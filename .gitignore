@@ -11,3 +11,4 @@ upgrade_script.sh
 upgrade.sh
 setup.sh
 start.sh
+.DS_Store
