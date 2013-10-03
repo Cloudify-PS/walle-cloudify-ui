@@ -8,17 +8,20 @@ angular.module('cosmoYamlApp')
             scope: {
                 json: '='
             },
-            link: function(scope, element, attrs) {
+            link: function(scope) {
                 function json2html(json) {
-                    var i, ret = "";
-                    ret += "<ul>";
+                    var i, ret = '';
+                    ret += '<ul>';
                     for( i in json) {
-                        ret += "<li>"+i+": ";
-                        if( typeof json[i] === "object") ret += json2html(json[i]);
-                        else ret += json[i];
-                        ret += "</li>";
+                        ret += '<li>' + i + ': ';
+                        if( typeof json[i] === 'object') {
+                            ret += json2html(json[i]);
+                        } else {
+                            ret += json[i];
+                        }
+                        ret += '</li>';
                     }
-                    ret += "</ul>";
+                    ret += '</ul>';
                     return ret;
                 }
 

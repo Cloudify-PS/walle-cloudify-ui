@@ -135,10 +135,11 @@ body {
 }
 
 #mainContent {
-    width: 100%;
     height: 100%;
+    width: 100%;
     background-color: transparent;
-    position: relative;
+    position: absolute;
+    left: 208px;
 }
 
 #dataContent {
@@ -149,14 +150,74 @@ body {
     margin-left: auto;
     margin-right: auto;
     float: left;
-    left: 14px;
+    left: 17px;
     overflow: hidden;
 }
 
 #contentToolbar {
     position: relative;
-    float: right;
-    background-color: red;
-    width: 100%;
+    float: left;
+    width: 80%;
     height: 40px;
+    left: 17px;
+    margin-top: 10px;
+    margin-bottom: 3px;
+
+}
+
+.toolbarButton {
+    width: 37px;
+    height: 37px;
+    float: left;
+    margin-left: 8px;
+    position: relative;
+    background: url(/images/buttons.png) no-repeat;
+    cursor: pointer;
+}
+
+#toolbarButtonsContainer {
+    float: right;
+}
+
+#messages {
+    background-position: 0px -82px;
+}
+
+#messages:hover {
+    background-position: -42px -82px;
+}
+
+#apps {
+    background-position: 0px -38px;
+}
+
+#apps:hover {
+    background-position: -45px -38px;
+}
+
+#search {
+    float: left;
+    position: relative;
+    height: 30px;
+    width: 200px;
+    background-color: transparent;
+    border: solid 2px #f5f5f5;
+    border-radius: 5px;
+    font-size: 14px;
+    color: #f5f5f5;
+    font-style: italic;
+    padding-left: 10px;
+}
+
+.newAlerts {
+    background-color: #3dbfe3;
+    border: none;
+    border-radius: 10px;
+    width: 18px;
+    height: 18px;
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    font-size: 14px;
+    text-align: center;
 }
