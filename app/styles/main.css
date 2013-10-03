@@ -1,0 +1,162 @@
+body {
+    background: #727272;
+    font-family: "OpenSansCondLight", Helvetica, Arial, sans-serif;
+    color: #fff;
+    overflow: hidden;
+    margin: 0;
+}
+
+#appContent {
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    min-width: 1260px;
+}
+
+#yamlResult {
+    float: left;
+    position: relative;
+    color: #333;
+}
+
+#json {
+    width: 500px;
+    height: 600px;
+}
+
+#json li {
+    list-style: none;
+}
+
+#sideMenu {
+    width: 204px;
+    height: 100%;
+    /* IE10 Consumer Preview */
+    background-image: -ms-linear-gradient(right, #8FC4EB 0%, #80AFD2 100%);
+    /* Mozilla Firefox */
+    background-image: -moz-linear-gradient(right, #8FC4EB 0%, #80AFD2 100%);
+    /* Opera */
+    background-image: -o-linear-gradient(right, #8FC4EB 0%, #80AFD2 100%);
+    /* Webkit (Safari/Chrome 10) */
+    background-image: -webkit-gradient(linear, right top, left top, color-stop(0, #8FC4EB), color-stop(1, #80AFD2));
+    /* Webkit (Chrome 11+) */
+    background-image: -webkit-linear-gradient(right, #8FC4EB 0%, #80AFD2 100%);
+    /* W3C Markup, IE10 Release Preview */
+    background-image: linear-gradient(to left, #8FC4EB 0%, #80AFD2 100%);
+    position: relative;
+    top: 0px;
+    left: 0px;
+    float: left;
+    color: #fff;
+    font-family: "OpenSansCondLight", Helvetica, Arial, sans-serif;
+}
+
+#logo {
+    position: relative;
+    width: 204px;
+    height: 119px;
+    background: url(/images/cloudifyLogo.png) no-repeat center center;
+}
+
+#menu {
+    position: relative;
+    float: left;
+    width: 100%;
+}
+
+#menu ul{
+    padding: 0;
+}
+
+#menu ul li{
+    list-style: none;
+    line-height: 62px;
+    padding-left: 15px;
+    font-size: 16px;
+}
+
+#menu ul li:hover{
+    background-color: #3778af;
+    cursor: pointer;
+}
+
+.menuIcon {
+    width: 30px;
+    height: 30px;
+    float: left;
+    margin-right: 15px;
+    position: relative;
+    top: 14px;
+    background: url(/images/icons-bar.png) no-repeat;
+}
+
+#plans {
+    background-position: 0px 0px;
+}
+
+#runningApps {
+    background-position: -40px 0px;
+}
+
+#events {
+    background-position: -80px 0px;
+}
+
+#monitoring {
+    background-position: -120px 0px;
+}
+
+#logs {
+    background-position: -160px 0px;
+}
+
+#hosts {
+    background-position: -200px 0px;
+}
+
+#networks {
+    background-position: -237px 0px;
+}
+
+#floatingIps {
+    background-position: -277px 0px;
+}
+
+#storage {
+    background-position: -316px 0px;
+}
+
+#divider {
+    width: 8px;
+    height: 100%;
+    background-color: #e8e6e6;
+    position: relative;
+    float: left;
+}
+
+#mainContent {
+    width: 100%;
+    height: 100%;
+    background-color: transparent;
+    position: relative;
+}
+
+#dataContent {
+    width: 80%;
+    height: 90%;
+    background-color: #fff;
+    position: relative;
+    margin-left: auto;
+    margin-right: auto;
+    float: left;
+    left: 14px;
+    overflow: hidden;
+}
+
+#contentToolbar {
+    position: relative;
+    float: right;
+    background-color: red;
+    width: 100%;
+    height: 40px;
+}

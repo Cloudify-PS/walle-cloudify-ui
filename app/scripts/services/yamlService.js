@@ -1,0 +1,184 @@
+'use strict';
+
+angular.module('cosmoYamlApp')
+    .service('yamlService', function yamlService($http) {
+
+        var that,
+            parsedData,
+            resultsArr,
+            json,
+            requestCount,
+            responseCount,
+            callbackFunc,
+            nodeId,
+            nodeIdMapping;
+
+        this.init = function(callback) {
+            that = this;
+            resultsArr = {};
+            json = {};
+            requestCount = 0;
+            responseCount = 0;
+            nodeId = 1;
+            nodeIdMapping = [];
+            callbackFunc = callback;
+            parsedData = {
+                imports: [],
+                types: [],
+                serviceTemplates: [],
+                relationships: []
+            };
+
+            this.loadYaml('integration-phase4.yaml');
+        };
+
+        this.loadYaml = function(yamlName) {
+            var url;
+
+            requestCount++;
+
+            if (yamlName.substr(yamlName.lastIndexOf('.') + 1).toLowerCase() === 'yaml') {
+                url = '/plans/path/' + yamlName;
+            } else {
+                url = yamlName;
+            }
+
+            $http.get(url)
+                .success(function(data) {
+                    _parseResult(data);
+                    resultsArr[yamlName] = data;
+                    responseCount++;
+
+                    if (resultsArr[yamlName].definitions.imports !== undefined && resultsArr[yamlName].definitions.imports.length > 0) {
+                        _loadImports(resultsArr[yamlName].definitions.imports);
+                    }
+                    if (_isLoadingDone()) {
+                        callbackFunc();
+                    }
+                });
+        };
+
+        this.getJson = function() {
+            return json;
+        };
+
+        function _loadImports(imports) {
+            for(var i = 0; i < imports.length; i++) {
+                var importName = imports[i];
+                // erez - turns out that if we don't do it very complicated, angular throws a "$digest already in progress" error.
+                setTimeout(function(_import){
+                    return function() {
+                        that.loadYaml(_import);
+                    };
+                }(importName), 1);
+            }
+        }
+
+        function _isLoadingDone() {
+            return responseCount === requestCount;
+        }
+
+        function _parseResult(result) {
+            if (result.definitions.imports !== undefined) {
+                for (var key in result.definitions.imports) {
+                    if ($.inArray(key, parsedData.imports === -1)) {
+                        parsedData.imports.push(result.definitions.imports[key]);
+                    }
+                }
+            }
+
+            if (result.definitions.types !== undefined) {
+                for (var type in result.definitions.types) {
+                    if ($.inArray(type, parsedData.types === -1)) {
+                        var typeArr = [];
+                        typeArr.push(type);
+                        if (result.definitions.types[type].derived_from !== undefined) {
+                            typeArr.push(result.definitions.types[type].derived_from);
+                        }
+                        parsedData.types.push(typeArr);
+                    }
+                }
+            }
+
+            if (result.definitions.service_templates !== undefined) {
+                for (var template in result.definitions.service_templates) {
+                    var topology = _findObjectByName(result.definitions.service_templates[template], 'topology');
+
+                    if (parsedData.serviceTemplates.length > 0) {
+                        parsedData.serviceTemplates.concat(_createNodes(topology));
+                    } else {
+                        parsedData.serviceTemplates = _createNodes(topology);
+                    }
+                }
+            }
+
+            _generateJSON();
+        }
+
+        function _findObjectByName(obj, name) {
+            for(var i in obj) {
+                if (i === name) {
+                    return obj[i];
+                }
+            }
+        }
+
+        function _createNodes(topology) {
+            var nodesArr = [];
+
+            for (var node in topology) {
+                nodesArr.push({
+                    id: nodeId,
+                    name: node,
+                    type: [topology[node].type]
+                });
+
+                for (var i = 0; topology[node].relationships !== undefined && i < topology[node].relationships.length; i++) {
+                    parsedData.relationships.push({
+                        origin: node,
+                        target: topology[node].relationships[i].target,
+                        type: topology[node].relationships[i].type
+                    });
+                }
+
+                nodeIdMapping[node] = nodeId;
+                nodeId++;
+            }
+
+            return nodesArr;
+        }
+
+        function _createEdges(nodes) {
+            var edgesArr = [];
+
+            for (var i = 0; i < nodes.length; i++) {
+                edgesArr.push({
+                    id: nodes[i].type.substr(nodes[i].type.lastIndexOf('.') + 1),
+                    origin: nodeIdMapping[nodes[i].origin],
+                    target: nodeIdMapping[nodes[i].target]
+                });
+            }
+
+            return edgesArr;
+        }
+
+        function _generateJSON() {
+            json = {};
+            json.nodes = _updateTypes(parsedData.serviceTemplates);
+            json.edges = _createEdges(parsedData.relationships);
+        }
+
+        function _updateTypes(templates) {
+            var updatedArr = templates;
+
+            for (var i = 0; i < updatedArr.length; i++) {
+                for (var j = 0; j < parsedData.types.length; j++) {
+                    if ($.inArray(updatedArr[i].type[0], parsedData.types[j]) > -1) {
+                        updatedArr[i].type = parsedData.types[j];
+                    }
+                }
+            }
+
+            return updatedArr;
+        }
+    });
