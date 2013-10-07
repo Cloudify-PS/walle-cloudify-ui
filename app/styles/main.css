@@ -1,3 +1,8 @@
+@font-face {
+    font-family: "TopologyIcons";
+    src: url(/images/topologyIcons.ttf);
+}
+
 body {
     background: #727272;
     font-family: "OpenSansCondLight", Helvetica, Arial, sans-serif;
@@ -88,6 +93,7 @@ body {
     position: relative;
     top: 14px;
     background: url(/images/icons-bar.png) no-repeat;
+    font-family: "TopologyIcons";
 }
 
 #plans {

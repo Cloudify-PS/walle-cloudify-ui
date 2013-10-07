@@ -130,7 +130,7 @@ angular.module('cosmoYamlApp')
                 nodesArr.push({
                     id: nodeId,
                     name: node,
-                    type: [topology[node].type]
+                    types: [topology[node].type]
                 });
 
                 for (var i = 0; topology[node].relationships !== undefined && i < topology[node].relationships.length; i++) {
@@ -153,8 +153,8 @@ angular.module('cosmoYamlApp')
 
             for (var i = 0; i < nodes.length; i++) {
                 edgesArr.push({
-                    id: nodes[i].type.substr(nodes[i].type.lastIndexOf('.') + 1),
-                    origin: nodeIdMapping[nodes[i].origin],
+                    type: nodes[i].type.substr(nodes[i].type.lastIndexOf('.') + 1),
+                    source: nodeIdMapping[nodes[i].origin],
                     target: nodeIdMapping[nodes[i].target]
                 });
             }
@@ -173,8 +173,8 @@ angular.module('cosmoYamlApp')
 
             for (var i = 0; i < updatedArr.length; i++) {
                 for (var j = 0; j < parsedData.types.length; j++) {
-                    if ($.inArray(updatedArr[i].type[0], parsedData.types[j]) > -1) {
-                        updatedArr[i].type = parsedData.types[j];
+                    if ($.inArray(updatedArr[i].types[0], parsedData.types[j]) > -1) {
+                        updatedArr[i].types = parsedData.types[j];
                     }
                 }
             }
