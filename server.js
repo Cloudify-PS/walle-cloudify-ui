@@ -17,8 +17,9 @@ var express = require('express');
 var ajax = require("http");
 var app = express();
 var port = 9001;
-var YAML = require('yamljs');
 var jsyaml = require('js-yaml');
+var fs = require('fs');
+var path = require('path');
 
 /*
  * App methods and libraries
@@ -90,47 +91,49 @@ if (app.get('env') === 'development') {
     app.use(express.static('dist'));
 }
 
-app.get('/plans/map', function(request, response, next) {
+app.post("/listDirectory", function(request, response, next) {
+    console.log(request);
+    var basePath = '/Users/erezcarmel/Projects/cosmo-ui/app/mock/cosmo-manager/orchestrator/src/test/resources/org/cloudifysource/cosmo/dsl/';
+    var directory = getFilePath(basePath + request.body.directory);
 
-    var options = {
-        hostname: 'localhost',
-        port: 9001,
-        path: '/',
-        method: 'GET'
-    };
+    console.log("listing directory: "  + directory);
+    try {
+        var directoryListing = fs.readdirSync(directory);
+        console.log(directory);
 
-    var data = '';
+        var result = [];
+        for (var i = 0; i < directoryListing.length; i++) {
+            var filePath = path.join(directory, directoryListing[i]);
+            var fileStat = fs.statSync(filePath) ;
 
-    var callback = function(res) {
-        var result = '';
+            if (directoryListing[i].substr(0, 1) !== '.' && directoryListing[i] !== '..' && directoryListing[i] !== '/') {
+                result.push({
+                    "name": directoryListing[i],
+                    "type": fileStat.isDirectory() ? "d":"f"
+                });
+            }
+        }
 
-        console.log('STATUS: ' + res.statusCode);
+        console.log("listing directory: " + directoryListing);
 
-        res.setEncoding('utf8');
-        res.on('data', function (chunk) {
-            result += chunk;
-        });
-
-        res.on('end', function () {
-            var jsonStr = JSON.stringify(jsyaml.safeLoad(result));
-            data = JSON.parse(jsonStr);
-            data.yaml = result;
-
-            console.log('Request done, data: ' + data);
-
-            response.send(data);
-        });
+        response.send(200, JSON.stringify(result));
+    } catch(e) {
+        response.send(200, JSON.stringify([]));
     }
 
-    var onError = function(e) {
-        console.log('problem with request: ' + e.message);
-        response.send(500);
-    };
+    function getFilePath(file) {
+        try {
+            file = JSON.parse(file);
+            var res = '';
 
-    var req = ajax.request(options, callback);
-    req.on('error', onError);
+            for (var i = 0; i < file.length; i++) {
+                res = path.join(res, file[i]);
+            }
+            file = res;
+        } catch(e) {}
 
-    req.end();
+        return file;
+    }
 });
 
 app.get('/plans/path/integration-phase4.yaml', function(request, response, next) {
@@ -157,7 +160,6 @@ app.get('/plans/path/integration-phase4.yaml', function(request, response, next)
         res.on('end', function () {
             var jsonStr = JSON.stringify(jsyaml.safeLoad(result));
             data = JSON.parse(jsonStr);
-            data.yaml = result;
 
             console.log('Request done, data: ' + data);
 
@@ -200,7 +202,6 @@ app.get('/plans/path/flask_installer.yaml', function(request, response, next) {
         res.on('end', function () {
             var jsonStr = JSON.stringify(jsyaml.safeLoad(result));
             data = JSON.parse(jsonStr);
-            data.yaml = result;
 
             console.log('Request done, data: ' + data);
 
@@ -243,7 +244,6 @@ app.get('/plans/path/pickle_db_installer.yaml', function(request, response, next
         res.on('end', function () {
             var jsonStr = JSON.stringify(jsyaml.safeLoad(result));
             data = JSON.parse(jsonStr);
-            data.yaml = result;
 
             console.log('Request done, data: ' + data);
 
@@ -286,7 +286,6 @@ app.get('/plans/path/flask_app_installer.yaml', function(request, response, next
         res.on('end', function () {
             var jsonStr = JSON.stringify(jsyaml.safeLoad(result));
             data = JSON.parse(jsonStr);
-            data.yaml = result;
 
             console.log('Request done, data: ' + data);
 
@@ -329,7 +328,6 @@ app.get('/plans/path/flask_app_connector.yaml', function(request, response, next
         res.on('end', function () {
             var jsonStr = JSON.stringify(jsyaml.safeLoad(result));
             data = JSON.parse(jsonStr);
-            data.yaml = result;
 
             console.log('Request done, data: ' + data);
 
@@ -372,7 +370,6 @@ app.get('/plans/path/stub_app_installer.yaml', function(request, response, next)
         res.on('end', function () {
             var jsonStr = JSON.stringify(jsyaml.safeLoad(result));
             data = JSON.parse(jsonStr);
-            data.yaml = result;
 
             console.log('Request done, data: ' + data);
 
@@ -415,7 +412,6 @@ app.get('/cloudify.types', function(request, response, next) {
         res.on('end', function () {
             var jsonStr = JSON.stringify(jsyaml.safeLoad(result));
             data = JSON.parse(jsonStr);
-            data.yaml = result;
 
             console.log('Request done, data: ' + data);
 
@@ -458,7 +454,6 @@ app.get('/vagrant_host_provisioner', function(request, response, next) {
         res.on('end', function () {
             var jsonStr = JSON.stringify(jsyaml.safeLoad(result));
             data = JSON.parse(jsonStr);
-            data.yaml = result;
 
             console.log('Request done, data: ' + data);
 
@@ -501,7 +496,6 @@ app.get('/cloudify.policies', function(request, response, next) {
         res.on('end', function () {
             var jsonStr = JSON.stringify(jsyaml.safeLoad(result));
             data = JSON.parse(jsonStr);
-            data.yaml = result;
 
             console.log('Request done, data: ' + data);
 
@@ -544,7 +538,6 @@ app.get('/celery_worker_installer', function(request, response, next) {
         res.on('end', function () {
             var jsonStr = JSON.stringify(jsyaml.safeLoad(result));
             data = JSON.parse(jsonStr);
-            data.yaml = result;
 
             console.log('Request done, data: ' + data);
 
@@ -587,7 +580,6 @@ app.get('/celery_plugin_installer', function(request, response, next) {
         res.on('end', function () {
             var jsonStr = JSON.stringify(jsyaml.safeLoad(result));
             data = JSON.parse(jsonStr);
-            data.yaml = result;
 
             console.log('Request done, data: ' + data);
 
@@ -682,31 +674,6 @@ app.use(function(err, req, res, next) {
     // default to plain-text. send()
     res.type('txt').send('Error ' + err.status);
 });
-
-
-/*
- * Routes
- */
-//app.get('/', function(req, res, next) {
-//    // we use a direct database connection here
-//    // because the API would have sent JSON itself
-//    app.db.getPeople(function (err, people) {
-//        if (err) {
-//            return next(err);
-//        }
-//
-//        res.render('app', {
-//            bootstrap: 'var bootstrap = ' + JSON.stringify(people) + ';',
-//        });
-//    });
-//});
-//
-//app.get('/normal', function(req, res, next) {
-//    res.render('normal');
-//});
-
-//app.get('/api/people', app.api.people.getAll);
-//app.get('/api/peopleError', app.api.people.getError);
 
 /*
  * Status Code pages

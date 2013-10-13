@@ -5,7 +5,6 @@ dist
 *.iml
 .idea
 app/bower_components
-Gruntfile.js
 libpeerconnection.log
 upgrade_script.sh
 upgrade.sh

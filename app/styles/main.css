@@ -7,7 +7,7 @@ body {
     background: #727272;
     font-family: "OpenSansCondLight", Helvetica, Arial, sans-serif;
     color: #fff;
-    overflow: hidden;
+    /*overflow: hidden;*/
     margin: 0;
 }
 
@@ -157,7 +157,7 @@ body {
     margin-right: auto;
     float: left;
     left: 17px;
-    overflow: hidden;
+    /*overflow: hidden;*/
 }
 
 #contentToolbar {
