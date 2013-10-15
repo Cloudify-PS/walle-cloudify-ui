@@ -169,15 +169,19 @@ angular.module('cosmoYamlApp')
             return json;
         };
 
+        function _loadYaml( obj, _import ){
+            obj.loadYaml(_import);
+        }
+
+        function _loadYamlTimeout( obj, _import){
+            setTimeout( function(){ _loadYaml(obj,_import); },1);
+        }
+
         function _loadImports(imports) {
             for(var i = 0; i < imports.length; i++) {
                 var importName = imports[i];
                 // erez - turns out that if we don't do it very complicated, angular throws a "$digest already in progress" error.
-                setTimeout(function(_import){
-                    return function() {
-                        that.loadYaml(_import);
-                    };
-                }(importName), 1);
+                _loadYamlTimeout( that, importName);
             }
         }
 

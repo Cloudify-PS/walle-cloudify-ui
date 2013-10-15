@@ -2,6 +2,7 @@
   "name": "cosmoYaml",
   "version": "0.0.0",
   "dependencies": {
+      "jquery":"1.9.1",
     "angular": "~1.0.7",
     "json3": "~3.2.4","es5-shim": "~2.0.8"
   },
