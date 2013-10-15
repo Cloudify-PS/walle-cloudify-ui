@@ -3,7 +3,7 @@
 describe('Controller: PlansCtrl', function () {
 
   // load the controller's module
-  beforeEach(module('cosmoYamlApp'));
+  beforeEach(module('cosmoUi'));
 
   var PlansCtrl,
     scope;

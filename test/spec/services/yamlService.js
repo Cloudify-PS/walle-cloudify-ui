@@ -3,7 +3,7 @@
 describe('Service: yamlService', function () {
 
   // load the service's module
-  beforeEach(module('cosmoYamlApp'));
+  beforeEach(module('cosmoUi'));
 
   // instantiate service
   var yamlService;

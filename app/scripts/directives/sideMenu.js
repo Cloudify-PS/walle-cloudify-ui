@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('cosmoYamlApp')
+angular.module('cosmoUi')
     .directive('sideMenu', function () {
         return {
             template: '<div>' +

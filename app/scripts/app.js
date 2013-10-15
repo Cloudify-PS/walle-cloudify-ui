@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('cosmoYamlApp', [])
+angular.module('cosmoUi', [])
     .config(function ($routeProvider) {
         $routeProvider
             .when('/json', {

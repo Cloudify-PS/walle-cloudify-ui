@@ -1,7 +1,7 @@
 'use strict';
 
 describe('Directive: sideMenu', function () {
-  beforeEach(module('cosmoYamlApp'));
+  beforeEach(module('cosmoUi'));
 
   var element;
 

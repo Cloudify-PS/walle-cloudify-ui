@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('cosmoYamlApp')
+angular.module('cosmoUi')
     .controller('PlansCtrl', function ($scope, yamlService) {
         yamlService.getFilesList('/', function(data) {
             $scope.files = data;

@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('cosmoYamlApp')
+angular.module('cosmoUi')
     .service('yamlService', function yamlService($http) {
 
 //        var that,

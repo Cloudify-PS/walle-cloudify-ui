@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('cosmoYamlApp')
+angular.module('cosmoUi')
     .directive('yamlResult', function () {
         return {
             template: '<div id="json"></div>',

@@ -1,7 +1,7 @@
 'use strict';
 
 describe('Directive: yamlResult', function () {
-  beforeEach(module('cosmoYamlApp'));
+  beforeEach(module('cosmoUi'));
 
   var element;
 

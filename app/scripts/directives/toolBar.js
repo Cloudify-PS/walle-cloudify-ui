@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('cosmoYamlApp')
+angular.module('cosmoUi')
     .directive('toolBar', function () {
         return {
             template: '<div id="toolbarButtonsContainer">' +
