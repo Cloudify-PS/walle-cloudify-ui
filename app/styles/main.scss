@@ -1,206 +1,273 @@
+//@import "../bower_components/bootstrap-sass/lib/bootstrap";
+
 @font-face {
-    font-family: "TopologyIcons";
-    src: url(/images/topologyIcons.ttf);
+  font-family: "TopologyIcons";
+  src: url(/images/topologyIcons.ttf);
 }
 
-body {
-    background: #727272;
-    font-family: "OpenSansCondLight", Helvetica, Arial, sans-serif;
-    color: #fff;
-    /*overflow: hidden;*/
-    margin: 0;
+*{ padding:0; margin:0}
+
+$HEADER_HEIGHT:0;
+$FOOTER_HEIGHT:0;
+$LEFT_MENU_WIDTH:200px;
+$RIGHT_MENU_WIDTH:0;
+
+html, body, .layout{ height:100%; width:100%; }
+.layout{
+  margin:            0 auto;
+  min-width:         600px;
+  min-height:        100%;
+  height:            100%;
+  background:#cadbec;
+  font-family: "OpenSansRegular";
 }
 
-#appContent {
-    height: 100%;
-    width: 100%;
-    position: absolute;
-    min-width: 1260px;
+.layout[class]{
+  height:            auto;
+  overflow:          hidden;
 }
-
-#yamlResult {
-    float: left;
-    position: relative;
-    color: #333;
+#header{ height: $HEADER_HEIGHT; background:#0000ff}
+#footer{ height:$FOOTER_HEIGHT; margin-top:-$FOOTER_HEIGHT; background : #222 }
+#footer[id]{z-index:100; position:relative;}
+#fix {
+  height: $FOOTER_HEIGHT;
+  clear: both;
+  background-color:yellow;
 }
-
-#json {
-    width: 500px;
-    height: 600px;
+#left-side-menu{
+  width:             $LEFT_MENU_WIDTH;
+  float:             left;
+  background:#4b6c8b;
+  padding-bottom:    3200px;
+  margin-bottom:    -3200px;
 }
+#right-side-menu{
+  width:             $RIGHT_MENU_WIDTH;
 
-#json li {
-    list-style: none;
+  background:        #00ff00;
+  padding-bottom:    32000px;
+  margin-bottom:    -32000px;
+  float:             right;
+
 }
+#main-content{ padding: 20px 20px 20px 20px; overflow:auto; height:100%; background-color:#cadbec;  }
+#main-content-panel{ background:#fff; width:100%; min-height:900px; }
 
-#sideMenu {
-    width: 204px;
-    height: 100%;
-    /* IE10 Consumer Preview */
-    background-image: -ms-linear-gradient(right, #8FC4EB 0%, #80AFD2 100%);
-    /* Mozilla Firefox */
-    background-image: -moz-linear-gradient(right, #8FC4EB 0%, #80AFD2 100%);
-    /* Opera */
-    background-image: -o-linear-gradient(right, #8FC4EB 0%, #80AFD2 100%);
-    /* Webkit (Safari/Chrome 10) */
-    background-image: -webkit-gradient(linear, right top, left top, color-stop(0, #8FC4EB), color-stop(1, #80AFD2));
-    /* Webkit (Chrome 11+) */
-    background-image: -webkit-linear-gradient(right, #8FC4EB 0%, #80AFD2 100%);
-    /* W3C Markup, IE10 Release Preview */
-    background-image: linear-gradient(to left, #8FC4EB 0%, #80AFD2 100%);
-    position: relative;
-    top: 0px;
-    left: 0px;
-    float: left;
-    color: #fff;
-    font-family: "OpenSansCondLight", Helvetica, Arial, sans-serif;
+
+
+
+
+
+//body {
+//  background: #727272;
+//  font-family: "OpenSansCondLight", Helvetica, Arial, sans-serif;
+//  color: #fff;
+//  /*overflow: hidden;*/
+//  margin: 0;
+//}
+//
+//#appContent {
+//  width: 100%;
+//  position: absolute;
+//  min-width: 1260px;
+//}
+//
+//#yamlResult {
+//  float: left;
+//  position: relative;
+//  color: #333;
+//}
+//
+//#json {
+//  width: 500px;
+//  height: 600px;
+//}
+//
+//#json li {
+//  list-style: none;
+//}
+//
+.side-menu {
+//  width: 204px;
+//  height: 100%;
+//  position: relative;
+//  top: 0px;
+//  left: 0px;
+//  float: left;
+  color: #fff;
+  font-family: "OpenSansCondLight", Helvetica, Arial, sans-serif;
+  .menu {
+    font-size:17px;
+    min-height:500px;
+//    position: relative;
+//    float: left;
+//    width: 100%;
+//
+    ul {
+      padding: 0;
+      li {
+        list-style: none;
+        line-height: 62px;
+
+
+        a {
+          padding-left:15px;
+          color:white;
+          display:block;
+          text-decoration: none;
+          &:hover{
+            background:#2c4a67;
+          }
+        }
+      }
+    }
+  }
 }
-
-#logo {
-    position: relative;
-    width: 204px;
-    height: 119px;
-    background: url(/images/cloudifyLogo.png) no-repeat center center;
+//
+.logo {
+//  position: relative;
+  width: 204px;
+  height: 119px;
+  background: url('/images/logo.png') no-repeat center center;
 }
-
-#menu {
-    position: relative;
-    float: left;
-    width: 100%;
-}
-
-#menu ul{
-    padding: 0;
-}
-
-#menu ul li{
-    list-style: none;
-    line-height: 62px;
-    padding-left: 15px;
-    font-size: 16px;
-}
-
-#menu ul li:hover{
-    background-color: #3778af;
-    cursor: pointer;
-}
-
+//
 .gsi {
-    width: 30px;
-    height: 30px;
-    float: left;
-    margin-right: 15px;
-    position: relative;
-    top: 14px;
-    background: url(/images/icons-bar.png) no-repeat;
-    font-family: "TopologyIcons";
+  width: 30px;
+  height: 30px;
+  float: left;
+  margin-right: 15px;
+  position: relative;
+  top: 14px;
+  background: url(/images/icons-bar.png) no-repeat;
+  font-family: "TopologyIcons";
 
-  &.plans { background-position: 0px 0px; }
-  &.runningApps { background-position: - 40 px 0px; }
-  &.events { background-position: - 80 px 0px; }
-  &.monitoring { background-position: - 120 px 0px; }
-  &.logs { background-position: - 160 px 0px; }
-  &.hosts { background-position: - 200 px 0px; }
-  &.networks { background-position: - 237 px 0px; }
-  &.floatingIps { background-position: - 277 px 0px; }
-  &.storage { background-position: - 316 px 0px; }
-
-}
-
-
-
-#divider {
-    width: 8px;
-    height: 100%;
-    background-color: #e8e6e6;
-    position: relative;
-    float: left;
-}
-
-#mainContent {
-    height: 100%;
-    width: 100%;
-    background-color: transparent;
-    position: absolute;
-    left: 208px;
-}
-
-#dataContent {
-    width: 80%;
-    height: 90%;
-    background-color: #fff;
-    position: relative;
-    margin-left: auto;
-    margin-right: auto;
-    float: left;
-    left: 17px;
-    /*overflow: hidden;*/
-}
-
-#contentToolbar {
-    position: relative;
-    float: left;
-    width: 80%;
-    height: 40px;
-    left: 17px;
-    margin-top: 10px;
-    margin-bottom: 3px;
+  &.plans {
+    background-position: 0px 0px;
+  }
+  &.running-apps {
+    background-position: -40px 0px;
+  }
+  &.events {
+    background-position: -80px 0px;
+  }
+  &.monitoring {
+    background-position: -120px 0px;
+  }
+  &.logs {
+    background-position: -160px 0px;
+  }
+  &.hosts {
+    background-position: -200px 0px;
+  }
+  &.networks {
+    background-position: -237px 0px;
+  }
+  &.floating-ips {
+    background-position: -277px 0px;
+  }
+  &.storage {
+    background-position: -316px 0px;
+  }
 
 }
-
-.toolbarButton {
-    width: 37px;
-    height: 37px;
-    float: left;
-    margin-left: 8px;
-    position: relative;
-    background: url(/images/buttons.png) no-repeat;
-    cursor: pointer;
-}
-
-#toolbarButtonsContainer {
-    float: right;
-}
-
-#messages {
-    background-position: 0px -82px;
-}
-
-#messages:hover {
-    background-position: -42px -82px;
-}
-
-#apps {
-    background-position: 0px -38px;
-}
-
-#apps:hover {
-    background-position: -45px -38px;
-}
-
-#search {
-    float: left;
-    position: relative;
-    height: 30px;
-    width: 200px;
-    background-color: transparent;
-    border: solid 2px #f5f5f5;
-    border-radius: 5px;
-    font-size: 14px;
-    color: #f5f5f5;
-    font-style: italic;
-    padding-left: 10px;
-}
-
-.newAlerts {
-    background-color: #3dbfe3;
-    border: none;
-    border-radius: 10px;
-    width: 18px;
-    height: 18px;
-    position: absolute;
-    top: -5px;
-    right: -5px;
-    font-size: 14px;
-    text-align: center;
-}
+//
+//#divider {
+//  width: 8px;
+//  height: 100%;
+//  background-color: #e8e6e6;
+//  position: relative;
+//  float: left;
+//}
+//
+//#mainContent {
+//  position:absolute;
+//  right:20px;
+//  top:20px;
+//  bottom:20px;
+//  height: 100%;
+//  background-color: transparent;
+//  position: absolute;
+//  left: 208px;
+//}
+//
+//#dataContent {
+//  position:absolute;
+//  right:20px;
+//  left:20px;
+//  height: 90%;
+//  background-color: #fff;
+//  position: relative;
+//  margin-left: auto;
+//  margin-right: auto;
+//  float: left;
+//  left: 17px;
+//  /*overflow: hidden;*/
+//}
+//
+//#contentToolbar {
+//  position: relative;
+//  float: left;
+//  width: 80%;
+//  height: 40px;
+//  left: 17px;
+//  margin-top: 10px;
+//  margin-bottom: 3px;
+//
+//}
+//
+//.toolbarButton {
+//  width: 37px;
+//  height: 37px;
+//  float: left;
+//  margin-left: 8px;
+//  position: relative;
+//  background: url(/images/buttons.png) no-repeat;
+//  cursor: pointer;
+//}
+//
+//#toolbarButtonsContainer {
+//  float: right;
+//}
+//
+//#messages {
+//  background-position: 0px -82px;
+//}
+//
+//#messages:hover {
+//  background-position: -42px -82px;
+//}
+//
+//#apps {
+//  background-position: 0px -38px;
+//}
+//
+//#apps:hover {
+//  background-position: -45px -38px;
+//}
+//
+//#search {
+//  float: left;
+//  position: relative;
+//  height: 30px;
+//  width: 200px;
+//  background-color: transparent;
+//  border: solid 2px #f5f5f5;
+//  border-radius: 5px;
+//  font-size: 14px;
+//  color: #f5f5f5;
+//  font-style: italic;
+//  padding-left: 10px;
+//}
+//
+//.newAlerts {
+//  background-color: #3dbfe3;
+//  border: none;
+//  border-radius: 10px;
+//  width: 18px;
+//  height: 18px;
+//  position: absolute;
+//  top: -5px;
+//  right: -5px;
+//  font-size: 14px;
+//  text-align: center;
+//}

@@ -3,27 +3,33 @@
 angular.module('cosmoUi')
     .directive('sideMenu', function () {
         return {
-            template: '<div>' +
-                '<div id="logo"></div> ' +
-                '<div id="menu">' +
+            template: '<div class="side-menu">' +
+                '<div class="logo"></div> ' +
+                '<div class="menu">' +
                     '<ul>' +
-                        '<li><div class="gsi plans" id="plans"></div>Plans</li>' +
-                        '<li><div class="gsi running-apps" id="runningApps"></div>Running Apps</li>' +
-                        '<li><div class="gsi events" id="events"></div>Events</li>' +
-                        '<li><div class="gsi monitoring" id="monitoring"></div>Monitoring</li>' +
-                        '<li><div class="gsi logs" id="logs"></div>Logs</li>' +
-                        '<li><div class="gsi hosts" id="hosts"></div>Hosts</li>' +
-                        '<li><div class="gsi networks" id="networks"></div>Networks</li>' +
-                        '<li><div class="gsi" id="floatingIps"></div>Floating IPs</li>' +
-                        '<li><div class="gsi" id="storage"></div>Storage</li>' +
+                        '<li ng-repeat="item in items"><a href="{{item.route}}">              <div class="gsi {{item.icon}}">         </div>            {{item.label}}               </a></li>' +
                     '</ul>' +
                 '</div> ' +
               '</div>',
-            restrict: 'E',
-            link: function() {
-                $('#menu li').on('click', function(element) {
-                    console.log(element.currentTarget.innerText + ' button was clicked');
-                });
+            restrict: 'A',
+            scope:{
+
+            },
+            replace:true,
+            transclude:true,
+            link:function( scope ){
+                scope.items = [
+                    { 'route' : '#plans' ,              'icon' : 'plans' ,                'label':'Plans'},
+                    { 'route' : '#running-apps' ,       'icon' : 'running-apps' ,         'label':'Running Apps'},
+                    { 'route' : '#events' ,              'icon' : 'events' ,                'label':'Events'},
+                    { 'route' : '#monitoring' ,         'icon' : 'monitoring' ,           'label':'Monitoring'},
+                    { 'route' : '#logs' ,               'icon' : 'logs' ,                 'label':'Logs'},
+                    { 'route' : '#hosts' ,              'icon' : 'hosts' ,                'label':'Hosts'},
+                    { 'route' : '#networks' ,           'icon' : 'networks' ,             'label':'Networks'},
+                    { 'route' : '#floating-ips' ,       'icon' : 'floating-ips' ,         'label':'Floating IPs'},
+                    { 'route' : '#storage' ,            'icon' : 'storage' ,              'label':'Storage'}
+                ];
             }
+
         };
     });

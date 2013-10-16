@@ -24,7 +24,8 @@
       <script src="bower_components/json3/lib/json3.min.js"></script>
     <![endif]-->
 
-    <div class="container" ng-view=""></div>
+    <div ng-view="" style="height:100%;"></div>
+
 
     <script>
       var _gaq=[['_setAccount','UA-XXXXX-X'],['_trackPageview']];
@@ -33,9 +34,25 @@
       s.parentNode.insertBefore(g,s)}(document,'script'));
     </script>
 
+    <!-- build:js scripts/plugins.js -->
+    <script src="bower_components/jquery/jquery.js"></script>
     <script src="bower_components/angular/angular.js"></script>
-    <script src="bower_components/jquery/jquery.min.js"></script>
+    <script src="bower_components/bootstrap-sass/js/bootstrap-affix.js"></script>
+    <script src="bower_components/bootstrap-sass/js/bootstrap-alert.js"></script>
+    <script src="bower_components/bootstrap-sass/js/bootstrap-dropdown.js"></script>
+    <script src="bower_components/bootstrap-sass/js/bootstrap-tooltip.js"></script>
+    <script src="bower_components/bootstrap-sass/js/bootstrap-modal.js"></script>
+    <script src="bower_components/bootstrap-sass/js/bootstrap-transition.js"></script>
+    <script src="bower_components/bootstrap-sass/js/bootstrap-button.js"></script>
+    <script src="bower_components/bootstrap-sass/js/bootstrap-popover.js"></script>
+    <script src="bower_components/bootstrap-sass/js/bootstrap-typeahead.js"></script>
+    <script src="bower_components/bootstrap-sass/js/bootstrap-carousel.js"></script>
+    <script src="bower_components/bootstrap-sass/js/bootstrap-scrollspy.js"></script>
+    <script src="bower_components/bootstrap-sass/js/bootstrap-collapse.js"></script>
+    <script src="bower_components/bootstrap-sass/js/bootstrap-tab.js"></script>
+    <!-- endbuild -->
 
+    <!-- build:js scripts/modules.js -->
     <script src="scripts/app.js"></script>
     <script src="scripts/controllers/main.js"></script>
     <script src="scripts/controllers/plans.js"></script>
@@ -43,6 +60,8 @@
     <script src="scripts/directives/yaml-result.js"></script>
     <script src="scripts/directives/sideMenu.js"></script>
     <script src="scripts/directives/toolBar.js"></script>
+    <script src="scripts/directives/cosmoLayout.js"></script>
+    <!-- endbuild -->
 
   </body>
 </html>

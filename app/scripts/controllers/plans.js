@@ -2,10 +2,10 @@
 
 angular.module('cosmoUi')
     .controller('PlansCtrl', function ($scope, yamlService) {
-        yamlService.getFilesList('/', function(data) {
-            $scope.files = data;
-        });
 
+//        yamlService.getFilesList('/', function(data) {
+//            $scope.files = data;
+//        });
         $scope.showFile = function(file) {
             console.log(file.name);
         };

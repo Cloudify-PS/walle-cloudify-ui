@@ -7,11 +7,11 @@ angular.module('cosmoUi', [])
                 templateUrl: 'views/main.html',
                 controller: 'MainCtrl'
             })
-            .when('/', {
+            .when('/plans', {
                 templateUrl: 'views/plans.html',
                 controller: 'PlansCtrl'
             })
             .otherwise({
-                redirectTo: '/'
+                redirectTo: '/plans'
             });
     });
