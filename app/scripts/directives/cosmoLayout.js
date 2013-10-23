@@ -18,7 +18,7 @@ angular.module('cosmoUi')
                 '</div>' +
                 '<div id="right-side-menu"></div>' +
                 '<div id="main-content">' +
-                '<div id="main-content-panel" ng-transclude>This is cosmoLayout</div>' +
+                '<div id="main-content-panel" ng-transclude></div>' +
                 '</div>' +
                 '<div id="fix"></div>' + // a fix for footer position.
                 '</div>' + // layout end

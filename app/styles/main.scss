@@ -1,15 +1,13 @@
 @import "../bower_components/bootstrap-sass/lib/bootstrap";
 
-//@import "../bower_components/gs-ui-infra/app/styles/fonts.scss";
-//@import "../bower_components/gs-ui-infra/app/styles/topology.scss";
+$gs-infra-root:'../bower_components/gs-ui-infra';
+@import "../bower_components/gs-ui-infra/app/styles/main.scss";
 
+$fa-font-path:'../bower_components/font-awesome/fonts';
 
-@font-face {
-  font-family: "TopologyIcons";
-  src: url(/images/topologyIcons.ttf);
-}
+@import "../bower_components/font-awesome/scss/font-awesome";
 
-*{ padding:0; margin:0}
+*{ padding:0; margin:0;}
 
 $HEADER_HEIGHT:0;
 $FOOTER_HEIGHT:0;
@@ -58,55 +56,13 @@ html, body, .layout{ height:100%; width:100%; }
 #main-content-panel{ background:#fff; width:100%; min-height:900px; }
 
 
-
-
-
-
-//body {
-//  background: #727272;
-//  font-family: "OpenSansCondLight", Helvetica, Arial, sans-serif;
-//  color: #fff;
-//  /*overflow: hidden;*/
-//  margin: 0;
-//}
-//
-//#appContent {
-//  width: 100%;
-//  position: absolute;
-//  min-width: 1260px;
-//}
-//
-//#yamlResult {
-//  float: left;
-//  position: relative;
-//  color: #333;
-//}
-//
-//#json {
-//  width: 500px;
-//  height: 600px;
-//}
-//
-//#json li {
-//  list-style: none;
-//}
-//
 .side-menu {
-//  width: 204px;
-//  height: 100%;
-//  position: relative;
-//  top: 0px;
-//  left: 0px;
-//  float: left;
+
   color: #fff;
   font-family: "OpenSansCondLight", Helvetica, Arial, sans-serif;
   .menu {
     font-size:17px;
     min-height:500px;
-//    position: relative;
-//    float: left;
-//    width: 100%;
-//
     ul {
       padding: 0;
       li {
@@ -115,6 +71,8 @@ html, body, .layout{ height:100%; width:100%; }
 
 
         a {
+
+          vertical-align: top;
           padding-left:15px;
           color:white;
           display:block;
@@ -122,19 +80,20 @@ html, body, .layout{ height:100%; width:100%; }
           &:hover{
             background:#2c4a67;
           }
+          i{
+            padding-right:10px;
+          }
         }
       }
     }
   }
 }
-//
 .logo {
-//  position: relative;
   width: 204px;
   height: 119px;
   background: url('/images/logo.png') no-repeat center center;
 }
-//
+
 .gsi {
   width: 30px;
   height: 30px;
@@ -142,11 +101,15 @@ html, body, .layout{ height:100%; width:100%; }
   margin-right: 15px;
   position: relative;
   top: 14px;
-  background: url(/images/icons-bar.png) no-repeat;
-  font-family: "TopologyIcons";
+  //background: url(/images/icons-bar.png) no-repeat;
+  font-family: "Cosmo";
 
   &.plans {
     background-position: 0px 0px;
+    &:after{
+      content:"123456789abcdefghijklmnop";
+      display:"inline-block"
+    }
   }
   &.running-apps {
     background-position: -40px 0px;
@@ -174,104 +137,92 @@ html, body, .layout{ height:100%; width:100%; }
   }
 
 }
-//
-//#divider {
-//  width: 8px;
-//  height: 100%;
-//  background-color: #e8e6e6;
-//  position: relative;
-//  float: left;
-//}
-//
-//#mainContent {
-//  position:absolute;
-//  right:20px;
-//  top:20px;
-//  bottom:20px;
-//  height: 100%;
-//  background-color: transparent;
-//  position: absolute;
-//  left: 208px;
-//}
-//
-//#dataContent {
-//  position:absolute;
-//  right:20px;
-//  left:20px;
-//  height: 90%;
-//  background-color: #fff;
-//  position: relative;
-//  margin-left: auto;
-//  margin-right: auto;
-//  float: left;
-//  left: 17px;
-//  /*overflow: hidden;*/
-//}
-//
-//#contentToolbar {
-//  position: relative;
-//  float: left;
-//  width: 80%;
-//  height: 40px;
-//  left: 17px;
-//  margin-top: 10px;
-//  margin-bottom: 3px;
-//
-//}
-//
-//.toolbarButton {
-//  width: 37px;
-//  height: 37px;
-//  float: left;
-//  margin-left: 8px;
-//  position: relative;
-//  background: url(/images/buttons.png) no-repeat;
-//  cursor: pointer;
-//}
-//
-//#toolbarButtonsContainer {
-//  float: right;
-//}
-//
-//#messages {
-//  background-position: 0px -82px;
-//}
-//
-//#messages:hover {
-//  background-position: -42px -82px;
-//}
-//
-//#apps {
-//  background-position: 0px -38px;
-//}
-//
-//#apps:hover {
-//  background-position: -45px -38px;
-//}
-//
-//#search {
-//  float: left;
-//  position: relative;
-//  height: 30px;
-//  width: 200px;
-//  background-color: transparent;
-//  border: solid 2px #f5f5f5;
-//  border-radius: 5px;
-//  font-size: 14px;
-//  color: #f5f5f5;
-//  font-style: italic;
-//  padding-left: 10px;
-//}
-//
-//.newAlerts {
-//  background-color: #3dbfe3;
-//  border: none;
-//  border-radius: 10px;
-//  width: 18px;
-//  height: 18px;
-//  position: absolute;
-//  top: -5px;
-//  right: -5px;
-//  font-size: 14px;
-//  text-align: center;
-//}
+
+
+#plans-index{
+  table.table{
+    width:97%;
+    margin:0 auto;
+
+    i{
+      color:#BCBCBC;
+    }
+    tr:first-child td{
+      background:#CCE4F6;
+      color:#234E71;
+    }
+    tr{
+      cursor:pointer;
+      &:hover:not(:first-child) td{
+        background-color:#CECECE;
+
+        &,i {color:white; }
+        i{font-weight: normal;}
+        font-weight: bold;
+      }
+      td{
+        vertical-align: middle;
+        &.icon{ width:40px;}
+        &.name,&.version, &.description,&.actions{ width:25%;}
+        &.description{padding-right:30px;}
+
+      }
+      &:not(:first-child) td.actions{
+        font-size:35px;
+        letter-spacing: 10px;
+      }
+    }
+
+
+  }
+}
+
+
+$gs-icon-prefix:'gs-icon';
+[class^=#{$gs-icon-prefix}], [class*=" #{$gs-icon-prefix}"]{
+  font-size:50px;
+  line-height:10px;
+  font-family:'Cosmo';
+  font-style: normal;
+  display:inline-block;
+
+}
+
+.#{$gs-icon-prefix}-question-mark-sign:before { content:"a"; }
+.#{$gs-icon-prefix}-question-mark:before { content:"b"; }
+.#{$gs-icon-prefix}-closed-envelope:before { content:"c"; }
+.#{$gs-icon-prefix}-events:before { content:"d"; }
+.#{$gs-icon-prefix}-floating-ips:before { content:"e"; }
+.#{$gs-icon-prefix}-hosts:before { content:"f"; }
+.#{$gs-icon-prefix}-logs:before { content:"g"; }
+.#{$gs-icon-prefix}-monitoring:before { content:"h"; }
+.#{$gs-icon-prefix}-networks:before { content:"i"; }
+.#{$gs-icon-prefix}-plans:before { content:"j"; }
+.#{$gs-icon-prefix}-running-apps:before { content:"k"; }
+.#{$gs-icon-prefix}-storage:before { content:"l"; }
+
+
+
+.content-header{
+
+  height:30px;
+  padding: 10px 20px;
+  vertical-align: middle;
+
+  .breadcrumbs{ color:#22619D; font-size:30px; float:left; }
+  .right{
+    float:right;
+
+    .gs-btn{
+      color:white;
+      font-weight: bold;
+      padding:5px 10px 5px 10px ;
+      background-color:#4885C0;
+      border-radius: 3px;
+      border-bottom:1px solid #2D6FAF;
+      border-right:1px solid #3475B4;
+      border-top:none;
+      border-left:none;
+    }
+  }
+}

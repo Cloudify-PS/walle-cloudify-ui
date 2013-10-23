@@ -8,10 +8,12 @@ angular.module('cosmoUi', ['gsUiInfra'])
                 controller: 'MainCtrl'
             })
             .when('/plans', {
+                templateUrl: 'views/plansIndex.html',
+                controller: 'PlansIndexCtrl'
+            }).when('/plan',{
                 templateUrl: 'views/plans.html',
                 controller: 'PlansCtrl'
-            })
-            .otherwise({
+            }).otherwise({
                 redirectTo: '/plans'
             });
     });

@@ -7,7 +7,7 @@ angular.module('cosmoUi')
                 '<div class="logo"></div> ' +
                 '<div class="menu">' +
                     '<ul>' +
-                        '<li ng-repeat="item in items"><a href="{{item.route}}">              <div class="gsi {{item.icon}}">         </div>            {{item.label}}               </a></li>' +
+                        '<li ng-repeat="item in items"><a href="{{item.route}}">              <i class="gs-icon-{{item.icon}}">         </i>            {{item.label}}               </a></li>' +
                     '</ul>' +
                 '</div> ' +
               '</div>',
