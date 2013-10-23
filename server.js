@@ -136,12 +136,42 @@ app.post("/listDirectory", function(request, response, next) {
     }
 });
 
-app.get('/plans/path/integration-phase4.yaml', function(request, response, next) {
+// mock API for getting yamls.
+app.get('/plans/path', function(request, response, next ){
 
+
+    var file = request.param("file");
+    var isImport = request.param("import") == "true";
+
+    var rootPath = '/dev/cosmo-manager/orchestrator/src/test/resources/org/cloudifysource/cosmo/dsl/integration_phase4/';
+
+    var absolutePath = undefined;
+
+    // imports are handled differently for some reason..
+    if ( isImport ){
+        var specialPaths = { // yes, there are special paths..
+            'cloudify.types':'/dev/cosmo-manager/orchestrator/src/main/resources/cloudify/tosca/types/types.yaml',
+            'vagrant_host_provisioner':'/dev/cosmo-manager/orchestrator/src/main/resources/cloudify/tosca/artifacts/plugins/vagrant_host_provisioner.yaml',
+            'cloudify.policies':'/dev/cosmo-manager/orchestrator/src/main/resources/cloudify/tosca/policies/policies.yaml',
+            'celery_worker_installer':'/dev/cosmo-manager/orchestrator/src/main/resources/cloudify/tosca/artifacts/plugins/worker_installer.yaml',
+            'celery_plugin_installer':'/dev/cosmo-manager/orchestrator/src/main/resources/cloudify/tosca/artifacts/plugins/plugin_installer.yaml'
+        };
+
+        if ( specialPaths.hasOwnProperty(file) ){ // special import behavior
+            absolutePath = specialPaths[file];
+        }else{
+            absolutePath = rootPath + "definitions/" + file; // default import behavior
+        }
+    }else{ // non import behavior
+        absolutePath = rootPath + file;
+    }
+
+    console.log(["absolutePath is ", absolutePath ]);
+    // lets act as if we are getting the file from a remote service. mocking this with static file middleware.
     var options = {
         hostname: 'localhost',
         port: 9001,
-        path: '/mock/cosmo-manager/orchestrator/src/test/resources/org/cloudifysource/cosmo/dsl/integration_phase4/integration-phase4.yaml',
+        path: absolutePath ,
         method: 'GET'
     };
 
@@ -165,7 +195,7 @@ app.get('/plans/path/integration-phase4.yaml', function(request, response, next)
 
             response.send(data);
         });
-    }
+    };
 
     var onError = function(e) {
         console.log('problem with request: ' + e.message);
@@ -178,425 +208,6 @@ app.get('/plans/path/integration-phase4.yaml', function(request, response, next)
     req.end();
 });
 
-app.get('/plans/path/flask_installer.yaml', function(request, response, next) {
-
-    var options = {
-        hostname: 'localhost',
-        port: 9001,
-        path: '/mock/cosmo-manager/orchestrator/src/test/resources/org/cloudifysource/cosmo/dsl/integration_phase4/definitions/flask_installer.yaml',
-        method: 'GET'
-    };
-
-    var data = '';
-
-    var callback = function(res) {
-        var result = '';
-
-        console.log('STATUS: ' + res.statusCode);
-
-        res.setEncoding('utf8');
-        res.on('data', function (chunk) {
-            result += chunk;
-        });
-
-        res.on('end', function () {
-            var jsonStr = JSON.stringify(jsyaml.safeLoad(result));
-            data = JSON.parse(jsonStr);
-
-            console.log('Request done, data: ' + data);
-
-            response.send(data);
-        });
-    }
-
-    var onError = function(e) {
-        console.log('problem with request: ' + e.message);
-        response.send(500);
-    };
-
-    var req = ajax.request(options, callback);
-    req.on('error', onError);
-
-    req.end();
-});
-
-app.get('/plans/path/pickle_db_installer.yaml', function(request, response, next) {
-
-    var options = {
-        hostname: 'localhost',
-        port: 9001,
-        path: '/mock/cosmo-manager/orchestrator/src/test/resources/org/cloudifysource/cosmo/dsl/integration_phase4/definitions/pickle_db_installer.yaml',
-        method: 'GET'
-    };
-
-    var data = '';
-
-    var callback = function(res) {
-        var result = '';
-
-        console.log('STATUS: ' + res.statusCode);
-
-        res.setEncoding('utf8');
-        res.on('data', function (chunk) {
-            result += chunk;
-        });
-
-        res.on('end', function () {
-            var jsonStr = JSON.stringify(jsyaml.safeLoad(result));
-            data = JSON.parse(jsonStr);
-
-            console.log('Request done, data: ' + data);
-
-            response.send(data);
-        });
-    }
-
-    var onError = function(e) {
-        console.log('problem with request: ' + e.message);
-        response.send(500);
-    };
-
-    var req = ajax.request(options, callback);
-    req.on('error', onError);
-
-    req.end();
-});
-
-app.get('/plans/path/flask_app_installer.yaml', function(request, response, next) {
-
-    var options = {
-        hostname: 'localhost',
-        port: 9001,
-        path: '/mock/cosmo-manager/orchestrator/src/test/resources/org/cloudifysource/cosmo/dsl/integration_phase4/definitions/flask_app_installer.yaml',
-        method: 'GET'
-    };
-
-    var data = '';
-
-    var callback = function(res) {
-        var result = '';
-
-        console.log('STATUS: ' + res.statusCode);
-
-        res.setEncoding('utf8');
-        res.on('data', function (chunk) {
-            result += chunk;
-        });
-
-        res.on('end', function () {
-            var jsonStr = JSON.stringify(jsyaml.safeLoad(result));
-            data = JSON.parse(jsonStr);
-
-            console.log('Request done, data: ' + data);
-
-            response.send(data);
-        });
-    }
-
-    var onError = function(e) {
-        console.log('problem with request: ' + e.message);
-        response.send(500);
-    };
-
-    var req = ajax.request(options, callback);
-    req.on('error', onError);
-
-    req.end();
-});
-
-app.get('/plans/path/flask_app_connector.yaml', function(request, response, next) {
-
-    var options = {
-        hostname: 'localhost',
-        port: 9001,
-        path: '/mock/cosmo-manager/orchestrator/src/test/resources/org/cloudifysource/cosmo/dsl/integration_phase4/definitions/flask_app_connector.yaml',
-        method: 'GET'
-    };
-
-    var data = '';
-
-    var callback = function(res) {
-        var result = '';
-
-        console.log('STATUS: ' + res.statusCode);
-
-        res.setEncoding('utf8');
-        res.on('data', function (chunk) {
-            result += chunk;
-        });
-
-        res.on('end', function () {
-            var jsonStr = JSON.stringify(jsyaml.safeLoad(result));
-            data = JSON.parse(jsonStr);
-
-            console.log('Request done, data: ' + data);
-
-            response.send(data);
-        });
-    }
-
-    var onError = function(e) {
-        console.log('problem with request: ' + e.message);
-        response.send(500);
-    };
-
-    var req = ajax.request(options, callback);
-    req.on('error', onError);
-
-    req.end();
-});
-
-app.get('/plans/path/stub_app_installer.yaml', function(request, response, next) {
-
-    var options = {
-        hostname: 'localhost',
-        port: 9001,
-        path: '/mock/cosmo-manager/orchestrator/src/test/resources/org/cloudifysource/cosmo/dsl/integration_phase4/definitions/stub_app_installer.yaml',
-        method: 'GET'
-    };
-
-    var data = '';
-
-    var callback = function(res) {
-        var result = '';
-
-        console.log('STATUS: ' + res.statusCode);
-
-        res.setEncoding('utf8');
-        res.on('data', function (chunk) {
-            result += chunk;
-        });
-
-        res.on('end', function () {
-            var jsonStr = JSON.stringify(jsyaml.safeLoad(result));
-            data = JSON.parse(jsonStr);
-
-            console.log('Request done, data: ' + data);
-
-            response.send(data);
-        });
-    }
-
-    var onError = function(e) {
-        console.log('problem with request: ' + e.message);
-        response.send(500);
-    };
-
-    var req = ajax.request(options, callback);
-    req.on('error', onError);
-
-    req.end();
-});
-
-app.get('/cloudify.types', function(request, response, next) {
-
-    var options = {
-        hostname: 'localhost',
-        port: 9001,
-        path: '/mock/cosmo-manager/orchestrator/src/main/resources/cloudify/tosca/types/types.yaml',
-        method: 'GET'
-    };
-
-    var data = '';
-
-    var callback = function(res) {
-        var result = '';
-
-        console.log('STATUS: ' + res.statusCode);
-
-        res.setEncoding('utf8');
-        res.on('data', function (chunk) {
-            result += chunk;
-        });
-
-        res.on('end', function () {
-            var jsonStr = JSON.stringify(jsyaml.safeLoad(result));
-            data = JSON.parse(jsonStr);
-
-            console.log('Request done, data: ' + data);
-
-            response.send(data);
-        });
-    }
-
-    var onError = function(e) {
-        console.log('problem with request: ' + e.message);
-        response.send(500);
-    };
-
-    var req = ajax.request(options, callback);
-    req.on('error', onError);
-
-    req.end();
-});
-
-app.get('/vagrant_host_provisioner', function(request, response, next) {
-
-    var options = {
-        hostname: 'localhost',
-        port: 9001,
-        path: '/mock/cosmo-manager/orchestrator/src/main/resources/cloudify/tosca/artifacts/plugins/vagrant_host_provisioner.yaml',
-        method: 'GET'
-    };
-
-    var data = '';
-
-    var callback = function(res) {
-        var result = '';
-
-        console.log('STATUS: ' + res.statusCode);
-
-        res.setEncoding('utf8');
-        res.on('data', function (chunk) {
-            result += chunk;
-        });
-
-        res.on('end', function () {
-            var jsonStr = JSON.stringify(jsyaml.safeLoad(result));
-            data = JSON.parse(jsonStr);
-
-            console.log('Request done, data: ' + data);
-
-            response.send(data);
-        });
-    }
-
-    var onError = function(e) {
-        console.log('problem with request: ' + e.message);
-        response.send(500);
-    };
-
-    var req = ajax.request(options, callback);
-    req.on('error', onError);
-
-    req.end();
-});
-
-app.get('/cloudify.policies', function(request, response, next) {
-
-    var options = {
-        hostname: 'localhost',
-        port: 9001,
-        path: '/mock/cosmo-manager/orchestrator/src/main/resources/cloudify/tosca/policies/policies.yaml',
-        method: 'GET'
-    };
-
-    var data = '';
-
-    var callback = function(res) {
-        var result = '';
-
-        console.log('STATUS: ' + res.statusCode);
-
-        res.setEncoding('utf8');
-        res.on('data', function (chunk) {
-            result += chunk;
-        });
-
-        res.on('end', function () {
-            var jsonStr = JSON.stringify(jsyaml.safeLoad(result));
-            data = JSON.parse(jsonStr);
-
-            console.log('Request done, data: ' + data);
-
-            response.send(data);
-        });
-    }
-
-    var onError = function(e) {
-        console.log('problem with request: ' + e.message);
-        response.send(500);
-    };
-
-    var req = ajax.request(options, callback);
-    req.on('error', onError);
-
-    req.end();
-});
-
-app.get('/celery_worker_installer', function(request, response, next) {
-
-    var options = {
-        hostname: 'localhost',
-        port: 9001,
-        path: '/mock/cosmo-manager/orchestrator/src/main/resources/cloudify/tosca/artifacts/plugins/worker_installer.yaml',
-        method: 'GET'
-    };
-
-    var data = '';
-
-    var callback = function(res) {
-        var result = '';
-
-        console.log('STATUS: ' + res.statusCode);
-
-        res.setEncoding('utf8');
-        res.on('data', function (chunk) {
-            result += chunk;
-        });
-
-        res.on('end', function () {
-            var jsonStr = JSON.stringify(jsyaml.safeLoad(result));
-            data = JSON.parse(jsonStr);
-
-            console.log('Request done, data: ' + data);
-
-            response.send(data);
-        });
-    }
-
-    var onError = function(e) {
-        console.log('problem with request: ' + e.message);
-        response.send(500);
-    };
-
-    var req = ajax.request(options, callback);
-    req.on('error', onError);
-
-    req.end();
-});
-
-app.get('/celery_plugin_installer', function(request, response, next) {
-
-    var options = {
-        hostname: 'localhost',
-        port: 9001,
-        path: '/mock/cosmo-manager/orchestrator/src/main/resources/cloudify/tosca/artifacts/plugins/plugin_installer.yaml',
-        method: 'GET'
-    };
-
-    var data = '';
-
-    var callback = function(res) {
-        var result = '';
-
-        console.log('STATUS: ' + res.statusCode);
-
-        res.setEncoding('utf8');
-        res.on('data', function (chunk) {
-            result += chunk;
-        });
-
-        res.on('end', function () {
-            var jsonStr = JSON.stringify(jsyaml.safeLoad(result));
-            data = JSON.parse(jsonStr);
-
-            console.log('Request done, data: ' + data);
-
-            response.send(data);
-        });
-    }
-
-    var onError = function(e) {
-        console.log('problem with request: ' + e.message);
-        response.send(500);
-    };
-
-    var req = ajax.request(options, callback);
-    req.on('error', onError);
-
-    req.end();
-});
 
 // Since this is the last non-error-handling
 // middleware use()d, we assume 404, as nothing else

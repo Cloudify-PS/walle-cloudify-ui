@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('cosmoUi')
-    .service('yamlService', function yamlService($http) {
+    .service('YamlService', function YamlService($http) {
 
 //        var that,
 //            json,
@@ -139,13 +139,13 @@ angular.module('cosmoUi')
             this.loadYaml(appName);
         };
 
-        this.loadYaml = function(yamlName) {
+        this.loadYaml = function(yamlName, isImport ) {
             var url;
 
             requestCount++;
 
             if (yamlName.substr(yamlName.lastIndexOf('.') + 1).toLowerCase() === 'yaml') {
-                url = '/plans/path/' + yamlName;
+                url = '/plans/path?file=' + yamlName + "&import=" + isImport;
             } else {
                 url = yamlName;
             }
@@ -170,7 +170,7 @@ angular.module('cosmoUi')
         };
 
         function _loadYaml( obj, _import ){
-            obj.loadYaml(_import);
+            obj.loadYaml(_import, true);
         }
 
         function _loadYamlTimeout( obj, _import){

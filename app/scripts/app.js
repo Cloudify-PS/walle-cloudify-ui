@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('cosmoUi', [])
+angular.module('cosmoUi', ['gsUiInfra'])
     .config(function ($routeProvider) {
         $routeProvider
             .when('/json', {
