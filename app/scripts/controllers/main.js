@@ -1,9 +1,17 @@
 'use strict';
 
 angular.module('cosmoUi')
-    .controller('MainCtrl', function ($scope, YamlService) {
-        YamlService.init('integration-phase4.yaml', function() {
-            $scope.json = YamlService.getJson();
+    .controller('MainCtrl', function ($scope, YamlService, $routeParams ) {
+        var appName = $routeParams.appName || "mezzanine-app";
+        console.log(['appName is', appName]);
+        YamlService.load('mezzanine-app','mezzanine_template.yaml', function( err, result ) {
+            if ( err ){
+                console.log(err);
+                $scope.json = "ERROR : " + err.message;
+            }else{
+                $scope.json = result;
+            }
+
         });
 
         $scope.asString = function(){

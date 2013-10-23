@@ -141,9 +141,10 @@ app.get('/plans/path', function(request, response, next ){
 
 
     var file = request.param("file");
+    var folder = request.param("folder")
     var isImport = request.param("import") == "true";
 
-    var rootPath = '/dev/cosmo-manager/orchestrator/src/test/resources/org/cloudifysource/cosmo/dsl/integration_phase4/';
+    var rootPath = '/dev/cosmo-manager/orchestrator/src/test/resources/org/cloudifysource/cosmo/dsl/' + folder + '/';
 
     var absolutePath = undefined;
 
