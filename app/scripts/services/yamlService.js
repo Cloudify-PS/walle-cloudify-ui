@@ -141,14 +141,9 @@ angular.module('cosmoUi')
 
         this.loadYaml = function(yamlName, isImport ) {
             var url;
-
             requestCount++;
+            url = '/plans/path?file=' + yamlName + "&import=" + isImport;
 
-            if (yamlName.substr(yamlName.lastIndexOf('.') + 1).toLowerCase() === 'yaml') {
-                url = '/plans/path?file=' + yamlName + "&import=" + isImport;
-            } else {
-                url = yamlName;
-            }
 
             $http.get(url)
                 .success(function(data) {
