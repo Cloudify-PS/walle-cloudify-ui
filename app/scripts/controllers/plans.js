@@ -10,9 +10,11 @@ angular.module('cosmoUi')
             console.log(file.name);
         };
 
+        $scope.planName = $routeParams.name;
+
         $scope.renderer = Render.Topology.D3;
         $scope.layouter = Layout.Topology.Tensor.init({"xyPositioning":"relative"});
-        YamlService.load($routeParams.folder, $routeParams.file, function( err, json ){
+        YamlService.load($routeParams.directory, $routeParams.file,  function( err, json ){
             console.log(json);
             $scope.graph = json;
         } );

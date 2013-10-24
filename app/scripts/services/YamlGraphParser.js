@@ -30,8 +30,10 @@ angular.module('cosmoUi')
 
                 for (var i = 0; i < updatedArr.length; i++) {
                     for (var j = 0; j < parsedData.types.length; j++) {
-                        if ($.inArray(updatedArr[i].type[0], parsedData.types[j]) > -1) {
-                            updatedArr[i].type = parsedData.types[j];
+                        if (updatedArr[i].id !== 'root') {
+                            if ($.inArray(updatedArr[i].type[0], parsedData.types[j]) > -1) {
+                                updatedArr[i].type = parsedData.types[j];
+                            }
                         }
                     }
                 }
@@ -68,7 +70,6 @@ angular.module('cosmoUi')
                     node = topology[nodeIndex];
                     nodeId = nodeIdMapping[node.name].id;
                     for (var i = 0; node.relationships !== undefined && i < node.relationships.length; i++) {
-                        debugger;
                         parsedData.relationships.push({
                             source: nodeId,
                             target: nodeIdMapping[node.relationships[i].target].id,
