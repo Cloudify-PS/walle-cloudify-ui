@@ -8,7 +8,6 @@ dev
 app/bower_components
 libpeerconnection.log
 upgrade_script.sh
-upgrade.sh
 setup.sh
 start.sh
 .DS_Store
