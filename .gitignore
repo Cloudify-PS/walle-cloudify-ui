@@ -1,0 +1,16 @@
+node_modules
+dist
+dev
+.tmp
+.sass-cache
+*.iml
+.idea
+app/bower_components
+libpeerconnection.log
+upgrade_script.sh
+upgrade.sh
+setup.sh
+start.sh
+.DS_Store
+app/dev
+conf/dev

@@ -1,0 +1,288 @@
+@import "../bower_components/bootstrap-sass/lib/bootstrap";
+
+$gs-infra-root:'../bower_components/gs-ui-infra';
+@import "../bower_components/gs-ui-infra/app/styles/main.scss";
+
+$fa-font-path:'../bower_components/font-awesome/fonts';
+
+@import "../bower_components/font-awesome/scss/font-awesome";
+
+*{ padding:0; margin:0;}
+
+$HEADER_HEIGHT:0;
+$FOOTER_HEIGHT:0;
+$LEFT_MENU_WIDTH:200px;
+$RIGHT_MENU_WIDTH:0;
+
+html, body, .layout{ height:100%; width:100%; position:relative; }
+.layout{
+  margin:            0 auto;
+  min-width:         600px;
+  min-height:        100%;
+  height:            100%;
+  background:#cadbec;
+  font-family: "OpenSansRegular";
+}
+
+.layout[class]{
+  height:            auto;
+  overflow:          hidden;
+}
+#header{ height: $HEADER_HEIGHT; background:#0000ff}
+#footer{ height:$FOOTER_HEIGHT; margin-top:-$FOOTER_HEIGHT; background : #222 }
+#footer[id]{z-index:100; position:relative;}
+#fix {
+  height: $FOOTER_HEIGHT;
+  clear: both;
+  background-color:yellow;
+}
+#left-side-menu{
+  width:             $LEFT_MENU_WIDTH;
+  float:             left;
+  background:#4b6c8b;
+  padding-bottom:    3200px;
+  margin-bottom:    -3200px;
+}
+#right-side-menu{
+  width:             $RIGHT_MENU_WIDTH;
+  background:        #fff;
+  padding-bottom:    32000px;
+  margin-bottom:    -32000px;
+  float:             right;
+
+}
+#main-content{ overflow:hidden; padding: 20px 20px 20px 20px;  height:100%; background-color:#cadbec;  }
+#main-content-panel{ background:#fff; width:100%; min-height:900px; }
+
+
+.side-menu {
+
+  color: #fff;
+  font-family: "OpenSansCondLight", Helvetica, Arial, sans-serif;
+  .menu {
+    font-size:17px;
+    min-height:500px;
+    ul {
+      padding: 0;
+      li {
+        list-style: none;
+        line-height: 62px;
+
+
+        a {
+
+          vertical-align: top;
+          padding-left:15px;
+          color:white;
+          display:block;
+          text-decoration: none;
+          &:hover{
+            background:#2c4a67;
+          }
+          i{
+            padding-right:10px;
+          }
+        }
+      }
+    }
+  }
+}
+.logo {
+  width: 204px;
+  height: 119px;
+  background: url('/images/logo.png') no-repeat center center;
+}
+
+.gsi {
+  width: 30px;
+  height: 30px;
+  float: left;
+  margin-right: 15px;
+  position: relative;
+  top: 14px;
+  //background: url(/images/icons-bar.png) no-repeat;
+  font-family: "Cosmo";
+
+  &.plans {
+    background-position: 0px 0px;
+    &:after{
+      content:"123456789abcdefghijklmnop";
+      display:"inline-block"
+    }
+  }
+  &.running-apps {
+    background-position: -40px 0px;
+  }
+  &.events {
+    background-position: -80px 0px;
+  }
+  &.monitoring {
+    background-position: -120px 0px;
+  }
+  &.logs {
+    background-position: -160px 0px;
+  }
+  &.hosts {
+    background-position: -200px 0px;
+  }
+  &.networks {
+    background-position: -237px 0px;
+  }
+  &.floating-ips {
+    background-position: -277px 0px;
+  }
+  &.storage {
+    background-position: -316px 0px;
+  }
+
+}
+
+
+#plans-index{
+  table.table{
+    width:97%;
+    margin:0 auto;
+
+    i{
+      color:#BCBCBC;
+    }
+    tr:first-child td{
+      background:#CCE4F6;
+      color:#234E71;
+    }
+    tr{
+      cursor:pointer;
+      &:hover:not(:first-child) td{
+        background-color:#CECECE;
+
+        &,i {color:white; }
+        i{font-weight: normal;}
+        font-weight: bold;
+      }
+      td{
+        vertical-align: middle;
+        &.icon{ width:40px;}
+        &.name,&.version, &.description,&.actions{ width:25%;}
+        &.description{padding-right:30px;}
+
+      }
+      &:not(:first-child) td.actions{
+        font-size:35px;
+        letter-spacing: 10px;
+      }
+    }
+
+
+  }
+}
+
+
+$gs-icon-prefix:'gs-icon';
+[class^=#{$gs-icon-prefix}], [class*=" #{$gs-icon-prefix}"]{
+  font-size:50px;
+  line-height:10px;
+  font-family:'Cosmo';
+  font-style: normal;
+  display:inline-block;
+
+}
+
+.#{$gs-icon-prefix}-question-mark-sign:before { content:"a"; }
+.#{$gs-icon-prefix}-question-mark:before { content:"b"; }
+.#{$gs-icon-prefix}-closed-envelope:before { content:"c"; }
+.#{$gs-icon-prefix}-events:before { content:"d"; }
+.#{$gs-icon-prefix}-floating-ips:before { content:"e"; }
+.#{$gs-icon-prefix}-hosts:before { content:"f"; }
+.#{$gs-icon-prefix}-logs:before { content:"g"; }
+.#{$gs-icon-prefix}-monitoring:before { content:"h"; }
+.#{$gs-icon-prefix}-networks:before { content:"i"; }
+.#{$gs-icon-prefix}-plans:before { content:"j"; }
+.#{$gs-icon-prefix}-running-apps:before { content:"k"; }
+.#{$gs-icon-prefix}-storage:before { content:"l"; }
+
+
+
+.content-header{
+
+  height:66px;
+  padding: 10px 20px;
+  vertical-align: middle;
+
+
+  padding-bottom: 20px;
+  border-bottom: 3px solid #D3DFE2;
+  margin-bottom: 20px;
+  width: 98%;
+  margin: 0 auto 20px auto;
+
+  .breadcrumbs{
+    color:#22619D;
+    font-size:30px;
+    float:left;
+    ul,li{ list-style:none; margin:0; padding:0; }
+    li { display:inline-block; padding-right:5px; padding-left:5px;}
+    li:not(:last-child):after{
+      display:inline-block;
+      content:"\f054";
+      font-family: "FontAwesome";
+      padding-left:5px;
+    }
+  }
+  .right{
+    float:right;
+
+    .gs-btn{
+      color:white;
+      font-weight: bold;
+      padding:5px 10px 5px 10px ;
+      background-color:#4885C0;
+      border-radius: 3px;
+      border-bottom:1px solid #2D6FAF;
+      border-right:1px solid #3475B4;
+      border-top:none;
+      border-left:none;
+    }
+  }
+}
+
+
+#plans{
+  #right-side-menu{
+    position:absolute;
+    top:0;
+    right:0;
+    width:600px;
+    border-left:4px solid #2c4a67;
+    background-color:rgba(255,255,255,0.9);
+    padding-left:19px;
+    padding-right:23px;
+    padding-top:20px;
+
+    .title{
+      padding-bottom:10px;
+      line-height:40px;
+      color:#5A82A2;
+      font-size:32px;
+      border-bottom:4px solid #CADBEC;
+      i { float:right; }
+    }
+
+    .content{
+      margin-top:10px;
+      .btn-group{
+        $RADIUS:30px;
+        button{ height:34px; font-size:22px; padding-top:0; padding-bottom:0; color: #496685; border:1px solid #D3DFE2; }
+
+        button:last-child{ border-bottom-right-radius: $RADIUS; border-top-right-radius: $RADIUS;}
+        button:first-child{ border-top-left-radius: $RADIUS; border-bottom-left-radius: $RADIUS; }
+        button.active{ background: #496685; color:white; }
+      }
+      .content-section{
+        margin-top:30px;
+      }
+    }
+  }
+}
+.right-panel{
+  width:400px;
+}

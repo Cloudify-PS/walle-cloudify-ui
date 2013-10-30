@@ -1,0 +1,25 @@
+<div class="cosmo-layout" id="plans-index">
+    <div class="content-header">
+        <div class="breadcrumbs">Plans</div>
+        <div class="right">
+            <button class="gs-btn">Add a Plan</button>
+        </div>
+    </div>
+
+    <table class="table table-striped">
+        <tr>
+            <td class="icon"><!-- icon --></td>
+            <td class="name">Name</td>
+            <td class="version">Version</td>
+            <td class="description">Description</td>
+            <td class="actions">Action</td>
+        </tr>
+        <tr ng-repeat="plan in plans" ng-click="redirectTo(plan)">
+            <td class="icon"><i class="gs-icon-running-apps"></i></td>
+            <td class="name">{{plan.name}}</td>
+            <td class="version">{{plan.version}}</td>
+            <td class="description">{{plan.description}}</td>
+            <td class="actions"><i class="fa  fa-chevron-circle-down"></i><i class="fa  fa-play-circle-o"></i></td>
+        </tr>
+    </table>
+</div>
