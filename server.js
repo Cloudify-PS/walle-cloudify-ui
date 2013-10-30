@@ -137,7 +137,7 @@ app.post("/listDirectory", function(request, response, next) {
 });
 
 // mock API for getting yamls.
-app.get('/plans/path', function(request, response, next ){
+app.get('/backend/plans/path', function(request, response, next ){
 
 
     var file = request.param("file");

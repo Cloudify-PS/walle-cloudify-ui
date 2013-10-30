@@ -1,11 +1,11 @@
 'use strict';
 
 angular.module('cosmoUi')
-  .service('YamlGraphParser', function YamlGraphParser() {
-    // AngularJS will instantiate a singleton by calling "new" on this function
+    .service('YamlGraphParser', function YamlGraphParser() {
+        // AngularJS will instantiate a singleton by calling "new" on this function
 
 
-        function Parser(){
+        function Parser() {
 
             var json = {};
             var parsedData = {
@@ -15,8 +15,6 @@ angular.module('cosmoUi')
             };
             var _nodeId = 1;
             var nodeIdMapping = {};
-
-
 
 
             function _generateJSON() {
@@ -41,7 +39,7 @@ angular.module('cosmoUi')
                 return updatedArr;
             }
 
-            function uniqueId(){
+            function uniqueId() {
                 return _nodeId++;
             }
 
@@ -55,17 +53,21 @@ angular.module('cosmoUi')
                 for (var nodeIndex = 0; nodeIndex < topology.length; nodeIndex++) {
                     nodeId = uniqueId();
                     node = topology[nodeIndex];
-                    var myNode =  {
+                    var myNode = {
                         id: nodeId,
                         name: node.name,
-                        type: [node.type]
+                        type: [node.type],
+                        properties: node.properties,
+                        policies: node.policies,
+                        general: null, /* type, name, numOfInstances, description, relationships */
+
                     };
-                    nodesArr.push( myNode );
-                    nodeIdMapping[node.name] = myNode ;
+                    nodesArr.push(myNode);
+                    nodeIdMapping[node.name] = myNode;
                 }
 
                 // create edges
-                for ( nodeIndex = 0; nodeIndex < topology.length; nodeIndex++ ){
+                for (nodeIndex = 0; nodeIndex < topology.length; nodeIndex++) {
 
                     node = topology[nodeIndex];
                     nodeId = nodeIdMapping[node.name].id;
@@ -82,12 +84,12 @@ angular.module('cosmoUi')
             }
 
 
-            this.getParsedResult = function(){
+            this.getParsedResult = function () {
                 return json;
-            }
+            };
 
-            this.parseResult = function(result) {
-                console.log(["parsing",result]);
+            this.parseResult = function (result) {
+//                console.log(["parsing",result]);
 
                 if (result.types !== undefined) {
                     for (var type in result.types) {
@@ -103,24 +105,24 @@ angular.module('cosmoUi')
                 }
 
                 if (result.application_template !== undefined) {
-                        var templateValue = result.application_template;
-                        var topology =  templateValue.hasOwnProperty('topology') ? templateValue.topology : undefined;
+                    var templateValue = result.application_template;
+                    var topology = templateValue.hasOwnProperty('topology') ? templateValue.topology : undefined;
 
-                        if (parsedData.serviceTemplates.length > 0) {
-                            parsedData.serviceTemplates.concat(_createNodes(topology));
-                        } else {
-                            parsedData.serviceTemplates = _createNodes(topology);
-                        }
+                    if (parsedData.serviceTemplates.length > 0) {
+                        parsedData.serviceTemplates.concat(_createNodes(topology));
+                    } else {
+                        parsedData.serviceTemplates = _createNodes(topology);
+                    }
                 }
 
                 _generateJSON();
-            }
+            };
         }
 
 
-        this.newInstance = function(){
+        this.newInstance = function () {
             return new Parser();
-        }
+        };
 
 
     });

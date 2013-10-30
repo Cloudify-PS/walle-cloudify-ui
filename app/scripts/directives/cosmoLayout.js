@@ -25,9 +25,17 @@ angular.module('cosmoUi')
                 '<div id="footer"></div></div>',
             restrict: 'C',
             transclude: true,
-            replace:true,
-            link: function postLink(/*scope, element, attrs*/) {
+            replace: true,
+            link: function postLink(scope, element/*, attrs*/) {
+                try {
+                    var rightPanel = element.find('.right-panel');
+                    $('#right-side-menu').remove();
+                    $('#left-side-menu').after(rightPanel);
+                    rightPanel.attr('id', 'right-side-menu');
+                } catch (e) {
+                    console.log(e);
 
+                }
             }
         };
     });

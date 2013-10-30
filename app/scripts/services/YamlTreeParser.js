@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('cosmoUi')
-  .service('YamlTreeParser', function YamlTreeParser() {
+    .service('YamlTreeParser', function YamlTreeParser() { });
 //        var that,
 //            json,
 //            resultsArr,
@@ -108,4 +108,4 @@ angular.module('cosmoUi')
 //            }
 //
 //        }
-  });
+

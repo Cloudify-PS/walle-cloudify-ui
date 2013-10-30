@@ -14,7 +14,7 @@ $FOOTER_HEIGHT:0;
 $LEFT_MENU_WIDTH:200px;
 $RIGHT_MENU_WIDTH:0;
 
-html, body, .layout{ height:100%; width:100%; }
+html, body, .layout{ height:100%; width:100%; position:relative; }
 .layout{
   margin:            0 auto;
   min-width:         600px;
@@ -45,14 +45,13 @@ html, body, .layout{ height:100%; width:100%; }
 }
 #right-side-menu{
   width:             $RIGHT_MENU_WIDTH;
-
-  background:        #00ff00;
+  background:        #fff;
   padding-bottom:    32000px;
   margin-bottom:    -32000px;
   float:             right;
 
 }
-#main-content{ padding: 20px 20px 20px 20px; overflow:auto; height:100%; background-color:#cadbec;  }
+#main-content{ overflow:hidden; padding: 20px 20px 20px 20px;  height:100%; background-color:#cadbec;  }
 #main-content-panel{ background:#fff; width:100%; min-height:900px; }
 
 
@@ -205,9 +204,16 @@ $gs-icon-prefix:'gs-icon';
 
 .content-header{
 
-  height:30px;
+  height:66px;
   padding: 10px 20px;
   vertical-align: middle;
+
+
+  padding-bottom: 20px;
+  border-bottom: 3px solid #D3DFE2;
+  margin-bottom: 20px;
+  width: 98%;
+  margin: 0 auto 20px auto;
 
   .breadcrumbs{
     color:#22619D;
@@ -237,4 +243,46 @@ $gs-icon-prefix:'gs-icon';
       border-left:none;
     }
   }
+}
+
+
+#plans{
+  #right-side-menu{
+    position:absolute;
+    top:0;
+    right:0;
+    width:600px;
+    border-left:4px solid #2c4a67;
+    background-color:rgba(255,255,255,0.9);
+    padding-left:19px;
+    padding-right:23px;
+    padding-top:20px;
+
+    .title{
+      padding-bottom:10px;
+      line-height:40px;
+      color:#5A82A2;
+      font-size:32px;
+      border-bottom:4px solid #CADBEC;
+      i { float:right; }
+    }
+
+    .content{
+      margin-top:10px;
+      .btn-group{
+        $RADIUS:30px;
+        button{ height:34px; font-size:22px; padding-top:0; padding-bottom:0; color: #496685; border:1px solid #D3DFE2; }
+
+        button:last-child{ border-bottom-right-radius: $RADIUS; border-top-right-radius: $RADIUS;}
+        button:first-child{ border-top-left-radius: $RADIUS; border-bottom-left-radius: $RADIUS; }
+        button.active{ background: #496685; color:white; }
+      }
+      .content-section{
+        margin-top:30px;
+      }
+    }
+  }
+}
+.right-panel{
+  width:400px;
 }

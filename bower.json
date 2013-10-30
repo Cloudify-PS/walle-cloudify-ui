@@ -9,7 +9,8 @@
     "es5-shim": "~2.0.8",
     "gs-ui-infra": "git://github.com/guy-mograbi-at-gigaspaces/gs-ui-infra.git",
     "d3": "~3.3.8",
-      "font-awesome":"~4.0.0"
+    "font-awesome": "~4.0.0",
+    "yamljs": "git://github.com/jeremyfa/yaml.js.git"
   },
   "devDependencies": {
     "angular-mocks": "~1.0.7",

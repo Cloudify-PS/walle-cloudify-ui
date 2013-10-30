@@ -1,13 +1,13 @@
 'use strict';
 
 describe('Directive: toolBar', function () {
-  beforeEach(module('cosmoUi'));
+//  beforeEach(module('cosmoUi'));
 
-  var element;
+//  var element;
 
-  it('should make hidden element visible', inject(function ($rootScope, $compile) {
+//  it('should make hidden element visible', inject(function ($rootScope, $compile) {
 //    element = angular.element('<tool-bar></tool-bar>');
 //    element = $compile(element)($rootScope);
 //    expect(element.text()).toBe('this is the toolBar directive');
-  }));
+//  }));
 });

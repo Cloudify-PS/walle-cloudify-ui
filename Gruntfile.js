@@ -219,6 +219,7 @@ module.exports = function (grunt) {
             //     ]
             //   }
             // }
+            options:{processImport: false}
         },
         htmlmin: {
             dist: {
@@ -257,7 +258,10 @@ module.exports = function (grunt) {
                             '.htaccess',
                             'bower_components/**/*',
                             'images/{,*/}*.{gif,webp,svg}',
-                            'styles/fonts/*'
+                            'styles/fonts/*',
+                            '!bower_components/**/node_modules/**/*',
+                            '!bower_components/**/*.{css,scss}'
+
                         ]
                     },
                     {

@@ -10,7 +10,7 @@
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width">
 
-      <!-- build:css styles/main.css -->
+      <!-- build:css({.tmp,app}) styles/main.css -->
     <link rel="stylesheet" href="styles/main.css">
     <!-- endbuild -->
 </head>
@@ -37,6 +37,7 @@
     <!-- build:js scripts/plugins.js -->
     <script src="bower_components/jquery/jquery.js"></script>
     <script src="bower_components/angular/angular.js"></script>
+    <script src="bower_components/yamljs/bin/yaml.js"></script>
     <script src="bower_components/bootstrap-sass/dist/js/bootstrap.js"></script>
     <script src="bower_components/d3/d3.js"></script>
 
@@ -58,6 +59,8 @@
     <script src="scripts/services/YamlTreeParser.js"></script>
     <script src="scripts/services/YamlGraphParser.js"></script>
     <script src="scripts/controllers/PlansIndex.js"></script>
+    <script src="scripts/filters/yaml.js"></script>
+    <script src="scripts/directives/checkboxToggle.js"></script>
     <!-- endbuild -->
 
   </body>

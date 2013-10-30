@@ -15,7 +15,6 @@ angular.module('cosmoUi')
 
 
         function YamlLoader( folderName, callback ) {
-            var that = this;
 
             var imports = [];
             var loadedImports = [];
@@ -35,7 +34,7 @@ angular.module('cosmoUi')
 
                 var url;
                 requestCount++;
-                url = '/plans/path?file=' + yamlName + "&import=" + isImport + "&folder=" + folderName;
+                url = '/backend/plans/path?file=' + yamlName + '&import=' + isImport + '&folder=' + folderName;
 
 
                 $http.get(url)
@@ -63,7 +62,7 @@ angular.module('cosmoUi')
                             callbackFunc(null, parser.getParsedResult());
                         }
                     });
-            };
+            }
 
 
             function _parseResult(result) {

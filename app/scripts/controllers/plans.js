@@ -10,14 +10,19 @@ angular.module('cosmoUi')
             console.log(file.name);
         };
 
+        $scope.section = 'general';
+
+        $scope.$watch('section', function () {
+            console.log('got a new section value');
+        });
+
         $scope.planName = $routeParams.name;
 
         $scope.renderer = Render.Topology.D3;
-        $scope.layouter = Layout.Topology.Tensor.init({"xyPositioning":"relative"});
-        YamlService.load($routeParams.directory, $routeParams.file,  function( err, json ){
-            console.log(json);
+        $scope.layouter = Layout.Topology.Tensor.init({'xyPositioning': 'relative'});
+        YamlService.load($routeParams.directory, $routeParams.file, function (err, json) {
             $scope.graph = json;
-        } );
+        });
 
         $scope.showDirectory = function (directory) {
             console.log(directory.name);
@@ -25,4 +30,24 @@ angular.module('cosmoUi')
                 $scope.files = data;
             });
         };
+
+        $scope.topologyHandlers = {
+            'click': function (node) {
+                $scope.showProperties = node;
+            }
+        };
+
+
+        $scope.hideProperties = function () {
+            $scope.showProperties = null;
+        };
+
+//        $(document).on('click','svg', function(e, data){
+//            $scope.$apply(function(){
+//                console.log(["doing something on click",$scope.graph.nodes[1]]);
+//
+//                $scope.showProperties = $scope.graph.nodes[1];
+//
+//            })
+//        })
     });
