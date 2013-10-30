@@ -171,7 +171,7 @@ app.get('/backend/plans/path', function(request, response, next ){
     // lets act as if we are getting the file from a remote service. mocking this with static file middleware.
     var options = {
         hostname: 'localhost',
-        port: 9001,
+        port: port,
         path: absolutePath ,
         method: 'GET'
     };
