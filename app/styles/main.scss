@@ -249,6 +249,8 @@ $gs-icon-prefix:'gs-icon';
 #plans{
   #right-side-menu{
     position:absolute;
+    z-index:20;
+
     top:0;
     right:0;
     width:600px;
@@ -271,7 +273,7 @@ $gs-icon-prefix:'gs-icon';
       margin-top:10px;
       .btn-group{
         $RADIUS:30px;
-        button{ height:34px; font-size:22px; padding-top:0; padding-bottom:0; color: #496685; border:1px solid #D3DFE2; }
+        button{ height:22px; line-height:0; font-size:16px; padding-top:0; padding-bottom:0; color: #496685; border:1px solid #D3DFE2; }
 
         button:last-child{ border-bottom-right-radius: $RADIUS; border-top-right-radius: $RADIUS;}
         button:first-child{ border-top-left-radius: $RADIUS; border-bottom-left-radius: $RADIUS; }
@@ -285,4 +287,10 @@ $gs-icon-prefix:'gs-icon';
 }
 .right-panel{
   width:400px;
+}
+
+
+.topology {
+  .topology-directive-inner-div{ height:100%; width:100%; }
+
 }

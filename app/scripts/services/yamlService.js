@@ -49,10 +49,6 @@ angular.module('cosmoUi')
                             _loadImports(imports);
                         }
 
-
-
-
-
                         _parseResult(data);
                         resultsArr[yamlName] = data;
                         responseCount++;

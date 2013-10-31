@@ -32,8 +32,8 @@ angular.module('cosmoUi')
         };
 
         $scope.topologyHandlers = {
-            'click': function (node) {
-                $scope.showProperties = node;
+            'actionClick': function (data) {
+                $scope.showProperties = data.node;
             }
         };
 

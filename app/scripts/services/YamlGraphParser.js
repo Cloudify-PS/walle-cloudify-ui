@@ -59,7 +59,7 @@ angular.module('cosmoUi')
                         type: [node.type],
                         properties: node.properties,
                         policies: node.policies,
-                        general: null, /* type, name, numOfInstances, description, relationships */
+                        general: null /* type, name, numOfInstances, description, relationships */
 
                     };
                     nodesArr.push(myNode);
@@ -89,7 +89,7 @@ angular.module('cosmoUi')
             };
 
             this.parseResult = function (result) {
-//                console.log(["parsing",result]);
+                console.log(["parsing",result]);
 
                 if (result.types !== undefined) {
                     for (var type in result.types) {
@@ -104,8 +104,9 @@ angular.module('cosmoUi')
                     }
                 }
 
-                if (result.application_template !== undefined) {
-                    var templateValue = result.application_template;
+                if (result.blueprint !== undefined) {
+                    debugger;
+                    var templateValue = result.blueprint;
                     var topology = templateValue.hasOwnProperty('topology') ? templateValue.topology : undefined;
 
                     if (parsedData.serviceTemplates.length > 0) {
