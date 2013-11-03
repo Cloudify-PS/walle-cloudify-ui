@@ -151,11 +151,12 @@ app.get('/backend/plans/path', function(request, response, next ){
     // imports are handled differently for some reason..
     if ( isImport ){
         var specialPaths = { // yes, there are special paths..
-            'cloudify.types':'/dev/cosmo-manager/orchestrator/src/main/resources/cloudify/tosca/types/types.yaml',
-            'vagrant_host_provisioner':'/dev/cosmo-manager/orchestrator/src/main/resources/cloudify/tosca/artifacts/plugins/vagrant_host_provisioner.yaml',
-            'cloudify.policies':'/dev/cosmo-manager/orchestrator/src/main/resources/cloudify/tosca/policies/policies.yaml',
-            'celery_worker_installer':'/dev/cosmo-manager/orchestrator/src/main/resources/cloudify/tosca/artifacts/plugins/worker_installer.yaml',
-            'celery_plugin_installer':'/dev/cosmo-manager/orchestrator/src/main/resources/cloudify/tosca/artifacts/plugins/plugin_installer.yaml'
+            'cloudify.types':'/dev/cosmo-manager/orchestrator/src/main/resources/cloudify/types/types.yaml',
+            'vagrant_host_provisioner':'/dev/cosmo-manager/orchestrator/src/main/resources/cloudify/plugins/vagrant_host_provisioner.yaml',
+            'cloudify.policies':'/dev/cosmo-manager/orchestrator/src/main/resources/cloudify/policies/policies.yaml',
+            'celery_worker_installer':'/dev/cosmo-manager/orchestrator/src/main/resources/cloudify/plugins/worker_installer.yaml',
+            'celery_plugin_installer':'/dev/cosmo-manager/orchestrator/src/main/resources/cloudify/plugins/plugin_installer.yaml',
+            'openstack_host_provisioner':'/dev/cosmo-manager/orchestrator/src/main/resources/cloudify/plugins/openstack_host_provisioner.yaml'
         };
 
         if ( specialPaths.hasOwnProperty(file) ){ // special import behavior

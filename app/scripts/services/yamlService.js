@@ -2,19 +2,19 @@
 
 // this service will load yamls and send to parser.
 angular.module('cosmoUi')
-    .service('YamlService', function YamlService($http, YamlTreeParser, YamlGraphParser ) {
+    .service('YamlService', function YamlService($http, YamlTreeParser, YamlGraphParser) {
 
-        this.newInstance = function(){
-            return new YamlLoader( YamlGraphParser.newInstance() );
+        this.newInstance = function () {
+            return new YamlLoader(YamlGraphParser.newInstance());
         };
 
 
-        this.load = function( folderName, appName, callback ){
-            new YamlLoader( folderName, callback ).load( appName);
+        this.load = function (folderName, appName, callback) {
+            new YamlLoader(folderName, callback).load(appName);
         };
 
 
-        function YamlLoader( folderName, callback ) {
+        function YamlLoader(folderName, callback) {
 
             var imports = [];
             var loadedImports = [];
@@ -26,7 +26,7 @@ angular.module('cosmoUi')
 
             var parser = YamlGraphParser.newInstance();
 
-            this.load = function (  appName ) {
+            this.load = function (appName) {
                 _loadYamlInternal(appName, false);
             };
 
@@ -37,32 +37,38 @@ angular.module('cosmoUi')
                 url = '/backend/plans/path?file=' + yamlName + '&import=' + isImport + '&folder=' + folderName;
 
 
-                $http.get(url)
-                    .success(function (data) {
-                        var result = data;
-                        if (result.imports !== undefined) {
-                            for (var key in result.imports) {
-                                if ($.inArray(key, imports === -1)) {
-                                    imports.push(result.imports[key]);
-                                }
+                $http({ 'method': 'GET', 'url': url}).success(function (data) {
+
+                    if (!!data.message) {
+                        console.log([url, data.message]);
+                    }
+                    var result = data;
+                    if (result.imports !== undefined) {
+                        for (var key in result.imports) {
+                            if ($.inArray(key, imports === -1)) {
+                                imports.push(result.imports[key]);
                             }
-                            _loadImports(imports);
                         }
+                        _loadImports(imports);
+                    }
 
-                        _parseResult(data);
-                        resultsArr[yamlName] = data;
-                        responseCount++;
+                    _parseResult(data);
+                    resultsArr[yamlName] = data;
+                    responseCount++;
 
 
-                        if (_isLoadingDone()) {
-                            callbackFunc(null, parser.getParsedResult());
-                        }
+                    if (_isLoadingDone()) {
+
+                        callbackFunc(null, parser.getParsedResult());
+                    }
+                }).error(function (data) {
+                        console.log(['unable to load ', url, data ]);
                     });
             }
 
 
             function _parseResult(result) {
-                parser.parseResult( result );
+                parser.parseResult(result);
 
             }
 
@@ -80,7 +86,7 @@ angular.module('cosmoUi')
 
                 for (var i = 0; i < imports.length; i++) {
                     var importName = imports[i];
-                    if ( loadedImports.indexOf(importName) < 0){
+                    if (loadedImports.indexOf(importName) < 0) {
                         loadedImports.push(importName);
                         // erez - turns out that if we don't do it very complicated, angular throws a "$digest already in progress" error.
                         _loadYamlTimeout(importName);
@@ -92,9 +98,6 @@ angular.module('cosmoUi')
                 return responseCount === loadedImports.length;
             }
         }
-
-
-
 
 
     });

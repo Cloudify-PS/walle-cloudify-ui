@@ -1,9 +1,8 @@
 'use strict';
 
 angular.module('cosmoUi')
-    .service('YamlGraphParser', function YamlGraphParser() {
-        // AngularJS will instantiate a singleton by calling "new" on this function
-
+    .service('YamlGraphParser', function ( PlanData ) {
+        var planData = PlanData.newInstance();
 
         function Parser() {
 
@@ -56,12 +55,10 @@ angular.module('cosmoUi')
                     var myNode = {
                         id: nodeId,
                         name: node.name,
-                        type: [node.type],
-                        properties: node.properties,
-                        policies: node.policies,
-                        general: null /* type, name, numOfInstances, description, relationships */
+                        type: [node.type]
 
                     };
+                    planData.addNode($.extend({ 'id': nodeId}, node) );
                     nodesArr.push(myNode);
                     nodeIdMapping[node.name] = myNode;
                 }
@@ -85,14 +82,20 @@ angular.module('cosmoUi')
 
 
             this.getParsedResult = function () {
-                return json;
+                planData.setJSON( json );
+                return planData;
             };
 
             this.parseResult = function (result) {
-                console.log(["parsing",result]);
+
 
                 if (result.types !== undefined) {
                     for (var type in result.types) {
+
+                        var typeObj = result.types[type];
+                        typeObj.name = type;
+                        planData.addType( typeObj );
+
                         if ($.inArray(type, parsedData.types === -1)) {
                             var typeArr = [];
                             typeArr.push(type);
@@ -105,7 +108,7 @@ angular.module('cosmoUi')
                 }
 
                 if (result.blueprint !== undefined) {
-                    debugger;
+
                     var templateValue = result.blueprint;
                     var topology = templateValue.hasOwnProperty('topology') ? templateValue.topology : undefined;
 

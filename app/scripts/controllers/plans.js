@@ -1,7 +1,9 @@
 'use strict';
 
 angular.module('cosmoUi')
-    .controller('PlansCtrl', function ($scope, YamlService, Layout, Render, $routeParams) {
+    .controller('PlansCtrl', function ($scope, YamlService, Layout, Render, $routeParams ) {
+
+        var planData/*:PlanData*/ = null;
 
 //        yamlService.getFilesList('/', function(data) {
 //            $scope.files = data;
@@ -20,8 +22,9 @@ angular.module('cosmoUi')
 
         $scope.renderer = Render.Topology.D3;
         $scope.layouter = Layout.Topology.Tensor.init({'xyPositioning': 'relative'});
-        YamlService.load($routeParams.directory, $routeParams.file, function (err, json) {
-            $scope.graph = json;
+        YamlService.load($routeParams.directory, $routeParams.file, function (err, data) {
+            planData = data;
+            $scope.graph = planData.getJSON();
         });
 
         $scope.showDirectory = function (directory) {
@@ -33,7 +36,15 @@ angular.module('cosmoUi')
 
         $scope.topologyHandlers = {
             'actionClick': function (data) {
-                $scope.showProperties = data.node;
+                var node = data.node;
+                var realNode = planData.getNode(node.id);
+                $scope.showProperties = {
+                    properties: planData.getProperties(realNode),
+                    policies: planData.getPolicies(realNode),
+                    general: planData.getGeneralInfo( realNode )
+                };
+
+
             }
         };
 

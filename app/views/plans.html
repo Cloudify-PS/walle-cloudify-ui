@@ -11,9 +11,9 @@
                 <button type="button" class="btn btn-default" value="policies">Policies</button>
             </div>
             <div ng-switch="section" class="content-section">
-                <pre ng-switch-default="general"> {{showProperties.general | yaml:'No general information' }} </pre>
-                <pre ng-switch-when="properties"> {{showProperties.properties | yaml:'No properties to display' }} </pre>
-                <pre ng-switch-when="policies"> {{showProperties.policies | yaml:'No policies to display' }} </pre>
+                <pre ng-switch-default="general">{{showProperties.general | yaml:'No general information' }} </pre>
+                <pre ng-switch-when="properties">{{showProperties.properties | yaml:'No properties to display' }} </pre>
+                <pre ng-switch-when="policies">{{showProperties.policies | yaml:'No policies to display' }} </pre>
             </div>
         </div>
 
