@@ -37,7 +37,7 @@ angular.module('cosmoUi')
 
         $scope.redirectTo = function (plan) {
             console.log(['redirecting to', plan]);
-            $location.path('/plan').search({file: plan.file, directory: plan.directory, name: plan.name});
+            $location.path('/blueprint').search({file: plan.file, directory: plan.directory, name: plan.name});
         };
 
     });
