@@ -4,10 +4,14 @@ angular.module('cosmoUi')
     .directive('sideMenu', function () {
         return {
             template: '<div class="side-menu">' +
-                '<div class="logo"></div> ' +
                 '<div class="menu">' +
                     '<ul>' +
-                        '<li ng-repeat="item in items"><a href="{{item.route}}">              <i class="gs-icon-{{item.icon}}">         </i>            {{item.label}}               </a></li>' +
+                        '<li ng-repeat="item in items" ng-class="{selected:selectedItem == item}" ng-click="itemClick(item)">' +
+                            '<a href="{{item.route}}">' +
+                                '<div class="gs-icon-{{item.icon}} side-menu-icon"></div>' +
+                                '<div class="side-menu-title">{{item.label}}</div>' +
+                            '</a>' +
+                        '</li>' +
                     '</ul>' +
                 '</div> ' +
               '</div>',
@@ -29,6 +33,12 @@ angular.module('cosmoUi')
                     { 'route' : '#floating-ips' ,       'icon' : 'floating-ips' ,         'label':'Floating IPs'},
                     { 'route' : '#storage' ,            'icon' : 'storage' ,              'label':'Storage'}
                 ];
+
+                scope.selectedItem = null;
+
+                scope.itemClick = function(item) {
+                    scope.selectedItem = item;
+                };
             }
 
         };

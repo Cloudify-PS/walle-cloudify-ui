@@ -12,7 +12,7 @@ angular.module('cosmoUi')
     .directive('cosmoLayout', function () {
         return {
             template: '<div style="height:100%;"><div class="layout"> ' +
-                '<div id="header"></div>' +
+                '<div header id="header"></div>' +
                 '<div id="left-side-menu">' +
                 '<div side-menu class="side-menu"></div>' +
                 '</div>' +
