@@ -10,10 +10,36 @@ angular.module('cosmoUi', ['gsUiInfra', 'angularFileUpload'])
             .when('/plans', {
                 templateUrl: 'views/plansIndex.html',
                 controller: 'PlansIndexCtrl'
-            }).when('/plan',{
+            })
+            .when('/plan',{
                 templateUrl: 'views/plans.html',
                 controller: 'PlansCtrl'
-            }).otherwise({
+            })
+            .when('/running-apps',{
+                templateUrl: 'views/plans.html'
+            })
+            .when('/events',{
+                templateUrl: 'views/plans.html'
+            })
+            .when('/monitoring',{
+                templateUrl: 'views/plans.html'
+            })
+            .when('/logs',{
+                templateUrl: 'views/plans.html'
+            })
+            .when('/hosts',{
+                templateUrl: 'views/plans.html'
+            })
+            .when('/networks',{
+                templateUrl: 'views/plans.html'
+            })
+            .when('/floating-ips',{
+                templateUrl: 'views/plans.html'
+            })
+            .when('/storage',{
+                templateUrl: 'views/plans.html'
+            })
+            .otherwise({
                 redirectTo: '/plans'
             });
     });

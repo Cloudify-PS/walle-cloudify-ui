@@ -1,12 +1,12 @@
 'use strict';
 
 angular.module('cosmoUi')
-    .directive('sideMenu', function () {
+    .directive('sideMenu', function ($location) {
         return {
             template: '<div class="side-menu">' +
                 '<div class="menu">' +
                     '<ul>' +
-                        '<li ng-repeat="item in items" ng-class="{selected:selectedItem == item}" ng-click="itemClick(item)">' +
+                        '<li ng-repeat="item in items" ng-class="{selected:isSelected(item)}" ng-click="itemClick(item)">' +
                             '<a href="{{item.route}}">' +
                                 '<div class="gs-icon-{{item.icon}} side-menu-icon"></div>' +
                                 '<div class="side-menu-title">{{item.label}}</div>' +
@@ -25,7 +25,7 @@ angular.module('cosmoUi')
                 scope.items = [
                     { 'route' : '#plans' ,              'icon' : 'plans' ,                'label':'Blueprints'},
                     { 'route' : '#running-apps' ,       'icon' : 'running-apps' ,         'label':'Running Apps'},
-                    { 'route' : '#events' ,              'icon' : 'events' ,                'label':'Events'},
+                    { 'route' : '#events' ,             'icon' : 'events' ,               'label':'Events'},
                     { 'route' : '#monitoring' ,         'icon' : 'monitoring' ,           'label':'Monitoring'},
                     { 'route' : '#logs' ,               'icon' : 'logs' ,                 'label':'Logs'},
                     { 'route' : '#hosts' ,              'icon' : 'hosts' ,                'label':'Hosts'},
@@ -35,6 +35,10 @@ angular.module('cosmoUi')
                 ];
 
                 scope.selectedItem = null;
+
+                scope.isSelected = function(item) {
+                    return $location.path().substr(1) === item.route.substr(1);
+                };
 
                 scope.itemClick = function(item) {
                     scope.selectedItem = item;
