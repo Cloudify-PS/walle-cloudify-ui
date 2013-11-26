@@ -1,0 +1,61 @@
+'use strict';
+
+angular.module('cosmoUi')
+    .directive('addPlan', function () {
+        return {
+            template: '<div id="addDialogBg"></div>' +
+                '<div id="addPlanContainer">' +
+                    '<div id="addPlanClose" class="formButton" ng-click="closeDialog()">X</div>' +
+                    '<div id="addPlanTitle">Add a Plan</div>' +
+                    '<div id="addPlanDescription">Some text that explains about adding a plan by using this dialog</div>' +
+                    '<form id="uploadForm" name="uploadForm">' +
+                        '<div id="browse">' +
+                            '<div id="browseBtn" class="formButton">Browse</div>' +
+                            '<input type="text" id="browseTxt">' +
+                            '<input type="file" name="fileInput" id="fileInput" accept=".yaml" ng-file-select="onFileSelect($files)">' +
+//                            '<input type="file" name="fileInput" id="fileInput" accept=".zip" ng-file-select="onFileSelect($files)">' +
+                        '</div> ' +
+                        '<button id="uploadBtn" class="formButton" ng-click="uploadFile()">Upload</button>' +
+                    '</form>' +
+                '</div>',
+            restrict: 'A',
+            link: function postLink(scope, element) {
+                var selectedFile = null;
+
+                scope.onFileSelect = function ($files) {
+                    selectedFile = $files[0];
+                    element.find('#browseTxt').val(selectedFile.name);
+                    console.log(['files were selected', $files]);
+                };
+
+                scope.uploadFile = function() {
+                    console.log(['upload: ', selectedFile]);
+
+                    var planForm = new FormData();
+                    planForm.append('file', selectedFile);
+
+                    $.ajax({
+                        url: '/backend/blueprints/add',
+                        data: planForm,
+                        type: 'POST',
+                        contentType: false,
+                        processData: false,
+                        cache: false,
+                        xhrFields: {
+                            onprogress: function (e) {
+                                if (e.lengthComputable) {
+                                    console.log('Loaded ' + (e.loaded / e.total * 100) + '%');
+                                } else {
+                                    console.log('Length not computable.');
+                                }
+                            }
+                        }
+                    });
+                };
+
+                scope.closeDialog = function() {
+                    scope.toggleAddDialog();
+                };
+            }
+        };
+    });

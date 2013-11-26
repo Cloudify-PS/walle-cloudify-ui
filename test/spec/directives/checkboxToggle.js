@@ -1,7 +1,7 @@
 'use strict';
 
 describe('Directive: checkboxToggle', function () {
-//  beforeEach(module('cosmoUiApp'));
+//  beforeEach(module('cosmoUi'));
 //
 //  var element;
 //

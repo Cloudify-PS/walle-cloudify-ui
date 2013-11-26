@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('cosmoUi', ['gsUiInfra'])
+angular.module('cosmoUi', ['gsUiInfra', 'angularFileUpload'])
     .config(function ($routeProvider) {
         $routeProvider
             .when('/json', {

@@ -20,6 +20,14 @@ var port = 9001;
 var jsyaml = require('js-yaml');
 var fs = require('fs');
 var path = require('path');
+var conf = require("./backend/appConf");
+console.log(JSON.stringify(conf));
+
+// app.use(express.favicon());
+app.use(express.cookieParser(/* 'some secret key to sign cookies' */ 'keyboardcat' ));
+app.use(express.bodyParser());
+app.use(express.compress());
+app.use(express.methodOverride());
 
 /*
  * App methods and libraries
@@ -53,14 +61,103 @@ app.set('views', __dirname + '/views');
 app.set('view engine', 'jade');
 
 if (app.get('env') === 'development') {
-    app.use(express.logger('dev'));
+    app.use(express.static('.tmp'));
+    app.use(express.static('app'));
+} else {
+    app.use(express.static('dist'));
 }
 
-// app.use(express.favicon());
-app.use(express.cookieParser(/* 'some secret key to sign cookies' */ 'keyboardcat' ));
-app.use(express.bodyParser());
-app.use(express.compress());
-app.use(express.methodOverride());
+function createRequest(requestData) {
+    var callback = function(res) {
+        var data = '';
+        var result = '';
+
+        console.log('STATUS: ' + res.statusCode);
+
+        res.setEncoding('utf8');
+        res.on('data', function (chunk) {
+            result += chunk;
+        });
+
+        res.on('end', function () {
+            var jsonStr = JSON.stringify(result);
+            data = JSON.parse(jsonStr);
+
+            console.log('Request done, data: ' + data);
+
+            requestData.response.send(data);
+        });
+    }
+
+    var onError = function(e) {
+        console.log(e);
+        console.log('problem with request: ' + e.message);
+        requestData.response.send(500);
+    };
+
+    var req = ajax.request(requestData.options, callback);
+    req.on('error', onError);
+
+    if (requestData.post_data !== undefined) {
+        req.write(requestData.post_data);
+    }
+
+    req.end();
+}
+
+app.get('/backend/blueprints', function(request, response, next) {
+    var requestData = {};
+    requestData.request = request;
+    requestData.response = response;
+    requestData.options = {
+        hostname: conf.cosmoServer,
+        port: conf.cosmoPort,
+        path: '/blueprints',
+        method: 'GET'
+    };
+
+    createRequest(requestData);
+});
+
+app.post('/backend/blueprints/add', function(request, response) {
+    fs.readFile(request.files.file.path, 'utf8', function (err, data) {
+        if (err) throw err;
+
+//        var json = {
+//            'yml': data
+//        };
+
+        var json = {
+            "yml": 'interfaces:cloudify.interfaces.app_connector:operations:- "set_db_properties"plugins:cloudify.plugins.flask_app_connector:derived_from: "cloudify.plugins.agent_plugin"properties:interface: "cloudify.interfaces.app_connector"url: "#{plugin_repository}/flask-app-connector.zip"'
+        };
+        request.body = json;
+
+        var requestData = {};
+        requestData.request = request;
+        requestData.response = response;
+        requestData.post_data = JSON.stringify(request.body);
+        requestData.options = {
+            hostname: conf.cosmoServer,
+            port: conf.cosmoPort,
+            path: '/blueprints',
+            method: 'POST',
+            headers: {
+                'Content-Type': 'text/plain',
+                'Content-Length': requestData.post_data.length
+            }
+        };
+
+        createRequest(requestData);
+    });
+
+//    var jsonStr = JSON.stringify(jsyaml.safeLoad(request.files[0]));
+//    data = JSON.parse(jsonStr);
+//    console.log(jsonStr);
+
+
+
+
+});
 
 // our custom "verbose errors" setting
 // which we can use in the templates
@@ -92,7 +189,6 @@ if (app.get('env') === 'development') {
 }
 
 app.post("/listDirectory", function(request, response, next) {
-    console.log(request);
     var basePath = '/Users/erezcarmel/Projects/cosmo-ui/app/mock/cosmo-manager/orchestrator/src/test/resources/org/cloudifysource/cosmo/dsl/';
     var directory = getFilePath(basePath + request.body.directory);
 

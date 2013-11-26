@@ -1,7 +1,9 @@
 'use strict';
 
 angular.module('cosmoUi')
-    .controller('PlansIndexCtrl', function ($scope, $location) {
+    .controller('PlansIndexCtrl', function ($scope, $location, RestService) {
+        $scope.isAddDialogVisible = false;
+
         $scope.plans = [
             {
                 'name': 'SugarCRM',
@@ -34,10 +36,15 @@ angular.module('cosmoUi')
             }
         ];
 
+        $scope.blueprints = RestService.loadBlueprints();
 
         $scope.redirectTo = function (plan) {
             console.log(['redirecting to', plan]);
             $location.path('/plan').search({file: plan.file, directory: plan.directory, name: plan.name});
+        };
+
+        $scope.toggleAddDialog = function() {
+            $scope.isAddDialogVisible = $scope.isAddDialogVisible === false;
         };
 
     });
