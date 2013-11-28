@@ -41,11 +41,11 @@
 
 
 var publicConfiguration = {
-    googleAnalyticsCode: null,
-    googleAnalyticsDomain: null
 };
 
 var privateConfiguration = {
+    cosmoServer: undefined,
+    cosmoPort: 8100,
     log4js:{
         appenders: [
             { "type":"console" },
