@@ -497,6 +497,14 @@ $gs-icon-prefix:'gs-icon';
     border-right: 1px solid #3475B4;
     border-top: none;
     border-left: none;
+
+    &.disabled {
+      background: #D0D0D0;
+    }
+
+    &.enabled {
+      background: #4885C0;
+    }
   }
 
   #addPlanTitle {

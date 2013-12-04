@@ -14,15 +14,16 @@ angular.module('cosmoUi')
                             '<input type="text" id="browseTxt">' +
                             '<input type="file" name="fileInput" id="fileInput" accept=".tar,.gz,.yaml" ng-file-select="onFileSelect($files)">' +
                         '</div> ' +
-                        '<div id="mainFile">YAML name: <input type="text" id="mainYamlName"></div>' +
-                        '<button id="uploadBtn" class="formButton" ng-click="uploadFile()">Upload</button>' +
+                        '<div id="mainFile">YAML name: <input type="text" id="mainYamlName" ng-model="mainFileName"></div>' +
+                        '<button id="uploadBtn" class="formButton" ng-class="{disabled: !isUploadEnabled(), enabled: isUploadEnabled()}" ng-click="uploadFile()">Upload</button>' +
                     '</form>' +
                 '</div>',
             restrict: 'A',
             link: function postLink(scope, element) {
                 var selectedFile = null;
-                var mainFileName;
+                scope.mainFileName = '';
                 scope.uploadEnabled = false;
+                scope.uploadInProcess = false;
 
                 scope.onFileSelect = function ($files) {
                     selectedFile = $files[0];
@@ -31,7 +32,7 @@ angular.module('cosmoUi')
                 };
 
                 scope.uploadFile = function() {
-                    mainFileName = element.find('#mainYamlName').val();
+                    scope.mainFileName = element.find('#mainYamlName').val();
                     console.log(['upload: ', selectedFile]);
 
                     if (!scope.isUploadEnabled()) {
@@ -39,8 +40,9 @@ angular.module('cosmoUi')
                     }
 
                     var planForm = new FormData();
-                    planForm.append('application_file', mainFileName);
+                    planForm.append('application_file', scope.mainFileName);
                     planForm.append('application_archive', selectedFile);
+                    scope.uploadInProcess = true;
 
                     $.ajax({
                         url: '/backend/blueprints/add',
@@ -59,8 +61,12 @@ angular.module('cosmoUi')
                             }
                         },
                         success: function() {
+                            scope.uploadInProcess = false;
                             scope.loadBlueprints();
                             scope.closeDialog();
+                        },
+                        error: function() {
+                            scope.uploadInProcess = false;
                         }
                     });
                 };
@@ -70,7 +76,7 @@ angular.module('cosmoUi')
                 };
 
                 scope.isUploadEnabled = function() {
-                    return (selectedFile !== null && mainFileName !== undefined && mainFileName.length > 0);
+                    return (selectedFile !== null && scope.mainFileName !== undefined && scope.mainFileName.length > 0 && !scope.uploadInProcess);
                 };
             }
         };
