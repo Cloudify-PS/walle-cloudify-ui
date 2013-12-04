@@ -156,6 +156,20 @@ app.get('/backend/blueprints/get', function(request, response) {
     createRequest(requestData);
 });
 
+app.get('/backend/events', function(request, response, next) {
+    var requestData = {};
+    requestData.request = request;
+    requestData.response = response;
+    requestData.options = {
+        hostname: conf.cosmoServer,
+        port: conf.cosmoPort,
+        path: '/events',
+        method: 'GET'
+    };
+
+    createRequest(requestData);
+})
+
 // our custom "verbose errors" setting
 // which we can use in the templates
 // via settings['verbose errors']

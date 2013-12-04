@@ -35,7 +35,7 @@ angular.module('cosmoUi')
 
                 $http({
                         url: url,
-                        method: "GET",
+                        method: 'GET',
                         params: {id: id}
                     })
                     .success(function (data) {

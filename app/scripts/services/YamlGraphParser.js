@@ -23,21 +23,21 @@ angular.module('cosmoUi')
                 json.edges = parsedData.relationships;
             }
 
-            function _updateTypes(templates) {
-                var updatedArr = templates;
-
-                for (var i = 0; i < updatedArr.length; i++) {
-                    for (var j = 0; j < parsedData.types.length; j++) {
-                        if (updatedArr[i].id !== 'root') {
-                            if ($.inArray(updatedArr[i].type[0], parsedData.types[j]) > -1) {
-                                updatedArr[i].type = parsedData.types[j];
-                            }
-                        }
-                    }
-                }
-
-                return updatedArr;
-            }
+//            function _updateTypes(templates) {
+//                var updatedArr = templates;
+//
+//                for (var i = 0; i < updatedArr.length; i++) {
+//                    for (var j = 0; j < parsedData.types.length; j++) {
+//                        if (updatedArr[i].id !== 'root') {
+//                            if ($.inArray(updatedArr[i].type[0], parsedData.types[j]) > -1) {
+//                                updatedArr[i].type = parsedData.types[j];
+//                            }
+//                        }
+//                    }
+//                }
+//
+//                return updatedArr;
+//            }
 
             function uniqueId() {
                 return _nodeId++;
@@ -67,14 +67,15 @@ angular.module('cosmoUi')
                 parsedData.nodes = nodesArr;
 
                 // create edges
+                var mapCallback = function(value) {
+                    return [value];
+                };
                 for (nodeIndex = 0; nodeIndex < topology.nodes.length; nodeIndex++) {
                     node = topology.nodes[nodeIndex];
                     nodeId = nodeIdMapping[node.id].id;
                     var relationshipsArr = [];
                     if (node.relationships !== undefined) {
-                        relationshipsArr = $.map(node.relationships, function(value, index) {
-                            return [value];
-                        });
+                        relationshipsArr = $.map(node.relationships, mapCallback);
                     }
                     for (var i = 0; relationshipsArr.length > 0 && i < relationshipsArr.length; i++) {
                         parsedData.relationships.push({

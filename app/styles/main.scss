@@ -298,8 +298,6 @@ html, body, .layout{ height:100%; width:100%; position:relative; }
         letter-spacing: 10px;
       }
     }
-
-
   }
 }
 
@@ -327,7 +325,61 @@ $gs-icon-prefix:'gs-icon';
 .#{$gs-icon-prefix}-running-apps:before { content:"k"; }
 .#{$gs-icon-prefix}-storage:before { content:"l"; }
 
+#events-index {
+  table.table {
+    width:97%;
+    margin:0 auto;
 
+    i {
+      color:#BCBCBC;
+    }
+
+    tr:first-child td {
+      background:#CCE4F6;
+      color:#234E71;
+    }
+
+    tr {
+      cursor:pointer;
+
+      &:hover:not(:first-child) td{
+        background-color:#CECECE;
+
+        &,i {color:white; }
+        i {font-weight: normal;}
+        //font-weight: bold;
+      }
+
+      td {
+        vertical-align: middle;
+        height: 60px;
+        color: #333;
+
+        &.icon { width:60px;}
+        &.node, &.task, &.workflow { width: 200px;}
+        &.date { padding-right:30px;}
+
+        &.event-text-green {
+          color: #8eaf26;
+        }
+
+        &.event-text-red {
+          color: #d54931;
+        }
+
+        &.event-icon-workflow-started {background: url(/images/events/WorkflowStarted.png) no-repeat center center;}
+        &.event-icon-workflow-end-successfully {background: url(/images/events/WorkflowSuccessfully.png) no-repeat center center;}
+        &.event-icon-workflow-failed {background: url(/images/events/WorkflowFailed.png) no-repeat center center;}
+        &.event-icon-task-started {background: url(/images/events/TaskStarted.png) no-repeat center center;}
+        &.event-icon-task-failed {background: url(/images/events/TaskFailed.png) no-repeat center center;}
+        &.event-icon-task-sent {background: url(/images/events/TaskSent.png) no-repeat center center;}
+        &.event-icon-task-success {background: url(/images/events/TaskSuccessfully.png) no-repeat center center;}
+        &.event-icon-policy-success {background: url(/images/events/PolicySuccessfully.png) no-repeat center center;}
+        &.event-icon-policy-failed {background: url(/images/events/PolicyFailed.png) no-repeat center center;}
+      }
+    }
+  }
+}
 
 .content-header{
 

@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('cosmoUi')
-    .directive('addPlan', function (RestService) {
+    .directive('addPlan', function () {
         return {
             template: '<div id="addDialogBg"></div>' +
                 '<div id="addPlanContainer">' +
@@ -67,7 +67,7 @@ angular.module('cosmoUi')
 
                 scope.isUploadEnabled = function() {
                     return (selectedFile !== null && mainFileName !== undefined && mainFileName.length > 0);
-                }
+                };
             }
         };
     });

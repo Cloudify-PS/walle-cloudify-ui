@@ -19,7 +19,8 @@ angular.module('cosmoUi', ['gsUiInfra', 'angularFileUpload'])
                 templateUrl: 'views/plans.html'
             })
             .when('/events',{
-                templateUrl: 'views/plans.html'
+                templateUrl: 'views/events.html',
+                controller: 'EventsCtrl'
             })
             .when('/monitoring',{
                 templateUrl: 'views/plans.html'

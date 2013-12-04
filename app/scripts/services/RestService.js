@@ -3,12 +3,6 @@
 angular.module('cosmoUi')
     .service('RestService', function RestService($http) {
 
-        var _restLoader = new RestLoader();
-
-        function _load(rest, params){
-            return _restLoader.load(rest, params);
-        }
-
         function RestLoader() {
 
             this.load = function (rest, params) {
@@ -30,6 +24,12 @@ angular.module('cosmoUi')
             }
         }
 
+        var _restLoader = new RestLoader();
+
+        function _load(rest, params){
+            return _restLoader.load(rest, params);
+        }
+
         function _loadBlueprints() {
             return _load('blueprints');
         }
@@ -38,6 +38,11 @@ angular.module('cosmoUi')
             _load('blueprints/add', params);
         }
 
+        function _loadEvents() {
+            return _load('events');
+        }
+
         this.loadBlueprints = _loadBlueprints;
         this.addBlueprint = _addBlueprint;
+        this.loadEvents = _loadEvents;
     });
