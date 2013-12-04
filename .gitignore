@@ -14,3 +14,4 @@ start.sh
 .DS_Store
 app/dev
 conf/dev
+*.log

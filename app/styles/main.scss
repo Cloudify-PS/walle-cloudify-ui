@@ -510,6 +510,20 @@ $gs-icon-prefix:'gs-icon';
       }
     }
 
+    #mainFile {
+      position: relative;
+      float: left;
+      left: 120px;
+      top: 63px;
+
+      #mainYamlName {
+        width: 300px;
+        height: 30px;
+        border-radius: 5px;
+        margin-left: 10px;
+      }
+    }
+
     #uploadBtn {
       position: absolute;
       float: right;

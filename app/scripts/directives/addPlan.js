@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('cosmoUi')
-    .directive('addPlan', function () {
+    .directive('addPlan', function (RestService) {
         return {
             template: '<div id="addDialogBg"></div>' +
                 '<div id="addPlanContainer">' +
@@ -12,15 +12,17 @@ angular.module('cosmoUi')
                         '<div id="browse">' +
                             '<div id="browseBtn" class="formButton">Browse</div>' +
                             '<input type="text" id="browseTxt">' +
-                            '<input type="file" name="fileInput" id="fileInput" accept=".yaml" ng-file-select="onFileSelect($files)">' +
-//                            '<input type="file" name="fileInput" id="fileInput" accept=".zip" ng-file-select="onFileSelect($files)">' +
+                            '<input type="file" name="fileInput" id="fileInput" accept=".tar,.gz,.yaml" ng-file-select="onFileSelect($files)">' +
                         '</div> ' +
+                        '<div id="mainFile">YAML name: <input type="text" id="mainYamlName"></div>' +
                         '<button id="uploadBtn" class="formButton" ng-click="uploadFile()">Upload</button>' +
                     '</form>' +
                 '</div>',
             restrict: 'A',
             link: function postLink(scope, element) {
                 var selectedFile = null;
+                var mainFileName;
+                scope.uploadEnabled = false;
 
                 scope.onFileSelect = function ($files) {
                     selectedFile = $files[0];
@@ -29,10 +31,16 @@ angular.module('cosmoUi')
                 };
 
                 scope.uploadFile = function() {
+                    mainFileName = element.find('#mainYamlName').val();
                     console.log(['upload: ', selectedFile]);
 
+                    if (!scope.isUploadEnabled()) {
+                        return;
+                    }
+
                     var planForm = new FormData();
-                    planForm.append('file', selectedFile);
+                    planForm.append('application_file', mainFileName);
+                    planForm.append('application_archive', selectedFile);
 
                     $.ajax({
                         url: '/backend/blueprints/add',
@@ -56,6 +64,10 @@ angular.module('cosmoUi')
                 scope.closeDialog = function() {
                     scope.toggleAddDialog();
                 };
+
+                scope.isUploadEnabled = function() {
+                    return (selectedFile !== null && mainFileName !== undefined && mainFileName.length > 0);
+                }
             }
         };
     });

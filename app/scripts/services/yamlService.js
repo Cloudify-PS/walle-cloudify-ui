@@ -8,13 +8,11 @@ angular.module('cosmoUi')
             return new YamlLoader( YamlGraphParser.newInstance() );
         };
 
-
-        this.load = function( folderName, appName, callback ){
-            new YamlLoader( folderName, callback ).load( appName);
+        this.load = function( id, callback ){
+            new YamlLoader( callback ).load( id);
         };
 
-
-        function YamlLoader( folderName, callback ) {
+        function YamlLoader( callback ) {
 
             var imports = [];
             var loadedImports = [];
@@ -26,20 +24,22 @@ angular.module('cosmoUi')
 
             var parser = YamlGraphParser.newInstance();
 
-            this.load = function (  appName ) {
-                _loadYamlInternal(appName, false);
+            this.load = function ( id ) {
+                _loadYamlInternal(id);
             };
 
-            function _loadYamlInternal(yamlName, isImport) {
-
-                var url;
+            function _loadYamlInternal(id) {
+                var url = '/backend/blueprints/get';
                 requestCount++;
-                url = '/backend/plans/path?file=' + yamlName + '&import=' + isImport + '&folder=' + folderName;
 
 
-                $http.get(url)
+                $http({
+                        url: url,
+                        method: "GET",
+                        params: {id: id}
+                    })
                     .success(function (data) {
-                        var result = data;
+                        var result = JSON.parse(data.plan);
                         if (result.imports !== undefined) {
                             for (var key in result.imports) {
                                 if ($.inArray(key, imports === -1)) {
@@ -49,14 +49,13 @@ angular.module('cosmoUi')
                             _loadImports(imports);
                         }
 
+                        _parseResult(result);
 
+                        resultsArr[id] = result;
 
-
-
-                        _parseResult(data);
-                        resultsArr[yamlName] = data;
-                        responseCount++;
-
+                        if (result.imports !== undefined) {
+                            responseCount++;
+                        }
 
                         if (_isLoadingDone()) {
                             callbackFunc(null, parser.getParsedResult());
@@ -64,10 +63,8 @@ angular.module('cosmoUi')
                     });
             }
 
-
             function _parseResult(result) {
                 parser.parseResult( result );
-
             }
 
             function _loadYaml(_import) {

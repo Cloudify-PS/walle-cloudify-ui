@@ -3,34 +3,39 @@
 angular.module('cosmoUi')
     .service('RestService', function RestService($http) {
 
-        function _load(rest, callback){
-            new RestLoader(callback).load(rest);
+        var _restLoader = new RestLoader();
+
+        function _load(rest, params){
+            return _restLoader.load(rest, params);
         }
 
-        function RestLoader(callback) {
-            var callbackFunc = callback;
+        function RestLoader() {
 
-            this.load = function (rest) {
-                _loadRestInternal(rest);
+            this.load = function (rest, params) {
+                return _loadRestInternal(rest, params);
             };
 
-            function _loadRestInternal(rest) {
-                if (callbackFunc !== undefined) {
-                    callbackFunc();
-                }
-                return $http({
+            function _loadRestInternal(rest, params) {
+                var callParams = {
                     url: '/backend/' + rest,
                     method: 'GET'
+                };
+                if (params !== undefined) {
+                    callParams = params;
+                }
+                return $http(callParams).then(function(data) {
+                    console.log(['data loaded',data]);
+                    return data.data;
                 });
             }
         }
 
         function _loadBlueprints() {
-            _load('blueprints');
+            return _load('blueprints');
         }
 
-        function _addBlueprint() {
-            _load('blueprints/add');
+        function _addBlueprint(params) {
+            _load('blueprints/add', params);
         }
 
         this.loadBlueprints = _loadBlueprints;

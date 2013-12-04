@@ -18,9 +18,17 @@ var ajax = require("http");
 var app = express();
 var port = 9001;
 var jsyaml = require('js-yaml');
-var fs = require('fs');
-var path = require('path');
 var conf = require("./backend/appConf");
+var rest = require('restler');
+var http = require('http');
+var log4js = require('log4js');
+log4js.configure({
+    appenders: [
+        { type: 'console' },
+        { type: 'file', filename: 'logs/gsui.log', category: 'gsui' }
+    ]
+});
+var logger = log4js.getLogger('server');
 console.log(JSON.stringify(conf));
 
 // app.use(express.favicon());
@@ -74,7 +82,6 @@ function createRequest(requestData) {
 
         console.log('STATUS: ' + res.statusCode);
 
-        res.setEncoding('utf8');
         res.on('data', function (chunk) {
             result += chunk;
         });
@@ -119,44 +126,34 @@ app.get('/backend/blueprints', function(request, response, next) {
     createRequest(requestData);
 });
 
-app.post('/backend/blueprints/add', function(request, response) {
-    fs.readFile(request.files.file.path, 'utf8', function (err, data) {
-        if (err) throw err;
+app.post('/backend/blueprints/add', function(request, response){
+    var myFile = request.files.application_archive;
+    var mainFileName = request.body.application_file;
+    var host = 'http://' + conf.cosmoServer + ':' + conf.cosmoPort + "/blueprints";
 
-//        var json = {
-//            'yml': data
-//        };
-
-        var json = {
-            "yml": 'interfaces:cloudify.interfaces.app_connector:operations:- "set_db_properties"plugins:cloudify.plugins.flask_app_connector:derived_from: "cloudify.plugins.agent_plugin"properties:interface: "cloudify.interfaces.app_connector"url: "#{plugin_repository}/flask-app-connector.zip"'
-        };
-        request.body = json;
-
-        var requestData = {};
-        requestData.request = request;
-        requestData.response = response;
-        requestData.post_data = JSON.stringify(request.body);
-        requestData.options = {
-            hostname: conf.cosmoServer,
-            port: conf.cosmoPort,
-            path: '/blueprints',
-            method: 'POST',
-            headers: {
-                'Content-Type': 'text/plain',
-                'Content-Length': requestData.post_data.length
-            }
-        };
-
-        createRequest(requestData);
+    rest.post(host, {
+        multipart: true,
+        data: {
+            'application_archive': rest.file(myFile.path, myFile.name, myFile.size, null, 'application/gzip'),
+            'application_file': mainFileName
+        }
+    }).on('complete', function(data) {
+        logger.debug('data: ' + JSON.stringify(data));
     });
+});
 
-//    var jsonStr = JSON.stringify(jsyaml.safeLoad(request.files[0]));
-//    data = JSON.parse(jsonStr);
-//    console.log(jsonStr);
+app.get('/backend/blueprints/get', function(request, response) {
+    var requestData = {};
+    requestData.request = request;
+    requestData.response = response;
+    requestData.options = {
+        hostname: conf.cosmoServer,
+        port: conf.cosmoPort,
+        path: '/blueprints/' + request.query.id,
+        method: 'GET'
+    };
 
-
-
-
+    createRequest(requestData);
 });
 
 // our custom "verbose errors" setting
@@ -187,124 +184,6 @@ if (app.get('env') === 'development') {
 } else {
     app.use(express.static('dist'));
 }
-
-app.post("/listDirectory", function(request, response, next) {
-    var basePath = '/Users/erezcarmel/Projects/cosmo-ui/app/mock/cosmo-manager/orchestrator/src/test/resources/org/cloudifysource/cosmo/dsl/';
-    var directory = getFilePath(basePath + request.body.directory);
-
-    console.log("listing directory: "  + directory);
-    try {
-        var directoryListing = fs.readdirSync(directory);
-        console.log(directory);
-
-        var result = [];
-        for (var i = 0; i < directoryListing.length; i++) {
-            var filePath = path.join(directory, directoryListing[i]);
-            var fileStat = fs.statSync(filePath) ;
-
-            if (directoryListing[i].substr(0, 1) !== '.' && directoryListing[i] !== '..' && directoryListing[i] !== '/') {
-                result.push({
-                    "name": directoryListing[i],
-                    "type": fileStat.isDirectory() ? "d":"f"
-                });
-            }
-        }
-
-        console.log("listing directory: " + directoryListing);
-
-        response.send(200, JSON.stringify(result));
-    } catch(e) {
-        response.send(200, JSON.stringify([]));
-    }
-
-    function getFilePath(file) {
-        try {
-            file = JSON.parse(file);
-            var res = '';
-
-            for (var i = 0; i < file.length; i++) {
-                res = path.join(res, file[i]);
-            }
-            file = res;
-        } catch(e) {}
-
-        return file;
-    }
-});
-
-// mock API for getting yamls.
-app.get('/backend/plans/path', function(request, response, next ){
-
-
-    var file = request.param("file");
-    var folder = request.param("folder");
-    var isImport = request.param("import") == "true";
-
-    var rootPath = '/dev/cosmo-manager/orchestrator/src/test/resources/org/cloudifysource/cosmo/dsl/' + folder + '/';
-
-    var absolutePath = undefined;
-
-    // imports are handled differently for some reason..
-    if ( isImport ){
-        var specialPaths = { // yes, there are special paths..
-            'cloudify.types':'/dev/cosmo-manager/orchestrator/src/main/resources/cloudify/tosca/types/types.yaml',
-            'vagrant_host_provisioner':'/dev/cosmo-manager/orchestrator/src/main/resources/cloudify/tosca/artifacts/plugins/vagrant_host_provisioner.yaml',
-            'cloudify.policies':'/dev/cosmo-manager/orchestrator/src/main/resources/cloudify/tosca/policies/policies.yaml',
-            'celery_worker_installer':'/dev/cosmo-manager/orchestrator/src/main/resources/cloudify/tosca/artifacts/plugins/worker_installer.yaml',
-            'celery_plugin_installer':'/dev/cosmo-manager/orchestrator/src/main/resources/cloudify/tosca/artifacts/plugins/plugin_installer.yaml'
-        };
-
-        if ( specialPaths.hasOwnProperty(file) ){ // special import behavior
-            absolutePath = specialPaths[file];
-        }else{
-            absolutePath = rootPath + "definitions/" + file; // default import behavior
-        }
-    }else{ // non import behavior
-        absolutePath = rootPath + file;
-    }
-
-    console.log(["absolutePath is ", absolutePath ]);
-    // lets act as if we are getting the file from a remote service. mocking this with static file middleware.
-    var options = {
-        hostname: 'localhost',
-        port: 9001,
-        path: absolutePath ,
-        method: 'GET'
-    };
-
-    var data = '';
-
-    var callback = function(res) {
-        var result = '';
-
-        console.log('STATUS: ' + res.statusCode);
-
-        res.setEncoding('utf8');
-        res.on('data', function (chunk) {
-            result += chunk;
-        });
-
-        res.on('end', function () {
-            var jsonStr = JSON.stringify(jsyaml.safeLoad(result));
-            data = JSON.parse(jsonStr);
-
-            console.log('Request done, data: ' + data);
-
-            response.send(data);
-        });
-    };
-
-    var onError = function(e) {
-        console.log('problem with request: ' + e.message);
-        response.send(500);
-    };
-
-    var req = ajax.request(options, callback);
-    req.on('error', onError);
-
-    req.end();
-});
-
 
 // Since this is the last non-error-handling
 // middleware use()d, we assume 404, as nothing else

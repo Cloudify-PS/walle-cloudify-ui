@@ -20,7 +20,7 @@ angular.module('cosmoUi')
 
         $scope.renderer = Render.Topology.D3;
         $scope.layouter = Layout.Topology.Tensor.init({'xyPositioning': 'relative'});
-        YamlService.load($routeParams.directory, $routeParams.file, function (err, json) {
+        YamlService.load($routeParams.id, function (err, json) {
             $scope.graph = json;
         });
 
@@ -36,7 +36,6 @@ angular.module('cosmoUi')
                 $scope.showProperties = node;
             }
         };
-
 
         $scope.hideProperties = function () {
             $scope.showProperties = null;
