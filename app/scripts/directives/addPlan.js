@@ -57,6 +57,10 @@ angular.module('cosmoUi')
                                     console.log('Length not computable.');
                                 }
                             }
+                        },
+                        success: function() {
+                            scope.loadBlueprints();
+                            scope.closeDialog();
                         }
                     });
                 };

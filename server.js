@@ -139,6 +139,7 @@ app.post('/backend/blueprints/add', function(request, response){
         }
     }).on('complete', function(data) {
         logger.debug('data: ' + JSON.stringify(data));
+        response.send(200);
     });
 });
 
