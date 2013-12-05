@@ -90,7 +90,7 @@ function createRequest(requestData) {
             var jsonStr = JSON.stringify(result);
             data = JSON.parse(jsonStr);
 
-            logger.info('Request done, data: ' + data);
+            logger.info(['Request done, data: ',data]);
 
             requestData.response.send(data);
         });
@@ -110,6 +110,7 @@ function createRequest(requestData) {
         req.write(requestData.post_data);
     }
 
+    req.write(JSON.stringify(requestData.request.body));
     req.end();
 }
 
@@ -167,6 +168,24 @@ app.get('/backend/events', function(request, response, next) {
         port: conf.cosmoPort,
         path: '/events',
         method: 'GET'
+    };
+
+    createRequest(requestData);
+});
+
+app.post('/backend/blueprints/execution', function(request, response) {
+    var requestData = {};
+    requestData.request = request;
+    requestData.response = response;
+    requestData.options = {
+        hostname: conf.cosmoServer,
+        port: conf.cosmoPort,
+        path: '/blueprints/' + request.body.planId + '/executions',
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Content-Length': JSON.stringify(requestData.request.body).length
+        }
     };
 
     createRequest(requestData);

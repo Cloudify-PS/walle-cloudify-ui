@@ -5,8 +5,6 @@ angular.module('cosmoUi')
         $scope.isAddDialogVisible = false;
         $scope.selectedPlanId = null;
 
-
-
         $scope.redirectTo = function (plan) {
             console.log(['redirecting to', plan]);
             $scope.selectedPlanId = plan.id;
@@ -19,6 +17,10 @@ angular.module('cosmoUi')
 
         $scope.loadBlueprints = function() {
             $scope.plans = RestService.loadBlueprints();
+        };
+
+        $scope.executePlan = function(plan) {
+            RestService.executeBlueprint(plan.id);
         };
 
         $scope.loadBlueprints();
