@@ -7,11 +7,11 @@ angular.module('cosmoUi', ['gsUiInfra', 'angularFileUpload'])
                 templateUrl: 'views/main.html',
                 controller: 'MainCtrl'
             })
-            .when('/plans', {
+            .when('/blueprints', {
                 templateUrl: 'views/plansIndex.html',
                 controller: 'PlansIndexCtrl'
             })
-            .when('/plan',{
+            .when('/blueprint',{
                 templateUrl: 'views/plans.html',
                 controller: 'PlansCtrl'
             })
@@ -41,6 +41,6 @@ angular.module('cosmoUi', ['gsUiInfra', 'angularFileUpload'])
                 templateUrl: 'views/plans.html'
             })
             .otherwise({
-                redirectTo: '/plans'
+                redirectTo: '/blueprints'
             });
     });

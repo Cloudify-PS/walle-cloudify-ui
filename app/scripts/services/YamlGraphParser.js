@@ -61,6 +61,7 @@ angular.module('cosmoUi')
                         general: null/*, type, name, numOfInstances, description, relationships */
 
                     };
+                    planData.addNode($.extend({ 'id': nodeId}, node) );
                     nodesArr.push(myNode);
                     nodeIdMapping[node.id] = myNode;
                 }
@@ -91,7 +92,8 @@ angular.module('cosmoUi')
 
 
             this.getParsedResult = function () {
-                return json;
+                planData.setJSON( json );
+                return planData;
             };
 
             this.parseResult = function (result) {

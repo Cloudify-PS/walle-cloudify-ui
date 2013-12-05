@@ -1,7 +1,7 @@
 <div class="cosmo-layout" id="plans">
     <div class="properties-panel right-panel" ng-hide="!showProperties">
         <div class="title">
-            {{showProperties.name}} Details
+            {{showProperties.general.name}} Details
             <i ng-click="hideProperties()" class="fa fa-times-circle right"></i>
         </div>
         <div class="content">
@@ -11,9 +11,9 @@
                 <button type="button" class="btn btn-default" value="policies">Policies</button>
             </div>
             <div ng-switch="section" class="content-section">
-                <pre ng-switch-default="general"> {{showProperties.general | yaml:'No general information' }} </pre>
-                <pre ng-switch-when="properties"> {{showProperties.properties | yaml:'No properties to display' }} </pre>
-                <pre ng-switch-when="policies"> {{showProperties.policies | yaml:'No policies to display' }} </pre>
+                <pre ng-switch-default="general">{{showProperties.general | yaml:'No general information' }} </pre>
+                <pre ng-switch-when="properties">{{showProperties.properties | yaml:'No properties to display' }} </pre>
+                <pre ng-switch-when="policies">{{showProperties.policies | yaml:'No policies to display' }} </pre>
             </div>
         </div>
 
@@ -22,7 +22,7 @@
         <div class="breadcrumbs"><ul><li>Blueprints</li><li>{{planName}}</li></ul></div>
 
     </div>
-   <div class="topology" data="graph" renderer="renderer" events="topologyHandlers" layouter="layouter" style="height:500px; width:1200px;"></div>
+   <div class="topology" data="graph" renderer="renderer" events="topologyHandlers" layouter="layouter" style="position:relative;height:500px; width:1200px;"></div>
 
 </div>
 

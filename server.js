@@ -94,7 +94,7 @@ function createRequest(requestData) {
 
             requestData.response.send(data);
         });
-    }
+    };
 
     var onError = function(e) {
         console.log(e);

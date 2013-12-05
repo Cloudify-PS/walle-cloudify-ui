@@ -23,7 +23,7 @@ angular.module('cosmoUi')
             transclude:true,
             link:function( scope ){
                 scope.items = [
-                    { 'route' : '#plans' ,              'icon' : 'plans' ,                'label':'Blueprints'},
+                    { 'route' : '#blueprints' ,              'icon' : 'plans' ,                'label':'Blueprints'},
                     { 'route' : '#running-apps' ,       'icon' : 'running-apps' ,         'label':'Running Apps'},
                     { 'route' : '#events' ,             'icon' : 'events' ,               'label':'Events'},
                     { 'route' : '#monitoring' ,         'icon' : 'monitoring' ,           'label':'Monitoring'},

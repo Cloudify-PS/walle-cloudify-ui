@@ -11,18 +11,7 @@
 angular.module('cosmoUi')
     .directive('cosmoLayout', function () {
         return {
-            template: '<div style="height:100%;"><div class="layout"> ' +
-                '<div header id="header"></div>' +
-                '<div id="left-side-menu">' +
-                '<div side-menu class="side-menu"></div>' +
-                '</div>' +
-                '<div id="right-side-menu"></div>' +
-                '<div id="main-content">' +
-                '<div id="main-content-panel" ng-transclude></div>' +
-                '</div>' +
-                '<div id="fix"></div>' + // a fix for footer position.
-                '</div>' + // layout end
-                '<div id="footer"></div></div>',
+            templateUrl: 'views/cosmoLayout.html',
             restrict: 'C',
             transclude: true,
             replace: true,
