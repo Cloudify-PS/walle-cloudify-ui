@@ -64,7 +64,6 @@ angular.module('cosmoUi').service('PlanData', function () {
             var index = 0;
             var result = {};
 
-
             if (node.hasOwnProperty(property)) {
                 properties.push(node[property]);
             }

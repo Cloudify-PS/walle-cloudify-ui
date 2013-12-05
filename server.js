@@ -90,7 +90,7 @@ function createRequest(requestData) {
             var jsonStr = JSON.stringify(result);
             data = JSON.parse(jsonStr);
 
-            console.log('Request done, data: ' + data);
+            logger.info('Request done, data: ' + data);
 
             requestData.response.send(data);
         });
@@ -102,6 +102,7 @@ function createRequest(requestData) {
         requestData.response.send(500);
     };
 
+    logger.info(['dispatching request ', requestData.options]);
     var req = ajax.request(requestData.options, callback);
     req.on('error', onError);
 
@@ -169,7 +170,7 @@ app.get('/backend/events', function(request, response, next) {
     };
 
     createRequest(requestData);
-})
+});
 
 // our custom "verbose errors" setting
 // which we can use in the templates

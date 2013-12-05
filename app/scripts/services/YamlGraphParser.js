@@ -1,9 +1,9 @@
 'use strict';
 
 angular.module('cosmoUi')
-    .service('YamlGraphParser', function YamlGraphParser() {
+    .service('YamlGraphParser', function YamlGraphParser( PlanData ) {
         // AngularJS will instantiate a singleton by calling "new" on this function
-
+        var planData = PlanData.newInstance();;
 
         function Parser() {
 

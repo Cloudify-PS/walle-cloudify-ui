@@ -22,9 +22,9 @@ angular.module('cosmoUi')
 
         $scope.renderer = Render.Topology.D3;
         $scope.layouter = Layout.Topology.Tensor.init({'xyPositioning': 'relative'});
-        YamlService.load($routeParams.directory, $routeParams.file, function (err, json) {
-            planData = data.getData();
-            $scope.graph = json;
+        YamlService.load($routeParams.id, function (err, data) {
+            planData = data;
+            $scope.graph = data.getJSON();
         });
 
         $scope.showDirectory = function (directory) {
@@ -43,11 +43,8 @@ angular.module('cosmoUi')
                     policies: planData.getPolicies(realNode),
                     general: planData.getGeneralInfo( realNode )
                 };
-
-
             }
         };
-
 
         $scope.hideProperties = function () {
             $scope.showProperties = null;
