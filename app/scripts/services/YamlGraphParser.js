@@ -43,6 +43,19 @@ angular.module('cosmoUi')
                 return _nodeId++;
             }
 
+
+            var realTypes = {
+               'mezzanine_app_module':'cloudify.types.app_module',
+                'mezzanine_host': 'cloudify.types.host',
+                'mezzanine_middleware': 'cloudify.types.middleware_server'
+
+            };
+
+            function extractName( uglyName ){
+                var prettyName = uglyName.substring(uglyName.indexOf('.') + 1, uglyName.lastIndexOf('_'));
+                return prettyName;
+            }
+
             function _createNodes(topology) {
                 var nodesArr = [];
                 var nodeId = null;
@@ -54,8 +67,8 @@ angular.module('cosmoUi')
                     node = topology.nodes[nodeIndex];
                     var myNode = {
                         id: nodeId,
-                        name: node.id,
-                        type: [node.type],
+                        name: extractName(node.id),
+                        type: [ realTypes[node.type] || node.type ],
                         properties: node.properties,
                         policies: node.policies,
                         general: null/*, type, name, numOfInstances, description, relationships */
