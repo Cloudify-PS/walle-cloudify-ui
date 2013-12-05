@@ -38,11 +38,21 @@ angular.module('cosmoUi')
             _load('blueprints/add', params);
         }
 
+        function _executeBlueprint(params) {
+            var callParams = {
+                url: '/backend/blueprints/execution',
+                method: 'POST',
+                data: {'planId': params, 'workflowId': 'install'}
+            };
+            _load('blueprints/execution', callParams);
+        }
+
         function _loadEvents() {
             return _load('events');
         }
 
         this.loadBlueprints = _loadBlueprints;
         this.addBlueprint = _addBlueprint;
+        this.executeBlueprint = _executeBlueprint;
         this.loadEvents = _loadEvents;
     });

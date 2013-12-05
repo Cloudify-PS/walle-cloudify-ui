@@ -14,7 +14,7 @@ angular.module('cosmoUi')
                             '<input type="text" id="browseTxt">' +
                             '<input type="file" name="fileInput" id="fileInput" accept=".tar,.gz,.yaml" ng-file-select="onFileSelect($files)">' +
                         '</div> ' +
-                        '<div id="mainFile">YAML name: <input type="text" id="mainYamlName" ng-model="mainFileName"></div>' +
+                        '<div id="mainFile">Application file: <input type="text" id="mainYamlName" ng-model="mainFileName"></div>' +
                         '<button id="uploadBtn" class="formButton" ng-class="{disabled: !isUploadEnabled(), enabled: isUploadEnabled()}" ng-click="uploadFile()">Upload</button>' +
                     '</form>' +
                 '</div>',
