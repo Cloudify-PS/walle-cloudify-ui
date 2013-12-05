@@ -2,9 +2,9 @@
 
 angular.module('cosmoUi')
     .controller('MainCtrl', function ($scope, YamlService, $routeParams) {
-        var appName = $routeParams.appName || 'mezzanine-app';
+        var appName = $routeParams.name || 'mezzanine-app';
         console.log(['appName is', appName]);
-        YamlService.load('mezzanine-app', 'mezzanine_template.yaml', function (err, result) {
+        YamlService.load($routeParams.id, function (err, result) {
             if (err) {
                 console.log(err);
                 $scope.json = 'ERROR : ' + err.message;
