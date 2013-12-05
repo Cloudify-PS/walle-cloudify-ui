@@ -3,7 +3,7 @@
 angular.module('cosmoUi')
     .service('YamlGraphParser', function YamlGraphParser( PlanData ) {
         // AngularJS will instantiate a singleton by calling "new" on this function
-        var planData = PlanData.newInstance();;
+        var planData = PlanData.newInstance();
 
         function Parser() {
 
@@ -85,7 +85,7 @@ angular.module('cosmoUi')
                         general: null/*, type, name, numOfInstances, description, relationships */
 
                     };
-                    planData.addNode($.extend({ 'id': nodeId}, node) );
+                    planData.addNode($.extend({ 'uid': nodeId}, node) );
                     nodesArr.push(myNode);
                     nodeIdMapping[node.id] = myNode;
                 }

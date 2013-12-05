@@ -208,7 +208,7 @@ angular.module('cosmoUi').service('PlanData', function () {
         }
 
         function _addNode(node) {
-            nodesMap[node.id] = node;
+            nodesMap[node.uid] = node;
             nodesList.push(node);
         }
 
