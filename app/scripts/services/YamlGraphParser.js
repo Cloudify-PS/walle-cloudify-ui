@@ -17,9 +17,14 @@ angular.module('cosmoUi')
             var nodeIdMapping = {};
 
 
+            // positive if a before b
+            function sortByType( a , b ){
+                return typesOrder.indexOf(a.type[0]) - typesOrder.indexOf(b.type[0]);
+            }
+
             function _generateJSON() {
                 json = {};
-                json.nodes = parsedData.nodes;//_updateTypes(parsedData.serviceTemplates);
+                json.nodes = parsedData.nodes.sort(sortByType);//_updateTypes(parsedData.serviceTemplates);
                 json.edges = parsedData.relationships;
             }
 
@@ -43,6 +48,12 @@ angular.module('cosmoUi')
                 return _nodeId++;
             }
 
+            var typesOrder = [
+                'cloudify.types.host',
+                'cloudify.types.middleware_server',
+                'cloudify.types.app_module'
+
+            ];
 
             var realTypes = {
                'mezzanine_app_module':'cloudify.types.app_module',
