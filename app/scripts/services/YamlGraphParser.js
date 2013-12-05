@@ -22,9 +22,13 @@ angular.module('cosmoUi')
                 return typesOrder.indexOf(a.type[0]) - typesOrder.indexOf(b.type[0]);
             }
 
+            function sortByName( a, b ){ // ugly hack until we figure out bugs in charts
+                return namesOrder.indexOf(a.name) - typesOrder.indexOf(b.name);
+            }
+
             function _generateJSON() {
                 json = {};
-                json.nodes = parsedData.nodes.sort(sortByType);//_updateTypes(parsedData.serviceTemplates);
+                json.nodes = parsedData.nodes.sort(sortByName).sort(sortByType);//_updateTypes(parsedData.serviceTemplates);
                 json.edges = parsedData.relationships;
             }
 
@@ -52,6 +56,13 @@ angular.module('cosmoUi')
                 'cloudify.types.host',
                 'cloudify.types.middleware_server',
                 'cloudify.types.app_module'
+
+            ];
+
+            var namesOrder = [
+                'webserver_host',
+                'postgres_host',
+
 
             ];
 
