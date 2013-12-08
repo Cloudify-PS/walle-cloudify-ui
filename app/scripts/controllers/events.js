@@ -32,8 +32,11 @@ angular.module('cosmoUi')
                     $cookieStore.put('lastEventLoaded', data.lastEvent);
 
                     $scope.events = $scope.events.concat(data.events);
-                    for (var i = 0; i < $scope.events.length; i++) {
-                        $scope.events[i] = JSON.parse($scope.events[i]);
+
+                    if (typeof($scope.events[0]) === 'string') {    // walkaround if the events returned as strings and not JSONs
+                        for (var i = 0; i < $scope.events.length; i++) {
+                            $scope.events[i] = JSON.parse($scope.events[i]);
+                        }
                     }
                 }
             });
