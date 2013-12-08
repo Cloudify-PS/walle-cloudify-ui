@@ -39,80 +39,46 @@ angular.module('cosmoUi')
             });
 
         $scope.getEventClass = function(event) {
-            var eventClass;
-
-            if (event.type === 'policy') {
-                if (event.policy === 'start_detection_policy') {
-                    eventClass = eventCSSMap['policy_success'].class;
-                } else if (event.policy === 'failed_detection_policy') {
-                    eventClass = eventCSSMap['policy_failed'].class;
-                }
-            } else if (event.type === 'workflow_stage') {
-                if (event.stage.indexOf('Loading blueprint') !== -1) {
-                    eventClass = eventCSSMap['workflow_started'].class;
-                } else if (event.stage.indexOf('executed successfully') !== -1) {
-                    eventClass = eventCSSMap['workflow_success'].class;
-                }
-            } else if (eventCSSMap[event.type] !== undefined) {
-                eventClass = eventCSSMap[event.type].class;
-            }
-
-            if (eventClass === undefined) {
-                eventClass = 'event-text-green';
-            }
+            var eventClass = eventCSSMap[getEventMapping(event)].class;
 
             return eventClass;
         };
 
         $scope.getEventIcon = function(event) {
-            var iconClass;
-
-            if (event.type === 'policy') {
-                if (event.policy === 'start_detection_policy') {
-                    iconClass = eventCSSMap['policy_success'].icon;
-                } else if (event.policy === 'failed_detection_policy') {
-                    iconClass = eventCSSMap['policy_failed'].icon;
-                }
-            } else if (event.type === 'workflow_stage') {
-                if (event.stage.indexOf('Loading blueprint') !== -1) {
-                    iconClass = eventCSSMap['workflow_started'].icon;
-                } else if (event.stage.indexOf('executed successfully') !== -1) {
-                    iconClass = eventCSSMap['workflow_success'].icon;
-                }
-            } else if (eventCSSMap[event.type] !== undefined) {
-                iconClass = eventCSSMap[event.type].icon;
-            }
-
-            if (iconClass === undefined) {
-                iconClass = 'event-icon-workflow-started';
-            }
+            var iconClass = eventCSSMap[getEventMapping(event)].icon;
 
             return iconClass;
         };
 
         $scope.getEventText = function(event) {
-            var eventText = event.type;
-
-            if (event.type === 'policy') {
-                if (event.policy === 'start_detection_policy') {
-                    eventText = eventCSSMap['policy_success'].text;
-                } else if (event.policy === 'failed_detection_policy') {
-                    eventText = eventCSSMap['policy_failed'].text;
-                }
-            } else if (event.type === 'workflow_stage') {
-                if (event.stage.indexOf('Loading blueprint') !== -1) {
-                    eventText = eventCSSMap['workflow_started'].text;
-                } else if (event.stage.indexOf('executed successfully') !== -1) {
-                    eventText = eventCSSMap['workflow_success'].text;
-                } else if (event.stage.indexOf('Initializing monitoring policies') !== -1) {
-                    eventText = eventCSSMap['workflow_initializing_policies'].text;
-                } else if (event.stage.indexOf('Initializing node') !== -1) {
-                    eventText = eventCSSMap['workflow_initializing_node'].text;
-                }
-            } else if (eventCSSMap[event.type] !== undefined) {
-                eventText = eventCSSMap[event.type].text;
-            }
+            var eventText = eventCSSMap[getEventMapping(event)].text;
 
             return eventText !== undefined ? eventText : event.type;
         };
+
+        function getEventMapping(event) {
+            var eventMap = '';
+
+            if (event.type === 'policy') {
+                if (event.policy === 'start_detection_policy') {
+                    eventMap = 'policy_success';
+                } else if (event.policy === 'failed_detection_policy') {
+                    eventMap = 'policy_failed';
+                }
+            } else if (event.type === 'workflow_stage') {
+                if (event.stage.indexOf('Loading blueprint') !== -1) {
+                    eventMap = 'workflow_started';
+                } else if (event.stage.indexOf('executed successfully') !== -1) {
+                    eventMap = 'workflow_success';
+                } else if (event.stage.indexOf('Initializing monitoring policies') !== -1) {
+                    eventMap = 'workflow_initializing_policies';
+                } else if (event.stage.indexOf('Initializing node') !== -1) {
+                    eventMap = 'workflow_initializing_node';
+                }
+            } else if (eventCSSMap[event.type] !== undefined) {
+                eventMap = event.type;
+            }
+
+            return eventMap !== undefined ? eventMap : event.type;
+        }
     });
