@@ -1,94 +1,103 @@
 'use strict';
 
 angular.module('cosmoUi')
-    .controller('EventsCtrl', function ($scope/*, RestService*/) {
-        $scope.events = [
-            {
-                'type': 'Workflow started',
-                'node': '',
-                'task': '',
-                'workflow': 'Install',
-                'date': new Date().getTime()
-            },
-            {
-                'type': 'Workflow end successfully',
-                'node': 'web host',
-                'task': 'creat-Nova host plugin',
-                'workflow': 'Install',
-                'date': new Date().getTime()
-            },
-            {
-                'type': 'Workflow failed',
-                'node': '',
-                'task': 'creat-Nova host plugin',
-                'workflow': 'Install',
-                'date': new Date().getTime()
-            },
-            {
-                'type': 'Task sent',
-                'node': 'web host',
-                'task': 'creat-Nova host plugin',
-                'workflow': 'Failed',
-                'date': new Date().getTime()
-            },
-            {
-                'type': 'Task started',
-                'node': 'web host',
-                'task': 'creat-Nova host plugin',
-                'workflow': 'Failed',
-                'date': new Date().getTime()
-            },
-            {
-                'type': 'Task success',
-                'node': 'web host',
-                'task': 'creat-Nova host plugin',
-                'workflow': 'Failed',
-                'date': new Date().getTime()
-            },
-            {
-                'type': 'Task failed',
-                'node': '',
-                'task': '',
-                'workflow': 'Install',
-                'date': new Date().getTime()
-            },
-            {
-                'type': 'Policy event success',
-                'node': '',
-                'task': '',
-                'workflow': 'Install',
-                'date': new Date().getTime()
-            },
-            {
-                'type': 'Policy event failed',
-                'node': 'web host',
-                'task': 'creat-Nova host plugin',
-                'workflow': 'Install',
-                'date': new Date().getTime()
-            },
-            {
-                'type': 'Workflow failed',
-                'node': '',
-                'task': '',
-                'workflow': 'Install',
-                'date': new Date().getTime()
-            },
-            {
-                'type': 'Task started',
-                'node': 'web host',
-                'task': 'creat-Nova host plugin',
-                'workflow': 'Failed',
-                'date': new Date().getTime()
-            },
-            {
-                'type': 'Task sent',
-                'node': 'web host',
-                'task': 'creat-Nova host plugin',
-                'workflow': 'Install',
-                'date': new Date().getTime()
-            }
-        ];
-        //$scope.events = RestService.loadEvents();
+    .controller('EventsCtrl', function ($scope, $cookieStore, RestService) {
+//        $scope.events = [
+//            {
+//                'type': 'Workflow started',
+//                'node': '',
+//                'task': '',
+//                'workflow': 'Install',
+//                'date': new Date().getTime()
+//            },
+//            {
+//                'type': 'Workflow end successfully',
+//                'node': 'web host',
+//                'task': 'creat-Nova host plugin',
+//                'workflow': 'Install',
+//                'date': new Date().getTime()
+//            },
+//            {
+//                'type': 'Workflow failed',
+//                'node': '',
+//                'task': 'creat-Nova host plugin',
+//                'workflow': 'Install',
+//                'date': new Date().getTime()
+//            },
+//            {
+//                'type': 'Task sent',
+//                'node': 'web host',
+//                'task': 'creat-Nova host plugin',
+//                'workflow': 'Failed',
+//                'date': new Date().getTime()
+//            },
+//            {
+//                'type': 'Task started',
+//                'node': 'web host',
+//                'task': 'creat-Nova host plugin',
+//                'workflow': 'Failed',
+//                'date': new Date().getTime()
+//            },
+//            {
+//                'type': 'Task success',
+//                'node': 'web host',
+//                'task': 'creat-Nova host plugin',
+//                'workflow': 'Failed',
+//                'date': new Date().getTime()
+//            },
+//            {
+//                'type': 'Task failed',
+//                'node': '',
+//                'task': '',
+//                'workflow': 'Install',
+//                'date': new Date().getTime()
+//            },
+//            {
+//                'type': 'Policy event success',
+//                'node': '',
+//                'task': '',
+//                'workflow': 'Install',
+//                'date': new Date().getTime()
+//            },
+//            {
+//                'type': 'Policy event failed',
+//                'node': 'web host',
+//                'task': 'creat-Nova host plugin',
+//                'workflow': 'Install',
+//                'date': new Date().getTime()
+//            },
+//            {
+//                'type': 'Workflow failed',
+//                'node': '',
+//                'task': '',
+//                'workflow': 'Install',
+//                'date': new Date().getTime()
+//            },
+//            {
+//                'type': 'Task started',
+//                'node': 'web host',
+//                'task': 'creat-Nova host plugin',
+//                'workflow': 'Failed',
+//                'date': new Date().getTime()
+//            },
+//            {
+//                'type': 'Task sent',
+//                'node': 'web host',
+//                'task': 'creat-Nova host plugin',
+//                'workflow': 'Install',
+//                'date': new Date().getTime()
+//            }
+//        ];
+        $scope.events = [];
+        var eventsReqObj = {
+            id: $cookieStore.get('lastExecutedPlan').id,
+            from: $scope.events.length
+        };
+
+        RestService.loadEvents(eventsReqObj)
+            .success(function(data) {
+                $scope.events = $scope.events.concat(data.events);
+            });
 
         $scope.getEventClass = function(event) {
             var eventClass = 'event-text-green';

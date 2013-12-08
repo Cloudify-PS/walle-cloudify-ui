@@ -67,10 +67,9 @@ angular.module('cosmoUi')
             ];
 
             var realTypes = {
-               'mezzanine_app_module':'cloudify.types.app_module',
+                'mezzanine_app_module':'cloudify.types.app_module',
                 'mezzanine_host': 'cloudify.types.host',
                 'mezzanine_middleware': 'cloudify.types.middleware_server'
-
             };
 
             function extractName( uglyName ){

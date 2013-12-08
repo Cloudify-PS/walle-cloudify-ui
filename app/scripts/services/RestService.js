@@ -25,6 +25,7 @@ angular.module('cosmoUi')
         }
 
         var _restLoader = new RestLoader();
+//        var _currentPlan;
 
         function _load(rest, params){
             return _restLoader.load(rest, params);
@@ -44,11 +45,16 @@ angular.module('cosmoUi')
                 method: 'POST',
                 data: {'planId': params, 'workflowId': 'install'}
             };
-            _load('blueprints/execution', callParams);
+            return _load('blueprints/execution', callParams);
         }
 
-        function _loadEvents() {
-            return _load('events');
+        function _loadEvents(params) {
+            var callParams = {
+                url: '/backend/events',
+                method: 'POST',
+                data: {id: params.id, from: params.from}
+            };
+            return _load('events', callParams);
         }
 
         this.loadBlueprints = _loadBlueprints;

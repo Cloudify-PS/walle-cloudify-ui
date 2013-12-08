@@ -1,9 +1,10 @@
 'use strict';
 
 angular.module('cosmoUi')
-    .controller('PlansIndexCtrl', function ($scope, $location, RestService) {
+    .controller('PlansIndexCtrl', function ($scope, $location, $cookieStore, RestService) {
         $scope.isAddDialogVisible = false;
         $scope.selectedPlanId = null;
+        $scope.lastExecutedPlan = null;
 
         $scope.redirectTo = function (plan) {
             console.log(['redirecting to', plan]);
@@ -20,8 +21,12 @@ angular.module('cosmoUi')
         };
 
         $scope.executePlan = function(plan) {
-            RestService.executeBlueprint(plan.id);
+            $scope.lastExecutedPlan = RestService.executeBlueprint(plan.id);
         };
+
+        $scope.$watch('lastExecutedPlan', function(data) {
+            $cookieStore.put('lastExecutedPlan', data);
+        });
 
         $scope.loadBlueprints();
 
