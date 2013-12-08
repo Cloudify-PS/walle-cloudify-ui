@@ -264,11 +264,14 @@ html, body, .layout{ height:100%; width:100%; position:relative; }
 
 }
 
-
 #plans-index{
   table.table{
     width:97%;
     margin:0 auto;
+
+    .planExecute {
+      color: green;
+    }
 
     i{
       color:#BCBCBC;

@@ -5,6 +5,7 @@ angular.module('cosmoUi')
         $scope.isAddDialogVisible = false;
         $scope.selectedPlanId = null;
         $scope.lastExecutedPlan = null;
+        var _playingPlanId = $cookieStore.get('lastExecutedPlan');
 
         $scope.redirectTo = function (plan) {
             console.log(['redirecting to', plan]);
@@ -22,11 +23,13 @@ angular.module('cosmoUi')
 
         $scope.executePlan = function(plan) {
             $scope.lastExecutedPlan = RestService.executeBlueprint(plan.id);
+            $cookieStore.put('lastExecutedPlan', plan.id);
+            _playingPlanId = plan.id;
         };
 
-        $scope.$watch('lastExecutedPlan', function(data) {
-            $cookieStore.put('lastExecutedPlan', data);
-        });
+        $scope.isExecuting = function(planId) {
+            return planId === _playingPlanId;
+        };
 
         $scope.loadBlueprints();
 

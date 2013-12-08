@@ -90,13 +90,18 @@ angular.module('cosmoUi')
 //        ];
         $scope.events = [];
         var eventsReqObj = {
-            id: $cookieStore.get('lastExecutedPlan').id,
-            from: $scope.events.length
+            id: $cookieStore.get('lastExecutedPlan'),
+            from: $cookieStore.get('lastEventLoaded')
         };
 
         RestService.loadEvents(eventsReqObj)
-            .success(function(data) {
-                $scope.events = $scope.events.concat(data.events);
+            .then(function(data) {
+                if (data.id !== undefined && data.lastEvent !== undefined) {
+                    $cookieStore.put('lastExecutedPlan', data.id);
+                    $cookieStore.put('lastEventLoaded', data.lastEvent);
+
+                    $scope.events = $scope.events.concat(data.events);
+                }
             });
 
         $scope.getEventClass = function(event) {

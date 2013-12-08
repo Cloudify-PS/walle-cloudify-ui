@@ -19,7 +19,7 @@
             <td class="name" ng-click="redirectTo(plan)">{{plan.name}}</td>
             <td class="version">{{plan.version}}</td>
             <td class="description">{{plan.description}}</td>
-            <td class="actions"><i class="fa  fa-chevron-circle-down"></i><i class="fa  fa-play-circle-o" ng-click="executePlan(plan)"></i></td>
+            <td class="actions"><i id="plan-down" class="fa  fa-chevron-circle-down"></i><i class="fa  fa-play-circle-o" ng-click="executePlan(plan)" ng-class="{planExecute: isExecuting(plan.id)}"></i></td>
         </tr>
     </table>
     <div add-plan ng-show="isAddDialogVisible"></div>
