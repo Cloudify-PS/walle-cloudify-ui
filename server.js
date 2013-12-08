@@ -166,7 +166,8 @@ app.post('/backend/events', function(request, response, next) {
     requestData.options = {
         hostname: conf.cosmoServer,
         port: conf.cosmoPort,
-        path: '/deployments/' + request.body.id + '/events',
+
+        path: '/deployments/' + request.body.id + '/events?from=' + request.body.from,
         method: 'GET'
     };
 
@@ -174,6 +175,7 @@ app.post('/backend/events', function(request, response, next) {
 });
 
 app.post('/backend/blueprints/execution', function(request, response) {
+    console.log(request);
     var requestData = {};
     requestData.request = request;
     requestData.response = response;

@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('cosmoUi')
-    .controller('EventsCtrl', function ($scope, $cookieStore, RestService) {
+    .controller('EventsCtrl', function ($scope, $cookieStore, RestService, $routeParams, $timeout) {
 
         var eventCSSMap = {
             'workflow_started': {text: 'Workflow started', icon: 'event-icon-workflow-started', class: 'event-text-green'},
@@ -19,44 +19,57 @@ angular.module('cosmoUi')
         };
 
         $scope.events = [];
-        var eventsReqObj = {
-            id: $cookieStore.get('lastExecutedPlan'),
-            from: $cookieStore.get('lastEventLoaded')
-        };
 
-        RestService.loadEvents(eventsReqObj)
+        var id = $routeParams.lastExecutedPlan;
+        var from = 0;
+
+        function loadEvents( ){
+            RestService.loadEvents({ id : id, from: from })
             .then(function(data) {
                 if (data.id !== undefined && data.lastEvent !== undefined) {
-                    //$cookieStore.put('lastExecutedPlan', data.id);
-                    $cookieStore.put('lastExecutedPlan', data.name);
-                    $cookieStore.put('lastEventLoaded', data.lastEvent);
 
-                    $scope.events = $scope.events.concat(data.events);
+                    if ( from < data.lastEvent){
+                        from = data.lastEvent + 1;
+                    }
+                    if (data.events && data.events.length > 0) {
+                        $scope.events = $scope.events.concat(data.events);
 
-                    if (typeof($scope.events[0]) === 'string') {    // walkaround if the events returned as strings and not JSONs
+
                         for (var i = 0; i < $scope.events.length; i++) {
-                            $scope.events[i] = JSON.parse($scope.events[i]);
+                            if (typeof($scope.events[0]) === 'string') {    // walkaround if the events returned as strings and not JSONs
+                                $scope.events[i] = JSON.parse($scope.events[i]);
+                            }
                         }
                     }
+
+                    $timeout( loadEvents, 3000 )
                 }
             });
+        }
+
+        loadEvents();
+
+
+        function _getCssMapField( event, field ){
+            var eventMapping = getEventMapping(event);
+            if ( !!eventMapping && eventCSSMap.hasOwnProperty(eventMapping) ){
+                return eventCSSMap[eventMapping][field];
+            }else{
+                console.log([event, 'does not have field', field]);
+                return '';
+            }
+        }
 
         $scope.getEventClass = function(event) {
-            var eventClass = eventCSSMap[getEventMapping(event)].class;
-
-            return eventClass;
+            return _getCssMapField( event, 'class');
         };
 
         $scope.getEventIcon = function(event) {
-            var iconClass = eventCSSMap[getEventMapping(event)].icon;
-
-            return iconClass;
+            return _getCssMapField( event, 'icon');
         };
 
         $scope.getEventText = function(event) {
-            var eventText = eventCSSMap[getEventMapping(event)].text;
-
-            return eventText !== undefined ? eventText : event.type;
+            return _getCssMapField( event, 'text') || event.type;
         };
 
         function getEventMapping(event) {

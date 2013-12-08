@@ -48,11 +48,17 @@ angular.module('cosmoUi')
             return _load('blueprints/execution', callParams);
         }
 
+        /**
+         *
+         * @param params { id: _id, from: _from }
+         * @returns {*}
+         * @private
+         */
         function _loadEvents(params) {
             var callParams = {
                 url: '/backend/events',
                 method: 'POST',
-                data: {id: params.id, from: params.from}
+                data: params
             };
             return _load('events', callParams);
         }
