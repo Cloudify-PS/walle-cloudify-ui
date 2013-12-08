@@ -358,6 +358,7 @@ $gs-icon-prefix:'gs-icon';
         height: 60px;
         color: #333;
 
+        &.type {width:100px;}
         &.icon { width:60px;}
         &.node, &.task, &.workflow { width: 200px;}
         &.date { padding-right:30px;}
