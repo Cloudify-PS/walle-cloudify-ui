@@ -23,8 +23,10 @@ angular.module('cosmoUi')
 
         $scope.executePlan = function(plan) {
             $scope.lastExecutedPlan = RestService.executeBlueprint(plan.id);
-            $cookieStore.put('lastExecutedPlan', plan.id);
-            _playingPlanId = plan.id;
+//            $cookieStore.put('lastExecutedPlan', plan.id);
+            $cookieStore.put('lastExecutedPlan', plan.name);
+//            _playingPlanId = plan.id;
+            _playingPlanId = plan.name;
         };
 
         $scope.isExecuting = function(planId) {

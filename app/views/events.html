@@ -10,15 +10,15 @@
             <td class="node">Node</td>
             <td class="task">Task</td>
             <td class="workflow">Workflow</td>
-            <td class="date">Date</td>
+            <!--<td class="date">Date</td>-->
         </tr>
         <tr ng-repeat="event in events">
             <td class="icon" ng-class="getEventIcon(event)"></td>
-            <td class="type" ng-class="getEventClass(event)">{{event.type == '' && 'N/A' || event.type}}</td>
+            <td class="type" ng-class="getEventClass(event)">{{event.type == '' && 'N/A' || getEventText(event)}}</td>
             <td class="node">{{event.node == '' && 'N/A' || event.node}}</td>
-            <td class="task">{{event.task == '' && 'N/A' || event.task}}</td>
-            <td class="workflow">{{event.workflow == '' && 'N/A' || event.workflow}}</td>
-            <td class="date">{{event.date | eventTimeFilter}}</td>
+            <td class="task">{{event.name == '' && 'N/A' || event.name}}</td>
+            <td class="workflow">{{event.workflow_name == '' && 'N/A' || event.workflow_name}}</td>
+            <!--<td class="date">{{event.date | eventTimeFilter}}</td>-->
         </tr>
     </table>
     </div>

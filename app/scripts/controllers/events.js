@@ -2,92 +2,22 @@
 
 angular.module('cosmoUi')
     .controller('EventsCtrl', function ($scope, $cookieStore, RestService) {
-//        $scope.events = [
-//            {
-//                'type': 'Workflow started',
-//                'node': '',
-//                'task': '',
-//                'workflow': 'Install',
-//                'date': new Date().getTime()
-//            },
-//            {
-//                'type': 'Workflow end successfully',
-//                'node': 'web host',
-//                'task': 'creat-Nova host plugin',
-//                'workflow': 'Install',
-//                'date': new Date().getTime()
-//            },
-//            {
-//                'type': 'Workflow failed',
-//                'node': '',
-//                'task': 'creat-Nova host plugin',
-//                'workflow': 'Install',
-//                'date': new Date().getTime()
-//            },
-//            {
-//                'type': 'Task sent',
-//                'node': 'web host',
-//                'task': 'creat-Nova host plugin',
-//                'workflow': 'Failed',
-//                'date': new Date().getTime()
-//            },
-//            {
-//                'type': 'Task started',
-//                'node': 'web host',
-//                'task': 'creat-Nova host plugin',
-//                'workflow': 'Failed',
-//                'date': new Date().getTime()
-//            },
-//            {
-//                'type': 'Task success',
-//                'node': 'web host',
-//                'task': 'creat-Nova host plugin',
-//                'workflow': 'Failed',
-//                'date': new Date().getTime()
-//            },
-//            {
-//                'type': 'Task failed',
-//                'node': '',
-//                'task': '',
-//                'workflow': 'Install',
-//                'date': new Date().getTime()
-//            },
-//            {
-//                'type': 'Policy event success',
-//                'node': '',
-//                'task': '',
-//                'workflow': 'Install',
-//                'date': new Date().getTime()
-//            },
-//            {
-//                'type': 'Policy event failed',
-//                'node': 'web host',
-//                'task': 'creat-Nova host plugin',
-//                'workflow': 'Install',
-//                'date': new Date().getTime()
-//            },
-//            {
-//                'type': 'Workflow failed',
-//                'node': '',
-//                'task': '',
-//                'workflow': 'Install',
-//                'date': new Date().getTime()
-//            },
-//            {
-//                'type': 'Task started',
-//                'node': 'web host',
-//                'task': 'creat-Nova host plugin',
-//                'workflow': 'Failed',
-//                'date': new Date().getTime()
-//            },
-//            {
-//                'type': 'Task sent',
-//                'node': 'web host',
-//                'task': 'creat-Nova host plugin',
-//                'workflow': 'Install',
-//                'date': new Date().getTime()
-//            }
-//        ];
+
+        var eventCSSMap = {
+            'workflow_started': {text: 'Workflow started', icon: 'event-icon-workflow-started', class: 'event-text-green'},
+            'workflow_initializing_policies': {text: 'Workflow initializing policies', icon: 'event-icon-workflow-started', class: 'event-text-green'},
+            'workflow_initializing_node': {text: 'Workflow initializing node', icon: 'event-icon-workflow-started', class: 'event-text-green'},
+            'workflow_success': {text: 'Workflow end successfully', icon: 'event-icon-workflow-end-successfully', class: 'event-text-green'},
+            'workflow_failed': {text: 'Workflow failed', icon: 'event-icon-workflow-failed', class: 'event-text-red'},
+            'task_started': {text: 'Task started', icon: 'event-icon-task-started', class: 'event-text-green'},
+            'sending_task': {text: 'Task sent', icon: 'event-icon-task-sent', class: 'event-text-green'},
+            'task_received': {text: 'Task received', icon: 'event-icon-task-sent', class: 'event-text-green'},
+            'task_succeeded': {text: 'Task end successfully', icon: 'event-icon-task-success', class: 'event-text-green'},
+            'task_failed': {text: 'Task failed', icon: 'event-icon-task-failed', class: 'event-text-red'},
+            'policy_success': {text: 'Policy end successfully started', icon: 'event-icon-policy-success', class: 'event-text-green'},
+            'policy_failed': {text: 'Policy failed', icon: 'event-icon-policy-failed', class: 'event-text-red'}
+        };
+
         $scope.events = [];
         var eventsReqObj = {
             id: $cookieStore.get('lastExecutedPlan'),
@@ -97,64 +27,92 @@ angular.module('cosmoUi')
         RestService.loadEvents(eventsReqObj)
             .then(function(data) {
                 if (data.id !== undefined && data.lastEvent !== undefined) {
-                    $cookieStore.put('lastExecutedPlan', data.id);
+                    //$cookieStore.put('lastExecutedPlan', data.id);
+                    $cookieStore.put('lastExecutedPlan', data.name);
                     $cookieStore.put('lastEventLoaded', data.lastEvent);
 
                     $scope.events = $scope.events.concat(data.events);
+                    for (var i = 0; i < $scope.events.length; i++) {
+                        $scope.events[i] = JSON.parse($scope.events[i]);
+                    }
                 }
             });
 
         $scope.getEventClass = function(event) {
-            var eventClass = 'event-text-green';
-            switch (event.type) {
-            case 'Workflow started':
-            case 'Workflow end successfully':
-            case 'Task started':
-            case 'Task sent':
-            case 'Task success':
-            case 'Policy event success':
-                eventClass = 'event-text-green';
-                break;
-            case 'Workflow failed':
-            case 'Policy event failed':
-            case 'Task failed':
-                eventClass = 'event-text-red';
-                break;
+            var eventClass;
+
+            if (event.type === 'policy') {
+                if (event.policy === 'start_detection_policy') {
+                    eventClass = eventCSSMap['policy_success'].class;
+                } else if (event.policy === 'failed_detection_policy') {
+                    eventClass = eventCSSMap['policy_failed'].class;
+                }
+            } else if (event.type === 'workflow_stage') {
+                if (event.stage.indexOf('Loading blueprint') !== -1) {
+                    eventClass = eventCSSMap['workflow_started'].class;
+                } else if (event.stage.indexOf('executed successfully') !== -1) {
+                    eventClass = eventCSSMap['workflow_success'].class;
+                }
+            } else if (eventCSSMap[event.type] !== undefined) {
+                eventClass = eventCSSMap[event.type].class;
             }
+
+            if (eventClass === undefined) {
+                eventClass = 'event-text-green';
+            }
+
             return eventClass;
         };
 
         $scope.getEventIcon = function(event) {
-            var iconClass = 'event-icon-workflow-started';
-            switch (event.type) {
-            case 'Workflow started':
-                iconClass = 'event-icon-workflow-started';
-                break;
-            case 'Workflow end successfully':
-                iconClass = 'event-icon-workflow-end-successfully';
-                break;
-            case 'Workflow failed':
-                iconClass = 'event-icon-workflow-failed';
-                break;
-            case 'Task started':
-                iconClass = 'event-icon-task-started';
-                break;
-            case 'Task sent':
-                iconClass = 'event-icon-task-sent';
-                break;
-            case 'Task failed':
-                iconClass = 'event-icon-task-failed';
-                break;
-            case 'Task success':
-                iconClass = 'event-icon-task-success';
-                break;
-            case 'Policy event success':
-                iconClass = 'event-icon-policy-success';
-                break;
-            case 'Policy event failed':
-                iconClass = 'event-icon-policy-failed';
-                break;
+            var iconClass;
+
+            if (event.type === 'policy') {
+                if (event.policy === 'start_detection_policy') {
+                    iconClass = eventCSSMap['policy_success'].icon;
+                } else if (event.policy === 'failed_detection_policy') {
+                    iconClass = eventCSSMap['policy_failed'].icon;
+                }
+            } else if (event.type === 'workflow_stage') {
+                if (event.stage.indexOf('Loading blueprint') !== -1) {
+                    iconClass = eventCSSMap['workflow_started'].icon;
+                } else if (event.stage.indexOf('executed successfully') !== -1) {
+                    iconClass = eventCSSMap['workflow_success'].icon;
+                }
+            } else if (eventCSSMap[event.type] !== undefined) {
+                iconClass = eventCSSMap[event.type].icon;
             }
+
+            if (iconClass === undefined) {
+                iconClass = 'event-icon-workflow-started';
+            }
+
             return iconClass;
+        };
+
+        $scope.getEventText = function(event) {
+            var eventText = event.type;
+
+            if (event.type === 'policy') {
+                if (event.policy === 'start_detection_policy') {
+                    eventText = eventCSSMap['policy_success'].text;
+                } else if (event.policy === 'failed_detection_policy') {
+                    eventText = eventCSSMap['policy_failed'].text;
+                }
+            } else if (event.type === 'workflow_stage') {
+                if (event.stage.indexOf('Loading blueprint') !== -1) {
+                    eventText = eventCSSMap['workflow_started'].text;
+                } else if (event.stage.indexOf('executed successfully') !== -1) {
+                    eventText = eventCSSMap['workflow_success'].text;
+                } else if (event.stage.indexOf('Initializing monitoring policies') !== -1) {
+                    eventText = eventCSSMap['workflow_initializing_policies'].text;
+                } else if (event.stage.indexOf('Initializing node') !== -1) {
+                    eventText = eventCSSMap['workflow_initializing_node'].text;
+                }
+            } else if (eventCSSMap[event.type] !== undefined) {
+                eventText = eventCSSMap[event.type].text;
+            }
+
+            return eventText !== undefined ? eventText : event.type;
         };
     });
