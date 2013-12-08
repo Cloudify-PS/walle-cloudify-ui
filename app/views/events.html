@@ -14,10 +14,10 @@
         </tr>
         <tr ng-repeat="event in events">
             <td class="icon" ng-class="getEventIcon(event)"></td>
-            <td class="type" ng-class="getEventClass(event)">{{event.type == '' && 'N/A' || getEventText(event)}}</td>
-            <td class="node">{{event.node == '' && 'N/A' || event.node}}</td>
-            <td class="task">{{event.name == '' && 'N/A' || event.name}}</td>
-            <td class="workflow">{{event.workflow_name == '' && 'N/A' || event.workflow_name}}</td>
+            <td class="type" ng-class="getEventClass(event)">{{event.type == undefined && 'N/A' || getEventText(event)}}</td>
+            <td class="node">{{event.node == undefined && 'N/A' || event.node}}</td>
+            <td class="task">{{event.name == undefined && 'N/A' || event.name}}</td>
+            <td class="workflow">{{event.workflow_name == undefined && 'N/A' || event.workflow_name}}</td>
             <!--<td class="date">{{event.date | eventTimeFilter}}</td>-->
         </tr>
     </table>
