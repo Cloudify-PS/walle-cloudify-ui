@@ -9,6 +9,7 @@ angular.module('cosmoUi')
             'workflow_initializing_node': {text: 'Workflow initializing node', icon: 'event-icon-workflow-started', class: 'event-text-green'},
             'workflow_success': {text: 'Workflow end successfully', icon: 'event-icon-workflow-end-successfully', class: 'event-text-green'},
             'workflow_failed': {text: 'Workflow failed', icon: 'event-icon-workflow-failed', class: 'event-text-red'},
+            'workflow_stage': {text: 'Workflow Stage', icon: 'event-icon-task-sent', class: 'event-text-green'},
             'task_started': {text: 'Task started', icon: 'event-icon-task-started', class: 'event-text-green'},
             'sending_task': {text: 'Task sent', icon: 'event-icon-task-sent', class: 'event-text-green'},
             'task_received': {text: 'Task received', icon: 'event-icon-task-sent', class: 'event-text-green'},
@@ -55,6 +56,7 @@ angular.module('cosmoUi')
             if ( !!eventMapping && eventCSSMap.hasOwnProperty(eventMapping) ){
                 return eventCSSMap[eventMapping][field];
             }else{
+                debugger;
                 console.log([event, 'does not have field', field]);
                 return '';
             }
@@ -73,7 +75,7 @@ angular.module('cosmoUi')
         };
 
         function getEventMapping(event) {
-            var eventMap = '';
+            var eventMap = undefined;
 
             if (event.type === 'policy') {
                 if (event.policy === 'start_detection_policy') {

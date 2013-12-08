@@ -37,7 +37,8 @@ angular.module('cosmoUi')
                 scope.selectedItem = null;
 
                 scope.isSelected = function(item) {
-                    return $location.path().substr(1) === item.route.substr(1);
+
+                    return $location.path().substr(1 ) === item.route.substr(1).split("?")[0];
                 };
 
                 scope.itemClick = function(item) {
