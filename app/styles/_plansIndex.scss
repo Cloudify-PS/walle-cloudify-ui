@@ -1,0 +1,39 @@
+#plans-index{
+  table.table{
+    width:97%;
+    margin:0 auto;
+
+    .planExecute {
+      color: green;
+    }
+
+    i{
+      color:#BCBCBC;
+    }
+    tr:first-child td{
+      background:#CCE4F6;
+      color:#234E71;
+    }
+    tr{
+      cursor:pointer;
+      &:hover:not(:first-child) td{
+        background-color:#CECECE;
+
+        &,i {color:white; }
+        i{font-weight: normal;}
+        font-weight: bold;
+      }
+      td{
+        vertical-align: middle;
+        &.icon{ width:40px;}
+        &.name,&.version, &.description,&.actions{ width:25%;}
+        &.description{padding-right:30px;}
+
+      }
+      &:not(:first-child) td.actions{
+        font-size:35px;
+        letter-spacing: 10px;
+      }
+    }
+  }
+}

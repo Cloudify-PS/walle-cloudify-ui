@@ -1,0 +1,67 @@
+.gsi {
+  width: 30px;
+  height: 30px;
+  float: left;
+  margin-right: 15px;
+  position: relative;
+  top: 14px;
+  //background: url(/images/icons-bar.png) no-repeat;
+  font-family: "Cosmo";
+
+  &.plans {
+    background-position: 0px 0px;
+    &:after{
+      content:"123456789abcdefghijklmnop";
+      display:"inline-block"
+    }
+  }
+  &.running-apps {
+    background-position: -40px 0px;
+  }
+  &.events {
+    background-position: -80px 0px;
+  }
+  &.monitoring {
+    background-position: -120px 0px;
+  }
+  &.logs {
+    background-position: -160px 0px;
+  }
+  &.hosts {
+    background-position: -200px 0px;
+  }
+  &.networks {
+    background-position: -237px 0px;
+  }
+  &.floating-ips {
+    background-position: -277px 0px;
+  }
+  &.storage {
+    background-position: -316px 0px;
+  }
+
+}
+
+
+$gs-icon-prefix:'gs-icon';
+[class^=#{$gs-icon-prefix}], [class*=" #{$gs-icon-prefix}"]{
+  font-size:50px;
+  line-height:10px;
+  font-family:'Cosmo';
+  font-style: normal;
+  display:inline-block;
+
+}
+
+.#{$gs-icon-prefix}-question-mark-sign:before { content:"a"; }
+.#{$gs-icon-prefix}-question-mark:before { content:"b"; }
+.#{$gs-icon-prefix}-closed-envelope:before { content:"c"; }
+.#{$gs-icon-prefix}-events:before { content:"d"; }
+.#{$gs-icon-prefix}-floating-ips:before { content:"e"; }
+.#{$gs-icon-prefix}-hosts:before { content:"f"; }
+.#{$gs-icon-prefix}-logs:before { content:"g"; }
+.#{$gs-icon-prefix}-monitoring:before { content:"h"; }
+.#{$gs-icon-prefix}-networks:before { content:"i"; }
+.#{$gs-icon-prefix}-plans:before { content:"j"; }
+.#{$gs-icon-prefix}-running-apps:before { content:"k"; }
+.#{$gs-icon-prefix}-storage:before { content:"l"; }

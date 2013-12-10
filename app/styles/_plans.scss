@@ -1,0 +1,39 @@
+#plans{
+  #right-side-menu{
+    position:absolute;
+    z-index:20;
+
+    top:0;
+    right:0;
+    width:600px;
+    border-left:4px solid #2c4a67;
+    background-color:rgba(255,255,255,0.9);
+    padding-left:19px;
+    padding-right:23px;
+    padding-top:20px;
+
+    .title{
+      padding-bottom:10px;
+      line-height:40px;
+      color:#5A82A2;
+      font-size:32px;
+      border-bottom:4px solid #CADBEC;
+      i { float:right; }
+    }
+
+    .content{
+      margin-top:10px;
+      .btn-group{
+        $RADIUS:30px;
+        button{ height:34px; font-size:22px; padding-top:0; padding-bottom:0; color: #496685; border:1px solid #D3DFE2; }
+
+        button:last-child{ border-bottom-right-radius: $RADIUS; border-top-right-radius: $RADIUS;}
+        button:first-child{ border-top-left-radius: $RADIUS; border-bottom-left-radius: $RADIUS; }
+        button.active{ background: #496685; color:white; }
+      }
+      .content-section{
+        margin-top:30px;
+      }
+    }
+  }
+}
