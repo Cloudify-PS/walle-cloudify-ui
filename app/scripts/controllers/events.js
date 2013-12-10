@@ -43,7 +43,7 @@ angular.module('cosmoUi')
                         }
                     }
 
-                    $timeout( loadEvents, 3000 )
+                    $timeout( loadEvents, 3000 );
                 }
             });
         }
@@ -56,7 +56,6 @@ angular.module('cosmoUi')
             if ( !!eventMapping && eventCSSMap.hasOwnProperty(eventMapping) ){
                 return eventCSSMap[eventMapping][field];
             }else{
-                debugger;
                 console.log([event, 'does not have field', field]);
                 return '';
             }
@@ -75,7 +74,7 @@ angular.module('cosmoUi')
         };
 
         function getEventMapping(event) {
-            var eventMap = undefined;
+            var eventMap;
 
             if (event.type === 'policy') {
                 if (event.policy === 'start_detection_policy') {

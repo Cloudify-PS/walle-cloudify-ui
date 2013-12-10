@@ -22,5 +22,21 @@
             <td class="actions"><i id="plan-down" class="fa  fa-chevron-circle-down"></i><i class="fa  fa-play-circle-o" ng-click="executePlan(plan)" ng-class="{planExecute: isExecuting(plan.name)}"></i></td>
         </tr>
     </table>
-    <div add-plan ng-show="isAddDialogVisible"></div>
+    <div ng-show="isAddDialogVisible" ng-controller="PopupCtrl">
+        <div id="popupBoxBg"></div>
+        <div id="popupContainer">
+        <div id="popupClose" class="formButton" ng-click="closeDialog()">X</div>
+        <div id="popupTitle">Add a Plan</div>
+        <div id="popupDescription">Some text that explains about adding a plan by using this dialog</div>
+        <form id="uploadForm" name="uploadForm">
+            <div id="browse">
+                <div id="browseBtn" class="formButton">Browse</div>
+                <input type="text" id="browseTxt">
+                <input type="file" name="fileInput" id="fileInput" accept=".tar,.gz,.yaml" ng-file-select="onFileSelect($files)">
+                </div>
+            <div id="mainFile" style="display:none">Application file: <input type="text" ng-model="mainFileName"></div>
+            <button id="uploadBtn" class="formButton" ng-class="{disabled: !isUploadEnabled(), enabled: isUploadEnabled()}" ng-click="uploadFile()">Upload</button>
+            </form>
+        </div>
+    </div>
 </div>
