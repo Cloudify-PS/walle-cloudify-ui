@@ -6,26 +6,33 @@
     top:0;
     right:0;
     width:600px;
-    border-left:4px solid $COSMOUI_BLUEPRINT_LEFT_BORDER_COLOR;
-    background-color: $COSMOUI_BLUEPRINT_BACKGROUND;
+    border-left:4px solid $COSMOUI_BLUEPRINT_DETAILS_LEFT_BORDER_COLOR;
+    background-color: $COSMOUI_BLUEPRINT_DETAILS_BACKGROUND;
     padding-left:19px;
     padding-right:23px;
     padding-top:20px;
 
     .title{
-      padding-bottom:10px;
-      line-height:40px;
-      color:$COSMOUI_BLUEPRINT_TITLE_COLOR;
-      font-size:32px;
-      border-bottom:4px solid $COSMOUI_BLUEPRINT_TITLE_BOTTOM_BORDER_COLOR;
+      padding-bottom:$COSMOUI_BLUEPRINT_DETAILS_TITLE_PADDING_BOTTOM;
+      line-height: $COSMOUI_BLUEPRINT_DETAILS_TITLE_LINE_HEIGHT;
+      color:$COSMOUI_BLUEPRINT_DETAILS_TITLE_COLOR;
+      font-size: $COSMOUI_BLUEPRINT_DETAILS_TITLE_FONT_SIZE;
+      border-bottom:4px solid $COSMOUI_BLUEPRINT_DETAILS_TITLE_BOTTOM_BORDER_COLOR;
       i { float:right; }
     }
 
     .content{
-      margin-top:10px;
+      margin-top: $COSMOUI_BLUEPRINT_DETAILS_CONTENT_MARGIN_TOP;
       .btn-group{
         $RADIUS:30px;
-        button{ height:34px; font-size:22px; padding-top:0; padding-bottom:0; color: $COSMOUI_BLUEPRINT_BUTTON_GROUP_BACKGROUND; border:1px solid $COSMOUI_BLUEPRINT_BUTTON_GROUP_BORDER_COLOR; }
+
+        button{
+          height: $COSMOUI_BLUEPRINT_DETAILS_BUTTON_HEIGHT;
+          font-size: $COSMOUI_BLUEPRINT_DETAILS_BUTTON_FONT_SIZE;
+          padding: $COSMOUI_BLUEPRINT_DETAILS_BUTTON_PADDING;
+          color: $COSMOUI_BLUEPRINT_BUTTON_GROUP_BACKGROUND;
+          border:1px solid $COSMOUI_BLUEPRINT_BUTTON_GROUP_BORDER_COLOR;
+        }
 
         button:last-child{ border-bottom-right-radius: $RADIUS; border-top-right-radius: $RADIUS;}
         button:first-child{ border-top-left-radius: $RADIUS; border-bottom-left-radius: $RADIUS; }
