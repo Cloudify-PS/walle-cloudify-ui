@@ -1,26 +1,25 @@
 #events-index {
   table.table {
-    width:97%;
-    margin:0 auto;
+    width: $COSMOUI_LIST_WIDTH;
+    margin: $COSMOUI_LIST_MARGIN;
 
     i {
-      color:#BCBCBC;
+      color: $COSMOUI_EVENTS_LIST_ITEM_COLOR;
     }
 
     tr:first-child td {
-      background:#CCE4F6;
-      color:#234E71;
+      background: $COSMOUI_LIST_COLUMN_HEADER_BACKGROUND;
+      color: $COSMOUI_LIST_COLUMN_HEADER_TEXT_COLOR;
     }
 
     tr {
-      cursor:pointer;
+      cursor: $COSMOUI_POPUP_CURSOR;
 
       &:hover:not(:first-child) td{
-        background-color:#CECECE;
+        background-color: $COSMOUI_LIST_HOVER_BACKGROUND;
 
-        &,i {color:white; }
-        i {font-weight: normal;}
-        //font-weight: bold;
+        &,i {color: $COSMOUI_LIST_HOVER_ACTION_TEXT_COLOR; }
+        i {font-weight: $COSMOUI_LIST_HOVER_ACTION_FONT_WEIGHT;}
       }
 
       td {
@@ -34,11 +33,11 @@
         &.date { padding-right:30px;}
 
         &.event-text-green {
-          color: #8eaf26;
+          color: $COSMOUI_EVENTS_LIST_TEXT_SUCCESS;
         }
 
         &.event-text-red {
-          color: #d54931;
+          color: $COSMOUI_EVENTS_LIST_TEXT_FAILED;
         }
 
         &.event-icon-workflow-started {background: url(/images/events/WorkflowStarted.png) no-repeat center center;}

@@ -6,8 +6,8 @@
     top:0;
     right:0;
     width:600px;
-    border-left:4px solid #2c4a67;
-    background-color:rgba(255,255,255,0.9);
+    border-left:4px solid $COSMOUI_BLUEPRINT_LEFT_BORDER_COLOR;
+    background-color: $COSMOUI_BLUEPRINT_BACKGROUND;
     padding-left:19px;
     padding-right:23px;
     padding-top:20px;
@@ -15,9 +15,9 @@
     .title{
       padding-bottom:10px;
       line-height:40px;
-      color:#5A82A2;
+      color:$COSMOUI_BLUEPRINT_TITLE_COLOR;
       font-size:32px;
-      border-bottom:4px solid #CADBEC;
+      border-bottom:4px solid $COSMOUI_BLUEPRINT_TITLE_BOTTOM_BORDER_COLOR;
       i { float:right; }
     }
 
@@ -25,11 +25,11 @@
       margin-top:10px;
       .btn-group{
         $RADIUS:30px;
-        button{ height:34px; font-size:22px; padding-top:0; padding-bottom:0; color: #496685; border:1px solid #D3DFE2; }
+        button{ height:34px; font-size:22px; padding-top:0; padding-bottom:0; color: $COSMOUI_BLUEPRINT_BUTTON_GROUP_BACKGROUND; border:1px solid $COSMOUI_BLUEPRINT_BUTTON_GROUP_BORDER_COLOR; }
 
         button:last-child{ border-bottom-right-radius: $RADIUS; border-top-right-radius: $RADIUS;}
         button:first-child{ border-top-left-radius: $RADIUS; border-bottom-left-radius: $RADIUS; }
-        button.active{ background: #496685; color:white; }
+        button.active{ background: $COSMOUI_BLUEPRINT_BUTTON_ACTIVE_COLOR; color:white; }
       }
       .content-section{
         margin-top:30px;
