@@ -16,7 +16,8 @@ angular.module('cosmoUi', ['gsUiInfra', 'angularFileUpload', 'ngCookies'])
                 controller: 'PlansCtrl'
             })
             .when('/running-apps',{
-                templateUrl: 'views/plans.html'
+                templateUrl: 'views/runningApps.html',
+                controller: 'RunningappsCtrl'
             })
             .when('/events',{
                 templateUrl: 'views/events.html',

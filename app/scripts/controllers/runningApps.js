@@ -1,8 +1,10 @@
 'use strict';
 
 angular.module('cosmoUi')
-    .controller('EventsCtrl', function ($scope, RestService, $routeParams, $timeout) {
+    .controller('RunningappsCtrl', function ($scope, RestService, $routeParams, $timeout) {
 
+        var id = $routeParams.lastExecutedPlan;
+        var from = 0;
         var eventCSSMap = {
             'workflow_started': {text: 'Workflow started', icon: 'event-icon-workflow-started', class: 'event-text-green'},
             'workflow_initializing_policies': {text: 'Workflow initializing policies', icon: 'event-icon-workflow-started', class: 'event-text-green'},
@@ -20,32 +22,51 @@ angular.module('cosmoUi')
         };
 
         $scope.events = [];
-
-        var id = $routeParams.lastExecutedPlan;
-        var from = 0;
+        $scope.apps = [];
+        $scope.selectedApp = '';
 
         function loadEvents( ){
             RestService.loadEvents({ id : id, from: from })
-            .then(function(data) {
-                if (data.id !== undefined && data.lastEvent !== undefined) {
+                .then(function(data) {
+                    if (data.id !== undefined && data.lastEvent !== undefined) {
 
-                    if ( from < data.lastEvent){
-                        from = data.lastEvent + 1;
-                    }
-                    if (data.events && data.events.length > 0) {
-                        $scope.events = $scope.events.concat(data.events);
+                        if ( from < data.lastEvent){
+                            from = data.lastEvent + 1;
+                        }
 
+                        if (data.events && data.events.length > 0) {
+                            $scope.events = $scope.events.concat(data.events);
 
-                        for (var i = 0; i < $scope.events.length; i++) {
-                            if (typeof($scope.events[0]) === 'string') {    // walkaround if the events returned as strings and not JSONs
-                                $scope.events[i] = JSON.parse($scope.events[i]);
+                            for (var i = 0; i < $scope.events.length; i++) {
+                                if ($scope.events[i].node !== undefined) {
+                                    $scope.apps[_getNodeIndex($scope.events[i].node)].events.push($scope.events[i]);
+                                }
+
                             }
                         }
-                    }
 
-                    $timeout( loadEvents, 3000 );
+                        $timeout( loadEvents, 3000 );
+                    }
+                });
+        }
+
+        function _getNodeIndex(nodeName) {
+            var nodeIndex = -1;
+            for (var j = 0; j < $scope.apps.length; j++) {
+                if ($scope.apps[j].name === nodeName) {
+                    nodeIndex = j;
                 }
-            });
+            }
+
+            if (nodeIndex === -1) {
+                $scope.apps.push({
+                    name: nodeName,
+                    events: []
+                })
+                nodeIndex = $scope.apps.length - 1;
+            }
+
+            return nodeIndex;
         }
 
         function _getCssMapField( event, field ){
@@ -68,6 +89,14 @@ angular.module('cosmoUi')
 
         $scope.getEventText = function(event) {
             return _getCssMapField( event, 'text') || event.type;
+        };
+
+        $scope.showEvents = function(appName) {
+            if (appName === $scope.selectedApp) {
+                $scope.selectedApp = '';
+            } else {
+                $scope.selectedApp = appName;
+            }
         };
 
         function getEventMapping(event) {
@@ -97,4 +126,5 @@ angular.module('cosmoUi')
         }
 
         loadEvents();
+
     });
