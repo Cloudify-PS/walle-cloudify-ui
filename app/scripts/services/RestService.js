@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('cosmoUi')
-    .service('RestService', function RestService($http) {
+    .service('RestService', function RestService($http, $timeout, $q, $rootScope) {
 
         function RestLoader() {
 
@@ -45,6 +45,7 @@ angular.module('cosmoUi')
                 method: 'POST',
                 data: {'planId': params, 'workflowId': 'install'}
             };
+
             return _load('blueprints/execution', callParams);
         }
 
@@ -55,12 +56,31 @@ angular.module('cosmoUi')
          * @private
          */
         function _loadEvents(params) {
-            var callParams = {
-                url: '/backend/events',
-                method: 'POST',
-                data: params
-            };
-            return _load('events', callParams);
+            var deferred = $q.defer();
+
+            function _internalLoadEvents(){
+                console.log(['loading events', params]);
+
+                var callParams = {
+                    url: '/backend/events',
+                    method: 'POST',
+                    data: params
+                };
+
+                _load('events', callParams).then(function(data) {
+                    if ( params.from < data.lastEvent){
+                        params.from = data.lastEvent + 1;
+
+                        deferred.resolve(data);
+                    }
+
+                    $timeout(function(){$rootScope.$apply(_internalLoadEvents())}, 3000);
+                });
+            }
+
+            _internalLoadEvents();
+
+            return deferred.promise;
         }
 
         this.loadBlueprints = _loadBlueprints;

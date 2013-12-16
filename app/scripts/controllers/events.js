@@ -26,26 +26,20 @@ angular.module('cosmoUi')
 
         function loadEvents( ){
             RestService.loadEvents({ id : id, from: from })
-            .then(function(data) {
-                if (data.id !== undefined && data.lastEvent !== undefined) {
+                .then(function(data) {
+                    if (data.id !== undefined && data.lastEvent !== undefined) {
 
-                    if ( from < data.lastEvent){
-                        from = data.lastEvent + 1;
-                    }
-                    if (data.events && data.events.length > 0) {
-                        $scope.events = $scope.events.concat(data.events);
+                       if (data.events && data.events.length > 0) {
+                            $scope.events = $scope.events.concat(data.events);
 
-
-                        for (var i = 0; i < $scope.events.length; i++) {
-                            if (typeof($scope.events[0]) === 'string') {    // walkaround if the events returned as strings and not JSONs
-                                $scope.events[i] = JSON.parse($scope.events[i]);
+                            for (var i = 0; i < $scope.events.length; i++) {
+                                if (typeof($scope.events[0]) === 'string') {    // walkaround if the events returned as strings and not JSONs
+                                    $scope.events[i] = JSON.parse($scope.events[i]);
+                                }
                             }
                         }
                     }
-
-                    $timeout( loadEvents, 3000 );
-                }
-            });
+                });
         }
 
         function _getCssMapField( event, field ){

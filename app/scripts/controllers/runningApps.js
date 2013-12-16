@@ -30,10 +30,6 @@ angular.module('cosmoUi')
                 .then(function(data) {
                     if (data.id !== undefined && data.lastEvent !== undefined) {
 
-                        if ( from < data.lastEvent){
-                            from = data.lastEvent + 1;
-                        }
-
                         if (data.events && data.events.length > 0) {
                             $scope.events = $scope.events.concat(data.events);
 
@@ -41,11 +37,8 @@ angular.module('cosmoUi')
                                 if ($scope.events[i].node !== undefined) {
                                     $scope.apps[_getNodeIndex($scope.events[i].node)].events.push($scope.events[i]);
                                 }
-
                             }
                         }
-
-                        $timeout( loadEvents, 3000 );
                     }
                 });
         }
