@@ -29,7 +29,7 @@ angular.module('cosmoUi')
                 valid: true,
                 messages: []
             };
-            var ipRegEx = new RegExp('^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$');
+            var ipRegEx = new RegExp('^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?).(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?).(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?).(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$');
             var portRegEx = new RegExp('[^0-9]');
 
             if ($scope.cosmoServer === undefined || $scope.cosmoServer.length === 0 || !ipRegEx.test($scope.cosmoServer)) {
