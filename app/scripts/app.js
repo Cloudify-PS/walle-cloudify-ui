@@ -2,6 +2,8 @@
 
 angular.module('cosmoUi', ['gsUiInfra', 'angularFileUpload', 'ngCookies'])
     .config(function ($routeProvider) {
+        var isSettingsExists = window.isSettingsExists();
+
         $routeProvider
             .when('/json', {
                 templateUrl: 'views/main.html',
@@ -41,7 +43,11 @@ angular.module('cosmoUi', ['gsUiInfra', 'angularFileUpload', 'ngCookies'])
             .when('/storage',{
                 templateUrl: 'views/plans.html'
             })
+            .when('/config', {
+                templateUrl: 'views/config.html',
+                controller: 'ConfigCtrl'
+            })
             .otherwise({
-                redirectTo: '/blueprints'
+                redirectTo: isSettingsExists ? '/blueprints' : '/config'
             });
     });

@@ -13,3 +13,4 @@ setup.sh
 app/dev
 conf/dev
 *.log
+settings.json

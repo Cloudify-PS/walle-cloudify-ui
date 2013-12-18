@@ -17,7 +17,7 @@ var express = require('express');
 var ajax = require("http");
 var app = express();
 var port = 9001;
-var jsyaml = require('js-yaml');
+var gsSettings = require("./backend/gsSettings");
 var conf = require("./backend/appConf");
 var rest = require('restler');
 var http = require('http');
@@ -30,6 +30,10 @@ log4js.configure({
 });
 var logger = log4js.getLogger('server');
 console.log(JSON.stringify(conf));
+
+if (conf.cloudifyLicense !== 'tempLicense') {
+    throw new Error('invalid license');
+}
 
 // app.use(express.favicon());
 app.use(express.cookieParser(/* 'some secret key to sign cookies' */ 'keyboardcat' ));
@@ -167,7 +171,7 @@ app.post('/backend/events', function(request, response, next) {
         hostname: conf.cosmoServer,
         port: conf.cosmoPort,
 
-        path: '/deployments/' + request.body.id + '/events?from=' + request.body.from,
+        path: '/deployments/' + request.body.id + '/events?from=' + request.body.from + '&count=4',
         method: 'GET'
     };
 
@@ -175,7 +179,6 @@ app.post('/backend/events', function(request, response, next) {
 });
 
 app.post('/backend/blueprints/execution', function(request, response) {
-    console.log(request);
     var requestData = {};
     requestData.request = request;
     requestData.response = response;
@@ -191,6 +194,20 @@ app.post('/backend/blueprints/execution', function(request, response) {
     };
 
     createRequest(requestData);
+});
+
+app.post('/backend/settings', function(request, response) {
+    gsSettings.write(request.body.settings);
+    conf.applyConfiguration(request.body.settings);
+});
+
+app.get('/backend/settings', function(request, response) {
+    response.send(gsSettings.read());
+});
+
+app.get('/backend/homepage', function(request, response) {
+    var fileExists = gsSettings.read() !== undefined;
+    response.send("function isSettingsExists(){return " + fileExists + ";}");
 });
 
 // our custom "verbose errors" setting

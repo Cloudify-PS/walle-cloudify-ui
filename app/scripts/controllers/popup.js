@@ -6,7 +6,7 @@ angular.module('cosmoUi')
         $scope.mainFileName = 'mezzanine-app/mezzanine_blueprint.yaml'; // just until cosmo team will resolve this issue.
         $scope.uploadEnabled = false;
         $scope.uploadInProcess = false;
-        $scope.selectedFile = "";
+        $scope.selectedFile = '';
 
         $scope.onFileSelect = function ($files) {
             $scope.selectedFile = $files[0];

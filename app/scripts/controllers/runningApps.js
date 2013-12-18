@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('cosmoUi')
-    .controller('RunningappsCtrl', function ($scope, RestService, $routeParams, $timeout) {
+    .controller('RunningappsCtrl', function ($scope, RestService, $routeParams) {
 
         var id = $routeParams.lastExecutedPlan;
         var from = 0;
@@ -55,7 +55,7 @@ angular.module('cosmoUi')
                 $scope.apps.push({
                     name: nodeName,
                     events: []
-                })
+                });
                 nodeIndex = $scope.apps.length - 1;
             }
 

@@ -71,12 +71,18 @@ var privateConfiguration = {
 
 
 var meConf = null;
-try{
+try {
     meConf = require("../conf/dev/meConf");
-}catch( e ) { console.log("meConf does not exist. ignoring.. " + e)}
+} catch( e ) {
+    console.log("meConf does not exist. ignoring.. " + e);
+}
 
-
-
+var gsSettings = null;
+try {
+    gsSettings = require("./gsSettings");
+} catch( e ) {
+    console.log("gsSettings does not exist. ignoring.. " + e);
+}
 
 var publicConfigurationInitialized = false;
 var privateConfigurationInitialized = false;
@@ -95,7 +101,6 @@ function getPublicConfiguration(){
     return publicConfiguration;
 }
 
-
 function getPrivateConfiguration(){
     if ( !privateConfigurationInitialized ) {
         privateConfigurationInitialized = true;
@@ -107,16 +112,22 @@ function getPrivateConfiguration(){
                 privateConfiguration[j] = pubConf[j];
             }
         }
+
         if ( meConf != null ){
-              for ( var i in meConf ){
-                  privateConfiguration[i] = meConf[i];
-              }
+            for ( var i in meConf ){
+              privateConfiguration[i] = meConf[i];
+            }
+        }
+
+        if (gsSettings !== null) {
+            var settings = gsSettings.read();
+            for ( var i in settings ){
+                privateConfiguration[i] = settings[i];
+            }
         }
     }
     return privateConfiguration;
-
 }
-
 
 exports.sendPublicConfiguration = function( req, res ){
     var name = req.param("name") || "conf";
@@ -124,6 +135,12 @@ exports.sendPublicConfiguration = function( req, res ){
     res.send( "window." + name + " = " + JSON.stringify(getPublicConfiguration()) + ";");
 };
 
+exports.applyConfiguration = function( req, res ){
+    var settings = req;
+    for ( var i in settings ){
+        exports[i] = settings[i];
+    }
+};
 
 var prConf = getPrivateConfiguration();
 if ( prConf != null ){
@@ -136,6 +153,16 @@ if ( prConf != null ){
     }
 }
 
+var prConf = getPrivateConfiguration();
+if ( prConf != null ){
+    for ( var i in prConf ){
+        if ( prConf[i] === undefined ){
+
+            throw new Error("undefined configuration [" + i + "]");
+        }
+        exports[i] = prConf[i];
+    }
+}
 
 return exports;
 

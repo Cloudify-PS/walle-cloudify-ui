@@ -74,7 +74,9 @@ angular.module('cosmoUi')
                         deferred.resolve(data);
                     }
 
-                    $timeout(function(){$rootScope.$apply(_internalLoadEvents())}, 3000);
+                    $timeout(function() {
+                        $rootScope.$apply(_internalLoadEvents());
+                    }, 3000);
                 });
             }
 
@@ -83,8 +85,24 @@ angular.module('cosmoUi')
             return deferred.promise;
         }
 
+        function _setConfiguration(data) {
+            var callParams = {
+                url: '/backend/settings',
+                method: 'POST',
+                data: {settings: {'cosmoServer': data.cosmoServer, 'cosmoPort': data.cosmoPort}}
+            };
+
+            return _load('settings', callParams);
+        }
+
+        function _getConfiguration() {
+            return _load('settings');
+        }
+
         this.loadBlueprints = _loadBlueprints;
         this.addBlueprint = _addBlueprint;
         this.executeBlueprint = _executeBlueprint;
         this.loadEvents = _loadEvents;
+        this.getConfiguration = _getConfiguration;
+        this.setConfiguration = _setConfiguration;
     });

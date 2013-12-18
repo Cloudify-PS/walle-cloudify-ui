@@ -31,7 +31,7 @@
           font-size: $COSMOUI_BLUEPRINT_DETAILS_BUTTON_FONT_SIZE;
           padding: $COSMOUI_BLUEPRINT_DETAILS_BUTTON_PADDING;
           color: $COSMOUI_BLUEPRINT_BUTTON_GROUP_BACKGROUND;
-          border:1px solid $COSMOUI_BLUEPRINT_BUTTON_GROUP_BORDER_COLOR;
+          border: $COSMOUI_BLUEPRINT_BUTTON_GROUP_BORDER_COLOR;
         }
 
         button:last-child{ border-bottom-right-radius: $RADIUS; border-top-right-radius: $RADIUS;}

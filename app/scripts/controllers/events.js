@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('cosmoUi')
-    .controller('EventsCtrl', function ($scope, RestService, $routeParams, $timeout) {
+    .controller('EventsCtrl', function ($scope, RestService, $routeParams) {
 
         var eventCSSMap = {
             'workflow_started': {text: 'Workflow started', icon: 'event-icon-workflow-started', class: 'event-text-green'},
@@ -29,7 +29,7 @@ angular.module('cosmoUi')
                 .then(function(data) {
                     if (data.id !== undefined && data.lastEvent !== undefined) {
 
-                       if (data.events && data.events.length > 0) {
+                        if (data.events && data.events.length > 0) {
                             $scope.events = $scope.events.concat(data.events);
 
                             for (var i = 0; i < $scope.events.length; i++) {
