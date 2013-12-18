@@ -171,7 +171,7 @@ app.post('/backend/events', function(request, response, next) {
         hostname: conf.cosmoServer,
         port: conf.cosmoPort,
 
-        path: '/deployments/' + request.body.id + '/events?from=' + request.body.from + '&count=4',
+        path: '/deployments/' + request.body.id + '/events?from=' + request.body.from,
         method: 'GET'
     };
 
