@@ -71,12 +71,11 @@ angular.module('cosmoUi')
                     if ( params.from < data.lastEvent){
                         params.from = data.lastEvent + 1;
 
-                        deferred.resolve(data);
+//                        deferred.resolve(data);
+                        deferred.notify(data);
                     }
 
-                    $timeout(function() {
-                        $rootScope.$apply(_internalLoadEvents());
-                    }, 3000);
+                    $timeout(_internalLoadEvents, 3000);
                 });
             }
 
