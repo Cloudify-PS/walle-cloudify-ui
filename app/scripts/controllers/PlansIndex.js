@@ -18,7 +18,10 @@ angular.module('cosmoUi')
         };
 
         $scope.loadBlueprints = function() {
-            $scope.plans = RestService.loadBlueprints();
+//            $scope.plans = RestService.loadBlueprints();
+            RestService.loadBlueprints().then(function(data) {
+                $scope.plans = data;
+            });
         };
 
         $scope.executePlan = function(plan) {

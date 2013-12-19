@@ -27,7 +27,7 @@ angular.module('cosmoUi')
 
         function loadEvents( ){
             RestService.loadEvents({ id : id, from: from })
-                .then(function(data) {
+                .then(null, null, function(data) {
                     if (data.id !== undefined && data.lastEvent !== undefined) {
 
                         if (data.events && data.events.length > 0) {
