@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('cosmoUi')
-    .service('RestService', function RestService($http, $timeout, $q, $rootScope) {
+    .service('RestService', function RestService($http, $timeout, $q) {
 
         function RestLoader() {
 
