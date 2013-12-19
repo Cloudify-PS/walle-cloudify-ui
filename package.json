@@ -2,7 +2,7 @@
   "name": "cosmo-ui",
   "version": "1.0.0",
   "bin" : {
-      "npm" : "./server.js "
+      "cosmo-ui" : "cosmoui.js"
   },
   "dependencies": {
     "karma-script-launcher": "~0.1.0",
