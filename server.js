@@ -25,7 +25,7 @@ var log4js = require('log4js');
 log4js.configure({
     appenders: [
         { type: 'console' },
-        { type: 'file', filename: 'logs/gsui.log', category: 'gsui' }
+        { type: 'file', filename: __dirname + '/logs/gsui.log', category: 'gsui' }
     ]
 });
 var logger = log4js.getLogger('server');
@@ -73,10 +73,10 @@ app.set('views', __dirname + '/views');
 app.set('view engine', 'jade');
 
 if (app.get('env') === 'development') {
-    app.use(express.static('.tmp'));
-    app.use(express.static('app'));
+    app.use(express.static(__dirname + '/.tmp'));
+    app.use(express.static(__dirname + '/app'));
 } else {
-    app.use(express.static('dist'));
+    app.use(express.static(__dirname + '/dist'));
 }
 
 function createRequest(requestData) {
