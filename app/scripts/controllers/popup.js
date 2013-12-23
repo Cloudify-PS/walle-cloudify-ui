@@ -3,7 +3,7 @@
 angular.module('cosmoUi')
     .controller('PopupCtrl', function ($scope) {
         var selectedFile = null;
-        $scope.mainFileName = 'mezzanine-app/mezzanine_blueprint.yaml'; // just until cosmo team will resolve this issue.
+        $scope.mainFileName = 'mezzanine_blueprint.yaml'; // just until cosmo team will resolve this issue.
         $scope.uploadEnabled = false;
         $scope.uploadInProcess = false;
         $scope.selectedFile = '';
