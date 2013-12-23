@@ -135,13 +135,12 @@ app.get('/backend/blueprints', function(request, response, next) {
 app.post('/backend/blueprints/add', function(request, response){
     var myFile = request.files.application_archive;
     var mainFileName = request.body.application_file;
-    var host = 'http://' + conf.cosmoServer + ':' + conf.cosmoPort + "/blueprints";
+    var host = 'http://' + conf.cosmoServer + ':' + conf.cosmoPort + "/blueprints?application_file_name=" + mainFileName;
 
     rest.post(host, {
         multipart: true,
         data: {
-            'application_archive': rest.file(myFile.path, myFile.name, myFile.size, null, 'application/gzip'),
-            'application_file': mainFileName
+            'application_archive': rest.file(myFile.path, myFile.name, myFile.size, null, 'application/gzip')
         }
     }).on('complete', function(data) {
         logger.debug('data: ' + JSON.stringify(data));
