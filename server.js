@@ -118,6 +118,8 @@ function createRequest(requestData) {
     req.end();
 }
 
+// cosmo REST APIs
+
 app.get('/backend/blueprints', function(request, response, next) {
     var requestData = {};
     requestData.request = request;
@@ -134,14 +136,11 @@ app.get('/backend/blueprints', function(request, response, next) {
 
 app.post('/backend/blueprints/add', function(request, response){
     var myFile = request.files.application_archive;
-    var mainFileName = request.body.application_file;
-    var host = 'http://' + conf.cosmoServer + ':' + conf.cosmoPort + "/blueprints?application_file_name=" + mainFileName;
+    var applicationFileName = request.body.application_file_name;
+    var host = 'http://' + conf.cosmoServer + ':' + conf.cosmoPort + "/blueprints?application_file_name=" + applicationFileName;
 
     rest.post(host, {
-        multipart: true,
-        data: {
-            'application_archive': rest.file(myFile.path, myFile.name, myFile.size, null, 'application/gzip')
-        }
+        data: rest.file(myFile.path, myFile.name, myFile.size, null, 'application/gzip')
     }).on('complete', function(data) {
         logger.debug('data: ' + JSON.stringify(data));
         response.send(200);
@@ -162,29 +161,56 @@ app.get('/backend/blueprints/get', function(request, response) {
     createRequest(requestData);
 });
 
-app.post('/backend/events', function(request, response, next) {
+app.get('/backend/blueprints/validate', function(request, response) {
     var requestData = {};
     requestData.request = request;
     requestData.response = response;
     requestData.options = {
         hostname: conf.cosmoServer,
         port: conf.cosmoPort,
-
-        path: '/deployments/' + request.body.id + '/events?from=' + request.body.from,
+        path: '/blueprints/' + request.query.id + '/validate',
         method: 'GET'
     };
 
     createRequest(requestData);
 });
 
-app.post('/backend/blueprints/execution', function(request, response) {
+app.get('/backend/executions', function(request, response) {
     var requestData = {};
     requestData.request = request;
     requestData.response = response;
     requestData.options = {
         hostname: conf.cosmoServer,
         port: conf.cosmoPort,
-        path: '/blueprints/' + request.body.planId + '/executions',
+        path: '/executions/' + request.query.executionId,
+        method: 'GET'
+    };
+
+    createRequest(requestData);
+});
+
+app.get('/backend/deployments', function(request, response) {
+    var requestData = {};
+    requestData.request = request;
+    requestData.response = response;
+    requestData.options = {
+        hostname: conf.cosmoServer,
+        port: conf.cosmoPort,
+        path: '/deployments/',
+        method: 'GET'
+    };
+
+    createRequest(requestData);
+});
+
+app.post('/backend/deployments/create', function(request, response) {
+    var requestData = {};
+    requestData.request = request;
+    requestData.response = response;
+    requestData.options = {
+        hostname: conf.cosmoServer,
+        port: conf.cosmoPort,
+        path: '/deployments',
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -194,6 +220,69 @@ app.post('/backend/blueprints/execution', function(request, response) {
 
     createRequest(requestData);
 });
+
+app.get('/backend/deployments/get', function(request, response) {
+    var requestData = {};
+    requestData.request = request;
+    requestData.response = response;
+    requestData.options = {
+        hostname: conf.cosmoServer,
+        port: conf.cosmoPort,
+        path: '/executions/' + request.query.deploymentId,
+        method: 'GET'
+    };
+
+    createRequest(requestData);
+});
+
+app.get('/backend/deployments/executions/get', function(request, response) {
+    var requestData = {};
+    requestData.request = request;
+    requestData.response = response;
+    requestData.options = {
+        hostname: conf.cosmoServer,
+        port: conf.cosmoPort,
+        path: '/deployments/' + request.body.deploymentId + 'executions',
+        method: 'GET'
+    };
+
+    createRequest(requestData);
+});
+
+app.post('/backend/deployments/execute', function(request, response) {
+    var requestData = {};
+    requestData.request = request;
+    requestData.response = response;
+    requestData.options = {
+        hostname: conf.cosmoServer,
+        port: conf.cosmoPort,
+        path: '/deployments/' + request.body.workflowId + '/executions',
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Content-Length': JSON.stringify(requestData.request.body).length
+        }
+    };
+
+    createRequest(requestData);
+});
+
+app.get('/backend/events', function(request, response, next) {
+    var requestData = {};
+    requestData.request = request;
+    requestData.response = response;
+    requestData.options = {
+        hostname: conf.cosmoServer,
+        port: conf.cosmoPort,
+        path: '/deployments/' + request.body.deploymentId + '/events?from=' + request.body.from,
+        method: 'GET'
+    };
+
+    createRequest(requestData);
+});
+
+
+// ui settings REST APIs
 
 app.post('/backend/settings', function(request, response) {
     gsSettings.write(request.body.settings);

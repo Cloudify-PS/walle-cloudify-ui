@@ -21,7 +21,7 @@ angular.module('cosmoUi')
             }
 
             var planForm = new FormData();
-            planForm.append('application_file', $scope.mainFileName);
+            planForm.append('application_file_name', $scope.mainFileName);
             planForm.append('application_archive', $scope.selectedFile);
             $scope.uploadInProcess = true;
 
