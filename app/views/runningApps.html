@@ -1,6 +1,16 @@
 <div class="cosmo-layout" id="running-apps">
+    <div events-widget id="plans-index-events-widget"></div>
+
     <div class="content-header">
         <div class="breadcrumbs">Running apps</div>
+    </div>
+
+    <div class="toggles-bar" id="plans-index-toggle-bar">
+        <div toggle-switch text="Network & Security" value="{{filters.network}}"></div>
+        <div toggle-switch text="Compute & Storage" value="{{filters.compute}}"></div>
+        <div toggle-switch text="Middleware" value="{{filters.middleware}}"></div>
+        <div toggle-switch text="Modules" value="{{filters.modules}}"></div>
+        <div toggle-switch text="Connections" value="{{filters.connections}}"></div>
     </div>
 
     <table>
