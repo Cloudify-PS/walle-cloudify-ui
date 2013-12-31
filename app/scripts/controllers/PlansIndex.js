@@ -5,13 +5,6 @@ angular.module('cosmoUi')
         $scope.isAddDialogVisible = false;
         $scope.selectedPlanId = null;
         $scope.lastExecutedPlan = null;
-        $scope.filters = {
-            'connections': 'on',
-            'modules': 'on',
-            'middleware': 'off',
-            'compute': 'on',
-            'network': 'on'
-        };
         var _playingPlanId = $cookieStore.get('lastExecutedPlan');
 
         $scope.redirectTo = function (plan) {

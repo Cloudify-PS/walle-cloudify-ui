@@ -24,6 +24,13 @@ angular.module('cosmoUi')
         $scope.events = [];
         $scope.apps = [];
         $scope.selectedApp = '';
+        $scope.filters = {
+            'connections': 'on',
+            'modules': 'on',
+            'middleware': 'off',
+            'compute': 'on',
+            'network': 'on'
+        };
 
         function loadEvents( ){
             RestService.loadEvents({ id : id, from: from })
