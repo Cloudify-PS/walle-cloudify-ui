@@ -6,9 +6,9 @@ angular.module('cosmoUi')
             template: '<div class="toggle-switch">' +
                     '<div id="toggle-switch-text">{{text}}</div>' +
                     '<div id="toggle-switch-button" class="{{value}}" ng-click="toggleButton()">' +
-                        '<div id="toggle-switch-button-text-on" class="toggle-switch-button-text">ON</div>' +
+                        '<div id="toggle-switch-button-text-on" class="toggle-switch-button-text" ng-show="isToggleOn()">ON</div>' +
                         '<div id="toggle-switch-button-circle" class="{{value}}"></div>' +
-                        '<div id="toggle-switch-button-text-off" class="toggle-switch-button-text">OFF</div>' +
+                        '<div id="toggle-switch-button-text-off" class="toggle-switch-button-text" ng-show="!isToggleOn()">OFF</div>' +
                     '</div>' +
                 '</div>',
             restrict: 'EA',
@@ -22,23 +22,9 @@ angular.module('cosmoUi')
                     scope.value = scope.value === 'on' ? 'off' : 'on';
                 };
 
-                scope.$watch('value', function(newVal) {
-                    if (newVal === 'off') {
-                        _setOff();
-                    } else {
-                        _setOn();
-                    }
-                });
-
-                function _setOn() {
-                    element.find('#toggle-switch-button-text-off').hide();
-                    element.find('#toggle-switch-button-text-on').show();
-                }
-
-                function _setOff() {
-                    element.find('#toggle-switch-button-text-on').hide();
-                    element.find('#toggle-switch-button-text-off').show();
-                }
+                scope.isToggleOn = function() {
+                    return scope.value === true;
+                };
             }
         };
     });
