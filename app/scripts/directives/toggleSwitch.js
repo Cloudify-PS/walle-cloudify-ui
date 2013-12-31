@@ -16,7 +16,7 @@ angular.module('cosmoUi')
                 text: '@',
                 value: '@'
             },
-            link: function (scope, element) {
+            link: function (scope) {
 
                 scope.toggleButton = function() {
                     scope.value = scope.value === 'on' ? 'off' : 'on';
