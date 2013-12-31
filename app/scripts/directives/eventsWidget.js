@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('cosmoUi')
-    .directive('eventsWidget', function (RestService) {
+    .directive('eventsWidget', function () {
         return {
             template: '<div class="events-widget">' +
                 '<div id="events-widget-closed-tab" ng-show="!isOpen()" ng-click="toggleWidget()">' +
@@ -21,6 +21,7 @@ angular.module('cosmoUi')
                 '</div>',
             restrict: 'EA',
             link: function postLink(scope) {
+
                 scope.widgetOpen = false;
                 scope.events = [1, 2, 3, 4, 5];
 
@@ -32,25 +33,25 @@ angular.module('cosmoUi')
                     scope.widgetOpen = !scope.widgetOpen;
                 };
 
-                function loadEvents( ){
-                    RestService.loadEvents({ id : id, from: from })
-                        .then(null, null, function(data) {
-                            if (data.id !== undefined && data.lastEvent !== undefined) {
-
-                                if (data.events && data.events.length > 0) {
-                                    $scope.events = $scope.events.concat(data.events);
-
-                                    for (var i = 0; i < $scope.events.length && i < 5; i++) {
-                                        if (typeof($scope.events[0]) === 'string') {    // walkaround if the events returned as strings and not JSONs
-                                            $scope.events[i] = JSON.parse($scope.events[i]);
-                                        }
-                                    }
-                                }
-                            }
-                        });
-                }
-
-//                loadEvents();
+//                function loadEvents( ){
+//                    RestService.loadEvents({ id : id, from: from })
+//                        .then(null, null, function(data) {
+//                            if (data.id !== undefined && data.lastEvent !== undefined) {
+//
+//                                if (data.events && data.events.length > 0) {
+//                                    $scope.events = $scope.events.concat(data.events);
+//
+//                                    for (var i = 0; i < $scope.events.length && i < 5; i++) {
+//                                        if (typeof($scope.events[0]) === 'string') {    // walkaround if the events returned as strings and not JSONs
+//                                            $scope.events[i] = JSON.parse($scope.events[i]);
+//                                        }
+//                                    }
+//                                }
+//                            }
+//                        });
+//                }
+//
+////                loadEvents();
             }
         };
     });
