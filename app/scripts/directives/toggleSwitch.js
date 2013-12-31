@@ -13,8 +13,8 @@ angular.module('cosmoUi')
                 '</div>',
             restrict: 'EA',
             scope: {
-               text: '@',
-               value: '@'
+                text: '@',
+                value: '@'
             },
             link: function (scope, element) {
 
