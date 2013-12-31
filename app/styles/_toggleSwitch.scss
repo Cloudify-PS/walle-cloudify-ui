@@ -1,33 +1,33 @@
 .toggle-switch {
   float: right;
   height: 20px;
-  margin-right: 10px;
+  margin-right: 14px;
 
   #toggle-switch-text {
     float: left;
     color: #4b6c8b;
-    font-size: 14px;
+    font-size: 16px;
   }
 
   #toggle-switch-button {
     float: left;
     border: 1px solid #cadbec;
-    border-radius: 10px;
-    width: 45px;
-    height: 20px;
+    border-radius: 15px;
+    width: 55px;
+    height: 25px;
     margin-left: 5px;
     cursor: pointer;
 
     .toggle-switch-button-text {
       float: left;
-      font-size: 12px;
+      font-size: 15px;
       margin: 1px;
     }
 
     #toggle-switch-button-circle {
       background: #29aaee;
-      width: 16px;
-      height: 16px;
+      width: 20px;
+      height: 20px;
       border-radius: 10px;
       margin: 1px;
     }
