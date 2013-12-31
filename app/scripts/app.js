@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('cosmoUi', ['gsUiInfra', 'angularFileUpload', 'ngCookies', 'ngRoute'])
+angular.module('cosmoUi', ['gsUiInfra', 'angularFileUpload', 'ngCookies', 'ngRoute','ngSanitize'])
     .config(function ($routeProvider) {
         var isSettingsExists = window.isSettingsExists();
 

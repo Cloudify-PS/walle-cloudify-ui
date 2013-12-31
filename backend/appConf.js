@@ -46,6 +46,7 @@ var publicConfiguration = {
 var privateConfiguration = {
     cosmoServer: undefined,
     cosmoPort: 8100,
+    cloudifyLicense:"tempLicense",
     log4js:{
         appenders: [
             { "type":"console" },
@@ -147,22 +148,13 @@ if ( prConf != null ){
     for ( var i in prConf ){
         if ( prConf[i] === undefined ){
 
-            throw new Error("undefined configuration [" + i + "]");
+//            throw new Error("undefined configuration [" + i + "]");
         }
         exports[i] = prConf[i];
     }
 }
 
-var prConf = getPrivateConfiguration();
-if ( prConf != null ){
-    for ( var i in prConf ){
-        if ( prConf[i] === undefined ){
 
-            throw new Error("undefined configuration [" + i + "]");
-        }
-        exports[i] = prConf[i];
-    }
-}
 
 return exports;
 

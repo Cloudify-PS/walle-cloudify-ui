@@ -268,11 +268,25 @@ module.exports = function (grunt) {
                         src: [
                             '*.{ico,png,txt}',
                             '.htaccess',
-                            'bower_components/**/*',
+                            'bower_components/**/*.{ttf,svg,gif,png}',
                             'images/{,*/}*.{gif,webp,svg}',
                             'styles/fonts/*',
-                            '!bower_components/**/node_modules/**/*',
-                            '!bower_components/**/*.{css,scss}'
+
+                        ]
+                    },
+                    {
+                        expand: true,
+                        dot: true,
+                        cwd: '.',
+                        dest: '<%= yeoman.dist %>',
+                        src: [
+                            '.npmignore',
+                            'package.json',
+                            'server.js',
+                            'backend/**/*',
+                            'cosmoui.js',
+                            'cosmoui.1',
+                            'logs/gsui.log'
 
                         ]
                     },

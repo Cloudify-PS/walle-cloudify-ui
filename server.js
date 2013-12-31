@@ -13,12 +13,19 @@
 /*
  * Express Dependencies
  */
+
+function isLocalhost(){
+    return process.env.GS_UI_NODE_ENV == "localhost";
+}
+
 var express = require('express');
 var ajax = require("http");
 var app = express();
 var port = 9001;
 var gsSettings = require("./backend/gsSettings");
+
 var conf = require("./backend/appConf");
+
 var rest = require('restler');
 var http = require('http');
 var log4js = require('log4js');
@@ -69,14 +76,14 @@ if (process.env.NODE_ENV === 'production' || process.argv[2] === 'production') {
 /*
  * Config
  */
-app.set('views', __dirname + '/views');
-app.set('view engine', 'jade');
+//app.set('views', __dirname + '/views');
+//app.set('view engine', 'jade');
 
 if (app.get('env') === 'development') {
     app.use(express.static(__dirname + '/.tmp'));
     app.use(express.static(__dirname + '/app'));
 } else {
-    app.use(express.static(__dirname + '/dist'));
+    app.use(express.static(__dirname));
 }
 
 function createRequest(requestData) {
@@ -119,6 +126,8 @@ function createRequest(requestData) {
 }
 
 // cosmo REST APIs
+
+
 
 app.get('/backend/blueprints', function(request, response, next) {
     var requestData = {};
@@ -324,7 +333,7 @@ if (app.get('env') === 'development') {
     app.use(express.static('.tmp'));
     app.use(express.static('app'));
 } else {
-    app.use(express.static('dist'));
+    app.use(express.static('.'));
 }
 
 // Since this is the last non-error-handling
@@ -426,7 +435,9 @@ app.get('/500', function(req, res, next){
     next(new Error('keyboard cat!'));
 });
 
+app.get('/', function(req, res, next){
 
+});
 
 
 app.listen(port);
