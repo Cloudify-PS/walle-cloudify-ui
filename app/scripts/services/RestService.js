@@ -39,14 +39,24 @@ angular.module('cosmoUi')
             _load('blueprints/add', params);
         }
 
-        function _executeBlueprint(params) {
+        function _deployBlueprint(params) {
             var callParams = {
-                url: '/backend/blueprints/execution',
+                url: '/backend/deployments/create',
                 method: 'POST',
-                data: {'planId': params, 'workflowId': 'install'}
+                data: {'blueprintId': params}
             };
 
-            return _load('blueprints/execution', callParams);
+            return _load('deployments/create', callParams);
+        }
+
+        function _executeBlueprint(params) {
+            var callParams = {
+                url: '/backend/deployments/execute',
+                method: 'POST',
+                data: {'deploymentId': params, 'workflowId': 'install'}
+            };
+
+            return _load('deployments/execute', callParams);
         }
 
         /**
@@ -63,7 +73,7 @@ angular.module('cosmoUi')
 
                 var callParams = {
                     url: '/backend/events',
-                    method: 'POST',
+                    method: 'GET',
                     data: params
                 };
 
@@ -84,6 +94,10 @@ angular.module('cosmoUi')
             return deferred.promise;
         }
 
+        function _loadDeployments() {
+            return _load('deployments');
+        }
+
         function _setConfiguration(data) {
             var callParams = {
                 url: '/backend/settings',
@@ -100,8 +114,10 @@ angular.module('cosmoUi')
 
         this.loadBlueprints = _loadBlueprints;
         this.addBlueprint = _addBlueprint;
+        this.deployBlueprint = _deployBlueprint;
         this.executeBlueprint = _executeBlueprint;
         this.loadEvents = _loadEvents;
+        this.loadDeployments = _loadDeployments;
         this.getConfiguration = _getConfiguration;
         this.setConfiguration = _setConfiguration;
     });

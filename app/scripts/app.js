@@ -10,16 +10,16 @@ angular.module('cosmoUi', ['gsUiInfra', 'angularFileUpload', 'ngCookies', 'ngRou
                 controller: 'MainCtrl'
             })
             .when('/blueprints', {
-                templateUrl: 'views/plansIndex.html',
-                controller: 'PlansIndexCtrl'
+                templateUrl: 'views/blueprintsIndex.html',
+                controller: 'BlueprintsIndexCtrl'
             })
             .when('/blueprint',{
                 templateUrl: 'views/plans.html',
                 controller: 'PlansCtrl'
             })
-            .when('/running-apps',{
-                templateUrl: 'views/runningApps.html',
-                controller: 'RunningappsCtrl'
+            .when('/deployments',{
+                templateUrl: 'views/deployments.html',
+                controller: 'DeploymentsCtrl'
             })
             .when('/events',{
                 templateUrl: 'views/events.html',

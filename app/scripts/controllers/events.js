@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('cosmoUi')
-    .controller('EventsCtrl', function ($scope, RestService, $routeParams) {
+    .controller('EventsCtrl', function ($scope, RestService, $cookieStore /*$routeParams*/) {
 
         var eventCSSMap = {
             'workflow_started': {text: 'Workflow started', icon: 'event-icon-workflow-started', class: 'event-text-green'},
@@ -21,11 +21,11 @@ angular.module('cosmoUi')
 
         $scope.events = [];
 
-        var id = $routeParams.lastExecutedPlan;
+        var id = $cookieStore.get('deploymentId');//$routeParams.deploymentId;
         var from = 0;
 
         function loadEvents( ){
-            RestService.loadEvents({ id : id, from: from })
+            RestService.loadEvents({ deploymentId : id, from: from })
                 .then(null, null, function(data) {
                     if (data.id !== undefined && data.lastEvent !== undefined) {
 

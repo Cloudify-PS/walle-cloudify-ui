@@ -205,7 +205,7 @@ app.get('/backend/deployments', function(request, response) {
     requestData.options = {
         hostname: conf.cosmoServer,
         port: conf.cosmoPort,
-        path: '/deployments/',
+        path: '/deployments',
         method: 'GET'
     };
 
@@ -265,7 +265,7 @@ app.post('/backend/deployments/execute', function(request, response) {
     requestData.options = {
         hostname: conf.cosmoServer,
         port: conf.cosmoPort,
-        path: '/deployments/' + request.body.workflowId + '/executions',
+        path: '/deployments/' + request.body.deploymentId + '/executions',
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',

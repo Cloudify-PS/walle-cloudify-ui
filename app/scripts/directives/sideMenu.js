@@ -24,8 +24,8 @@ angular.module('cosmoUi')
             link:function( scope ){
                 scope.items = [
                     { 'route' : '#blueprints' ,                                     'icon' : 'plans' ,                'label':'Blueprints'},
-                    { 'route' : '#running-apps?lastExecutedPlan=mezzanine' ,        'icon' : 'running-apps' ,         'label':'Running Apps'},
-                    { 'route' : '#events?lastExecutedPlan=mezzanine' ,              'icon' : 'events' ,               'label':'Events'},
+                    { 'route' : '#deployments' ,                                    'icon' : 'deployments' ,          'label':'Deployments'},
+                    { 'route' : '#events' ,                                         'icon' : 'events' ,               'label':'Events'},
                     { 'route' : '#monitoring' ,                                     'icon' : 'monitoring' ,           'label':'Monitoring'},
                     { 'route' : '#logs' ,                                           'icon' : 'logs' ,                 'label':'Logs'},
                     { 'route' : '#hosts' ,                                          'icon' : 'hosts' ,                'label':'Hosts'},
