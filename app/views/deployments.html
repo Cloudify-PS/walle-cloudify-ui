@@ -19,9 +19,9 @@
 
                 <table>
                     <tr>
-                        <td ng-click="showDeployments(blueprint.name)">{{blueprint.name}}</td>
+                        <td ng-click="showDeployments(blueprint.name)">{{blueprint.name}} ({{blueprint.id}})</td>
                     </tr>
-                    <tr ng-show="selectedApp == blueprint.name">
+                    <tr ng-show="selectedBlueprint == blueprint.name">
                         <td>
                             <table class="table table-striped">
                                 <tr>

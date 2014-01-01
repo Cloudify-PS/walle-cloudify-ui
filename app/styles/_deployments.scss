@@ -66,29 +66,10 @@
                 vertical-align: middle;
                 height: 60px;
                 color: #333;
-
-                &.type {width:100px;}
-                &.icon { width:60px;}
-                &.node, &.task, &.workflow { width: 200px;}
-                &.date { padding-right:30px;}
-
-                &.event-text-green {
-                  color: $COSMOUI_EVENTS_LIST_TEXT_SUCCESS;
-                }
-
-                &.event-text-red {
-                  color: $COSMOUI_EVENTS_LIST_TEXT_FAILED;
-                }
-
-                &.event-icon-workflow-started {background: url(/images/events/WorkflowStarted.png) no-repeat center center;}
-                &.event-icon-workflow-end-successfully {background: url(/images/events/WorkflowSuccessfully.png) no-repeat center center;}
-                &.event-icon-workflow-failed {background: url(/images/events/WorkflowFailed.png) no-repeat center center;}
-                &.event-icon-task-started {background: url(/images/events/TaskStarted.png) no-repeat center center;}
-                &.event-icon-task-failed {background: url(/images/events/TaskFailed.png) no-repeat center center;}
-                &.event-icon-task-sent {background: url(/images/events/TaskSent.png) no-repeat center center;}
-                &.event-icon-task-success {background: url(/images/events/TaskSuccessfully.png) no-repeat center center;}
-                &.event-icon-policy-success {background: url(/images/events/PolicySuccessfully.png) no-repeat center center;}
-                &.event-icon-policy-failed {background: url(/images/events/PolicyFailed.png) no-repeat center center;}
+              }
+              &:not(:first-child) td.actions{
+                font-size:$COSMOUI_LIST_HOVER_ACTION_FONT_SIZE;
+                letter-spacing: $COSMOUI_LIST_HOVER_ACTION_LETTER_SPACING;
               }
             }
           }
