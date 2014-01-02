@@ -6,7 +6,7 @@ exports.read = function( req, res ) {
     var fileJSON;
     try {
         fileJSON = require('./settings.json');
-    } catch (e) { return settingsObj;}
+    } catch (e) { return !!settingsObj ? settingsObj : fileJSON;}
 
     return fileJSON;
 };
