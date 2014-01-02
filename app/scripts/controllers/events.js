@@ -24,7 +24,7 @@ angular.module('cosmoUi')
         var id = $cookieStore.get('deploymentId');//$routeParams.deploymentId;
         var from = 0;
 
-        function loadEvents( ){
+        function loadEvents(){
             RestService.loadEvents({ deploymentId : id, from: from })
                 .then(null, null, function(data) {
                     if (data.id !== undefined && data.lastEvent !== undefined) {

@@ -73,7 +73,7 @@ angular.module('cosmoUi')
 
                 var callParams = {
                     url: '/backend/events',
-                    method: 'GET',
+                    method: 'POST',
                     data: params
                 };
 
@@ -81,7 +81,6 @@ angular.module('cosmoUi')
                     if ( params.from < data.lastEvent){
                         params.from = data.lastEvent + 1;
 
-//                        deferred.resolve(data);
                         deferred.notify(data);
                     }
 

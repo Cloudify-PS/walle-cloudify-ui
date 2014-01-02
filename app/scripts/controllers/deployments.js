@@ -13,7 +13,21 @@ angular.module('cosmoUi')
 //            'network': 'on'
 //        };
 
-        function loadDeployments(){
+        $scope.showDeployments = function(blueprintName) {
+            if (blueprintName === $scope.selectedBlueprint) {
+                $scope.selectedBlueprint = '';
+            } else {
+                $scope.selectedBlueprint = blueprintName;
+            }
+        };
+
+        $scope.executeDeployment = function(deployment) {
+            RestService.executeBlueprint(deployment.id);
+            $cookieStore.put('deploymentId', deployment.id);
+        };
+
+
+        function _loadDeployments(){
             RestService.loadDeployments()
                 .then(function(data) {
                     for (var i = 0; i < data.length; i++) {
@@ -33,19 +47,6 @@ angular.module('cosmoUi')
             return blueprintIndex;
         }
 
-        $scope.showDeployments = function(blueprintName) {
-            if (blueprintName === $scope.selectedBlueprint) {
-                $scope.selectedBlueprint = '';
-            } else {
-                $scope.selectedBlueprint = blueprintName;
-            }
-        };
-
-        $scope.executeDeployment = function(deployment) {
-            RestService.executeBlueprint(deployment.id);
-            $cookieStore.put('deploymentId', deployment.id);
-        };
-
-        loadDeployments();
+        _loadDeployments();
 
     });

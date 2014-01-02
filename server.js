@@ -276,7 +276,7 @@ app.post('/backend/deployments/execute', function(request, response) {
     createRequest(requestData);
 });
 
-app.get('/backend/events', function(request, response, next) {
+app.post('/backend/events', function(request, response, next) {
     var requestData = {};
     requestData.request = request;
     requestData.response = response;
