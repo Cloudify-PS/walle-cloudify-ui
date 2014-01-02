@@ -1,5 +1,5 @@
 <div class="cosmo-layout" id="deployments">
-    <!--<div events-widget id="plans-index-events-widget" events="{{deployment.events}}"></div>-->
+    <div events-widget id="plans-index-events-widget" events="{{events}}"></div>
 
     <div class="content-header">
         <div class="breadcrumbs">Deployments</div>
@@ -34,7 +34,7 @@
                                     <td class="id">{{deployment.id}}</td>
                                     <td class="create">{{deployment.createdAt}}</td>
                                     <td class="description">{{deployment.updatedAt}}</td>
-                                    <td class="actions"><i class="fa  fa-play-circle-o" ng-click="executeDeployment(deployment)"></i></td>
+                                    <td class="actions"><i class="fa  fa-play-circle-o" ng-click="executeDeployment(deployment)" ng-class="{deploymentExecute: isExecuting(deployment.id)}"></i></td>
                                 </tr>
                             </table>
                         </td>

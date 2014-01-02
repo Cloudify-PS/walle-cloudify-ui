@@ -11,7 +11,11 @@
   #plans-index-events-widget {
     position: absolute;
     right: 0px;
-    top: 60px;
+    top: 55px;
+  }
+
+  .deploymentExecute {
+    color: $COSMOUI_DEPLOYMENT_EXECUTE_COLOR;
   }
 
   table {

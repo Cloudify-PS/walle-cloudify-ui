@@ -4,6 +4,7 @@ angular.module('cosmoUi')
     .controller('EventsCtrl', function ($scope, RestService, $cookieStore /*$routeParams*/) {
 
         var eventCSSMap = {
+            'workflow_received': {text: 'Workflow received', icon: 'event-icon-workflow-started', class: 'event-text-green'},
             'workflow_started': {text: 'Workflow started', icon: 'event-icon-workflow-started', class: 'event-text-green'},
             'workflow_initializing_policies': {text: 'Workflow initializing policies', icon: 'event-icon-workflow-started', class: 'event-text-green'},
             'workflow_initializing_node': {text: 'Workflow initializing node', icon: 'event-icon-workflow-started', class: 'event-text-green'},
@@ -21,10 +22,10 @@ angular.module('cosmoUi')
 
         $scope.events = [];
 
-        var id = $cookieStore.get('deploymentId');//$routeParams.deploymentId;
+        var id = $cookieStore.get('deploymentId');
         var from = 0;
 
-        function loadEvents(){
+        function _loadEvents(){
             RestService.loadEvents({ deploymentId : id, from: from })
                 .then(null, null, function(data) {
                     if (data.id !== undefined && data.lastEvent !== undefined) {
@@ -46,7 +47,7 @@ angular.module('cosmoUi')
             var eventMapping = getEventMapping(event);
             if ( !!eventMapping && eventCSSMap.hasOwnProperty(eventMapping) ){
                 return eventCSSMap[eventMapping][field];
-            }else{
+            } else {
                 console.log([event, 'does not have field', field]);
                 return '';
             }
@@ -90,5 +91,5 @@ angular.module('cosmoUi')
             return eventMap !== undefined ? eventMap : event.type;
         }
 
-        loadEvents();
+        _loadEvents();
     });
