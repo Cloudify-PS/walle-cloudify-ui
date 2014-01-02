@@ -14,16 +14,59 @@ angular.module('cosmoUi')
                     '</div>' +
                     '<table id="events-widget-events-list">' +
                         '<tr ng-repeat="event in events">' +
-                            '<td>{{event}}</td>' +
+                            '<td>' +
+                                '<div id="event-icon"></div>' +
+                                '<div id="event-type">{{event.type}}</div>' +
+                                '<div id="event-workflow">{{event.workflow}}</div>' +
+                            '</td>' +
                         '</tr>' +
                     '</table>' +
                 '</div>' +
                 '</div>',
             restrict: 'EA',
+            scope: {
+                events: '@'
+            },
             link: function postLink(scope) {
 
                 scope.widgetOpen = false;
-                scope.events = [1, 2, 3, 4, 5];
+                scope.events = [
+                    {
+                        icon: '',
+                        type: '1',
+                        node: '1',
+                        task: '1',
+                        workflow: '1'
+                    },
+                    {
+                        icon: '',
+                        type: '2',
+                        node: '2',
+                        task: '2',
+                        workflow: '2'
+                    },
+                    {
+                        icon: '',
+                        type: '3',
+                        node: '3',
+                        task: '3',
+                        workflow: '3'
+                    },
+                    {
+                        icon: '',
+                        type: '4',
+                        node: '4',
+                        task: '4',
+                        workflow: '4'
+                    },
+                    {
+                        icon: '',
+                        type: '5',
+                        node: '5',
+                        task: '5',
+                        workflow: '5'
+                    }
+                ];
 
                 scope.isOpen = function() {
                     return scope.widgetOpen;
@@ -32,26 +75,6 @@ angular.module('cosmoUi')
                 scope.toggleWidget = function() {
                     scope.widgetOpen = !scope.widgetOpen;
                 };
-
-//                function loadEvents( ){
-//                    RestService.loadEvents({ id : id, from: from })
-//                        .then(null, null, function(data) {
-//                            if (data.id !== undefined && data.lastEvent !== undefined) {
-//
-//                                if (data.events && data.events.length > 0) {
-//                                    $scope.events = $scope.events.concat(data.events);
-//
-//                                    for (var i = 0; i < $scope.events.length && i < 5; i++) {
-//                                        if (typeof($scope.events[0]) === 'string') {    // walkaround if the events returned as strings and not JSONs
-//                                            $scope.events[i] = JSON.parse($scope.events[i]);
-//                                        }
-//                                    }
-//                                }
-//                            }
-//                        });
-//                }
-//
-////                loadEvents();
             }
         };
     });
