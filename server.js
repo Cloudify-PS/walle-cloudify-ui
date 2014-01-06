@@ -149,7 +149,12 @@ app.post('/backend/blueprints/add', function(request, response){
     var host = 'http://' + conf.cosmoServer + ':' + conf.cosmoPort + "/blueprints?application_file_name=" + applicationFileName;
 
     rest.post(host, {
-        data: rest.file(myFile.path, myFile.name, myFile.size, null, 'application/gzip')
+        data: rest.file(myFile.path, myFile.name, myFile.size, null, 'application/gzip'),
+        headers: {
+            'Transfer-Encoding': 'chunked',
+            'content-type': 'application/octet-stream',
+            'Content-Encoding': 'gzip'
+        }
     }).on('complete', function(data) {
         logger.debug('data: ' + JSON.stringify(data));
         response.send(200);
