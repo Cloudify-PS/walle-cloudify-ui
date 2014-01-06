@@ -23,7 +23,7 @@ angular.module('cosmoUi')
                 };
 
                 scope.isToggleOn = function() {
-                    return scope.value === true;
+                    return scope.value === 'on';
                 };
             }
         };

@@ -1,22 +1,20 @@
 <div class="cosmo-layout" id="deployment">
-
+    <div events-widget id="plans-index-events-widget" events="{{events}}"></div>
     <div id="deployment-header">
+        <div class="header-right">
+            <div id="appStatus"></div>
+        </div>
         <div class="header-left">
             <div class="content-header">
                 <div class="breadcrumbs">{{deployment.id}}</div>
             </div>
+            <div class="toggles-bar" id="plans-index-toggle-bar">
+                <div toggle-switch text="Network & Security" value="{{filters.network}}"></div>
+                <div toggle-switch text="Compute & Storage" value="{{filters.compute}}"></div>
+                <div toggle-switch text="Middleware" value="{{filters.middleware}}"></div>
+                <div toggle-switch text="Modules" value="{{filters.modules}}"></div>
+                <div toggle-switch text="Connections" value="{{filters.connections}}"></div>
+            </div>
         </div>
-        <div class="header-right">
-            <div id="appStatus"></div>
-            <div events-widget id="plans-index-events-widget" events="{{events}}"></div>
-        </div>
-    </div>
-
-    <div class="toggles-bar" id="plans-index-toggle-bar">
-        <div toggle-switch text="Network & Security" value="{{filters.network}}"></div>
-        <div toggle-switch text="Compute & Storage" value="{{filters.compute}}"></div>
-        <div toggle-switch text="Middleware" value="{{filters.middleware}}"></div>
-        <div toggle-switch text="Modules" value="{{filters.modules}}"></div>
-        <div toggle-switch text="Connections" value="{{filters.connections}}"></div>
     </div>
 </div>
