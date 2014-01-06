@@ -28,11 +28,16 @@
     #events-widget-header {
       width: 100%;
       height: 40px;
-      padding: 8px;
+      padding: 4px;
       color: #496685;
       font-size: 18px;
       font-weight: bold;
       border-bottom: 2px solid #496685;
+
+      #event-widget-header-text {
+        float: left;
+        margin-top: 3px;
+      }
 
       #events-widget-header-close-button {
         width: 30px;
@@ -40,8 +45,8 @@
         background: #496685;
         cursor: pointer;
         position: relative;
-        top: 5px;
         right: 5px;
+        float: right;
       }
     }
 
