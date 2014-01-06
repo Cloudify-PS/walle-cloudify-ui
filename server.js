@@ -168,7 +168,10 @@ app.post('/backend/blueprints/add', function(request, response){
             hostname: conf.cosmoServer,
             port: conf.cosmoPort,
             path: path,
-            method: 'POST'
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/octet-stream'
+            }
         };
 
         var req = http.request(options, function(res) {
