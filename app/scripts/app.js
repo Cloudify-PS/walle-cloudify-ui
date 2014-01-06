@@ -21,6 +21,10 @@ angular.module('cosmoUi', ['gsUiInfra', 'angularFileUpload', 'ngCookies', 'ngRou
                 templateUrl: 'views/deployments.html',
                 controller: 'DeploymentsCtrl'
             })
+            .when('/deployment',{
+                templateUrl: 'views/deployment.html',
+                controller: 'DeploymentCtrl'
+            })
             .when('/events',{
                 templateUrl: 'views/events.html',
                 controller: 'EventsCtrl'

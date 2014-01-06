@@ -26,6 +26,9 @@ angular.module('cosmoUi')
         var from = 0;
 
         function _loadEvents(){
+            if (id === undefined) {
+                return;
+            }
             RestService.loadEvents({ deploymentId : id, from: from })
                 .then(null, null, function(data) {
                     if (data.id !== undefined && data.lastEvent !== undefined) {

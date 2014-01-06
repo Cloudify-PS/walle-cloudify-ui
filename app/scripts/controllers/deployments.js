@@ -1,18 +1,10 @@
 'use strict';
 
 angular.module('cosmoUi')
-    .controller('DeploymentsCtrl', function ($scope, RestService, $cookieStore) {
+    .controller('DeploymentsCtrl', function ($scope, RestService, $cookieStore, $location) {
 
         $scope.blueprints = $cookieStore.get('blueprints');
-        $scope.events = [];
         $scope.selectedBlueprint = '';
-//        $scope.filters = {
-//            'connections': 'on',
-//            'modules': 'on',
-//            'middleware': 'off',
-//            'compute': 'on',
-//            'network': 'on'
-//        };
 
         $scope.showDeployments = function(blueprintName) {
             if (blueprintName === $scope.selectedBlueprint) {
@@ -29,6 +21,12 @@ angular.module('cosmoUi')
 
         $scope.isExecuting = function(deploymentId) {
             return deploymentId === $cookieStore.get('deploymentId');
+        };
+
+        $scope.redirectTo = function (deployment) {
+            console.log(['redirecting to', deployment]);
+            $scope.selectedDeploymentID = deployment.id;
+            $location.path('/deployment').search({deployment: JSON.stringify(deployment)});
         };
 
         function _loadDeployments() {
@@ -51,29 +49,5 @@ angular.module('cosmoUi')
             return blueprintIndex;
         }
 
-        var id = $cookieStore.get('deploymentId');
-        var from = 0;
-        var to = 5;
-
-        function _loadEvents() {
-            RestService.loadEvents({ deploymentId : id, from: from, to: to })
-                .then(null, null, function(data) {
-                    if (data.id !== undefined && data.lastEvent !== undefined) {
-
-                        if (data.events && data.events.length > 0) {
-                            $scope.events = $scope.events.concat(data.events);
-
-                            for (var i = 0; i < $scope.events.length; i++) {
-                                if (typeof($scope.events[0]) === 'string') {    // walkaround if the events returned as strings and not JSONs
-                                    $scope.events[i] = JSON.parse($scope.events[i]);
-                                }
-                            }
-                        }
-                    }
-                });
-        }
-
         _loadDeployments();
-        _loadEvents();
-
     });
