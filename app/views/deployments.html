@@ -10,9 +10,9 @@
 
                 <table>
                     <tr>
-                        <td ng-click="showDeployments(blueprint.name)">{{blueprint.name}} ({{blueprint.id}})</td>
+                        <td ng-click="showDeployments(blueprint.id)">{{blueprint.name}} ({{blueprint.id}})</td>
                     </tr>
-                    <tr ng-show="selectedBlueprint == blueprint.name">
+                    <tr ng-show="selectedBlueprint == blueprint.id">
                         <td>
                             <table class="table table-striped">
                                 <tr>

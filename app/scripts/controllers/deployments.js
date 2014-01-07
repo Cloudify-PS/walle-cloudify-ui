@@ -6,11 +6,11 @@ angular.module('cosmoUi')
         $scope.blueprints = $cookieStore.get('blueprints');
         $scope.selectedBlueprint = '';
 
-        $scope.showDeployments = function(blueprintName) {
-            if (blueprintName === $scope.selectedBlueprint) {
+        $scope.showDeployments = function(blueprintId) {
+            if (blueprintId === $scope.selectedBlueprint) {
                 $scope.selectedBlueprint = '';
             } else {
-                $scope.selectedBlueprint = blueprintName;
+                $scope.selectedBlueprint = blueprintId;
             }
         };
 
