@@ -13,7 +13,7 @@ angular.module('cosmoUi')
 
         $scope.deployment = JSON.parse($routeParams.deployment);
 
-        var id = deployment.id;
+        var id = $scope.deployment.id;
         var from = 0;
         var to = 5;
 
