@@ -16,6 +16,7 @@ angular.module('cosmoUi')
 
         $scope.executeDeployment = function(deployment) {
             RestService.executeBlueprint(deployment.id);
+            $cookieStore.remove('deploymentId');
             $cookieStore.put('deploymentId', deployment.id);
         };
 

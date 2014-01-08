@@ -21,8 +21,8 @@
                                     <td class="update">Updated</td>
                                     <td class="actions">Action</td>
                                 </tr>
-                                <tr ng-repeat="deployment in blueprint.deployments" ng-click="redirectTo(deployment)">
-                                    <td class="id">{{deployment.id}}</td>
+                                <tr ng-repeat="deployment in blueprint.deployments">
+                                    <td class="id" ng-click="redirectTo(deployment)">{{deployment.id}}</td>
                                     <td class="create">{{deployment.createdAt}}</td>
                                     <td class="description">{{deployment.updatedAt}}</td>
                                     <td class="actions"><i class="fa  fa-play-circle-o" ng-click="executeDeployment(deployment)" ng-class="{deploymentExecute: isExecuting(deployment.id)}"></i></td>

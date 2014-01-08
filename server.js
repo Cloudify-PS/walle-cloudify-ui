@@ -148,16 +148,37 @@ app.post('/backend/blueprints/add', function(request, response){
     var applicationFileName = request.body.application_file_name;
     var host = 'http://' + conf.cosmoServer + ':' + conf.cosmoPort + "/blueprints?application_file_name=" + applicationFileName;
 
-    rest.post(host, {
-        data: rest.file(myFile.path, myFile.name, null, null, 'application/gzip'),
-        headers: {
-            'Transfer-Encoding': 'chunked',
-            'content-type': 'application/octet-stream',
-            'Content-Encoding': 'gzip'
-        }
-    }).on('complete', function(data) {
-        logger.debug('data: ' + JSON.stringify(data));
-        response.send(200);
+    fs.readFile(myFile.path, function(err, data) {
+        if (err) throw err;
+        var path = '/blueprints?application_file_name=' + applicationFileName;
+        var options = {
+            hostname: conf.cosmoServer,
+            port: conf.cosmoPort,
+            path: path,
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/octet-stream',
+                'Transfer-Encoding': 'chunked'
+            }
+        };
+
+        var req = ajax.request(options, function(res) {
+            res.on('data', function (chunk) {
+                logger.debug('chunk: ' + JSON.stringify(data));
+            });
+
+            res.on('end', function() {
+                logger.debug('data: ' + JSON.stringify(data));
+                response.send(200);
+            });
+        });
+
+        req.on('error', function(e) {
+            console.log('problem with request: ' + e.message);
+        });
+
+        req.write(data);
+        req.end();
     });
 });
 
