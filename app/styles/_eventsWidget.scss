@@ -3,7 +3,7 @@
   #events-widget-closed-tab {
     width: 100px;
     height: 30px;
-    background: #cadbec;
+    background: #e8edf2;
     border-radius: 3px;
     float: right;
     cursor: pointer;
@@ -21,7 +21,7 @@
   #events-widget-opened-widget {
     width: 270px;
     height: 330px;
-    background: #cadbec;
+    background: #e8edf2;
     border-radius: 3px;
     box-shadow: -2px 2px 3px rgba(144, 144, 144, 0.5);
 
@@ -30,13 +30,14 @@
       height: 40px;
       padding: 4px;
       color: #496685;
-      font-size: 18px;
+      font-size: 16px;
       font-weight: bold;
       border-bottom: 2px solid #496685;
 
       #event-widget-header-text {
         float: left;
-        margin-top: 3px;
+        margin-top: 4px;
+        margin-left: 3px;
       }
 
       #events-widget-header-close-button {
