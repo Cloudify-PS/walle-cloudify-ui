@@ -10,7 +10,7 @@ angular.module('cosmoUi')
                 '<div id="events-widget-opened-widget" ng-show="isOpen()">' +
                     '<div id="events-widget-header">' +
                         '<div id="event-widget-header-text">Events</div>' +
-                        '<div id="events-widget-header-close-button" ng-click="toggleWidget()">X</div>' +
+                        '<div id="events-widget-header-close-button" ng-click="toggleWidget()"></div>' +
                     '</div>' +
                     '<div id="events-widget-list-container">' +
                         '<table id="events-widget-events-list">' +
