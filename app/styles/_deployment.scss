@@ -2,34 +2,34 @@
 
   #plans-index-events-widget {
     position: absolute;
-    right: 20px;
-    top: 102px;
+    right: $COSMOUI_DEPLOYMENT_EVENT_WIDGET_RIGHT;
+    top: $COSMOUI_DEPLOYMENT_EVENT_WIDGET_TOP;
   }
 
   #deployment-header {
-    width: 100%;
+    width: $COSMOUI_DEPLOYMENT_HEADER_WIDTH;
 
     .header-left {
       .toggles-bar {
-        width: 100%;
-        height: 50px;
-        margin-top: 5px;
+        width: $COSMOUI_DEPLOYMENT_TOGGLES_BAR_WIDTH;
+        height: $COSMOUI_DEPLOYMENT_TOGGLES_BAR_HEIGHT;
+        margin-top: $COSMOUI_DEPLOYMENT_TOGGLES_BAR_MARGIN_TOP;
       }
     }
 
     .header-right {
       position: relative;
-      width: 100px;
+      width: $COSMOUI_DEPLOYMENT_RIGHT_HEADER_WIDTH;
       float: right;
 
       #appStatus {
         float: right;
-        width: 100px;
-        height: 100px;
-        background: #2c4a67;
-        border-bottom-left-radius: 10px;
-        border-left: 3px solid #fff;
-        border-bottom: 3px solid #fff;
+        width: $COSMOUI_DEPLOYMENT_APP_STATUS_WIDTH;
+        height: $COSMOUI_DEPLOYMENT_APP_STATUS_HEIGHT;
+        background: $COSMOUI_DEPLOYMENT_APP_STATUS_BACKGROUND;
+        border-bottom-left-radius: $COSMOUI_DEPLOYMENT_APP_STATUS_BORDER_BOTTOM_LEFT_RADIUS;
+        border-left: $COSMOUI_DEPLOYMENT_APP_STATUS_BORDER;
+        border-bottom: $COSMOUI_DEPLOYMENT_APP_STATUS_BORDER;
       }
     }
   }
