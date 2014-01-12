@@ -1,4 +1,4 @@
-#deployments{
+  #deployments{
 
   .deploymentExecute {
     color: $COSMOUI_DEPLOYMENT_EXECUTE_COLOR;
@@ -64,7 +64,6 @@
               &:not(:first-child) td.actions{
                 width: $COSMOUI_LIST_HOVER_ACTION_WIDTH;
                 font-size:$COSMOUI_LIST_HOVER_ACTION_FONT_SIZE;
-                letter-spacing: $COSMOUI_LIST_HOVER_ACTION_LETTER_SPACING;
 
                 select {
                   background: #cce4f6;
@@ -78,7 +77,7 @@
                   -webkit-appearance: none;
                   -moz-appearance: none;
                   appearance: none;
-                  padding-left: 7px;
+                  padding: 7px;
                   cursor: pointer;
                 }
               }
