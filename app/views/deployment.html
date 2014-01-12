@@ -8,12 +8,40 @@
             <div class="content-header">
                 <div class="breadcrumbs">{{deployment.id}}</div>
             </div>
+            <div class="btn-group" checkbox-toggle value="section">
+                <button type="button" class="btn btn-default" value="scheme">Scheme</button>
+                <button type="button" class="btn btn-default" value="events">Events</button>
+            </div>
             <div class="toggles-bar" id="plans-index-toggle-bar">
                 <div toggle-switch text="Network & Security" value="{{filters.network}}"></div>
                 <div toggle-switch text="Compute & Storage" value="{{filters.compute}}"></div>
                 <div toggle-switch text="Middleware" value="{{filters.middleware}}"></div>
                 <div toggle-switch text="Modules" value="{{filters.modules}}"></div>
                 <div toggle-switch text="Connections" value="{{filters.connections}}"></div>
+            </div>
+
+            <div ng-switch="section" class="content-section">
+                <div ng-switch-default="scheme">Scheme</div>
+
+                <div ng-switch-when="events">
+                    <table class="table table-striped">
+                        <tr>
+                            <td class="icon"><!-- icon --></td>
+                            <td class="type">Event Type</td>
+                            <td class="node">Node</td>
+                            <td class="task">Task</td>
+                            <td class="workflow">Workflow</td>
+                        </tr>
+                        <tr ng-repeat="event in events">
+                            <td class="icon" ng-class="getEventIcon(event)"></td>
+                            <td class="type" ng-class="getEventClass(event)">{{event.type == undefined && 'N/A' || getEventText(event)}}</td>
+                            <td class="node">{{event.node == undefined && 'N/A' || event.node}}</td>
+                            <td class="task">{{event.name == undefined && 'N/A' || event.name}}</td>
+                            <td class="workflow">{{event.workflow_name == undefined && 'N/A' || event.workflow_name}}</td>
+                        </tr>
+                    </table>
+                </div>
+
             </div>
         </div>
     </div>
