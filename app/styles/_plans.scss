@@ -1,46 +1,182 @@
-#plans{
-  #right-side-menu{
-    position:absolute;
-    z-index:20;
-
-    top:0;
-    right:0;
-    width:600px;
-    border-left:4px solid $COSMOUI_BLUEPRINT_DETAILS_LEFT_BORDER_COLOR;
-    background-color: $COSMOUI_BLUEPRINT_DETAILS_BACKGROUND;
-    padding-left:19px;
-    padding-right:23px;
-    padding-top:20px;
-
-    .title{
-      padding-bottom:$COSMOUI_BLUEPRINT_DETAILS_TITLE_PADDING_BOTTOM;
-      line-height: $COSMOUI_BLUEPRINT_DETAILS_TITLE_LINE_HEIGHT;
-      color:$COSMOUI_BLUEPRINT_DETAILS_TITLE_COLOR;
-      font-size: $COSMOUI_BLUEPRINT_DETAILS_TITLE_FONT_SIZE;
-      border-bottom:4px solid $COSMOUI_BLUEPRINT_DETAILS_TITLE_BOTTOM_BORDER_COLOR;
-      i { float:right; }
-    }
-
-    .content{
-      margin-top: $COSMOUI_BLUEPRINT_DETAILS_CONTENT_MARGIN_TOP;
-      .btn-group{
-        $RADIUS:30px;
-
-        button{
-          height: $COSMOUI_BLUEPRINT_DETAILS_BUTTON_HEIGHT;
-          font-size: $COSMOUI_BLUEPRINT_DETAILS_BUTTON_FONT_SIZE;
-          padding: $COSMOUI_BLUEPRINT_DETAILS_BUTTON_PADDING;
-          color: $COSMOUI_BLUEPRINT_BUTTON_GROUP_BACKGROUND;
-          border: $COSMOUI_BLUEPRINT_BUTTON_GROUP_BORDER_COLOR;
+.bpContainer {
+    display: block;
+    font-family: 'trebuchet ms', verdana, arial;
+    width: 100%;
+    height: 100%;
+    display: block;
+    min-height: 500px;
+    padding: 40px;
+    .coordinates {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        svg {
+            position: relative;
+            width: 100%;
+            height: 100%;
         }
-
-        button:last-child{ border-bottom-right-radius: $RADIUS; border-top-right-radius: $RADIUS;}
-        button:first-child{ border-top-left-radius: $RADIUS; border-bottom-left-radius: $RADIUS; }
-        button.active{ background: $COSMOUI_BLUEPRINT_BUTTON_ACTIVE_COLOR; color:white; }
-      }
-      .content-section{
-        margin-top:30px;
-      }
     }
-  }
+    i.icon {
+        width: 36px;
+        height: 36px;
+        border-radius: 19px;
+    }
+    .box {
+        position: relative;
+        display: inline-block;
+        min-width: 270px;
+        min-height: 130px;
+        border-width: 2px;
+        border-color: #136e9d;
+        border-style: solid;
+        background-color: white;
+        vertical-align: top;
+        padding: 2px;
+        border-radius: 3px;
+        margin: 0 60px 40px 0;
+        .box {
+            border-color: #3aaeda;
+            margin: 15px;
+            .head {
+                background-color: #3aaeda;
+            }
+            .holder {
+                text-align: center;
+            }
+            > i.icon {
+                position: absolute;
+                background: #3aaeda;
+                border-width: 2px;
+                border-style: solid;
+                border-color: white;
+                top: 0px;
+                left: -20px;
+            }
+            .hoverup {
+                z-index: 101;
+            }
+        }
+        > i.icon {
+            position: absolute;
+            background: #136e9d;
+            border-width: 2px;
+            border-style: solid;
+            border-color: white;
+            top: 0px;
+            left: -20px;
+        }
+        .head {
+            display: block;
+            background-color: #136e9d;
+            color: white;
+            padding: 5px 10px 5px 20px;
+            border-radius: 3px;
+            font-size: 16px;
+        }
+        .holder {
+            display: block;
+            background-color: white;
+            padding: 10px;
+        }
+        .hoverup {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 100;
+        }
+        .buttons {
+            display: none;
+            position: absolute;
+            top: -17px;
+            right: 5px;
+            z-index: 100;
+            > ul {
+                display: inline-block;
+                list-style-type: none;
+                white-space: nowrap;
+                margin: 0;
+                padding: 0;
+                background-color: #f5f5f5;
+                border: 1px solid #ccc;
+                border-radius: 2px;
+                li {
+                    display: inline-block;
+                    background: f5f5f5;
+                    padding: 5px 10px;
+                    border-right: 1px dotted #ccc;
+                    cursor: pointer;
+                }
+                li:hover {
+                    background-color: #eee;
+                }
+                li:last-child {
+                    border: 0px;
+                }
+            }
+        }
+        :hover > .buttons {
+            display: inline;
+        }
+    }
+    .box:hover .buttons {
+        display: inline !important;
+    }
+    .app {
+        position: relative;
+        display: inline-block;
+        text-align: center;
+        border-radius: 3px;
+        p {
+            margin: 0px;
+            color: #555869;
+            font-size: 16px;
+        }
+        i.icon {
+            display: inline-block;
+            background: #66a2c5;
+        }
+    }
+}
+.bpContainer.disableCompute {
+    [data-type="compute"].box {
+        border-color: silver;
+        > .head {
+            background-color: silver;
+        }
+        > .icon {
+            background-color: silver;
+        }
+    }
+}
+
+.bpContainer.disableMiddleware {
+    [data-type="middleware"].box {
+        border-color: silver;
+        > .head {
+            background-color: silver;
+        }
+        > .icon {
+            background-color: silver;
+        }
+    }
+}
+.bpContainer.disableModules {
+    [data-type="modules"].app {
+        border-color: silver;
+        > p {
+            color: #ccc;
+        }
+        > .icon {
+            background-color: silver;
+        }
+    }
+}
+.bpContainer.disableConnections {
+    svg {
+        display: none;
+    }
 }

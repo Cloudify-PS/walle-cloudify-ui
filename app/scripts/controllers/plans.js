@@ -1,61 +1,46 @@
 'use strict';
 
 angular.module('cosmoUi')
-    .controller('PlansCtrl', function ($scope, YamlService, Layout, Render, $routeParams) {
+    .controller('PlansCtrl', function ($scope, YamlService, $routeParams, PlanDataConvert, blueprintCoordinateService) {
 
-        var planData/*:PlanData*/ = null;
-
-//        yamlService.getFilesList('/', function(data) {
-//            $scope.files = data;
-//        });
-        $scope.showFile = function (file) {
-            console.log(file.name);
-        };
-
-        $scope.section = 'general';
-
-        $scope.$watch('section', function () {
-            console.log('got a new section value');
-        });
-
+        $scope.section = "general";
         $scope.planName = $routeParams.name;
 
-        $scope.renderer = Render.Topology.D3;
-        $scope.layouter = Layout.Topology.Tensor.init({'xyPositioning': 'relative'});
+        $scope.toggleBar = {
+            "compute": true,
+            "middleware": true,
+            "modules": true,
+            "connections": true
+        };
+
         YamlService.load($routeParams.id, function (err, data) {
-            planData = data;
-            $scope.graph = data.getJSON();
-        });
 
-        $scope.showDirectory = function (directory) {
-            console.log(directory.name);
-            YamlService.getFilesList('/' + directory.name, function (data) {
-                $scope.files = data;
-            });
-        };
+            var dataPlan = data.getJSON(),
+                dataMap;
 
-        $scope.topologyHandlers = {
-            'actionClick': function (data) {
-                var node = data.node;
-                var realNode = planData.getNode(node.id);
-                $scope.showProperties = {
-                    properties: planData.getProperties(realNode),
-                    policies: planData.getPolicies(realNode),
-                    general: planData.getGeneralInfo( realNode )
-                };
+            // Convert edges to angular format
+            if (dataPlan.hasOwnProperty("edges") && !!dataPlan.edges){
+                dataMap = PlanDataConvert.edgesToAngular(dataPlan.edges);
             }
-        };
+
+            // Index data by ID
+            if (dataPlan.hasOwnProperty("nodes") && !!dataPlan.nodes){
+                $scope.indexNodes = {};
+                dataPlan.nodes.forEach(function(node){
+                    $scope.indexNodes[node.id] = node;
+                });
+            }
+
+            // Set Map
+            blueprintCoordinateService.setMap(dataMap["cloudify.relationships.connected_to"]);
+
+            // Connection between nodes
+            $scope.map = dataMap["cloudify.relationships.contained_in"];
+            $scope.coordinates = blueprintCoordinateService.getCoordinates();
+
+        });
 
         $scope.hideProperties = function () {
             $scope.showProperties = null;
         };
-
-//        $(document).on('click','svg', function(e, data){
-//            $scope.$apply(function(){
-//                console.log(["doing something on click",$scope.graph.nodes[1]]);
-//
-//                $scope.showProperties = $scope.graph.nodes[1];
-//
-//            })
-//        })
-    });
+});

@@ -20,9 +20,48 @@
     </div>
     <div class="content-header">
         <div class="breadcrumbs"><ul><li>Blueprints</li><li>{{planName}}</li></ul></div>
-
     </div>
-   <div class="topology" data="graph" renderer="renderer" events="topologyHandlers" layouter="layouter" style="position:relative;height:500px; width:1200px;"></div>
+
+    <!-- Blueprint Contianter - START -->
+    <div class="bpContainer" blueprint:resize data-ng-class="{
+        disableCompute: !toggleBar.compute,
+        disableMiddleware: !toggleBar.middleware,
+        disableModules: !toggleBar.modules,
+        disableConnections: !toggleBar.connections
+        }">
+        <div data-type="compute" data-ng-repeat="rootNode in map" class="box" blueprint:coordinate="rootNode.id">
+            <div class="hoverup">
+                <div class="buttons">
+                    <ul>
+                        <li>Search</li><li>Edit</li>
+                    </ul>
+                </div>
+            </div>
+            <i class="icon"></i>
+            <div class="head">{{ indexNodes[rootNode.id].name }}</div>
+            <div class="holder">
+                <div data-type="middleware" data-ng-repeat="subNode in rootNode.children" class="box" blueprint:coordinate="subNode.id">
+                    <div class="hoverup">
+                        <div class="buttons">
+                            <ul>
+                                <li>Search</li><li>Edit</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <i class="icon"></i>
+                    <div class="head">{{ indexNodes[subNode.id].name }}</div>
+                    <div class="holder">
+                        <div data-type="modules" data-ng-repeat="appNode in subNode.children" class="app">
+                            <i class="icon" blueprint:coordinate="appNode.id"></i>
+                            <p>{{ indexNodes[appNode.id].name }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="coordinates" blueprint:arrows="coordinates"></div>
+    </div>
+    <!-- Blueprint Contianter - END -->
 
 </div>
 

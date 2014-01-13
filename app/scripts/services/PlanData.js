@@ -250,3 +250,61 @@ angular.module('cosmoUi').service('PlanData', function () {
 
 
 });
+
+
+angular.module('cosmoUi').service("PlanDataConvert", function(){
+
+    var result = {};
+
+    this.edgesToAngular = function( data ){
+        for ( var i = 0; i < data.length ; i++) {
+
+            var edge = data[i];
+
+            if(!result.hasOwnProperty(edge.type)) {
+                result[edge.type] = [];
+            }
+
+            var sourceNode = findNode( result[edge.type], edge.type, edge.source );
+            var targetNode = findNode( result[edge.type], edge.type, edge.target );
+
+            if (sourceNode === null){
+                sourceNode = {"id": edge.source, type: edge.type};
+            }
+
+            if (targetNode === null){
+                targetNode = {"id": edge.target, type: edge.type};
+                result[edge.type].push(targetNode);
+            }
+
+            addChild( targetNode, sourceNode );
+            if (result[edge.type].indexOf(sourceNode) >= 0)
+                result[edge.type].splice(result[edge.type].indexOf(sourceNode), 1);
+        }
+        return result;
+    }
+
+    function findNode( tree, type, id ){
+        for ( var i = 0 ; i < tree.length; i ++ ){
+            var node = tree[i];
+            if (node.id === id){
+                return node;
+            }
+            else if (node.hasOwnProperty("children")){
+                var childNode = findNode(node.children, type, id);
+                if (childNode != null){
+                    return childNode;
+                }
+            }
+        }
+        return null;
+    }
+
+    function addChild( node, child ) {
+        if(!node.hasOwnProperty("children")) {
+            node.children = [];
+        }
+        node.children.push(child);
+    }
+
+});
