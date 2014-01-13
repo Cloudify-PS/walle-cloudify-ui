@@ -46,7 +46,7 @@ angular.module("cosmoUi")
                     .attr("markerWidth", 6)
                     .attr("markerHeight", 6)
                     .attr("orient", "auto")
-                    .attr("fill", "#858585")
+                    .attr("fill", "#ddd")
                     .append("svg:path")
                     .attr("d", "M0,-5L10,0L0,5");
 
@@ -63,7 +63,7 @@ angular.module("cosmoUi")
                             .attr("d", applyDiagonals)
                             .attr("marker-end", "url(#arrowhead)")
                             .attr("fill", "none")
-                            .attr("stroke", "#858585")
+                            .attr("stroke", "#ddd")
                             .attr("stroke-width", "3px");
                     }
                 }, true);

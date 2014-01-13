@@ -3,11 +3,12 @@
 angular.module('cosmoUi')
     .controller('PlansCtrl', function ($scope, YamlService, $routeParams, PlanDataConvert, blueprintCoordinateService) {
 
+        var planData/*:PlanData*/ = null;
         $scope.section = "general";
         $scope.planName = $routeParams.name;
 
         $scope.toggleBar = {
-            "compute": false,
+            "compute": true,
             "middleware": true,
             "modules": true,
             "connections": true
@@ -15,6 +16,7 @@ angular.module('cosmoUi')
 
         YamlService.load($routeParams.id, function (err, data) {
 
+            planData = data;
             var dataPlan = data.getJSON(),
                 dataMap;
 
@@ -39,6 +41,18 @@ angular.module('cosmoUi')
             $scope.coordinates = blueprintCoordinateService.getCoordinates();
 
         });
+
+
+        $scope.viewNode = function (node) {
+            var realNode = planData.getNode(node.id);
+            $scope.showProperties = {
+                properties: planData.getProperties(realNode),
+                policies: planData.getPolicies(realNode),
+                general: planData.getGeneralInfo(realNode)
+            };
+            console.log($scope.showProperties);
+        };
+
 
         $scope.hideProperties = function () {
             $scope.showProperties = null;

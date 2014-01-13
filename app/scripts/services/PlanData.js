@@ -59,6 +59,7 @@ angular.module('cosmoUi').service('PlanData', function () {
 
 
         function _getMergedValuesForProperty(node, property) {
+
             var properties = []; // a list of properties we will later merge. 0 - leaf, N - root.
             var type = null;
             var index = 0;
@@ -116,23 +117,7 @@ angular.module('cosmoUi').service('PlanData', function () {
             return result;
         }
 
-        function _getGeneralInfo(node) { // todo: remove this. We should expose smaller getters and let controller build this structure
-            var result = {
-                'name': node.name,
-                'type': _getTypesName(node),
-//                'numOfInstances':'',
-//                'description':'',
-                'relationships': _getRelationships(node)
-            };
 
-
-            for (var i in result) {
-                if (result.hasOwnProperty(i) && result[i] === null) {
-                    delete result[i];
-                }
-            }
-            return result;
-        }
 
         function _getRelationships(node) {
             var resultAsObj = _getMergedValuesForProperty(node, RELATIONSHIPS);
@@ -230,12 +215,18 @@ angular.module('cosmoUi').service('PlanData', function () {
         }
 
         this.addNode = _addNode;
-        this.getProperties = _getProperties;
-        this.getPolicies = _getPolicies;
+        this.getProperties = function(node){ return node.properties };//_getProperties;
+        this.getPolicies = function(node){ return node.policies};// _getPolicies;
         this.addType = _addType;
         this.getNodes = _getNodesList;
         this.getTypes = _getTypesList;
-        this.getGeneralInfo = _getGeneralInfo;
+        this.getGeneralInfo = function(node){  var result = {
+            'name': node.id,
+            'type': node.type,
+//                'numOfInstances':'',
+//                'description':'',
+            'relationships': node.relationships
+        }; return result;};//_getGeneralInfo;
         this.getNode = _getNode;
 
         this.getJSON = _getJSON;

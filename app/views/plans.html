@@ -41,26 +41,39 @@
             <div class="hoverup">
                 <div class="buttons">
                     <ul>
-                        <li>Search</li><li>Edit</li>
+                        <li data-ng-click="viewNode(rootNode)" class="topology-glyph node-details"></li><li class="topology-glyph edit-node"></li>
                     </ul>
                 </div>
             </div>
-            <i class="icon"></i>
+            <i class="icon topology-glyph host">
+                <div class="badge">2/4</div>
+            </i>
             <div class="head">{{ indexNodes[rootNode.id].name }}</div>
             <div class="holder">
                 <div data-type="middleware" data-ng-repeat="subNode in rootNode.children" class="box" blueprint:coordinate="subNode.id">
                     <div class="hoverup">
                         <div class="buttons">
                             <ul>
-                                <li>Search</li><li>Edit</li>
+                                <li data-ng-click="viewNode(subNode)" class="topology-glyph node-details"></li><li class="topology-glyph edit-node"></li>
                             </ul>
                         </div>
                     </div>
-                    <i class="icon"></i>
+                    <i class="icon topology-glyph app-server">
+                        <div class="badge">2/4</div>
+                    </i>
                     <div class="head">{{ indexNodes[subNode.id].name }}</div>
                     <div class="holder">
                         <div data-type="modules" data-ng-repeat="appNode in subNode.children" class="app">
-                            <i class="icon" blueprint:coordinate="appNode.id"></i>
+                            <div class="hoverup">
+                                <div class="buttons">
+                                    <ul>
+                                        <li data-ng-click="viewNode(appNode)" class="topology-glyph node-details"></li><li class="topology-glyph edit-node"></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <i class="icon topology-glyph app-module" blueprint:coordinate="appNode.id">
+                                <div class="badge">2/4</div>
+                            </i>
                             <p>{{ indexNodes[appNode.id].name }}</p>
                         </div>
                     </div>
