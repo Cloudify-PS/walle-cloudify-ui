@@ -82,7 +82,7 @@ angular.module("cosmoUi")
             scope: {
                 "id": "=blueprintCoordinate"
             },
-            link: function($scope, $element, $attr) {
+            link: function($scope, $element) {
                 blueprintCoordinateService.addElement($scope.id, $element);
             }
         }
@@ -98,7 +98,7 @@ angular.module("cosmoUi")
         return {
             restrict: "A",
             scope: false,
-            link: function($scope, $element, $attr) {
+            link: function($scope, $element) {
                 function broadcastResize() {
                     $element.scope().$apply(function(){
                         blueprintCoordinateService.refresh();
@@ -150,8 +150,8 @@ angular.module("cosmoUi")
         function updateData() {
             angular.forEach(elements, function (element, id){
                 data[id] = {
-                    "x": element.offset().left,
-                    "y": element.offset().top
+                    "x": element.offset().left - element.parents(".bpContainer").offset().left,
+                    "y": element.offset().top  - element.parents(".bpContainer").offset().top
                 }
             });
             setCoordinates();

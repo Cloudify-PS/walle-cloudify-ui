@@ -22,7 +22,15 @@
         <div class="breadcrumbs"><ul><li>Blueprints</li><li>{{planName}}</li></ul></div>
     </div>
 
+    <div class="toggles-bar">
+        <div toggle-switch text="Compute & Storage" value="toggleBar.compute"></div>
+        <div toggle-switch text="Middleware" value="toggleBar.middleware"></div>
+        <div toggle-switch text="Modules" value="toggleBar.modules"></div>
+        <div toggle-switch text="Connections" value="toggleBar.connections"></div>
+    </div>
+
     <!-- Blueprint Contianter - START -->
+
     <div class="bpContainer" blueprint:resize data-ng-class="{
         disableCompute: !toggleBar.compute,
         disableMiddleware: !toggleBar.middleware,

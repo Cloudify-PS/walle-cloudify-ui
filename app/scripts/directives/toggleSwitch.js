@@ -14,16 +14,17 @@ angular.module('cosmoUi')
             restrict: 'EA',
             scope: {
                 text: '@',
-                value: '@'
+                value: '='
             },
+            replace: true,
             link: function (scope) {
 
                 scope.toggleButton = function() {
-                    scope.value = scope.value === 'true' ? 'false' : 'true';
+                    scope.value = !scope.value;
                 };
 
                 scope.isToggleOn = function() {
-                    return scope.value === 'true';
+                    return scope.value;
                 };
             }
         };

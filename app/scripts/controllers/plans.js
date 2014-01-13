@@ -7,7 +7,7 @@ angular.module('cosmoUi')
         $scope.planName = $routeParams.name;
 
         $scope.toggleBar = {
-            "compute": true,
+            "compute": false,
             "middleware": true,
             "modules": true,
             "connections": true
