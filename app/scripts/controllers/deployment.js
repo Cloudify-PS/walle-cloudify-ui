@@ -4,11 +4,10 @@ angular.module('cosmoUi')
     .controller('DeploymentCtrl', function ($scope, $cookieStore, $routeParams, RestService) {
         $scope.events = [];
         $scope.filters = {
-            'connections': 'on',
-            'modules': 'on',
-            'middleware': 'off',
-            'compute': 'on',
-            'network': 'on'
+            'connections': true,
+            'modules': true,
+            'middleware': false,
+            'compute': true
         };
 
         $scope.deployment = JSON.parse($routeParams.deployment);
