@@ -9,7 +9,7 @@ angular.module('cosmoUi')
             'middleware': false,
             'compute': true
         };
-        $scope.section = 'scheme';
+        $scope.section = 'topology';
         $scope.deployment = JSON.parse($routeParams.deployment);
 
         var eventCSSMap = {
