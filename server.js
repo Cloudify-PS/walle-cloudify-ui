@@ -23,10 +23,7 @@ var ajax = require("http");
 var app = express();
 var port = 9001;
 var gsSettings = require("./backend/gsSettings");
-
 var conf = require("./backend/appConf");
-
-var rest = require('restler');
 var fs = require('fs');
 var log4js = require('log4js');
 log4js.configure({
@@ -145,12 +142,11 @@ app.get('/backend/blueprints', function(request, response, next) {
 
 app.post('/backend/blueprints/add', function(request, response){
     var myFile = request.files.application_archive;
-    var applicationFileName = request.body.application_file_name;
-    var host = 'http://' + conf.cosmoServer + ':' + conf.cosmoPort + "/blueprints?application_file_name=" + applicationFileName;
+    var host = 'http://' + conf.cosmoServer + ':' + conf.cosmoPort + "/blueprints";
 
     fs.readFile(myFile.path, function(err, data) {
         if (err) throw err;
-        var path = '/blueprints?application_file_name=' + applicationFileName;
+        var path = '/blueprints';
         var options = {
             hostname: conf.cosmoServer,
             port: conf.cosmoPort,
