@@ -6,6 +6,7 @@
 @import './popup';
 @import './toggleSwitch';
 @import './eventsWidget';
+@import './appStatusWidget';
 
 /** Fonts **/
 @import "../bower_components/bootstrap-sass/lib/bootstrap";
@@ -17,10 +18,11 @@ $fa-font-path:'../bower_components/font-awesome/fonts';
 @import "../bower_components/font-awesome/scss/font-awesome";
 
 /** Pages **/
-@import './plansIndex';
+@import './blueprintsIndex';
 @import './eventsIndex';
 @import './plans';
-@import './runningApps';
+@import './deployments';
+@import './deployment';
 @import './config';
 
 

@@ -3,7 +3,6 @@
 angular.module('cosmoUi')
     .controller('PopupCtrl', function ($scope) {
         var selectedFile = null;
-        $scope.mainFileName = 'mezzanine_blueprint.yaml'; // just until cosmo team will resolve this issue.
         $scope.uploadEnabled = false;
         $scope.uploadInProcess = false;
         $scope.selectedFile = '';
@@ -21,7 +20,6 @@ angular.module('cosmoUi')
             }
 
             var planForm = new FormData();
-            planForm.append('application_file_name', $scope.mainFileName);
             planForm.append('application_archive', $scope.selectedFile);
             $scope.uploadInProcess = true;
 
@@ -57,6 +55,6 @@ angular.module('cosmoUi')
         };
 
         $scope.isUploadEnabled = function() {
-            return ($scope.selectedFile !== null && $scope.mainFileName !== undefined && $scope.mainFileName.length > 0 && !$scope.uploadInProcess);
+            return ($scope.selectedFile !== null && !$scope.uploadInProcess);
         };
     });
