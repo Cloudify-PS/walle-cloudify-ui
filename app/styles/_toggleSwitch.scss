@@ -33,22 +33,22 @@
       margin: 1px;
     }
 
-    .on {
+    .true {
       float: right;
     }
 
-    .off {
+    .false {
       float: left;
     }
 
   }
 
-  .on {
+  .true {
     background: transparent;
     color: #4b6c8b;
   }
 
-  .off {
+  .false {
     background: #234E71;
     color: #fff;
   }
