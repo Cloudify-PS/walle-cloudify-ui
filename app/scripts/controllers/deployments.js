@@ -3,7 +3,7 @@
 angular.module('cosmoUi')
     .controller('DeploymentsCtrl', function ($scope, RestService, $cookieStore, $location) {
 
-        $scope.blueprints = $cookieStore.get('blueprints');
+        $scope.blueprints = RestService.getBlueprints();
         $scope.selectedBlueprint = '';
 
         $scope.showDeployments = function(blueprintId) {

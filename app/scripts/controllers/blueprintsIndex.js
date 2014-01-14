@@ -37,7 +37,6 @@ angular.module('cosmoUi')
                 var index = _getBlueprintArrNextIndex($scope.blueprints[i].id);
                 _blueprintsArr[index].name = $scope.blueprints[i].name;
             }
-            $cookieStore.put('blueprints', _blueprintsArr);
         }
 
         function _getBlueprintArrNextIndex(blueprintId) {
