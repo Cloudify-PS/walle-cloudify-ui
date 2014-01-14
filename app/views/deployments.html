@@ -25,7 +25,10 @@
                                     <td class="id" ng-click="redirectTo(deployment)">{{deployment.id}}</td>
                                     <td class="create">{{deployment.createdAt}}</td>
                                     <td class="description">{{deployment.updatedAt}}</td>
-                                    <td class="actions"><i class="fa  fa-play-circle-o" ng-click="executeDeployment(deployment)" ng-class="{deploymentExecute: isExecuting(deployment.id)}"></i></td>
+                                    <td class="actions">
+                                        <select ng-model="selectedWorkflow" ng-options="workflow for workflow in blueprint.workflows"><option value="">-- Select workflow --</option></select>
+                                        <i class="fa  fa-play-circle-o" ng-click="executeDeployment(deployment, selectedWorkflow)" ng-class="{deploymentExecute: isExecuting(deployment.id)}"></i>
+                                    </td>
                                 </tr>
                             </table>
                         </td>
