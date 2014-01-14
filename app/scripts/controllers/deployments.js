@@ -14,8 +14,8 @@ angular.module('cosmoUi')
             }
         };
 
-        $scope.executeDeployment = function(deployment) {
-            RestService.executeBlueprint(deployment.id);
+        $scope.executeDeployment = function(deployment, selectedWorkflow) {
+            RestService.executeBlueprint({'deploymentId': deployment.id, 'workflowId': selectedWorkflow});
             $cookieStore.remove('deploymentId');
             $cookieStore.put('deploymentId', deployment.id);
         };
@@ -35,6 +35,14 @@ angular.module('cosmoUi')
                 .then(function(data) {
                     for (var i = 0; i < data.length; i++) {
                         $scope.blueprints[_getBlueprintIndex(data[i].blueprintId)].deployments.push(data[i]);
+
+                        var workflows = JSON.parse(data[i].plan).workflows;
+                        if (workflows !== undefined) {
+                            $scope.blueprints[_getBlueprintIndex(data[i].blueprintId)].workflows = [];
+                            for (var workflow in workflows) {
+                                $scope.blueprints[_getBlueprintIndex(data[i].blueprintId)].workflows.push(workflow);
+                            }
+                        }
                     }
                 });
         }
