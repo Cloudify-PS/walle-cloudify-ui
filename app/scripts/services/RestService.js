@@ -49,7 +49,7 @@ angular.module('cosmoUi')
             return _load('deployments/create', callParams);
         }
 
-        function _executeBlueprint(params) {
+        function _executeDeployment(params) {
             var callParams = {
                 url: '/backend/deployments/execute',
                 method: 'POST',
@@ -114,7 +114,7 @@ angular.module('cosmoUi')
         this.loadBlueprints = _loadBlueprints;
         this.addBlueprint = _addBlueprint;
         this.deployBlueprint = _deployBlueprint;
-        this.executeBlueprint = _executeBlueprint;
+        this.executeDeployment = _executeDeployment;
         this.loadEvents = _loadEvents;
         this.loadDeployments = _loadDeployments;
         this.getConfiguration = _getConfiguration;

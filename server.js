@@ -1,15 +1,5 @@
 'use strict';
 
-
-//var npid = require('npid');
-//
-//try {
-//    npid.create('RUNNING_PID');
-//} catch (err) {
-//    console.log(err);
-//    process.exit(1);
-//}
-
 /*
  * Express Dependencies
  */
@@ -24,15 +14,8 @@ var app = express();
 var port = 9001;
 var gsSettings = require("./backend/gsSettings");
 var conf = require("./backend/appConf");
-var fs = require('fs');
-var log4js = require('log4js');
-log4js.configure({
-    appenders: [
-        { type: 'console' },
-        { type: 'file', filename: __dirname + '/logs/gsui.log', category: 'gsui' }
-    ]
-});
-var logger = log4js.getLogger('server');
+var cloudify4node = require("./backend/Cloudify4node");
+
 console.log(JSON.stringify(conf));
 
 if (conf.cloudifyLicense !== 'tempLicense') {
@@ -44,16 +27,6 @@ app.use(express.cookieParser(/* 'some secret key to sign cookies' */ 'keyboardca
 app.use(express.bodyParser());
 app.use(express.compress());
 app.use(express.methodOverride());
-
-/*
- * App methods and libraries
- */
-//app.db = require('./lib/database');
-//app.api = require('./lib/api');
-
-// propagate app instance throughout app methods
-//app.api.use(app);
-
 
 /*
  * Set app settings depending on environment mode.
@@ -73,8 +46,6 @@ if (process.env.NODE_ENV === 'production' || process.argv[2] === 'production') {
 /*
  * Config
  */
-//app.set('views', __dirname + '/views');
-//app.set('view engine', 'jade');
 
 if (app.get('env') === 'development') {
     app.use(express.static(__dirname + '/.tmp'));
@@ -83,233 +54,51 @@ if (app.get('env') === 'development') {
     app.use(express.static(__dirname));
 }
 
-function createRequest(requestData) {
-    var callback = function(res) {
-        var data = '';
-        var result = '';
-
-        console.log('STATUS: ' + res.statusCode);
-
-        res.on('data', function (chunk) {
-            result += chunk;
-        });
-
-        res.on('end', function () {
-            var jsonStr = JSON.stringify(result);
-            data = JSON.parse(jsonStr);
-
-            logger.info(['Request done, data: ',data]);
-
-            requestData.response.send(data);
-        });
-    };
-
-    var onError = function(e) {
-        console.log(e);
-        console.log('problem with request: ' + e.message);
-        requestData.response.send(500);
-    };
-
-    logger.info(['dispatching request ', requestData.options]);
-    var req = ajax.request(requestData.options, callback);
-    req.on('error', onError);
-
-    if (requestData.post_data !== undefined) {
-        req.write(requestData.post_data);
-    }
-
-    req.write(JSON.stringify(requestData.request.body));
-    req.end();
-}
-
 // cosmo REST APIs
 
-
-
 app.get('/backend/blueprints', function(request, response, next) {
-    var requestData = {};
-    requestData.request = request;
-    requestData.response = response;
-    requestData.options = {
-        hostname: conf.cosmoServer,
-        port: conf.cosmoPort,
-        path: '/blueprints',
-        method: 'GET'
-    };
-
-    createRequest(requestData);
+    cloudify4node.getBlueprints(request, response);
 });
 
 app.post('/backend/blueprints/add', function(request, response){
-    var myFile = request.files.application_archive;
-    var host = 'http://' + conf.cosmoServer + ':' + conf.cosmoPort + "/blueprints";
-
-    fs.readFile(myFile.path, function(err, data) {
-        if (err) throw err;
-        var path = '/blueprints';
-        var options = {
-            hostname: conf.cosmoServer,
-            port: conf.cosmoPort,
-            path: path,
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/octet-stream',
-                'Transfer-Encoding': 'chunked'
-            }
-        };
-
-        var req = ajax.request(options, function(res) {
-            res.on('data', function (chunk) {
-                logger.debug('chunk: ' + JSON.stringify(data));
-            });
-
-            res.on('end', function() {
-                logger.debug('data: ' + JSON.stringify(data));
-                response.send(200);
-            });
-        });
-
-        req.on('error', function(e) {
-            console.log('problem with request: ' + e.message);
-        });
-
-        req.write(data);
-        req.end();
-    });
+    cloudify4node.addBlueprint(request, response);
 });
 
 app.get('/backend/blueprints/get', function(request, response) {
-    var requestData = {};
-    requestData.request = request;
-    requestData.response = response;
-    requestData.options = {
-        hostname: conf.cosmoServer,
-        port: conf.cosmoPort,
-        path: '/blueprints/' + request.query.id,
-        method: 'GET'
-    };
 
-    createRequest(requestData);
+    cloudify4node.getBlueprintById(request, response);
 });
 
 app.get('/backend/blueprints/validate', function(request, response) {
-    var requestData = {};
-    requestData.request = request;
-    requestData.response = response;
-    requestData.options = {
-        hostname: conf.cosmoServer,
-        port: conf.cosmoPort,
-        path: '/blueprints/' + request.query.id + '/validate',
-        method: 'GET'
-    };
-
-    createRequest(requestData);
+    cloudify4node.validateBlueprint(request, response);
 });
 
 app.get('/backend/executions', function(request, response) {
-    var requestData = {};
-    requestData.request = request;
-    requestData.response = response;
-    requestData.options = {
-        hostname: conf.cosmoServer,
-        port: conf.cosmoPort,
-        path: '/executions/' + request.query.executionId,
-        method: 'GET'
-    };
-
-    createRequest(requestData);
+    cloudify4node.getExecutionById(request, response);
 });
 
 app.get('/backend/deployments', function(request, response) {
-    var requestData = {};
-    requestData.request = request;
-    requestData.response = response;
-    requestData.options = {
-        hostname: conf.cosmoServer,
-        port: conf.cosmoPort,
-        path: '/deployments',
-        method: 'GET'
-    };
-
-    createRequest(requestData);
+    cloudify4node.getDeployments(request, response);
 });
 
 app.post('/backend/deployments/create', function(request, response) {
-    var requestData = {};
-    requestData.request = request;
-    requestData.response = response;
-    requestData.options = {
-        hostname: conf.cosmoServer,
-        port: conf.cosmoPort,
-        path: '/deployments',
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'Content-Length': JSON.stringify(requestData.request.body).length
-        }
-    };
-
-    createRequest(requestData);
+    cloudify4node.addDeployment(request, response);
 });
 
 app.get('/backend/deployments/get', function(request, response) {
-    var requestData = {};
-    requestData.request = request;
-    requestData.response = response;
-    requestData.options = {
-        hostname: conf.cosmoServer,
-        port: conf.cosmoPort,
-        path: '/executions/' + request.query.deploymentId,
-        method: 'GET'
-    };
-
-    createRequest(requestData);
+    cloudify4node.getDeploymentById(request, response);
 });
 
 app.get('/backend/deployments/executions/get', function(request, response) {
-    var requestData = {};
-    requestData.request = request;
-    requestData.response = response;
-    requestData.options = {
-        hostname: conf.cosmoServer,
-        port: conf.cosmoPort,
-        path: '/deployments/' + request.body.deploymentId + 'executions',
-        method: 'GET'
-    };
-
-    createRequest(requestData);
+    cloudify4node.getDeploymentExecutions(request, response);
 });
 
 app.post('/backend/deployments/execute', function(request, response) {
-    var requestData = {};
-    requestData.request = request;
-    requestData.response = response;
-    requestData.options = {
-        hostname: conf.cosmoServer,
-        port: conf.cosmoPort,
-        path: '/deployments/' + request.body.deploymentId + '/executions',
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'Content-Length': JSON.stringify(requestData.request.body).length
-        }
-    };
-
-    createRequest(requestData);
+    cloudify4node.executeDeployment(request, response);
 });
 
 app.post('/backend/events', function(request, response, next) {
-    var requestData = {};
-    requestData.request = request;
-    requestData.response = response;
-    requestData.options = {
-        hostname: conf.cosmoServer,
-        port: conf.cosmoPort,
-        path: '/deployments/' + request.body.deploymentId + '/events?from=' + request.body.from,
-        method: 'GET'
-    };
-
-    createRequest(requestData);
+    cloudify4node.getDeploymentEvents(request, response);
 });
 
 
@@ -361,10 +150,6 @@ if (app.get('env') === 'development') {
 // Since this is the last non-error-handling
 // middleware use()d, we assume 404, as nothing else
 // responded.
-
-// $ curl http://localhost:3000/notfound
-// $ curl http://localhost:3000/notfound -H "Accept: application/json"
-// $ curl http://localhost:3000/notfound -H "Accept: text/plain"
 
 app.use(function(req, res, next) {
     res.status(404);
