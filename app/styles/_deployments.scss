@@ -1,0 +1,71 @@
+#deployments{
+
+  .deploymentExecute {
+    color: $COSMOUI_DEPLOYMENT_EXECUTE_COLOR;
+  }
+
+  table {
+    width: $COSMOUI_LIST_WIDTH;
+    margin: $COSMOUI_LIST_MARGIN;
+
+    i {
+      color: $COSMOUI_EVENTS_LIST_ITEM_COLOR;
+    }
+
+    table {
+      tr:first-child td {
+        background: $COSMOUI_LIST_COLUMN_HEADER_BACKGROUND;
+        color: $COSMOUI_LIST_COLUMN_HEADER_TEXT_COLOR;
+        border-bottom: 2px solid #fff;
+      }
+
+      tr.hide {
+        display: none;
+      }
+
+      tr.show {
+        display: block;
+      }
+
+      tr {
+        cursor: $COSMOUI_POPUP_CURSOR;
+
+        td {
+          vertical-align: middle;
+          height: 60px;
+          border: none;
+          padding: 8px;
+          line-height: 1.42857;
+
+          table {
+            tr:first-child td {
+              background: #E5EFF7;
+              color: $COSMOUI_LIST_COLUMN_HEADER_TEXT_COLOR;
+              border-bottom: 2px solid #fff;
+            }
+
+            tr {
+              &:hover:not(:first-child) td{
+                background-color: $COSMOUI_LIST_HOVER_BACKGROUND;
+
+                &,i {color: $COSMOUI_LIST_HOVER_ACTION_TEXT_COLOR; }
+                i {font-weight: $COSMOUI_LIST_HOVER_ACTION_FONT_WEIGHT;}
+              }
+
+              td {
+                vertical-align: middle;
+                height: 60px;
+                color: #333;
+              }
+              &:not(:first-child) td.actions{
+                font-size:$COSMOUI_LIST_HOVER_ACTION_FONT_SIZE;
+                letter-spacing: $COSMOUI_LIST_HOVER_ACTION_LETTER_SPACING;
+              }
+            }
+          }
+
+        }
+      }
+    }
+  }
+}

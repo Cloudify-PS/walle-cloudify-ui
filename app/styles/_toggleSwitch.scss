@@ -1,53 +1,54 @@
 .toggle-switch {
-  float: right;
+  float: left;
   height: 20px;
-  margin-right: 14px;
+  margin-left: 14px;
 
   #toggle-switch-text {
     float: left;
     color: #4b6c8b;
-    font-size: 16px;
+    font-size: 14px;
   }
 
   #toggle-switch-button {
     float: left;
     border: 1px solid #cadbec;
     border-radius: 15px;
-    width: 55px;
-    height: 25px;
+    width: 50px;
+    height: 19px;
     margin-left: 5px;
     cursor: pointer;
 
     .toggle-switch-button-text {
       float: left;
-      font-size: 15px;
-      margin: 1px;
+      font-size: 13px;
+      margin-right: 2px;
+      margin-left: 2px;
     }
 
     #toggle-switch-button-circle {
       background: #29aaee;
-      width: 20px;
-      height: 20px;
+      width: 15px;
+      height: 15px;
       border-radius: 10px;
       margin: 1px;
     }
 
-    .on {
+    .true {
       float: right;
     }
 
-    .off {
+    .false {
       float: left;
     }
 
   }
 
-  .on {
+  .true {
     background: transparent;
     color: #4b6c8b;
   }
 
-  .off {
+  .false {
     background: #234E71;
     color: #fff;
   }

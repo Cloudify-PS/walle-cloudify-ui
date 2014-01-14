@@ -19,11 +19,11 @@ angular.module('cosmoUi')
             link: function (scope) {
 
                 scope.toggleButton = function() {
-                    scope.value = scope.value === 'on' ? 'off' : 'on';
+                    scope.value = scope.value === 'true' ? 'false' : 'true';
                 };
 
                 scope.isToggleOn = function() {
-                    return scope.value === true;
+                    return scope.value === 'true';
                 };
             }
         };

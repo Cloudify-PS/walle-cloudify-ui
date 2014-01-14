@@ -23,11 +23,8 @@ var ajax = require("http");
 var app = express();
 var port = 9001;
 var gsSettings = require("./backend/gsSettings");
-
 var conf = require("./backend/appConf");
-
-var rest = require('restler');
-var http = require('http');
+var fs = require('fs');
 var log4js = require('log4js');
 log4js.configure({
     appenders: [
@@ -145,14 +142,39 @@ app.get('/backend/blueprints', function(request, response, next) {
 
 app.post('/backend/blueprints/add', function(request, response){
     var myFile = request.files.application_archive;
-    var applicationFileName = request.body.application_file_name;
-    var host = 'http://' + conf.cosmoServer + ':' + conf.cosmoPort + "/blueprints?application_file_name=" + applicationFileName;
+    var host = 'http://' + conf.cosmoServer + ':' + conf.cosmoPort + "/blueprints";
 
-    rest.post(host, {
-        data: rest.file(myFile.path, myFile.name, myFile.size, null, 'application/gzip')
-    }).on('complete', function(data) {
-        logger.debug('data: ' + JSON.stringify(data));
-        response.send(200);
+    fs.readFile(myFile.path, function(err, data) {
+        if (err) throw err;
+        var path = '/blueprints';
+        var options = {
+            hostname: conf.cosmoServer,
+            port: conf.cosmoPort,
+            path: path,
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/octet-stream',
+                'Transfer-Encoding': 'chunked'
+            }
+        };
+
+        var req = ajax.request(options, function(res) {
+            res.on('data', function (chunk) {
+                logger.debug('chunk: ' + JSON.stringify(data));
+            });
+
+            res.on('end', function() {
+                logger.debug('data: ' + JSON.stringify(data));
+                response.send(200);
+            });
+        });
+
+        req.on('error', function(e) {
+            console.log('problem with request: ' + e.message);
+        });
+
+        req.write(data);
+        req.end();
     });
 });
 
@@ -205,7 +227,7 @@ app.get('/backend/deployments', function(request, response) {
     requestData.options = {
         hostname: conf.cosmoServer,
         port: conf.cosmoPort,
-        path: '/deployments/',
+        path: '/deployments',
         method: 'GET'
     };
 
@@ -265,7 +287,7 @@ app.post('/backend/deployments/execute', function(request, response) {
     requestData.options = {
         hostname: conf.cosmoServer,
         port: conf.cosmoPort,
-        path: '/deployments/' + request.body.workflowId + '/executions',
+        path: '/deployments/' + request.body.deploymentId + '/executions',
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -276,7 +298,7 @@ app.post('/backend/deployments/execute', function(request, response) {
     createRequest(requestData);
 });
 
-app.get('/backend/events', function(request, response, next) {
+app.post('/backend/events', function(request, response, next) {
     var requestData = {};
     requestData.request = request;
     requestData.response = response;

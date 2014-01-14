@@ -15,7 +15,7 @@
       display:"inline-block"
     }
   }
-  &.running-apps {
+  &.deployments {
     background-position: -40px 0px;
   }
   &.events {
@@ -63,5 +63,5 @@ $gs-icon-prefix:'gs-icon';
 .#{$gs-icon-prefix}-monitoring:before { content:"h"; }
 .#{$gs-icon-prefix}-networks:before { content:"i"; }
 .#{$gs-icon-prefix}-plans:before { content:"j"; }
-.#{$gs-icon-prefix}-running-apps:before { content:"k"; }
+.#{$gs-icon-prefix}-deployments:before { content:"k"; }
 .#{$gs-icon-prefix}-storage:before { content:"l"; }

@@ -1,4 +1,4 @@
-<div class="cosmo-layout" id="plans-index">
+<div class="cosmo-layout" id="blueprints-index">
     <div class="content-header">
         <div class="breadcrumbs">Blueprints</div>
         <div class="right">
@@ -13,20 +13,20 @@
             <td class="description">Description</td>
             <td class="actions">Action</td>
         </tr>
-        <tr ng-repeat="plan in plans">
-            <td class="icon"><i class="gs-icon-running-apps"></i></td>
-            <td class="name" ng-click="redirectTo(plan)">{{plan.name}}</td>
-            <td class="version">{{plan.version}}</td>
-            <td class="description">{{plan.description}}</td>
-            <td class="actions"><i id="plan-down" class="fa  fa-chevron-circle-down"></i><i class="fa  fa-play-circle-o" ng-click="executePlan(plan)" ng-class="{planExecute: isExecuting(plan.name)}"></i></td>
+        <tr ng-repeat="blueprint in blueprints">
+            <td class="icon"><i class="gs-icon-deployments"></i></td>
+            <td class="name" ng-click="redirectTo(blueprint)">{{blueprint.name}}</td>
+            <td class="version">{{blueprint.version}}</td>
+            <td class="description">{{blueprint.description}}</td>
+            <td class="actions"><button class="deploy-button" ng-click="deployBlueprint(blueprint)">Deploy</button><!--i id="blueprint-down" class="fa  fa-chevron-circle-down"></i><i class="fa  fa-play-circle-o" ng-click="deployBlueprint(blueprint)"></i--></td>
         </tr>
     </table>
     <div ng-show="isAddDialogVisible" ng-controller="PopupCtrl">
         <div id="popupBoxBg"></div>
         <div id="popupContainer">
         <div id="popupClose" class="formButton" ng-click="closeDialog()">X</div>
-        <div id="popupTitle">Add a Plan</div>
-        <div id="popupDescription">Some text that explains about adding a plan by using this dialog</div>
+        <div id="popupTitle">Add a Blueprint</div>
+        <div id="popupDescription">Some text that explains about adding a blueprint by using this dialog</div>
         <form id="uploadForm" name="uploadForm">
             <div id="browse">
                 <div id="browseBtn" class="formButton">Browse</div>
