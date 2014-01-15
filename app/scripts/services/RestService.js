@@ -59,12 +59,6 @@ angular.module('cosmoUi')
             return _load('deployments/execute', callParams);
         }
 
-        /**
-         *
-         * @param params { id: _id, from: _from }
-         * @returns {*}
-         * @private
-         */
         function _loadEvents(params) {
             var deferred = $q.defer();
 
