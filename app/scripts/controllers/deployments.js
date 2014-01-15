@@ -3,7 +3,7 @@
 angular.module('cosmoUi')
     .controller('DeploymentsCtrl', function ($scope, RestService, $cookieStore, $location) {
 
-        $scope.blueprints = RestService.getBlueprints();
+        $scope.blueprints = [];
         $scope.selectedBlueprint = '';
 
         $scope.showDeployments = function(blueprintId) {
@@ -31,12 +31,21 @@ angular.module('cosmoUi')
         };
 
         function _loadDeployments() {
-            RestService.loadDeployments()
+            RestService.getBlueprints()
                 .then(function(data) {
-                    for (var i = 0; i < data.length; i++) {
-                        $scope.blueprints[_getBlueprintIndex(data[i].blueprintId)].deployments.push(data[i]);
-                    }
+                    $scope.blueprints = data;
+                    RestService.loadDeployments()
+                        .then(function(data) {
+                            for (var i = 0; i < data.length; i++) {
+                                var blueprint = $scope.blueprints[_getBlueprintIndex(data[i].blueprintId)];
+                                if (blueprint.deployments === undefined) {
+                                    blueprint.deployments = [];
+                                }
+                                blueprint.deployments.push(data[i]);
+                            }
+                        });
                 });
+
         }
 
         function _getBlueprintIndex(blueprintId) {

@@ -171,7 +171,7 @@ Cloudify4node.addDeployment = function(request, response) {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
-            'Content-Length': JSON.stringify(requestData.request.body).length
+            'Content-Length': JSON.stringify(request.body).length
         }
     });
 

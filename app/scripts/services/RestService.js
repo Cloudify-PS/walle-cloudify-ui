@@ -37,6 +37,9 @@ angular.module('cosmoUi')
         }
 
         function _getBlueprints() {
+            if (_blueprints.length === 0) {
+                _loadBlueprints();
+            }
             return _blueprints;
         }
 
