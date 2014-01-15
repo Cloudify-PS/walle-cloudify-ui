@@ -31,7 +31,7 @@ angular.module('cosmoUi')
         };
 
         function _loadDeployments() {
-            RestService.getBlueprints()
+            RestService.loadBlueprints()
                 .then(function(data) {
                     $scope.blueprints = data;
                     RestService.loadDeployments()

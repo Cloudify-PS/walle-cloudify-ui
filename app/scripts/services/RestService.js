@@ -32,15 +32,7 @@ angular.module('cosmoUi')
         }
 
         function _loadBlueprints() {
-            _blueprints = _load('blueprints');
-            return _blueprints;
-        }
-
-        function _getBlueprints() {
-            if (_blueprints.length === 0) {
-                _loadBlueprints();
-            }
-            return _blueprints;
+            return _load('blueprints');;
         }
 
         function _addBlueprint(params) {
@@ -120,7 +112,6 @@ angular.module('cosmoUi')
         }
 
         this.loadBlueprints = _loadBlueprints;
-        this.getBlueprints = _getBlueprints;
         this.addBlueprint = _addBlueprint;
         this.deployBlueprint = _deployBlueprint;
         this.executeDeployment = _executeDeployment;
