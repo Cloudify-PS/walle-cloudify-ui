@@ -55,6 +55,6 @@ angular.module('cosmoUi')
         };
 
         $scope.isUploadEnabled = function() {
-            return ($scope.selectedFile !== null && !$scope.uploadInProcess);
+            return ($scope.selectedFile !== '' && !$scope.uploadInProcess);
         };
     });
