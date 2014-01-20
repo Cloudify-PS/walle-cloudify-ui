@@ -50,8 +50,8 @@ html, body, .layout{ height:100%; width:100%; position:relative; }
   left: 10px;
   width: 142px;
   height: 58px;
-  background: url('/images/logo.new.png') no-repeat center center;
-  float: left;
+  background: url('/images/svg/cloudify-logo.svg') 50% 50% no-repeat;
+  background-size: contain;
 }
 
 .search-box {

@@ -14,6 +14,7 @@ var mountFolder = function (connect, dir) {
 // 'test/spec/**/*.js'
 
 module.exports = function (grunt) {
+
     // load all grunt tasks
     require('matchdep').filterDev('grunt-*').forEach(grunt.loadNpmTasks);
 
@@ -343,6 +344,18 @@ module.exports = function (grunt) {
                     ]
                 }
             }
+        },
+        grunticon: {
+            svg: {
+                files: [{
+                    expand: true,
+                    cwd: '<%= yeoman.dist %>/images/svg',
+                    src: ['*.svg'],
+                    dest: '<%= yeoman.dist %>/images/svg'
+                }],
+                options: {
+                }
+            }
         }
     });
 
@@ -377,6 +390,7 @@ module.exports = function (grunt) {
         'ngmin',
         'cssmin',
         'uglify',
+        'grunticon:svg',
         'rev',
         'usemin'
     ]);
