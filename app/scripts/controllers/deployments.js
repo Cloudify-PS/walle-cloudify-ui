@@ -18,6 +18,7 @@ angular.module('cosmoUi')
             RestService.executeBlueprint({'deploymentId': deployment.id, 'workflowId': selectedWorkflow});
             $cookieStore.remove('deploymentId');
             $cookieStore.put('deploymentId', deployment.id);
+            $scope.redirectTo(deployment);
         };
 
         $scope.isExecuting = function(deploymentId) {
