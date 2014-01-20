@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('cosmoUi')
-    .controller('DeploymentsCtrl', function ($scope, RestService, $cookieStore, $location) {
+    .controller('DeploymentsCtrl', function ($scope, RestService, $cookieStore, $location, $routeParams) {
 
         $scope.blueprints = $cookieStore.get('blueprints');
         $scope.selectedBlueprint = '';
@@ -59,4 +59,8 @@ angular.module('cosmoUi')
         }
 
         _loadDeployments();
+
+        if ($routeParams.blueprint !== undefined) {
+            $scope.showDeployments($routeParams.blueprint.id);
+        }
     });

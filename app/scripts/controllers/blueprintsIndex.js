@@ -29,6 +29,7 @@ angular.module('cosmoUi')
             RestService.deployBlueprint(blueprint.id)
                 .then(function(deployment) {
                     $cookieStore.put('deploymentId', deployment.id);
+                    $location.path('/deployments').search({blueprint: blueprint});
                 });
         };
 
