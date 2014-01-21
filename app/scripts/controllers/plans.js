@@ -1,7 +1,13 @@
 'use strict';
 
 angular.module('cosmoUi')
-    .controller('PlansCtrl', function ($scope, YamlService, Layout, Render, $routeParams) {
+    .controller('PlansCtrl', function ($scope, YamlService, Layout, Render, $routeParams, BreadcrumbsService) {
+
+        BreadcrumbsService.push('blueprint',
+            {
+                href: '#/',
+                label: 'blueprint'
+            });
 
         var planData/*:PlanData*/ = null;
 
