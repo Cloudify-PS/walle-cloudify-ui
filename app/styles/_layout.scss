@@ -50,7 +50,9 @@ html, body, .layout{ height:100%; width:100%; position:relative; }
   left: 10px;
   width: 142px;
   height: 58px;
-  background: url('/images/svg/cloudify-logo.svg') 50% 50% no-repeat;
+  background-position: 50% 50%;
+  background-repeat: no-repeat;
+  background-image: url('/images/svg/cloudify-logo.svg');
   background-size: contain;
 }
 

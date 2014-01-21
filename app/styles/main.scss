@@ -1,3 +1,6 @@
+/** Theme **/
+@import './whitelabel';
+
 /** Common **/
 @import './variables';
 @import './fonts';
@@ -8,14 +11,14 @@
 @import './eventsWidget';
 @import './appStatusWidget';
 
-/** Fonts **/
-@import "../bower_components/bootstrap-sass/lib/bootstrap";
+@import '../bower_components/bootstrap-sass/lib/bootstrap';
 
 $gs-infra-root:'../bower_components/gs-ui-infra';
-@import "../bower_components/gs-ui-infra/app/styles/main.scss";
+@import '../bower_components/gs-ui-infra/app/styles/main.scss';
 
+/** Fonts **/
 $fa-font-path:'../bower_components/font-awesome/fonts';
-@import "../bower_components/font-awesome/scss/font-awesome";
+@import '../bower_components/font-awesome/scss/font-awesome';
 
 /** Pages **/
 @import './blueprintsIndex';
@@ -26,6 +29,6 @@ $fa-font-path:'../bower_components/font-awesome/fonts';
 @import './config';
 
 
-
-
-
+@import './whitelabelImagesSvg';
+//@import './whitelabelImagesPng';
+//@import './whitelabelImagesFallback';

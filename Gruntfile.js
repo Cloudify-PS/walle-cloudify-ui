@@ -271,9 +271,24 @@ module.exports = function (grunt) {
                             '.htaccess',
                             'bower_components/**/*.{ttf,svg,gif,png}',
                             'images/{,*/}*.{gif,webp,svg}',
-                            'styles/fonts/*',
-
+                            'styles/fonts/*'
                         ]
+                    },
+                    // grunticon generated stylesheets
+                    // TODO we should probably also copy these stylesheets to the dist folder
+                    {
+                        expand: true,
+                        cwd: '<%= yeoman.app %>/grunticon-dist',
+                        dest: '<%= yeoman.app %>/styles',
+                        src: [
+                            '**/*.css'
+                        ],
+                        // change the file extension, and prefix with an underscore to stick to sass conventions
+                        // in order to comfortably import these files to the main sass stylesheet
+                        ext: '.scss',
+                        rename:  function (dest, src) {
+                            return dest + '/_' + src;
+                        }
                     },
                     {
                         expand: true,
@@ -346,14 +361,34 @@ module.exports = function (grunt) {
             }
         },
         grunticon: {
-            svg: {
+            whitelabel: {
                 files: [{
                     expand: true,
-                    cwd: '<%= yeoman.dist %>/images/svg',
+                    cwd: '<%= yeoman.app %>/images/svg',
                     src: ['*.svg'],
-                    dest: '<%= yeoman.dist %>/images/svg'
+                    dest: '<%= yeoman.app %>/grunticon-dist'
                 }],
                 options: {
+
+                    // SVGO compression, false is the default, true will make it so
+                    svgo: true,
+
+                    // CSS filenames: we don't want to change the file extension just yet, as these files can be
+                    // statically imported to preview the icons, just change the file name to our benefit
+                    datasvgcss: "whitelabelImagesSvg.css",
+                    datapngcss: "whitelabelImagesPng.css",
+                    urlpngcss: "whitelabelImagesFallback.css",
+
+                    // prefix for CSS classnames: avoid the default '.icon-' prefix to prevent collisions with bootstrap styles
+                    cssprefix: ".whitelabel-"
+
+                    // NOTE: the colors option is broken at the moment, see this issue: https://github.com/filamentgroup/grunticon/issues/113
+/*
+                    // define vars that can be used in filenames if desirable, like foo.colors-redlabel.svg
+                    colors: {
+                        redlabel: "#666"
+                    }
+*/
                 }
             }
         }
@@ -386,11 +421,11 @@ module.exports = function (grunt) {
         'useminPrepare',
         'concurrent:dist',
         'concat',
+        'grunticon',
         'copy',
         'ngmin',
         'cssmin',
         'uglify',
-        'grunticon:svg',
         'rev',
         'usemin'
     ]);

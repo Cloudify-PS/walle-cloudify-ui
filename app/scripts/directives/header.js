@@ -3,7 +3,7 @@
 angular.module('cosmoUi')
     .directive('header', function () {
         return {
-            template: '<div class="logo"></div>' +
+            template: '<div class="logo" ng-class="whitelabelClassname(\'cloudify-logo\')"></div>' +
                 '<!--div class="current-user">' +
                     '<div id="user-icon"></div> ' +
                     '<div id="user-name">{{loggedUser.name}}</div> ' +
@@ -26,6 +26,14 @@ angular.module('cosmoUi')
                 scope.logout = function() {
                     console.log('logout');
                 };
+
+                // TODO function to service, scope holds binded variable only
+                scope.whitelabelClassname = function (filename) {
+                    // TODO from server (use variable in gruntfile AND in whitelabel service)
+                    var whitelabelPrefix = 'whitelabel-';
+                    var whitelabelColorSuffix = '-0'; // may be absent
+                    return whitelabelPrefix + filename + whitelabelColorSuffix;
+                }
             }
         };
     });
