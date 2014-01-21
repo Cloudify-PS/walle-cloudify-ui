@@ -3,12 +3,6 @@
 angular.module('cosmoUi')
     .controller('PlansCtrl', function ($scope, YamlService, Layout, Render, $routeParams, BreadcrumbsService) {
 
-        BreadcrumbsService.push('blueprint',
-            {
-                href: '#/',
-                label: 'blueprint'
-            });
-
         var planData/*:PlanData*/ = null;
 
 //        yamlService.getFilesList('/', function(data) {
@@ -28,6 +22,13 @@ angular.module('cosmoUi')
 
         $scope.renderer = Render.Topology.D3;
         $scope.layouter = Layout.Topology.Tensor.init({'xyPositioning': 'relative'});
+
+        BreadcrumbsService.push('blueprint',
+            {
+                href: '#/blueprint?' + $scope.planName,
+                label: $scope.planName
+            });
+
         YamlService.load($routeParams.id, function (err, data) {
             planData = data;
             $scope.graph = data.getJSON();

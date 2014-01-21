@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('cosmoUi')
-    .controller('DeploymentCtrl', function ($scope, $cookieStore, $routeParams, RestService) {
+    .controller('DeploymentCtrl', function ($scope, $cookieStore, $routeParams, RestService, BreadcrumbsService) {
         $scope.events = [];
         $scope.section = 'topology';
         $scope.deployment = JSON.parse($routeParams.deployment);
@@ -31,6 +31,12 @@ angular.module('cosmoUi')
         var id = $scope.deployment.id;
         var from = 0;
         var to = 5;
+
+        BreadcrumbsService.push('deployment',
+            {
+                href: '#/deployment?' + id,
+                label: $scope.deployment.name
+            });
 
         $scope.getEventClass = function(event) {
             return _getCssMapField( event, 'class');

@@ -34,7 +34,11 @@ angular.module('cosmoUi')
     .directive('breadcrumbs', function(BreadcrumbsService) {
     return {
         restrict: 'EA',
-        template: '<ul><li ng-repeat=\'bc in breadcrumbs\' ng-class="{\'active\': {{$last}} }"><a ng-click="unregisterBreadCrumb( $index )" ng-href="{{bc.href}}">{{bc.label}}</a><span class="divider" ng-show="! $last">|</span></li></ul>',
+        template: '<ul>' +
+                '<li ng-repeat=\'bc in breadcrumbs\' ng-class="{\'active\': {{$last}} }">' +
+                    '<a ng-click="unregisterBreadCrumb( $index )" ng-href="{{bc.href}}">{{bc.label}}</a>' +
+                '</li>' +
+            '</ul>',
         replace: true,
         compile: function() {
             return function($scope, $elem, $attr) {
@@ -46,14 +50,16 @@ angular.module('cosmoUi')
                         });
                     };
                 resetCrumbs();
-                $scope.unregisterBreadCrumb = function( index ) {
-                    BreadcrumbsService.setLastIndex( bc_id, index );
+
+                $scope.unregisterBreadCrumb = function(index) {
+                    BreadcrumbsService.setLastIndex(bc_id, index);
                     resetCrumbs();
                 };
-                $scope.$on( 'breadcrumbsRefresh', function() {
-                    console.log( '$on' );
+
+                $scope.$on('breadcrumbsRefresh', function() {
+                    console.log('$on breadcrumbsRefresh');
                     resetCrumbs();
-                } );
+                });
             };
         }
     };

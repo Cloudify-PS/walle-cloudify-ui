@@ -1,10 +1,16 @@
 'use strict';
 
 angular.module('cosmoUi')
-    .controller('DeploymentsCtrl', function ($scope, RestService, $cookieStore, $location, $routeParams) {
+    .controller('DeploymentsCtrl', function ($scope, RestService, $cookieStore, $location, $routeParams, BreadcrumbsService) {
 
         $scope.blueprints = $cookieStore.get('blueprints');
         $scope.selectedBlueprint = '';
+
+        BreadcrumbsService.push('deployments',
+            {
+                href: '#/deployments',
+                label: 'Deployments'
+            });
 
         $scope.showDeployments = function(blueprintId) {
             if (blueprintId === $scope.selectedBlueprint) {
