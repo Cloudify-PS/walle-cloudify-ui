@@ -1,18 +1,9 @@
 'use strict';
 
 angular.module('cosmoUi')
-    .directive('header', function () {
+    .directive('header', ['WhiteLabel', function (WhiteLabel) {
         return {
-            template: '<div class="logo" ng-class="whitelabelClassname(\'cloudify-logo\')"></div>' +
-                '<!--div class="current-user">' +
-                    '<div id="user-icon"></div> ' +
-                    '<div id="user-name">{{loggedUser.name}}</div> ' +
-                    '<div id="logout-button" ng-click="logout()"></div> ' +
-                '</div> ' +
-                '<div class="search-box">' +
-                    '<input type="text" id="search-field" placeholder="Search on Cloudify..">' +
-                    '<input type="button" id="search-submit" ng-click="searchCloudify()">' +
-                '</div--> ',
+            templateUrl: 'views/headerTemplate.html',
             restrict: ' A',
             link: function postLink(scope, element) {
                 scope.loggedUser = {
@@ -27,13 +18,9 @@ angular.module('cosmoUi')
                     console.log('logout');
                 };
 
-                // TODO function to service, scope holds binded variable only
-                scope.whitelabelClassname = function (filename) {
-                    // TODO from server (use variable in gruntfile AND in whitelabel service)
-                    var whitelabelPrefix = 'whitelabel-';
-                    var whitelabelColorSuffix = '-0'; // may be absent
-                    return whitelabelPrefix + filename + whitelabelColorSuffix;
-                }
+                scope.classname = function (filename) {
+                    return WhiteLabel.classname(filename);
+                };
             }
         };
-    });
+    }]);

@@ -1,47 +1,65 @@
-*{ padding:0; margin:0;}
+* {
+  padding: 0;
+  margin: 0;
+}
 
-html, body, .layout{ height:100%; width:100%; position:relative; }
+html, body, .layout {
+  height: 100%;
+  width: 100%;
+  position: relative;
+}
 
-.layout{
-  margin:            0 auto;
-  min-width:         600px;
-  min-height:        100%;
-  height:            100%;
-  background:   $COSMOUI_BACKGROUND;
+.layout {
+  margin: 0 auto;
+  min-width: 600px;
+  min-height: 100%;
+  height: 100%;
+  background: $COSMOUI_BACKGROUND;
   font-family: "OpenSansRegular";
 }
 
-.layout[class]{
-  height:            auto;
-  overflow:          hidden;
+.layout[class] {
+  height: auto;
+  overflow: hidden;
 }
-#header{ height: $HEADER_HEIGHT; background: $COSMOUI_BACKGROUND}
 
-#footer{ height:$FOOTER_HEIGHT; margin-top:-$FOOTER_HEIGHT; background : $FOOTER_BACKGROUND }
+#header {
+  height: $HEADER_HEIGHT;
+  background: $COSMOUI_BACKGROUND
+}
 
-#footer[id]{z-index:100; position:relative;}
+#footer {
+  height: $FOOTER_HEIGHT;
+  margin-top: -$FOOTER_HEIGHT;
+  background: $FOOTER_BACKGROUND
+}
+
+#footer[id] {
+  z-index: 100;
+  position: relative;
+}
 
 #fix {
   height: $FOOTER_HEIGHT;
   clear: both;
-  background-color:yellow;
+  background-color: yellow;
 }
 
-#left-side-menu{
-  width:             $LEFT_MENU_WIDTH;
-  float:             left;
-  background:white;
-  padding-bottom:    32000px;
-  margin-bottom:    -32000px;
+#left-side-menu {
+  width: $LEFT_MENU_WIDTH;
+  float: left;
+  background: white;
+  padding-bottom: 32000px;
+  margin-bottom: -32000px;
   margin-right: 10px;
 }
 
-#right-side-menu{
-  width:             $RIGHT_MENU_WIDTH;
-  background:        $RIGHT_MENU_BACKGROUND;
-  padding-bottom:    32000px;
-  margin-bottom:    -32000px;
-  float:             right;
+#right-side-menu {
+  width: $RIGHT_MENU_WIDTH;
+  background: $RIGHT_MENU_BACKGROUND;
+  padding-bottom: 32000px;
+  margin-bottom: -32000px;
+  float: right;
 }
 
 .logo {
@@ -52,7 +70,7 @@ html, body, .layout{ height:100%; width:100%; position:relative; }
   height: 58px;
   background-position: 50% 50%;
   background-repeat: no-repeat;
-  background-image: url('/images/svg/cloudify-logo.svg');
+  //background-image: url("/images/svg/cloudify-logo.svg");
   background-size: contain;
 }
 
@@ -78,7 +96,7 @@ html, body, .layout{ height:100%; width:100%; position:relative; }
   #search-submit {
     width: 20px;
     height: 20px;
-    background: url(/images/search.svg) no-repeat center center;
+    background: url("/images/svg/search.svg") no-repeat center center;
     position: absolute;
     top: 5px;
     left: 5px;
@@ -97,7 +115,7 @@ html, body, .layout{ height:100%; width:100%; position:relative; }
   #user-icon {
     width: 18px;
     height: 18px;
-    background: url(/images/user.svg) no-repeat center center;
+    background: url("/images/svg/user.svg") no-repeat center center;
     position: relative;
     top: 0px;
     left: 0px;
@@ -119,7 +137,7 @@ html, body, .layout{ height:100%; width:100%; position:relative; }
     position: relative;
     top: 0px;
     right: 5px;
-    background: url(/images/logout.svg) no-repeat center center;
+    background: url("/images/svg/logout.svg") no-repeat center center;
     float: right;
     cursor: pointer;
   }
@@ -135,16 +153,15 @@ html, body, .layout{ height:100%; width:100%; position:relative; }
 
 #main-content-panel {
   background: $COSMOUI_MAIN_CONTENT_BACKGROUND;
-  width:100%;
-  min-height:900px;
+  width: 100%;
+  min-height: 900px;
 }
 
-.content-header{
+.content-header {
 
-  height:66px;
+  height: 66px;
   padding: 10px 20px;
   vertical-align: middle;
-
 
   padding-bottom: 20px;
   border-bottom: 3px solid $COSMOUI_MAIN_CONTENT_TITLE_SEPERATOR_COLOR;
@@ -152,36 +169,44 @@ html, body, .layout{ height:100%; width:100%; position:relative; }
   width: 98%;
   margin: 0 auto 0px auto;
 
-  .breadcrumbs{
-    color:$COSMOUI_CONTENT_TITLE_COLOR;
-    font-size:30px;
-    float:left;
-    ul,li{ list-style:none; margin:0; padding:0; }
-    li { display:inline-block; padding-right:5px; padding-left:5px;}
-    li:not(:last-child):after{
-      display:inline-block;
-      content:"\f054";
+  .breadcrumbs {
+    color: $COSMOUI_CONTENT_TITLE_COLOR;
+    font-size: 30px;
+    float: left;
+    ul, li {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+    li {
+      display: inline-block;
+      padding-right: 5px;
+      padding-left: 5px;
+    }
+    li:not(:last-child):after {
+      display: inline-block;
+      content: "\f054";
       font-family: "FontAwesome";
-      padding-left:5px;
+      padding-left: 5px;
     }
   }
-  .right{
-    float:right;
+  .right {
+    float: right;
 
-    .gs-btn{
-      color:white;
+    .gs-btn {
+      color: white;
       font-weight: bold;
-      padding:5px 10px 5px 10px ;
+      padding: 5px 10px 5px 10px;
       background-color: $COSMOUI_BUTTON_BACKGROUND;
       border-radius: 3px;
-      border-bottom:1px solid $COSMOUI_BUTTON_BOTTOM_BORDER_COLOR;
-      border-right:1px solid $COSMOUI_BUTTON_RIGHT_BORDER_COLOR;
-      border-top:none;
-      border-left:none;
+      border-bottom: 1px solid $COSMOUI_BUTTON_BOTTOM_BORDER_COLOR;
+      border-right: 1px solid $COSMOUI_BUTTON_RIGHT_BORDER_COLOR;
+      border-top: none;
+      border-left: none;
     }
   }
 }
 
-.right-panel{
-  width:400px;
+.right-panel {
+  width: 400px;
 }

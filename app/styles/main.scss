@@ -1,4 +1,5 @@
-/** Theme **/
+
+/** White Labeling **/
 @import './whitelabel';
 
 /** Common **/
@@ -27,8 +28,3 @@ $fa-font-path:'../bower_components/font-awesome/fonts';
 @import './deployments';
 @import './deployment';
 @import './config';
-
-
-@import './whitelabelImagesSvg';
-//@import './whitelabelImagesPng';
-//@import './whitelabelImagesFallback';

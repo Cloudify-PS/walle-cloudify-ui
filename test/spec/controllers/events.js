@@ -3,7 +3,7 @@
 describe('Controller: EventsCtrl', function () {
 
   // load the controller's module
-  beforeEach(module('cosmoUiApp'));
+  beforeEach(module('cosmoUi'));
 
   var EventsCtrl,
     scope;
