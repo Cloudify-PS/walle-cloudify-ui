@@ -3,5 +3,8 @@
         "redlabel": "#ff5555"
     },
     "classnamePrefix": "whitelabel-",
-    "colorSuffix": "-redlabel"
+    "colorSuffix": "-redlabel",
+    "TODO": [
+        "find another method to define colorSuffix, this is a redundancy here"
+    ]
 }
