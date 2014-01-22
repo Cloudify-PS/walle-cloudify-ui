@@ -9,10 +9,16 @@ angular.module('ngBreadcrumbs', []).factory('BreadcrumbsService', function($root
         }
     };
 
+    function checkIdExists(id) {
+        return data[id].length > 0;
+    }
+
     return {
         push: function(id, item) {
             ensureIdIsRegistered(id);
-            data[id].push(item);
+             if (!checkIdExists(id)) {
+                 data[id].push(item);
+             }
             console.log('$broadcast breadcrumbsRefresh');
             $rootScope.$broadcast('breadcrumbsRefresh');
         },
