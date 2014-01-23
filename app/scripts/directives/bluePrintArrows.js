@@ -124,7 +124,7 @@ angular.module("cosmoUi")
         /*************
          * Init
          */
-        $timeout(updateData, 1000);
+        $timeout(updateData, 1500);
 
         /*************
          * Api method to fire the update method

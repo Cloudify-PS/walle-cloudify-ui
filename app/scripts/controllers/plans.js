@@ -1,11 +1,12 @@
 'use strict';
 
 angular.module('cosmoUi')
-    .controller('PlansCtrl', function ($scope, YamlService, $routeParams, PlanDataConvert, blueprintCoordinateService) {
+    .controller('PlansCtrl', function ($scope, YamlService, $routeParams, PlanDataConvert, blueprintCoordinateService, $timeout) {
 
         var planData/*:PlanData*/ = null;
         $scope.section = "general";
         $scope.planName = $routeParams.name;
+        $scope.toggleView = false;
 
         $scope.toggleBar = {
             "compute": true,
@@ -13,6 +14,23 @@ angular.module('cosmoUi')
             "modules": true,
             "connections": true
         };
+
+        $scope.piProgress1 = {
+            "succeed": 20,
+            "error": 45,
+            "warning": 35
+        }
+
+        $scope.piProgress2 = {
+            "progress": 5
+        }
+
+        var progressDemo = function() {
+            $scope.piProgress2['progress']++;
+            if($scope.piProgress2['progress'] < 85)
+                $timeout(progressDemo, 30);
+        }
+        $timeout(progressDemo, 2000);
 
         YamlService.load($routeParams.id, function (err, data) {
 

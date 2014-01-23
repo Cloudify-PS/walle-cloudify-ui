@@ -1,0 +1,37 @@
+.piProgress {
+    position: relative;
+    display: inline-block;
+    .circle {
+        position: absolute;
+        display: box;
+        box-pack: center;
+        box-align: center;
+        background-color: #46b8da;
+        color: white;
+        font-size: 100%;
+        cursor: pointer;
+        p {
+            margin: 0px;
+        }
+        p::after {
+            content: "%";
+        }
+    }
+    .shadow {
+        position: absolute;
+        top: 0;
+        left: 0;
+    }
+    path.progress {
+        fill: #cce80b;
+    }
+    path.succeed {
+        fill: #cce80b;
+    }
+    path.error {
+        fill: #d54931;
+    }
+    path.warning {
+        fill: #feb300;
+    }
+}

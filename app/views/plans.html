@@ -30,8 +30,7 @@
     </div>
 
     <!-- Blueprint Contianter - START -->
-
-    <div class="bpContainer" blueprint:resize data-ng-class="{
+    <div class="bpContainer" ng-show="toggleView" blueprint:resize data-ng-class="{
         disableCompute: !toggleBar.compute,
         disableMiddleware: !toggleBar.middleware,
         disableModules: !toggleBar.modules,
@@ -45,11 +44,16 @@
                     </ul>
                 </div>
             </div>
-            <i class="icon topology-glyph host">
-                <div class="badge">2/4</div>
-            </i>
+            <div pie:progress="piProgress2" class="piProgress" size="51">
+                <div class="shadow"></div>
+                <div class="circle">
+                    <i class="icon topology-glyph host"></i>
+                    <!--<div class="badge">2/4</div>-->
+                </div>
+            </div>
             <div class="head">{{ indexNodes[rootNode.id].name }}</div>
             <div class="holder">
+                <!-- Middleware::start -->
                 <div data-type="middleware" data-ng-repeat="subNode in rootNode.children" class="box" blueprint:coordinate="subNode.id">
                     <div class="hoverup">
                         <div class="buttons">
@@ -58,11 +62,16 @@
                             </ul>
                         </div>
                     </div>
-                    <i class="icon topology-glyph app-server">
-                        <div class="badge">2/4</div>
-                    </i>
+                    <div pie:progress="piProgress2" class="piProgress" size="51">
+                        <div class="shadow"></div>
+                        <div class="circle">
+                            <i class="icon topology-glyph app-server"></i>
+                            <!--<div class="badge">2/4</div>-->
+                        </div>
+                    </div>
                     <div class="head">{{ indexNodes[subNode.id].name }}</div>
                     <div class="holder">
+                        <!-- Module::start -->
                         <div data-type="modules" data-ng-repeat="appNode in subNode.children" class="app">
                             <div class="hoverup">
                                 <div class="buttons">
@@ -71,18 +80,79 @@
                                     </ul>
                                 </div>
                             </div>
-                            <i class="icon topology-glyph app-module" blueprint:coordinate="appNode.id">
-                                <div class="badge">2/4</div>
-                            </i>
+                            <div pie:progress="piProgress2" class="piProgress" size="51">
+                                <div class="shadow"></div>
+                                <div class="circle" blueprint:coordinate="appNode.id">
+                                    <i class="icon topology-glyph app-module"></i>
+                                    <!--<div class="badge">2/4</div>-->
+                                </div>
+                            </div>
                             <p>{{ indexNodes[appNode.id].name }}</p>
                         </div>
+                        <!-- Module::end -->
                     </div>
                 </div>
+                <!-- Middleware::end -->
             </div>
         </div>
         <div class="coordinates" blueprint:arrows="coordinates"></div>
     </div>
     <!-- Blueprint Contianter - END -->
+
+    <!-- Network Topology - START -->
+    <div class="networksContainer" ng-show="!toggleView">
+        <div bp:networks class="relations"></div>
+
+        <div class="network">
+            <div class="devices">
+                <div class="device" bp:network:coordinate="4" type="subnet" color="#149bdf">
+                    <i class="topology-glyph app-server"></i>
+                </div>
+            </div>
+        </div>
+
+        <div class="network">
+            <div class="line">
+                <div class="name">Network Name</div>
+                <div class="subnet" bp:network:coordinate="1" type="subnet" color="#149bdf">
+                    <p>Subnet Name</p>
+                    <p class="cidr">10.0.0.0/24</p>
+                </div>
+                <div class="subnet red" bp:network:coordinate="3" type="subnet" color="#d54931">
+                    <p>Subnet Name</p>
+                    <p class="cidr">168.192.0.55/24</p>
+                </div>
+            </div>
+            <div class="devices">
+                <div class="device" bp:network:coordinate="2" type="device">
+                    <i class="topology-glyph app-server"></i>
+                </div>
+                <div class="device" bp:network:coordinate="5" type="device">
+                    <i class="topology-glyph app-server"></i>
+                </div>
+            </div>
+        </div>
+
+        <div class="network">
+            <div class="line">
+                <div class="name">Private Network</div>
+                <div class="subnet orange" bp:network:coordinate="6" type="subnet" color="#f89406">
+                    <p>Subnet Name</p>
+                    <p class="cidr">192.0.0.1/24</p>
+                </div>
+            </div>
+            <div class="devices">
+                <div class="device" bp:network:coordinate="7" type="device">
+                    <i class="topology-glyph app-server"></i>
+                </div>
+                <div class="device" bp:network:coordinate="8" type="device">
+                    <i class="topology-glyph app-server"></i>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <!-- Network Topology - END -->
 
 </div>
 
