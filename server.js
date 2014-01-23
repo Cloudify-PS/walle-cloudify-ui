@@ -99,7 +99,7 @@ app.get('/backend/deployments', function(request, response) {
 });
 
 app.post('/backend/deployments/create', function(request, response) {
-    cloudify4node.addDeployment(request, response, function(err, data) {
+    cloudify4node.addDeployment(request.body, function(err, data) {
         response.send(data);
     });
 });

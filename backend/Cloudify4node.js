@@ -45,17 +45,16 @@ function createRequest(requestData, callback) {
     var req = ajax.request(requestData.options, _callback);
     req.on('error', onError);
 
-    if (requestData.post_data !== undefined) {
-        req.write(requestData.post_data);
-    }
 
-    console.log(requestData);
+    if (requestData.post_data !== undefined) {
+        req.write(JSON.stringify(requestData.post_data));
+    }
 
     req.write(JSON.stringify(requestData));
     req.end();
 }
 
-function createRequestData( options) {
+function createRequestData(options) {
     var requestData = {};
 
     if (options !== undefined) {
@@ -65,6 +64,10 @@ function createRequestData( options) {
             path: options.path,
             method: options.method
         };
+    }
+
+    if (options.data !== undefined) {
+        requestData.post_data = options.data;
     }
 
     if (options.headers !== undefined) {
@@ -159,13 +162,14 @@ Cloudify4node.getDeployments = function(callback) {
     createRequest(requestData, callback);
 }
 
-Cloudify4node.addDeployment = function(request, response, callback) {
-    var requestData = createRequestData(request, response, {
+Cloudify4node.addDeployment = function(requestBody, callback) {
+    var requestData = createRequestData({
         path: '/deployments',
+        data: requestBody,
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
-            'Content-Length': JSON.stringify(request.body).length
+            'Content-Length': JSON.stringify(requestBody).length
         }
     });
 
