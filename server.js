@@ -69,7 +69,9 @@ app.get('/backend/blueprints', function(request, response, next) {
 });
 
 app.post('/backend/blueprints/add', function(request, response){
-    cloudify4node.addBlueprint(request, response);
+    cloudify4node.addBlueprint(request.files.application_archive, function(err, data) {
+        response.send(data);
+    });
 });
 
 app.get('/backend/blueprints/get', function(request, response) {
@@ -85,11 +87,15 @@ app.get('/backend/blueprints/validate', function(request, response) {
 });
 
 app.get('/backend/executions', function(request, response) {
-    cloudify4node.getExecutionById(request, response);
+    cloudify4node.getExecutionById(request.query.executionId, function(err, data) {
+        response.send(data);
+    });
 });
 
 app.get('/backend/deployments', function(request, response) {
-    cloudify4node.getDeployments(request, response);
+    cloudify4node.getDeployments(function(err, data) {
+        response.send(data);
+    });
 });
 
 app.post('/backend/deployments/create', function(request, response) {
@@ -97,11 +103,15 @@ app.post('/backend/deployments/create', function(request, response) {
 });
 
 app.get('/backend/deployments/get', function(request, response) {
-    cloudify4node.getDeploymentById(request, response);
+    cloudify4node.getDeploymentById(request.query.deploymentId, function(err, data) {
+        response.send(data);
+    });
 });
 
 app.get('/backend/deployments/executions/get', function(request, response) {
-    cloudify4node.getDeploymentExecutions(request, response);
+    cloudify4node.getDeploymentExecutions(request.body.deploymentId, function(err, data) {
+        response.send(data);
+    });
 });
 
 app.post('/backend/deployments/execute', function(request, response) {
@@ -109,7 +119,9 @@ app.post('/backend/deployments/execute', function(request, response) {
 });
 
 app.post('/backend/events', function(request, response, next) {
-    cloudify4node.getDeploymentEvents(request, response);
+    cloudify4node.getDeploymentEvents(request.body.deploymentId, request.body.from, function(err, data) {
+        response.send(data);
+    });
 });
 
 

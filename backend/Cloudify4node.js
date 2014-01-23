@@ -83,8 +83,8 @@ Cloudify4node.getBlueprints = function(callback) {
     createRequest(requestData, callback);
 }
 
-Cloudify4node.addBlueprint = function(request, response) {
-    var myFile = request.files.application_archive;
+Cloudify4node.addBlueprint = function(application_archive, callback) {
+    var myFile = application_archive;
     var host = 'http://' + conf.cosmoServer + ':' + conf.cosmoPort + "/blueprints";
 
     fs.readFile(myFile.path, function(err, data) {
@@ -108,7 +108,7 @@ Cloudify4node.addBlueprint = function(request, response) {
 
             res.on('end', function() {
                 logger.debug('data: ' + JSON.stringify(data));
-                response.send(200);
+                callback(200);
             });
         });
 
