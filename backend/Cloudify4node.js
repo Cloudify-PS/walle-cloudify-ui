@@ -159,13 +159,13 @@ Cloudify4node.getDeployments = function(callback) {
     createRequest(requestData, callback);
 }
 
-Cloudify4node.addDeployment = function(requestBody, callback) {
-    var requestData = createRequestData({
+Cloudify4node.addDeployment = function(request, response, callback) {
+    var requestData = createRequestData(request, response, {
         path: '/deployments',
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
-            'Content-Length': JSON.stringify(requestBody).length
+            'Content-Length': JSON.stringify(request.body).length
         }
     });
 
