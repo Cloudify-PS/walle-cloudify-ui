@@ -195,12 +195,16 @@ Cloudify4node.getDeploymentExecutions = function(deployment_id, callback) {
 }
 
 Cloudify4node.executeDeployment = function(requestBody, callback) {
+    var data = {
+        'workflowId': requestBody.workflowId
+    };
     var requestData = createRequestData({
         path: '/deployments/' + requestBody.deploymentId + '/executions',
+        data: data,
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
-            'Content-Length': JSON.stringify(requestBody).length
+            'Content-Length': JSON.stringify(data).length
         }
     });
 
@@ -213,5 +217,5 @@ Cloudify4node.getDeploymentEvents = function(deployment_id, from, callback) {
         method: 'GET'
     });
 
-    createRequest(requestData, callabck);
+    createRequest(requestData, callback);
 }
