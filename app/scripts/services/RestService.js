@@ -25,14 +25,13 @@ angular.module('cosmoUi')
         }
 
         var _restLoader = new RestLoader();
-        var _blueprints = [];
 
         function _load(rest, params){
             return _restLoader.load(rest, params);
         }
 
         function _loadBlueprints() {
-            return _load('blueprints');;
+            return _load('blueprints');
         }
 
         function _addBlueprint(params) {

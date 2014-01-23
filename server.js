@@ -14,7 +14,13 @@ var app = express();
 var port = 9001;
 var gsSettings = require("./backend/gsSettings");
 var conf = require("./backend/appConf");
-var cloudify4node = require("./backend/Cloudify4node");
+var cloudify4node;
+
+if (conf.useMock) {
+    cloudify4node = require("./backend/Cloudify4node-mock");
+} else {
+    cloudify4node = require("./backend/Cloudify4node");
+}
 
 console.log(JSON.stringify(conf));
 
@@ -57,7 +63,9 @@ if (app.get('env') === 'development') {
 // cosmo REST APIs
 
 app.get('/backend/blueprints', function(request, response, next) {
-    cloudify4node.getBlueprints(request, response);
+    cloudify4node.getBlueprints(function(err, data) {
+        response.send(data);
+    });
 });
 
 app.post('/backend/blueprints/add', function(request, response){
@@ -65,12 +73,15 @@ app.post('/backend/blueprints/add', function(request, response){
 });
 
 app.get('/backend/blueprints/get', function(request, response) {
-
-    cloudify4node.getBlueprintById(request, response);
+    cloudify4node.getBlueprintById(request.body.id, function(err, data) {
+        response.send(data);
+    });
 });
 
 app.get('/backend/blueprints/validate', function(request, response) {
-    cloudify4node.validateBlueprint(request, response);
+    cloudify4node.validateBlueprint(request.body.id ,function(err, data) {
+        response.send(data);
+    });
 });
 
 app.get('/backend/executions', function(request, response) {

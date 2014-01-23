@@ -14,8 +14,8 @@ module.exports = Cloudify4node;
 
 function Cloudify4node(options) {}
 
-function createRequest(requestData) {
-    var callback = function(res) {
+function createRequest(requestData, callback) {
+    var _callback = function(res) {
         var data = '';
         var result = '';
 
@@ -31,38 +31,32 @@ function createRequest(requestData) {
 
             logger.info(['Request done, data: ',data]);
 
-            requestData.response.send(data);
+            callback(null, data);
         });
     };
 
     var onError = function(e) {
         console.log(e);
         console.log('problem with request: ' + e.message);
-        requestData.response.send(500);
+        _callback(e, null);
     };
 
     logger.info(['dispatching request ', requestData.options]);
-    var req = ajax.request(requestData.options, callback);
+    var req = ajax.request(requestData.options, _callback);
     req.on('error', onError);
 
     if (requestData.post_data !== undefined) {
         req.write(requestData.post_data);
     }
 
-    req.write(JSON.stringify(requestData.request.body));
+    console.log(requestData);
+
+    req.write(JSON.stringify(requestData));
     req.end();
 }
 
-function createRequestData(request, response, options) {
+function createRequestData( options) {
     var requestData = {};
-
-    if (request !== undefined) {
-        requestData.request = request;
-    }
-
-    if (response !== undefined) {
-        requestData.response = response;
-    }
 
     if (options !== undefined) {
         requestData.options = {
@@ -80,13 +74,13 @@ function createRequestData(request, response, options) {
     return requestData;
 }
 
-Cloudify4node.getBlueprints = function(request, response) {
-    var requestData = createRequestData(request, response, {
+Cloudify4node.getBlueprints = function(callback) {
+    var requestData = createRequestData({
         path: '/blueprints',
         method: 'GET'
     });
 
-    createRequest(requestData);
+    createRequest(requestData, callback);
 }
 
 Cloudify4node.addBlueprint = function(request, response) {
@@ -127,42 +121,42 @@ Cloudify4node.addBlueprint = function(request, response) {
     });
 }
 
-Cloudify4node.getBlueprintById = function(request, response) {
-    var requestData = createRequestData(request, response, {
-        path: '/blueprints/' + request.query.id,
+Cloudify4node.getBlueprintById = function(blueprint_id, callback) {
+    var requestData = createRequestData({
+        path: '/blueprints/' + blueprint_id,
         method: 'GET'
     });
 
-    createRequest(requestData);
+    createRequest(requestData, callback );
 }
 
-Cloudify4node.validateBlueprint = function(request, response) {
-    var requestData = createRequestData(request, response, {
+Cloudify4node.validateBlueprint = function(blueprint_id, callback) {
+    var requestData = createRequestData({
         hostname: conf.cosmoServer,
         port: conf.cosmoPort,
-        path: '/blueprints/' + request.query.id + '/validate',
+        path: '/blueprints/' + blueprint_id + '/validate',
         method: 'GET'
     });
 
-    createRequest(requestData);
+    createRequest(requestData, callback );
 }
 
-Cloudify4node.getExecutionById = function(request, response) {
-    var requestData = createRequestData(request, response, {
-        path: '/executions/' + request.query.executionId,
+Cloudify4node.getExecutionById = function(execution_id, callback) {
+    var requestData = createRequestData({
+        path: '/executions/' + execution_id,
         method: 'GET'
     });
 
-    createRequest(requestData);
+    createRequest(requestData, callback);
 }
 
-Cloudify4node.getDeployments = function(request, response) {
-    var requestData = createRequestData(request, response, {
+Cloudify4node.getDeployments = function(callback) {
+    var requestData = createRequestData({
         path: '/deployments',
         method: 'GET'
     });
 
-    createRequest(requestData);
+    createRequest(requestData, callback);
 }
 
 Cloudify4node.addDeployment = function(request, response) {
@@ -178,22 +172,22 @@ Cloudify4node.addDeployment = function(request, response) {
     createRequest(requestData);
 }
 
-Cloudify4node.getDeploymentById = function(request, response) {
+Cloudify4node.getDeploymentById = function(deployment_id, callback) {
     var requestData = createRequestData(request, response, {
-        path: '/deployments/' + request.query.deploymentId,
+        path: '/deployments/' + deployment_id,
         method: 'GET'
     });
 
-    createRequest(requestData);
+    createRequest(requestData, callback);
 }
 
-Cloudify4node.getDeploymentExecutions = function(request, response) {
+Cloudify4node.getDeploymentExecutions = function(deployment_id, callback) {
     var requestData = createRequestData(request, response, {
-        path: '/deployments/' + request.body.deploymentId + '/executions',
+        path: '/deployments/' + deployment_id + '/executions',
         method: 'GET'
     });
 
-    createRequest(requestData);
+    createRequest(requestData, callback);
 }
 
 Cloudify4node.executeDeployment = function(request, response) {
@@ -209,11 +203,11 @@ Cloudify4node.executeDeployment = function(request, response) {
     createRequest(requestData);
 }
 
-Cloudify4node.getDeploymentEvents = function(request, response) {
+Cloudify4node.getDeploymentEvents = function(deployment_id, from, callback) {
     var requestData = createRequestData(request, response, {
-        path: '/deployments/' + request.body.deploymentId + '/events?from=' + request.body.from,
+        path: '/deployments/' + deployment_id + '/events?from=' + from,
         method: 'GET'
     });
 
-    createRequest(requestData);
+    createRequest(requestData, callabck);
 }
