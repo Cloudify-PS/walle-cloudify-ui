@@ -316,7 +316,6 @@ app.post('/backend/events', function(request, response, next) {
 // ui settings REST APIs
 
 app.post('/backend/settings', function(request, response) {
-    gsSettings.write(request.body.settings);
     conf.applyConfiguration(request.body.settings);
 });
 
