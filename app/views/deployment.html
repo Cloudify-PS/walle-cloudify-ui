@@ -1,5 +1,6 @@
 <div class="cosmo-layout" id="deployment">
-    <div events-widget id="plans-index-events-widget" events="{{events}}"></div>
+    <div events-widget id="plans-index-events-widget" events="{{events}}" ng-show="section != 'events'"></div>
+
     <div id="deployment-header">
         <div class="header-right">
             <div app-status-widget id="appStatus"></div>
@@ -13,12 +14,7 @@
                 <button type="button" class="btn btn-default" value="network">Network</button>
                 <button type="button" class="btn btn-default" value="events">Events</button>
             </div>
-            <div class="toggles-bar" id="plans-index-toggle-bar">
-                <div toggle-switch text="Compute & Storage" value="{{filters.compute}}"></div>
-                <div toggle-switch text="Middleware" value="{{filters.middleware}}"></div>
-                <div toggle-switch text="Modules" value="{{filters.modules}}"></div>
-                <div toggle-switch text="Connections" value="{{filters.connections}}"></div>
-            </div>
+            <div settings-toggles id="settings-button" toggles="topologySettings"></div>
 
             <div ng-switch="section" class="content-section">
                 <div ng-switch-default="topology">Topology</div>

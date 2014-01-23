@@ -3,14 +3,14 @@
 angular.module('cosmoUi')
     .controller('DeploymentCtrl', function ($scope, $cookieStore, $routeParams, RestService) {
         $scope.events = [];
-        $scope.filters = {
-            'connections': true,
-            'modules': true,
-            'middleware': false,
-            'compute': true
-        };
         $scope.section = 'topology';
         $scope.deployment = JSON.parse($routeParams.deployment);
+        $scope.topologySettings = [
+            {name: 'connections',   state: true},
+            {name: 'modules',       state: false},
+            {name: 'middleware',    state: true},
+            {name: 'compute',       state: true}
+        ];
 
         var eventCSSMap = {
             'workflow_received': {text: 'Workflow received', icon: 'event-icon-workflow-started', class: 'event-text-green'},

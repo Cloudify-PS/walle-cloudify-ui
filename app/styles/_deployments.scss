@@ -30,6 +30,12 @@
         display: block;
       }
 
+      tr.blueprint-name {
+        &:hover:first-child td {
+          background-color: #e8edf2;
+        }
+      }
+
       tr {
         cursor: $COSMOUI_POPUP_CURSOR;
 
