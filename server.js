@@ -99,7 +99,9 @@ app.get('/backend/deployments', function(request, response) {
 });
 
 app.post('/backend/deployments/create', function(request, response) {
-    cloudify4node.addDeployment(request, response);
+    cloudify4node.addDeployment(request.body, function(err, data) {
+        response.send(data);
+    });
 });
 
 app.get('/backend/deployments/get', function(request, response) {
@@ -115,7 +117,9 @@ app.get('/backend/deployments/executions/get', function(request, response) {
 });
 
 app.post('/backend/deployments/execute', function(request, response) {
-    cloudify4node.executeDeployment(request, response);
+    cloudify4node.executeDeployment(request.body, function(err, data) {
+        response.send(data);
+    });
 });
 
 app.post('/backend/events', function(request, response, next) {

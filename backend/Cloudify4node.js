@@ -159,21 +159,21 @@ Cloudify4node.getDeployments = function(callback) {
     createRequest(requestData, callback);
 }
 
-Cloudify4node.addDeployment = function(request, response) {
-    var requestData = createRequestData(request, response, {
+Cloudify4node.addDeployment = function(requestBody, callback) {
+    var requestData = createRequestData({
         path: '/deployments',
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
-            'Content-Length': JSON.stringify(request.body).length
+            'Content-Length': JSON.stringify(requestBody).length
         }
     });
 
-    createRequest(requestData);
+    createRequest(requestData, callback);
 }
 
 Cloudify4node.getDeploymentById = function(deployment_id, callback) {
-    var requestData = createRequestData(request, response, {
+    var requestData = createRequestData({
         path: '/deployments/' + deployment_id,
         method: 'GET'
     });
@@ -182,7 +182,7 @@ Cloudify4node.getDeploymentById = function(deployment_id, callback) {
 }
 
 Cloudify4node.getDeploymentExecutions = function(deployment_id, callback) {
-    var requestData = createRequestData(request, response, {
+    var requestData = createRequestData({
         path: '/deployments/' + deployment_id + '/executions',
         method: 'GET'
     });
@@ -190,21 +190,21 @@ Cloudify4node.getDeploymentExecutions = function(deployment_id, callback) {
     createRequest(requestData, callback);
 }
 
-Cloudify4node.executeDeployment = function(request, response) {
-    var requestData = createRequestData(request, response, {
-        path: '/deployments/' + request.body.deploymentId + '/executions',
+Cloudify4node.executeDeployment = function(requestBody, callback) {
+    var requestData = createRequestData({
+        path: '/deployments/' + requestBody.deploymentId + '/executions',
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
-            'Content-Length': JSON.stringify(request.body).length
+            'Content-Length': JSON.stringify(requestBody).length
         }
     });
 
-    createRequest(requestData);
+    createRequest(requestData, callback);
 }
 
 Cloudify4node.getDeploymentEvents = function(deployment_id, from, callback) {
-    var requestData = createRequestData(request, response, {
+    var requestData = createRequestData({
         path: '/deployments/' + deployment_id + '/events?from=' + from,
         method: 'GET'
     });
