@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('cosmoUi', ['gsUiInfra', 'angularFileUpload', 'ngCookies', 'ngRoute','ngSanitize'])
+angular.module('cosmoUi', ['gsUiInfra', 'angularFileUpload', 'ngCookies', 'ngRoute','ngSanitize', 'ngBreadcrumbs'])
     .config(function ($routeProvider) {
         var isSettingsExists = window.isSettingsExists();
 
@@ -26,22 +26,22 @@ angular.module('cosmoUi', ['gsUiInfra', 'angularFileUpload', 'ngCookies', 'ngRou
                 controller: 'DeploymentCtrl'
             })
             .when('/monitoring',{
-                templateUrl: 'views/plans.html'
+                templateUrl: 'views/blueprintsIndex.html'
             })
             .when('/logs',{
-                templateUrl: 'views/plans.html'
+                templateUrl: 'views/blueprintsIndex.html'
             })
             .when('/hosts',{
-                templateUrl: 'views/plans.html'
+                templateUrl: 'views/blueprintsIndex.html'
             })
             .when('/networks',{
-                templateUrl: 'views/plans.html'
+                templateUrl: 'views/blueprintsIndex.html'
             })
             .when('/floating-ips',{
-                templateUrl: 'views/plans.html'
+                templateUrl: 'views/blueprintsIndex.html'
             })
             .when('/storage',{
-                templateUrl: 'views/plans.html'
+                templateUrl: 'views/blueprintsIndex.html'
             })
             .when('/config', {
                 templateUrl: 'views/config.html',
