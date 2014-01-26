@@ -3,7 +3,6 @@
 angular.module('ngBreadcrumbs', []).factory('BreadcrumbsService', function() {
 
     var data = {};
-    var currentId = '';
 
     function _checkIdExists(id) {
         if (angular.isUndefined(data[id])) {
