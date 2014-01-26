@@ -14,7 +14,7 @@ angular.module('cosmoUi')
                     '</div>' +
                     '<div id="events-widget-list-container">' +
                         '<table id="events-widget-events-list">' +
-                            '<tr ng-repeat="event in events">' +
+                                '<tr ng-repeat="event in events track by $index">' +
                                 '<td>' +
                                     '<div id="event-icon" ng-class="getEventIcon(event)"></div>' +
                                     '<div id="event-type">{{getEventText(event)}}</div>' +
@@ -51,9 +51,9 @@ angular.module('cosmoUi')
                 scope.widgetOpen = false;
 
                 scope.$watch('events', function(data) {
-                    if(data !== '[]') {
+                    try {
                         scope.events = JSON.parse(data);
-                    }
+                    } catch(e) {}
                 });
 
                 scope.isOpen = function() {
