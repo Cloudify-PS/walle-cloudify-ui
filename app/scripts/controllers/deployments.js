@@ -3,7 +3,7 @@
 angular.module('cosmoUi')
     .controller('DeploymentsCtrl', function ($scope, RestService, $cookieStore, $location, $routeParams) {
 
-        $scope.blueprints = $cookieStore.get('blueprints');
+        $scope.blueprints = [];
         $scope.selectedBlueprint = '';
 
         $scope.showDeployments = function(blueprintId) {
@@ -14,8 +14,8 @@ angular.module('cosmoUi')
             }
         };
 
-        $scope.executeDeployment = function(deployment, selectedWorkflow) {
-            RestService.executeBlueprint({'deploymentId': deployment.id, 'workflowId': selectedWorkflow});
+        $scope.executeDeployment = function(deployment) {
+            RestService.executeDeployment(deployment.id);
             $cookieStore.remove('deploymentId');
             $cookieStore.put('deploymentId', deployment.id);
             $scope.redirectTo(deployment);
@@ -32,19 +32,19 @@ angular.module('cosmoUi')
         };
 
         function _loadDeployments() {
-            RestService.loadDeployments()
+            RestService.loadBlueprints()
                 .then(function(data) {
-                    for (var i = 0; i < data.length; i++) {
-                        $scope.blueprints[_getBlueprintIndex(data[i].blueprintId)].deployments.push(data[i]);
-
-                        var workflows = JSON.parse(data[i].plan).workflows;
-                        if (workflows !== undefined) {
-                            $scope.blueprints[_getBlueprintIndex(data[i].blueprintId)].workflows = [];
-                            for (var workflow in workflows) {
-                                $scope.blueprints[_getBlueprintIndex(data[i].blueprintId)].workflows.push(workflow);
+                    $scope.blueprints = data;
+                    RestService.loadDeployments()
+                        .then(function(data) {
+                            for (var i = 0; i < data.length; i++) {
+                                var blueprint = $scope.blueprints[_getBlueprintIndex(data[i].blueprintId)];
+                                if (blueprint.deployments === undefined) {
+                                    blueprint.deployments = [];
+                                }
+                                blueprint.deployments.push(data[i]);
                             }
-                        }
-                    }
+                        });
                 });
         }
 
