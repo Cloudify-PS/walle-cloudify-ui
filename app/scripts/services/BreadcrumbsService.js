@@ -9,10 +9,6 @@ angular.module('ngBreadcrumbs', []).factory('BreadcrumbsService', function() {
         if (angular.isUndefined(data[id])) {
             data[id] = [];
         }
-        if (id !== currentId) {
-            data[currentId] = [];
-            currentId = id;
-        }
     }
 
     function _checkItemExists(id, item) {
@@ -36,6 +32,9 @@ angular.module('ngBreadcrumbs', []).factory('BreadcrumbsService', function() {
         push: function(id, item) {
             _checkIdExists(id);
             if (!_checkItemExists(id, item)) {
+                if (item.id === id) {
+                    data[id] = [];
+                }
                 data[id].push(item);
             }
         },
