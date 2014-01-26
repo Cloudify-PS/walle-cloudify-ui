@@ -5,7 +5,7 @@ angular.module('cosmoUi')
         return {
             template: '<div class="events-widget">' +
                 '<div id="events-widget-closed-tab" ng-show="!isOpen()" ng-click="toggleWidget()">' +
-                    '<div id="events-widget-tab-text">Events ({{events.length}})</div>' +
+                    '<div id="events-widget-tab-text">Events ({{eventsData.length}})</div>' +
                 '</div>' +
                 '<div id="events-widget-opened-widget" ng-show="isOpen()">' +
                     '<div id="events-widget-header">' +
@@ -14,7 +14,7 @@ angular.module('cosmoUi')
                     '</div>' +
                     '<div id="events-widget-list-container">' +
                         '<table id="events-widget-events-list">' +
-                                '<tr ng-repeat="event in events track by $index">' +
+                                '<tr ng-repeat="event in eventsData">' +
                                 '<td>' +
                                     '<div id="event-icon" ng-class="getEventIcon(event)"></div>' +
                                     '<div id="event-type">{{getEventText(event)}}</div>' +
@@ -49,10 +49,11 @@ angular.module('cosmoUi')
                 };
 
                 scope.widgetOpen = false;
+                scope.eventsData = [];
 
                 scope.$watch('events', function(data) {
                     try {
-                        scope.events = JSON.parse(data);
+                        scope.eventsData = JSON.parse(data);
                     } catch(e) {}
                 });
 

@@ -1,38 +1,52 @@
 'use strict';
 
-angular.module('ngBreadcrumbs', []).factory('BreadcrumbsService', function($rootScope) {
+angular.module('ngBreadcrumbs', []).factory('BreadcrumbsService', function() {
 
     var data = {};
-    var ensureIdIsRegistered = function(id) {
+    var currentId = '';
+
+    function _checkIdExists(id) {
         if (angular.isUndefined(data[id])) {
             data[id] = [];
         }
-    };
+        if (id !== currentId) {
+            data[currentId] = [];
+            currentId = id;
+        }
+    }
 
-    function checkIdExists(id) {
-        return data[id].length > 0;
+    function _checkItemExists(id, item) {
+        var exists = false;
+        for (var i = 0; i < data[id].length; i++) {
+            if (item.id === data[id][i].id) {
+                exists = true;
+                if (i === 0) {
+                    _setLastIndex(id, i);
+                }
+            }
+        }
+        return exists;
+    }
+
+    function _setLastIndex(id, idx) {
+        data[id].splice(1 + idx, data[id].length - idx);
     }
 
     return {
         push: function(id, item) {
-            ensureIdIsRegistered(id);
-             if (!checkIdExists(id)) {
-                 data[id].push(item);
-             }
-            console.log('$broadcast breadcrumbsRefresh');
-            $rootScope.$broadcast('breadcrumbsRefresh');
+            _checkIdExists(id);
+            if (!_checkItemExists(id, item)) {
+                data[id].push(item);
+            }
         },
 
         get: function(id) {
-            ensureIdIsRegistered(id);
+            _checkIdExists(id);
             return angular.copy(data[id]);
         },
 
         setLastIndex: function(id, idx) {
-            ensureIdIsRegistered(id);
-            if (data[id].length > 1 + idx) {
-                data[id].splice(1 + idx, data[id].length - idx);
-            }
+            _setLastIndex(id, idx);
         }
     };
 });

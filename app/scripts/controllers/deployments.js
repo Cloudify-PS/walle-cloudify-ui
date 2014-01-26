@@ -9,7 +9,8 @@ angular.module('cosmoUi')
         BreadcrumbsService.push('deployments',
             {
                 href: '#/deployments',
-                label: 'Deployments'
+                label: 'Deployments',
+                id: 'deployments'
             });
 
         $scope.showDeployments = function(blueprintId) {

@@ -8,9 +8,6 @@ angular.module('cosmoUi')
 //        yamlService.getFilesList('/', function(data) {
 //            $scope.files = data;
 //        });
-        $scope.showFile = function (file) {
-            console.log(file.name);
-        };
 
         $scope.section = 'general';
 
@@ -23,10 +20,11 @@ angular.module('cosmoUi')
         $scope.renderer = Render.Topology.D3;
         $scope.layouter = Layout.Topology.Tensor.init({'xyPositioning': 'relative'});
 
-        BreadcrumbsService.push('blueprint',
+        BreadcrumbsService.push('blueprints',
             {
-                href: '#/blueprint?' + $scope.planName,
-                label: $scope.planName
+                href: '#/blueprint?id=' + $routeParams.id + '&name=' + $scope.planName,
+                label: $scope.planName,
+                id: 'blueprint'
             });
 
         YamlService.load($routeParams.id, function (err, data) {
@@ -56,13 +54,4 @@ angular.module('cosmoUi')
         $scope.hideProperties = function () {
             $scope.showProperties = null;
         };
-
-//        $(document).on('click','svg', function(e, data){
-//            $scope.$apply(function(){
-//                console.log(["doing something on click",$scope.graph.nodes[1]]);
-//
-//                $scope.showProperties = $scope.graph.nodes[1];
-//
-//            })
-//        })
     });

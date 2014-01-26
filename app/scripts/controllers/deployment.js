@@ -32,10 +32,11 @@ angular.module('cosmoUi')
         var from = 0;
         var to = 5;
 
-        BreadcrumbsService.push('deployment',
+        BreadcrumbsService.push('deployments',
             {
-                href: '#/deployment?' + id,
-                label: $scope.deployment.name
+                href: '#/deployment?id=' + id,
+                label: id,
+                id: 'deployment'
             });
 
         $scope.getEventClass = function(event) {

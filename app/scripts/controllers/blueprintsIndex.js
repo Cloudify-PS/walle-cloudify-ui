@@ -11,7 +11,8 @@ angular.module('cosmoUi')
         BreadcrumbsService.push('blueprints',
             {
                 href: '#/blueprints',
-                label: 'Blueprints'
+                label: 'Blueprints',
+                id: 'blueprints'
             });
 
         $scope.redirectTo = function (blueprint) {
