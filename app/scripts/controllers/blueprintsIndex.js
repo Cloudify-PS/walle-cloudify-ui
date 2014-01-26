@@ -1,12 +1,19 @@
 'use strict';
 
 angular.module('cosmoUi')
-    .controller('BlueprintsIndexCtrl', function ($scope, $location, $cookieStore, RestService) {
+    .controller('BlueprintsIndexCtrl', function ($scope, $location, $cookieStore, RestService, BreadcrumbsService) {
         $scope.isAddDialogVisible = false;
         $scope.selectedBlueprintId = null;
         $scope.lastExecutedPlan = null;
         $scope.deploymentId = null;
         var _blueprintsArr = [];
+
+        BreadcrumbsService.push('blueprints',
+            {
+                href: '#/blueprints',
+                label: 'Blueprints',
+                id: 'blueprints'
+            });
 
         $scope.redirectTo = function (blueprint) {
             console.log(['redirecting to', blueprint]);
