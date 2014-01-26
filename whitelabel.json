@@ -5,6 +5,7 @@
     "classnamePrefix": "whitelabel-",
     "colorSuffix": "-redlabel",
     "TODO": [
+        "turn colorSuffix into a dictionary for file-name->color-key mapping",
         "find another method to define colorSuffix, this is a redundancy here"
     ]
 }

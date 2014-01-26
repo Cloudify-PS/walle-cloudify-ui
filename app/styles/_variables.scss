@@ -20,9 +20,13 @@ $base_17: #5a82a2 !default;
 $base_18: #8eaf26 !default;
 $base_19: #d54931 !default;
 $base_20: #29aaee !default;
+$base_21: #333333 !default;
 $base_alpha_01: rgba(208, 208, 208, 0.8) !default;
 $base_alpha_02: rgba(144, 144, 144, 0.5) !default;
 $base_alpha_03: rgba(255, 255, 255, 0.9) !default;
+
+/** Overrides */
+$text-color: $base_21;
 
 /** General **/
 $COSMOUI_BACKGROUND: $base_00;
@@ -109,7 +113,7 @@ $COSMOUI_EVENTS_WIDGET_OPENED_HEADER_TEXT_MARGIN_TOP: 4px;
 $COSMOUI_EVENTS_WIDGET_OPENED_HEADER_TEXT_MARGIN_LEFT: 3px;
 $COSMOUI_EVENTS_WIDGET_OPENED_HEADER_CLOSE_WIDTH: 20px;
 $COSMOUI_EVENTS_WIDGET_OPENED_HEADER_CLOSE_HEIGHT: 20px;
-$COSMOUI_EVENTS_WIDGET_OPENED_HEADER_CLOSE_BACKGROUND: url(/images/eventsWidgetClose.png) no-repeat center center;
+$COSMOUI_EVENTS_WIDGET_OPENED_HEADER_CLOSE_BACKGROUND: url("/images/eventsWidgetClose.png") no-repeat center center;
 $COSMOUI_EVENTS_WIDGET_OPENED_HEADER_CLOSE_RIGHT: 5px;
 $COSMOUI_EVENTS_WIDGET_OPENED_HEADER_CLOSE_TOP: 5px;
 $COSMOUI_EVENTS_WIDGET_OPENED_LIST_CONTAINER_OVERFLOW_X: hidden;
@@ -126,15 +130,15 @@ $COSMOUI_EVENTS_WIDGET_OPENED_EVENT_TYPE_MARGIN_LEFT: 10px;
 $COSMOUI_EVENTS_WIDGET_OPENED_EVENT_TIME_MARGIN_LEFT: 10px;
 
 /** Event icons **/
-$COSMOUI_EVENT_ICON_BACKGROUND_WORKFLOW_STARTED: url(/images/events/WorkflowStarted.png) no-repeat center center;
-$COSMOUI_EVENT_ICON_BACKGROUND_WORKFLOW_END_SUCCESSFULLY: url(/images/events/WorkflowSuccessfully.png) no-repeat center center;
-$COSMOUI_EVENT_ICON_BACKGROUND_WORKFLOW_FAILED: url(/images/events/WorkflowFailed.png) no-repeat center center;
-$COSMOUI_EVENT_ICON_BACKGROUND_TASK_STARTED: url(/images/events/TaskStarted.png) no-repeat center center;
-$COSMOUI_EVENT_ICON_BACKGROUND_TASK_FAILED: url(/images/events/TaskFailed.png) no-repeat center center;
-$COSMOUI_EVENT_ICON_BACKGROUND_TASK_SENT: url(/images/events/TaskSent.png) no-repeat center center;
-$COSMOUI_EVENT_ICON_BACKGROUND_TASK_SUCCESS: url(/images/events/TaskSuccessfully.png) no-repeat center center;
-$COSMOUI_EVENT_ICON_BACKGROUND_POLICY_SUCCESS: url(/images/events/PolicySuccessfully.png) no-repeat center center;
-$COSMOUI_EVENT_ICON_BACKGROUND_POLICY_FAILED: url(/images/events/PolicyFailed.png) no-repeat center center;
+$COSMOUI_EVENT_ICON_BACKGROUND_WORKFLOW_STARTED: url("/images/events/WorkflowStarted.png") no-repeat center center;
+$COSMOUI_EVENT_ICON_BACKGROUND_WORKFLOW_END_SUCCESSFULLY: url("/images/events/WorkflowSuccessfully.png") no-repeat center center;
+$COSMOUI_EVENT_ICON_BACKGROUND_WORKFLOW_FAILED: url("/images/events/WorkflowFailed.png") no-repeat center center;
+$COSMOUI_EVENT_ICON_BACKGROUND_TASK_STARTED: url("/images/events/TaskStarted.png") no-repeat center center;
+$COSMOUI_EVENT_ICON_BACKGROUND_TASK_FAILED: url("/images/events/TaskFailed.png") no-repeat center center;
+$COSMOUI_EVENT_ICON_BACKGROUND_TASK_SENT: url("/images/events/TaskSent.png") no-repeat center center;
+$COSMOUI_EVENT_ICON_BACKGROUND_TASK_SUCCESS: url("/images/events/TaskSuccessfully.png") no-repeat center center;
+$COSMOUI_EVENT_ICON_BACKGROUND_POLICY_SUCCESS: url("/images/events/PolicySuccessfully.png") no-repeat center center;
+$COSMOUI_EVENT_ICON_BACKGROUND_POLICY_FAILED: url("/images/events/PolicyFailed.png") no-repeat center center;
 
 
 /** Blueprints list page **/

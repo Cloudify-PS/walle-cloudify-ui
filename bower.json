@@ -1,27 +1,27 @@
 {
-  "name": "cosmoUi",
-  "version": "0.0.0",
-  "dependencies": {
-    "jquery": "1.9.1",
-    "bootstrap-sass": "3.0.0",
-    "angular": "1.2.5",
-    "json3": "~3.2.4",
-    "es5-shim": "~2.0.8",
-    "gs-ui-infra": "git://github.com/guy-mograbi-at-gigaspaces/gs-ui-infra.git",
-    "d3": "~3.3.8",
-    "font-awesome": "~4.0.0",
-    "yamljs": "git://github.com/jeremyfa/yaml.js.git",
-    "ng-file-upload": "1.1.10",
-    "angular-route": "1.2.5",
-    "angular-sanitize": "1.2.5"
-  },
-  "devDependencies": {
-    "angular-mocks": "1.2.5",
-    "angular-scenario": "1.2.5"
-  },
-  "resolutions": {
-    "angular": "1.2.5",
-    "jquery": ">= 1.9.0",
-    "angular-sanitize": "1.2.5"
-  }
+    "name": "cosmoUi",
+    "version": "0.0.0",
+    "dependencies": {
+        "jquery": "1.9.1",
+        "bootstrap-sass": "3.0.0",
+        "angular": "1.2.5",
+        "json3": "~3.2.4",
+        "es5-shim": "~2.0.8",
+        "gs-ui-infra": "git://github.com/guy-mograbi-at-gigaspaces/gs-ui-infra.git",
+        "d3": "~3.3.8",
+        "font-awesome": "~4.0.0",
+        "yamljs": "git://github.com/jeremyfa/yaml.js.git",
+        "ng-file-upload": "1.1.10",
+        "angular-route": "1.2.5",
+        "angular-sanitize": "1.2.5"
+    },
+    "devDependencies": {
+        "angular-mocks": "1.2.5",
+        "angular-scenario": "1.2.5"
+    },
+    "resolutions": {
+        "angular": "1.2.5",
+        "jquery": ">= 1.9.0",
+        "angular-sanitize": "1.2.5"
+    }
 }
