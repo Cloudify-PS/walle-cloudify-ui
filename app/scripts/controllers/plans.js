@@ -4,7 +4,7 @@ angular.module('cosmoUi')
     .controller('PlansCtrl', function ($scope, YamlService, Layout, Render, $routeParams, BreadcrumbsService, PlanDataConvert, blueprintCoordinateService, $timeout) {
 
         var planData/*:PlanData*/ = null;
-        $scope.section = "general";
+        $scope.section = 'network';
         $scope.planName = $routeParams.name;
         $scope.toggleView = false;
 
