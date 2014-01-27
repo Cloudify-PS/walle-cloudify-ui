@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('cosmoUi')
-    .controller('PlansCtrl', function ($scope, YamlService, $routeParams, PlanDataConvert, blueprintCoordinateService, $timeout) {
+    .controller('PlansCtrl', function ($scope, YamlService, Layout, Render, $routeParams, BreadcrumbsService, PlanDataConvert, blueprintCoordinateService, $timeout) {
 
         var planData/*:PlanData*/ = null;
         $scope.section = "general";
@@ -31,6 +31,13 @@ angular.module('cosmoUi')
                 $timeout(progressDemo, 30);
         }
         $timeout(progressDemo, 2000);
+
+        BreadcrumbsService.push('blueprints',
+            {
+                href: '#/blueprint?id=' + $routeParams.id + '&name=' + $scope.planName,
+                label: $scope.planName,
+                id: 'blueprint'
+            });
 
         YamlService.load($routeParams.id, function (err, data) {
 

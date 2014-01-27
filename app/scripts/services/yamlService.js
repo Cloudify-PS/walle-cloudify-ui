@@ -32,7 +32,6 @@ angular.module('cosmoUi')
                 var url = '/backend/blueprints/get';
                 requestCount++;
 
-
                 $http({
                         url: url,
                         method: 'GET',

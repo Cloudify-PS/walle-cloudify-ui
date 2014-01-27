@@ -136,11 +136,13 @@ exports.sendPublicConfiguration = function( req, res ){
     res.send( "window." + name + " = " + JSON.stringify(getPublicConfiguration()) + ";");
 };
 
-exports.applyConfiguration = function( req, res ){
-    var settings = req;
+exports.applyConfiguration = function( settings ){
+    // todo : add support for public configuration
     for ( var i in settings ){
         exports[i] = settings[i];
     }
+    gsSettings.write(settings);
+
 };
 
 var prConf = getPrivateConfiguration();

@@ -1,10 +1,17 @@
 'use strict';
 
 angular.module('cosmoUi')
-    .controller('DeploymentsCtrl', function ($scope, RestService, $cookieStore, $location) {
+    .controller('DeploymentsCtrl', function ($scope, RestService, $cookieStore, $location, $routeParams, BreadcrumbsService) {
 
-        $scope.blueprints = $cookieStore.get('blueprints');
+        $scope.blueprints = [];
         $scope.selectedBlueprint = '';
+
+        BreadcrumbsService.push('deployments',
+            {
+                href: '#/deployments',
+                label: 'Deployments',
+                id: 'deployments'
+            });
 
         $scope.showDeployments = function(blueprintId) {
             if (blueprintId === $scope.selectedBlueprint) {
@@ -15,9 +22,10 @@ angular.module('cosmoUi')
         };
 
         $scope.executeDeployment = function(deployment) {
-            RestService.executeBlueprint(deployment.id);
+            RestService.executeDeployment(deployment.id);
             $cookieStore.remove('deploymentId');
             $cookieStore.put('deploymentId', deployment.id);
+            $scope.redirectTo(deployment);
         };
 
         $scope.isExecuting = function(deploymentId) {
@@ -31,11 +39,19 @@ angular.module('cosmoUi')
         };
 
         function _loadDeployments() {
-            RestService.loadDeployments()
+            RestService.loadBlueprints()
                 .then(function(data) {
-                    for (var i = 0; i < data.length; i++) {
-                        $scope.blueprints[_getBlueprintIndex(data[i].blueprintId)].deployments.push(data[i]);
-                    }
+                    $scope.blueprints = data;
+                    RestService.loadDeployments()
+                        .then(function(data) {
+                            for (var i = 0; i < data.length; i++) {
+                                var blueprint = $scope.blueprints[_getBlueprintIndex(data[i].blueprintId)];
+                                if (blueprint.deployments === undefined) {
+                                    blueprint.deployments = [];
+                                }
+                                blueprint.deployments.push(data[i]);
+                            }
+                        });
                 });
         }
 
@@ -51,4 +67,8 @@ angular.module('cosmoUi')
         }
 
         _loadDeployments();
+
+        if ($routeParams.blueprint !== undefined) {
+            $scope.showDeployments($routeParams.blueprint.id);
+        }
     });

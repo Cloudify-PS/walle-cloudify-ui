@@ -1,16 +1,24 @@
 'use strict';
 
 angular.module('cosmoUi')
-    .controller('BlueprintsIndexCtrl', function ($scope, $location, $cookieStore, RestService) {
+    .controller('BlueprintsIndexCtrl', function ($scope, $location, $cookieStore, RestService, BreadcrumbsService) {
         $scope.isAddDialogVisible = false;
         $scope.selectedBlueprintId = null;
         $scope.lastExecutedPlan = null;
         $scope.deploymentId = null;
         var _blueprintsArr = [];
 
+        BreadcrumbsService.push('blueprints',
+            {
+                href: '#/blueprints',
+                label: 'Blueprints',
+                id: 'blueprints'
+            });
+
         $scope.redirectTo = function (blueprint) {
             console.log(['redirecting to', blueprint]);
             $scope.selectedBlueprintId = blueprint.id;
+            console.log(blueprint.id);
             $location.path('/blueprint').search({id: blueprint.id, name: blueprint.name});
         };
 
@@ -29,6 +37,7 @@ angular.module('cosmoUi')
             RestService.deployBlueprint(blueprint.id)
                 .then(function(deployment) {
                     $cookieStore.put('deploymentId', deployment.id);
+                    $location.path('/deployments').search({blueprint: blueprint});
                 });
         };
 
@@ -37,7 +46,6 @@ angular.module('cosmoUi')
                 var index = _getBlueprintArrNextIndex($scope.blueprints[i].id);
                 _blueprintsArr[index].name = $scope.blueprints[i].name;
             }
-            $cookieStore.put('blueprints', _blueprintsArr);
         }
 
         function _getBlueprintArrNextIndex(blueprintId) {

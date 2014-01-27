@@ -25,7 +25,6 @@ angular.module('cosmoUi')
                 scope.items = [
                     { 'route' : ['#blueprints', '#blueprint'] ,                       'icon' : 'plans' ,                'label':'Blueprints'},
                     { 'route' : ['#deployments', '#deployment'] ,                     'icon' : 'deployments' ,          'label':'Deployments'},
-                    { 'route' : ['#events'] ,                                         'icon' : 'events' ,               'label':'Events'},
                     { 'route' : ['#monitoring'] ,                                     'icon' : 'monitoring' ,           'label':'Monitoring'},
                     { 'route' : ['#logs'] ,                                           'icon' : 'logs' ,                 'label':'Logs'},
                     { 'route' : ['#hosts'] ,                                          'icon' : 'hosts' ,                'label':'Hosts'},
@@ -38,7 +37,6 @@ angular.module('cosmoUi')
 
                 scope.isSelected = function(item) {
                     return item.route.indexOf('#' + $location.path().substr(1)) >= 0;
-//                    return $location.path().substr(1) === item.route.substr(1).split('?')[0];
                 };
 
                 scope.itemClick = function(item) {

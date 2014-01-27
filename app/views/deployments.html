@@ -1,7 +1,8 @@
 <div class="cosmo-layout" id="deployments">
 
     <div class="content-header">
-        <div class="breadcrumbs">Deployments</div>
+        <!--<div class="breadcrumbs">Deployments</div>-->
+        <div class="breadcrumbs"><ul id="deployments" breadcrumbs></ul></div>
     </div>
 
     <table>
@@ -9,8 +10,8 @@
             <td>
 
                 <table>
-                    <tr>
-                        <td ng-click="showDeployments(blueprint.id)">{{blueprint.name}} ({{blueprint.id}})</td>
+                    <tr class="blueprint-name">
+                        <td ng-click="showDeployments(blueprint.id)">{{blueprint.name}}</td>
                     </tr>
                     <tr ng-show="selectedBlueprint == blueprint.id">
                         <td>
@@ -25,7 +26,10 @@
                                     <td class="id" ng-click="redirectTo(deployment)">{{deployment.id}}</td>
                                     <td class="create">{{deployment.createdAt}}</td>
                                     <td class="description">{{deployment.updatedAt}}</td>
-                                    <td class="actions"><i class="fa  fa-play-circle-o" ng-click="executeDeployment(deployment)" ng-class="{deploymentExecute: isExecuting(deployment.id)}"></i></td>
+                                    <td class="actions">
+                                        <select ng-model="selectedWorkflow" ng-options="workflow for workflow in blueprint.workflows"><option value="">-- Select workflow --</option></select>
+                                        <i class="fa  fa-play-circle-o" ng-click="executeDeployment(deployment, selectedWorkflow)" ng-class="{deploymentExecute: isExecuting(deployment.id)}"></i>
+                                    </td>
                                 </tr>
                             </table>
                         </td>

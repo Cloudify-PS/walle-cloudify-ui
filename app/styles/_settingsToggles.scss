@@ -1,0 +1,44 @@
+.settings-toggles {
+  #settings-toggles-button {
+    width: 16px;
+    height: 16px;
+    background: url(/images/topology-settings.png) no-repeat center center;
+    padding: 10px;
+  }
+
+  .bordered {
+    border: 1px solid #cadbec;
+  }
+
+  #settings-toggles-container {
+    position: absolute;
+    width: 170px;
+    height: 160px;
+    background: #fff;
+    border: 1px solid #cadbec;
+    margin-top: 5px;
+
+    #settings-toggles-title {
+      color: #000;
+      font-size: 14px;
+      height: 30px;
+      margin: 5px;
+      border-bottom: 1px solid #cadbec;
+    }
+
+    ul li{
+      list-style: none;
+      height: 20px;
+
+      .toggle-switch {
+        float: none;
+        margin-left: 5px;
+
+        #toggle-switch-button {
+          float: right;
+          margin-right: 5px;
+        }
+      }
+    }
+  }
+}
