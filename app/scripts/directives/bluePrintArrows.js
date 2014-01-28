@@ -3,26 +3,27 @@
 /*********************
  * SVG layer to implement the relations between the nodes
  */
-angular.module("cosmoUi")
-    .directive("blueprintArrows", function(blueprintCoordinateService){
+angular.module('cosmoUi')
+    .directive('blueprintArrows', function(){
         return {
-            restrict: "A",
+            restrict: 'A',
             scope: {
-                "coordinates": "=blueprintArrows"
+                'coordinates': '=blueprintArrows'
             },
-            link: function($scope, $element, $attr)
+            link: function($scope, $element)
             {
-                var canvas = d3.select($element[0]).append("svg:svg")
-                    .attr("width", "100%")
-                    .attr("height", "100%")
-                    .attr("fill", "silver");
+                var canvas = d3.select($element[0]).append('svg:svg')
+                    .attr('width', '100%')
+                    .attr('height', '100%')
+                    .attr('fill', 'silver');
 
-                var group = canvas.append("g")
-                    .attr("transform", "translate(0, 0)");
+                var group = canvas.append('g')
+                    .attr('transform', 'translate(0, 0)');
 
                 var diagonal = d3.svg.diagonal();
 
                 function applyDiagonals(data) {
+                    /* jshint validthis:true */
                     return diagonal.apply(this, [{
                         source : {
                             x: data[0].x,
@@ -35,57 +36,57 @@ angular.module("cosmoUi")
                     }]);
                 }
 
-                canvas.append("svg:defs").selectAll("marker")
-                    .data(["Arrow"])
+                canvas.append('svg:defs').selectAll('marker')
+                    .data(['Arrow'])
                     .enter()
-                    .append("svg:marker")
-                    .attr("id", "arrowhead")
-                    .attr("viewBox", "0 -5 10 10")
-                    .attr("refX", 9)
-                    .attr("refY", 0)
-                    .attr("markerWidth", 6)
-                    .attr("markerHeight", 6)
-                    .attr("orient", "auto")
-                    .attr("fill", "#ddd")
-                    .append("svg:path")
-                    .attr("d", "M0,-5L10,0L0,5");
+                    .append('svg:marker')
+                    .attr('id', 'arrowhead')
+                    .attr('viewBox', '0 -5 10 10')
+                    .attr('refX', 9)
+                    .attr('refY', 0)
+                    .attr('markerWidth', 6)
+                    .attr('markerHeight', 6)
+                    .attr('orient', 'auto')
+                    .attr('fill', '#ddd')
+                    .append('svg:path')
+                    .attr('d', 'M0,-5L10,0L0,5');
 
 
-                $scope.$watch("coordinates", function(data){
+                $scope.$watch('coordinates', function(data){
                     if(data) {
-                        group.selectAll("path")
+                        group.selectAll('path')
                             .remove();
 
-                        group.selectAll("path")
+                        group.selectAll('path')
                             .data(data)
                             .enter()
-                            .append("path")
-                            .attr("d", applyDiagonals)
-                            .attr("marker-end", "url(#arrowhead)")
-                            .attr("fill", "none")
-                            .attr("stroke", "#ddd")
-                            .attr("stroke-width", "3px");
+                            .append('path')
+                            .attr('d', applyDiagonals)
+                            .attr('marker-end', 'url(#arrowhead)')
+                            .attr('fill', 'none')
+                            .attr('stroke', '#ddd')
+                            .attr('stroke-width', '3px');
                     }
                 }, true);
             }
-        }
+        };
     });
 
 /***************
  * Directive to define DOM element coordinate
  * Must be as: Attribute="{id}"
  */
-angular.module("cosmoUi")
-    .directive("blueprintCoordinate", function(blueprintCoordinateService, $timeout){
+angular.module('cosmoUi')
+    .directive('blueprintCoordinate', function(blueprintCoordinateService){
         return {
-            restrict: "A",
+            restrict: 'A',
             scope: {
-                "id": "=blueprintCoordinate"
+                'id': '=blueprintCoordinate'
             },
             link: function($scope, $element) {
                 blueprintCoordinateService.addElement($scope.id, $element);
             }
-        }
+        };
     });
 
 /*****************
@@ -93,10 +94,10 @@ angular.module("cosmoUi")
  * and broadcast it into angular, which update the "data" of the
  * coordinates
  */
-angular.module("cosmoUi")
-    .directive("blueprintResize", function(blueprintCoordinateService){
+angular.module('cosmoUi')
+    .directive('blueprintResize', function(blueprintCoordinateService){
         return {
-            restrict: "A",
+            restrict: 'A',
             scope: false,
             link: function($scope, $element) {
                 function broadcastResize() {
@@ -104,22 +105,36 @@ angular.module("cosmoUi")
                         blueprintCoordinateService.refresh();
                     });
                 }
-                document.addEventListener("DOMContentLoaded", broadcastResize, false);
+                document.addEventListener('DOMContentLoaded', broadcastResize, false);
                 window.onresize = broadcastResize;
             }
-        }
+        };
     });
 
 /***************
  * Service to store and calculate the coordinate data
  */
-angular.module("cosmoUi")
-    .service("blueprintCoordinateService", function($rootScope, $timeout){
+angular.module('cosmoUi')
+    .service('blueprintCoordinateService', function($rootScope, $timeout){
 
         var data = {},
             elements = {},
             coordinates = [],
             map = {};
+
+        /**************
+         * Using the element which inject into the server
+         * and calculating the x,y coordinates of the element
+         */
+        function updateData() {
+            angular.forEach(elements, function (element, id){
+                data[id] = {
+                    'x': element.offset().left - element.parents('.bpContainer').offset().left,
+                    'y': element.offset().top  - element.parents('.bpContainer').offset().top
+                };
+            });
+            setCoordinates();
+        }
 
         /*************
          * Init
@@ -132,7 +147,7 @@ angular.module("cosmoUi")
         this.refresh = function()
         {
             updateData();
-        }
+        };
 
         /**************
          * Api method to connect the coordinates
@@ -141,20 +156,6 @@ angular.module("cosmoUi")
         this.getCoordinates = function()
         {
             return coordinates;
-        }
-
-        /**************
-         * Using the element which inject into the server
-         * and calculating the x,y coordinates of the element
-         */
-        function updateData() {
-            angular.forEach(elements, function (element, id){
-                data[id] = {
-                    "x": element.offset().left - element.parents(".bpContainer").offset().left,
-                    "y": element.offset().top  - element.parents(".bpContainer").offset().top
-                }
-            });
-            setCoordinates();
         };
 
         /***************
@@ -169,7 +170,7 @@ angular.module("cosmoUi")
                 var to   = node.id,
                     from = node.children[0].id;
 
-                if(data[from] != undefined && data[to] != undefined) {
+                if(data[from] !== undefined && data[to] !== undefined) {
                     Coords.push(getNearestPoints(from, to));
                 }
             });
@@ -188,7 +189,7 @@ angular.module("cosmoUi")
                 toPoint   = getAttachPointes(to),
                 collector;
 
-            var current, test,
+            var current,
                 nearest = false;
 
             angular.forEach(fromPoint, function(f, fi){
@@ -251,7 +252,7 @@ angular.module("cosmoUi")
         this.setMap = function( data )
         {
             map = data;
-        }
+        };
 
         /***************
          * Add node element
@@ -261,7 +262,7 @@ angular.module("cosmoUi")
         this.addElement = function(id, element)
         {
             elements[id] = element;
-        }
+        };
 
         /***************
          * Calculate the center Coordinate of DOM element
@@ -273,6 +274,6 @@ angular.module("cosmoUi")
             data.x = data.x + data.e.width() / 2;
             data.y = data.y + data.e.height() / 2;
             return data;
-        }
+        };
 
     });

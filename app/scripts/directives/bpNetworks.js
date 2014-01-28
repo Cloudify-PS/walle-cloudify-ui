@@ -4,21 +4,22 @@ angular.module('cosmoUi')
     .directive('bpNetworks', function (bpNetworkService) {
         return {
             restrict: 'A',
-            link: function postLink($scope, $element, $attrs) {
+            link: function postLink($scope, $element) {
 
-                var width = "100%",
-                    height = "100%";
+                var width = '100%',
+                    height = '100%';
 
-                var vis = d3.select($element[0]).append("svg:svg")
-                    .attr("width", width)
-                    .attr("height", height);
+                var vis = d3.select($element[0]).append('svg:svg')
+                    .attr('width', width)
+                    .attr('height', height);
 
-                var group = vis.append("g")
-                    .attr("transform", "translate(0, 0)");
+                var group = vis.append('g')
+                    .attr('transform', 'translate(0, 0)');
 
                 var diagonal = d3.svg.diagonal();
 
                 function applyDiagonals(data) {
+                    /* jshint validthis:true */
                     return diagonal.apply(this, [
                         {
                             source: {
@@ -34,12 +35,12 @@ angular.module('cosmoUi')
                 }
 
                 bpNetworkService.setMap([
-                    {"from": "6", "to": "2"},
-                    {"from": "3", "to": "2"},
-                    {"from": "6", "to": "8"},
-                    {"from": "3", "to": "7"},
-                    {"from": "1", "to": "5"},
-                    {"from": "1", "to": "4"}
+                    {'from': '6', 'to': '2'},
+                    {'from': '3', 'to': '2'},
+                    {'from': '6', 'to': '8'},
+                    {'from': '3', 'to': '7'},
+                    {'from': '1', 'to': '5'},
+                    {'from': '1', 'to': '4'}
                 ]);
                 $scope.coordinates = bpNetworkService.getCoordinates();
 
@@ -48,24 +49,24 @@ angular.module('cosmoUi')
                         bpNetworkService.render();
                     });
                 }
-                document.addEventListener("DOMContentLoaded", broadcastResize, false);
+                document.addEventListener('DOMContentLoaded', broadcastResize, false);
                 window.onresize = broadcastResize;
 
-                $scope.$watch("coordinates", function (data) {
+                $scope.$watch('coordinates', function (data) {
                     if (data) {
-                        group.selectAll("path")
+                        group.selectAll('path')
                             .remove();
 
-                        group.selectAll("path")
+                        group.selectAll('path')
                             .data(data)
                             .enter()
-                            .append("path")
-                            .attr("d", applyDiagonals)
-                            .attr("fill", "none")
-                            .attr("stroke", function (d) {
+                            .append('path')
+                            .attr('d', applyDiagonals)
+                            .attr('fill', 'none')
+                            .attr('stroke', function (d) {
                                 return d.color;
                             })
-                            .attr("stroke-width", "4px");
+                            .attr('stroke-width', '4px');
                     }
 
                 }, true);
@@ -73,46 +74,41 @@ angular.module('cosmoUi')
         };
     });
 
-angular.module("cosmoUi")
-    .directive("bpNetworkCoordinate", function(bpNetworkService, $timeout){
+angular.module('cosmoUi')
+    .directive('bpNetworkCoordinate', function (bpNetworkService) {
         return {
-            restrict: "A",
+            restrict: 'A',
             scope: {
-                "id": "=bpNetworkCoordinate"
+                'id': '=bpNetworkCoordinate'
             },
-            link: function($scope, $element, $attr) {
-
+            link: function ($scope, $element, $attr) {
                 switch ($attr.type) {
-                    case "subnet":
-                        bpNetworkService.addSubnet($scope.id, $element, $attr.color);
-                        break;
+                case 'subnet':
+                    bpNetworkService.addSubnet($scope.id, $element, $attr.color);
+                    break;
 
-                    case "network":
-                        bpNetworkService.addNetwork();
-                        break;
+                case 'network':
+                    bpNetworkService.addNetwork($scope.id, $element);
+                    break;
 
-                    case "device":
-                        bpNetworkService.addDevice($scope.id, $element);
-                        break;
+                case 'device':
+                    bpNetworkService.addDevice($scope.id, $element);
+                    break;
                 }
-
             }
-        }
+        };
     });
 
 angular.module('cosmoUi')
-    .service("bpNetworkService", function($timeout){
+    .service('bpNetworkService', function($timeout){
 
-        var data = {},
-            elements = {},
+        var elements = {},
             coordinates = [],
             map = {};
 
-        $timeout(render, 500);
-
         this.render = function () {
             render();
-        }
+        };
 
         function render() {
             var Coords = [];
@@ -135,6 +131,7 @@ angular.module('cosmoUi')
             });
             angular.extend(coordinates, Coords);
         }
+        $timeout(render, 500);
 
         function getAttachPoint(startPoint, endPoint, element) {
             var width = element.outerWidth(),
@@ -143,42 +140,44 @@ angular.module('cosmoUi')
             if (pointPosition < 0) { // Target right
                 return startPoint + width;
             }
-            else return startPoint; // Target left
+            else { // Target left
+                return startPoint;
+            }
         }
 
-        this.addDevice = function (id, element, type) {
+        this.addDevice = function (id, element) {
             elements[id] = angular.extend(elementCoords(element), {
-                "type": "device"
+                'type': 'device'
             });
-        }
+        };
 
         this.addSubnet = function (id, element, color) {
             elements[id] = angular.extend(elementCoords(element), {
-                "color": color || "silver",
-                "type": "subnet"
+                'color': color || 'silver',
+                'type': 'subnet'
             });
-        }
+        };
 
         this.addNetwork = function (id, element) {
             elements[id] = angular.extend(elementCoords(element), {
-                "type": "network"
+                'type': 'network'
             });
-        }
+        };
 
         function elementCoords(element) {
             return {
-                "x": element.offset().left - element.parents(".networksContainer").offset().left,
-                "y": element.offset().top - element.parents(".networksContainer").offset().top,
-                "element": element
-            }
+                'x': element.offset().left - element.parents('.networksContainer').offset().left,
+                'y': element.offset().top - element.parents('.networksContainer').offset().top,
+                'element': element
+            };
         }
 
         this.setMap = function (data) {
             map = data;
-        }
+        };
 
         this.getCoordinates = function () {
             return coordinates;
-        }
+        };
 
     });
