@@ -17,10 +17,6 @@ angular.module('cosmoUi')
                 scope.logout = function() {
                     console.log('logout');
                 };
-
-                scope.classname = function (filename) {
-                    return WhiteLabel.classname(filename);
-                };
             }
         };
     }]);

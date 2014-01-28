@@ -6,7 +6,7 @@ var proxySnippet = require('grunt-connect-proxy/lib/utils').proxyRequest;
 var mountFolder = function (connect, dir) {
     return connect.static(require('path').resolve(dir));
 };
-var gsWhitelabel = require("./backend/gsWhitelabel");
+//var gsWhitelabel = require("./backend/gsWhitelabel");
 
 // # Globbing
 // for performance reasons we're only matching one level down:
@@ -40,6 +40,16 @@ module.exports = function (grunt) {
 
 
 /*
+
+//whitelabel json example:
+// {
+// "colors": {
+// "redlabel": "#ff5555"
+// },
+// "classnamePrefix": "whitelabel-",
+// "colorSuffix": "-redlabel"
+// }
+
     try {
         var whitelabelJson = gsWhitelabel.read();
         grunt.log.writeln('read whitelabel.json: ', whitelabelJson);
