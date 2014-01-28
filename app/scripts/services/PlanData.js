@@ -59,6 +59,7 @@ angular.module('cosmoUi').service('PlanData', function () {
 
 
         function _getMergedValuesForProperty(node, property) {
+
             var properties = []; // a list of properties we will later merge. 0 - leaf, N - root.
             var type = null;
             var index = 0;
@@ -116,23 +117,7 @@ angular.module('cosmoUi').service('PlanData', function () {
             return result;
         }
 
-        function _getGeneralInfo(node) { // todo: remove this. We should expose smaller getters and let controller build this structure
-            var result = {
-                'name': node.name,
-                'type': _getTypesName(node),
-//                'numOfInstances':'',
-//                'description':'',
-                'relationships': _getRelationships(node)
-            };
 
-
-            for (var i in result) {
-                if (result.hasOwnProperty(i) && result[i] === null) {
-                    delete result[i];
-                }
-            }
-            return result;
-        }
 
         function _getRelationships(node) {
             var resultAsObj = _getMergedValuesForProperty(node, RELATIONSHIPS);
@@ -230,12 +215,18 @@ angular.module('cosmoUi').service('PlanData', function () {
         }
 
         this.addNode = _addNode;
-        this.getProperties = _getProperties;
-        this.getPolicies = _getPolicies;
+        this.getProperties = function(node){ return node.properties };//_getProperties;
+        this.getPolicies = function(node){ return node.policies};// _getPolicies;
         this.addType = _addType;
         this.getNodes = _getNodesList;
         this.getTypes = _getTypesList;
-        this.getGeneralInfo = _getGeneralInfo;
+        this.getGeneralInfo = function(node){  var result = {
+            'name': node.id,
+            'type': node.type,
+//                'numOfInstances':'',
+//                'description':'',
+            'relationships': node.relationships
+        }; return result;};//_getGeneralInfo;
         this.getNode = _getNode;
 
         this.getJSON = _getJSON;
@@ -248,5 +239,63 @@ angular.module('cosmoUi').service('PlanData', function () {
         return new DataWrapper();
     };
 
+
+});
+
+
+angular.module('cosmoUi').service("PlanDataConvert", function(){
+
+    var result = {};
+
+    this.edgesToAngular = function( data ){
+        for ( var i = 0; i < data.length ; i++) {
+
+            var edge = data[i];
+
+            if(!result.hasOwnProperty(edge.type)) {
+                result[edge.type] = [];
+            }
+
+            var sourceNode = findNode( result[edge.type], edge.type, edge.source );
+            var targetNode = findNode( result[edge.type], edge.type, edge.target );
+
+            if (sourceNode === null){
+                sourceNode = {"id": edge.source, type: edge.type};
+            }
+
+            if (targetNode === null){
+                targetNode = {"id": edge.target, type: edge.type};
+                result[edge.type].push(targetNode);
+            }
+
+            addChild( targetNode, sourceNode );
+            if (result[edge.type].indexOf(sourceNode) >= 0)
+                result[edge.type].splice(result[edge.type].indexOf(sourceNode), 1);
+        }
+        return result;
+    }
+
+    function findNode( tree, type, id ){
+        for ( var i = 0 ; i < tree.length; i ++ ){
+            var node = tree[i];
+            if (node.id === id){
+                return node;
+            }
+            else if (node.hasOwnProperty("children")){
+                var childNode = findNode(node.children, type, id);
+                if (childNode != null){
+                    return childNode;
+                }
+            }
+        }
+        return null;
+    }
+
+    function addChild( node, child ) {
+        if(!node.hasOwnProperty("children")) {
+            node.children = [];
+        }
+        node.children.push(child);
+    }
 
 });

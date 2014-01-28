@@ -128,7 +128,6 @@ html, body, .layout{ height:100%; width:100%; position:relative; }
   padding: 0px 20px 20px 10px;
   height: 100%;
   background-color: $COSMOUI_BACKGROUND;
-  position: relative;
 }
 
 #main-content-panel {
@@ -198,4 +197,30 @@ html, body, .layout{ height:100%; width:100%; position:relative; }
 
 .right-panel{
   width:400px;
+}
+
+.buttons-group {
+    $RADIUS: 30px;
+    display: inline-block;
+    margin: 4px 4px 0px 4px;
+    button {
+        display: inline-block;
+        height: $COSMOUI_BLUEPRINT_DETAILS_BUTTON_HEIGHT;
+        font-size: $COSMOUI_BLUEPRINT_DETAILS_BUTTON_FONT_SIZE;
+        padding: $COSMOUI_BLUEPRINT_DETAILS_BUTTON_PADDING;
+        color: $COSMOUI_BLUEPRINT_BUTTON_GROUP_BACKGROUND;
+        border: $COSMOUI_BLUEPRINT_BUTTON_GROUP_BORDER_COLOR;
+        border-radius: 0px;
+        margin: 0 -5px 0 0;
+        &:first-child {
+            border-radius: $RADIUS 0 0 $RADIUS;
+        }
+        &:last-child {
+            border-radius: 0 $RADIUS $RADIUS 0;
+        }
+        &.active {
+            background: $COSMOUI_BLUEPRINT_BUTTON_ACTIVE_COLOR;
+            color: white;
+        }
+    }
 }

@@ -1,46 +1,375 @@
-#plans{
-  #right-side-menu{
-    position:absolute;
-    z-index:20;
+#plans {
+    #right-side-menu{
+        position:absolute;
+        z-index:120;
 
-    top:0;
-    right:0;
-    width:600px;
-    border-left:4px solid $COSMOUI_BLUEPRINT_DETAILS_LEFT_BORDER_COLOR;
-    background-color: $COSMOUI_BLUEPRINT_DETAILS_BACKGROUND;
-    padding-left:19px;
-    padding-right:23px;
-    padding-top:20px;
+        top:0;
+        right:0;
+        width:600px;
+        border-left:4px solid $COSMOUI_BLUEPRINT_DETAILS_LEFT_BORDER_COLOR;
+        background-color: $COSMOUI_BLUEPRINT_DETAILS_BACKGROUND;
+        padding-left:19px;
+        padding-right:23px;
+        padding-top:20px;
 
-    .title{
-      padding-bottom:$COSMOUI_BLUEPRINT_DETAILS_TITLE_PADDING_BOTTOM;
-      line-height: $COSMOUI_BLUEPRINT_DETAILS_TITLE_LINE_HEIGHT;
-      color:$COSMOUI_BLUEPRINT_DETAILS_TITLE_COLOR;
-      font-size: $COSMOUI_BLUEPRINT_DETAILS_TITLE_FONT_SIZE;
-      border-bottom:4px solid $COSMOUI_BLUEPRINT_DETAILS_TITLE_BOTTOM_BORDER_COLOR;
-      i { float:right; }
-    }
-
-    .content{
-      margin-top: $COSMOUI_BLUEPRINT_DETAILS_CONTENT_MARGIN_TOP;
-      .btn-group{
-        $RADIUS:30px;
-
-        button{
-          height: $COSMOUI_BLUEPRINT_DETAILS_BUTTON_HEIGHT;
-          font-size: $COSMOUI_BLUEPRINT_DETAILS_BUTTON_FONT_SIZE;
-          padding: $COSMOUI_BLUEPRINT_DETAILS_BUTTON_PADDING;
-          color: $COSMOUI_BLUEPRINT_BUTTON_GROUP_BACKGROUND;
-          border: $COSMOUI_BLUEPRINT_BUTTON_GROUP_BORDER_COLOR;
+        .title{
+            padding-bottom:$COSMOUI_BLUEPRINT_DETAILS_TITLE_PADDING_BOTTOM;
+            line-height: $COSMOUI_BLUEPRINT_DETAILS_TITLE_LINE_HEIGHT;
+            color:$COSMOUI_BLUEPRINT_DETAILS_TITLE_COLOR;
+            font-size: $COSMOUI_BLUEPRINT_DETAILS_TITLE_FONT_SIZE;
+            border-bottom:4px solid $COSMOUI_BLUEPRINT_DETAILS_TITLE_BOTTOM_BORDER_COLOR;
+            i { float:right; }
         }
 
-        button:last-child{ border-bottom-right-radius: $RADIUS; border-top-right-radius: $RADIUS;}
-        button:first-child{ border-top-left-radius: $RADIUS; border-bottom-left-radius: $RADIUS; }
-        button.active{ background: $COSMOUI_BLUEPRINT_BUTTON_ACTIVE_COLOR; color:white; }
-      }
-      .content-section{
-        margin-top:30px;
-      }
+        .content{
+            margin-top: $COSMOUI_BLUEPRINT_DETAILS_CONTENT_MARGIN_TOP;
+            .content-section{
+                margin-top:30px;
+            }
+        }
     }
-  }
+    .toggles-bar {
+        display: inline-block;
+    }
+    .content-section {
+        padding: 30px 0;
+    }
+    .bpContainer {
+        position: relative;
+        display: block;
+        font-family: 'trebuchet ms', verdana, arial;
+        width: 100%;
+        height: 100%;
+        padding: 0 40px;
+        .coordinates {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            svg {
+                position: relative;
+                width: 100%;
+                height: 100%;
+            }
+        }
+        i.icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 19px;
+            position: relative;
+            color: white;
+            &:after {
+                position: absolute;
+                top: -12px;
+                left: 6px;
+            }
+            > .badge {
+                position: absolute;
+                z-index: 1;
+                top: -10px;
+                right: -15px;
+                background-color: #8eaf26; // #d54931; #feb300; #8eaf26; #2f3334;
+                text-decoration: none;
+                font-family: "OpenSansBold";
+                font-size: 14px;
+                color: #fff;
+                line-height: 15px;
+            }
+        }
+        .box {
+            position: relative;
+            display: inline-block;
+            min-height: 164px;
+            border-width: 2px;
+            border-color: #136e9d;
+            border-style: solid;
+            background-color: white;
+            vertical-align: top;
+            padding: 2px;
+            border-radius: 3px;
+            margin: 0 60px 40px 0;
+            .box {
+                border-color: #3aaeda;
+                min-width: 270px;
+                margin: 15px;
+                .head {
+                    background-color: #3aaeda;
+                }
+                .holder {
+                    text-align: center;
+                }
+                > i.icon {
+                    position: absolute;
+                    background: #3aaeda;
+                    border-width: 2px;
+                    border-style: solid;
+                    border-color: white;
+                    top: 0px;
+                    left: -20px;
+                }
+                > .piProgress {
+                    position: absolute;
+                    top: -5px;
+                    left: -28px;
+                    .circle {
+                        background: #3aaeda;
+                        border-width: 2px;
+                        border-style: solid;
+                        border-color: white;
+                    }
+                }
+                .hoverup {
+                    z-index: 101;
+                }
+            }
+            > i.icon {
+                position: absolute;
+                background: #136e9d;
+                border-width: 2px;
+                border-style: solid;
+                border-color: white;
+                top: 0px;
+                left: -20px;
+            }
+            > .piProgress {
+                position: absolute;
+                top: -5px;
+                left: -28px;
+                .circle {
+                    background: #136e9d;
+                    border-width: 2px;
+                    border-style: solid;
+                    border-color: white;
+                }
+            }
+            .head {
+                display: block;
+                background-color: #136e9d;
+                color: white;
+                padding: 6px 10px 6px 20px;
+                border-radius: 3px;
+                font-size: 18px;
+            }
+            .holder {
+                display: block;
+                background-color: white;
+                padding: 10px;
+            }
+            .hoverup {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                z-index: 100;
+            }
+            .buttons {
+                display: none;
+                position: absolute;
+                top: -10px;
+                right: 0px;
+                z-index: 100;
+                > ul {
+                    display: inline-block;
+                    list-style-type: none;
+                    white-space: nowrap;
+                    margin: 0;
+                    padding: 0;
+                    li {
+                        display: inline-block;
+                        width: 36px;
+                        height: 28px;
+                        border-width: 2px 0 2px 2px;
+                        border-style: solid;
+                        border-color: #ddd;
+                        background-color: #fff;
+                        cursor: pointer;
+                        position: relative;
+                        &:after {
+                            position: absolute;
+                            top: -8px;
+                            left: 9px;
+                            font-size: 30px;
+                        }
+                    }
+                    li:first-child {
+                        border-radius: 14px 0 0 14px;
+                    }
+                    li:last-child {
+                        border-width: 2px;
+                        border-radius: 0 14px 14px 0;
+                    }
+                }
+            }
+            :hover > .buttons {
+                display: inline;
+            }
+        }
+        .app {
+            position: relative;
+            min-width: 180px;
+            display: inline-block;
+            text-align: center;
+            border-radius: 3px;
+            margin: 10px;
+            p {
+                margin: 0px;
+                color: #555869;
+                font-size: 16px;
+            }
+            i.icon {
+                display: inline-block;
+                background: #66a2c5;
+                &:after {
+                    position: absolute;
+                    top: -10px;
+                    left: 8px;
+                }
+            }
+        }
+        .disableBox {
+            border-color:silver;
+            > .head {
+                background-color: silver;
+            }
+            > .icon {
+                background-color: silver;
+                > .badge {
+                    background-color: silver;
+                }
+            }
+        }
+        &.disableCompute {
+            [data-type="compute"].box {
+                @extend .disableBox;
+            }
+        }
+        &.disableMiddleware {
+            [data-type="middleware"].box {
+                @extend .disableBox;
+            }
+        }
+        &.disableModules {
+            [data-type="modules"].app {
+                @extend .disableBox;
+            }
+        }
+        &.disableConnections {
+            svg {
+                display: none;
+            }
+        }
+    }
+
+
+    .networksContainer {
+        position: relative;
+        white-space: nowrap;
+        .relations {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+        .network {
+            display: inline-block;
+            text-align: center;
+            .name {
+                display: block;
+                background-color: #797B86;
+                color: #fff;
+                padding: 2px 6px;
+                border-radius: 5px;
+                text-align: center;
+                margin: 0 0 20px 0;
+            }
+            .line {
+                display: inline-block;
+                .subnet {
+                    position: relative;
+                    display: inline-block;
+                    width: 20px;
+                    height: 500px;
+                    background-color: #149bdf;
+                    color: #fff;
+                    border-radius: 5px;
+                    vertical-align: top;
+                    margin: 0 10px 0 0;
+                    > p {
+                        position: absolute;
+                        display: block;
+                        transform: rotate(90deg);
+                        -ms-transform: rotate(90deg); /* IE 9 */
+                        -webkit-transform: rotate(90deg); /* Safari and Chrome */
+                        white-space: nowrap;
+                        top: 5px;
+                        right: 0;
+                        left: 0;
+                    }
+                    > p.cidr {
+                        width: 200px;
+                        top: auto;
+                        left: -90px;
+                        bottom: 85px;
+                        text-align: right;
+                    }
+                    &.red {
+                        background-color: #d54931;
+                    }
+                    &.orange {
+                        background-color: #f89406;
+                    }
+                }
+                .subnet:last-child {
+                    margin: 0;
+                }
+            }
+            .devices {
+                display: inline-block;
+                width: 200px;
+                height: 500px;
+                padding: 47px 0;
+                vertical-align: top;
+                > .device {
+                    position: relative;
+                    display: block;
+                    width: 40px;
+                    height: 40px;
+                    background-color: #fff;
+                    border-width: 3px;
+                    border-style: solid;
+                    color: #797B86;
+                    border-radius: 20px;
+                    margin: 0 auto 40px;
+                    vertical-align: top;
+                    label {
+                        display: block;
+                        background-color: #000;
+                        color: #fff;
+                        margin: 0px;
+                        font-weight: normal;
+                    }
+                    > p {
+                        margin: 5px;
+                    }
+                    > i.topology-glyph {
+                        color: inherit;
+                    }
+                    > i.topology-glyph::after {
+                        position: absolute;
+                        left: 7px;
+                        top: -11px;
+                    }
+                }
+                > .device:last-child {
+                    margin-bottom: 0px;
+                }
+            }
+        }
+        .network:nth-child(even) .devices {
+            padding: 92px;
+        }
+    }
 }
