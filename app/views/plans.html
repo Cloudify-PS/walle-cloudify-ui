@@ -28,12 +28,13 @@
         <button type="button" class="btn btn-default" value="network">Network</button>
     </div>
 
-    <div class="toggles-bar">
-        <div toggle-switch text="Compute & Storage" value="toggleBar.compute"></div>
-        <div toggle-switch text="Middleware" value="toggleBar.middleware"></div>
-        <div toggle-switch text="Modules" value="toggleBar.modules"></div>
-        <div toggle-switch text="Connections" value="toggleBar.connections"></div>
-    </div>
+    <div settings-toggles id="settings-button" toggles="toggleBar"></div>
+    <!--<div class="toggles-bar">-->
+        <!--<div toggle-switch text="Compute & Storage" value="toggleBar.compute"></div>-->
+        <!--<div toggle-switch text="Middleware" value="toggleBar.middleware"></div>-->
+        <!--<div toggle-switch text="Modules" value="toggleBar.modules"></div>-->
+        <!--<div toggle-switch text="Connections" value="toggleBar.connections"></div>-->
+    <!--</div>-->
 
     <div ng-switch="section" class="content-section">
 
