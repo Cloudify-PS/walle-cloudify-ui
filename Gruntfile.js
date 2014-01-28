@@ -439,10 +439,12 @@ module.exports = function (grunt) {
         'karma'
     ]);
 
+/*
     grunt.registerTask('whitelabel', [
             'grunticon',
             'copy:whitelabel'
         ]);
+*/
 
     grunt.registerTask('build', function (target) {
 
@@ -459,9 +461,11 @@ module.exports = function (grunt) {
             'usemin'
         ];
 
+/*
         if (target === 'wl') { // whitelabel
             tasks.splice(tasks.indexOf('copy:dist'), 0, 'whitelabel'); // insert grunticon task before copy task
         }
+*/
 
 //        grunt.log.writeln(tasks);
         grunt.task.run(tasks);
