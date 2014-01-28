@@ -9,27 +9,28 @@ angular.module('cosmoUi')
         $scope.toggleView = false;
 
         $scope.toggleBar = {
-            "compute": true,
-            "middleware": true,
-            "modules": true,
-            "connections": true
+            'compute': true,
+            'middleware': true,
+            'modules': true,
+            'connections': true
         };
 
         $scope.piProgress1 = {
-            "succeed": 20,
-            "error": 45,
-            "warning": 35
-        }
+            'succeed': 20,
+            'error': 45,
+            'warning': 35
+        };
 
         $scope.piProgress2 = {
-            "progress": 5
-        }
+            'progress': 5
+        };
 
-        var progressDemo = function() {
-            $scope.piProgress2['progress']++;
-            if($scope.piProgress2['progress'] < 85)
+        var progressDemo = function () {
+            $scope.piProgress2.progress++;
+            if ($scope.piProgress2.progress < 85) {
                 $timeout(progressDemo, 30);
-        }
+            }
+        };
         $timeout(progressDemo, 2000);
 
         BreadcrumbsService.push('blueprints',
@@ -46,23 +47,23 @@ angular.module('cosmoUi')
                 dataMap;
 
             // Convert edges to angular format
-            if (dataPlan.hasOwnProperty("edges") && !!dataPlan.edges){
+            if (dataPlan.hasOwnProperty('edges') && !!dataPlan.edges) {
                 dataMap = PlanDataConvert.edgesToAngular(dataPlan.edges);
             }
 
             // Index data by ID
-            if (dataPlan.hasOwnProperty("nodes") && !!dataPlan.nodes){
+            if (dataPlan.hasOwnProperty('nodes') && !!dataPlan.nodes) {
                 $scope.indexNodes = {};
-                dataPlan.nodes.forEach(function(node){
+                dataPlan.nodes.forEach(function (node) {
                     $scope.indexNodes[node.id] = node;
                 });
             }
 
             // Set Map
-            blueprintCoordinateService.setMap(dataMap["cloudify.relationships.connected_to"]);
+            blueprintCoordinateService.setMap(dataMap['cloudify.relationships.connected_to']);
 
             // Connection between nodes
-            $scope.map = dataMap["cloudify.relationships.contained_in"];
+            $scope.map = dataMap['cloudify.relationships.contained_in'];
             $scope.coordinates = blueprintCoordinateService.getCoordinates();
 
         });
@@ -82,4 +83,4 @@ angular.module('cosmoUi')
         $scope.hideProperties = function () {
             $scope.showProperties = null;
         };
-});
+    });
