@@ -73,16 +73,16 @@ angular.module('cosmoUi')
                 });
         }
 
-        function _getBlueprintIndex(blueprintId) {
-            var blueprintIndex = -1;
-            for (var j = 0; j < $scope.blueprints.length; j++) {
-                if ($scope.blueprints[j].id === blueprintId) {
-                    blueprintIndex = j;
-                }
-            }
-
-            return blueprintIndex;
-        }
+//        function _getBlueprintIndex(blueprintId) {
+//            var blueprintIndex = -1;
+//            for (var j = 0; j < $scope.blueprints.length; j++) {
+//                if ($scope.blueprints[j].id === blueprintId) {
+//                    blueprintIndex = j;
+//                }
+//            }
+//
+//            return blueprintIndex;
+//        }
 
         _loadDeployments();
 

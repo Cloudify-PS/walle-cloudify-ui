@@ -37,14 +37,14 @@ angular.module('cosmoUi')
                         updateDeployments();
                     }
 
-                }, function(e) {
+                }, function() {
                     cosmoError = true;
                 });
         };
 
         $scope.deployBlueprint = function(blueprint) {
             RestService.deployBlueprint(blueprint.id)
-                .then(function(deployment) {
+                .then(function() {
                     $location.path('/deployments').search({blueprint: blueprint});
                 });
         };
