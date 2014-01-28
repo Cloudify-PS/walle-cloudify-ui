@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('cosmoUi')
-    .directive('header', ['WhiteLabel', function (WhiteLabel) {
+    .directive('header', function () {
         return {
             templateUrl: 'views/headerTemplate.html',
             restrict: ' A',
@@ -19,4 +19,4 @@ angular.module('cosmoUi')
                 };
             }
         };
-    }]);
+    });
