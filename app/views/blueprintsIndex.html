@@ -5,7 +5,7 @@
         <button class="gs-btn" ng-click="toggleAddDialog()">Upload Blueprint</button>
         </div>
     </div>
-    <table class="table table-striped">
+    <table class="table table-striped" ng-show="!cosmoConnectionOk()">
         <tr>
             <td class="icon"><!-- icon --></td>
             <td class="name">Name</td>
@@ -18,9 +18,14 @@
             <td class="name" ng-click="redirectTo(blueprint)">{{blueprint.name}}</td>
             <td class="version">{{blueprint.version}}</td>
             <td class="description">{{blueprint.description}}</td>
-            <td class="actions"><button class="deploy-button" ng-click="deployBlueprint(blueprint)">Create Deployment</button><!--i id="blueprint-down" class="fa  fa-chevron-circle-down"></i><i class="fa  fa-play-circle-o" ng-click="deployBlueprint(blueprint)"></i--></td>
+            <td class="actions">
+                <button class="deploy-button" ng-click="deployBlueprint(blueprint)">Create Deployment</button>
+                <div class="deployments-number">{{blueprint.deployments.length}}</div>
+                <!--i id="blueprint-down" class="fa  fa-chevron-circle-down"></i><i class="fa  fa-play-circle-o" ng-click="deployBlueprint(blueprint)"></i-->
+            </td>
         </tr>
     </table>
+    <div class="connect-error-message" ng-show="cosmoConnectionOk()">Error connecting to Cosmo server</div>
     <div ng-show="isAddDialogVisible" ng-controller="PopupCtrl">
         <div id="popupBoxBg"></div>
         <div id="popupContainer">

@@ -17,7 +17,9 @@ angular.module('cosmoUi')
                 if (params !== undefined) {
                     callParams = params;
                 }
-                return $http(callParams).then(function(data) {
+                return $http(callParams).error(function(data) {
+                    return data;
+                }).then(function(data) {
                     console.log(['data loaded',data]);
                     return data.data;
                 });
@@ -31,7 +33,27 @@ angular.module('cosmoUi')
         }
 
         function _loadBlueprints() {
-            return _load('blueprints');
+            var deferred = $q.defer();
+            var blueprints = [];
+            _load('blueprints').then(function(data) {
+                blueprints = data;
+                _load('deployments').then(function(data) {
+                    var deployments = data;
+                    for (var i = 0; i < deployments.length; i++) {
+                        for (var j = 0; j < blueprints.length; j++) {
+                            if (blueprints[j].deployments === undefined) {
+                                blueprints[j].deployments = [];
+                            }
+                            if (deployments[i].blueprintId === blueprints[j].id) {
+                                blueprints[j].deployments.push(deployments[i]);
+                            }
+                        }
+                    }
+                    deferred.resolve(blueprints);
+                });
+            });
+
+            return deferred.promise;
         }
 
         function _addBlueprint(params) {

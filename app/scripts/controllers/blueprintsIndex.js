@@ -7,6 +7,7 @@ angular.module('cosmoUi')
         $scope.lastExecutedPlan = null;
         $scope.deploymentId = null;
         var _blueprintsArr = [];
+        var cosmoError = false;
 
         BreadcrumbsService.push('blueprints',
             {
@@ -18,7 +19,6 @@ angular.module('cosmoUi')
         $scope.redirectTo = function (blueprint) {
             console.log(['redirecting to', blueprint]);
             $scope.selectedBlueprintId = blueprint.id;
-            console.log(blueprint.id);
             $location.path('/blueprint').search({id: blueprint.id, name: blueprint.name});
         };
 
@@ -27,18 +27,30 @@ angular.module('cosmoUi')
         };
 
         $scope.loadBlueprints = function() {
-            RestService.loadBlueprints().then(function(data) {
-                $scope.blueprints = data;
-                updateDeployments();
-            });
+            RestService.loadBlueprints()
+                .then(function(data) {
+                    cosmoError = false;
+                    if (data.length < 1) {
+                        $scope.blueprints = [];
+                    } else {
+                        $scope.blueprints = data;
+                        updateDeployments();
+                    }
+
+                }, function() {
+                    cosmoError = true;
+                });
         };
 
         $scope.deployBlueprint = function(blueprint) {
             RestService.deployBlueprint(blueprint.id)
-                .then(function(deployment) {
-                    $cookieStore.put('deploymentId', deployment.id);
+                .then(function() {
                     $location.path('/deployments').search({blueprint: blueprint});
                 });
+        };
+
+        $scope.cosmoConnectionOk = function() {
+            return cosmoError;
         };
 
         function updateDeployments() {

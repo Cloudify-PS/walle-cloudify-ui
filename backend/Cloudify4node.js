@@ -19,6 +19,11 @@ function createRequest(requestData, callback) {
         var data = '';
         var result = '';
 
+        if (res.errno !== undefined) {
+            callback(null, 500);
+            return;
+        }
+
         console.log('STATUS: ' + res.statusCode);
 
         res.on('data', function (chunk) {
@@ -36,7 +41,6 @@ function createRequest(requestData, callback) {
     };
 
     var onError = function(e) {
-        console.log(e);
         console.log('problem with request: ' + e.message);
         _callback(e, null);
     };
