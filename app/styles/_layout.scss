@@ -70,7 +70,7 @@ html, body, .layout {
   height: 58px;
   background-position: 50% 50%;
   background-repeat: no-repeat;
-  //background-image: url("/images/svg/cloudify-logo.svg");
+  background-image: url("#{$img-cloudify-logo}");
   background-size: contain;
 }
 
@@ -96,7 +96,7 @@ html, body, .layout {
   #search-submit {
     width: 20px;
     height: 20px;
-    background: url("/images/svg/search.svg") no-repeat center center;
+    background: url("#{$img-search}") no-repeat center center;
     position: absolute;
     top: 5px;
     left: 5px;
@@ -115,7 +115,7 @@ html, body, .layout {
   #user-icon {
     width: 18px;
     height: 18px;
-    background: url("/images/svg/user.svg") no-repeat center center;
+    background: url("#{$img-user}") no-repeat center center;
     position: relative;
     top: 0px;
     left: 0px;
@@ -137,7 +137,7 @@ html, body, .layout {
     position: relative;
     top: 0px;
     right: 5px;
-    background: url("/images/svg/logout.svg") no-repeat center center;
+    background: url("#{$img-logout}") no-repeat center center;
     float: right;
     cursor: pointer;
   }

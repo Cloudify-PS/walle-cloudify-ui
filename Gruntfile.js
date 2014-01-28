@@ -6,6 +6,7 @@ var proxySnippet = require('grunt-connect-proxy/lib/utils').proxyRequest;
 var mountFolder = function (connect, dir) {
     return connect.static(require('path').resolve(dir));
 };
+var gsWhitelabel = require("./backend/gsWhitelabel");
 
 // # Globbing
 // for performance reasons we're only matching one level down:
@@ -29,23 +30,29 @@ module.exports = function (grunt) {
     } catch (e) {
     }
 
+/*
     var grunticonConfig = {
         dist: 'grunticon-dist',
         colors: {},
-        classnamePrefix: '-whitelabel'
+        classnamePrefix: 'whitelabel-'
     }
+*/
 
+
+/*
     try {
-        var whitelabelJson = require('./whitelabel.json');
+        var whitelabelJson = gsWhitelabel.read();
+        grunt.log.writeln('read whitelabel.json: ', whitelabelJson);
         grunticonConfig.colors = whitelabelJson.colors || grunticonConfig.colors;
         grunticonConfig.classnamePrefix = whitelabelJson.classnamePrefix || grunticonConfig.classnamePrefix;
     } catch (e) {
-        console.log('failed to extract json config for white labeling: ', e);
+        grunt.log.writeln('failed to extract json config for white labeling: ', e);
     }
+*/
 
     grunt.initConfig({
         yeoman: yeomanConfig,
-        gicon: grunticonConfig,
+//        gicon: grunticonConfig,
         watch: {
             coffee: {
                 files: ['<%= yeoman.app %>/scripts/{,*/}*.coffee'],
@@ -131,7 +138,7 @@ module.exports = function (grunt) {
                         dot: true,
                         src: [
                             '.tmp',
-                            '<%= gicon.dist %>',
+//                            '<%= gicon.dist %>',
                             '<%= yeoman.dist %>/*',
                             '!<%= yeoman.dist %>/.git*'
                         ]
@@ -275,26 +282,26 @@ module.exports = function (grunt) {
         },
         // Put files not handled in other tasks here
         copy: {
-            app: {
-                files: [
-                    // grunticon generated stylesheets
-                    // TODO we should probably also copy these stylesheets to the dist folder
-                    {
-                        expand: true,
-                        cwd: '<%= gicon.dist %>',
-                        dest: '<%= yeoman.app %>/styles',
-                        src: [
-                            '**/*.css'
-                        ],
-                        // change the file extension, and prefix with an underscore to stick to sass conventions
-                        // in order to comfortably import these files to the main sass stylesheet
-                        ext: '.scss',
-                        rename:  function (dest, src) {
-                            return dest + '/_' + src;
-                        }
-                    }
-                ]
-            },
+//            whitelabel: {
+//                files: [
+//                    // grunticon generated stylesheets
+//                    // TODO we should probably also copy these stylesheets to the dist folder
+//                    {
+//                        expand: true,
+//                        cwd: '<%= gicon.dist %>',
+//                        dest: '<%= yeoman.app %>/styles',
+//                        src: [
+//                            '**/*.css'
+//                        ],
+//                        // change the file extension, and prefix with an underscore to stick to sass conventions
+//                        // in order to comfortably import these files to the main sass stylesheet
+//                        ext: '.scss',
+//                        rename:  function (dest, src) {
+//                            return dest + '/_' + src;
+//                        }
+//                    }
+//                ]
+//            },
             dist: {
                 files: [
                     {
@@ -379,34 +386,34 @@ module.exports = function (grunt) {
                     ]
                 }
             }
-        },
-        grunticon: {
-            whitelabel: {
-                files: [{
-                    expand: true,
-                    cwd: '<%= yeoman.app %>/images/svg',
-                    src: ['*.svg'],
-                    dest: '<%= gicon.dist %>'
-                }],
-                options: {
-
-                    // SVGO compression, false is the default, true will make it so
-                    svgo: true,
-
-                    // CSS filenames: we don't want to change the file extension just yet, as these files can be
-                    // statically imported to preview the icons, just change the file name to our benefit
-                    datasvgcss: 'whitelabelImagesSvg.css',
-                    datapngcss: 'whitelabelImagesPng.css',
-                    urlpngcss: 'whitelabelImagesFallback.css',
-
-                    // prefix for CSS classnames: avoid the default '.icon-' prefix to prevent collisions with bootstrap styles
-                    cssprefix: '.<%= gicon.classnamePrefix %>',
-
-                    // NOTE: the colors option is broken at the moment, see this issue: https://github.com/filamentgroup/grunticon/issues/113
-                    // define vars that can be used in filenames if desirable, like foo.colors-redlabel.svg
-                    colors: '<%= gicon.colors %>'
-                }
-            }
+//        },
+//        grunticon: {
+//            whitelabel: {
+//                files: [{
+//                    expand: true,
+//                    cwd: '<%= yeoman.app %>/images/svg',
+//                    src: ['*.svg'],
+//                    dest: '<%= gicon.dist %>'
+//                }],
+//                options: {
+//
+//                    // SVGO compression, false is the default, true will make it so
+//                    svgo: true,
+//
+//                    // CSS filenames: we don't want to change the file extension just yet, as these files can be
+//                    // statically imported to preview the icons, just change the file name to our benefit
+//                    datasvgcss: 'whitelabelImagesSvg.css',
+//                    datapngcss: 'whitelabelImagesPng.css',
+//                    urlpngcss: 'whitelabelImagesFallback.css',
+//
+//                    // prefix for CSS classnames: avoid the default '.icon-' prefix to prevent collisions with bootstrap styles
+//                    cssprefix: '.<%= gicon.classnamePrefix %>',
+//
+//                    // NOTE: the colors option is broken at the moment, see this issue: https://github.com/filamentgroup/grunticon/issues/113
+//                    // define vars that can be used in filenames if desirable, like foo.colors-redlabel.svg
+//                    colors: '<%= gicon.colors %>'
+//                }
+//            }
         }
     });
 
@@ -432,19 +439,33 @@ module.exports = function (grunt) {
         'karma'
     ]);
 
-    grunt.registerTask('build', [
-        'clean:dist',
-        'useminPrepare',
-        'concurrent:dist',
-        'concat',
-        'grunticon',
-        'copy',
-        'ngmin',
-        'cssmin',
-        'uglify',
-        'rev',
-        'usemin'
-    ]);
+    grunt.registerTask('whitelabel', [
+            'grunticon',
+            'copy:whitelabel'
+        ]);
+
+    grunt.registerTask('build', function (target) {
+
+        var tasks = [
+            'clean:dist',
+            'useminPrepare',
+            'concurrent:dist',
+            'concat',
+            'copy:dist',
+            'ngmin',
+            'cssmin',
+            'uglify',
+            'rev',
+            'usemin'
+        ];
+
+        if (target === 'wl') { // whitelabel
+            tasks.splice(tasks.indexOf('copy:dist'), 0, 'whitelabel'); // insert grunticon task before copy task
+        }
+
+//        grunt.log.writeln(tasks);
+        grunt.task.run(tasks);
+    });
 
     grunt.registerTask('default', [
         'jshint',

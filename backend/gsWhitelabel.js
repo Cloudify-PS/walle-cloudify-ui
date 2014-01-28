@@ -2,7 +2,7 @@ var fs = require('fs');
 
 var whitelabelObj = null;
 
-exports.read = function (req, res) {
+exports.read = function () {
     var fileJSON;
     try {
         fileJSON = require('../whitelabel.json');
@@ -12,3 +12,4 @@ exports.read = function (req, res) {
     }
     return fileJSON;
 };
+

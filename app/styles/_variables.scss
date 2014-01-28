@@ -113,7 +113,7 @@ $COSMOUI_EVENTS_WIDGET_OPENED_HEADER_TEXT_MARGIN_TOP: 4px;
 $COSMOUI_EVENTS_WIDGET_OPENED_HEADER_TEXT_MARGIN_LEFT: 3px;
 $COSMOUI_EVENTS_WIDGET_OPENED_HEADER_CLOSE_WIDTH: 20px;
 $COSMOUI_EVENTS_WIDGET_OPENED_HEADER_CLOSE_HEIGHT: 20px;
-$COSMOUI_EVENTS_WIDGET_OPENED_HEADER_CLOSE_BACKGROUND: url("/images/eventsWidgetClose.png") no-repeat center center;
+$COSMOUI_EVENTS_WIDGET_OPENED_HEADER_CLOSE_BACKGROUND: url("#{$img-widget-close}") no-repeat center center;
 $COSMOUI_EVENTS_WIDGET_OPENED_HEADER_CLOSE_RIGHT: 5px;
 $COSMOUI_EVENTS_WIDGET_OPENED_HEADER_CLOSE_TOP: 5px;
 $COSMOUI_EVENTS_WIDGET_OPENED_LIST_CONTAINER_OVERFLOW_X: hidden;
@@ -130,15 +130,15 @@ $COSMOUI_EVENTS_WIDGET_OPENED_EVENT_TYPE_MARGIN_LEFT: 10px;
 $COSMOUI_EVENTS_WIDGET_OPENED_EVENT_TIME_MARGIN_LEFT: 10px;
 
 /** Event icons **/
-$COSMOUI_EVENT_ICON_BACKGROUND_WORKFLOW_STARTED: url("/images/events/WorkflowStarted.png") no-repeat center center;
-$COSMOUI_EVENT_ICON_BACKGROUND_WORKFLOW_END_SUCCESSFULLY: url("/images/events/WorkflowSuccessfully.png") no-repeat center center;
-$COSMOUI_EVENT_ICON_BACKGROUND_WORKFLOW_FAILED: url("/images/events/WorkflowFailed.png") no-repeat center center;
-$COSMOUI_EVENT_ICON_BACKGROUND_TASK_STARTED: url("/images/events/TaskStarted.png") no-repeat center center;
-$COSMOUI_EVENT_ICON_BACKGROUND_TASK_FAILED: url("/images/events/TaskFailed.png") no-repeat center center;
-$COSMOUI_EVENT_ICON_BACKGROUND_TASK_SENT: url("/images/events/TaskSent.png") no-repeat center center;
-$COSMOUI_EVENT_ICON_BACKGROUND_TASK_SUCCESS: url("/images/events/TaskSuccessfully.png") no-repeat center center;
-$COSMOUI_EVENT_ICON_BACKGROUND_POLICY_SUCCESS: url("/images/events/PolicySuccessfully.png") no-repeat center center;
-$COSMOUI_EVENT_ICON_BACKGROUND_POLICY_FAILED: url("/images/events/PolicyFailed.png") no-repeat center center;
+$COSMOUI_EVENT_ICON_BACKGROUND_WORKFLOW_STARTED: url("#{$img-workflow-started}") no-repeat center center;
+$COSMOUI_EVENT_ICON_BACKGROUND_WORKFLOW_END_SUCCESSFULLY: url("#{$img-workflow-end-successfully}") no-repeat center center;
+$COSMOUI_EVENT_ICON_BACKGROUND_WORKFLOW_FAILED: url("#{$img-workflow-failed}") no-repeat center center;
+$COSMOUI_EVENT_ICON_BACKGROUND_TASK_STARTED: url("#{$img-task-started}") no-repeat center center;
+$COSMOUI_EVENT_ICON_BACKGROUND_TASK_FAILED: url("#{$img-task-failed}") no-repeat center center;
+$COSMOUI_EVENT_ICON_BACKGROUND_TASK_SENT: url("#{$img-task-sent}") no-repeat center center;
+$COSMOUI_EVENT_ICON_BACKGROUND_TASK_SUCCESS: url("#{$img-task-success}") no-repeat center center;
+$COSMOUI_EVENT_ICON_BACKGROUND_POLICY_SUCCESS: url("#{$img-policy-success}") no-repeat center center;
+$COSMOUI_EVENT_ICON_BACKGROUND_POLICY_FAILED: url("#{$img-policy-failed}") no-repeat center center;
 
 
 /** Blueprints list page **/

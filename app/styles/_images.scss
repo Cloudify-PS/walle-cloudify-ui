@@ -1,0 +1,18 @@
+$images-path: '/images' !default;
+
+$img-cloudify-logo: '#{$images-path}/cloudify-logo.svg' !default;
+$img-search: '#{$images-path}/search.svg' !default;
+$img-user: '#{$images-path}/user.svg' !default;
+$img-logout: '#{$images-path}/logout.svg' !default;
+$img-workflow-started: '#{$images-path}/events/WorkflowStarted.png' !default;
+$img-workflow-end-successfully: '#{$images-path}/events/WorkflowSuccessfully.png' !default;
+$img-workflow-failed: '#{$images-path}/events/WorkflowFailed.png' !default;
+$img-task-started: '#{$images-path}/events/TaskStarted.png' !default;
+$img-task-failed: '#{$images-path}/events/TaskFailed.png' !default;
+$img-task-sent: '#{$images-path}/events/TaskSent.png' !default;
+$img-task-success: '#{$images-path}/events/TaskSuccessfully.png' !default;
+$img-policy-success: '#{$images-path}/events/PolicySuccessfully.png' !default;
+$img-policy-failed: '#{$images-path}/events/PolicyFailed.png' !default;
+$img-widget-close: '#{$images-path}/eventsWidgetClose.png' !default;
+$img-icons-bar: '#{$images-path}/icons-bar.png' !default;
+$img-buttons: '#{$images-path}/buttons.png' !default;

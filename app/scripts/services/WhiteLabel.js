@@ -4,12 +4,12 @@ angular.module('cosmoUi')
     .factory('WhiteLabel', ['$resource', function ($resource) {
 
         var obj = $resource('/backend/whitelabel').get() || {};
-        console.log(obj)
+//        console.log(obj)
 
         return {
 
             value: function (key) {
-                return obj[key];
+                return key in obj && obj[key] || '';
             },
 
             classnamePrefix: function () {
@@ -30,7 +30,7 @@ angular.module('cosmoUi')
                 var classname = this.classnamePrefix() + filename + colorSuffix;
 
                 // TODO why is it called with undefined prefix?
-                console.log('classname: ', classname);
+//                console.log('classname: ', classname);
                 return classname;
             }
 
