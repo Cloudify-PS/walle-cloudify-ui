@@ -2,12 +2,7 @@ var ajax = require("http");
 var fs = require('fs');
 var conf = require("../backend/appConf");
 var log4js = require('log4js');
-log4js.configure({
-    appenders: [
-        { type: 'console' },
-        { type: 'file', filename: 'logs/gsui.log', category: 'gsui' }
-    ]
-});
+log4js.configure(conf.log4js);
 var logger = log4js.getLogger('server');
 
 module.exports = Cloudify4node;
