@@ -5,7 +5,7 @@
         <div class="breadcrumbs"><ul id="deployments" breadcrumbs></ul></div>
     </div>
 
-    <table>
+    <table ng-show="!cosmoConnectionOk()">
         <tr ng-repeat="blueprint in blueprints">
             <td>
 
@@ -15,7 +15,8 @@
                     </tr>
                     <tr ng-show="selectedBlueprint == blueprint.id">
                         <td>
-                            <table class="table table-striped">
+                            <div ng-show="blueprint.deployments == null">No Deployments</div>
+                            <table class="table table-striped" ng-show="blueprint.deployments != null">
                                 <tr>
                                     <td class="id">ID</td>
                                     <td class="create">Create date</td>
@@ -28,7 +29,8 @@
                                     <td class="description">{{deployment.updatedAt}}</td>
                                     <td class="actions">
                                         <select ng-model="selectedWorkflow" ng-options="workflow for workflow in blueprint.workflows"><option value="">-- Select workflow --</option></select>
-                                        <i class="fa  fa-play-circle-o" ng-click="executeDeployment(deployment, selectedWorkflow)" ng-class="{deploymentExecute: isExecuting(deployment.id)}"></i>
+                                        <i class="fa fa-play-circle-o" ng-click="executeDeployment(deployment, selectedWorkflow)" ng-class="{disable: !isExecuteEnabled()}"></i>
+                                        <i ng-class="{deploymentExecute: isExecuting(deployment.id)}" ng-show="isExecuting(deployment.id)"></i>
                                     </td>
                                 </tr>
                             </table>
@@ -39,4 +41,6 @@
             </td>
         </tr>
     </table>
+    <div class="no-blueprints-message" ng-show="blueprints.length == 0">No Blueprints</div>
+    <div class="connect-error-message" ng-show="cosmoConnectionOk()">Error connecting to Cosmo server</div>
 </div>

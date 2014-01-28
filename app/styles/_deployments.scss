@@ -1,7 +1,17 @@
   #deployments{
 
   .deploymentExecute {
-    color: $COSMOUI_DEPLOYMENT_EXECUTE_COLOR;
+    margin-top: 10px;
+    margin-left: 5PX;
+    width: 20px;
+    height: 20px;
+    background: url(/images/progress.gif) no-repeat center center;
+    background-color: #fff;
+    border-radius: 10px;
+  }
+
+  .disable {
+    color: $COSMOUI_BUTTON_DISABLED_BACKGROUND;
   }
 
   table {
@@ -93,5 +103,17 @@
         }
       }
     }
+  }
+
+  .connect-error-message {
+    color: #f00;
+    margin-left: 20px;
+    margin-top: 20px;
+  }
+
+  .no-blueprints-message {
+    color: #000;
+    margin-left: 20px;
+    margin-top: 20px;
   }
 }
