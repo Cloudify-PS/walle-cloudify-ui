@@ -34,7 +34,7 @@
             border-top-color: transparent;
             border-right-color: transparent;
             border-bottom-color: transparent;
-            border-left-color: #fff;
+            border-left-color: $COSMOUI_MENU_BACKGROUND;
             position: relative;
             left: 140px;
             top: -50px;
@@ -71,4 +71,8 @@
       }
     }
   }
+}
+
+#left-side-menu {
+  background-color: $COSMOUI_MENU_BACKGROUND;
 }

@@ -13,6 +13,7 @@ var ajax = require("http");
 var app = express();
 var port = 9001;
 var gsSettings = require("./backend/gsSettings");
+var gsWhitelabel = require("./backend/gsWhitelabel");
 var conf = require("./backend/appConf");
 var cloudify4node;
 
@@ -27,6 +28,8 @@ console.log(JSON.stringify(conf));
 if (conf.cloudifyLicense !== 'tempLicense') {
     throw new Error('invalid license');
 }
+
+app.enable("jsonp callback");
 
 // app.use(express.favicon());
 app.use(express.cookieParser(/* 'some secret key to sign cookies' */ 'keyboardcat' ));
@@ -143,6 +146,15 @@ app.get('/backend/homepage', function(request, response) {
     var fileExists = gsSettings.read() !== undefined;
     response.send("function isSettingsExists(){return " + fileExists + ";}");
 });
+
+
+// whitelabeling REST APIs
+
+app.get('/backend/whitelabel', function(request, response) {
+    // jsonp is allowed by calling '/backend/whitelabel?callback=myFunction'
+    response.json(gsWhitelabel.read());
+});
+
 
 // our custom "verbose errors" setting
 // which we can use in the templates
