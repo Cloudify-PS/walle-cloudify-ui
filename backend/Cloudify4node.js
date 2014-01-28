@@ -2,7 +2,7 @@ var ajax = require("http");
 var fs = require('fs');
 var conf = require("../backend/appConf");
 var log4js = require('log4js');
-log4js.configure(conf.loggerConfig);
+log4js.configure(conf.log4js);
 var logger = log4js.getLogger('server');
 
 module.exports = Cloudify4node;
