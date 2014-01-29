@@ -25,8 +25,8 @@
             </td>
         </tr>
     </table>
-    <div class="connect-error-message" ng-show="cosmoConnectionOk()">{{ 'blueprints.connectError' | i18n }}</div>
-    <div class="no-blueprints-message" ng-show="blueprints.length == 0">No Blueprints</div>
+    <div class="connect-error-message" ng-show="cosmoConnectionOk()">{{ 'connectError' | i18n }}</div>
+    <div class="no-blueprints-message" ng-show="blueprints.length == 0">{{ 'blueprints.emptyMessage' | i18n }}</div>
     <div ng-show="isAddDialogVisible" ng-controller="PopupCtrl">
         <div id="popupBoxBg"></div>
         <div id="popupContainer">

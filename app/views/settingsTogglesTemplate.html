@@ -1,7 +1,7 @@
 <div class="settings-toggles">
     <div id="settings-toggles-button" ng-click="toggleOpenList()" ng-class="{bordered: isOpen()}"></div>
     <div id="settings-toggles-container" ng-show="isOpen()">
-        <div id="settings-toggles-title">Topology settings</div>
+        <div id="settings-toggles-title">{{ 'settingsToggles.title' | i18n }}</div>
         <ul ng-repeat="toggle in togglesArr">
             <li>
                 <div class="settings-toggle-switch"
