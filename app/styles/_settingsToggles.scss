@@ -4,7 +4,7 @@
     border: 1px solid transparent; // setting default width border to prevent layout flicks
     width: 16px;
     height: 16px;
-    background: url("#{$topology-settings}") no-repeat center center;
+    background: url("#{$img-topology-settings}") no-repeat center center;
     padding: 10px;
 
     &.bordered {

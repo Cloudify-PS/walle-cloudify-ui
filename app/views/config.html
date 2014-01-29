@@ -4,15 +4,15 @@
         <div id="main-content">
 
             <div id="configView">
-                <h3>Welcome to Cosmo UI server configuration</h3>
+                <h3>{{ 'config.title' | i18n }}</h3>
 
                 <div id="configForm">
-                    <div id="text">Please fill in the required information:</div>
+                    <div id="text">{{ 'config.mainMessage' | i18n }}</div>
                     <form>
-                        <label for="cosmoServer">Cosmo server IP:</label>
+                        <label for="cosmoServer">{{ 'config.addressLabel' | i18n }}</label>
                         <input type="text" id="cosmoServer" ng-model="cosmoServer">
 
-                        <label for="cosmoPort">Cosmo server port:</label>
+                        <label for="cosmoPort">{{ 'config.portLabel' | i18n }}</label>
                         <input type="text" id="cosmoPort" ng-model="cosmoPort" maxlength="5" required>
 
                         <ul id="errMsgList">
@@ -21,12 +21,12 @@
                             </li>
                         </ul>
 
-                        <button type="button" class="btn btn-default" ng-click="saveConfiguration()">Save configuration</button>
+                        <button type="button" class="btn btn-default" ng-click="saveConfiguration()">{{ 'config.saveBtn' | i18n }}</button>
                     </form>
                 </div>
             </div>
-
         </div>
+
         <div id="fix"></div>
         <!--&lt;!&ndash;  a fix for footer position. &ndash;&gt;-->
     </div>

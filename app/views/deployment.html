@@ -11,25 +11,25 @@
                 <!--<div class="breadcrumbs">{{deployment.id}}</div>-->
             </div>
             <div class="buttons-group" checkbox-toggle value="section">
-                <button type="button" class="btn btn-default" value="topology">Topology</button>
-                <button type="button" class="btn btn-default" value="network">Network</button>
-                <button type="button" class="btn btn-default" value="events">Events</button>
+                <button type="button" class="btn btn-default" value="topology">{{ 'deployment.topologyBtn' | i18n }}</button>
+                <button type="button" class="btn btn-default" value="network">{{ 'deployment.networkBtn' | i18n }}</button>
+                <button type="button" class="btn btn-default" value="events">{{ 'deployment.eventsBtn' | i18n }}</button>
             </div>
             <div settings-toggles id="settings-button" toggles="topologySettings"></div>
 
             <div ng-switch="section" class="content-section">
-                <div ng-switch-default="topology">Topology</div>
+                <div ng-switch-default="topology">{{ 'deployment.title.topology' | i18n }}</div>
 
-                <div ng-switch-when="network">Network</div>
+                <div ng-switch-when="network">{{ 'deployment.title.network' | i18n }}</div>
 
                 <div ng-switch-when="events">
                     <table class="table table-striped">
                         <tr>
                             <td class="icon"><!-- icon --></td>
-                            <td class="type">Event Type</td>
-                            <td class="node">Node</td>
-                            <td class="task">Task</td>
-                            <td class="workflow">Workflow</td>
+                            <td class="type">{{ 'deployment.table.heading.eventType' | i18n }}</td>
+                            <td class="node">{{ 'deployment.table.heading.node' | i18n }}</td>
+                            <td class="task">{{ 'deployment.table.heading.task' | i18n }}</td>
+                            <td class="workflow">{{ 'deployment.table.heading.workflow' | i18n }}</td>
                         </tr>
                         <tr ng-repeat="event in events">
                             <td class="icon" ng-class="getEventIcon(event)"></td>
@@ -40,7 +40,6 @@
                         </tr>
                     </table>
                 </div>
-
             </div>
         </div>
     </div>

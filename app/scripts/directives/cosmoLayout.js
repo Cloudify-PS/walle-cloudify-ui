@@ -11,7 +11,7 @@
 angular.module('cosmoUi')
     .directive('cosmoLayout', function () {
         return {
-            templateUrl: 'views/cosmoLayout.html',
+            templateUrl: 'views/cosmoLayoutTemplate.html',
             restrict: 'C',
             transclude: true,
             replace: true,

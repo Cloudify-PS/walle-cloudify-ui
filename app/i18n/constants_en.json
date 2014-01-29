@@ -1,4 +1,50 @@
 {
-    "title": "Are you ready for the truth?",
-    "paragraph": "The path of the righteous man is beset on all sides by the iniquities of the selfish and the tyranny of evil men. Blessed is he who, in the name of charity and good will, shepherds the weak through the valley of darkness, for he is truly his brother's keeper and the finder of lost children. And I will strike down upon thee with great vengeance and furious anger those who would attempt to poison and destroy My brothers. And you will know My name is the Lord when I lay My vengeance upon thee."
+    "appStatus": {
+        "title": "App Status",
+        "time": "Time left"
+    },
+    "blueprints": {
+        "uploadBtn": "Upload Blueprint",
+        "table": {
+            "heading": {
+                "name": "Name",
+                "version": "Version",
+                "description": "Description",
+                "action": "Action"
+            },
+            "deployBtn": "Create Deployment"
+        },
+        "connectError": "Error connecting to Cosmo server",
+        "uploadPopup": {
+            "title": "Upload Blueprint",
+            "description": "Some text that explains about adding a blueprint by using this dialog",
+            "browseBtn": "Browse",
+            "fileLabel": "Application file: ",
+            "uploadBtn": "Upload"
+        }
+    },
+    "config": {
+        "title": "Welcome to Cosmo UI server configuration",
+        "mainMessage": "Please fill in the required information:",
+        "addressLabel": "Cosmo server IP:",
+        "portLabel": "Cosmo server port:",
+        "saveBtn": "Save configuration"
+    },
+    "deployment": {
+        "topologyBtn": "Topology",
+        "networkBtn": "Network",
+        "eventsBtn": "Events",
+        "title": {
+            "topology": "Topology",
+            "network": "Network"
+        },
+        "table": {
+            "heading": {
+                "eventType": "Event Type",
+                "node": "Node",
+                "task": "Task",
+                "workflow": "Workflow"
+            }
+        }
+    }
 }
