@@ -73,7 +73,7 @@ angular.module('cosmoUi')
             };
 
             function extractName( uglyName ){
-                var prettyName = uglyName.substring(uglyName.indexOf('.') + 1, uglyName.lastIndexOf('_'));
+                var prettyName = uglyName.split(".")[1];
                 return prettyName;
             }
 
