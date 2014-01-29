@@ -456,7 +456,7 @@ module.exports = function (grunt) {
         ]);
 */
 
-    grunt.registerTask('build', function (target) {
+    grunt.registerTask('build', function () {
 
         var tasks = [
             'clean:dist',

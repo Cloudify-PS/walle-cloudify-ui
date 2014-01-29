@@ -1,49 +1,54 @@
-.toggles-bar {
-    padding: 10px;
-    .toggle-switch {
+.toggle-switch {
+    display: inline-block;
+    margin-right: 14px;
+
+    #toggle-switch-text {
         display: inline-block;
-        margin-right: 14px;
-        #toggle-switch-text {
-            display: inline-block;
-            color: #4b6c8b;
-            font-size: 14px;
+        color: #4b6c8b;
+        font-size: 14px;
+    }
+
+    #toggle-switch-button {
+        display: inline-block;
+        vertical-align: middle;
+        border: 1px solid #cadbec;
+        border-radius: 15px;
+        width: 50px;
+        height: 19px;
+        margin-left: 5px;
+        cursor: pointer;
+
+        .toggle-switch-button-text {
+            float: left;
+            font-size: 13px;
+            margin-right: 2px;
+            margin-left: 2px;
         }
-        #toggle-switch-button {
-            display: inline-block;
-            vertical-align: middle;
-            border: 1px solid #cadbec;
-            border-radius: 15px;
-            width: 50px;
-            height: 19px;
-            margin-left: 5px;
-            cursor: pointer;
-            .toggle-switch-button-text {
-                float: left;
-                font-size: 13px;
-                margin-right: 2px;
-                margin-left: 2px;
-            }
-            #toggle-switch-button-circle {
-                background: #29aaee;
-                width: 15px;
-                height: 15px;
-                border-radius: 10px;
-                margin: 1px;
-            }
-            .true {
-                float: right;
-            }
-            .false {
-                float: left;
-            }
+
+        #toggle-switch-button-circle {
+            background: #29aaee;
+            width: 15px;
+            height: 15px;
+            border-radius: 10px;
+            margin: 1px;
         }
+
         .true {
-            background: transparent;
-            color: #4b6c8b;
+            float: right;
         }
+
         .false {
-            background: #234E71;
-            color: #fff;
+            float: left;
         }
+    }
+
+    .true {
+        background: transparent;
+        color: #4b6c8b;
+    }
+
+    .false {
+        background: #234E71;
+        color: #fff;
     }
 }

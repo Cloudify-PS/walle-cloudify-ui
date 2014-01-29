@@ -1,7 +1,9 @@
 'use strict';
 
-angular.module('cosmoUi', ['gsUiInfra', 'angularFileUpload', 'ngCookies', 'ngRoute','ngSanitize', 'ngBreadcrumbs'])
-    .config(function ($routeProvider) {
+angular.module('cosmoUi', ['gsUiInfra', 'angularFileUpload', 'ngCookies', 'ngRoute', 'ngSanitize', 'ngResource', 'ngBreadcrumbs'])
+
+    .config(['$routeProvider', function ($routeProvider) {
+
         var isSettingsExists = window.isSettingsExists();
 
         $routeProvider
@@ -50,4 +52,4 @@ angular.module('cosmoUi', ['gsUiInfra', 'angularFileUpload', 'ngCookies', 'ngRou
             .otherwise({
                 redirectTo: isSettingsExists ? '/blueprints' : '/config'
             });
-    });
+    }]);

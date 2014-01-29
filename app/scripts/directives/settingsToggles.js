@@ -10,6 +10,18 @@ angular.module('cosmoUi')
             },
             link: function (scope) {
                 var isOpen = false;
+                scope.togglesArr = [];
+
+                scope.$watch('toggles', function() {
+                    if (scope.toggles !== undefined) {
+                        for (var i in scope.toggles) {
+                            scope.togglesArr.push({
+                                name: i,
+                                state: scope.toggles[i]
+                            });
+                        }
+                    }
+                });
 
                 scope.toggleOpenList = function() {
                     isOpen = !isOpen;
@@ -19,11 +31,10 @@ angular.module('cosmoUi')
                     return isOpen;
                 };
 
-                scope.updateToggle = function(toggleName) {
+                scope.updateToggle = function(toggleName, toggleState) {
                     for (var i in scope.toggles) {
-                        var toggle = scope.toggles[i];
-                        if (toggle.name === toggleName) {
-                            toggle.state = !toggle.state;
+                        if (i === toggleName) {
+                            scope.toggles[i] = toggleState;
                         }
                     }
                 };

@@ -4,7 +4,6 @@ angular.module('cosmoUi')
     .controller('DeploymentCtrl', function ($scope, $cookieStore, $routeParams, RestService, BreadcrumbsService) {
         $scope.events = [];
         $scope.section = 'topology';
-        $scope.deployment = JSON.parse($routeParams.deployment);
         $scope.topologySettings = [
             {name: 'connections',   state: true},
             {name: 'modules',       state: false},
@@ -28,7 +27,7 @@ angular.module('cosmoUi')
             'policy_success': {text: 'Policy end successfully started', icon: 'event-icon-policy-success', class: 'event-text-green'},
             'policy_failed': {text: 'Policy failed', icon: 'event-icon-policy-failed', class: 'event-text-red'}
         };
-        var id = $scope.deployment.id;
+        var id = $routeParams.id;
         var from = 0;
         var to = 5;
 

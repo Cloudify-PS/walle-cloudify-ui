@@ -45,7 +45,7 @@ angular.module('cosmoUi')
         $scope.redirectTo = function (deployment) {
             console.log(['redirecting to', deployment]);
             $scope.selectedDeploymentID = deployment.id;
-            $location.path('/deployment').search({deployment: JSON.stringify(deployment)});
+            $location.path('/deployment').search({id: deployment.id});
         };
 
         $scope.cosmoConnectionOk = function() {

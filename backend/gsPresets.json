@@ -3,7 +3,22 @@
         "cosmoServer": "localhost",
         "cosmoPort": 8100,
         "log4js": {
-            appenders: [
+            "appenders": [
+                { "type":"console" },
+                {
+                    "type": "file",
+                    "filename": "logs/application.log",
+                    "maxLogSize": 20480,
+                    "backups": 3
+                }
+            ]
+        }
+    },
+    "staging": {
+        "cosmoServer": "cosmo.gsdev.info",
+        "cosmoPort": 8100,
+        "log4js": {
+            "appenders": [
                 { "type":"console" },
                 {
                     "type": "file",
