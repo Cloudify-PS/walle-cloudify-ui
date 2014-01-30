@@ -23,7 +23,7 @@ angular.module('cosmoUi')
             }
         };
 
-        $scope.executeDeployment = function(deployment, workflow) {
+        $scope.executeDeployment = function(deployment) {
             if ($scope.isExecuteEnabled()) {
                 if (window.confirm('Execute deployment?')) {
                     RestService.executeDeployment(deployment.id);
