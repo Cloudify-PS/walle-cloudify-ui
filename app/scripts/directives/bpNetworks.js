@@ -35,12 +35,12 @@ angular.module('cosmoUi')
                 }
 
                 bpNetworkService.setMap([
-                    {'from': '6', 'to': '2'},
-                    {'from': '3', 'to': '2'},
-                    {'from': '6', 'to': '8'},
-                    {'from': '3', 'to': '7'},
-                    {'from': '1', 'to': '5'},
-                    {'from': '1', 'to': '4'}
+                    {'source': '6', 'target': '2'},
+                    {'source': '3', 'target': '2'},
+                    {'source': '6', 'target': '8'},
+                    {'source': '3', 'target': '7'},
+                    {'source': '1', 'target': '5'},
+                    {'source': '1', 'target': '4'}
                 ]);
                 $scope.coordinates = bpNetworkService.getCoordinates();
 
@@ -70,6 +70,13 @@ angular.module('cosmoUi')
                     }
 
                 }, true);
+
+                $scope.$watch(function() {
+                    return $element.is(':visible');
+                },
+                function() {
+                    bpNetworkService.render();
+                });
             }
         };
     });
@@ -113,8 +120,8 @@ angular.module('cosmoUi')
         function render() {
             var Coords = [];
             angular.forEach(map, function (relation) {
-                var from = elements[relation.from],
-                    to = elements[relation.to],
+                var from = elements[relation.source],
+                    to = elements[relation.target],
                     height = to.element.outerHeight();
 
                 Coords.push({
