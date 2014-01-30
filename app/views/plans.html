@@ -6,9 +6,9 @@
         </div>
         <div class="content">
             <div class="buttons-group" checkbox-toggle value="section">
-                <button type="button" class="btn btn-default" value="general">General</button>
-                <button type="button" class="btn btn-default" value="properties">Properties</button>
-                <button type="button" class="btn btn-default" value="policies">Policies</button>
+                <button type="button" class="btn btn-default" value="general">{{ 'plans.generalBtn' | i18n }}</button>
+                <button type="button" class="btn btn-default" value="properties">{{ 'plans.propertiesBtn' | i18n }}</button>
+                <button type="button" class="btn btn-default" value="policies">{{ 'plans.policiesBtn' | i18n }}</button>
             </div>
             <div ng-switch="section" class="content-section">
                 <pre ng-switch-default="general">{{showProperties.general | yaml:'No general information' }} </pre>
@@ -24,8 +24,8 @@
      </div>
 
     <div class="buttons-group" checkbox-toggle value="section">
-        <button type="button" class="btn btn-default" value="topology">Topology</button>
-        <button type="button" class="btn btn-default" value="network">Network</button>
+        <button type="button" class="btn btn-default" value="topology">{{ 'plans.topologyBtn' | i18n }}</button>
+        <button type="button" class="btn btn-default" value="network">{{ 'plans.networkBtn' | i18n }}</button>
     </div>
 
     <div settings-toggles id="settings-button" toggles="toggleBar"></div>
@@ -120,13 +120,13 @@
             </div>
             <div class="network">
                 <div class="line">
-                    <div class="name">Network Name</div>
+                    <div class="name">{{ 'plans.topology.networkName' | i18n }}</div>
                     <div class="subnet" bp:network:coordinate="1" type="subnet" color="#149bdf">
-                        <p>Subnet Name</p>
+                        <p>{{ 'plans.topology.subnetName' | i18n }}</p>
                         <p class="cidr">10.0.0.0/24</p>
                     </div>
                     <div class="subnet red" bp:network:coordinate="3" type="subnet" color="#d54931">
-                        <p>Subnet Name</p>
+                        <p>{{ 'plans.topology.subnetName' | i18n }}</p>
                         <p class="cidr">168.192.0.55/24</p>
                     </div>
                 </div>
@@ -141,9 +141,9 @@
             </div>
             <div class="network">
                 <div class="line">
-                    <div class="name">Private Network</div>
+                    <div class="name">{{ 'plans.topology.privateNetwork' | i18n }}</div>
                     <div class="subnet orange" bp:network:coordinate="6" type="subnet" color="#f89406">
-                        <p>Subnet Name</p>
+                        <p>{{ 'plans.topology.subnetName' | i18n }}</p>
                         <p class="cidr">192.0.0.1/24</p>
                     </div>
                 </div>

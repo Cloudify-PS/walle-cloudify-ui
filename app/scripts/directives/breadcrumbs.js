@@ -4,11 +4,7 @@ angular.module('cosmoUi')
     .directive('breadcrumbs', function(BreadcrumbsService) {
     return {
         restrict: 'EA',
-        template: '<ul>' +
-                '<li ng-repeat=\'bc in breadcrumbs\' ng-class="{\'active\': {{$last}} }">' +
-                    '<a ng-click="unregisterBreadCrumb($index)" ng-href="{{bc.href}}">{{bc.label}}</a>' +
-                '</li>' +
-            '</ul>',
+        templateUrl: 'views/breadcrumbsTemplate.html',
         replace: true,
         link: function($scope, $attr) {
             var bc_id = $attr[0].id;

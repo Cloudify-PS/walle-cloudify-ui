@@ -1,0 +1,96 @@
+{
+    "connectError": "Error connecting to Cosmo server",
+    "appStatus": {
+        "title": "App Status",
+        "time": "Time left"
+    },
+    "blueprints": {
+        "uploadBtn": "Upload Blueprint",
+        "table": {
+            "heading": {
+                "name": "Name",
+                "version": "Version",
+                "description": "Description",
+                "action": "Action"
+            },
+            "deployBtn": "Create Deployment"
+        },
+        "emptyMessage": "No Blueprints",
+        "uploadPopup": {
+            "title": "Upload Blueprint",
+            "description": "Some text that explains about adding a blueprint by using this dialog",
+            "browseBtn": "Browse",
+            "fileLabel": "Application file: ",
+            "uploadBtn": "Upload"
+        }
+    },
+    "config": {
+        "title": "Welcome to Cosmo UI server configuration",
+        "mainMessage": "Please fill in the required information:",
+        "addressLabel": "Cosmo server IP:",
+        "portLabel": "Cosmo server port:",
+        "saveBtn": "Save configuration"
+    },
+    "deployment": {
+        "title": {
+            "topology": "Topology",
+            "network": "Network"
+        },
+        "table": {
+            "heading": {
+                "eventType": "Event Type",
+                "node": "Node",
+                "task": "Task",
+                "workflow": "Workflow"
+            }
+        }
+    },
+    "deployments": {
+        "emptyMessage": "No Deployments",
+        "table": {
+            "heading": {
+                "id": "ID",
+                "createDate": "Create date",
+                "updated": "Updated",
+                "action": "Action"
+            },
+            "workflowSelect": "-- Select workflow --"
+        }
+    },
+    "settingsToggles": {
+        "title": "Topology settings"
+    },
+    "eventsWidget": {
+        "title": "Events"
+    },
+    "main": {
+        "title": {
+            "json": "Json",
+            "yaml": " Yaml ",
+            "types": " Types ",
+            "info": "Information"
+        }
+    },
+    "plans": {
+        "generalBtn": "General",
+        "propertiesBtn": "Properties",
+        "policiesBtn": "Policies",
+        "topologyBtn": "Topology",
+        "networkBtn": "Network",
+        "topology": {
+            "networkName": "Network Name",
+            "subnetName": "Subnet Name",
+            "privateNetwork": "Private Network"
+        }
+    },
+    "toggleSwitch": {
+        "on": "ON",
+        "off": "OFF"
+    },
+    "toolBar": {
+        "searchPlaceholder": "Search on Cloudify..."
+    }
+}
+
+
+

@@ -3,18 +3,7 @@
 angular.module('cosmoUi')
     .directive('sideMenu', function ($location) {
         return {
-            template: '<div class="side-menu">' +
-                '<div class="menu">' +
-                    '<ul>' +
-                        '<li ng-repeat="item in items" ng-class="{selected:isSelected(item)}" ng-click="itemClick(item)">' +
-                            '<a href="{{item.route[0]}}">' +
-                                '<div class="gs-icon-{{item.icon}} side-menu-icon"></div>' +
-                                '<div class="side-menu-title">{{item.label}}</div>' +
-                            '</a>' +
-                        '</li>' +
-                    '</ul>' +
-                '</div> ' +
-              '</div>',
+            templateUrl: 'views/sideMenuTemplate.html',
             restrict: 'A',
             scope:{
 

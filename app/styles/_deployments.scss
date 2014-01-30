@@ -1,11 +1,11 @@
-  #deployments{
+#deployments{
 
   .deploymentExecute {
     margin-top: 10px;
     margin-left: 5PX;
     width: 20px;
     height: 20px;
-    background: url(/images/progress.gif) no-repeat center center;
+    background: url("#{$img-progress}") no-repeat center center;
     background-color: #fff;
     border-radius: 10px;
   }
