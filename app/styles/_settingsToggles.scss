@@ -1,13 +1,15 @@
 .settings-toggles {
+
   #settings-toggles-button {
+    border: 1px solid transparent; // setting default width border to prevent layout flicks
     width: 16px;
     height: 16px;
-    background: url(/images/topology-settings.png) no-repeat center center;
+    background: url("#{$img-topology-settings}") no-repeat center center;
     padding: 10px;
-  }
 
-  .bordered {
-    border: 1px solid #cadbec;
+    &.bordered {
+      border: 1px solid #cadbec;
+    }
   }
 
   #settings-toggles-container {
