@@ -4,7 +4,7 @@ angular.module('cosmoUi')
     .controller('PlansCtrl', function ($scope, YamlService, Layout, Render, $routeParams, BreadcrumbsService, PlanDataConvert, blueprintCoordinateService, $timeout) {
 
         var planData/*:PlanData*/ = null;
-        $scope.section = 'network';
+        $scope.section = 'nodes';
         $scope.planName = $routeParams.name;
         $scope.toggleView = false;
 
@@ -65,6 +65,17 @@ angular.module('cosmoUi')
             // Connection between nodes
             $scope.map = dataMap['cloudify.relationships.contained_in'];
             $scope.coordinates = blueprintCoordinateService.getCoordinates();
+            $scope.dataTable = PlanDataConvert.nodesToTable(dataPlan);
+
+            // Get Icon by Type
+            $scope.getIcon = function (type) {
+                switch (type) {
+                case 'server':
+                    return 'app-server';
+                case 'host':
+                    return 'host';
+                }
+            };
 
         });
 
