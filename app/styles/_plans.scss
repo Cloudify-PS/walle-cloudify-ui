@@ -284,17 +284,22 @@
         .network {
             display: inline-block;
             text-align: center;
-            .name {
-                display: block;
-                background-color: #797B86;
-                color: #fff;
-                padding: 2px 6px;
-                border-radius: 5px;
-                text-align: center;
-                margin: 0 0 20px 0;
-            }
+            min-width: 150px;
             .line {
+                position: relative;
                 display: inline-block;
+                .name {
+                    display: block;
+                    width: 150px;
+                    background-color: #797B86;
+                    color: #fff;
+                    padding: 2px 6px;
+                    border-radius: 5px;
+                    text-align: center;
+                    margin: 0 0 10px 0;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                }
                 .subnet {
                     position: relative;
                     display: inline-block;
@@ -304,7 +309,7 @@
                     color: #fff;
                     border-radius: 5px;
                     vertical-align: top;
-                    margin: 0 10px 0 0;
+                    margin: 0px 10px 0 0;
                     > p {
                         position: absolute;
                         display: block;
