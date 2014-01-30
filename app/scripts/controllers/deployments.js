@@ -5,7 +5,7 @@ angular.module('cosmoUi')
 
         $scope.blueprints = null;
         $scope.selectedBlueprint = '';
-        $scope.selectedWorkflow = null;
+        var selectedWorkflow = null;
         var cosmoError = false;
 
         BreadcrumbsService.push('deployments',
@@ -23,7 +23,7 @@ angular.module('cosmoUi')
             }
         };
 
-        $scope.executeDeployment = function(deployment) {
+        $scope.executeDeployment = function(deployment, workflow) {
             if ($scope.isExecuteEnabled()) {
                 if (window.confirm('Execute deployment?')) {
                     RestService.executeDeployment(deployment.id);
@@ -34,12 +34,27 @@ angular.module('cosmoUi')
             }
         };
 
+        $scope.getWorkflows = function(deployment) {
+            var plan = JSON.parse(deployment.plan.replace('\\\\n','').replace('\\',''));
+            var workflows = [];
+            for (var i in plan.workflows) {
+                workflows.push({
+                    'name': i
+                });
+            }
+            return workflows;
+        };
+
+        $scope.workflowSelected = function(workflow) {
+            selectedWorkflow = workflow;
+        };
+
         $scope.isExecuting = function(deploymentId) {
             return deploymentId === $cookieStore.get('deploymentId');
         };
 
         $scope.isExecuteEnabled = function() {
-            return $scope.selectedWorkflow !== null;
+            return selectedWorkflow !== null;
         };
 
         $scope.redirectTo = function (deployment) {
