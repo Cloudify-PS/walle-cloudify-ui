@@ -30,6 +30,7 @@
         background: $COSMOUI_LIST_COLUMN_HEADER_BACKGROUND;
         color: $COSMOUI_LIST_COLUMN_HEADER_TEXT_COLOR;
         border-bottom: 2px solid #fff;
+        font-size: 16px;
       }
 
       tr.hide {
@@ -55,6 +56,38 @@
           border: none;
           padding: 8px;
           line-height: 1.42857;
+
+          .blueprint-arrow {
+            float: left;
+            margin-top: 7px;
+            margin-right: 10px;
+
+            &.right {
+              border-top: 5px solid transparent;
+              border-bottom: 5px solid transparent;
+
+              border-left: 5px solid #fff;
+            }
+
+            &.down {
+              border-left: 5px solid transparent;
+              border-right: 5px solid transparent;
+
+              border-top: 5px solid #fff;
+            }
+          }
+
+          .deployments-number {
+            background: #fff center;
+            width: 20px;
+            height: 20px;
+            border-radius: 10px;
+            float: right;
+            text-align: center;
+            margin-left: 10px;
+            margin-top: 5px;
+            font-size: 14px;
+          }
 
           table {
             tr:first-child td {

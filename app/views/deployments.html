@@ -11,7 +11,8 @@
 
                 <table>
                     <tr class="blueprint-name">
-                        <td ng-click="showDeployments(blueprint.id)">{{blueprint.name}}</td>
+                        <td ng-click="showDeployments(blueprint.id)"><div class="blueprint-arrow" ng-class="{'down': selectedBlueprint == blueprint.id, 'right': selectedBlueprint != blueprint.id}"></div>{{blueprint.name}}</td>
+                        <td><div class="deployments-number">{{blueprint.deployments.length}}</div></td>
                     </tr>
                     <tr ng-show="selectedBlueprint == blueprint.id">
                         <td>
