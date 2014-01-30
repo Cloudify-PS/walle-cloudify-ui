@@ -73,11 +73,12 @@ angular.module('cosmoUi')
             };
 
             function extractName( uglyName ){
-                var prettyName = uglyName.split(".")[1];
+                var prettyName = uglyName.split('.')[1];
                 return prettyName;
             }
 
             function _createNodes(topology) {
+
                 var nodesArr = [];
                 var nodeId = null;
                 var node = null;
@@ -92,7 +93,9 @@ angular.module('cosmoUi')
                         type: [ realTypes[node.type] || node.type ],
                         properties: node.properties,
                         policies: node.policies,
-                        general: null/*, type, name, numOfInstances, description, relationships */
+                        general: {/*, type, name, numOfInstances, description, relationships */
+                            numOfInstances: node.instances.deploy
+                        }
 
                     };
                     planData.addNode($.extend({ 'uid': nodeId}, node) );
