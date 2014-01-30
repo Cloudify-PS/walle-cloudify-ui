@@ -28,6 +28,13 @@ $fa-font-path:'../bower_components/font-awesome/fonts';
 @import './config';
 
 
-
+.embeded {
+    #header, #left-side-menu, #footer, .no-embed {
+        display: none !important;
+    }
+    .layout, #main-content {
+        background-color: transparent;
+    }
+}
 
 

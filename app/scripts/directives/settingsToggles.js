@@ -8,7 +8,7 @@ angular.module('cosmoUi')
                     '<div id="settings-toggles-container" ng-show="isOpen()">' +
                         '<div id="settings-toggles-title">Topology settings</div>' +
                         '<ul ng-repeat="toggle in toggles">' +
-                            '<li><div class="settings-toggle-switch" toggle-switch text="{{toggle.name}}" value="{{toggle.state}}" ng-click="updateToggle(toggle.name)"></div></li>' +
+                            '<li><div class="settings-toggle-switch" toggle-switch text="{{toggle.name}}" value="toggle.state" ng-click="updateToggle(toggle.name)"></div></li>' +
                         '</ul>' +
                     '</div>' +
                 '</div>',
