@@ -122,5 +122,13 @@
       right: 30px;
       bottom: 0px;
     }
+
+    #upload-error-message {
+      float: right;
+      bottom: 5px;
+      right: 120px;
+      position: absolute;
+      color: #f00;
+    }
   }
 }

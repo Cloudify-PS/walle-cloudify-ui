@@ -104,13 +104,14 @@ Cloudify4node.addBlueprint = function(application_archive, callback) {
         };
 
         var req = ajax.request(options, function(res) {
+            console.log('statusCode: ' + res.statusCode);
             res.on('data', function (chunk) {
                 logger.debug('chunk: ' + JSON.stringify(data));
             });
 
             res.on('end', function() {
                 logger.debug('data: ' + JSON.stringify(data));
-                callback(200);
+                callback(res.statusCode);
             });
         });
 

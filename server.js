@@ -67,67 +67,67 @@ if (app.get('env') === 'development') {
 
 app.get('/backend/blueprints', function(request, response, next) {
     cloudify4node.getBlueprints(function(err, data) {
-        response.send(data);
+        response.send(err !== null ? err : data);
     });
 });
 
 app.post('/backend/blueprints/add', function(request, response){
     cloudify4node.addBlueprint(request.files.application_archive, function(err, data) {
-        response.send(data);
+        response.send(err !== null ? err : data);
     });
 });
 
 app.get('/backend/blueprints/get', function(request, response) {
     cloudify4node.getBlueprintById(request.query.id, function(err, data) {
-        response.send(data);
+        response.send(err !== null ? err : data);
     });
 });
 
 app.get('/backend/blueprints/validate', function(request, response) {
     cloudify4node.validateBlueprint(request.body.id ,function(err, data) {
-        response.send(data);
+        response.send(err !== null ? err : data);
     });
 });
 
 app.get('/backend/executions', function(request, response) {
     cloudify4node.getExecutionById(request.query.executionId, function(err, data) {
-        response.send(data);
+        response.send(err !== null ? err : data);
     });
 });
 
 app.get('/backend/deployments', function(request, response) {
     cloudify4node.getDeployments(function(err, data) {
-        response.send(data);
+        response.send(err !== null ? err : data);
     });
 });
 
 app.post('/backend/deployments/create', function(request, response) {
     cloudify4node.addDeployment(request.body, function(err, data) {
-        response.send(data);
+        response.send(err !== null ? err : data);
     });
 });
 
 app.get('/backend/deployments/get', function(request, response) {
     cloudify4node.getDeploymentById(request.query.deploymentId, function(err, data) {
-        response.send(data);
+        response.send(err !== null ? err : data);
     });
 });
 
 app.get('/backend/deployments/executions/get', function(request, response) {
     cloudify4node.getDeploymentExecutions(request.body.deploymentId, function(err, data) {
-        response.send(data);
+        response.send(err !== null ? err : data);
     });
 });
 
 app.post('/backend/deployments/execute', function(request, response) {
     cloudify4node.executeDeployment(request.body, function(err, data) {
-        response.send(data);
+        response.send(err !== null ? err : data);
     });
 });
 
 app.post('/backend/events', function(request, response, next) {
     cloudify4node.getDeploymentEvents(request.body.deploymentId, request.body.from, function(err, data) {
-        response.send(data);
+        response.send(err !== null ? err : data);
     });
 });
 

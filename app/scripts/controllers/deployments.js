@@ -57,32 +57,11 @@ angular.module('cosmoUi')
                 .then(function(data) {
                     cosmoError = false;
                     $scope.blueprints = data;
-//                    RestService.loadDeployments()
-//                        .then(function(data) {
-//                            for (var i = 0; i < data.length; i++) {
-//                                var blueprint = $scope.blueprints[_getBlueprintIndex(data[i].blueprintId)];
-//                                if (blueprint.deployments === undefined) {
-//                                    blueprint.deployments = [];
-//                                }
-//                                blueprint.deployments.push(data[i]);
-//                            }
-//                        });
                 },
                 function() {
                     cosmoError = true;
                 });
         }
-
-//        function _getBlueprintIndex(blueprintId) {
-//            var blueprintIndex = -1;
-//            for (var j = 0; j < $scope.blueprints.length; j++) {
-//                if ($scope.blueprints[j].id === blueprintId) {
-//                    blueprintIndex = j;
-//                }
-//            }
-//
-//            return blueprintIndex;
-//        }
 
         _loadDeployments();
 
