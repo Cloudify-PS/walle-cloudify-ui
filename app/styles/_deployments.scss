@@ -102,6 +102,8 @@
 
                 &,i {color: $COSMOUI_LIST_HOVER_ACTION_TEXT_COLOR; }
                 i {font-weight: $COSMOUI_LIST_HOVER_ACTION_FONT_WEIGHT;}
+
+
               }
 
               td {
@@ -128,6 +130,11 @@
                   appearance: none;
                   padding: 7px;
                   cursor: pointer;
+
+                  &.disable {
+                    background: transparent;
+                    color: #000;
+                  }
                 }
               }
             }
