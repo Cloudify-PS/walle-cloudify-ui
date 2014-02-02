@@ -1,64 +1,46 @@
 #blueprints-index{
 
-  table.table{
-    width: $COSMOUI_LIST_WIDTH;
-    margin: $COSMOUI_LIST_MARGIN;
-
-    .blueprintDeployed {
-      color: $COSMOUI_BLUEPRINTS_DEPLOY_COLOR;
-    }
-
-    i{
-      color: $COSMOUI_BLUEPRINTS_ICON_COLOR;
-    }
-    tr:first-child td{
-      background:$COSMOUI_LIST_COLUMN_HEADER_BACKGROUND;
-      color:$COSMOUI_LIST_COLUMN_HEADER_TEXT_COLOR;
-    }
-    tr{
-      cursor: $COSMOUI_POPUP_CURSOR;
-      &:hover:not(:first-child) td{
-        background-color: $COSMOUI_LIST_HOVER_BACKGROUND;
-
-        &,i {color: $COSMOUI_LIST_HOVER_ACTION_TEXT_COLOR; }
-        i{font-weight: $COSMOUI_LIST_HOVER_ACTION_FONT_WEIGHT;}
-      }
-      td{
-        vertical-align: middle;
-        &.icon{ width:40px; padding-top: 20px;}
-        &.name,&.version, &.description,&.actions{ width:25%; }
-        &.description{ padding-right:30px; }
-
-        .deploy-button{
-          color:white;
-          font-weight: bold;
-          padding:5px 10px 5px 10px ;
-          background-color: $COSMOUI_BUTTON_BACKGROUND;
-          border-radius: 3px;
-          border-bottom:1px solid $COSMOUI_BUTTON_BOTTOM_BORDER_COLOR;
-          border-right:1px solid $COSMOUI_BUTTON_RIGHT_BORDER_COLOR;
-          border-top:none;
-          border-left:none;
-          float: left;
+    table.table {
+        .blueprintDeployed {
+            color: $COSMOUI_BLUEPRINTS_DEPLOY_COLOR;
         }
-
-        .deployments-number {
-          background: #CADBEC center;
-          width: 20px;
-          height: 20px;
-          border-radius: 10px;
-          float: left;
-          text-align: center;
-          margin-left: 10px;
-          margin-top: 5px;
+        tr {
+            td, th {
+                &.icon {
+                    width: 40px;
+                    padding-top: 20px;
+                }
+                &.name, &.version, &.description, &.actions {
+                    width: 25%;
+                }
+                &.description {
+                    padding-right: 30px;
+                }
+                .deploy-button {
+                    color: white;
+                    font-weight: bold;
+                    padding: 5px 10px 5px 10px;
+                    background-color: $COSMOUI_BUTTON_BACKGROUND;
+                    border-radius: 3px;
+                    border-bottom: 1px solid $COSMOUI_BUTTON_BOTTOM_BORDER_COLOR;
+                    border-right: 1px solid $COSMOUI_BUTTON_RIGHT_BORDER_COLOR;
+                    border-top: none;
+                    border-left: none;
+                    float: left;
+                }
+                .deployments-number {
+                    background: #CADBEC center;
+                    width: 20px;
+                    height: 20px;
+                    border-radius: 10px;
+                    float: left;
+                    text-align: center;
+                    margin-left: 10px;
+                    margin-top: 5px;
+                }
+            }
         }
-      }
-      //&:not(:first-child) td.actions{
-        //font-size:$COSMOUI_LIST_HOVER_ACTION_FONT_SIZE;
-        //letter-spacing: $COSMOUI_LIST_HOVER_ACTION_LETTER_SPACING;
-      //}
     }
-  }
 
   .connect-error-message {
     color: #f00;
