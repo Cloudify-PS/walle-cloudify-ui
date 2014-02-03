@@ -30,39 +30,8 @@ module.exports = function (grunt) {
     } catch (e) {
     }
 
-/*
-    var grunticonConfig = {
-        dist: 'grunticon-dist',
-        colors: {},
-        classnamePrefix: 'whitelabel-'
-    }
-*/
-
-
-/*
-
-//whitelabel json example:
-// {
-// "colors": {
-// "redlabel": "#ff5555"
-// },
-// "classnamePrefix": "whitelabel-",
-// "colorSuffix": "-redlabel"
-// }
-
-    try {
-        var whitelabelJson = gsWhitelabel.read();
-        grunt.log.writeln('read whitelabel.json: ', whitelabelJson);
-        grunticonConfig.colors = whitelabelJson.colors || grunticonConfig.colors;
-        grunticonConfig.classnamePrefix = whitelabelJson.classnamePrefix || grunticonConfig.classnamePrefix;
-    } catch (e) {
-        grunt.log.writeln('failed to extract json config for white labeling: ', e);
-    }
-*/
-
     grunt.initConfig({
         yeoman: yeomanConfig,
-//        gicon: grunticonConfig,
         watch: {
             coffee: {
                 files: ['<%= yeoman.app %>/scripts/{,*/}*.coffee'],
@@ -140,11 +109,6 @@ module.exports = function (grunt) {
             server: {
                 url: 'http://localhost:<%= connect.options.port %>'
             }
-/*
-            dist: {
-                url: 'http://localhost:<%= connect.server.proxies[0].port %>'
-            }
-*/
         },
         clean: {
             dist: {
@@ -153,7 +117,6 @@ module.exports = function (grunt) {
                         dot: true,
                         src: [
                             '.tmp',
-//                            '<%= gicon.dist %>',
                             '<%= yeoman.dist %>/*',
                             '!<%= yeoman.dist %>/.git*'
                         ]
@@ -402,45 +365,12 @@ module.exports = function (grunt) {
                     ]
                 }
             }
-//        },
-//        grunticon: {
-//            whitelabel: {
-//                files: [{
-//                    expand: true,
-//                    cwd: '<%= yeoman.app %>/images/svg',
-//                    src: ['*.svg'],
-//                    dest: '<%= gicon.dist %>'
-//                }],
-//                options: {
-//
-//                    // SVGO compression, false is the default, true will make it so
-//                    svgo: true,
-//
-//                    // CSS filenames: we don't want to change the file extension just yet, as these files can be
-//                    // statically imported to preview the icons, just change the file name to our benefit
-//                    datasvgcss: 'whitelabelImagesSvg.css',
-//                    datapngcss: 'whitelabelImagesPng.css',
-//                    urlpngcss: 'whitelabelImagesFallback.css',
-//
-//                    // prefix for CSS classnames: avoid the default '.icon-' prefix to prevent collisions with bootstrap styles
-//                    cssprefix: '.<%= gicon.classnamePrefix %>',
-//
-//                    // NOTE: the colors option is broken at the moment, see this issue: https://github.com/filamentgroup/grunticon/issues/113
-//                    // define vars that can be used in filenames if desirable, like foo.colors-redlabel.svg
-//                    colors: '<%= gicon.colors %>'
-//                }
-//            }
         }
     });
 
     grunt.registerTask('server', function (target) {
         if (target === 'dist') {
-            return grunt.task.run([
-                'build',
-//                'configureProxies',
-                'open',
-                'connect:dist:keepalive'
-            ]);
+            return grunt.task.run(['build', 'open', 'connect:dist:keepalive']);
         }
 
         grunt.task.run([
@@ -460,13 +390,6 @@ module.exports = function (grunt) {
         'karma'
     ]);
 
-/*
-    grunt.registerTask('whitelabel', [
-            'grunticon',
-            'copy:whitelabel'
-        ]);
-*/
-
     grunt.registerTask('build', function () {
 
         var tasks = [
@@ -482,13 +405,6 @@ module.exports = function (grunt) {
             'usemin'
         ];
 
-/*
-        if (target === 'wl') { // whitelabel
-            tasks.splice(tasks.indexOf('copy:dist'), 0, 'whitelabel'); // insert grunticon task before copy task
-        }
-*/
-
-//        grunt.log.writeln(tasks);
         grunt.task.run(tasks);
     });
 
