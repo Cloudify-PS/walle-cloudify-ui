@@ -42,7 +42,7 @@
 
 var publicConfiguration = {
     i18n: {
-        language: 'gibberish'
+        language: 'en'
     }
 };
 
