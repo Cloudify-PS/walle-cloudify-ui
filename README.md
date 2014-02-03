@@ -62,8 +62,9 @@ Translations can be done as follows:
   add an entry to override the default language, as follows:
 
       exports.i18n = {
-          language: 'de' // this is your locale string
+          language: 'zh_CN' // this is your locale string
       };
+- Restart the server.
 
 
 
