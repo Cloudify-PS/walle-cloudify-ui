@@ -107,8 +107,8 @@ app.post('/backend/deployments/create', function(request, response) {
     });
 });
 
-app.get('/backend/deployments/get', function(request, response) {
-    cloudify4node.getDeploymentById(request.query.deploymentId, function(err, data) {
+app.post('/backend/deployments/get', function(request, response) {
+    cloudify4node.getDeploymentById(request.body.deploymentId, function(err, data) {
         response.send(err !== null ? err : data);
     });
 });

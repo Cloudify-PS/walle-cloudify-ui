@@ -112,6 +112,15 @@ angular.module('cosmoUi')
             return _load('deployments');
         }
 
+        function _getDeploymentById(params) {
+            var callParams = {
+                url: '/backend/deployments/get',
+                method: 'POST',
+                data: params
+            };
+            return _load('deployments/get', callParams);
+        }
+
         function _setConfiguration(data) {
             var callParams = {
                 url: '/backend/settings',
@@ -130,6 +139,7 @@ angular.module('cosmoUi')
         this.addBlueprint = _addBlueprint;
         this.deployBlueprint = _deployBlueprint;
         this.executeDeployment = _executeDeployment;
+        this.getDeploymentById = _getDeploymentById;
         this.loadEvents = _loadEvents;
         this.loadDeployments = _loadDeployments;
         this.getConfiguration = _getConfiguration;
