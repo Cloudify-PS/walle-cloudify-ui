@@ -41,6 +41,9 @@
 
 
 var publicConfiguration = {
+    i18n: {
+        language: 'gibberish'
+    }
 };
 
 var privateConfiguration = {
@@ -156,6 +159,9 @@ if ( prConf != null ){
     }
 }
 
+exports.getPublicConfiguration = getPublicConfiguration;
+
+exports.getPrivateConfiguration = getPrivateConfiguration;
 
 
 return exports;

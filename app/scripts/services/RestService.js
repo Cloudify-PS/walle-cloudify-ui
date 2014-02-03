@@ -112,7 +112,7 @@ angular.module('cosmoUi')
             return _load('deployments');
         }
 
-        function _setConfiguration(data) {
+        function _setSettings(data) {
             var callParams = {
                 url: '/backend/settings',
                 method: 'POST',
@@ -122,8 +122,19 @@ angular.module('cosmoUi')
             return _load('settings', callParams);
         }
 
-        function _getConfiguration() {
+        function _getSettings() {
             return _load('settings');
+        }
+
+        function _getConfiguration(access) {
+            var callParams = {
+                url: '/backend/configuration',
+                method: 'GET',
+                params: {
+                    access: access || 'all'
+                }
+            };
+            return _load('configuration', callParams);
         }
 
         this.loadBlueprints = _loadBlueprints;
@@ -132,6 +143,7 @@ angular.module('cosmoUi')
         this.executeDeployment = _executeDeployment;
         this.loadEvents = _loadEvents;
         this.loadDeployments = _loadDeployments;
+        this.getSettings = _getSettings;
+        this.setSettings = _setSettings;
         this.getConfiguration = _getConfiguration;
-        this.setConfiguration = _setConfiguration;
     });

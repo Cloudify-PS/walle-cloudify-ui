@@ -140,6 +140,11 @@ module.exports = function (grunt) {
             server: {
                 url: 'http://localhost:<%= connect.options.port %>'
             }
+/*
+            dist: {
+                url: 'http://localhost:<%= connect.server.proxies[0].port %>'
+            }
+*/
         },
         clean: {
             dist: {
@@ -430,7 +435,12 @@ module.exports = function (grunt) {
 
     grunt.registerTask('server', function (target) {
         if (target === 'dist') {
-            return grunt.task.run(['build', 'open', 'connect:dist:keepalive']);
+            return grunt.task.run([
+                'build',
+//                'configureProxies',
+                'open',
+                'connect:dist:keepalive'
+            ]);
         }
 
         grunt.task.run([

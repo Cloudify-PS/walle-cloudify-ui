@@ -1,0 +1,96 @@
+{
+    "connectError": "___Error connecting to Cosmo server___",
+    "appStatus": {
+        "title": "___App Status___",
+        "time": "___Time left___"
+    },
+    "blueprints": {
+        "uploadBtn": "___Upload Blueprint___",
+        "table": {
+            "heading": {
+                "name": "___Name___",
+                "version": "___Version___",
+                "description": "___Description___",
+                "action": "___Action___"
+            },
+            "deployBtn": "___Create Deployment___"
+        },
+        "emptyMessage": "___No Blueprints___",
+        "uploadPopup": {
+            "title": "___Upload Blueprint___",
+            "description": "___Some text that explains about adding a blueprint by using this dialog___",
+            "browseBtn": "___Browse___",
+            "fileLabel": "___Application file: ___",
+            "uploadBtn": "___Upload___"
+        }
+    },
+    "config": {
+        "title": "___Welcome to Cosmo UI server configuration___",
+        "mainMessage": "___Please fill in the required information:___",
+        "addressLabel": "___Cosmo server IP:___",
+        "portLabel": "___Cosmo server port:___",
+        "saveBtn": "___Save configuration___"
+    },
+    "deployment": {
+        "title": {
+            "topology": "___Topology___",
+            "network": "___Network___"
+        },
+        "table": {
+            "heading": {
+                "eventType": "___Event Type___",
+                "node": "___Node___",
+                "task": "___Task___",
+                "workflow": "___Workflow___"
+            }
+        }
+    },
+    "deployments": {
+        "emptyMessage": "___No Deployments___",
+        "table": {
+            "heading": {
+                "id": "___ID___",
+                "createDate": "___Create date___",
+                "updated": "___Updated___",
+                "action": "___Action___"
+            },
+            "workflowSelect": "___-- Select workflow --___"
+        }
+    },
+    "settingsToggles": {
+        "title": "___Topology settings___"
+    },
+    "eventsWidget": {
+        "title": "___Events___"
+    },
+    "main": {
+        "title": {
+            "json": "___Json___",
+            "yaml": "___ Yaml ___",
+            "types": "___ Types ___",
+            "info": "___Information___"
+        }
+    },
+    "plans": {
+        "generalBtn": "___General___",
+        "propertiesBtn": "___Properties___",
+        "policiesBtn": "___Policies___",
+        "topologyBtn": "___Topology___",
+        "networkBtn": "___Network___",
+        "topology": {
+            "networkName": "___Network Name___",
+            "subnetName": "___Subnet Name___",
+            "privateNetwork": "___Private Network___"
+        }
+    },
+    "toggleSwitch": {
+        "on": "___ON___",
+        "off": "___OFF___"
+    },
+    "toolBar": {
+        "searchPlaceholder": "___Search on Cloudify...___"
+    }
+}
+
+
+

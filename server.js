@@ -9,13 +9,14 @@ function isLocalhost(){
 }
 
 var express = require('express');
+var _ = require('lodash');
 var ajax = require("http");
 var app = express();
 var port = 9001;
 var gsSettings = require("./backend/gsSettings");
-var gsWhitelabel = require("./backend/gsWhitelabel");
 var conf = require("./backend/appConf");
 var cloudify4node;
+
 
 if (conf.useMock) {
     cloudify4node = require("./backend/Cloudify4node-mock");
@@ -144,16 +145,21 @@ app.get('/backend/settings', function(request, response) {
 
 app.get('/backend/homepage', function(request, response) {
     var fileExists = gsSettings.read() !== undefined;
-    response.send("function isSettingsExists(){return " + fileExists + ";}");
+    response.send('function isSettingsExists(){return ' + fileExists + ';}');
 });
 
-
-// whitelabeling REST APIs
-
-app.get('/backend/whitelabel', function(request, response) {
-    // jsonp is allowed by calling '/backend/whitelabel?callback=myFunction'
-    response.json(gsWhitelabel.read());
-});
+app.get('/backend/configuration', function (request, response) {
+    var access = request.query.access,
+        dto = {};
+    if (access === 'public') {
+        _.extend(dto, conf.getPublicConfiguration());
+    } else if (access === 'private') {
+        _.extend(dto, conf.getPrivateConfiguration());
+    } else if (access === 'all') {
+        _.extend(dto, conf.getPrivateConfiguration(), conf.getPublicConfiguration());
+    }
+    response.json(dto);
+})
 
 
 // our custom "verbose errors" setting

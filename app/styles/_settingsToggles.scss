@@ -8,7 +8,7 @@
     padding: 10px;
 
     &.bordered {
-      border: 1px solid #cadbec;
+      border: 1px solid $base_04;
     }
   }
 
@@ -16,8 +16,8 @@
     position: absolute;
     width: 170px;
     height: 160px;
-    background: #fff;
-    border: 1px solid #cadbec;
+    background: $base_01;
+    border: 1px solid $base_04;
     margin-top: 5px;
     box-shadow: -2px 2px 3px rgba(144, 144, 144, 0.5);
 
@@ -28,7 +28,7 @@
       font-size: 14px;
       height: 30px;
       margin: 5px;
-      border-bottom: 1px solid #cadbec;
+      border-bottom: 1px solid $base_04;
     }
 
     ul li{

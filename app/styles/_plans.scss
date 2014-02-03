@@ -55,7 +55,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            > svg {
+            svg {
                 position: relative;
                 width: 100%;
                 height: 100%;
@@ -264,7 +264,7 @@
             }
         }
         &.disableConnections {
-            .coordinates > svg {
+            svg {
                 display: none;
             }
         }
@@ -378,13 +378,6 @@
         }
         .network:nth-child(even) .devices {
             padding: 92px;
-        }
-    }
-
-    .table {
-        .topology-glyph {
-            display: inline-block;
-            line-height: 0.7;
         }
     }
 }
