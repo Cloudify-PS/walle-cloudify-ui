@@ -1,0 +1,22 @@
+<div class="events-widget">
+    <div id="events-widget-closed-tab" ng-show="!isOpen()" ng-click="toggleWidget()">
+        <div id="events-widget-tab-text">Events ({{eventsData.length}})</div>
+    </div>
+    <div id="events-widget-opened-widget" ng-show="isOpen()">
+        <div id="events-widget-header">
+            <div id="event-widget-header-text">{{ 'eventsWidget.title' | i18n }}</div>
+            <div id="events-widget-header-close-button" ng-click="toggleWidget()"></div>
+        </div>
+        <div id="events-widget-list-container">
+            <table id="events-widget-events-list">
+                <tr ng-repeat="event in eventsData">
+                    <td>
+                        <div id="event-icon" ng-class="getEventIcon(event)"></div>
+                        <div id="event-type">{{getEventText(event)}}</div>
+                        <div id="event-time">{{event.timestamp}}</div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>

@@ -1,39 +1,46 @@
 <div class="cosmo-layout" id="blueprints-index">
     <div class="content-header">
-        <div class="breadcrumbs">Blueprints</div>
+        <div class="breadcrumbs"><ul id="blueprints" breadcrumbs></ul></div>
         <div class="right">
-        <button class="gs-btn" ng-click="toggleAddDialog()">Add a Blueprint</button>
+        <button class="gs-btn" ng-click="toggleAddDialog()">{{ 'blueprints.uploadBtn' | i18n }}</button>
         </div>
     </div>
-    <table class="table table-striped">
+    <table class="table table-striped" ng-show="!cosmoConnectionOk()">
         <tr>
             <td class="icon"><!-- icon --></td>
-            <td class="name">Name</td>
-            <td class="version">Version</td>
-            <td class="description">Description</td>
-            <td class="actions">Action</td>
+            <td class="name">{{ 'blueprints.table.heading.name' | i18n }}</td>
+            <td class="version">{{ 'blueprints.table.heading.version' | i18n }}</td>
+            <td class="description">{{ 'blueprints.table.heading.description' | i18n }}</td>
+            <td class="actions">{{ 'blueprints.table.heading.action' | i18n }}</td>
         </tr>
         <tr ng-repeat="blueprint in blueprints">
             <td class="icon"><i class="gs-icon-deployments"></i></td>
-            <td class="name" ng-click="redirectTo(blueprint)">{{blueprint.name}}</td>
-            <td class="version">{{blueprint.version}}</td>
-            <td class="description">{{blueprint.description}}</td>
-            <td class="actions"><button class="deploy-button" ng-click="deployBlueprint(blueprint)">Deploy</button><!--i id="blueprint-down" class="fa  fa-chevron-circle-down"></i><i class="fa  fa-play-circle-o" ng-click="deployBlueprint(blueprint)"></i--></td>
+            <td class="name" ng-click="redirectTo(blueprint)">{{ blueprint.name }}</td>
+            <td class="version">{{ blueprint.version }}</td>
+            <td class="description">{{ blueprint.description }}</td>
+            <td class="actions">
+                <button class="deploy-button" ng-click="deployBlueprint(blueprint)">{{ 'blueprints.table.deployBtn' | i18n }}</button>
+                <div class="deployments-number">{{ blueprint.deployments.length }}</div>
+                <!--i id="blueprint-down" class="fa  fa-chevron-circle-down"></i><i class="fa  fa-play-circle-o" ng-click="deployBlueprint(blueprint)"></i-->
+            </td>
         </tr>
     </table>
+    <div class="connect-error-message" ng-show="cosmoConnectionOk()">{{ 'connectError' | i18n }}</div>
+    <div class="no-blueprints-message" ng-show="blueprints.length == 0">{{ 'blueprints.emptyMessage' | i18n }}</div>
     <div ng-show="isAddDialogVisible" ng-controller="PopupCtrl">
         <div id="popupBoxBg"></div>
         <div id="popupContainer">
         <div id="popupClose" class="formButton" ng-click="closeDialog()">X</div>
-        <div id="popupTitle">Add a Blueprint</div>
-        <div id="popupDescription">Some text that explains about adding a blueprint by using this dialog</div>
+        <div id="popupTitle">{{ 'blueprints.uploadPopup.title' | i18n }}</div>
+        <div id="popupDescription">{{ 'blueprints.uploadPopup.description' | i18n }}</div>
         <form id="uploadForm" name="uploadForm">
             <div id="browse">
-                <div id="browseBtn" class="formButton">Browse</div>
+                <div id="browseBtn" class="formButton">{{ 'blueprints.uploadPopup.browseBtn' | i18n }}</div>
                 <input type="text" id="browseTxt" ng-model="selectedFile.name">
                 <input type="file" name="fileInput" id="fileInput" accept=".tar,.gz,.yaml" ng-file-select="onFileSelect($files)">
                 </div>
             <div id="mainFile" style="display:none">Application file: <input type="text" ng-model="mainFileName"></div>
+            <div id="upload-error-message" ng-show="isUploadError()">Error uploading blueprint</div>
             <button id="uploadBtn" class="formButton" ng-class="{disabled: !isUploadEnabled(), enabled: isUploadEnabled()}" ng-click="uploadFile()">Upload</button>
             </form>
         </div>

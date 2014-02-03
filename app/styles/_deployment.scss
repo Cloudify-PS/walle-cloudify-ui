@@ -10,29 +10,11 @@
     width: $COSMOUI_DEPLOYMENT_HEADER_WIDTH;
 
     .header-left {
-      .btn-group {
-        $RADIUS:30px;
+      #settings-button {
         float: left;
-        margin-top: 4px;
-        margin-left: 5px;
-
-        button{
-          height: $COSMOUI_BLUEPRINT_DETAILS_BUTTON_HEIGHT;
-          font-size: $COSMOUI_BLUEPRINT_DETAILS_BUTTON_FONT_SIZE;
-          padding: $COSMOUI_BLUEPRINT_DETAILS_BUTTON_PADDING;
-          color: $COSMOUI_BLUEPRINT_BUTTON_GROUP_BACKGROUND;
-          border: $COSMOUI_BLUEPRINT_BUTTON_GROUP_BORDER_COLOR;
-        }
-
-        button:last-child{ border-bottom-right-radius: $RADIUS; border-top-right-radius: $RADIUS;}
-        button:first-child{ border-top-left-radius: $RADIUS; border-bottom-left-radius: $RADIUS; }
-        button.active{ background: $COSMOUI_BLUEPRINT_BUTTON_ACTIVE_COLOR; color:white; }
-      }
-
-      .toggles-bar {
-        width: $COSMOUI_DEPLOYMENT_TOGGLES_BAR_WIDTH;
-        height: $COSMOUI_DEPLOYMENT_TOGGLES_BAR_HEIGHT;
-        margin-top: $COSMOUI_DEPLOYMENT_TOGGLES_BAR_MARGIN_TOP;
+        margin-top: 10px;
+        margin-left: 10px;
+         cursor: pointer;
       }
     }
 
@@ -58,6 +40,7 @@
     margin-left: 30px;
     width: 100%;
     height: 100%;
+    float: left;
 
     table.table {
       width: $COSMOUI_LIST_WIDTH;
@@ -99,15 +82,15 @@
             color: $COSMOUI_EVENTS_LIST_TEXT_FAILED;
           }
 
-          &.event-icon-workflow-started {background: url(/images/events/WorkflowStarted.png) no-repeat center center;}
-          &.event-icon-workflow-end-successfully {background: url(/images/events/WorkflowSuccessfully.png) no-repeat center center;}
-          &.event-icon-workflow-failed {background: url(/images/events/WorkflowFailed.png) no-repeat center center;}
-          &.event-icon-task-started {background: url(/images/events/TaskStarted.png) no-repeat center center;}
-          &.event-icon-task-failed {background: url(/images/events/TaskFailed.png) no-repeat center center;}
-          &.event-icon-task-sent {background: url(/images/events/TaskSent.png) no-repeat center center;}
-          &.event-icon-task-success {background: url(/images/events/TaskSuccessfully.png) no-repeat center center;}
-          &.event-icon-policy-success {background: url(/images/events/PolicySuccessfully.png) no-repeat center center;}
-          &.event-icon-policy-failed {background: url(/images/events/PolicyFailed.png) no-repeat center center;}
+          &.event-icon-workflow-started {background: url("#{$img-workflow-started}") no-repeat center center;}
+          &.event-icon-workflow-end-successfully {background: url("#{$img-workflow-end-successfully}") no-repeat center center;}
+          &.event-icon-workflow-failed {background: url("#{$img-workflow-failed}") no-repeat center center;}
+          &.event-icon-task-started {background: url("#{$img-task-started}") no-repeat center center;}
+          &.event-icon-task-failed {background: url("#{$img-task-failed}") no-repeat center center;}
+          &.event-icon-task-sent {background: url("#{$img-task-sent}") no-repeat center center;}
+          &.event-icon-task-success {background: url("#{$img-task-success}") no-repeat center center;}
+          &.event-icon-policy-success {background: url("#{$img-policy-success}") no-repeat center center;}
+          &.event-icon-policy-failed {background: url("#{$img-policy-failed}") no-repeat center center;}
         }
       }
     }

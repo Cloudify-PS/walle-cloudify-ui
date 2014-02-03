@@ -6,6 +6,7 @@ angular.module('cosmoUi')
         $scope.uploadEnabled = false;
         $scope.uploadInProcess = false;
         $scope.selectedFile = '';
+        $scope.uploadError = false;
 
         $scope.onFileSelect = function ($files) {
             $scope.selectedFile = $files[0];
@@ -22,6 +23,7 @@ angular.module('cosmoUi')
             var planForm = new FormData();
             planForm.append('application_archive', $scope.selectedFile);
             $scope.uploadInProcess = true;
+            $scope.uploadError = false;
 
             $.ajax({
                 url: '/backend/blueprints/add',
@@ -40,12 +42,18 @@ angular.module('cosmoUi')
                     }
                 },
                 success: function() {
-                    $scope.uploadInProcess = false;
+                    $scope.$apply(function() {
+                        $scope.uploadError = false;
+                        $scope.uploadInProcess = false;
+                    });
                     $scope.loadBlueprints();
                     $scope.closeDialog();
                 },
                 error: function() {
-                    $scope.uploadInProcess = false;
+                    $scope.$apply(function() {
+                        $scope.uploadError = true;
+                        $scope.uploadInProcess = false;
+                    });
                 }
             });
         };
@@ -55,6 +63,10 @@ angular.module('cosmoUi')
         };
 
         $scope.isUploadEnabled = function() {
-            return ($scope.selectedFile !== null && !$scope.uploadInProcess);
+            return ($scope.selectedFile !== '' && !$scope.uploadInProcess);
+        };
+
+        $scope.isUploadError = function() {
+            return $scope.uploadError;
         };
     });

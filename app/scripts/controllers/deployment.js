@@ -1,16 +1,17 @@
 'use strict';
 
 angular.module('cosmoUi')
-    .controller('DeploymentCtrl', function ($scope, $cookieStore, $routeParams, RestService) {
+    .controller('DeploymentCtrl', function ($scope, $cookieStore, $routeParams, RestService, BreadcrumbsService) {
+
+        $scope.deployment = null;
         $scope.events = [];
-        $scope.filters = {
-            'connections': true,
-            'modules': true,
-            'middleware': false,
-            'compute': true
-        };
         $scope.section = 'topology';
-        $scope.deployment = JSON.parse($routeParams.deployment);
+        $scope.topologySettings = [
+            {name: 'connections',   state: true},
+            {name: 'modules',       state: false},
+            {name: 'middleware',    state: true},
+            {name: 'compute',       state: true}
+        ];
 
         var eventCSSMap = {
             'workflow_received': {text: 'Workflow received', icon: 'event-icon-workflow-started', class: 'event-text-green'},
@@ -28,9 +29,16 @@ angular.module('cosmoUi')
             'policy_success': {text: 'Policy end successfully started', icon: 'event-icon-policy-success', class: 'event-text-green'},
             'policy_failed': {text: 'Policy failed', icon: 'event-icon-policy-failed', class: 'event-text-red'}
         };
-        var id = $scope.deployment.id;
+        var id = $routeParams.id;
         var from = 0;
         var to = 5;
+
+        BreadcrumbsService.push('deployments',
+            {
+                href: '#/deployment?id=' + id,
+                label: id,
+                id: 'deployment'
+            });
 
         $scope.getEventClass = function(event) {
             return _getCssMapField( event, 'class');
@@ -80,6 +88,13 @@ angular.module('cosmoUi')
             return eventMap !== undefined ? eventMap : event.type;
         }
 
+        function _loadDeployment() {
+            RestService.getDeploymentById({deploymentId : id})
+                .then(function(data) {
+                    $scope.deployment = data;
+                });
+        }
+
         function _loadEvents() {
             if (id === undefined) {
                 return;
@@ -101,5 +116,6 @@ angular.module('cosmoUi')
                 });
         }
 
+        _loadDeployment();
         _loadEvents();
     });

@@ -3,28 +3,7 @@
 angular.module('cosmoUi')
     .directive('eventsWidget', function () {
         return {
-            template: '<div class="events-widget">' +
-                '<div id="events-widget-closed-tab" ng-show="!isOpen()" ng-click="toggleWidget()">' +
-                    '<div id="events-widget-tab-text">Events ({{events.length}})</div>' +
-                '</div>' +
-                '<div id="events-widget-opened-widget" ng-show="isOpen()">' +
-                    '<div id="events-widget-header">' +
-                        '<div id="event-widget-header-text">Events</div>' +
-                        '<div id="events-widget-header-close-button" ng-click="toggleWidget()"></div>' +
-                    '</div>' +
-                    '<div id="events-widget-list-container">' +
-                        '<table id="events-widget-events-list">' +
-                            '<tr ng-repeat="event in events">' +
-                                '<td>' +
-                                    '<div id="event-icon" ng-class="getEventIcon(event)"></div>' +
-                                    '<div id="event-type">{{getEventText(event)}}</div>' +
-                                    '<div id="event-time">{{event.timestamp}}</div>' +
-                                '</td>' +
-                            '</tr>' +
-                        '</table>' +
-                    '</div>' +
-                '</div>' +
-                '</div>',
+            templateUrl: 'views/eventsWidgetTemplate.html',
             restrict: 'EA',
             scope: {
                 events: '@'
@@ -49,11 +28,12 @@ angular.module('cosmoUi')
                 };
 
                 scope.widgetOpen = false;
+                scope.eventsData = [];
 
                 scope.$watch('events', function(data) {
-                    if(data !== '[]') {
-                        scope.events = JSON.parse(data);
-                    }
+                    try {
+                        scope.eventsData = JSON.parse(data);
+                    } catch(e) {}
                 });
 
                 scope.isOpen = function() {

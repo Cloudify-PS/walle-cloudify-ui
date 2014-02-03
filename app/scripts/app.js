@@ -1,7 +1,9 @@
 'use strict';
 
-angular.module('cosmoUi', ['gsUiInfra', 'angularFileUpload', 'ngCookies', 'ngRoute','ngSanitize'])
-    .config(function ($routeProvider) {
+angular.module('cosmoUi', ['gsUiInfra', 'angularFileUpload', 'ngCookies', 'ngRoute', 'ngSanitize', 'ngResource', 'ngBreadcrumbs'])
+
+    .config(['$routeProvider', function ($routeProvider) {
+
         var isSettingsExists = window.isSettingsExists();
 
         $routeProvider
@@ -25,27 +27,23 @@ angular.module('cosmoUi', ['gsUiInfra', 'angularFileUpload', 'ngCookies', 'ngRou
                 templateUrl: 'views/deployment.html',
                 controller: 'DeploymentCtrl'
             })
-//            .when('/events',{
-//                templateUrl: 'views/events.html',
-//                controller: 'EventsCtrl'
-//            })
             .when('/monitoring',{
-                templateUrl: 'views/plans.html'
+                templateUrl: 'views/blueprintsIndex.html'
             })
             .when('/logs',{
-                templateUrl: 'views/plans.html'
+                templateUrl: 'views/blueprintsIndex.html'
             })
             .when('/hosts',{
-                templateUrl: 'views/plans.html'
+                templateUrl: 'views/blueprintsIndex.html'
             })
             .when('/networks',{
-                templateUrl: 'views/plans.html'
+                templateUrl: 'views/blueprintsIndex.html'
             })
             .when('/floating-ips',{
-                templateUrl: 'views/plans.html'
+                templateUrl: 'views/blueprintsIndex.html'
             })
             .when('/storage',{
-                templateUrl: 'views/plans.html'
+                templateUrl: 'views/blueprintsIndex.html'
             })
             .when('/config', {
                 templateUrl: 'views/config.html',
@@ -54,4 +52,4 @@ angular.module('cosmoUi', ['gsUiInfra', 'angularFileUpload', 'ngCookies', 'ngRou
             .otherwise({
                 redirectTo: isSettingsExists ? '/blueprints' : '/config'
             });
-    });
+    }]);

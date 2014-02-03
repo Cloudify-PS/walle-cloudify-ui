@@ -11,9 +11,9 @@ exports.read = function( req, res ) {
     return fileJSON;
 };
 
-exports.write = function( req, res ) {
-    settingsObj = req;
-    fs.writeFile("backend/settings.json", JSON.stringify(req, null, 2), function(err) {
+exports.write = function( settingsObj ) {
+
+    fs.writeFile("backend/settings.json", JSON.stringify(settingsObj, null, 2), function(err) {
         if(err) {
             console.log(err);
         } else {

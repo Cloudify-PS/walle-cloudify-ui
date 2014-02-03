@@ -17,7 +17,9 @@ angular.module('cosmoUi')
                 if (params !== undefined) {
                     callParams = params;
                 }
-                return $http(callParams).then(function(data) {
+                return $http(callParams).error(function(data) {
+                    return data;
+                }).then(function(data) {
                     console.log(['data loaded',data]);
                     return data.data;
                 });
@@ -25,14 +27,33 @@ angular.module('cosmoUi')
         }
 
         var _restLoader = new RestLoader();
-//        var _currentPlan;
 
         function _load(rest, params){
             return _restLoader.load(rest, params);
         }
 
         function _loadBlueprints() {
-            return _load('blueprints');
+            var deferred = $q.defer();
+            var blueprints = [];
+            _load('blueprints').then(function(data) {
+                blueprints = data;
+                _load('deployments').then(function(data) {
+                    var deployments = data;
+                    for (var i = 0; i < deployments.length; i++) {
+                        for (var j = 0; j < blueprints.length; j++) {
+                            if (blueprints[j].deployments === undefined) {
+                                blueprints[j].deployments = [];
+                            }
+                            if (deployments[i].blueprintId === blueprints[j].id) {
+                                blueprints[j].deployments.push(deployments[i]);
+                            }
+                        }
+                    }
+                    deferred.resolve(blueprints);
+                });
+            });
+
+            return deferred.promise;
         }
 
         function _addBlueprint(params) {
@@ -49,7 +70,7 @@ angular.module('cosmoUi')
             return _load('deployments/create', callParams);
         }
 
-        function _executeBlueprint(params) {
+        function _executeDeployment(params) {
             var callParams = {
                 url: '/backend/deployments/execute',
                 method: 'POST',
@@ -59,12 +80,6 @@ angular.module('cosmoUi')
             return _load('deployments/execute', callParams);
         }
 
-        /**
-         *
-         * @param params { id: _id, from: _from }
-         * @returns {*}
-         * @private
-         */
         function _loadEvents(params) {
             var deferred = $q.defer();
 
@@ -97,6 +112,15 @@ angular.module('cosmoUi')
             return _load('deployments');
         }
 
+        function _getDeploymentById(params) {
+            var callParams = {
+                url: '/backend/deployments/get',
+                method: 'POST',
+                data: params
+            };
+            return _load('deployments/get', callParams);
+        }
+
         function _setConfiguration(data) {
             var callParams = {
                 url: '/backend/settings',
@@ -114,7 +138,8 @@ angular.module('cosmoUi')
         this.loadBlueprints = _loadBlueprints;
         this.addBlueprint = _addBlueprint;
         this.deployBlueprint = _deployBlueprint;
-        this.executeBlueprint = _executeBlueprint;
+        this.executeDeployment = _executeDeployment;
+        this.getDeploymentById = _getDeploymentById;
         this.loadEvents = _loadEvents;
         this.loadDeployments = _loadDeployments;
         this.getConfiguration = _getConfiguration;

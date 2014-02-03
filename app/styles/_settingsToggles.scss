@@ -1,0 +1,50 @@
+.settings-toggles {
+
+  #settings-toggles-button {
+    border: 1px solid transparent; // setting default width border to prevent layout flicks
+    width: 16px;
+    height: 16px;
+    background: url("#{$img-topology-settings}") no-repeat center center;
+    padding: 10px;
+
+    &.bordered {
+      border: 1px solid #cadbec;
+    }
+  }
+
+  #settings-toggles-container {
+    position: absolute;
+    width: 170px;
+    height: 160px;
+    background: #fff;
+    border: 1px solid #cadbec;
+    margin-top: 5px;
+    box-shadow: -2px 2px 3px rgba(144, 144, 144, 0.5);
+
+    z-index: 9999;  // TO BE REMOVED!!
+
+    #settings-toggles-title {
+      color: #000;
+      font-size: 14px;
+      height: 30px;
+      margin: 5px;
+      border-bottom: 1px solid #cadbec;
+    }
+
+    ul li{
+      list-style: none;
+      height: 20px;
+
+      .toggle-switch {
+        float: none;
+        margin-left: 5px;
+        width: 160px;
+
+        #toggle-switch-button {
+          float: right;
+          margin-right: 5px;
+        }
+      }
+    }
+  }
+}

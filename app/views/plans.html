@@ -5,10 +5,10 @@
             <i ng-click="hideProperties()" class="fa fa-times-circle right"></i>
         </div>
         <div class="content">
-            <div class="btn-group" checkbox-toggle value="section">
-                <button type="button" class="btn btn-default" value="general">General</button>
-                <button type="button" class="btn btn-default" value="properties">Properties</button>
-                <button type="button" class="btn btn-default" value="policies">Policies</button>
+            <div class="buttons-group" checkbox-toggle value="section">
+                <button type="button" class="btn btn-default" value="general">{{ 'plans.generalBtn' | i18n }}</button>
+                <button type="button" class="btn btn-default" value="properties">{{ 'plans.propertiesBtn' | i18n }}</button>
+                <button type="button" class="btn btn-default" value="policies">{{ 'plans.policiesBtn' | i18n }}</button>
             </div>
             <div ng-switch="section" class="content-section">
                 <pre ng-switch-default="general">{{showProperties.general | yaml:'No general information' }} </pre>
@@ -18,11 +18,186 @@
         </div>
 
     </div>
-    <div class="content-header">
-        <div class="breadcrumbs"><ul><li>Blueprints</li><li>{{planName}}</li></ul></div>
+    <div class="content-header no-embed">
+        <div class="breadcrumbs"><ul id="blueprints" breadcrumbs></ul></div>
+        <!--<div class="breadcrumbs"><ul><li>Blueprints</li><li>{{planName}}</li></ul></div>-->
+     </div>
+
+    <div class="buttons-group no-embed" checkbox-toggle value="section">
+        <button type="button" class="btn btn-default" value="topology">Topology</button>
+        <button type="button" class="btn btn-default" value="network">Network</button>
+        <button type="button" class="btn btn-default" value="nodes">Nodes</button>
+        <button type="button" class="btn btn-default" value="code">Code</button>
+    </div>
+    <div settings-toggles id="settings-button" class="no-embed" toggles="toggleBar"></div>
+
+    <div ng-switch="section" class="content-section">
+
+        <!-- Blueprint Contianter - START -->
+        <div class="bpContainer" ng-switch-default="topology" blueprint:resize data-ng-class="{
+        disableCompute: !toggleBar.compute,
+        disableMiddleware: !toggleBar.middleware,
+        disableModules: !toggleBar.modules,
+        disableConnections: !toggleBar.connections
+        }">
+            <div data-type="compute" data-ng-repeat="rootNode in map" class="box" blueprint:coordinate="rootNode.id">
+                <div class="hoverup">
+                    <div class="buttons no-embed">
+                        <ul>
+                            <li data-ng-click="viewNode(rootNode)" class="topology-glyph node-details"></li><li class="topology-glyph edit-node"></li>
+                        </ul>
+                    </div>
+                </div>
+                <div pie:progress="piProgress2" class="piProgress" size="51">
+                    <div class="shadow"></div>
+                    <div class="circle">
+                        <i class="icon topology-glyph host"></i>
+                        <!--<div class="badge">2/4</div>-->
+                    </div>
+                </div>
+                <div class="head">{{ indexNodes[rootNode.id].name }}</div>
+                <div class="holder">
+                    <!-- Middleware::start -->
+                    <div data-type="middleware" data-ng-repeat="subNode in rootNode.children" class="box" blueprint:coordinate="subNode.id">
+                        <div class="hoverup">
+                            <div class="buttons no-embed">
+                                <ul>
+                                    <li data-ng-click="viewNode(subNode)" class="topology-glyph node-details"></li><li class="topology-glyph edit-node"></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div pie:progress="piProgress2" class="piProgress" size="51">
+                            <div class="shadow"></div>
+                            <div class="circle">
+                                <i class="icon topology-glyph app-server"></i>
+                                <!--<div class="badge">2/4</div>-->
+                            </div>
+                        </div>
+                        <div class="head">{{ indexNodes[subNode.id].name }}</div>
+                        <div class="holder">
+                            <!-- Module::start -->
+                            <div data-type="modules" data-ng-repeat="appNode in subNode.children" class="app">
+                                <div class="hoverup">
+                                    <div class="buttons no-embed">
+                                        <ul>
+                                            <li data-ng-click="viewNode(appNode)" class="topology-glyph node-details"></li><li class="topology-glyph edit-node"></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div pie:progress="piProgress2" class="piProgress" size="51">
+                                    <div class="shadow"></div>
+                                    <div class="circle" blueprint:coordinate="appNode.id">
+                                        <i class="icon topology-glyph app-module"></i>
+                                        <!--<div class="badge">2/4</div>-->
+                                    </div>
+                                </div>
+                                <p>{{ indexNodes[appNode.id].name }}</p>
+                            </div>
+                            <!-- Module::end -->
+                        </div>
+                    </div>
+                    <!-- Middleware::end -->
+                </div>
+            </div>
+            <div class="coordinates" blueprint:arrows="coordinates"></div>
+        </div>
+        <!-- Blueprint Contianter - END -->
+
+        <!-- Network Topology - START -->
+        <div class="networksContainer" ng-switch-when="network">
+            <div bp:networks class="relations"></div>
+            <div class="network">
+                <div class="devices">
+                    <div class="device" bp:network:coordinate="4" type="subnet" color="#149bdf">
+                        <i class="topology-glyph app-server"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="network">
+                <div class="line">
+                    <div class="name">{{ 'plans.topology.networkName' | i18n }}</div>
+                    <div class="subnet" bp:network:coordinate="1" type="subnet" color="#149bdf">
+                        <p>{{ 'plans.topology.subnetName' | i18n }}</p>
+                        <p class="cidr">10.0.0.0/24</p>
+                    </div>
+                    <div class="subnet red" bp:network:coordinate="3" type="subnet" color="#d54931">
+                        <p>{{ 'plans.topology.subnetName' | i18n }}</p>
+                        <p class="cidr">168.192.0.55/24</p>
+                    </div>
+                </div>
+                <div class="devices">
+                    <div class="device" bp:network:coordinate="2" type="device">
+                        <i class="topology-glyph app-server"></i>
+                    </div>
+                    <div class="device" bp:network:coordinate="5" type="device">
+                        <i class="topology-glyph app-server"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="network">
+                <div class="line">
+                    <div class="name">{{ 'plans.topology.privateNetwork' | i18n }}</div>
+                    <div class="subnet orange" bp:network:coordinate="6" type="subnet" color="#f89406">
+                        <p>{{ 'plans.topology.subnetName' | i18n }}</p>
+                        <p class="cidr">192.0.0.1/24</p>
+                    </div>
+                </div>
+                <div class="devices">
+                    <div class="device" bp:network:coordinate="7" type="device">
+                        <i class="topology-glyph app-server"></i>
+                    </div>
+                    <div class="device" bp:network:coordinate="8" type="device">
+                        <i class="topology-glyph app-server"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Network Topology - END -->
+
+        <!-- Nodes - START -->
+        <div ng-switch-when="nodes">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th>Number of instances</th>
+                        <th>Contained in</th>
+                        <th>Connected to</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr data-ng-repeat="row in dataTable">
+                        <td><i class="topology-glyph {{ getIcon(row.type) }}"></i></td>
+                        <td>{{ row.name }}</td>
+                        <td>{{ row.type }}</td>
+                        <td>{{ row.instances }}</td>
+                        <td>
+                            <span data-ng-if="row.contained_in != false">{{ indexNodes[row.contained_in].name }}</span>
+                            <span data-ng-if="row.contained_in == false">--</span>
+                        </td>
+                        <td>
+                            <span data-ng-if="row.connected_to.length > 0" data-ng-repeat="connection in row.connected_to">{{ indexNodes[connection].name }}</span>
+                            <span data-ng-if="row.connected_to == 0">--</span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <!-- Nodes - END -->
+
+        <!-- Code - START -->
+        <div ng-switch-when="code">
+            <pre>{{ dataCode | yaml:'Code not found' }}</pre>
+        </div>
+        <!-- Code - END -->
 
     </div>
-   <div class="topology" data="graph" renderer="renderer" events="topologyHandlers" layouter="layouter" style="position:relative;height:500px; width:1200px;"></div>
+
+
+
+
 
 </div>
 
