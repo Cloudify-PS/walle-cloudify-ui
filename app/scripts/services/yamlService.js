@@ -9,7 +9,11 @@ angular.module('cosmoUi')
         };
 
         this.load = function( id, callback ){
-            new YamlLoader( callback ).load( id);
+            new YamlLoader( callback ).load(id);
+        };
+
+        this.loadJSON = function( id, data, callback ) {
+            new YamlLoader( callback ).loadJSON(id, data);
         };
 
         function YamlLoader( callback ) {
@@ -28,6 +32,34 @@ angular.module('cosmoUi')
                 _loadYamlInternal(id);
             };
 
+            this.loadJSON = function( id, data ) {
+                _loadJSON(id, data);
+            };
+
+            function _loadJSON(id, data) {
+                var result = JSON.parse(data.plan);
+                if (result.imports !== undefined) {
+                    for (var key in result.imports) {
+                        if ($.inArray(key, imports === -1)) {
+                            imports.push(result.imports[key]);
+                        }
+                    }
+                    _loadImports(imports);
+                }
+
+                _parseResult(result);
+
+                resultsArr[id] = result;
+
+                if (result.imports !== undefined) {
+                    responseCount++;
+                }
+
+                if (_isLoadingDone()) {
+                    callbackFunc(null, parser.getParsedResult());
+                }
+            }
+
             function _loadYamlInternal(id) {
                 var url = '/backend/blueprints/get';
                 requestCount++;
@@ -38,27 +70,7 @@ angular.module('cosmoUi')
                         params: {id: id}
                     })
                     .success(function (data) {
-                        var result = JSON.parse(data.plan);
-                        if (result.imports !== undefined) {
-                            for (var key in result.imports) {
-                                if ($.inArray(key, imports === -1)) {
-                                    imports.push(result.imports[key]);
-                                }
-                            }
-                            _loadImports(imports);
-                        }
-
-                        _parseResult(result);
-
-                        resultsArr[id] = result;
-
-                        if (result.imports !== undefined) {
-                            responseCount++;
-                        }
-
-                        if (_isLoadingDone()) {
-                            callbackFunc(null, parser.getParsedResult());
-                        }
+                        _loadJSON(id, data);
                     });
             }
 

@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('cosmoUi')
-    .controller('DeploymentCtrl', function ($scope, $cookieStore, $routeParams, RestService, BreadcrumbsService) {
+    .controller('DeploymentCtrl', function ($scope, $cookieStore, $routeParams, RestService, BreadcrumbsService, YamlService, PlanDataConvert, blueprintCoordinateService, $timeout) {
 
         $scope.deployment = null;
         $scope.events = [];
@@ -91,7 +91,41 @@ angular.module('cosmoUi')
         function _loadDeployment() {
             RestService.getDeploymentById({deploymentId : id})
                 .then(function(data) {
-                    $scope.deployment = data;
+                    YamlService.loadJSON(id, data, function(err, data){
+
+                        var dataPlan = data.getJSON(),
+                            dataMap;
+
+                        // Convert edges to angular format
+                        if (dataPlan.hasOwnProperty('edges') && !!dataPlan.edges) {
+                            dataMap = PlanDataConvert.edgesToAngular(dataPlan.edges);
+                        }
+
+                        // Index data by ID
+                        if (dataPlan.hasOwnProperty('nodes') && !!dataPlan.nodes) {
+                            $scope.indexNodes = {};
+                            dataPlan.nodes.forEach(function (node) {
+                                $scope.indexNodes[node.id] = node;
+                            });
+                        }
+
+                        // Set Map
+                        blueprintCoordinateService.setMap(dataMap['cloudify.relationships.connected_to']);
+
+                        // Connection between nodes
+                        $scope.map = dataMap['cloudify.relationships.contained_in'];
+                        $scope.coordinates = blueprintCoordinateService.getCoordinates();
+
+                        // Get Icon by Type
+                        $scope.getIcon = function (type) {
+                            switch (type) {
+                                case 'server':
+                                    return 'app-server';
+                                case 'host':
+                                    return 'host';
+                            }
+                        };
+                    });
                 });
         }
 
@@ -118,4 +152,24 @@ angular.module('cosmoUi')
 
         _loadDeployment();
         _loadEvents();
+
+
+        // DEMO
+        $scope.piProgress1 = {
+            'succeed': 20,
+            'error': 45,
+            'warning': 35
+        };
+
+        $scope.piProgress2 = {
+            'progress': 5
+        };
+
+        var progressDemo = function () {
+            $scope.piProgress2.progress++;
+            if ($scope.piProgress2.progress < 85) {
+                $timeout(progressDemo, 30);
+            }
+        };
+        $timeout(progressDemo, 2000);
     });

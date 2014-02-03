@@ -15,24 +15,6 @@ angular.module('cosmoUi')
             'connections': true
         };
 
-        $scope.piProgress1 = {
-            'succeed': 20,
-            'error': 45,
-            'warning': 35
-        };
-
-        $scope.piProgress2 = {
-            'progress': 5
-        };
-
-        var progressDemo = function () {
-            $scope.piProgress2.progress++;
-            if ($scope.piProgress2.progress < 85) {
-                $timeout(progressDemo, 30);
-            }
-        };
-        $timeout(progressDemo, 2000);
-
         BreadcrumbsService.push('blueprints',
             {
                 href: '#/blueprint?id=' + $routeParams.id + '&name=' + $scope.planName,
@@ -41,6 +23,9 @@ angular.module('cosmoUi')
             });
 
         YamlService.load($routeParams.id, function (err, data) {
+
+
+            console.log(["DDDDDD", data]);
 
             planData = data;
             var dataPlan = data.getJSON(),
