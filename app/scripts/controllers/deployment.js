@@ -3,6 +3,7 @@
 angular.module('cosmoUi')
     .controller('DeploymentCtrl', function ($scope, $cookieStore, $routeParams, RestService, BreadcrumbsService, YamlService, PlanDataConvert, blueprintCoordinateService, $timeout) {
 
+        var planData/*:PlanData*/ = null;
         $scope.deployment = null;
         $scope.events = [];
         $scope.section = 'topology';
@@ -93,6 +94,7 @@ angular.module('cosmoUi')
                 .then(function(data) {
                     YamlService.loadJSON(id, data, function(err, data){
 
+                        planData = data;
                         var dataPlan = data.getJSON(),
                             dataMap;
 
@@ -153,6 +155,21 @@ angular.module('cosmoUi')
         _loadDeployment();
         _loadEvents();
 
+        // Right Panel
+        $scope.viewNode = function (node) {
+            var realNode = planData.getNode(node.id);
+            $scope.showProperties = {
+                properties: planData.getProperties(realNode),
+                policies: planData.getPolicies(realNode),
+                general: planData.getGeneralInfo(realNode)
+            };
+            console.log($scope.showProperties);
+        };
+
+
+        $scope.hideProperties = function () {
+            $scope.showProperties = null;
+        };
 
         // DEMO
         $scope.piProgress1 = {

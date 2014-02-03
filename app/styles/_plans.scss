@@ -1,4 +1,4 @@
-#plans {
+#plans, #deployment {
     #right-side-menu{
         position:absolute;
         z-index:120;
@@ -42,9 +42,7 @@
     .content-section {
         padding: 30px 0;
     }
-}
 
-#plans, #deployment {
     .bpContainer {
         position: relative;
         display: block;

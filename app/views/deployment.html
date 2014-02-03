@@ -1,4 +1,21 @@
 <div class="cosmo-layout" id="deployment">
+
+    <div class="properties-panel right-panel" ng-hide="!showProperties">
+        <div class="title">
+            {{showProperties.general.name}} Details
+            <i ng-click="hideProperties()" class="fa fa-times-circle right"></i>
+        </div>
+        <div class="content">
+            <div class="buttons-group" checkbox-toggle value="section">
+                <button type="button" class="btn btn-default" value="general">{{ 'plans.generalBtn' | i18n }}</button>
+            </div>
+            <div ng-switch="section" class="content-section">
+                <pre ng-switch-default="general">{{showProperties.general | yaml:'No general information' }} </pre>
+            </div>
+        </div>
+    </div>
+
+
     <div events-widget id="plans-index-events-widget" events="{{events}}" ng-show="section != 'events'"></div>
 
     <div id="deployment-header">
@@ -19,7 +36,7 @@
                             <div class="hoverup">
                                 <div class="buttons no-embed">
                                     <ul>
-                                        <li data-ng-click="viewNode(rootNode)" class="topology-glyph node-details"></li><li class="topology-glyph edit-node"></li>
+                                        <li data-ng-click="viewNode(rootNode)" class="topology-glyph node-details"></li>
                                     </ul>
                                 </div>
                             </div>
@@ -37,7 +54,7 @@
                                     <div class="hoverup">
                                         <div class="buttons no-embed">
                                             <ul>
-                                                <li data-ng-click="viewNode(subNode)" class="topology-glyph node-details"></li><li class="topology-glyph edit-node"></li>
+                                                <li data-ng-click="viewNode(subNode)" class="topology-glyph node-details"></li>
                                             </ul>
                                         </div>
                                     </div>
@@ -55,7 +72,7 @@
                                             <div class="hoverup">
                                                 <div class="buttons no-embed">
                                                     <ul>
-                                                        <li data-ng-click="viewNode(appNode)" class="topology-glyph node-details"></li><li class="topology-glyph edit-node"></li>
+                                                        <li data-ng-click="viewNode(appNode)" class="topology-glyph node-details"></li>
                                                     </ul>
                                                 </div>
                                             </div>
