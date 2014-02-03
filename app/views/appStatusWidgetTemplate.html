@@ -1,5 +1,7 @@
 <div class="app-status-widget">
     <div class="title">{{ 'appStatus.title' | i18n }}</div>
-    <div class="gauge"></div>
+    <div pie:progress="status" class="piProgress" size="50">
+        <div class="gauge">{{ total }}</div>
+    </div>
     <div class="time-left">{{ 'appStatus.time' | i18n }}</div>
 </div>

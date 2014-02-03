@@ -1,5 +1,4 @@
 <div class="cosmo-layout" id="deployment">
-
     <div class="properties-panel right-panel" ng-hide="!showProperties">
         <div class="title">
             {{showProperties.general.name}} Details
@@ -20,7 +19,7 @@
 
     <div id="deployment-header">
         <div class="header-right">
-            <div app-status-widget id="appStatus"></div>
+            <div app-status-widget id="appStatus" ng-model="appStatus"></div>
         </div>
         <div class="header-left">
             <div class="content-header">
@@ -43,7 +42,7 @@
                             <div pie:progress="piProgress2" class="piProgress" size="51">
                                 <div class="circle">
                                     <i class="icon topology-glyph host">
-                                        <div class="badge">{{ indexNodes[rootNode.id].general.numOfInstances }}</div>
+                                        <div class="badge" data-ng-class="getBadgeStatus(indexNodes[rootNode.id].nodeId)">{{ indexNodes[rootNode.id].general.numOfInstances }}</div>
                                     </i>
                                 </div>
                             </div>
@@ -61,7 +60,7 @@
                                     <div pie:progress="piProgress2" class="piProgress" size="51">
                                         <div class="circle">
                                             <i class="icon topology-glyph app-server">
-                                                <div class="badge">{{ indexNodes[subNode.id].general.numOfInstances }}</div>
+                                                <div class="badge" data-ng-class="getBadgeStatus(indexNodes[subNode.id].nodeId)">{{ indexNodes[subNode.id].general.numOfInstances }}</div>
                                             </i>
                                         </div>
                                     </div>
@@ -79,7 +78,7 @@
                                             <div pie:progress="piProgress2" class="piProgress" size="51">
                                                 <div class="circle" blueprint:coordinate="appNode.id">
                                                     <i class="icon topology-glyph app-module">
-                                                        <div class="badge">{{ indexNodes[appNode.id].general.numOfInstances }}</div>
+                                                        <div class="badge" data-ng-class="indexNodes[appNode.id].nodeId)">{{ indexNodes[appNode.id].general.numOfInstances }}</div>
                                                     </i>
                                                 </div>
                                             </div>

@@ -78,12 +78,24 @@
                 z-index: 1;
                 top: -10px;
                 right: -50px;
-                background-color: #2f3334; // #d54931; #feb300; #8eaf26; #2f3334;
+                background-color: #ccc;
                 text-decoration: none;
                 font-family: "OpenSansBold";
                 font-size: 14px;
                 color: #fff;
                 line-height: 15px;
+                &.install {
+                    background-color: #2f3334;
+                }
+                &.done {
+                    background-color: #8eaf26;
+                }
+                &.alert {
+                    background-color: #feb300;
+                }
+                &.failed {
+                    background-color: #d54931;
+                }
             }
         }
         .box {

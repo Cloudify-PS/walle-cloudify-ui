@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('cosmoUi')
-    .controller('PlansCtrl', function ($scope, YamlService, Layout, Render, $routeParams, BreadcrumbsService, PlanDataConvert, blueprintCoordinateService, $timeout) {
+    .controller('PlansCtrl', function ($scope, YamlService, Layout, Render, $routeParams, BreadcrumbsService, PlanDataConvert, blueprintCoordinateService) {
 
         var planData/*:PlanData*/ = null;
         $scope.section = 'topology';
@@ -23,9 +23,6 @@ angular.module('cosmoUi')
             });
 
         YamlService.load($routeParams.id, function (err, data) {
-
-
-            console.log(["DDDDDD", data]);
 
             planData = data;
             var dataPlan = data.getJSON(),
@@ -52,8 +49,6 @@ angular.module('cosmoUi')
             $scope.coordinates = blueprintCoordinateService.getCoordinates();
             $scope.dataTable = PlanDataConvert.nodesToTable(dataPlan);
             $scope.dataCode = dataPlan;
-
-            console.log(["dataPlan", dataPlan]);
 
             // Get Icon by Type
             $scope.getIcon = function (type) {

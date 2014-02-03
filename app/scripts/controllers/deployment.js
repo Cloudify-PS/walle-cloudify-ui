@@ -3,10 +3,14 @@
 angular.module('cosmoUi')
     .controller('DeploymentCtrl', function ($scope, $cookieStore, $routeParams, RestService, BreadcrumbsService, YamlService, PlanDataConvert, blueprintCoordinateService, $timeout) {
 
-        var planData/*:PlanData*/ = null;
+        var planData/*:PlanData*/ = null,
+            totalNodes = 0;
+
         $scope.deployment = null;
+        $scope.nodes = [];
         $scope.events = [];
         $scope.section = 'topology';
+        $scope.appStatus = 0;
         $scope.topologySettings = [
             {name: 'connections',   state: true},
             {name: 'modules',       state: false},
@@ -105,9 +109,11 @@ angular.module('cosmoUi')
 
                         // Index data by ID
                         if (dataPlan.hasOwnProperty('nodes') && !!dataPlan.nodes) {
+                            totalNodes = 0;
                             $scope.indexNodes = {};
                             dataPlan.nodes.forEach(function (node) {
                                 $scope.indexNodes[node.id] = node;
+                                totalNodes++;
                             });
                         }
 
@@ -121,12 +127,17 @@ angular.module('cosmoUi')
                         // Get Icon by Type
                         $scope.getIcon = function (type) {
                             switch (type) {
-                                case 'server':
-                                    return 'app-server';
-                                case 'host':
-                                    return 'host';
+                            case 'server':
+                                return 'app-server';
+                            case 'host':
+                                return 'host';
                             }
                         };
+
+                        RestService.getDeploymentNodes({deploymentId : id})
+                            .then(null, null, function(dataNodes) {
+                                $scope.nodes = dataNodes;
+                            });
                     });
                 });
         }
@@ -154,6 +165,41 @@ angular.module('cosmoUi')
 
         _loadDeployment();
         _loadEvents();
+
+        $scope.$watch('nodes', function(nodes){
+            var done = 0, failed = 0, install = 0;
+            $scope.nodesStatus = {};
+            angular.forEach(nodes, function(node){
+                $scope.nodesStatus[node.id] = node.reachable;
+                switch(node.reachable) {
+                case true:
+                    done++;
+                    break;
+                case false:
+                    failed++;
+                    break;
+                case null:
+                    install++;
+                    break;
+                }
+            });
+            $scope.appStatus = {
+                'install': totalNodes > 0 ? 100 * install / totalNodes : 0,
+                'done': totalNodes > 0 ? 100 * done / totalNodes : 0,
+                'failed': totalNodes > 0 ? 100 * failed / totalNodes : 0
+            };
+        }, true);
+
+        $scope.getBadgeStatus = function( id ) {
+            switch($scope.nodesStatus[id]) {
+            case true:
+                return 'done';
+            case false:
+                return 'failed';
+            default:
+                return 'install';
+            }
+        };
 
         // Right Panel
         $scope.viewNode = function (node) {
