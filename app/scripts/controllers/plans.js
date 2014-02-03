@@ -68,6 +68,8 @@ angular.module('cosmoUi')
             $scope.dataTable = PlanDataConvert.nodesToTable(dataPlan);
             $scope.dataCode = dataPlan;
 
+            console.log(["dataPlan", dataPlan]);
+
             // Get Icon by Type
             $scope.getIcon = function (type) {
                 switch (type) {

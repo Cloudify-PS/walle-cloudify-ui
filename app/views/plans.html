@@ -49,10 +49,10 @@
                     </div>
                 </div>
                 <div pie:progress="piProgress2" class="piProgress" size="51">
-                    <div class="shadow"></div>
                     <div class="circle">
-                        <i class="icon topology-glyph host"></i>
-                        <!--<div class="badge">2/4</div>-->
+                        <i class="icon topology-glyph host">
+                            <div class="badge">{{ indexNodes[rootNode.id].general.numOfInstances }}</div>
+                        </i>
                     </div>
                 </div>
                 <div class="head">{{ indexNodes[rootNode.id].name }}</div>
@@ -67,10 +67,10 @@
                             </div>
                         </div>
                         <div pie:progress="piProgress2" class="piProgress" size="51">
-                            <div class="shadow"></div>
                             <div class="circle">
-                                <i class="icon topology-glyph app-server"></i>
-                                <!--<div class="badge">2/4</div>-->
+                                <i class="icon topology-glyph app-server">
+                                    <div class="badge">{{ indexNodes[subNode.id].general.numOfInstances }}</div>
+                                </i>
                             </div>
                         </div>
                         <div class="head">{{ indexNodes[subNode.id].name }}</div>
@@ -85,10 +85,10 @@
                                     </div>
                                 </div>
                                 <div pie:progress="piProgress2" class="piProgress" size="51">
-                                    <div class="shadow"></div>
                                     <div class="circle" blueprint:coordinate="appNode.id">
-                                        <i class="icon topology-glyph app-module"></i>
-                                        <!--<div class="badge">2/4</div>-->
+                                        <i class="icon topology-glyph app-module">
+                                            <div class="badge">{{ indexNodes[appNode.id].general.numOfInstances }}</div>
+                                        </i>
                                     </div>
                                 </div>
                                 <p>{{ indexNodes[appNode.id].name }}</p>
