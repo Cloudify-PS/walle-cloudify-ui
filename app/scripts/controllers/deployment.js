@@ -2,6 +2,9 @@
 
 angular.module('cosmoUi')
     .controller('DeploymentCtrl', function ($scope, $cookieStore, $routeParams, RestService, BreadcrumbsService) {
+
+        $scope.deployment = null;
+        $scope.nodes = [];
         $scope.events = [];
         $scope.section = 'topology';
         $scope.topologySettings = [
@@ -86,6 +89,17 @@ angular.module('cosmoUi')
             return eventMap !== undefined ? eventMap : event.type;
         }
 
+        function _loadDeployment() {
+            RestService.getDeploymentById({deploymentId : id})
+                .then(function(data) {
+                    $scope.deployment = data;
+                    RestService.getDeploymentNodes({deploymentId : id})
+                        .then(null, null, function(data) {
+                            $scope.nodes = data;
+                        });
+                });
+        }
+
         function _loadEvents() {
             if (id === undefined) {
                 return;
@@ -107,5 +121,6 @@ angular.module('cosmoUi')
                 });
         }
 
+        _loadDeployment();
         _loadEvents();
     });

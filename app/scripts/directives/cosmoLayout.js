@@ -9,7 +9,7 @@
  Use it wisely
  **/
 angular.module('cosmoUi')
-    .directive('cosmoLayout', function () {
+    .directive('cosmoLayout', function ($routeParams) {
         return {
             templateUrl: 'views/cosmoLayoutTemplate.html',
             restrict: 'C',
@@ -25,6 +25,8 @@ angular.module('cosmoUi')
                     console.log(e);
 
                 }
+
+                scope.embeded = ($routeParams.hasOwnProperty('embed') && $routeParams.embed === 'true') ? true : false;
             }
         };
     });

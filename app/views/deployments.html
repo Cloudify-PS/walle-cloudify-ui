@@ -1,7 +1,6 @@
 <div class="cosmo-layout" id="deployments">
 
     <div class="content-header">
-        <!--<div class="breadcrumbs">Deployments</div>-->
         <div class="breadcrumbs"><ul id="deployments" breadcrumbs></ul></div>
     </div>
 
@@ -10,8 +9,9 @@
             <td>
 
                 <table>
-                    <tr class="blueprint-name">
-                        <td ng-click="showDeployments(blueprint.id)">{{blueprint.name}}</td>
+                    <tr class="blueprint-name" ng-click="showDeployments(blueprint.id)">
+                        <td><div class="blueprint-arrow" ng-class="{'down': selectedBlueprint == blueprint.id, 'right': selectedBlueprint != blueprint.id}"></div>{{blueprint.name}}</td>
+                        <td><div class="deployments-number">{{blueprint.deployments.length}}</div></td>
                     </tr>
                     <tr ng-show="selectedBlueprint == blueprint.id">
                         <td>
@@ -28,11 +28,15 @@
                                     <td class="create">{{deployment.createdAt}}</td>
                                     <td class="description">{{deployment.updatedAt}}</td>
                                     <td class="actions">
-                                        <select ng-model="selectedWorkflow" ng-options="option.name as option.name for option in getWorkflows(deployment)" ng-change="workflowSelected(selectedWorkflow)">
+                                        <select ng-model="selectedWorkflow"
+                                                ng-options="option.name as option.name for option in getWorkflows(deployment)"
+                                                ng-change="workflowSelected(selectedWorkflow)"
+                                                ng-disabled="isExecuting(deployment.id)"
+                                                ng-class="{disable: isExecuting(deployment.id)}">
                                             <option value="">-- Select workflow --</option>
                                         </select>
                                         <i class="fa fa-play-circle-o" ng-click="executeDeployment(deployment)" ng-class="{disable: !isExecuteEnabled()}"></i>
-                                        <i ng-class="{deploymentExecute: isExecuting(deployment.id)}" ng-show="isExecuting(deployment.id)"></i>
+                                        <!--<i ng-class="{deploymentExecute: isExecuting(deployment.id)}" ng-show="isExecuting(deployment.id)"></i>-->
                                     </td>
                                 </tr>
                             </table>

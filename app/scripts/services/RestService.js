@@ -112,6 +112,38 @@ angular.module('cosmoUi')
             return _load('deployments');
         }
 
+        function _getDeploymentById(params) {
+            var callParams = {
+                url: '/backend/deployments/get',
+                method: 'POST',
+                data: params
+            };
+            return _load('deployments/get', callParams);
+        }
+
+        function _getDeploymentNodes(params) {
+            var deferred = $q.defer();
+
+            function _internalLoadNodes(){
+                console.log(['loading nodes', params]);
+
+                var callParams = {
+                    url: '/backend/deployments/nodes',
+                    method: 'POST',
+                    data: params
+                };
+
+                _load('nodes', callParams).then(function(data) {
+                    deferred.notify(data.nodes);
+                    $timeout(_internalLoadNodes, 3000);
+                });
+            }
+
+            _internalLoadNodes();
+
+            return deferred.promise;
+        }
+
         function _setSettings(data) {
             var callParams = {
                 url: '/backend/settings',
@@ -141,6 +173,8 @@ angular.module('cosmoUi')
         this.addBlueprint = _addBlueprint;
         this.deployBlueprint = _deployBlueprint;
         this.executeDeployment = _executeDeployment;
+        this.getDeploymentById = _getDeploymentById;
+        this.getDeploymentNodes = _getDeploymentNodes;
         this.loadEvents = _loadEvents;
         this.loadDeployments = _loadDeployments;
         this.getSettings = _getSettings;
