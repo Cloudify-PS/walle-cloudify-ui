@@ -51,7 +51,7 @@ existing images, or create a new directory and refer to it from the stylesheet.
 
 ## I18N
 
-***Note:** Updating I18N configuration requires server restart.*
+*__Note:__ Updating I18N configuration requires server restart.*
 
 Translations can be done as follows:
 - Create an additional translation file under `/app/i18n`, copy the contents of `translations_en.json` into it.
