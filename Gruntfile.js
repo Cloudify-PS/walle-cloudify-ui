@@ -260,26 +260,6 @@ module.exports = function (grunt) {
         },
         // Put files not handled in other tasks here
         copy: {
-//            whitelabel: {
-//                files: [
-//                    // grunticon generated stylesheets
-//                    // TODO we should probably also copy these stylesheets to the dist folder
-//                    {
-//                        expand: true,
-//                        cwd: '<%= gicon.dist %>',
-//                        dest: '<%= yeoman.app %>/styles',
-//                        src: [
-//                            '**/*.css'
-//                        ],
-//                        // change the file extension, and prefix with an underscore to stick to sass conventions
-//                        // in order to comfortably import these files to the main sass stylesheet
-//                        ext: '.scss',
-//                        rename:  function (dest, src) {
-//                            return dest + '/_' + src;
-//                        }
-//                    }
-//                ]
-//            },
             dist: {
                 files: [
                     {
