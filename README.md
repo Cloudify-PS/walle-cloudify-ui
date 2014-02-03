@@ -1,6 +1,9 @@
 
 # Cosmo UI
 
+An [AngularJS][4] based UI for Cosmo.
+
+
 ===
 
 
@@ -55,3 +58,5 @@ existing images, or create a new directory and refer to it from the stylesheet.
 [1]: http://nodejs.org/
 [2]: http://bower.io/
 [3]: http://sass-lang.com/
+[4]: http://angularjs.org/
+
