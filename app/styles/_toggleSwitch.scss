@@ -4,14 +4,14 @@
 
     #toggle-switch-text {
         display: inline-block;
-        color: $base_11;
+        color: $clr-base-11;
         font-size: 14px;
     }
 
     #toggle-switch-button {
         display: inline-block;
         vertical-align: middle;
-        border: 1px solid $base_04;
+        border: 1px solid $clr-base-04;
         border-radius: 15px;
         width: 50px;
         height: 19px;
@@ -26,7 +26,7 @@
         }
 
         #toggle-switch-button-circle {
-            background: $base_20;
+            background: $clr-base-20;
             width: 15px;
             height: 15px;
             border-radius: 10px;
@@ -44,11 +44,11 @@
 
     .true {
         background: transparent;
-        color: $base_11;
+        color: $clr-base-11;
     }
 
     .false {
-        background: $base_06;
-        color: $base_01;
+        background: $clr-base-06;
+        color: $clr-base-01;
     }
 }

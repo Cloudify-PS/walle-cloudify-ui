@@ -9,7 +9,7 @@
     cursor: pointer;
 
     &.bordered {
-      border: 1px solid $base_04;
+      border: 1px solid $clr-base-04;
     }
   }
 
@@ -17,8 +17,8 @@
     position: absolute;
     width: 170px;
     height: 160px;
-    background: $base_01;
-    border: 1px solid $base_04;
+    background: $clr-base-01;
+    border: 1px solid $clr-base-04;
     margin-top: 5px;
     box-shadow: -2px 2px 3px rgba(144, 144, 144, 0.5);
 
@@ -29,7 +29,7 @@
       font-size: 14px;
       height: 30px;
       margin: 5px;
-      border-bottom: 1px solid $base_04;
+      border-bottom: 1px solid $clr-base-04;
     }
 
     ul li{
