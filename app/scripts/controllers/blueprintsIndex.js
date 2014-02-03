@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('cosmoUi')
-    .controller('BlueprintsIndexCtrl', function ($scope, $location, $cookieStore, RestService, BreadcrumbsService) {
+    .controller('BlueprintsIndexCtrl', function ($scope, $location, $cookieStore, $filter, RestService, BreadcrumbsService) {
         $scope.isAddDialogVisible = false;
         $scope.selectedBlueprintId = null;
         $scope.lastExecutedPlan = null;
@@ -12,7 +12,7 @@ angular.module('cosmoUi')
         BreadcrumbsService.push('blueprints',
             {
                 href: '#/blueprints',
-                label: 'Blueprints',
+                i18nKey: 'breadcrumb.blueprints',
                 id: 'blueprints'
             });
 

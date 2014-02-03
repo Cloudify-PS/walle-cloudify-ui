@@ -11,7 +11,7 @@ angular.module('cosmoUi')
         BreadcrumbsService.push('deployments',
             {
                 href: '#/deployments',
-                label: 'Deployments',
+                i18nKey: 'breadcrumb.deployments',
                 id: 'deployments'
             });
 

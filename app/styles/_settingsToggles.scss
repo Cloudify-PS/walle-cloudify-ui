@@ -6,6 +6,7 @@
     height: 16px;
     background: url("#{$img-topology-settings}") no-repeat center center;
     padding: 10px;
+    cursor: pointer;
 
     &.bordered {
       border: 1px solid $base_04;
