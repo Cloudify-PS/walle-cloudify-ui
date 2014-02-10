@@ -39,10 +39,12 @@
                                     </ul>
                                 </div>
                             </div>
-                            <div pie:progress="piProgress2" class="piProgress" size="51">
+                            <div pie:progress="deployments[indexNodes[rootNode.id].nodeId].process" class="piProgress" size="51">
                                 <div class="circle">
                                     <i class="icon topology-glyph host">
-                                        <div class="badge" data-ng-class="getBadgeStatus(indexNodes[rootNode.id].nodeId)">{{ indexNodes[rootNode.id].general.numOfInstances }}</div>
+                                        <div class="badge" data-ng-class="getBadgeStatus(indexNodes[rootNode.id].nodeId)">
+                                            {{ deployments[indexNodes[rootNode.id].nodeId].completed }}/{{ deployments[indexNodes[rootNode.id].nodeId].instances }}
+                                        </div>
                                     </i>
                                 </div>
                             </div>
@@ -57,10 +59,12 @@
                                             </ul>
                                         </div>
                                     </div>
-                                    <div pie:progress="piProgress2" class="piProgress" size="51">
+                                    <div pie:progress="deployments[indexNodes[subNode.id].nodeId].process" class="piProgress" size="51">
                                         <div class="circle">
                                             <i class="icon topology-glyph app-server">
-                                                <div class="badge" data-ng-class="getBadgeStatus(indexNodes[subNode.id].nodeId)">{{ indexNodes[subNode.id].general.numOfInstances }}</div>
+                                                <div class="badge" data-ng-class="getBadgeStatus(indexNodes[subNode.id].nodeId)">
+                                                    {{ deployments[indexNodes[subNode.id].nodeId].completed }}/{{ deployments[indexNodes[subNode.id].nodeId].instances }}
+                                                </div>
                                             </i>
                                         </div>
                                     </div>
@@ -75,10 +79,12 @@
                                                     </ul>
                                                 </div>
                                             </div>
-                                            <div pie:progress="piProgress2" class="piProgress" size="51">
+                                            <div pie:progress="deployments[indexNodes[appNode.id].nodeId].process" class="piProgress" size="51">
                                                 <div class="circle" blueprint:coordinate="appNode.id">
                                                     <i class="icon topology-glyph app-module">
-                                                        <div class="badge" data-ng-class="indexNodes[appNode.id].nodeId)">{{ indexNodes[appNode.id].general.numOfInstances }}</div>
+                                                        <div class="badge" data-ng-class="getBadgeStatus(indexNodes[appNode.id].nodeId)">
+                                                            {{ deployments[indexNodes[appNode.id].nodeId].completed }}/{{ deployments[indexNodes[appNode.id].nodeId].instances }}
+                                                        </div>
                                                     </i>
                                                 </div>
                                             </div>
