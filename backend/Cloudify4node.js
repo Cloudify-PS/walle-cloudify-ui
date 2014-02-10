@@ -185,6 +185,15 @@ Cloudify4node.getDeploymentById = function(deployment_id, callback) {
     createRequest(requestData, callback);
 }
 
+Cloudify4node.getDeploymentNodes = function(deployment_id, callback) {
+    var requestData = createRequestData({
+        path: '/deployments/' + deployment_id + '/nodes',
+        method: 'GET'
+    });
+
+    createRequest(requestData, callback);
+}
+
 Cloudify4node.getDeploymentExecutions = function(deployment_id, callback) {
     var requestData = createRequestData({
         path: '/deployments/' + deployment_id + '/executions',
