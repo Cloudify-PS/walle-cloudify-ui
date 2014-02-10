@@ -264,7 +264,7 @@ angular.module('cosmoUi')
 
         // TODO: return the right status by formula, need to ask Yaron or Guy
         $scope.getBadgeStatus = function() {
-            return 'alerts';
+            return 'install';
         };
 
         // Get Icon by Type
