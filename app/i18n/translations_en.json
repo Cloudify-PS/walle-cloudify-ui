@@ -74,6 +74,8 @@
     "plans": {
         "generalBtn": "General",
         "propertiesBtn": "Properties",
+        "relationshipsBtn": "Relationships",
+        "interfacesBtn": "Interfaces",
         "policiesBtn": "Policies",
         "topologyBtn": "Topology",
         "networkBtn": "Network",

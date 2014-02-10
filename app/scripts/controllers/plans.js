@@ -5,8 +5,13 @@ angular.module('cosmoUi')
 
         var planData/*:PlanData*/ = null;
         $scope.section = 'topology';
+        $scope.propSection = 'general';
         $scope.planName = $routeParams.name;
         $scope.toggleView = false;
+
+        $scope.$watch('propSection', function(val) {
+            console.log(val);
+        });
 
         $scope.toggleBar = {
             'compute': true,
