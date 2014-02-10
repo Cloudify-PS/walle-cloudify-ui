@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('cosmoUi')
-    .controller('PlansCtrl', function ($scope, YamlService, Layout, Render, $routeParams, BreadcrumbsService, PlanDataConvert, blueprintCoordinateService, $timeout) {
+    .controller('PlansCtrl', function ($scope, YamlService, Layout, Render, $routeParams, BreadcrumbsService, PlanDataConvert, blueprintCoordinateService) {
 
         var planData/*:PlanData*/ = null;
         $scope.section = 'topology';
@@ -19,24 +19,6 @@ angular.module('cosmoUi')
             'modules': true,
             'connections': true
         };
-
-        $scope.piProgress1 = {
-            'succeed': 20,
-            'error': 45,
-            'warning': 35
-        };
-
-        $scope.piProgress2 = {
-            'progress': 5
-        };
-
-        var progressDemo = function () {
-            $scope.piProgress2.progress++;
-            if ($scope.piProgress2.progress < 85) {
-                $timeout(progressDemo, 30);
-            }
-        };
-        $timeout(progressDemo, 2000);
 
         BreadcrumbsService.push('blueprints',
             {

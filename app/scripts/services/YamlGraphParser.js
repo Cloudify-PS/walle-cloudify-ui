@@ -74,7 +74,10 @@ angular.module('cosmoUi')
 
             function extractName( uglyName ){
                 var prettyName = uglyName.split('.')[1];
-                return prettyName;
+                if(prettyName !== undefined) {
+                    return prettyName;
+                }
+                return uglyName;
             }
 
             function _createNodes(topology) {
@@ -90,6 +93,7 @@ angular.module('cosmoUi')
                     var myNode = {
                         id: nodeId,
                         name: extractName(node.id),
+                        nodeId: node.id,
                         type: [ realTypes[node.type] || node.type ],
                         properties: node.properties,
                         policies: node.policies,

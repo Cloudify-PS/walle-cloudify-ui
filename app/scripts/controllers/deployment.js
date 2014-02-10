@@ -1,7 +1,12 @@
 'use strict';
 
 angular.module('cosmoUi')
-    .controller('DeploymentCtrl', function ($scope, $cookieStore, $routeParams, RestService, BreadcrumbsService) {
+    .controller('DeploymentCtrl', function ($scope, $cookieStore, $routeParams, RestService, BreadcrumbsService, YamlService, PlanDataConvert, blueprintCoordinateService) {
+
+        var totalNodes = 0,
+            appStatus = {},
+            deploymentModel = {},
+            instances = 0;
 
         $scope.deployment = null;
         $scope.nodes = [];
@@ -121,6 +126,166 @@ angular.module('cosmoUi')
                 });
         }
 
+        // Define Deployment Model in the first time
+        function _setDeploymentModel( data ) {
+            data.plan = JSON.parse(data.plan);
+            for (var i = 0; i < data.plan.nodes.length; i++) {
+                var node = data.plan.nodes[i];
+                if(!deploymentModel.hasOwnProperty(node.name)) {
+                    deploymentModel[node.name] = {
+                        'status': {},
+                        'process': {},
+                        'completed':  0,
+                        'instances': node.instances.deploy
+                    };
+                }
+                deploymentModel[node.name].status[node.id] = {
+                    'reachable': null
+                };
+                instances += node.instances.deploy;
+            }
+        }
+
+        function _drawPlan( dataPlan ) {
+            var dataMap;
+
+            // Convert edges to angular format
+            if (dataPlan.hasOwnProperty('edges') && !!dataPlan.edges) {
+                dataMap = PlanDataConvert.edgesToAngular(dataPlan.edges);
+            }
+
+            // Index data by ID
+            if (dataPlan.hasOwnProperty('nodes') && !!dataPlan.nodes) {
+                totalNodes = 0;
+                $scope.indexNodes = {};
+                dataPlan.nodes.forEach(function (node) {
+                    $scope.indexNodes[node.id] = node;
+                    totalNodes++;
+                });
+            }
+
+            // Set Map
+            blueprintCoordinateService.setMap(dataMap['cloudify.relationships.connected_to']);
+
+            // Connection between nodes
+            $scope.map = dataMap['cloudify.relationships.contained_in'];
+            $scope.coordinates = blueprintCoordinateService.getCoordinates();
+            $scope.deployments = deploymentModel;
+            $scope.appStatus = appStatus;
+        }
+
+        function _loadDeployment() {
+            RestService.getDeploymentById({deploymentId : id})
+                .then(function(deploymentData) {
+                    // Set Deployment Model
+                    _setDeploymentModel(deploymentData);
+
+                    // Blueprint
+                    RestService.getBlueprintById({id: deploymentData.blueprintId})
+                        .then(function(data){
+                            YamlService.loadJSON(id, data, function(err, data){
+                                // Draw Blueprint Plan
+                                _drawPlan(data.getJSON());
+                            });
+                        });
+
+                    // Execution
+                    RestService.getDeploymentNodes({deploymentId : id})
+                        .then(null, null, function(dataNodes) {
+                            $scope.nodes = dataNodes;
+                        });
+                });
+        }
+
+        // Update deployments process and values
+        function updateDeployments() {
+            for (var i in deploymentModel) {
+                for (var instanceID in deploymentModel[i].status) {
+                    var completed = 0, failed = 0, install = 0;
+                    switch (deploymentModel[i].status[instanceID]) {
+                    case true:
+                        completed++;
+                        break;
+                    case false:
+                        failed++;
+                        break;
+                    case null:
+                        install++;
+                        break;
+                    }
+                    deploymentModel[i].completed = completed;
+                    deploymentModel[i].process = {
+                        'done': processCalc(completed, deploymentModel[i].instances),
+                        'failed': processCalc(failed, deploymentModel[i].instances),
+                        'install': processCalc(install, deploymentModel[i].instances)
+                    };
+                }
+            }
+        }
+
+        // Calculate value by percents for pieProgress
+        function processCalc(partOf, instances) {
+            return Math.round(partOf > 0 ? 100 * partOf / instances : 0);
+        }
+
+        // Init
         _loadDeployment();
         _loadEvents();
+
+        // Execution Listener
+        $scope.$watch('nodes', function(nodes){
+            // Organizing the data by id
+            var IndexedNodes = {}, completed = 0, failed = 0, install = 0;
+            for (var i = 0; i < nodes.length; i++) {
+                var node = nodes[i];
+                IndexedNodes[node.id] = node.reachable;
+                switch (node.reachable) {
+                case true:
+                    completed++;
+                    break;
+                case false:
+                    failed++;
+                    break;
+                case null:
+                    install++;
+                    break;
+                }
+            }
+            // Update Deployment Model with new Data
+            for (var d in deploymentModel) {
+                var deployment = deploymentModel[d];
+                for (var nodeId in deployment.status) {
+                    if(IndexedNodes.hasOwnProperty(nodeId)) {
+                        deployment.status[nodeId] = IndexedNodes[nodeId];
+                    }
+                }
+            }
+            // Total App Status
+            appStatus = {
+                'done': processCalc(completed, instances),
+                'failed': processCalc(failed, instances),
+                'install': processCalc(install, instances)
+            };
+        }, true);
+
+        // Listener for deployments, update process values
+        $scope.$watch('deployments', function(){
+            updateDeployments();
+        }, true);
+
+        // TODO: return the right status by formula, need to ask Yaron or Guy
+        $scope.getBadgeStatus = function() {
+            return 'install';
+        };
+
+        // Get Icon by Type
+        $scope.getIcon = function (type) {
+            switch (type) {
+            case 'server':
+                return 'app-server';
+            case 'host':
+                return 'host';
+            }
+        };
+
     });

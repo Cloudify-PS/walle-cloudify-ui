@@ -36,7 +36,7 @@
                                             <option value="">-- Select workflow --</option>
                                         </select>
                                         <i class="fa fa-play-circle-o" ng-click="executeDeployment(deployment)" ng-class="{disable: !isExecuteEnabled()}"></i>
-                                        <!--<i ng-class="{deploymentExecute: isExecuting(deployment.id)}" ng-show="isExecuting(deployment.id)"></i>-->
+                                        <i ng-class="{deploymentExecute: isExecuting(deployment.id)}" ng-show="isExecuting(deployment.id)"></i>
                                     </td>
                                 </tr>
                             </table>
