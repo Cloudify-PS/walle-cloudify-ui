@@ -1,9 +1,25 @@
 <div class="cosmo-layout" id="deployment">
+    <div class="properties-panel right-panel" ng-hide="!showProperties">
+        <div class="title">
+            {{showProperties.general.name}} Details
+            <i ng-click="hideProperties()" class="fa fa-times-circle right"></i>
+        </div>
+        <div class="content">
+            <div class="buttons-group" checkbox-toggle value="section">
+                <button type="button" class="btn btn-default" value="general">{{ 'plans.generalBtn' | i18n }}</button>
+            </div>
+            <div ng-switch="section" class="content-section">
+                <pre ng-switch-default="general">{{showProperties.general | yaml:'No general information' }} </pre>
+            </div>
+        </div>
+    </div>
+
+
     <div events-widget id="plans-index-events-widget" events="{{events}}" ng-show="section != 'events'"></div>
 
     <div id="deployment-header">
         <div class="header-right">
-            <div app-status-widget id="appStatus"></div>
+            <div app-status-widget id="appStatus" ng-model="appStatus"></div>
         </div>
         <div class="header-left">
             <div class="content-header">
@@ -11,7 +27,80 @@
             </div>
 
             <div ng-switch="section" class="content-section">
-                <div ng-switch-default="topology">{{ 'deployment.title.topology' | i18n }}</div>
+                <div ng-switch-default="topology">
+
+                    <!-- Blueprint Contianter - START -->
+                    <div class="bpContainer" blueprint:resize>
+                        <div data-type="compute" data-ng-repeat="rootNode in map" class="box" blueprint:coordinate="rootNode.id">
+                            <div class="hoverup">
+                                <div class="buttons no-embed">
+                                    <ul>
+                                        <li data-ng-click="viewNode(rootNode)" class="topology-glyph node-details"></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div pie:progress="deployments[indexNodes[rootNode.id].nodeId].process" class="piProgress" size="51">
+                                <div class="circle">
+                                    <i class="icon topology-glyph host">
+                                        <div class="badge" data-ng-class="getBadgeStatus(indexNodes[rootNode.id].nodeId)">
+                                            {{ deployments[indexNodes[rootNode.id].nodeId].completed }}/{{ deployments[indexNodes[rootNode.id].nodeId].instances }}
+                                        </div>
+                                    </i>
+                                </div>
+                            </div>
+                            <div class="head">{{ indexNodes[rootNode.id].name }}</div>
+                            <div class="holder">
+                                <!-- Middleware::start -->
+                                <div data-type="middleware" data-ng-repeat="subNode in rootNode.children" class="box" blueprint:coordinate="subNode.id">
+                                    <div class="hoverup">
+                                        <div class="buttons no-embed">
+                                            <ul>
+                                                <li data-ng-click="viewNode(subNode)" class="topology-glyph node-details"></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div pie:progress="deployments[indexNodes[subNode.id].nodeId].process" class="piProgress" size="51">
+                                        <div class="circle">
+                                            <i class="icon topology-glyph app-server">
+                                                <div class="badge" data-ng-class="getBadgeStatus(indexNodes[subNode.id].nodeId)">
+                                                    {{ deployments[indexNodes[subNode.id].nodeId].completed }}/{{ deployments[indexNodes[subNode.id].nodeId].instances }}
+                                                </div>
+                                            </i>
+                                        </div>
+                                    </div>
+                                    <div class="head">{{ indexNodes[subNode.id].name }}</div>
+                                    <div class="holder">
+                                        <!-- Module::start -->
+                                        <div data-type="modules" data-ng-repeat="appNode in subNode.children" class="app">
+                                            <div class="hoverup">
+                                                <div class="buttons no-embed">
+                                                    <ul>
+                                                        <li data-ng-click="viewNode(appNode)" class="topology-glyph node-details"></li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                            <div pie:progress="deployments[indexNodes[appNode.id].nodeId].process" class="piProgress" size="51">
+                                                <div class="circle" blueprint:coordinate="appNode.id">
+                                                    <i class="icon topology-glyph app-module">
+                                                        <div class="badge" data-ng-class="getBadgeStatus(indexNodes[appNode.id].nodeId)">
+                                                            {{ deployments[indexNodes[appNode.id].nodeId].completed }}/{{ deployments[indexNodes[appNode.id].nodeId].instances }}
+                                                        </div>
+                                                    </i>
+                                                </div>
+                                            </div>
+                                            <p>{{ indexNodes[appNode.id].name }}</p>
+                                        </div>
+                                        <!-- Module::end -->
+                                    </div>
+                                </div>
+                                <!-- Middleware::end -->
+                            </div>
+                        </div>
+                        <div class="coordinates" blueprint:arrows="coordinates"></div>
+                    </div>
+                    <!-- Blueprint Contianter - END -->
+
+                </div>
 
                 <div ng-switch-when="network">{{ 'deployment.title.network' | i18n }}</div>
 

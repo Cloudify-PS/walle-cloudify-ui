@@ -5,25 +5,29 @@
         <button class="gs-btn" ng-click="toggleAddDialog()">{{ 'blueprints.uploadBtn' | i18n }}</button>
         </div>
     </div>
-    <table class="table table-striped" ng-show="!cosmoConnectionOk()">
-        <tr>
-            <td class="icon"><!-- icon --></td>
-            <td class="name">{{ 'blueprints.table.heading.name' | i18n }}</td>
-            <td class="version">{{ 'blueprints.table.heading.version' | i18n }}</td>
-            <td class="description">{{ 'blueprints.table.heading.description' | i18n }}</td>
-            <td class="actions">{{ 'blueprints.table.heading.action' | i18n }}</td>
-        </tr>
-        <tr ng-repeat="blueprint in blueprints">
-            <td class="icon"><i class="gs-icon-deployments"></i></td>
-            <td class="name" ng-click="redirectTo(blueprint)">{{ blueprint.name }}</td>
-            <td class="version">{{ blueprint.version }}</td>
-            <td class="description">{{ blueprint.description }}</td>
-            <td class="actions">
-                <button class="deploy-button" ng-click="deployBlueprint(blueprint)">{{ 'blueprints.table.deployBtn' | i18n }}</button>
-                <div class="deployments-number">{{ blueprint.deployments.length }}</div>
-                <!--i id="blueprint-down" class="fa  fa-chevron-circle-down"></i><i class="fa  fa-play-circle-o" ng-click="deployBlueprint(blueprint)"></i-->
-            </td>
-        </tr>
+    <table class="table" ng-show="!cosmoConnectionOk()">
+        <thead>
+            <tr>
+                <th class="icon"><!-- icon --></th>
+                <th class="name">{{ 'blueprints.table.heading.name' | i18n }}</th>
+                <th class="version">{{ 'blueprints.table.heading.version' | i18n }}</th>
+                <th class="description">{{ 'blueprints.table.heading.description' | i18n }}</th>
+                <th class="actions">{{ 'blueprints.table.heading.action' | i18n }}</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="blueprint in blueprints">
+                <td class="icon"><i class="gs-icon-deployments"></i></td>
+                <td class="name" ng-click="redirectTo(blueprint)">{{ blueprint.name }}</td>
+                <td class="version">{{ blueprint.version }}</td>
+                <td class="description">{{ blueprint.description }}</td>
+                <td class="actions">
+                    <button class="deploy-button" ng-click="deployBlueprint(blueprint)">{{ 'blueprints.table.deployBtn' | i18n }}</button>
+                    <div class="deployments-number">{{ blueprint.deployments.length }}</div>
+                    <!--i id="blueprint-down" class="fa  fa-chevron-circle-down"></i><i class="fa  fa-play-circle-o" ng-click="deployBlueprint(blueprint)"></i-->
+                </td>
+            </tr>
+        </tbody>
     </table>
     <div class="connect-error-message" ng-show="cosmoConnectionOk()">{{ 'connectError' | i18n }}</div>
     <div class="no-blueprints-message" ng-show="blueprints.length == 0">{{ 'blueprints.emptyMessage' | i18n }}</div>

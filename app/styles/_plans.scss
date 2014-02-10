@@ -1,4 +1,10 @@
-#plans {
+#plans, #deployment {
+
+    $install: #2f3334;
+    $done: #8eaf26;
+    $alerts: #feb300;
+    $failed: #d54931;
+
     #right-side-menu{
         position:absolute;
         z-index:120;
@@ -42,6 +48,7 @@
     .content-section {
         padding: 30px 0;
     }
+
     .bpContainer {
         position: relative;
         display: block;
@@ -69,20 +76,33 @@
             color: white;
             &:after {
                 position: absolute;
-                top: -12px;
-                left: 6px;
+                top: -11px;
+                left: 7px;
             }
             > .badge {
                 position: absolute;
                 z-index: 1;
                 top: -10px;
-                right: -15px;
-                background-color: #8eaf26; // #d54931; #feb300; #8eaf26; #2f3334;
+                left: 25px;
+                background-color: $install;
                 text-decoration: none;
                 font-family: "OpenSansBold";
                 font-size: 14px;
                 color: #fff;
                 line-height: 15px;
+                opacity: 1;
+                &.install {
+                    background-color: $install;
+                }
+                &.done {
+                    background-color: $done;
+                }
+                &.alerts {
+                    background-color: $alerts;
+                }
+                &.failed {
+                    background-color: $failed;
+                }
             }
         }
         .box {
@@ -116,17 +136,6 @@
                     top: 0px;
                     left: -20px;
                 }
-                > .piProgress {
-                    position: absolute;
-                    top: -5px;
-                    left: -28px;
-                    .circle {
-                        background: #3aaeda;
-                        border-width: 2px;
-                        border-style: solid;
-                        border-color: white;
-                    }
-                }
                 .hoverup {
                     z-index: 101;
                 }
@@ -140,22 +149,35 @@
                 top: 0px;
                 left: -20px;
             }
-            > .piProgress {
+            .piProgress {
                 position: absolute;
                 top: -5px;
-                left: -28px;
+                left: -27px;
+                z-index: 1;
                 .circle {
                     background: #136e9d;
                     border-width: 2px;
                     border-style: solid;
                     border-color: white;
                 }
+                path.install {
+                    fill: $install;
+                }
+                path.done {
+                    fill: $done;
+                }
+                path.alerts {
+                    fill: $alerts;
+                }
+                path.failed {
+                    fill: $failed;
+                }
             }
             .head {
                 display: block;
                 background-color: #136e9d;
                 color: white;
-                padding: 6px 10px 6px 20px;
+                padding: 6px 10px 6px 25px;
                 border-radius: 3px;
                 font-size: 18px;
             }
@@ -284,17 +306,22 @@
         .network {
             display: inline-block;
             text-align: center;
-            .name {
-                display: block;
-                background-color: #797B86;
-                color: #fff;
-                padding: 2px 6px;
-                border-radius: 5px;
-                text-align: center;
-                margin: 0 0 20px 0;
-            }
+            min-width: 150px;
             .line {
+                position: relative;
                 display: inline-block;
+                .name {
+                    display: block;
+                    width: 150px;
+                    background-color: #797B86;
+                    color: #fff;
+                    padding: 2px 6px;
+                    border-radius: 5px;
+                    text-align: center;
+                    margin: 0 0 10px 0;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                }
                 .subnet {
                     position: relative;
                     display: inline-block;
@@ -304,7 +331,7 @@
                     color: #fff;
                     border-radius: 5px;
                     vertical-align: top;
-                    margin: 0 10px 0 0;
+                    margin: 0px 10px 0 0;
                     > p {
                         position: absolute;
                         display: block;
