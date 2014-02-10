@@ -9,10 +9,6 @@ angular.module('cosmoUi')
         $scope.planName = $routeParams.name;
         $scope.toggleView = false;
 
-        $scope.$watch('propSection', function(val) {
-            console.log(val);
-        });
-
         $scope.toggleBar = {
             'compute': true,
             'middleware': true,
