@@ -4,7 +4,11 @@ angular.module('cosmoUi')
     .directive('bpNetworks', function (bpNetworkService) {
         return {
             restrict: 'A',
-            link: function postLink($scope, $element) {
+            require: '?ngModel',
+            link: function postLink($scope, $element, $attrs, ngModel) {
+                if (!ngModel) {
+                    return;
+                }
 
                 var width = '100%',
                     height = '100%';
@@ -34,16 +38,6 @@ angular.module('cosmoUi')
                     ]);
                 }
 
-                bpNetworkService.setMap([
-                    {'source': '6', 'target': '2'},
-                    {'source': '3', 'target': '2'},
-                    {'source': '6', 'target': '8'},
-                    {'source': '3', 'target': '7'},
-                    {'source': '1', 'target': '5'},
-                    {'source': '1', 'target': '4'}
-                ]);
-                $scope.coordinates = bpNetworkService.getCoordinates();
-
                 function broadcastResize() {
                     $element.scope().$apply(function () {
                         bpNetworkService.render();
@@ -52,7 +46,8 @@ angular.module('cosmoUi')
                 document.addEventListener('DOMContentLoaded', broadcastResize, false);
                 window.onresize = broadcastResize;
 
-                $scope.$watch('coordinates', function (data) {
+                ngModel.$render = function () {
+                    var data = ngModel.$viewValue || false;
                     if (data) {
                         group.selectAll('path')
                             .remove();
@@ -68,8 +63,7 @@ angular.module('cosmoUi')
                             })
                             .attr('stroke-width', '4px');
                     }
-
-                }, true);
+                };
 
                 $scope.$watch(function() {
                     return $element.is(':visible');
@@ -85,29 +79,30 @@ angular.module('cosmoUi')
     .directive('bpNetworkCoordinate', function (bpNetworkService) {
         return {
             restrict: 'A',
-            scope: {
-                'id': '=bpNetworkCoordinate'
-            },
-            link: function ($scope, $element, $attr) {
-                switch ($attr.type) {
-                case 'subnet':
-                    bpNetworkService.addSubnet($scope.id, $element, $attr.color);
-                    break;
-
-                case 'network':
-                    bpNetworkService.addNetwork($scope.id, $element);
-                    break;
-
-                case 'device':
-                    bpNetworkService.addDevice($scope.id, $element);
-                    break;
+            require: '?ngModel',
+            link: function ($scope, $element, $attr, ngModel) {
+                if (!ngModel) {
+                    return;
                 }
+                ngModel.$render = function () {
+                    var data = ngModel.$viewValue || false;
+                    switch (data.type) {
+                    case 'subnet':
+                        $element.css('backgroundColor', data.color);
+                        bpNetworkService.addSubnet(data.id, $element, data.color);
+                        break;
+
+                    default:
+                        bpNetworkService.addDevice(data.id, $element);
+                        break;
+                    }
+                };
             }
         };
     });
 
 angular.module('cosmoUi')
-    .service('bpNetworkService', function($timeout){
+    .service('bpNetworkService', function(){
 
         var elements = {},
             coordinates = [],
@@ -120,6 +115,10 @@ angular.module('cosmoUi')
         function render() {
             var Coords = [];
             angular.forEach(map, function (relation) {
+                if(!elements.hasOwnProperty(relation.source) || !elements.hasOwnProperty(relation.target)) {
+                    return;
+                }
+
                 var from = elements[relation.source],
                     to = elements[relation.target],
                     height = to.element.outerHeight();
@@ -138,7 +137,6 @@ angular.module('cosmoUi')
             });
             angular.extend(coordinates, Coords);
         }
-        $timeout(render, 500);
 
         function getAttachPoint(startPoint, endPoint, element) {
             var width = element.outerWidth(),

@@ -94,17 +94,6 @@ angular.module('cosmoUi')
             return eventMap !== undefined ? eventMap : event.type;
         }
 
-        function _loadDeployment() {
-            RestService.getDeploymentById({deploymentId : id})
-                .then(function(data) {
-                    $scope.deployment = data;
-                    RestService.getDeploymentNodes({deploymentId : id})
-                        .then(null, null, function(data) {
-                            $scope.nodes = data;
-                        });
-                });
-        }
-
         function _loadEvents() {
             if (id === undefined) {
                 return;
@@ -128,7 +117,6 @@ angular.module('cosmoUi')
 
         // Define Deployment Model in the first time
         function _setDeploymentModel( data ) {
-            data.plan = JSON.parse(data.plan);
             for (var i = 0; i < data.plan.nodes.length; i++) {
                 var node = data.plan.nodes[i];
                 if(!deploymentModel.hasOwnProperty(node.name)) {
@@ -151,7 +139,7 @@ angular.module('cosmoUi')
 
             // Convert edges to angular format
             if (dataPlan.hasOwnProperty('edges') && !!dataPlan.edges) {
-                dataMap = PlanDataConvert.edgesToAngular(dataPlan.edges);
+                dataMap = PlanDataConvert.edgesToBlueprint(dataPlan.edges);
             }
 
             // Index data by ID

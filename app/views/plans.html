@@ -105,49 +105,25 @@
 
         <!-- Network Topology - START -->
         <div class="networksContainer" ng-switch-when="network">
-            <div bp:networks class="relations"></div>
+            <div bp:networks class="relations" ng-model="networkcoords"></div>
             <div class="network">
                 <div class="devices">
-                    <div class="device" bp:network:coordinate="4" type="subnet" color="#149bdf">
+                    <div data-ng-repeat="external in networks.external" class="device" bp:network:coordinate ng-model="external">
                         <i class="topology-glyph app-server"></i>
                     </div>
                 </div>
             </div>
-            <div class="network">
+            <div data-ng-repeat="network in networks.networks" class="network">
                 <div class="line">
-                    <div class="name">{{ 'plans.topology.networkName' | i18n }}</div>
-                    <div class="subnet" bp:network:coordinate="1" type="subnet" color="#149bdf">
-                        <p>{{ 'plans.topology.subnetName' | i18n }}</p>
-                        <p class="cidr">10.0.0.0/24</p>
-                    </div>
-                    <div class="subnet red" bp:network:coordinate="3" type="subnet" color="#d54931">
-                        <p>{{ 'plans.topology.subnetName' | i18n }}</p>
-                        <p class="cidr">168.192.0.55/24</p>
+                    <div class="name">{{ network.name }}</div>
+                    <div data-ng-repeat="subnet in network.subnets" class="subnet" bp:network:coordinate ng-model="subnet">
+                        <p>{{ subnet.name }}</p>
+                        <p class="cidr">{{ subnet.cidr }}</p>
                     </div>
                 </div>
                 <div class="devices">
-                    <div class="device" bp:network:coordinate="2" type="device">
-                        <i class="topology-glyph app-server"></i>
-                    </div>
-                    <div class="device" bp:network:coordinate="5" type="device">
-                        <i class="topology-glyph app-server"></i>
-                    </div>
-                </div>
-            </div>
-            <div class="network">
-                <div class="line">
-                    <div class="name">{{ 'plans.topology.privateNetwork' | i18n }}</div>
-                    <div class="subnet orange" bp:network:coordinate="6" type="subnet" color="#f89406">
-                        <p>{{ 'plans.topology.subnetName' | i18n }}</p>
-                        <p class="cidr">192.0.0.1/24</p>
-                    </div>
-                </div>
-                <div class="devices">
-                    <div class="device" bp:network:coordinate="7" type="device">
-                        <i class="topology-glyph app-server"></i>
-                    </div>
-                    <div class="device" bp:network:coordinate="8" type="device">
-                        <i class="topology-glyph app-server"></i>
+                    <div data-ng-repeat="device in network.devices" class="device" bp:network:coordinate ng-model="device">
+                        <i class="topology-glyph {{ device.icon }}"></i>
                     </div>
                 </div>
             </div>
