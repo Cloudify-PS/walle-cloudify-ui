@@ -255,6 +255,15 @@ angular.module('cosmoUi').service('PlanDataConvert', function () {
         return false;
     }
 
+    function getRandomColor() {
+        var letters = '0123456789ABCDEF'.split('');
+        var color = '#';
+        for (var i = 0; i < 6; i++ ) {
+            color += letters[Math.round(Math.random() * 15)];
+        }
+        return color;
+    }
+
     function addNetwork(data, node) {
         data.network.networks.push({
             'id': node.id,
@@ -273,7 +282,7 @@ angular.module('cosmoUi').service('PlanDataConvert', function () {
                     'id': node.id,
                     'name': node.name,
                     'cidr': '0.0.0.0/24',
-                    'color': '#149bdf',
+                    'color': getRandomColor(),
                     'type': 'subnet'
                 });
                 addRelation(data, edge);
