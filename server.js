@@ -73,7 +73,7 @@ app.get('/backend/blueprints', function(request, response, next) {
 
 app.post('/backend/blueprints/add', function(request, response){
     cloudify4node.addBlueprint(request.files.application_archive, function(err, data) {
-        response.send(err !== null ? err : data);
+        response.send(err !== null ? err : data, err !== null ? data : 200);
     });
 });
 

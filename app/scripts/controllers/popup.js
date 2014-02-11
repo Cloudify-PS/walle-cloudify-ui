@@ -7,6 +7,7 @@ angular.module('cosmoUi')
         $scope.uploadInProcess = false;
         $scope.selectedFile = '';
         $scope.uploadError = false;
+        $scope.errorMessage = 'Error uploading blueprint';
 
         $scope.onFileSelect = function ($files) {
             $scope.selectedFile = $files[0];
@@ -32,15 +33,6 @@ angular.module('cosmoUi')
                 contentType: false,
                 processData: false,
                 cache: false,
-                xhrFields: {
-                    onprogress: function (e) {
-                        if (e.lengthComputable) {
-                            console.log('Loaded ' + (e.loaded / e.total * 100) + '%');
-                        } else {
-                            console.log('Length not computable.');
-                        }
-                    }
-                },
                 success: function() {
                     $scope.$apply(function() {
                         $scope.uploadError = false;
@@ -49,13 +41,14 @@ angular.module('cosmoUi')
                     $scope.loadBlueprints();
                     $scope.closeDialog();
                 },
-                error: function() {
+                error: function(e) {
+                    $scope.errorMessage = JSON.parse(e.responseText).message;
                     $scope.$apply(function() {
                         $scope.uploadError = true;
                         $scope.uploadInProcess = false;
                     });
                 }
-            });
+            })
         };
 
         $scope.closeDialog = function() {

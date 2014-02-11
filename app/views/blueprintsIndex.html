@@ -45,7 +45,7 @@
                 <input type="file" name="fileInput" id="fileInput" accept=".tar,.gz,.yaml" ng-file-select="onFileSelect($files)">
                 </div>
             <div id="mainFile" style="display:none">Application file: <input type="text" ng-model="mainFileName"></div>
-            <div id="upload-error-message" ng-show="isUploadError()">Error uploading blueprint</div>
+            <div id="upload-error-message" ng-show="isUploadError()">{{errorMessage}}</div>
             <button id="uploadBtn" class="formButton" ng-class="{disabled: !isUploadEnabled(), enabled: isUploadEnabled()}" ng-click="uploadFile()">Upload</button>
             </form>
         </div>
