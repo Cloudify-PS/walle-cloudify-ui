@@ -242,6 +242,9 @@ angular.module('cosmoUi').service('PlanDataConvert', function () {
                     addDevice(data, node);
                     topologyNodes.push(node);
                     break;
+                default:
+                    topologyNodes.push(node);
+                    break;
                 }
             });
             data.nodes = topologyNodes;
