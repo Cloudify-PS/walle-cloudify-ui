@@ -30,7 +30,26 @@
         .content{
             margin-top: $COSMOUI_BLUEPRINT_DETAILS_CONTENT_MARGIN_TOP;
             .content-section{
-                margin-top:30px;
+              margin-top:30px;
+
+              table {
+                display: block;
+                padding: 9.5px;
+                font-size: 13px;
+                color: #333333;
+                background-color: whitesmoke;
+                border: 1px solid #cccccc;
+                border-radius: 4px;
+
+                tr {
+                  height: 30px;
+
+                  td {
+                    min-width: 120px;
+                    vertical-align: top;
+                  }
+                }
+              }
             }
         }
     }
