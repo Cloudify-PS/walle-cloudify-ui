@@ -360,7 +360,7 @@
                         white-space: nowrap;
                         top: 5px;
                         right: 0;
-                        left: 0;
+                        left: 1px;
                     }
                     > p.cidr {
                         width: 200px;
@@ -389,8 +389,8 @@
                 > .device {
                     position: relative;
                     display: block;
-                    width: 40px;
-                    height: 40px;
+                    width: 39px;
+                    height: 39px;
                     background-color: #fff;
                     border-width: 3px;
                     border-style: solid;

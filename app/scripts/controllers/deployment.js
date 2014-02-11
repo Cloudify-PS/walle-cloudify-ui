@@ -139,7 +139,7 @@ angular.module('cosmoUi')
 
             // Convert edges to angular format
             if (dataPlan.hasOwnProperty('edges') && !!dataPlan.edges) {
-                dataMap = PlanDataConvert.edgesToAngular(dataPlan.edges);
+                dataMap = PlanDataConvert.edgesToBlueprint(dataPlan.edges);
             }
 
             // Index data by ID

@@ -36,7 +36,6 @@ angular.module('cosmoUi')
 
         $scope.getWorkflows = function(deployment) {
 //            var plan = JSON.parse(deployment.plan.replace('\\\\n','').replace('\\',''));
-            var plan = deployment.plan;
             var workflows = [];
             for (var i in plan.workflows) {
                 workflows.push({
