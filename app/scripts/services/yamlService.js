@@ -37,7 +37,7 @@ angular.module('cosmoUi')
             };
 
             function _loadJSON(id, data) {
-//                var result = JSON.parse(data.plan);
+                var result = data.plan;
                 if (result.imports !== undefined) {
                     for (var key in result.imports) {
                         if ($.inArray(key, imports === -1)) {
