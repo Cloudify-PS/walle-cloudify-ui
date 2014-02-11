@@ -15,7 +15,7 @@ function createRequest(requestData, callback) {
         var result = '';
 
         if (res.errno !== undefined) {
-            callback(null, 500);
+            callback(500, null);
             return;
         }
 

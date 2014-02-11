@@ -64,7 +64,7 @@ angular.module('cosmoUi')
             $location.path('/deployment').search({id: deployment.id});
         };
 
-        $scope.cosmoConnectionOk = function() {
+        $scope.cosmoConnectionError = function() {
             return cosmoError;
         };
 

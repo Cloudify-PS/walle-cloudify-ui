@@ -17,11 +17,11 @@ angular.module('cosmoUi')
                 if (params !== undefined) {
                     callParams = params;
                 }
-                return $http(callParams).error(function(data) {
-                    return data;
-                }).then(function(data) {
+                return $http(callParams).then(function(data) {
                     //console.log(['data loaded',data]);
                     return data.data;
+                }, function(e) {
+                    throw e;
                 });
             }
         }
@@ -51,6 +51,8 @@ angular.module('cosmoUi')
                     }
                     deferred.resolve(blueprints);
                 });
+            }, function(e) {
+                deferred.reject(e);
             });
 
             return deferred.promise;
