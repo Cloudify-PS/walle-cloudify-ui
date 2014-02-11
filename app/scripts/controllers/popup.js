@@ -48,7 +48,7 @@ angular.module('cosmoUi')
                         $scope.uploadInProcess = false;
                     });
                 }
-            })
+            });
         };
 
         $scope.closeDialog = function() {
