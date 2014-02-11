@@ -6,7 +6,6 @@ angular.module('cosmoUi')
         var planData/*:PlanData*/ = null;
         $scope.section = 'topology';
         $scope.propSection = 'general';
-        $scope.planName = $routeParams.name;
         $scope.toggleView = false;
 
         $scope.toggleBar = {
@@ -18,8 +17,8 @@ angular.module('cosmoUi')
 
         BreadcrumbsService.push('blueprints',
             {
-                href: '#/blueprint?id=' + $routeParams.id + '&name=' + $scope.planName,
-                label: $scope.planName,
+                href: '#/blueprint?id=' + $routeParams.id,
+                label: $routeParams.id,
                 id: 'blueprint'
             });
 
