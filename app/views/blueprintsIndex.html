@@ -18,7 +18,7 @@
         <tbody>
             <tr ng-repeat="blueprint in blueprints">
                 <td class="icon"><i class="gs-icon-deployments"></i></td>
-                <td class="name" ng-click="redirectTo(blueprint)">{{ blueprint.name }}</td>
+                <td class="name" ng-click="redirectTo(blueprint)">{{ blueprint.id }}</td>
                 <td class="version">{{ blueprint.version }}</td>
                 <td class="description">{{ blueprint.description }}</td>
                 <td class="actions">
@@ -30,6 +30,7 @@
         </tbody>
     </table>
     <div class="connect-error-message" ng-show="cosmoConnectionOk()">{{ 'connectError' | i18n }}</div>
+    <div class="loading" ng-show="blueprints == null"></div>
     <div class="no-blueprints-message" ng-show="blueprints.length == 0">{{ 'blueprints.emptyMessage' | i18n }}</div>
     <div ng-show="isAddDialogVisible" ng-controller="PopupCtrl">
         <div id="popupBoxBg"></div>

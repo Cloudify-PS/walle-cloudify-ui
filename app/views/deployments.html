@@ -10,7 +10,7 @@
 
                 <table>
                     <tr class="blueprint-name" ng-click="showDeployments(blueprint.id)">
-                        <td><div class="blueprint-arrow" ng-class="{'down': selectedBlueprint == blueprint.id, 'right': selectedBlueprint != blueprint.id}"></div>{{blueprint.name}}</td>
+                        <td><div class="blueprint-arrow" ng-class="{'down': selectedBlueprint == blueprint.id, 'right': selectedBlueprint != blueprint.id}"></div>{{blueprint.id}}</td>
                         <td><div class="deployments-number">{{blueprint.deployments.length}}</div></td>
                     </tr>
                     <tr ng-show="selectedBlueprint == blueprint.id">
@@ -48,5 +48,6 @@
         </tr>
     </table>
     <div class="no-blueprints-message" ng-show="blueprints.length == 0">{{ 'blueprints.emptyMessage' | i18n }}</div>
+    <div class="loading" ng-show="blueprints == null"></div>
     <div class="connect-error-message" ng-show="cosmoConnectionOk()">{{ 'connectError' | i18n }}</div>
 </div>

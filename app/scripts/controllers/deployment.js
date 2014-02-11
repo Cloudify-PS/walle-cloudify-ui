@@ -128,7 +128,6 @@ angular.module('cosmoUi')
 
         // Define Deployment Model in the first time
         function _setDeploymentModel( data ) {
-            data.plan = JSON.parse(data.plan);
             for (var i = 0; i < data.plan.nodes.length; i++) {
                 var node = data.plan.nodes[i];
                 if(!deploymentModel.hasOwnProperty(node.name)) {
