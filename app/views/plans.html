@@ -123,10 +123,17 @@
         <!-- Network Topology - START -->
         <div class="networksContainer" ng-switch-when="network">
             <div bp:networks class="relations" ng-model="networkcoords"></div>
-            <div class="network">
+            <div data-ng-repeat="network in networks.external" class="network">
+                <div class="line">
+                    <div class="name">{{ network.name }}</div>
+                    <div data-ng-repeat="subnet in network.subnets" class="subnet" bp:network:coordinate ng-model="subnet">
+                        <p>{{ subnet.name }}</p>
+                        <p class="cidr">{{ subnet.cidr }}</p>
+                    </div>
+                </div>
                 <div class="devices">
-                    <div data-ng-repeat="external in networks.external" class="device" bp:network:coordinate ng-model="external">
-                        <i class="topology-glyph app-server"></i>
+                    <div data-ng-repeat="device in network.devices" class="device" bp:network:coordinate ng-model="device">
+                        <i class="topology-glyph {{ device.icon }}"></i>
                     </div>
                 </div>
             </div>

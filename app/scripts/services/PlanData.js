@@ -203,7 +203,11 @@ angular.module('cosmoUi').service('PlanDataConvert', function () {
     this.nodesToNetworks = function (data) {
         var topologyNodes = [];
         data.network = {
-            'external': {},
+            'external': [{
+                'name': 'External Netowrk',
+                'subnets': [],
+                'devices': []
+            }],
             'networks': [],
             'relations': []
         };
@@ -288,7 +292,7 @@ angular.module('cosmoUi').service('PlanDataConvert', function () {
                     'color': getRandomColor(),
                     'type': 'subnet'
                 });
-                addRelation(data, edge);
+                addRelation(data, edge, true);
             }
         }
     }
@@ -305,7 +309,7 @@ angular.module('cosmoUi').service('PlanDataConvert', function () {
                         'type': 'device',
                         'icon': getIconByType(node.type[0])
                     });
-                    addRelation(data, edge);
+                    addRelation(data, edge, true);
                 }
             }
         }
@@ -315,23 +319,54 @@ angular.module('cosmoUi').service('PlanDataConvert', function () {
         for (var i in data.edges) {
             var edge = data.edges[i];
             if (edge.type.search('connected_to') && node.id === edge.target) {
-                var network = getNetworkBySubnetId(data.network.networks, edge.source);
-                if (network !== null) {
-                    network.devices.push({
-                        'id': node.id,
-                        'name': node.name,
-                        'type': 'device',
-                        'icon': getIconByType(node.type[0])
-                    });
-                    addRelation(data, edge);
+                if(!addExternalGateway(data, node)) {
+                    var network = getNetworkBySubnetId(data.network.networks, edge.source);
+                    if (network !== null) {
+                        network.devices.push({
+                            'id': node.id,
+                            'name': node.name,
+                            'type': 'device',
+                            'icon': getIconByType(node.type[0])
+                        });
+                    }
                 }
+                addRelation(data, edge, true);
             }
         }
     }
 
-    function addRelation(data, edge) {
+    function addExternalGateway(data, node) {
+        if (node.properties.router.hasOwnProperty('external_gateway_info')) {
+            var gateway = node.properties.router.external_gateway_info,
+                external = data.network.external[0];
+
+            external.subnets.push({
+                'id': 0,
+                'name': gateway.network_name,
+                'color': '#999',
+                'type': 'subnet'
+            });
+            external.devices.push({
+                'id': node.id,
+                'name': node.name,
+                'type': 'device',
+                'icon': getIconByType(node.type[0])
+            });
+            addRelation(data, {
+                'source': 0,
+                'target': node.id
+            }, false);
+
+            return true;
+        }
+        return false;
+    }
+
+    function addRelation(data, edge, remove) {
         data.network.relations.push(edge);
-        data.edges.splice(data.edges.indexOf(edge), 1);
+        if(remove === true) {
+            data.edges.splice(data.edges.indexOf(edge), 1);
+        }
     }
 
     function getNetworkById(networks, id) {

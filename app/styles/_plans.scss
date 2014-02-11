@@ -315,6 +315,7 @@
     .networksContainer {
         position: relative;
         white-space: nowrap;
+        margin: 0 0 0 20px;
         .relations {
             position: absolute;
             top: 0;
@@ -382,7 +383,7 @@
             }
             .devices {
                 display: inline-block;
-                width: 200px;
+                width: 100px;
                 height: 500px;
                 padding: 47px 0;
                 vertical-align: top;
@@ -423,7 +424,7 @@
             }
         }
         .network:nth-child(even) .devices {
-            padding: 92px;
+            padding: 92px 0;
         }
     }
 
