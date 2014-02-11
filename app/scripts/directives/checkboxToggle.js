@@ -23,7 +23,6 @@ angular.module('cosmoUi')
                         });
 
 //                        $location.search('section', scope.value);
-
                         console.log(['set new value on scope', scope.value]);
                     } catch (e) {
                         console.log(e);
