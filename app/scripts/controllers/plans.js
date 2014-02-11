@@ -39,7 +39,7 @@ angular.module('cosmoUi')
             $timeout(function(){
                 $scope.networkcoords = bpNetworkService.getCoordinates();
                 bpNetworkService.render();
-            }, 1000);
+            }, 1500);
 
 
             /**
