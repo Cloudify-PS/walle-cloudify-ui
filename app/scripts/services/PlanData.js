@@ -278,6 +278,7 @@ angular.module('cosmoUi').service('PlanDataConvert', function () {
             'subnets': [],
             'devices': []
         });
+        data.nodes.splice(data.nodes.indexOf(node), 1);
     }
 
     function addSubnet(data, node) {
@@ -295,6 +296,7 @@ angular.module('cosmoUi').service('PlanDataConvert', function () {
                 addRelation(data, edge, true);
             }
         }
+        data.nodes.splice(data.nodes.indexOf(node), 1);
     }
 
     function addDevice(data, node) {
