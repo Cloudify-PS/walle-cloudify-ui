@@ -193,6 +193,9 @@ angular.module('cosmoUi').service('PlanDataConvert', function () {
     /***
      * Networks
      */
+    var colorIndex = 0,
+        colors = ['#d54931', '#f89406', '#149bdf', '#555869', '#8eaf26', '#330033', '#4b6c8b', '#550000', '#dc322f', '#FF6600', '#cce80b', '#003300', '#805e00'];
+
     var networkMap = {
         'neutron_network': 'network',
         'neutron_subnet': 'subnet',
@@ -263,11 +266,12 @@ angular.module('cosmoUi').service('PlanDataConvert', function () {
     }
 
     function getRandomColor() {
-        var letters = '0123456789ABCDEF'.split('');
-        var color = '#';
-        for (var i = 0; i < 6; i++ ) {
-            color += letters[Math.round(Math.random() * 15)];
+        var color;
+        if(colorIndex >= colors.length) {
+            colorIndex = 0;
         }
+        color = colors[colorIndex];
+        colorIndex++;
         return color;
     }
 
