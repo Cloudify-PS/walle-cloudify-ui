@@ -86,8 +86,6 @@ angular.module('cosmoUi')
                 var nodeId = null;
                 var node = null;
 
-                //console.log(["topology", topology]);
-
                 // create nodes
                 for (var nodeIndex = 0; nodeIndex < topology.nodes.length; nodeIndex++) {
                     nodeId = uniqueId();

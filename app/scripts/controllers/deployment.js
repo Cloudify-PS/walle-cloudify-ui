@@ -204,8 +204,8 @@ angular.module('cosmoUi')
                     deploymentModel[i].completed = completed;
                     deploymentModel[i].process = {
                         'done': processCalc(completed, deploymentModel[i].instances),
-                        'failed': processCalc(failed, deploymentModel[i].instances),
-                        'install': processCalc(install, deploymentModel[i].instances)
+                        'failed': processCalc(failed, deploymentModel[i].instances)/*,
+                        'install': processCalc(install, deploymentModel[i].instances)*/
                     };
                 }
             }
@@ -222,9 +222,6 @@ angular.module('cosmoUi')
 
         // Execution Listener
         $scope.$watch('nodes', function(nodes){
-
-            //console.log(["execution", nodes]);
-
             // Organizing the data by id
             var IndexedNodes = {}, completed = 0, failed = 0, install = 0;
             for (var i = 0; i < nodes.length; i++) {
@@ -237,9 +234,9 @@ angular.module('cosmoUi')
                 case false:
                     failed++;
                     break;
-                case null:
+                /*case null:
                     install++;
-                    break;
+                    break;*/
                 }
             }
             // Update Deployment Model with new Data
