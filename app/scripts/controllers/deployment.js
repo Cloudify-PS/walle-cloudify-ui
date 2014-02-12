@@ -223,7 +223,7 @@ angular.module('cosmoUi')
         // Execution Listener
         $scope.$watch('nodes', function(nodes){
 
-            console.log(["execution", nodes]);
+            //console.log(["execution", nodes]);
 
             // Organizing the data by id
             var IndexedNodes = {}, completed = 0, failed = 0, install = 0;
@@ -277,6 +277,22 @@ angular.module('cosmoUi')
             case 'host':
                 return 'host';
             }
+        };
+
+        /**
+         * Side panel
+         */
+        $scope.viewNode = function () {
+            $scope.showProperties = {
+                properties: {},
+                policies: {},
+                general: {}
+            };
+        };
+
+
+        $scope.hideProperties = function () {
+            $scope.showProperties = null;
         };
 
     });

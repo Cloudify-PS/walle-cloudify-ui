@@ -103,7 +103,6 @@ angular.module('cosmoUi')
                 policies: planData.getPolicies(realNode),
                 general: planData.getGeneralInfo(realNode)
             };
-            console.log($scope.showProperties);
         };
 
 

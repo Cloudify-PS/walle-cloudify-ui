@@ -1,4 +1,5 @@
 <div class="cosmo-layout" id="plans">
+    <!-- Side Panel - START -->
     <div class="properties-panel right-panel" ng-hide="!showProperties">
         <div class="title">
             {{showProperties.general.name}} Details
@@ -34,13 +35,15 @@
                 </div>
             </div>
         </div>
-
     </div>
+    <!-- Side Panel - END -->
+    <!-- Breadcrumbs - START -->
     <div class="content-header no-embed">
         <div class="breadcrumbs"><ul id="blueprints" breadcrumbs></ul></div>
         <!--<div class="breadcrumbs"><ul><li>Blueprints</li><li>{{planName}}</li></ul></div>-->
      </div>
-
+    <!-- Breadcrumbs - END -->
+    <!-- Settings - START -->
     <div class="buttons-group no-embed" checkbox-toggle value="section">
         <button type="button" class="btn btn-default" value="topology">Topology</button>
         <button type="button" class="btn btn-default" value="network">Network</button>
@@ -48,9 +51,8 @@
         <button type="button" class="btn btn-default" value="code">Code</button>
     </div>
     <div settings-toggles id="settings-button" class="no-embed" toggles="toggleBar"></div>
-
+    <!-- Settings - END -->
     <div ng-switch="section" class="content-section">
-
         <!-- Blueprint Contianter - START -->
         <div class="bpContainer" ng-switch-default="topology" blueprint:resize data-ng-class="{
         disableCompute: !toggleBar.compute,
@@ -120,7 +122,6 @@
             <div class="coordinates" blueprint:arrows="coordinates"></div>
         </div>
         <!-- Blueprint Contianter - END -->
-
         <!-- Network Topology - START -->
         <div class="networksContainer" ng-switch-when="network">
             <div bp:networks class="relations" ng-model="networkcoords"></div>
@@ -154,7 +155,6 @@
             </div>
         </div>
         <!-- Network Topology - END -->
-
         <!-- Nodes - START -->
         <div ng-switch-when="nodes">
             <table class="table">
@@ -187,18 +187,11 @@
             </table>
         </div>
         <!-- Nodes - END -->
-
         <!-- Code - START -->
         <div ng-switch-when="code">
             <pre>{{ dataCode | yaml:'Code not found' }}</pre>
         </div>
         <!-- Code - END -->
-
     </div>
-
-
-
-
-
 </div>
 
