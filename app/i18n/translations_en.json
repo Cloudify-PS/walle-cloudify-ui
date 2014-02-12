@@ -72,13 +72,11 @@
         }
     },
     "plans": {
-        "general": "General",
-        "properties": "Properties",
-        "relationships": "Relationships",
-        "interfaces": "Interfaces",
-        "policies": "Policies",
-        "topology": "Topology",
-        "network": "Network",
+        "generalBtn": "General",
+        "propertiesBtn": "Properties",
+        "policiesBtn": "Relationships",
+        "topologyBtn": "Topology",
+        "networkBtn": "Network",
         "topology": {
             "networkName": "Network Name",
             "subnetName": "Subnet Name",

@@ -338,6 +338,7 @@ angular.module('cosmoUi').service('PlanDataConvert', function () {
     }
 
     function addExternalGateway(data, node) {
+        return false;
         if (node.properties.router.hasOwnProperty('external_gateway_info')) {
             var gateway = node.properties.router.external_gateway_info,
                 external = data.network.external[0];

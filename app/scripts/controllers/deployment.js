@@ -222,6 +222,9 @@ angular.module('cosmoUi')
 
         // Execution Listener
         $scope.$watch('nodes', function(nodes){
+
+            console.log(["execution", nodes]);
+
             // Organizing the data by id
             var IndexedNodes = {}, completed = 0, failed = 0, install = 0;
             for (var i = 0; i < nodes.length; i++) {

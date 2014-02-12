@@ -51,6 +51,7 @@
 
     <div ng-switch="section" class="content-section">
 
+        <!-- Blueprint Contianter - START -->
         <div class="bpContainer" ng-switch-default="topology" blueprint:resize data-ng-class="{
         disableCompute: !toggleBar.compute,
         disableMiddleware: !toggleBar.middleware,
@@ -125,10 +126,10 @@
             <div bp:networks class="relations" ng-model="networkcoords"></div>
             <div data-ng-repeat="network in networks.external" class="network">
                 <div class="line">
-                    <div class="name">{{ network.name }}</div>
+                    <div class="name-space"></div>
                     <div data-ng-repeat="subnet in network.subnets" class="subnet" bp:network:coordinate ng-model="subnet">
                         <p>{{ subnet.name }}</p>
-                        <p class="cidr">{{ subnet.cidr }}</p>
+                        <p class="cidr">External Network</p>
                     </div>
                 </div>
                 <div class="devices">

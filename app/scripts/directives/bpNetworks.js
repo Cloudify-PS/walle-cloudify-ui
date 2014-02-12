@@ -6,9 +6,7 @@ angular.module('cosmoUi')
             restrict: 'A',
             require: '?ngModel',
             link: function postLink($scope, $element, $attrs, ngModel) {
-                if (!ngModel) {
-                    return;
-                }
+                if (!ngModel) return;
 
                 var width = '100%',
                     height = '100%';

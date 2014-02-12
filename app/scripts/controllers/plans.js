@@ -22,6 +22,21 @@ angular.module('cosmoUi')
                 id: 'blueprint'
             });
 
+//        $http.get("network_mock.json").success(function(data){
+//
+//            $scope.networks = data;
+//
+//            bpNetworkService.setMap(data.relations);
+//
+//            $timeout(function(){
+//                $scope.networkcoords = bpNetworkService.getCoordinates();
+//                bpNetworkService.render();
+//            }, 1500);
+//
+//            console.log(["network mock", data]);
+//
+//        });
+
         YamlService.load($routeParams.id, function (err, data) {
 
             planData = data;
