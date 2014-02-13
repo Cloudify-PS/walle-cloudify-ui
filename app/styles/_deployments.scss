@@ -108,8 +108,10 @@
 
                 &,i {color: $COSMOUI_LIST_HOVER_ACTION_TEXT_COLOR; }
                 i {font-weight: $COSMOUI_LIST_HOVER_ACTION_FONT_WEIGHT;}
+              }
 
-
+              &:nth-child(odd):not(:first-child) td {
+                background-color: #ededed;
               }
 
               td {
