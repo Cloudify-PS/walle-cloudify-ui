@@ -20,9 +20,15 @@ table.table {
                     font-weight: $COSMOUI_LIST_HOVER_ACTION_FONT_WEIGHT;
                 }
             }
+
+            &:nth-child(even) {
+              background-color: #ededed;
+            }
+
             td {
                 vertical-align: middle;
                 height: 60px;
+                border: none;
             }
         }
     }

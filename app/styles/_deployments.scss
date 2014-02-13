@@ -29,6 +29,7 @@
       font-size: 14px;
       float: left;
       margin-top: 10px;
+      width: 167px;
     }
 
     table {
@@ -108,10 +109,6 @@
 
                 &,i {color: $COSMOUI_LIST_HOVER_ACTION_TEXT_COLOR; }
                 i {font-weight: $COSMOUI_LIST_HOVER_ACTION_FONT_WEIGHT;}
-              }
-
-              &:nth-child(odd):not(:first-child) td {
-                background-color: #ededed;
               }
 
               td {
