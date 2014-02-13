@@ -1,4 +1,5 @@
 <div class="cosmo-layout" id="plans">
+    <!-- Side Panel - START -->
     <div class="properties-panel right-panel" ng-hide="!showProperties">
         <div class="title">
             {{showProperties.general.name}} Details
@@ -34,13 +35,15 @@
                 </div>
             </div>
         </div>
-
     </div>
+    <!-- Side Panel - END -->
+    <!-- Breadcrumbs - START -->
     <div class="content-header no-embed">
         <div class="breadcrumbs"><ul id="blueprints" breadcrumbs></ul></div>
         <!--<div class="breadcrumbs"><ul><li>Blueprints</li><li>{{planName}}</li></ul></div>-->
      </div>
-
+    <!-- Breadcrumbs - END -->
+    <!-- Settings - START -->
     <div class="buttons-group no-embed" checkbox-toggle value="section">
         <button type="button" class="btn btn-default" value="topology">Topology</button>
         <button type="button" class="btn btn-default" value="network">Network</button>
@@ -48,9 +51,9 @@
         <button type="button" class="btn btn-default" value="code">Code</button>
     </div>
     <div settings-toggles id="settings-button" class="no-embed" toggles="toggleBar"></div>
-
+    <!-- Settings - END -->
     <div ng-switch="section" class="content-section">
-
+        <!-- Blueprint Contianter - START -->
         <div class="bpContainer" ng-switch-default="topology" blueprint:resize data-ng-class="{
         disableCompute: !toggleBar.compute,
         disableMiddleware: !toggleBar.middleware,
@@ -119,14 +122,20 @@
             <div class="coordinates" blueprint:arrows="coordinates"></div>
         </div>
         <!-- Blueprint Contianter - END -->
-
         <!-- Network Topology - START -->
         <div class="networksContainer" ng-switch-when="network">
             <div bp:networks class="relations" ng-model="networkcoords"></div>
-            <div class="network">
+            <div data-ng-repeat="network in networks.external" class="network">
+                <div class="line">
+                    <div class="name-space"></div>
+                    <div data-ng-repeat="subnet in network.subnets" class="subnet" bp:network:coordinate ng-model="subnet">
+                        <p>{{ subnet.name }}</p>
+                        <p class="cidr">External Network</p>
+                    </div>
+                </div>
                 <div class="devices">
-                    <div data-ng-repeat="external in networks.external" class="device" bp:network:coordinate ng-model="external">
-                        <i class="topology-glyph app-server"></i>
+                    <div data-ng-repeat="device in network.devices" class="device" bp:network:coordinate ng-model="device">
+                        <i class="topology-glyph {{ device.icon }}"></i>
                     </div>
                 </div>
             </div>
@@ -146,7 +155,6 @@
             </div>
         </div>
         <!-- Network Topology - END -->
-
         <!-- Nodes - START -->
         <div ng-switch-when="nodes">
             <table class="table">
@@ -179,18 +187,11 @@
             </table>
         </div>
         <!-- Nodes - END -->
-
         <!-- Code - START -->
         <div ng-switch-when="code">
             <pre>{{ dataCode | yaml:'Code not found' }}</pre>
         </div>
         <!-- Code - END -->
-
     </div>
-
-
-
-
-
 </div>
 

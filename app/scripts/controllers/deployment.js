@@ -204,8 +204,8 @@ angular.module('cosmoUi')
                     deploymentModel[i].completed = completed;
                     deploymentModel[i].process = {
                         'done': processCalc(completed, deploymentModel[i].instances),
-                        'failed': processCalc(failed, deploymentModel[i].instances),
-                        'install': processCalc(install, deploymentModel[i].instances)
+                        'failed': processCalc(failed, deploymentModel[i].instances)/*,
+                        'install': processCalc(install, deploymentModel[i].instances)*/
                     };
                 }
             }
@@ -234,9 +234,9 @@ angular.module('cosmoUi')
                 case false:
                     failed++;
                     break;
-                case null:
+                /*case null:
                     install++;
-                    break;
+                    break;*/
                 }
             }
             // Update Deployment Model with new Data
@@ -274,6 +274,22 @@ angular.module('cosmoUi')
             case 'host':
                 return 'host';
             }
+        };
+
+        /**
+         * Side panel
+         */
+        $scope.viewNode = function () {
+            $scope.showProperties = {
+                properties: {},
+                policies: {},
+                general: {}
+            };
+        };
+
+
+        $scope.hideProperties = function () {
+            $scope.showProperties = null;
         };
 
     });

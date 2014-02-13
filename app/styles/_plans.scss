@@ -243,11 +243,13 @@
                         }
                     }
                     li:first-child {
-                        border-radius: 14px 0 0 14px;
+                        border-top-left-radius: 14px;
+                        border-bottom-left-radius: 14px;
                     }
                     li:last-child {
                         border-width: 2px;
-                        border-radius: 0 14px 14px 0;
+                        border-top-right-radius: 14px;
+                        border-bottom-right-radius: 14px;
                     }
                 }
             }
@@ -315,6 +317,7 @@
     .networksContainer {
         position: relative;
         white-space: nowrap;
+        margin: 0 0 0 20px;
         .relations {
             position: absolute;
             top: 0;
@@ -329,6 +332,7 @@
             .line {
                 position: relative;
                 display: inline-block;
+                vertical-align: top;
                 .name {
                     display: block;
                     width: 150px;
@@ -340,6 +344,11 @@
                     margin: 0 0 10px 0;
                     overflow: hidden;
                     text-overflow: ellipsis;
+                }
+                .name-space {
+                    display: block;
+                    width: 50px;
+                    height: 40px;
                 }
                 .subnet {
                     position: relative;
@@ -382,9 +391,8 @@
             }
             .devices {
                 display: inline-block;
-                width: 200px;
+                width: 150px;
                 height: 500px;
-                padding: 47px 0;
                 vertical-align: top;
                 > .device {
                     position: relative;
@@ -398,6 +406,7 @@
                     border-radius: 20px;
                     margin: 0 auto 40px;
                     vertical-align: top;
+                    margin: 47px auto;
                     label {
                         display: block;
                         background-color: #000;
@@ -422,8 +431,8 @@
                 }
             }
         }
-        .network:nth-child(even) .devices {
-            padding: 92px;
+        .network:nth-child(even) .devices .device {
+            margin: 92px auto 47px;
         }
     }
 
