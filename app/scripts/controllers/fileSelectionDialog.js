@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('cosmoUi')
-    .controller('PopupCtrl', function ($scope) {
+    .controller('FileSelectionDialogCtrl', function ($scope) {
         var selectedFile = null;
         $scope.uploadEnabled = false;
         $scope.uploadInProcess = false;

@@ -4,7 +4,7 @@ $base_01: #ffffff !default;
 $base_02: #4885c0 !default;
 $base_03: #d0d0d0 !default;
 $base_04: #cadbec !default;
-$base_05: #cce4f6 !default;
+$base_05: #cadbec !default;
 $base_06: #234e71 !default;
 $base_07: #cecece !default;
 $base_08: #496685 !default;
@@ -54,6 +54,7 @@ $COSMOUI_MENU_ITEM_HEIGHT: 78px !default;
 $COSMOUI_MENU_ITEM_COLOR: $base_11;
 $COSMOUI_MENU_ITEM_COLOR_HOVER: $base_20;
 $COSMOUI_MENU_ITEM_COLOR_SELECTED: $base_20;
+$COSMOUI_MENU_ITEM_COLOR_DISABLED: $base_07;
 $COSMOUI_MENU_ITEM_SEPERATOR: $base_04;
 $COSMOUI_MENU_ICON_WIDTH: 115px !default;
 $COSMOUI_MENU_ICON_HEIGHT: 30px !default;
@@ -83,11 +84,11 @@ $COSMOUI_LIST_WIDTH: 97% !default;
 $COSMOUI_LIST_MARGIN: 10px auto !default;
 
 /** Popup **/
-$COSMOUI_POPUP_BACKGROUND: $base_01;
-$COSMOUI_POPUP_BORDER_COLOR: $base_08;
-$COSMOUI_POPUP_SHADOW_COLOR: $base_alpha_01;
-$COSMOUI_POPUP_TITLE_COLOR: $base_10;
-$COSMOUI_POPUP_CURSOR: pointer;
+$COSMOUI_DIALOG_BACKGROUND: $base_01;
+$COSMOUI_DIALOG_BORDER_COLOR: $base_08;
+$COSMOUI_DIALOG_SHADOW_COLOR: $base_alpha_01;
+$COSMOUI_DIALOG_TITLE_COLOR: $base_10;
+$COSMOUI_DIALOG_CURSOR: pointer;
 
 /** Events widget **/
 $COSMOUI_EVENTS_WIDGET_CLOSED_HEIGHT: 30px;

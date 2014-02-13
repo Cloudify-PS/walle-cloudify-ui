@@ -10,7 +10,7 @@ table.table {
     }
     tbody {
         tr {
-            cursor: $COSMOUI_POPUP_CURSOR;
+            cursor: $COSMOUI_DIALOG_CURSOR;
             &:hover td {
                 background-color: $COSMOUI_LIST_HOVER_BACKGROUND;
                 &, i {

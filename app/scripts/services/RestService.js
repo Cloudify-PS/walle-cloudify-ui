@@ -39,12 +39,12 @@ angular.module('cosmoUi')
                 blueprints = data;
                 _load('deployments').then(function(data) {
                     var deployments = data;
-                    for (var i = 0; i < deployments.length; i++) {
+                    for (var i = 0; i <= deployments.length; i++) {
                         for (var j = 0; j < blueprints.length; j++) {
                             if (blueprints[j].deployments === undefined) {
                                 blueprints[j].deployments = [];
                             }
-                            if (deployments[i].blueprintId === blueprints[j].id) {
+                            if (deployments[i] !== undefined && deployments[i].blueprintId === blueprints[j].id) {
                                 blueprints[j].deployments.push(deployments[i]);
                             }
                         }

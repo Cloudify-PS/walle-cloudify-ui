@@ -14,12 +14,12 @@ angular.module('cosmoUi')
                 scope.items = [
                     { 'route' : ['#blueprints', '#blueprint'] ,                       'icon' : 'plans' ,                'label':'Blueprints'},
                     { 'route' : ['#deployments', '#deployment'] ,                     'icon' : 'deployments' ,          'label':'Deployments'},
-                    { 'route' : ['#monitoring'] ,                                     'icon' : 'monitoring' ,           'label':'Monitoring'},
-                    { 'route' : ['#logs'] ,                                           'icon' : 'logs' ,                 'label':'Logs'},
-                    { 'route' : ['#hosts'] ,                                          'icon' : 'hosts' ,                'label':'Hosts'},
-                    { 'route' : ['#networks'] ,                                       'icon' : 'networks' ,             'label':'Networks'},
-                    { 'route' : ['#floating-ips'] ,                                   'icon' : 'floating-ips' ,         'label':'Floating IPs'},
-                    { 'route' : ['#storage'] ,                                        'icon' : 'storage' ,              'label':'Storage'}
+                    { 'route' : ['#monitoring'] ,                                     'icon' : 'monitoring' ,           'label':'Monitoring',       isDisabled: true},
+                    { 'route' : ['#logs'] ,                                           'icon' : 'logs' ,                 'label':'Logs',             isDisabled: true},
+                    { 'route' : ['#hosts'] ,                                          'icon' : 'hosts' ,                'label':'Hosts',            isDisabled: true},
+                    { 'route' : ['#networks'] ,                                       'icon' : 'networks' ,             'label':'Networks',         isDisabled: true},
+                    { 'route' : ['#floating-ips'] ,                                   'icon' : 'floating-ips' ,         'label':'Floating IPs',     isDisabled: true},
+                    { 'route' : ['#storage'] ,                                        'icon' : 'storage' ,              'label':'Storage',          isDisabled: true}
                 ];
 
                 scope.selectedItem = null;
@@ -28,8 +28,14 @@ angular.module('cosmoUi')
                     return item.route.indexOf('#' + $location.path().substr(1)) >= 0;
                 };
 
+                scope.isDisabled = function(item) {
+                    return item.isDisabled !== undefined && item.isDisabled === true;
+                };
+
                 scope.itemClick = function(item) {
-                    scope.selectedItem = item;
+                    if (!scope.isDisabled(item)) {
+                        scope.selectedItem = item;
+                    }
                 };
             }
 

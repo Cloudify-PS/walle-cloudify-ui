@@ -5,7 +5,12 @@
             color: $COSMOUI_BLUEPRINTS_DEPLOY_COLOR;
         }
         tr {
+          color: $text-color;
+
             td, th {
+              border: none;
+
+
                 &.icon {
                     width: 40px;
                     padding-top: 20px;
@@ -39,6 +44,9 @@
                     margin-top: 5px;
                 }
             }
+          &:nth-child(even) {
+            background-color: #ededed;
+          }
         }
     }
 

@@ -49,8 +49,14 @@
           width: $COSMOUI_MENU_ITEM_WIDTH;
           height: $COSMOUI_MENU_ITEM_HEIGHT;
 
-          &:hover{
+          &:hover:not(.disabled){
             color: $COSMOUI_MENU_ITEM_COLOR_HOVER;
+          }
+
+          &.disabled {
+            color: $COSMOUI_MENU_ITEM_COLOR_DISABLED;
+            pointer-events: none;
+            cursor: default;
           }
 
           .side-menu-icon {

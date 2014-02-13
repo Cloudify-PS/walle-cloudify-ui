@@ -25,6 +25,12 @@
       float: left;
     }
 
+    .executingWorkflow {
+      font-size: 14px;
+      float: left;
+      margin-top: 10px;
+    }
+
     table {
       tr:first-child td {
         background: $COSMOUI_LIST_COLUMN_HEADER_BACKGROUND;
@@ -48,7 +54,7 @@
       }
 
       tr {
-        cursor: $COSMOUI_POPUP_CURSOR;
+        cursor: $COSMOUI_DIALOG_CURSOR;
 
         td {
           vertical-align: middle;
