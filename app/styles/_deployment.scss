@@ -75,6 +75,7 @@
           &.type {width:150px;}
           &.icon { width:60px;}
           &.node, &.task, &.workflow { width: 110px;}
+          &.task { width: auto; }
           &.date { padding-right:30px;}
 
           &.event-text-green {

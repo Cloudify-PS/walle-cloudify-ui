@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('cosmoUi')
-    .controller('DeploymentCtrl', function ($scope, $cookieStore, $routeParams, RestService, BreadcrumbsService, YamlService, PlanDataConvert, blueprintCoordinateService) {
+    .controller('DeploymentCtrl', function ($scope, $rootScope, $cookieStore, $routeParams, RestService, BreadcrumbsService, YamlService, PlanDataConvert, blueprintCoordinateService, $http) {
 
         var totalNodes = 0,
             appStatus = {},
@@ -25,21 +25,6 @@ angular.module('cosmoUi')
             'modules': true,
             'connections': true
         };
-
-        $scope.options = [
-            {'value': '1', 'label': 'Itsik Option'},
-            {'value': '2', 'label': 'Cosmo-UI'},
-            {'value': '3', 'label': 'This is Cool!'},
-            {'value': '4', 'label': 'Cloudify 3.0'}
-        ];
-
-        $scope.cars = [
-            {'value': '1', 'label': 'Ferrari'},
-            {'value': '2', 'label': 'Porsche'},
-            {'value': '3', 'label': 'Maserati'},
-            {'value': '4', 'label': 'Lamborghini'}
-        ];
-
 
         var eventCSSMap = {
             'workflow_received': {text: 'Workflow received', icon: 'event-icon-workflow-started', class: 'event-text-green'},
@@ -313,5 +298,101 @@ angular.module('cosmoUi')
         $scope.hideProperties = function () {
             $scope.showProperties = null;
         };
+
+        /* Filters DEMO - start */
+        $scope.eventTypeList = [
+            {'value': 'workflow_stage', 'label': 'Workflow Stage'},
+            {'value': 'workflow_started', 'label': 'Workflow Started'},
+            {'value': 'workflow_succeeded', 'label': 'Workflow Succeeded'},
+            {'value': 'task_succeeded', 'label': 'Task Succeeded'},
+            {'value': 'sending_task', 'label': 'Sending Task'},
+        ];
+        $scope.cars = [
+            {'value': '1', 'label': 'Ferrari'},
+            {'value': '2', 'label': 'Porsche'},
+            {'value': '3', 'label': 'Maserati'},
+            {'value': '4', 'label': 'Lamborghini'}
+        ];
+        /* Filters DEMO - end */
+
+
+        var esQuery = {
+            "sort": [
+                {
+                    "@timestamp": {
+                        "order": "asc"
+                    }
+                }
+            ],
+            "query": {
+                "bool": {
+                    "must": [
+                        {
+                            "match": {
+                                "type": "cloudify_event"
+                            }
+                        },
+                        {
+
+                            "match": {
+                                "context.execution_id": id
+                                //,"context.workflow_id": "install"
+                            }
+                        }
+                    ]
+                }
+            },
+            "from": 0,
+            "size": 100
+        };
+        var defaultMatch = [
+            {
+                "match": {
+                    "type": "cloudify_event"
+                }
+            },
+            {
+
+                "match": {
+                    "context.execution_id": id
+                }
+            }
+        ];
+
+        $scope.eventType = {'value': 'workflow_stage'};
+        $scope.$watch("eventType", function(eventType){
+
+            console.log(["eventType", eventType]);
+
+            if(eventType.hasOwnProperty('value')) {
+
+                console.log(["eventType value", eventType.value]);
+
+                esQuery.query.bool.must = defaultMatch;
+                esQuery.query.bool.must.push({
+                    "match": {
+                        "context.workflow_id": eventType.value
+                    }
+                });
+                console.log(["esQuery", esQuery]);
+                updateEvents(esQuery);
+            }
+        }, true);
+
+        function updateEvents( query ) {
+            $http({
+                method: 'GET',
+                url: 'http://15.185.181.231:9200/_search',
+                params: query
+            }).success(function(events){
+
+                console.log(["events", events]);
+
+                $scope.eventHits = events.hits.hits;
+
+            });
+        }
+
+
 
     });

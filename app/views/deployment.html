@@ -115,27 +115,29 @@
                 <!-- Topology Tab - END -->
                 <!-- Network Tab - START -->
                 <div ng-switch-when="network">{{ 'deployment.title.network' | i18n }}</div>
+                \
                 <!-- Network Tab - END -->
                 <!-- Events Tab - START -->
                 <div ng-switch-when="events">
                     <div class="filters">
-                        <div multi:select:menu data-options="options" data-ng-model="workflow" data-text="Select Workflow"></div>
-                        <div multi:select:menu multiple="true" data-options="cars" data-ng-model="selectedCar" data-text="Select Cars" data-selection="$count Cars"></div>
+                        <div multi:select:menu data-options="eventTypeList" data-ng-model="eventType" data-text="Choose Event"></div>
+                        <div multi:select:menu multiple="true" data-options="cars" data-ng-model="selectedCar" data-text="Filter by Nodes" data-selection="Filtered by $count Nodes"></div>
                     </div>
+                    eventType: {{ eventType.value }}
                     <table class="table table-striped">
                         <tr>
                             <td class="icon"><!-- icon --></td>
                             <td class="type">{{ 'deployment.table.heading.eventType' | i18n }}</td>
                             <td class="node">{{ 'deployment.table.heading.node' | i18n }}</td>
                             <td class="task">{{ 'deployment.table.heading.task' | i18n }}</td>
-                            <td class="workflow">{{ 'deployment.table.heading.workflow' | i18n }}</td>
+                            <td class="date">Timestemp</td>
                         </tr>
-                        <tr ng-repeat="event in events">
-                            <td class="icon" ng-class="getEventIcon(event)"></td>
-                            <td class="type" ng-class="getEventClass(event)">{{event.type == undefined && 'N/A' || getEventText(event)}}</td>
-                            <td class="node">{{event.node == undefined && 'N/A' || event.node}}</td>
-                            <td class="task">{{event.name == undefined && 'N/A' || event.name}}</td>
-                            <td class="workflow">{{event.workflow_name == undefined && 'N/A' || event.workflow_name}}</td>
+                        <tr ng-repeat="event in eventHits">
+                            <td class="icon"></td>
+                            <td class="type">{{event._source.event_type == undefined && 'N/A' || event._source.event_type}}</td>
+                            <td class="node">{{event._source.context.node_name == undefined && 'N/A' || event._source.context.node_name}}</td>
+                            <td class="task">{{event._source.message.text == undefined && 'N/A' || event._source.message.text}}</td>
+                            <td class="date">{{event._source.timestamp == undefined && 'N/A' || event._source.timestamp}}</td>
                         </tr>
                     </table>
                 </div>
