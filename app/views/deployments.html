@@ -15,8 +15,8 @@
                     </tr>
                     <tr ng-show="selectedBlueprint == blueprint.id">
                         <td>
-                            <div ng-show="blueprint.deployments == null">{{ 'deployments.emptyMessage' | i18n }}</div>
-                            <table class="table table-striped" ng-show="blueprint.deployments != null">
+                            <div ng-show="blueprint.deployments.length == 0">{{ 'deployments.emptyMessage' | i18n }}</div>
+                            <table class="table table-striped" ng-show="blueprint.deployments.length > 0">
                                 <tr>
                                     <td class="id">{{ 'deployments.table.heading.id' | i18n }}</td>
                                     <td class="create">{{ 'deployments.table.heading.createDate' | i18n }}</td>
