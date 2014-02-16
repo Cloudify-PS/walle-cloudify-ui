@@ -224,10 +224,16 @@ Cloudify4node.executeDeployment = function(requestBody, callback) {
     createRequest(requestData, callback);
 }
 
-Cloudify4node.getDeploymentEvents = function(deployment_id, from, callback) {
+Cloudify4node.getEvents = function(query, from, callback) {
+    var data = query;
     var requestData = createRequestData({
-        path: '/deployments/' + deployment_id + '/events?from=' + from,
-        method: 'GET'
+        path: '/events/',
+        data: data,
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'Content-Length': JSON.stringify(data).length
+        }
     });
 
     createRequest(requestData, callback);
