@@ -12,7 +12,7 @@ angular.module('cosmoUi')
             },
             link: function (scope, element/*, attrs*/) {
 
-                scope.value = $routeParams.section;
+                scope.value = $routeParams.section || scope.value;
 
                 element.on('click', 'button', function (e) {
                     try {

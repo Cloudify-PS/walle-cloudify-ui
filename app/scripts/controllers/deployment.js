@@ -19,6 +19,28 @@ angular.module('cosmoUi')
             {name: 'compute',       state: true}
         ];
 
+        $scope.toggleBar = {
+            'compute': true,
+            'middleware': true,
+            'modules': true,
+            'connections': true
+        };
+
+        $scope.options = [
+            {'value': '1', 'label': 'Itsik Option'},
+            {'value': '2', 'label': 'Cosmo-UI'},
+            {'value': '3', 'label': 'This is Cool!'},
+            {'value': '4', 'label': 'Cloudify 3.0'}
+        ];
+
+        $scope.cars = [
+            {'value': '1', 'label': 'Ferrari'},
+            {'value': '2', 'label': 'Porsche'},
+            {'value': '3', 'label': 'Maserati'},
+            {'value': '4', 'label': 'Lamborghini'}
+        ];
+
+
         var eventCSSMap = {
             'workflow_received': {text: 'Workflow received', icon: 'event-icon-workflow-started', class: 'event-text-green'},
             'workflow_started': {text: 'Workflow started', icon: 'event-icon-workflow-started', class: 'event-text-green'},
