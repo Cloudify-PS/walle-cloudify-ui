@@ -1,6 +1,6 @@
 'use strict';
 
-describe('Controller: PopupCtrl', function () {
+describe('Controller: FileSelectionDialogCtrl', function () {
 
 //  // load the controller's module
 //  beforeEach(module('cosmoUiApp'));

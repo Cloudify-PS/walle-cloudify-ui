@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('cosmoUi')
-    .directive('checkboxToggle', function ($routeParams, $location) {
+    .directive('checkboxToggle', function ($routeParams/*, $location*/) {
         return {
             template: '<div ng-transclude></div>',
             transclude: 'element',
@@ -22,8 +22,7 @@ angular.module('cosmoUi')
                             scope.value = $(e.target).addClass('active').attr('value');
                         });
 
-                        $location.search('section', scope.value);
-
+//                        $location.search('section', scope.value);
                         console.log(['set new value on scope', scope.value]);
                     } catch (e) {
                         console.log(e);

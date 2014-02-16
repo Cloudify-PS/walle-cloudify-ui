@@ -1,28 +1,49 @@
 <div class="cosmo-layout" id="plans">
+    <!-- Side Panel - START -->
     <div class="properties-panel right-panel" ng-hide="!showProperties">
         <div class="title">
             {{showProperties.general.name}} Details
             <i ng-click="hideProperties()" class="fa fa-times-circle right"></i>
         </div>
         <div class="content">
-            <div class="buttons-group" checkbox-toggle value="section">
-                <button type="button" class="btn btn-default" value="general">{{ 'plans.generalBtn' | i18n }}</button>
-                <button type="button" class="btn btn-default" value="properties">{{ 'plans.propertiesBtn' | i18n }}</button>
-                <button type="button" class="btn btn-default" value="policies">{{ 'plans.policiesBtn' | i18n }}</button>
+            <div class="buttons-group" checkbox-toggle value="propSection">
+                <button ng-repeat="(key, value) in showProperties" type="button" class="btn btn-default" value="{{key}}">{{ 'plans.' + key | i18n }}</button>
             </div>
-            <div ng-switch="section" class="content-section">
-                <pre ng-switch-default="general">{{showProperties.general | yaml:'No general information' }} </pre>
-                <pre ng-switch-when="properties">{{showProperties.properties | yaml:'No properties to display' }} </pre>
-                <pre ng-switch-when="policies">{{showProperties.policies | yaml:'No policies to display' }} </pre>
+            <div ng-switch="propSection" class="content-section">
+                <div ng-switch-default="general">
+                    <table>
+                        <tr ng-repeat="(key, value) in showProperties.general">
+                            <td>{{key}}:</td><td>{{value}}</td>
+                        </tr>
+                    </table>
+                </div>
+                <div ng-switch-when="properties">
+                    <table>
+                        <tr ng-repeat="(key, value) in showProperties.properties">
+                            <td>{{key}}:</td><td>{{value}}</td>
+                        </tr>
+                    </table>
+                </div>
+                <pre ng-switch-when="relationships">{{showProperties.relationships | yaml:'No relationships to display' }} </pre>
+                <pre ng-switch-when="interfaces">{{showProperties.interfaces | yaml:'No interfaces to display' }} </pre>
+                <div ng-switch-when="policies">
+                    <table>
+                        <tr ng-repeat="(key, value) in showProperties.policies">
+                            <td>{{key}}:</td><td>{{value}}</td>
+                        </tr>
+                    </table>
+                </div>
             </div>
         </div>
-
     </div>
+    <!-- Side Panel - END -->
+    <!-- Breadcrumbs - START -->
     <div class="content-header no-embed">
         <div class="breadcrumbs"><ul id="blueprints" breadcrumbs></ul></div>
         <!--<div class="breadcrumbs"><ul><li>Blueprints</li><li>{{planName}}</li></ul></div>-->
      </div>
-
+    <!-- Breadcrumbs - END -->
+    <!-- Settings - START -->
     <div class="buttons-group no-embed" checkbox-toggle value="section">
         <button type="button" class="btn btn-default" value="topology">Topology</button>
         <button type="button" class="btn btn-default" value="network">Network</button>
@@ -30,9 +51,8 @@
         <button type="button" class="btn btn-default" value="code">Code</button>
     </div>
     <div settings-toggles id="settings-button" class="no-embed" toggles="toggleBar"></div>
-
+    <!-- Settings - END -->
     <div ng-switch="section" class="content-section">
-
         <!-- Blueprint Contianter - START -->
         <div class="bpContainer" ng-switch-default="topology" blueprint:resize data-ng-class="{
         disableCompute: !toggleBar.compute,
@@ -49,10 +69,10 @@
                     </div>
                 </div>
                 <div pie:progress="piProgress2" class="piProgress" size="51">
-                    <div class="shadow"></div>
                     <div class="circle">
-                        <i class="icon topology-glyph host"></i>
-                        <!--<div class="badge">2/4</div>-->
+                        <i class="icon topology-glyph host">
+                            <div class="badge">{{ indexNodes[rootNode.id].general.numOfInstances }}</div>
+                        </i>
                     </div>
                 </div>
                 <div class="head">{{ indexNodes[rootNode.id].name }}</div>
@@ -67,10 +87,10 @@
                             </div>
                         </div>
                         <div pie:progress="piProgress2" class="piProgress" size="51">
-                            <div class="shadow"></div>
                             <div class="circle">
-                                <i class="icon topology-glyph app-server"></i>
-                                <!--<div class="badge">2/4</div>-->
+                                <i class="icon topology-glyph app-server">
+                                    <div class="badge">{{ indexNodes[subNode.id].general.numOfInstances }}</div>
+                                </i>
                             </div>
                         </div>
                         <div class="head">{{ indexNodes[subNode.id].name }}</div>
@@ -85,10 +105,10 @@
                                     </div>
                                 </div>
                                 <div pie:progress="piProgress2" class="piProgress" size="51">
-                                    <div class="shadow"></div>
                                     <div class="circle" blueprint:coordinate="appNode.id">
-                                        <i class="icon topology-glyph app-module"></i>
-                                        <!--<div class="badge">2/4</div>-->
+                                        <i class="icon topology-glyph app-module">
+                                            <div class="badge">{{ indexNodes[appNode.id].general.numOfInstances }}</div>
+                                        </i>
                                     </div>
                                 </div>
                                 <p>{{ indexNodes[appNode.id].name }}</p>
@@ -102,61 +122,42 @@
             <div class="coordinates" blueprint:arrows="coordinates"></div>
         </div>
         <!-- Blueprint Contianter - END -->
-
         <!-- Network Topology - START -->
         <div class="networksContainer" ng-switch-when="network">
-            <div bp:networks class="relations"></div>
-            <div class="network">
+            <div bp:networks class="relations" ng-model="networkcoords"></div>
+            <div data-ng-repeat="network in networks.external" class="network">
+                <div class="line">
+                    <div class="name-space"></div>
+                    <div data-ng-repeat="subnet in network.subnets" class="subnet" bp:network:coordinate ng-model="subnet">
+                        <p>{{ subnet.name }}</p>
+                        <p class="cidr">External Network</p>
+                    </div>
+                </div>
                 <div class="devices">
-                    <div class="device" bp:network:coordinate="4" type="subnet" color="#149bdf">
-                        <i class="topology-glyph app-server"></i>
+                    <div data-ng-repeat="device in network.devices" class="device" bp:network:coordinate ng-model="device">
+                        <i class="topology-glyph {{ device.icon }}"></i>
                     </div>
                 </div>
             </div>
-            <div class="network">
+            <div data-ng-repeat="network in networks.networks" class="network">
                 <div class="line">
-                    <div class="name">{{ 'plans.topology.networkName' | i18n }}</div>
-                    <div class="subnet" bp:network:coordinate="1" type="subnet" color="#149bdf">
-                        <p>{{ 'plans.topology.subnetName' | i18n }}</p>
-                        <p class="cidr">10.0.0.0/24</p>
-                    </div>
-                    <div class="subnet red" bp:network:coordinate="3" type="subnet" color="#d54931">
-                        <p>{{ 'plans.topology.subnetName' | i18n }}</p>
-                        <p class="cidr">168.192.0.55/24</p>
+                    <div class="name">{{ network.name }}</div>
+                    <div data-ng-repeat="subnet in network.subnets" class="subnet" bp:network:coordinate ng-model="subnet">
+                        <p>{{ subnet.name }}</p>
+                        <p class="cidr">{{ subnet.cidr }}</p>
                     </div>
                 </div>
                 <div class="devices">
-                    <div class="device" bp:network:coordinate="2" type="device">
-                        <i class="topology-glyph app-server"></i>
-                    </div>
-                    <div class="device" bp:network:coordinate="5" type="device">
-                        <i class="topology-glyph app-server"></i>
-                    </div>
-                </div>
-            </div>
-            <div class="network">
-                <div class="line">
-                    <div class="name">{{ 'plans.topology.privateNetwork' | i18n }}</div>
-                    <div class="subnet orange" bp:network:coordinate="6" type="subnet" color="#f89406">
-                        <p>{{ 'plans.topology.subnetName' | i18n }}</p>
-                        <p class="cidr">192.0.0.1/24</p>
-                    </div>
-                </div>
-                <div class="devices">
-                    <div class="device" bp:network:coordinate="7" type="device">
-                        <i class="topology-glyph app-server"></i>
-                    </div>
-                    <div class="device" bp:network:coordinate="8" type="device">
-                        <i class="topology-glyph app-server"></i>
+                    <div data-ng-repeat="device in network.devices" class="device" bp:network:coordinate ng-model="device">
+                        <i class="topology-glyph {{ device.icon }}"></i>
                     </div>
                 </div>
             </div>
         </div>
         <!-- Network Topology - END -->
-
         <!-- Nodes - START -->
         <div ng-switch-when="nodes">
-            <table class="table table-striped">
+            <table class="table">
                 <thead>
                     <tr>
                         <th></th>
@@ -186,18 +187,11 @@
             </table>
         </div>
         <!-- Nodes - END -->
-
         <!-- Code - START -->
         <div ng-switch-when="code">
             <pre>{{ dataCode | yaml:'Code not found' }}</pre>
         </div>
         <!-- Code - END -->
-
     </div>
-
-
-
-
-
 </div>
 

@@ -10,12 +10,13 @@
 @import './fonts';
 @import './layout';
 @import './sideMenu';
-@import './popup';
+@import 'dialogs';
 @import './toggleSwitch';
 @import './eventsWidget';
 @import './appStatusWidget';
 @import './pieProgress';
 @import './settingsToggles';
+@import './common';
 
 @import '../bower_components/bootstrap-sass/lib/bootstrap';
 

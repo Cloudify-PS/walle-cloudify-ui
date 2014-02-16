@@ -55,6 +55,12 @@
                 "action": "Action"
             },
             "workflowSelect": "-- Select workflow --"
+        },
+        "confirmationPopup": {
+            "title": "Confirm",
+            "description": "Execute deployment?",
+            "confirmBtn": "Confirm",
+            "cancelBtn": "Cancel"
         }
     },
     "settingsToggles": {

@@ -1,11 +1,11 @@
 'use strict';
 
 angular.module('cosmoUi')
-    .controller('PlansCtrl', function ($scope, YamlService, Layout, Render, $routeParams, BreadcrumbsService, PlanDataConvert, blueprintCoordinateService, $timeout) {
+    .controller('PlansCtrl', function ($scope, YamlService, Layout, Render, $routeParams, BreadcrumbsService, PlanDataConvert, blueprintCoordinateService, bpNetworkService, $http, $timeout) {
 
         var planData/*:PlanData*/ = null;
         $scope.section = 'topology';
-        $scope.planName = $routeParams.name;
+        $scope.propSection = 'general';
         $scope.toggleView = false;
 
         $scope.toggleBar = {
@@ -15,30 +15,27 @@ angular.module('cosmoUi')
             'connections': true
         };
 
-        $scope.piProgress1 = {
-            'succeed': 20,
-            'error': 45,
-            'warning': 35
-        };
-
-        $scope.piProgress2 = {
-            'progress': 5
-        };
-
-        var progressDemo = function () {
-            $scope.piProgress2.progress++;
-            if ($scope.piProgress2.progress < 85) {
-                $timeout(progressDemo, 30);
-            }
-        };
-        $timeout(progressDemo, 2000);
-
         BreadcrumbsService.push('blueprints',
             {
-                href: '#/blueprint?id=' + $routeParams.id + '&name=' + $scope.planName,
-                label: $scope.planName,
+                href: '#/blueprint?id=' + $routeParams.id,
+                label: $routeParams.id,
                 id: 'blueprint'
             });
+
+//        $http.get("network_mock.json").success(function(data){
+//
+//            $scope.networks = data;
+//
+//            bpNetworkService.setMap(data.relations);
+//
+//            $timeout(function(){
+//                $scope.networkcoords = bpNetworkService.getCoordinates();
+//                bpNetworkService.render();
+//            }, 1500);
+//
+//            console.log(["network mock", data]);
+//
+//        });
 
         YamlService.load($routeParams.id, function (err, data) {
 
@@ -46,9 +43,27 @@ angular.module('cosmoUi')
             var dataPlan = data.getJSON(),
                 dataMap;
 
+            /**
+             * Networks
+             */
+            // Filter data for Networks
+            PlanDataConvert.nodesToNetworks(dataPlan);
+            $scope.networks = dataPlan.network;
+            bpNetworkService.setMap(dataPlan.network.relations);
+
+            // Render Networks
+            $timeout(function(){
+                $scope.networkcoords = bpNetworkService.getCoordinates();
+                bpNetworkService.render();
+            }, 1500);
+
+
+            /**
+             * Blueprint
+             */
             // Convert edges to angular format
             if (dataPlan.hasOwnProperty('edges') && !!dataPlan.edges) {
-                dataMap = PlanDataConvert.edgesToAngular(dataPlan.edges);
+                dataMap = PlanDataConvert.edgesToBlueprint(dataPlan.edges);
             }
 
             // Index data by ID
@@ -88,7 +103,6 @@ angular.module('cosmoUi')
                 policies: planData.getPolicies(realNode),
                 general: planData.getGeneralInfo(realNode)
             };
-            console.log($scope.showProperties);
         };
 
 

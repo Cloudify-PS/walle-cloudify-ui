@@ -55,7 +55,7 @@
       }
 
       tr {
-        cursor: $COSMOUI_POPUP_CURSOR;
+        cursor: $COSMOUI_DIALOG_CURSOR;
 
         &:hover:not(:first-child) td{
           background-color: $COSMOUI_LIST_HOVER_BACKGROUND;

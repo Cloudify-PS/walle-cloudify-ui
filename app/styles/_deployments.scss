@@ -25,6 +25,13 @@
       float: left;
     }
 
+    .executingWorkflow {
+      font-size: 14px;
+      float: left;
+      margin-top: 10px;
+      width: 167px;
+    }
+
     table {
       tr:first-child td {
         background: $COSMOUI_LIST_COLUMN_HEADER_BACKGROUND;
@@ -48,7 +55,7 @@
       }
 
       tr {
-        cursor: $COSMOUI_POPUP_CURSOR;
+        cursor: $COSMOUI_DIALOG_CURSOR;
 
         td {
           vertical-align: middle;
@@ -102,15 +109,12 @@
 
                 &,i {color: $COSMOUI_LIST_HOVER_ACTION_TEXT_COLOR; }
                 i {font-weight: $COSMOUI_LIST_HOVER_ACTION_FONT_WEIGHT;}
-
-
               }
 
               td {
                 vertical-align: middle;
                 height: 60px;
                 color: #333;
-                width: 25%;
               }
               &:not(:first-child) td.actions{
                 width: $COSMOUI_LIST_HOVER_ACTION_WIDTH;
@@ -155,5 +159,15 @@
     color: #000;
     margin-left: 20px;
     margin-top: 20px;
+  }
+
+  .loading {
+    position: relative;
+    margin-left: auto;
+    margin-right: auto;
+    top: 50px;
+    width: 100px;
+    height: 100px;
+    background: url("/images/loading-anim.gif") no-repeat center center;;
   }
 }
