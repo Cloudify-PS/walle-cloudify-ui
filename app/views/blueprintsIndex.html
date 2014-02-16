@@ -5,7 +5,7 @@
         <button class="gs-btn" ng-click="toggleAddDialog()">{{ 'blueprints.uploadBtn' | i18n }}</button>
         </div>
     </div>
-    <table class="table" ng-show="!cosmoConnectionOk()">
+    <table class="table" ng-show="!cosmoConnectionError()">
         <thead>
             <tr>
                 <th class="icon"><!-- icon --></th>
@@ -29,23 +29,28 @@
             </tr>
         </tbody>
     </table>
-    <div class="connect-error-message" ng-show="cosmoConnectionOk()">{{ 'connectError' | i18n }}</div>
+
+    <div class="connect-error-message" ng-show="cosmoConnectionError()">{{ 'connectError' | i18n }}</div>
+
+    <div class="loading" ng-show="blueprints == null && !cosmoConnectionError()"></div>
+
     <div class="no-blueprints-message" ng-show="blueprints.length == 0">{{ 'blueprints.emptyMessage' | i18n }}</div>
-    <div ng-show="isAddDialogVisible" ng-controller="PopupCtrl">
-        <div id="popupBoxBg"></div>
-        <div id="popupContainer">
-        <div id="popupClose" class="formButton" ng-click="closeDialog()">X</div>
-        <div id="popupTitle">{{ 'blueprints.uploadPopup.title' | i18n }}</div>
-        <div id="popupDescription">{{ 'blueprints.uploadPopup.description' | i18n }}</div>
-        <form id="uploadForm" name="uploadForm">
-            <div id="browse">
-                <div id="browseBtn" class="formButton">{{ 'blueprints.uploadPopup.browseBtn' | i18n }}</div>
-                <input type="text" id="browseTxt" ng-model="selectedFile.name">
-                <input type="file" name="fileInput" id="fileInput" accept=".tar,.gz,.yaml" ng-file-select="onFileSelect($files)">
-                </div>
-            <div id="mainFile" style="display:none">Application file: <input type="text" ng-model="mainFileName"></div>
-            <div id="upload-error-message" ng-show="isUploadError()">Error uploading blueprint</div>
-            <button id="uploadBtn" class="formButton" ng-class="{disabled: !isUploadEnabled(), enabled: isUploadEnabled()}" ng-click="uploadFile()">Upload</button>
+
+    <div ng-show="isAddDialogVisible" ng-controller="FileSelectionDialogCtrl">
+        <div id="dialogBoxBg"></div>
+        <div id="uploadDialogContainer" class="dialogBox">
+            <div class="dialogClose dialogButton" ng-click="closeDialog()">X</div>
+            <div class="dialogTitle">{{ 'blueprints.uploadPopup.title' | i18n }}</div>
+            <div class="dialogDescription">{{ 'blueprints.uploadPopup.description' | i18n }}</div>
+            <form id="uploadForm" name="uploadForm">
+                <div id="browse">
+                    <div id="browseBtn" class="dialogButton">{{ 'blueprints.uploadPopup.browseBtn' | i18n }}</div>
+                    <input type="text" id="browseTxt" ng-model="selectedFile.name">
+                    <input type="file" name="fileInput" id="fileInput" accept=".tar,.gz,.yaml" ng-file-select="onFileSelect($files)">
+                    </div>
+                <div id="mainFile" style="display:none">Application file: <input type="text" ng-model="mainFileName"></div>
+                <div id="upload-error-message" ng-show="isUploadError()">{{errorMessage}}</div>
+                <button id="uploadBtn" class="dialogButton" ng-class="{disabled: !isUploadEnabled(), enabled: isUploadEnabled()}" ng-click="uploadFile()">Upload</button>
             </form>
         </div>
     </div>

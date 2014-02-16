@@ -5,7 +5,12 @@
             color: $COSMOUI_BLUEPRINTS_DEPLOY_COLOR;
         }
         tr {
+          color: $text-color;
+
             td, th {
+              border: none;
+
+
                 &.icon {
                     width: 40px;
                     padding-top: 20px;
@@ -52,5 +57,15 @@
     color: #000;
     margin-left: 20px;
     margin-top: 20px;
+  }
+
+  .loading {
+    position: relative;
+    margin-left: auto;
+    margin-right: auto;
+    top: 50px;
+    width: 100px;
+    height: 100px;
+    background: url("/images/loading-anim.gif") no-repeat center center;;
   }
 }

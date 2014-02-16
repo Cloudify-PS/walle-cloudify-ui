@@ -49,7 +49,7 @@ angular.module('cosmoUi')
                 });
         };
 
-        $scope.cosmoConnectionOk = function() {
+        $scope.cosmoConnectionError = function() {
             return cosmoError;
         };
 

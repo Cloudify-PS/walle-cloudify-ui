@@ -15,7 +15,7 @@ function createRequest(requestData, callback) {
         var result = '';
 
         if (res.errno !== undefined) {
-            callback(null, 500);
+            callback(500, null);
             return;
         }
 
@@ -87,37 +87,41 @@ Cloudify4node.getBlueprints = function(callback) {
 
 Cloudify4node.addBlueprint = function(application_archive, callback) {
     var myFile = application_archive;
-    var host = 'http://' + conf.cosmoServer + ':' + conf.cosmoPort + "/blueprints";
+    var path = '/blueprints';
+    var options = {
+        hostname: conf.cosmoServer,
+        port: conf.cosmoPort,
+        path: path,
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/octet-stream',
+            'Transfer-Encoding': 'chunked'
+        }
+    };
+
+    var req = ajax.request(options, function(res) {
+        var responseMessage = "";
+        console.log('statusCode: ' + res.statusCode);
+        res.on('data', function (chunk) {
+            responseMessage += chunk.toString();
+            logger.debug('chunk: ' + chunk.toString());
+        });
+
+        res.on('end', function() {
+            if (res.statusCode === 200){
+                callback(null, res.statusCode);
+            } else {
+                callback(responseMessage, res.statusCode);
+            }
+        });
+    });
+
+    req.on('error', function(e) {
+        console.log('problem with request: ' + e.message);
+    });
 
     fs.readFile(myFile.path, function(err, data) {
         if (err) throw err;
-        var path = '/blueprints';
-        var options = {
-            hostname: conf.cosmoServer,
-            port: conf.cosmoPort,
-            path: path,
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/octet-stream',
-                'Transfer-Encoding': 'chunked'
-            }
-        };
-
-        var req = ajax.request(options, function(res) {
-            console.log('statusCode: ' + res.statusCode);
-            res.on('data', function (chunk) {
-                logger.debug('chunk: ' + JSON.stringify(data));
-            });
-
-            res.on('end', function() {
-                logger.debug('data: ' + JSON.stringify(data));
-                callback(res.statusCode);
-            });
-        });
-
-        req.on('error', function(e) {
-            console.log('problem with request: ' + e.message);
-        });
 
         req.write(data);
         req.end();
@@ -220,10 +224,16 @@ Cloudify4node.executeDeployment = function(requestBody, callback) {
     createRequest(requestData, callback);
 }
 
-Cloudify4node.getDeploymentEvents = function(deployment_id, from, callback) {
+Cloudify4node.getEvents = function(query, from, callback) {
+    var data = query;
     var requestData = createRequestData({
-        path: '/deployments/' + deployment_id + '/events?from=' + from,
-        method: 'GET'
+        path: '/events/',
+        data: data,
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'Content-Length': JSON.stringify(data).length
+        }
     });
 
     createRequest(requestData, callback);
