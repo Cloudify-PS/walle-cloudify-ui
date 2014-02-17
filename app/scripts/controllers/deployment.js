@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('cosmoUi')
-    .controller('DeploymentCtrl', function ($scope, $rootScope, $cookieStore, $routeParams, RestService, BreadcrumbsService, YamlService, PlanDataConvert, blueprintCoordinateService, $http) {
+    .controller('DeploymentCtrl', function ($scope, $rootScope, $cookieStore, $routeParams, RestService, BreadcrumbsService, YamlService, PlanDataConvert, blueprintCoordinateService, $http, ejsResource) {
 
         var totalNodes = 0,
             appStatus = {},
@@ -11,14 +11,13 @@ angular.module('cosmoUi')
         $scope.deployment = null;
         $scope.nodes = [];
         $scope.events = [];
-        $scope.section = 'topology';
+        $scope.section = 'events';
         $scope.topologySettings = [
             {name: 'connections',   state: true},
             {name: 'modules',       state: false},
             {name: 'middleware',    state: true},
             {name: 'compute',       state: true}
         ];
-
         $scope.toggleBar = {
             'compute': true,
             'middleware': true,
@@ -58,7 +57,10 @@ angular.module('cosmoUi')
         };
 
         $scope.getEventIcon = function(event) {
-            return _getCssMapField( event, 'icon');
+            //return _getCssMapField( event, 'icon');
+            if(eventCSSMap.hasOwnProperty(event)) {
+                return eventCSSMap[event].icon;
+            }
         };
 
         $scope.getEventText = function(event) {
@@ -224,8 +226,8 @@ angular.module('cosmoUi')
         }
 
         // Init
-        _loadDeployment();
-        _loadEvents();
+        //_loadDeployment();
+        //_loadEvents();
 
         // Execution Listener
         $scope.$watch('nodes', function(nodes){
@@ -301,6 +303,7 @@ angular.module('cosmoUi')
 
         /* Filters DEMO - start */
         $scope.eventTypeList = [
+            {'value': '', 'label': 'All'},
             {'value': 'workflow_stage', 'label': 'Workflow Stage'},
             {'value': 'workflow_started', 'label': 'Workflow Started'},
             {'value': 'workflow_succeeded', 'label': 'Workflow Succeeded'},
@@ -315,84 +318,29 @@ angular.module('cosmoUi')
         ];
         /* Filters DEMO - end */
 
+        // Events Connected to Elastic Search
+        var server = 'http://cosmoes.gsdev.info/';
+        var ejs = ejsResource(server);
+        var oQuery = ejs.QueryStringQuery();
+        var client = ejs.Request()
+            .query(ejs.MatchQuery('type', 'cloudify_event'))
+            .query(ejs.MatchQuery('context.execution_id', id));
 
-        var esQuery = {
-            "sort": [
-                {
-                    "@timestamp": {
-                        "order": "asc"
-                    }
-                }
-            ],
-            "query": {
-                "bool": {
-                    "must": [
-                        {
-                            "match": {
-                                "type": "cloudify_event"
-                            }
-                        },
-                        {
-
-                            "match": {
-                                "context.execution_id": id
-                                //,"context.workflow_id": "install"
-                            }
-                        }
-                    ]
-                }
-            },
-            "from": 0,
-            "size": 100
-        };
-        var defaultMatch = [
-            {
-                "match": {
-                    "type": "cloudify_event"
-                }
-            },
-            {
-
-                "match": {
-                    "context.execution_id": id
-                }
+        $scope.filterEvents = function( filter ) {
+            if(filter && filter.value != '') {
+                var result = client
+                    .query(ejs.MatchQuery('event_type', filter.value))
+                    .doSearch();
             }
-        ];
-
-        $scope.eventType = {'value': 'workflow_stage'};
-        $scope.$watch("eventType", function(eventType){
-
-            console.log(["eventType", eventType]);
-
-            if(eventType.hasOwnProperty('value')) {
-
-                console.log(["eventType value", eventType.value]);
-
-                esQuery.query.bool.must = defaultMatch;
-                esQuery.query.bool.must.push({
-                    "match": {
-                        "context.workflow_id": eventType.value
-                    }
-                });
-                console.log(["esQuery", esQuery]);
-                updateEvents(esQuery);
+            else {
+                var result = client
+                    .query(oQuery.query('*'))
+                    .doSearch();
             }
-        }, true);
-
-        function updateEvents( query ) {
-            $http({
-                method: 'GET',
-                url: 'http://15.185.181.231:9200/_search',
-                params: query
-            }).success(function(events){
-
-                console.log(["events", events]);
-
-                $scope.eventHits = events.hits.hits;
-
+            result.then(function(data){
+                $scope.eventHits = data.hits.hits;
             });
-        }
-
-
+        };
+        $scope.filterEvents();
 
     });

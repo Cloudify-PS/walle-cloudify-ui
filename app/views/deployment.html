@@ -115,15 +115,12 @@
                 <!-- Topology Tab - END -->
                 <!-- Network Tab - START -->
                 <div ng-switch-when="network">{{ 'deployment.title.network' | i18n }}</div>
-                \
                 <!-- Network Tab - END -->
                 <!-- Events Tab - START -->
                 <div ng-switch-when="events">
                     <div class="filters">
-                        <div multi:select:menu data-options="eventTypeList" data-ng-model="eventType" data-text="Choose Event"></div>
-                        <div multi:select:menu multiple="true" data-options="cars" data-ng-model="selectedCar" data-text="Filter by Nodes" data-selection="Filtered by $count Nodes"></div>
+                        <div multi:select:menu data-options="eventTypeList" data-ng-model="eventType" data-init="['']" data-text="Choose Event" data-onchange="filterEvents(filter)"></div>
                     </div>
-                    eventType: {{ eventType.value }}
                     <table class="table table-striped">
                         <tr>
                             <td class="icon"><!-- icon --></td>
@@ -133,7 +130,7 @@
                             <td class="date">Timestemp</td>
                         </tr>
                         <tr ng-repeat="event in eventHits">
-                            <td class="icon"></td>
+                            <td class="icon" ng-class="getEventIcon(event._source.event_type)"></td>
                             <td class="type">{{event._source.event_type == undefined && 'N/A' || event._source.event_type}}</td>
                             <td class="node">{{event._source.context.node_name == undefined && 'N/A' || event._source.context.node_name}}</td>
                             <td class="task">{{event._source.message.text == undefined && 'N/A' || event._source.message.text}}</td>
