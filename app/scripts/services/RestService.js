@@ -122,7 +122,7 @@ angular.module('cosmoUi')
         function _loadEvents(query) {
             var callParams = {
                 url: '/backend/events',
-                method: 'GET',
+                method: 'POST',
                 data: query
             };
             return _load('events', callParams);

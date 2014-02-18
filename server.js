@@ -132,7 +132,7 @@ app.post('/backend/deployments/execute', function(request, response) {
 });
 
 app.post('/backend/events', function(request, response) {
-    cloudify4node.getEvents(request.body.query, function(err, data) {
+    cloudify4node.getEvents(request.body, function(err, data) {
         response.send(err !== null ? err : data);
     });
 });
