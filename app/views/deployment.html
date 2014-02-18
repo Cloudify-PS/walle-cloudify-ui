@@ -119,22 +119,36 @@
                 <!-- Events Tab - START -->
                 <div ng-switch-when="events">
                     <div class="filters">
-                        <div multi:select:menu data-options="eventTypeList" data-ng-model="eventType" data-init="['']" data-text="Choose Event" data-onchange="filterEvents(filter)"></div>
+                        Workflow: <div multi:select:menu
+                             data-options="workflowsList"
+                             data-ng-model="eventType"
+                             data-init="['']"
+                             data-text="Choose Workflow"
+                             data-onchange="filterEventsByWorkflow(filter)"></div>
+                        Event Type: <div multi:select:menu
+                             data-options="eventTypeList"
+                             data-ng-model="eventType"
+                             data-init="['']"
+                             data-text="Choose Type"
+                             data-onchange="filterEventsByType(filter)"></div>
+                        <div class="search">
+                            <input type="text" data-ng-model="searchNode" placeholder="Search Node"><button data-ng-click="filterByNodes()">Find</button>
+                        </div>
                     </div>
                     <table class="table table-striped">
                         <tr>
                             <td class="icon"><!-- icon --></td>
+                            <td class="date">Timestamp</td>
                             <td class="type">{{ 'deployment.table.heading.eventType' | i18n }}</td>
                             <td class="node">{{ 'deployment.table.heading.node' | i18n }}</td>
                             <td class="task">{{ 'deployment.table.heading.task' | i18n }}</td>
-                            <td class="date">Timestemp</td>
                         </tr>
                         <tr ng-repeat="event in eventHits">
                             <td class="icon" ng-class="getEventIcon(event._source.event_type)"></td>
+                            <td class="date">{{event._source.timestamp == undefined && 'N/A' || event._source.timestamp}}</td>
                             <td class="type">{{event._source.event_type == undefined && 'N/A' || event._source.event_type}}</td>
                             <td class="node">{{event._source.context.node_name == undefined && 'N/A' || event._source.context.node_name}}</td>
                             <td class="task">{{event._source.message.text == undefined && 'N/A' || event._source.message.text}}</td>
-                            <td class="date">{{event._source.timestamp == undefined && 'N/A' || event._source.timestamp}}</td>
                         </tr>
                     </table>
                 </div>

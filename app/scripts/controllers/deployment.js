@@ -42,8 +42,8 @@ angular.module('cosmoUi')
             'policy_failed': {text: 'Policy failed', icon: 'event-icon-policy-failed', class: 'event-text-red'}
         };
         var id = $routeParams.id;
-        var from = 0;
-        var to = 5;
+        //var from = 0;
+        //var to = 5;
 
         BreadcrumbsService.push('deployments',
             {
@@ -103,7 +103,7 @@ angular.module('cosmoUi')
             return eventMap !== undefined ? eventMap : event.type;
         }
 
-        function _loadEvents() {
+        /*function _loadEvents() {
             if (id === undefined) {
                 return;
             }
@@ -122,7 +122,7 @@ angular.module('cosmoUi')
                         }
                     }
                 });
-        }
+        }*/
 
         // Define Deployment Model in the first time
         function _setDeploymentModel( data ) {
@@ -226,7 +226,7 @@ angular.module('cosmoUi')
         }
 
         // Init
-        //_loadDeployment();
+        _loadDeployment();
         //_loadEvents();
 
         // Execution Listener
@@ -302,6 +302,12 @@ angular.module('cosmoUi')
         };
 
         /* Filters DEMO - start */
+        $scope.workflowsList = [
+            {'value': '', 'label': 'All'},
+            {'value': 'install', 'label': 'Install'},
+            {'value': 'complete', 'label': 'Complete'},
+            {'value': 'failed', 'label': 'Failed'}
+        ];
         $scope.eventTypeList = [
             {'value': '', 'label': 'All'},
             {'value': 'workflow_stage', 'label': 'Workflow Stage'},
@@ -310,15 +316,10 @@ angular.module('cosmoUi')
             {'value': 'task_succeeded', 'label': 'Task Succeeded'},
             {'value': 'sending_task', 'label': 'Sending Task'},
         ];
-        $scope.cars = [
-            {'value': '1', 'label': 'Ferrari'},
-            {'value': '2', 'label': 'Porsche'},
-            {'value': '3', 'label': 'Maserati'},
-            {'value': '4', 'label': 'Lamborghini'}
-        ];
         /* Filters DEMO - end */
 
         // Events Connected to Elastic Search
+        var filter = {};
         var server = 'http://cosmoes.gsdev.info/';
         var ejs = ejsResource(server);
         var oQuery = ejs.QueryStringQuery();
@@ -326,21 +327,62 @@ angular.module('cosmoUi')
             .query(ejs.MatchQuery('type', 'cloudify_event'))
             .query(ejs.MatchQuery('context.execution_id', id));
 
-        $scope.filterEvents = function( filter ) {
-            if(filter && filter.value != '') {
-                var result = client
-                    .query(ejs.MatchQuery('event_type', filter.value))
-                    .doSearch();
-            }
-            else {
-                var result = client
-                    .query(oQuery.query('*'))
-                    .doSearch();
-            }
-            result.then(function(data){
-                $scope.eventHits = data.hits.hits;
-            });
-        };
-        $scope.filterEvents();
 
+        $scope.filterEventsByWorkflow = function( filter ){
+            filterEvents('context.workflow_id', (filter && filter.value !== '') ? filter.value : null);
+        };
+
+        $scope.filterEventsByType = function( filter ) {
+            filterEvents('event_type', (filter && filter.value !== '') ? filter.value : null);
+        };
+
+        $scope.filterByNodes = function() {
+
+            //console.log(["filterByNodes", $scope.searchNode]);
+
+        };
+
+        /*$scope.searchNode = 'test';
+        $scope.$watch("searchNode", function(dataVal){
+            console.log(["searchNode", dataVal]);
+        });*/
+
+        function filterEvents(type, value) {
+            if(value) {
+                filter[type] = value;
+            }
+            else if(filter.hasOwnProperty(type)) {
+                delete filter[type];
+            }
+            filterEventsExecute(filterEventsQuery());
+        }
+
+        function filterEventsQuery() {
+            if(Object.keys(filter).length > 0) {
+                var filterQuery = client;
+                for(var type in filter) {
+                    switch(type) {
+                    default:
+                        filterQuery = filterQuery.query(ejs.MatchQuery(type, filter[type]));
+                        break;
+                    }
+                }
+                return filterQuery;
+            }
+            return client.query(oQuery.query('*'));
+        }
+
+        function filterEventsExecute(query) {
+            query.doSearch().then(function(data){
+                if(data.hasOwnProperty('error')) {
+                    console.error(data.error);
+                }
+                else {
+                    $scope.eventHits = data.hits.hits;
+                }
+            });
+        }
+
+        // Execute and Show All
+        filterEvents(null);
     });
