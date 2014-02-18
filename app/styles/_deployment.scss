@@ -42,6 +42,29 @@
 
       .filters {
           margin: 0 0 10px 0;
+          .multiSelectMenu {
+              margin: 0 15px 0 5px;
+              vertical-align: middle;
+          }
+          .search {
+              display: inline-block;
+              vertical-align: middle;
+              input {
+                  border-style: solid;
+                  border-color: #ccc;
+                  border-width: 1px 0 1px 1px;
+                  padding: 5px 10px;
+                  border-radius: 3px 0 0 3px;
+              }
+              button {
+                  background-color: #f5f5f5;
+                  border-style: solid;
+                  border-color: #ccc;
+                  border-width: 1px 1px 1px 0;
+                  padding: 5px 10px;
+                  border-radius: 0 3px 3px 0;
+              }
+          }
       }
 
     table.table {
@@ -76,7 +99,7 @@
           &.icon { width:60px;}
           &.node, &.task, &.workflow { width: 110px;}
           &.task { width: auto; }
-          &.date { padding-right:30px;}
+          &.date { width: 200px;}
 
           &.event-text-green {
             color: $COSMOUI_EVENTS_LIST_TEXT_SUCCESS;
