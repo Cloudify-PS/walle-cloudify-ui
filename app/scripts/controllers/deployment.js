@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('cosmoUi')
-    .controller('DeploymentCtrl', function ($scope, $cookieStore, $routeParams, RestService, BreadcrumbsService, YamlService, PlanDataConvert, blueprintCoordinateService) {
+    .controller('DeploymentCtrl', function ($scope, $rootScope, $cookieStore, $routeParams, RestService, BreadcrumbsService, YamlService, PlanDataConvert, blueprintCoordinateService, $http, ejsResource) {
 
         var totalNodes = 0,
             appStatus = {},
@@ -11,13 +11,19 @@ angular.module('cosmoUi')
         $scope.deployment = null;
         $scope.nodes = [];
         $scope.events = [];
-        $scope.section = 'topology';
+        $scope.section = 'events';
         $scope.topologySettings = [
             {name: 'connections',   state: true},
             {name: 'modules',       state: false},
             {name: 'middleware',    state: true},
             {name: 'compute',       state: true}
         ];
+        $scope.toggleBar = {
+            'compute': true,
+            'middleware': true,
+            'modules': true,
+            'connections': true
+        };
 
         var eventCSSMap = {
             'workflow_received': {text: 'Workflow received', icon: 'event-icon-workflow-started', class: 'event-text-green'},
@@ -51,7 +57,10 @@ angular.module('cosmoUi')
         };
 
         $scope.getEventIcon = function(event) {
-            return _getCssMapField( event, 'icon');
+            //return _getCssMapField( event, 'icon');
+            if(eventCSSMap.hasOwnProperty(event)) {
+                return eventCSSMap[event].icon;
+            }
         };
 
         $scope.getEventText = function(event) {
@@ -217,8 +226,8 @@ angular.module('cosmoUi')
         }
 
         // Init
-        _loadDeployment();
-        _loadEvents();
+        //_loadDeployment();
+        //_loadEvents();
 
         // Execution Listener
         $scope.$watch('nodes', function(nodes){
@@ -291,5 +300,47 @@ angular.module('cosmoUi')
         $scope.hideProperties = function () {
             $scope.showProperties = null;
         };
+
+        /* Filters DEMO - start */
+        $scope.eventTypeList = [
+            {'value': '', 'label': 'All'},
+            {'value': 'workflow_stage', 'label': 'Workflow Stage'},
+            {'value': 'workflow_started', 'label': 'Workflow Started'},
+            {'value': 'workflow_succeeded', 'label': 'Workflow Succeeded'},
+            {'value': 'task_succeeded', 'label': 'Task Succeeded'},
+            {'value': 'sending_task', 'label': 'Sending Task'},
+        ];
+        $scope.cars = [
+            {'value': '1', 'label': 'Ferrari'},
+            {'value': '2', 'label': 'Porsche'},
+            {'value': '3', 'label': 'Maserati'},
+            {'value': '4', 'label': 'Lamborghini'}
+        ];
+        /* Filters DEMO - end */
+
+        // Events Connected to Elastic Search
+        var server = 'http://cosmoes.gsdev.info/';
+        var ejs = ejsResource(server);
+        var oQuery = ejs.QueryStringQuery();
+        var client = ejs.Request()
+            .query(ejs.MatchQuery('type', 'cloudify_event'))
+            .query(ejs.MatchQuery('context.execution_id', id));
+
+        $scope.filterEvents = function( filter ) {
+            if(filter && filter.value != '') {
+                var result = client
+                    .query(ejs.MatchQuery('event_type', filter.value))
+                    .doSearch();
+            }
+            else {
+                var result = client
+                    .query(oQuery.query('*'))
+                    .doSearch();
+            }
+            result.then(function(data){
+                $scope.eventHits = data.hits.hits;
+            });
+        };
+        $scope.filterEvents();
 
     });

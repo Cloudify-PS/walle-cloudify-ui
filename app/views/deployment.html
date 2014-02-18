@@ -28,103 +28,117 @@
                 <div class="breadcrumbs"><ul id="deployments" breadcrumbs></ul></div>
             </div>
 
-            <div ng-switch="section" class="content-section">
-                <div ng-switch-default="topology">
+            <!-- Settings - START -->
+            <div class="buttons-group no-embed" checkbox-toggle value="section">
+                <button type="button" class="btn btn-default" value="topology">Topology</button>
+                <button type="button" class="btn btn-default" value="network">Network</button>
+                <button type="button" class="btn btn-default" value="events">Events</button>
+            </div>
+            <div settings-toggles id="settings-button" class="no-embed" toggles="toggleBar"></div>
+            <!-- Settings - END -->
 
-                    <!-- Blueprint Contianter - START -->
-                    <div class="bpContainer" blueprint:resize>
-                        <div data-type="compute" data-ng-repeat="rootNode in map" class="box" blueprint:coordinate="rootNode.id">
-                            <div class="hoverup">
-                                <div class="buttons no-embed">
-                                    <ul>
-                                        <li data-ng-click="viewNode(rootNode)" class="topology-glyph node-details"></li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div pie:progress="deployments[indexNodes[rootNode.id].nodeId].process" class="piProgress" size="51">
-                                <div class="circle">
-                                    <i class="icon topology-glyph host">
-                                        <div class="badge" data-ng-class="getBadgeStatus(indexNodes[rootNode.id].nodeId)">
-                                            {{ deployments[indexNodes[rootNode.id].nodeId].completed }}/{{ deployments[indexNodes[rootNode.id].nodeId].instances }}
-                                        </div>
-                                    </i>
-                                </div>
-                            </div>
-                            <div class="head">{{ indexNodes[rootNode.id].name }}</div>
-                            <div class="holder">
-                                <!-- Middleware::start -->
-                                <div data-type="middleware" data-ng-repeat="subNode in rootNode.children" class="box" blueprint:coordinate="subNode.id">
-                                    <div class="hoverup">
-                                        <div class="buttons no-embed">
-                                            <ul>
-                                                <li data-ng-click="viewNode(subNode)" class="topology-glyph node-details"></li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                    <div pie:progress="deployments[indexNodes[subNode.id].nodeId].process" class="piProgress" size="51">
-                                        <div class="circle">
-                                            <i class="icon topology-glyph app-server">
-                                                <div class="badge" data-ng-class="getBadgeStatus(indexNodes[subNode.id].nodeId)">
-                                                    {{ deployments[indexNodes[subNode.id].nodeId].completed }}/{{ deployments[indexNodes[subNode.id].nodeId].instances }}
-                                                </div>
-                                            </i>
-                                        </div>
-                                    </div>
-                                    <div class="head">{{ indexNodes[subNode.id].name }}</div>
-                                    <div class="holder">
-                                        <!-- Module::start -->
-                                        <div data-type="modules" data-ng-repeat="appNode in subNode.children" class="app">
-                                            <div class="hoverup">
-                                                <div class="buttons no-embed">
-                                                    <ul>
-                                                        <li data-ng-click="viewNode(appNode)" class="topology-glyph node-details"></li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                            <div pie:progress="deployments[indexNodes[appNode.id].nodeId].process" class="piProgress" size="51">
-                                                <div class="circle" blueprint:coordinate="appNode.id">
-                                                    <i class="icon topology-glyph app-module">
-                                                        <div class="badge" data-ng-class="getBadgeStatus(indexNodes[appNode.id].nodeId)">
-                                                            {{ deployments[indexNodes[appNode.id].nodeId].completed }}/{{ deployments[indexNodes[appNode.id].nodeId].instances }}
-                                                        </div>
-                                                    </i>
-                                                </div>
-                                            </div>
-                                            <p>{{ indexNodes[appNode.id].name }}</p>
-                                        </div>
-                                        <!-- Module::end -->
-                                    </div>
-                                </div>
-                                <!-- Middleware::end -->
+            <div ng-switch="section" class="content-section">
+                <!-- Topology Tab - START -->
+                <div class="bpContainer" ng-switch-default="topology" blueprint:resize data-ng-class="{
+                disableCompute: !toggleBar.compute,
+                disableMiddleware: !toggleBar.middleware,
+                disableModules: !toggleBar.modules,
+                disableConnections: !toggleBar.connections
+                }">
+                    <div data-type="compute" data-ng-repeat="rootNode in map" class="box" blueprint:coordinate="rootNode.id">
+                        <div class="hoverup">
+                            <div class="buttons no-embed">
+                                <ul>
+                                    <li data-ng-click="viewNode(rootNode)" class="topology-glyph node-details"></li>
+                                </ul>
                             </div>
                         </div>
-                        <div class="coordinates" blueprint:arrows="coordinates"></div>
+                        <div pie:progress="deployments[indexNodes[rootNode.id].nodeId].process" class="piProgress" size="51">
+                            <div class="circle">
+                                <i class="icon topology-glyph host">
+                                    <div class="badge" data-ng-class="getBadgeStatus(indexNodes[rootNode.id].nodeId)">
+                                        {{ deployments[indexNodes[rootNode.id].nodeId].completed }}/{{ deployments[indexNodes[rootNode.id].nodeId].instances }}
+                                    </div>
+                                </i>
+                            </div>
+                        </div>
+                        <div class="head">{{ indexNodes[rootNode.id].name }}</div>
+                        <div class="holder">
+                            <!-- Middleware::start -->
+                            <div data-type="middleware" data-ng-repeat="subNode in rootNode.children" class="box" blueprint:coordinate="subNode.id">
+                                <div class="hoverup">
+                                    <div class="buttons no-embed">
+                                        <ul>
+                                            <li data-ng-click="viewNode(subNode)" class="topology-glyph node-details"></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div pie:progress="deployments[indexNodes[subNode.id].nodeId].process" class="piProgress" size="51">
+                                    <div class="circle">
+                                        <i class="icon topology-glyph app-server">
+                                            <div class="badge" data-ng-class="getBadgeStatus(indexNodes[subNode.id].nodeId)">
+                                                {{ deployments[indexNodes[subNode.id].nodeId].completed }}/{{ deployments[indexNodes[subNode.id].nodeId].instances }}
+                                            </div>
+                                        </i>
+                                    </div>
+                                </div>
+                                <div class="head">{{ indexNodes[subNode.id].name }}</div>
+                                <div class="holder">
+                                    <!-- Module::start -->
+                                    <div data-type="modules" data-ng-repeat="appNode in subNode.children" class="app">
+                                        <div class="hoverup">
+                                            <div class="buttons no-embed">
+                                                <ul>
+                                                    <li data-ng-click="viewNode(appNode)" class="topology-glyph node-details"></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        <div pie:progress="deployments[indexNodes[appNode.id].nodeId].process" class="piProgress" size="51">
+                                            <div class="circle" blueprint:coordinate="appNode.id">
+                                                <i class="icon topology-glyph app-module">
+                                                    <div class="badge" data-ng-class="getBadgeStatus(indexNodes[appNode.id].nodeId)">
+                                                        {{ deployments[indexNodes[appNode.id].nodeId].completed }}/{{ deployments[indexNodes[appNode.id].nodeId].instances }}
+                                                    </div>
+                                                </i>
+                                            </div>
+                                        </div>
+                                        <p>{{ indexNodes[appNode.id].name }}</p>
+                                    </div>
+                                    <!-- Module::end -->
+                                </div>
+                            </div>
+                            <!-- Middleware::end -->
+                        </div>
                     </div>
-                    <!-- Blueprint Contianter - END -->
-
+                    <div class="coordinates" blueprint:arrows="coordinates"></div>
                 </div>
-
+                <!-- Topology Tab - END -->
+                <!-- Network Tab - START -->
                 <div ng-switch-when="network">{{ 'deployment.title.network' | i18n }}</div>
-
+                <!-- Network Tab - END -->
+                <!-- Events Tab - START -->
                 <div ng-switch-when="events">
+                    <div class="filters">
+                        <div multi:select:menu data-options="eventTypeList" data-ng-model="eventType" data-init="['']" data-text="Choose Event" data-onchange="filterEvents(filter)"></div>
+                    </div>
                     <table class="table table-striped">
                         <tr>
                             <td class="icon"><!-- icon --></td>
                             <td class="type">{{ 'deployment.table.heading.eventType' | i18n }}</td>
                             <td class="node">{{ 'deployment.table.heading.node' | i18n }}</td>
                             <td class="task">{{ 'deployment.table.heading.task' | i18n }}</td>
-                            <td class="workflow">{{ 'deployment.table.heading.workflow' | i18n }}</td>
+                            <td class="date">Timestemp</td>
                         </tr>
-                        <tr ng-repeat="event in events">
-                            <td class="icon" ng-class="getEventIcon(event)"></td>
-                            <td class="type" ng-class="getEventClass(event)">{{event.type == undefined && 'N/A' || getEventText(event)}}</td>
-                            <td class="node">{{event.node == undefined && 'N/A' || event.node}}</td>
-                            <td class="task">{{event.name == undefined && 'N/A' || event.name}}</td>
-                            <td class="workflow">{{event.workflow_name == undefined && 'N/A' || event.workflow_name}}</td>
+                        <tr ng-repeat="event in eventHits">
+                            <td class="icon" ng-class="getEventIcon(event._source.event_type)"></td>
+                            <td class="type">{{event._source.event_type == undefined && 'N/A' || event._source.event_type}}</td>
+                            <td class="node">{{event._source.context.node_name == undefined && 'N/A' || event._source.context.node_name}}</td>
+                            <td class="task">{{event._source.message.text == undefined && 'N/A' || event._source.message.text}}</td>
+                            <td class="date">{{event._source.timestamp == undefined && 'N/A' || event._source.timestamp}}</td>
                         </tr>
                     </table>
                 </div>
-
+                <!-- Events Tab - END -->
             </div>
         </div>
     </div>
