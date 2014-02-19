@@ -314,7 +314,7 @@ angular.module('cosmoUi')
             {'value': 'workflow_started', 'label': 'Workflow Started'},
             {'value': 'workflow_succeeded', 'label': 'Workflow Succeeded'},
             {'value': 'task_succeeded', 'label': 'Task Succeeded'},
-            {'value': 'sending_task', 'label': 'Sending Task'},
+            {'value': 'sending_task', 'label': 'Sending Task'}
         ];
         /* Filters DEMO - end */
 

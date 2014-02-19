@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('cosmoUi', ['gsUiInfra', 'angularFileUpload', 'ngCookies', 'ngRoute', 'ngSanitize', 'ngResource', 'ngBreadcrumbs', 'elasticjs.service'])
+angular.module('cosmoUi', ['gsUiInfraApp', 'angularFileUpload', 'ngCookies', 'ngRoute', 'ngSanitize', 'ngResource', 'ngBreadcrumbs', 'elasticjs.service'])
 
     .config(['$routeProvider', function ($routeProvider) {
 
