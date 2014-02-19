@@ -65,7 +65,7 @@ angular.module('cosmoUi')
         };
 
         $scope.toggleConfirmationDialog = function(deployment) {
-            selectedDeployment = deployment;
+            selectedDeployment = deployment || null;
             $scope.isConfirmationDialogVisible = $scope.isConfirmationDialogVisible === false;
         };
 

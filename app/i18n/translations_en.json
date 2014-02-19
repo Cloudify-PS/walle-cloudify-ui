@@ -22,6 +22,12 @@
             "browseBtn": "Browse",
             "fileLabel": "Application file: ",
             "uploadBtn": "Upload"
+        },
+        "deployDialog": {
+            "title": "Deploy",
+            "description": "Create deployment?",
+            "cancelBtn": "Cancel",
+            "deployBtn": "Deploy"
         }
     },
     "config": {

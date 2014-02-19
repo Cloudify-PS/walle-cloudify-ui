@@ -56,13 +56,13 @@
 
     <div class="connect-error-message" ng-show="cosmoConnectionError()">{{ 'connectError' | i18n }}</div>
 
-    <div ng-show="isConfirmationDialogVisible" ng-controller="ConfirmationDialogCtrl">
+    <div ng-show="isConfirmationDialogVisible">
         <div id="dialogBoxBg"></div>
         <div id="confirmationDialogContainer" class="dialogBox">
             <div class="dialogTitle">{{ 'deployments.confirmationPopup.title' | i18n }}</div>
             <div class="dialogDescription">{{ 'deployments.confirmationPopup.description' | i18n }}</div>
             <div class="buttonsContainer">
-                <button id="cancelBtn" class="dialogButton" ng-click="closeDialog()">{{ 'deployments.confirmationPopup.cancelBtn' | i18n }}</button>
+                <button id="cancelBtn" class="dialogButton" ng-click="toggleConfirmationDialog()">{{ 'deployments.confirmationPopup.cancelBtn' | i18n }}</button>
                 <button id="confirmBtn" class="dialogButton" ng-click="executeDeployment()">{{ 'deployments.confirmationPopup.confirmBtn' | i18n }}</button>
             </div>
         </div>
