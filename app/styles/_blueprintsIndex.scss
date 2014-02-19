@@ -16,10 +16,11 @@
                     padding-top: 20px;
                 }
                 &.name, &.version, &.description {
-                    min-width: 150px;
+                    width: 33%;
                 }
                 &.actions {
-                    min-width: 200px;
+                    min-width: 220px;
+                    float: right;
                 }
                 &.description {
                     padding-right: 30px;
