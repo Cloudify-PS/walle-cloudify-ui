@@ -10,13 +10,16 @@
             td, th {
               border: none;
 
-
                 &.icon {
                     width: 40px;
                     padding-top: 20px;
                 }
-                &.name, &.version, &.description, &.actions {
-                    width: 25%;
+                &.name, &.version, &.description {
+                    width: 33%;
+                }
+                &.actions {
+                    min-width: 220px;
+                    float: right;
                 }
                 &.description {
                     padding-right: 30px;

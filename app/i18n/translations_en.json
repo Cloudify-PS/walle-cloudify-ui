@@ -18,10 +18,16 @@
         "emptyMessage": "No Blueprints",
         "uploadPopup": {
             "title": "Upload Blueprint",
-            "description": "Some text that explains about adding a blueprint by using this dialog",
+            "description": "Select blueprint file to upload, and press 'Upload' button",
             "browseBtn": "Browse",
             "fileLabel": "Application file: ",
             "uploadBtn": "Upload"
+        },
+        "deployDialog": {
+            "title": "Deploy",
+            "description": "Create deployment of",
+            "cancelBtn": "Cancel",
+            "deployBtn": "Deploy"
         }
     },
     "config": {
@@ -50,7 +56,7 @@
         "table": {
             "heading": {
                 "id": "ID",
-                "createDate": "Create date",
+                "createDate": "Created",
                 "updated": "Updated",
                 "action": "Action"
             },
@@ -58,13 +64,13 @@
         },
         "confirmationPopup": {
             "title": "Confirm",
-            "description": "Execute deployment?",
+            "description": "Execute",
             "confirmBtn": "Confirm",
             "cancelBtn": "Cancel"
         }
     },
     "settingsToggles": {
-        "title": "Topology settings"
+        "title": "Topology view settings"
     },
     "eventsWidget": {
         "title": "Events"
@@ -91,7 +97,11 @@
     },
     "toggleSwitch": {
         "on": "ON",
-        "off": "OFF"
+        "off": "OFF",
+        "compute" : "Infrastructure",
+        "middleware": "Middleware",
+        "modules": "Modules",
+        "connections": "Connections"
     },
     "toolBar": {
         "searchPlaceholder": "Search on Cloudify..."

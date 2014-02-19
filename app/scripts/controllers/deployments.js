@@ -7,7 +7,7 @@ angular.module('cosmoUi')
         $scope.selectedBlueprint = '';
         $scope.executingWorkflow = $cookieStore.get('executingWorkflow');
         $scope.isConfirmationDialogVisible = false;
-        var selectedDeployment = null;
+        $scope.selectedDeployment = null;
         var selectedWorkflow = null;
         var cosmoError = false;
 
@@ -29,14 +29,14 @@ angular.module('cosmoUi')
         $scope.executeDeployment = function() {
             if ($scope.isExecuteEnabled()) {
                 RestService.executeDeployment({
-                    deploymentId: selectedDeployment.id,
+                    deploymentId: $scope.selectedDeployment.id,
                     workflowId: selectedWorkflow
                 });
                 $cookieStore.remove('deploymentId');
-                $cookieStore.put('deploymentId', selectedDeployment.id);
+                $cookieStore.put('deploymentId', $scope.selectedDeployment.id);
                 $cookieStore.put('executingWorkflow', selectedWorkflow);
                 $scope.executingWorkflow = selectedWorkflow;
-                $scope.redirectTo(selectedDeployment);
+                $scope.redirectTo($scope.selectedDeployment);
             }
         };
 
@@ -65,13 +65,12 @@ angular.module('cosmoUi')
         };
 
         $scope.toggleConfirmationDialog = function(deployment) {
-            selectedDeployment = deployment;
+            $scope.selectedDeployment = deployment || null;
             $scope.isConfirmationDialogVisible = $scope.isConfirmationDialogVisible === false;
         };
 
         $scope.redirectTo = function (deployment) {
             console.log(['redirecting to', deployment]);
-            $scope.selectedDeploymentID = deployment.id;
             $location.path('/deployment').search({id: deployment.id});
         };
 

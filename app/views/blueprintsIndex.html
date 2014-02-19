@@ -22,8 +22,8 @@
                 <td class="version">{{ blueprint.version }}</td>
                 <td class="description">{{ blueprint.description }}</td>
                 <td class="actions">
-                    <button class="deploy-button" ng-click="deployBlueprint(blueprint)">{{ 'blueprints.table.deployBtn' | i18n }}</button>
-                    <div class="deployments-number">{{ blueprint.deployments.length }}</div>
+                    <button class="deploy-button" ng-click="toggleDeployDialog(blueprint)">{{ 'blueprints.table.deployBtn' | i18n }}</button>
+                    <div class="deployments-number" ng-click="redirectToDeployments(blueprint)">{{ blueprint.deployments.length }}</div>
                     <!--i id="blueprint-down" class="fa  fa-chevron-circle-down"></i><i class="fa  fa-play-circle-o" ng-click="deployBlueprint(blueprint)"></i-->
                 </td>
             </tr>
@@ -37,7 +37,7 @@
     <div class="no-blueprints-message" ng-show="blueprints.length == 0">{{ 'blueprints.emptyMessage' | i18n }}</div>
 
     <div ng-show="isAddDialogVisible" ng-controller="FileSelectionDialogCtrl">
-        <div id="dialogBoxBg"></div>
+        <div class="dialogBoxBg"></div>
         <div id="uploadDialogContainer" class="dialogBox">
             <div class="dialogClose dialogButton" ng-click="closeDialog()">X</div>
             <div class="dialogTitle">{{ 'blueprints.uploadPopup.title' | i18n }}</div>
@@ -52,6 +52,18 @@
                 <div id="upload-error-message" ng-show="isUploadError()">{{errorMessage}}</div>
                 <button id="uploadBtn" class="dialogButton" ng-class="{disabled: !isUploadEnabled(), enabled: isUploadEnabled()}" ng-click="uploadFile()">Upload</button>
             </form>
+        </div>
+    </div>
+
+    <div ng-show="isDeployDialogVisible">
+        <div class="dialogBoxBg"></div>
+        <div id="confirmationDialogContainer" class="dialogBox">
+            <div class="dialogTitle">{{ 'blueprints.deployDialog.title' | i18n }}</div>
+            <div class="dialogDescription">{{ 'blueprints.deployDialog.description' | i18n }} {{selectedBlueprint.id}}?</div>
+            <div class="buttonsContainer">
+                <button id="cancelBtn" class="dialogButton" ng-click="toggleDeployDialog()">{{ 'blueprints.deployDialog.cancelBtn' | i18n }}</button>
+                <button id="deployBtn" class="dialogButton" ng-click="deployBlueprint()">{{ 'blueprints.deployDialog.deployBtn' | i18n }}</button>
+            </div>
         </div>
     </div>
 </div>

@@ -14,7 +14,7 @@
     "ng-file-upload": "1.1.10",
     "angular-route": "~1.2.10",
     "angular-sanitize": "~1.2.10",
-    "i18next": "~1.7.1",
+    "i18next": "1.7.2",
     "elastic.js": "~1.1.1"
   },
   "devDependencies": {
