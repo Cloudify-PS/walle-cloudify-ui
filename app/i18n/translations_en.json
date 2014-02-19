@@ -25,7 +25,7 @@
         },
         "deployDialog": {
             "title": "Deploy",
-            "description": "Create deployment?",
+            "description": "Create deployment of",
             "cancelBtn": "Cancel",
             "deployBtn": "Deploy"
         }
@@ -64,7 +64,7 @@
         },
         "confirmationPopup": {
             "title": "Confirm",
-            "description": "Execute deployment?",
+            "description": "Execute",
             "confirmBtn": "Confirm",
             "cancelBtn": "Cancel"
         }

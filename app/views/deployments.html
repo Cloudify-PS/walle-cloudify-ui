@@ -60,7 +60,7 @@
         <div id="dialogBoxBg"></div>
         <div id="confirmationDialogContainer" class="dialogBox">
             <div class="dialogTitle">{{ 'deployments.confirmationPopup.title' | i18n }}</div>
-            <div class="dialogDescription">{{ 'deployments.confirmationPopup.description' | i18n }}</div>
+            <div class="dialogDescription">{{ 'deployments.confirmationPopup.description' | i18n }} {{selectedDeployment.id}}?</div>
             <div class="buttonsContainer">
                 <button id="cancelBtn" class="dialogButton" ng-click="toggleConfirmationDialog()">{{ 'deployments.confirmationPopup.cancelBtn' | i18n }}</button>
                 <button id="confirmBtn" class="dialogButton" ng-click="executeDeployment()">{{ 'deployments.confirmationPopup.confirmBtn' | i18n }}</button>

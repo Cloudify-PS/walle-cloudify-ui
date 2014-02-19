@@ -6,8 +6,8 @@ angular.module('cosmoUi')
         $scope.isDeployDialogVisible = false;
         $scope.lastExecutedPlan = null;
         $scope.deploymentId = null;
+        $scope.selectedBlueprint = null;
         var _blueprintsArr = [];
-        var _selectedBlueprint = null;
         var cosmoError = false;
 
         BreadcrumbsService.push('blueprints',
@@ -27,7 +27,7 @@ angular.module('cosmoUi')
         };
 
         $scope.toggleDeployDialog = function(blueprint) {
-            _selectedBlueprint = blueprint || null;
+            $scope.selectedBlueprint = blueprint || null;
             $scope.isDeployDialogVisible = $scope.isDeployDialogVisible === false;
         };
 
@@ -52,9 +52,9 @@ angular.module('cosmoUi')
         };
 
         $scope.deployBlueprint = function() {
-            RestService.deployBlueprint(_selectedBlueprint.id)
+            RestService.deployBlueprint($scope.selectedBlueprint.id)
                 .then(function() {
-                    $scope.redirectToDeployments(_selectedBlueprint);
+                    $scope.redirectToDeployments($scope.selectedBlueprint);
                 });
         };
 
