@@ -45,8 +45,12 @@ angular.module('cosmoUi')
         $scope.deployBlueprint = function(blueprint) {
             RestService.deployBlueprint(blueprint.id)
                 .then(function() {
-                    $location.path('/deployments').search({blueprint: blueprint});
+                    $scope.redirectToDeployments(blueprint);
                 });
+        };
+
+        $scope.redirectToDeployments = function(blueprint) {
+            $location.path('/deployments').search({blueprint: blueprint});
         };
 
         $scope.cosmoConnectionError = function() {

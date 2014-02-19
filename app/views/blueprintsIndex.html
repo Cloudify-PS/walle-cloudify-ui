@@ -23,7 +23,7 @@
                 <td class="description">{{ blueprint.description }}</td>
                 <td class="actions">
                     <button class="deploy-button" ng-click="deployBlueprint(blueprint)">{{ 'blueprints.table.deployBtn' | i18n }}</button>
-                    <div class="deployments-number">{{ blueprint.deployments.length }}</div>
+                    <div class="deployments-number" ng-click="redirectToDeployments(blueprint)">{{ blueprint.deployments.length }}</div>
                     <!--i id="blueprint-down" class="fa  fa-chevron-circle-down"></i><i class="fa  fa-play-circle-o" ng-click="deployBlueprint(blueprint)"></i-->
                 </td>
             </tr>

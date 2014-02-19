@@ -15,8 +15,11 @@
                     width: 40px;
                     padding-top: 20px;
                 }
-                &.name, &.version, &.description, &.actions {
-                    width: 25%;
+                &.name, &.version, &.description {
+                    min-width: 150px;
+                }
+                &.actions {
+                    min-width: 200px;
                 }
                 &.description {
                     padding-right: 30px;
