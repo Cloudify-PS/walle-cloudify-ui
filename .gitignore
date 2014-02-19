@@ -13,7 +13,7 @@ setup.sh
 app/dev
 conf/dev
 *.log
-logs/
+**/*.log*
 settings.json
 *.tgz
 grunticon-dist

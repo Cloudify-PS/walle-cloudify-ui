@@ -12,7 +12,7 @@ angular.module('cosmoUi')
             if (validation.valid) {
                 $scope.errList = [];
 
-                RestService.setConfiguration({
+                RestService.setSettings({
                     cosmoServer: $scope.cosmoServer,
                     cosmoPort: $scope.cosmoPort
                 });

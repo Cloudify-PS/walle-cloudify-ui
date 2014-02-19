@@ -52,4 +52,17 @@ angular.module('cosmoUi', ['gsUiInfraApp', 'angularFileUpload', 'ngCookies', 'ng
             .otherwise({
                 redirectTo: isSettingsExists ? '/blueprints' : '/config'
             });
+    }]).run(['I18next', 'RestService', function(I18next, RestService) {
+
+        RestService.getConfiguration().then(function (data) {
+            var i18nConf = data.i18n;
+            if (i18nConf) {
+                I18next.setOptions({
+                    lng: i18nConf.language
+                });
+            }
+        }, function () {
+            console.log('problem loading configuration for i18n init');
+        });
+
     }]);
