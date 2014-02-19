@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('cosmoUi')
-    .controller('BlueprintsIndexCtrl', function ($scope, $location, $cookieStore, $filter, RestService, BreadcrumbsService) {
+    .controller('BlueprintsIndexCtrl', function ($scope, $location, $cookieStore, RestService, BreadcrumbsService) {
         $scope.isAddDialogVisible = false;
         $scope.selectedBlueprintId = null;
         $scope.lastExecutedPlan = null;
