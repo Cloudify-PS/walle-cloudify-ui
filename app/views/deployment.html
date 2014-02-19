@@ -153,6 +153,7 @@
                             <td class="task">{{event._source.message.text == undefined && 'N/A' || event._source.message.text}}</td>
                         </tr>
                     </table>
+                    <div class="emptyTable" data-ng-hide="eventHits.length">There is no events at this moment...</div>
                 </div>
                 <!-- Events Tab - END -->
             </div>
