@@ -3,9 +3,10 @@
 angular.module('cosmoUi')
     .controller('BlueprintsIndexCtrl', function ($scope, $location, $cookieStore, RestService, BreadcrumbsService) {
         $scope.isAddDialogVisible = false;
-        $scope.selectedBlueprintId = null;
+        $scope.isDeployDialogVisible = false;
         $scope.lastExecutedPlan = null;
         $scope.deploymentId = null;
+        $scope.selectedBlueprint = null;
         var _blueprintsArr = [];
         var cosmoError = false;
 
@@ -18,12 +19,20 @@ angular.module('cosmoUi')
 
         $scope.redirectTo = function (blueprint) {
             console.log(['redirecting to', blueprint]);
-            $scope.selectedBlueprintId = blueprint.id;
             $location.path('/blueprint').search({id: blueprint.id, name: blueprint.id});
         };
 
         $scope.toggleAddDialog = function() {
             $scope.isAddDialogVisible = $scope.isAddDialogVisible === false;
+        };
+
+        $scope.toggleDeployDialog = function(blueprint) {
+            $scope.selectedBlueprint = blueprint || null;
+            $scope.isDeployDialogVisible = $scope.isDeployDialogVisible === false;
+        };
+
+        $scope.closeDialog = function() {
+            $scope.toggleConfirmationDialog();
         };
 
         $scope.loadBlueprints = function() {
@@ -42,11 +51,15 @@ angular.module('cosmoUi')
                 });
         };
 
-        $scope.deployBlueprint = function(blueprint) {
-            RestService.deployBlueprint(blueprint.id)
+        $scope.deployBlueprint = function() {
+            RestService.deployBlueprint($scope.selectedBlueprint.id)
                 .then(function() {
-                    $location.path('/deployments').search({blueprint: blueprint});
+                    $scope.redirectToDeployments($scope.selectedBlueprint);
                 });
+        };
+
+        $scope.redirectToDeployments = function(blueprint) {
+            $location.path('/deployments').search({blueprint: blueprint});
         };
 
         $scope.cosmoConnectionError = function() {

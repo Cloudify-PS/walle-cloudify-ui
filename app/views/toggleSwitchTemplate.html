@@ -1,5 +1,5 @@
 <div class="toggle-switch">
-    <div id="toggle-switch-text">{{text}}</div>
+    <div id="toggle-switch-text">{{ 'toggleSwitch.' + text | i18n }}</div>
     <div id="toggle-switch-button" class="{{value}}" ng-click="toggleButton()">
         <div id="toggle-switch-button-text-on" class="toggle-switch-button-text" ng-show="isToggleOn()">{{ 'toggleSwitch.on' | i18n }}</div>
         <div id="toggle-switch-button-circle" class="{{value}}"></div>

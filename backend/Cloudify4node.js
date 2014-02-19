@@ -10,6 +10,7 @@ module.exports = Cloudify4node;
 function Cloudify4node(options) {}
 
 function createRequest(requestData, callback) {
+    console.log(requestData);
     var _callback = function(res) {
         var data = '';
         var result = '';
@@ -54,15 +55,21 @@ function createRequest(requestData, callback) {
 }
 
 function createRequestData(options) {
+    console.log(options);
     var requestData = {};
 
     if (options !== undefined) {
         requestData.options = {
-            hostname: conf.cosmoServer,
-            port: conf.cosmoPort,
+            hostname: options.hostname !== undefined ? options.hostname : conf.cosmoServer,
             path: options.path,
             method: options.method
         };
+
+        if (options.port !== undefined) {
+            requestData.options.port = options.port;
+        } else if (requestData.options.hostname === conf.cosmoServer) {
+            requestData.options.port = conf.cosmoPort;
+        }
     }
 
     if (options.data !== undefined) {
@@ -224,10 +231,17 @@ Cloudify4node.executeDeployment = function(requestBody, callback) {
     createRequest(requestData, callback);
 }
 
-Cloudify4node.getDeploymentEvents = function(deployment_id, from, callback) {
+Cloudify4node.getEvents = function(query, callback) {
+    var data = query;
     var requestData = createRequestData({
-        path: '/deployments/' + deployment_id + '/events?from=' + from,
-        method: 'GET'
+        hostname: conf.esServer,
+        path: '/_search',
+        data: data,
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Content-Length': JSON.stringify(data).length
+        }
     });
 
     createRequest(requestData, callback);

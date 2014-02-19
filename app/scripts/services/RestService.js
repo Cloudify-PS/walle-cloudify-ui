@@ -91,32 +91,41 @@ angular.module('cosmoUi')
             return _load('deployments/execute', callParams);
         }
 
-        function _loadEvents(params) {
-            var deferred = $q.defer();
+//        function _loadEvents(params) {
+//            var deferred = $q.defer();
+//
+//            function _internalLoadEvents(){
+//                //console.log(['loading events', params]);
+//
+//                var callParams = {
+//                    url: '/backend/events',
+//                    method: 'POST',
+//                    data: params
+//                };
+//
+//                _load('events', callParams).then(function(data) {
+//                    if ( params.from < data.lastEvent){
+//                        params.from = data.lastEvent + 1;
+//
+//                        deferred.notify(data);
+//                    }
+//
+//                    $timeout(_internalLoadEvents, 3000);
+//                });
+//            }
+//
+//            _internalLoadEvents();
+//
+//            return deferred.promise;
+//        }
 
-            function _internalLoadEvents(){
-                //console.log(['loading events', params]);
-
-                var callParams = {
-                    url: '/backend/events',
-                    method: 'POST',
-                    data: params
-                };
-
-                _load('events', callParams).then(function(data) {
-                    if ( params.from < data.lastEvent){
-                        params.from = data.lastEvent + 1;
-
-                        deferred.notify(data);
-                    }
-
-                    $timeout(_internalLoadEvents, 3000);
-                });
-            }
-
-            _internalLoadEvents();
-
-            return deferred.promise;
+        function _loadEvents(query) {
+            var callParams = {
+                url: '/backend/events',
+                method: 'POST',
+                data: query
+            };
+            return _load('events', callParams);
         }
 
         function _loadDeployments() {
