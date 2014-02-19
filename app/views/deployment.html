@@ -1,4 +1,5 @@
 <div class="cosmo-layout" id="deployment">
+
     <!-- Side Panel - START -->
     <div class="properties-panel right-panel" ng-hide="!showProperties">
         <div class="title">
@@ -121,19 +122,20 @@
                     <div class="filters">
                         Workflow: <div multi:select:menu
                              data-options="workflowsList"
-                             data-ng-model="eventType"
-                             data-init="['']"
+                             data-ng-model="eventsFilter.workflow"
+                             data-init="[null]"
                              data-text="Choose Workflow"
                              data-onchange="filterEventsByWorkflow(filter)"></div>
                         Event Type: <div multi:select:menu
                              data-options="eventTypeList"
-                             data-ng-model="eventType"
-                             data-init="['']"
+                             data-ng-model="eventsFilter.type"
+                             data-init="[null]"
                              data-text="Choose Type"
                              data-onchange="filterEventsByType(filter)"></div>
                         <div class="search">
-                            <input type="text" data-ng-model="searchNode" placeholder="Search Node"><button data-ng-click="filterByNodes()">Find</button>
+                            <input type="text" data-ng-model="eventsFilter.nodes" placeholder="Search Node"><button data-ng-click="eventFindNodes()">Find</button>
                         </div>
+                        <div class="loading" data-ng-show="filterLoading"></div>
                     </div>
                     <table class="table table-striped">
                         <tr>

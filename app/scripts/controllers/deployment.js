@@ -303,13 +303,13 @@ angular.module('cosmoUi')
 
         /* Filters DEMO - start */
         $scope.workflowsList = [
-            {'value': '', 'label': 'All'},
+            {'value': null, 'label': 'All'},
             {'value': 'install', 'label': 'Install'},
             {'value': 'complete', 'label': 'Complete'},
             {'value': 'failed', 'label': 'Failed'}
         ];
         $scope.eventTypeList = [
-            {'value': '', 'label': 'All'},
+            {'value': null, 'label': 'All'},
             {'value': 'workflow_stage', 'label': 'Workflow Stage'},
             {'value': 'workflow_started', 'label': 'Workflow Started'},
             {'value': 'workflow_succeeded', 'label': 'Workflow Succeeded'},
@@ -318,71 +318,129 @@ angular.module('cosmoUi')
         ];
         /* Filters DEMO - end */
 
-        // Events Connected to Elastic Search
-        var filter = {};
-        var server = 'http://cosmoes.gsdev.info/';
-        var ejs = ejsResource(server);
-        var oQuery = ejs.QueryStringQuery();
-        var client = ejs.Request()
-            .query(ejs.MatchQuery('type', 'cloudify_event'))
-            .query(ejs.MatchQuery('context.execution_id', id));
+        function EsEvents(server) {
 
-
-        $scope.filterEventsByWorkflow = function( filter ){
-            filterEvents('context.workflow_id', (filter && filter.value !== '') ? filter.value : null);
-        };
-
-        $scope.filterEventsByType = function( filter ) {
-            filterEvents('event_type', (filter && filter.value !== '') ? filter.value : null);
-        };
-
-        $scope.filterByNodes = function() {
-
-            //console.log(["filterByNodes", $scope.searchNode]);
-
-        };
-
-        /*$scope.searchNode = 'test';
-        $scope.$watch("searchNode", function(dataVal){
-            console.log(["searchNode", dataVal]);
-        });*/
-
-        function filterEvents(type, value) {
-            if(value) {
-                filter[type] = value;
+            if(!server) {
+                return;
             }
-            else if(filter.hasOwnProperty(type)) {
-                delete filter[type];
-            }
-            filterEventsExecute(filterEventsQuery());
-        }
 
-        function filterEventsQuery() {
-            if(Object.keys(filter).length > 0) {
-                var filterQuery = client;
-                for(var type in filter) {
-                    switch(type) {
-                    default:
-                        filterQuery = filterQuery.query(ejs.MatchQuery(type, filter[type]));
-                        break;
+            var ejs = ejsResource(server);
+            var oQuery = ejs.QueryStringQuery();
+            var client = ejs.Request()
+                .from(0)
+                .size(100);
+            var activeFilters = {};
+
+            function _isActiveFilter(field, term) {
+                return activeFilters.hasOwnProperty(field + term);
+            }
+
+            function _applyFilters(query) {
+                var filter = null;
+                var filters = Object.keys(activeFilters).map(function (k) {
+                    return activeFilters[k];
+                });
+
+                if (filters.length > 1) {
+                    filter = ejs.AndFilter(filters);
+                }
+                else if (filters.length === 1) {
+                    filter = filters[0];
+                }
+
+                return filter ? ejs.FilteredQuery(query, filter) : query;
+            }
+
+            function filter(field, term) {
+                if(_isActiveFilter(field, term)) {
+                    delete activeFilters[field + term];
+                } else {
+                    activeFilters[field + term] = ejs.TermFilter(field, term);
+                }
+            }
+
+            function execute(callbackFn) {
+                var results = client
+                    .query(_applyFilters(oQuery.query('*')))
+                    .doSearch();
+
+                results.then(function(data){
+                    if(data.hasOwnProperty('error')) {
+                        console.error(data.error);
                     }
-                }
-                return filterQuery;
+                    else if(angular.isFunction(callbackFn)) {
+                        callbackFn(data);
+                    }
+                });
             }
-            return client.query(oQuery.query('*'));
+
+            this.filter = filter;
+            this.execute = execute;
         }
 
-        function filterEventsExecute(query) {
-            query.doSearch().then(function(data){
-                if(data.hasOwnProperty('error')) {
-                    console.error(data.error);
-                }
-                else {
-                    $scope.eventHits = data.hits.hits;
-                }
+        $scope.filterLoading = false;
+        $scope.eventsFilter = {
+            'type': null,
+            'workflow': null,
+            'nodes': null
+        };
+
+        var events = new EsEvents('http://cosmoes.gsdev.info'),
+            lastNodeSearch = $scope.eventsFilter.nodes;
+
+        $scope.eventsFilter = {
+            'type': null,
+            'workflow': null,
+            'nodes': null
+        };
+
+        function executeEvents() {
+            $scope.filterLoading = true;
+            events.execute(function(data){
+                $scope.eventHits = data.hits.hits;
+                $scope.filterLoading = false;
             });
         }
 
-        // Execute and Show All
-        filterEvents(null);
+        function filterEvents(field, newValue, oldValue, execute) {
+            if(newValue === null) {
+                return;
+            }
+            if(oldValue !== null && oldValue.value !== null) {
+                events.filter(field, oldValue.value);
+            }
+            if(newValue.value !== null) {
+                events.filter(field, newValue.value);
+            }
+            if(execute === true) {
+                executeEvents();
+            }
+        }
+
+        (function _LoadEvents() {
+            filterEvents('type', {value: 'cloudify_event'}, null);
+            filterEvents('context.execution_id', {value: id}, null);
+            executeEvents();
+        })();
+
+        $scope.$watch('eventsFilter.type', function(newValue, oldValue){
+            if(newValue !== null && oldValue !== null) {
+                filterEvents('event_type', newValue, oldValue, true);
+            }
+        });
+
+        $scope.$watch('eventsFilter.workflow', function(newValue, oldValue){
+            if(newValue !== null && oldValue !== null) {
+                filterEvents('context.workflow_id', newValue, oldValue, true);
+            }
+        });
+
+        $scope.eventFindNodes = function() {
+            if($scope.eventsFilter.nodes === '') {
+                $scope.eventsFilter.nodes = null;
+            }
+            filterEvents('context.node_name', {value: $scope.eventsFilter.nodes}, {value: lastNodeSearch}, true);
+            lastNodeSearch = $scope.eventsFilter.nodes;
+        };
+
     });
