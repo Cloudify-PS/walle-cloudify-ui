@@ -100,6 +100,7 @@ angular.module('cosmoUi')
             var realNode = planData.getNode(node.id);
             $scope.showProperties = {
                 properties: planData.getProperties(realNode),
+                relationships: planData.getRelationships(realNode),
                 policies: planData.getPolicies(realNode),
                 general: planData.getGeneralInfo(realNode)
             };

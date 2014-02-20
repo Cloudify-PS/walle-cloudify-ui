@@ -51,14 +51,16 @@ angular.module('cosmoUi').service('PlanData', function () {
         this.getPolicies = function (node) {
             return node.policies;
         };
+        this.getRelationships = function (node) {
+            return node.relationships;
+        };
         this.addType = _addType;
         this.getNodes = _getNodesList;
         this.getTypes = _getTypesList;
         this.getGeneralInfo = function (node) {
             var result = {
                 'name': node.id,
-                'type': node.type,
-                'relationships': node.relationships
+                'type': node.type
             };
             return result;
         };

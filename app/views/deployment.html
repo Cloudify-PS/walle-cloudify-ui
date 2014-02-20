@@ -7,7 +7,7 @@
         </div>
         <div class="content">
             <div class="buttons-group" checkbox-toggle value="section">
-                <button type="button" class="btn btn-default" value="general">{{ 'plans.generalBtn' | i18n }}</button>
+                <button type="button" class="btn btn-default" value="general">{{ 'plans.general' | i18n }}</button>
             </div>
             <div ng-switch="section" class="content-section">
                 <pre ng-switch-default="general">{{showProperties.general | yaml:'No general information' }} </pre>

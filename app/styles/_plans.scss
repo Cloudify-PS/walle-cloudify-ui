@@ -33,20 +33,18 @@
               margin-top:30px;
 
               table {
-                display: block;
                 padding: 9.5px;
                 font-size: 13px;
                 color: #333333;
-                background-color: whitesmoke;
-                border: 1px solid #cccccc;
-                border-radius: 4px;
+                width: 98%;
 
                 tr {
                   height: 30px;
+                  border-bottom: 1px solid #cadbec;
 
                   td {
                     min-width: 120px;
-                    vertical-align: top;
+                    vertical-align: middle;
                   }
                 }
               }
