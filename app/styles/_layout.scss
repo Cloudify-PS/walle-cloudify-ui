@@ -169,7 +169,7 @@ html, body, .layout {
   margin: 0 auto 0px auto;
 
   .breadcrumbs{
-    color:$COSMOUI_CONTENT_TITLE_COLOR;
+    color:$COSMOUI_BREADCRUMB_ITEM_COLOR;
     font-size:30px;
     float:left;
     ul,li{ list-style:none; margin:0; padding:0; }
@@ -178,11 +178,15 @@ html, body, .layout {
       padding-right:5px;
       padding-left:5px;
 
-      a {
+      a, a:link, a:visited, a:hover, a:active {
         text-decoration: none;
+        color: $COSMOUI_BREADCRUMB_ITEM_COLOR;
+      }
+      a:hover {
+        color: $COSMOUI_BREADCRUMB_ITEM_COLOR_HOVER;
       }
 
-      .active {
+      &.active {
 
       }
     }
@@ -193,7 +197,7 @@ html, body, .layout {
       padding-left:5px;
     }
     li:last-child a {
-      color: $COSMOUI_CONTENT_TITLE_COLOR;
+      color: $COSMOUI_BREADCRUMB_ITEM_COLOR;
       cursor: default;
     }
   }

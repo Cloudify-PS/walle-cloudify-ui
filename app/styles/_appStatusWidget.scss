@@ -2,7 +2,7 @@
     width: 100%;
     height: 100%;
     .title {
-        color: #fff;
+        color: $clr-base-01;
         font-size: 12px;
         text-align: center;
     }
@@ -18,7 +18,7 @@
             width: 35px;
             height: 35px;
             border-radius: 20px;
-            background: #fff;
+            background: $clr-base-01;
             line-height: 35px;
             font-size: 11px;
         }
@@ -39,7 +39,7 @@
         }
     }
     .time-left {
-        color: #fff;
+        color: $clr-base-01;
         font-size: 12px;
         text-align: center;
         margin-top: 0px;
