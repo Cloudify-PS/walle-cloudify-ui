@@ -402,8 +402,6 @@
                     width: 39px;
                     height: 39px;
                     background-color: #fff;
-                    border-width: 3px;
-                    border-style: solid;
                     color: #797B86;
                     border-radius: 20px;
                     margin: 0 auto 40px;
@@ -424,8 +422,9 @@
                     }
                     > i.topology-glyph::after {
                         position: absolute;
-                        left: 7px;
-                        top: -11px;
+                        left: 0px;
+                        top: -34px;
+                        font-size: 75px;
                     }
                 }
                 > .device:last-child {
