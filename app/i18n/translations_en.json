@@ -105,6 +105,10 @@
     },
     "toolBar": {
         "searchPlaceholder": "Search on Cloudify..."
+    },
+    "breadcrumb": {
+        "blueprints": "Blueprints",
+        "deployments": "Deployments"
     }
 }
 

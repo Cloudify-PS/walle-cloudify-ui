@@ -13,7 +13,7 @@ angular.module('cosmoUi')
         BreadcrumbsService.push('blueprints',
             {
                 href: '#/blueprints',
-                label: 'Blueprints',
+                i18nKey: 'breadcrumb.blueprints',
                 id: 'blueprints'
             });
 

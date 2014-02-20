@@ -1,5 +1,5 @@
 <ul>
     <li ng-repeat='bc in breadcrumbs' ng-class="{'active': {{$last}} }">
-        <a ng-click="unregisterBreadCrumb($index)" ng-href="{{bc.href}}">{{bc.label}}</a>
+        <a ng-click="unregisterBreadCrumb($index)" ng-href="{{bc.href}}">{{ bc.label || bc.i18nKey | i18n }}</a>
     </li>
 </ul>
