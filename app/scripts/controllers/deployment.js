@@ -11,7 +11,7 @@ angular.module('cosmoUi')
         $scope.deployment = null;
         $scope.nodes = [];
         $scope.events = [];
-        $scope.section = 'events';
+        $scope.section = 'topology';
         $scope.topologySettings = [
             {name: 'connections',   state: true},
             {name: 'modules',       state: false},
@@ -187,7 +187,7 @@ angular.module('cosmoUi')
                         });
 
                     // Execution
-                    RestService.getDeploymentNodes({deploymentId : id})
+                    RestService.getDeploymentNodes({deploymentId : id/*, reachable: true*/})
                         .then(null, null, function(dataNodes) {
                             $scope.nodes = dataNodes;
                         });
@@ -231,6 +231,9 @@ angular.module('cosmoUi')
 
         // Execution Listener
         $scope.$watch('nodes', function(nodes){
+
+            /*console.log(["nodes", nodes]);*/
+
             // Organizing the data by id
             var IndexedNodes = {}, completed = 0, failed = 0, install = 0;
             for (var i = 0; i < nodes.length; i++) {
