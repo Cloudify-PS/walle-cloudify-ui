@@ -102,10 +102,10 @@
                 color: $COSMOUI_EVENTS_LIST_ITEM_COLOR;
             }
 
-            tr:first-child td {
+            /*tr:first-child td {
                 background: $COSMOUI_LIST_COLUMN_HEADER_BACKGROUND;
                 color: $COSMOUI_LIST_COLUMN_HEADER_TEXT_COLOR;
-            }
+            }*/
 
             tr {
                 cursor: $COSMOUI_DIALOG_CURSOR;
