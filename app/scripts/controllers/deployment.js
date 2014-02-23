@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('cosmoUi')
-    .controller('DeploymentCtrl', function ($scope, $rootScope, $cookieStore, $routeParams, RestService, BreadcrumbsService, YamlService, PlanDataConvert, blueprintCoordinateService, $http, ejsResource) {
+    .controller('DeploymentCtrl', function ($scope, $rootScope, $cookieStore, $routeParams, RestService, BreadcrumbsService, YamlService, PlanDataConvert, blueprintCoordinateService) {
 
         var totalNodes = 0,
             appStatus = {},
@@ -321,81 +321,6 @@ angular.module('cosmoUi')
         ];
         /* Filters DEMO - end */
 
-        function EsEvents(server) {
-
-            if(!server) {
-                return;
-            }
-
-            var ejs = ejsResource(server);
-            var oQuery = ejs.QueryStringQuery();
-            var client = ejs.Request()
-                .from(0)
-                .size(100);
-            var activeFilters = {};
-            var sortField = false;
-
-            function _isActiveFilter(field, term) {
-                return activeFilters.hasOwnProperty(field + term);
-            }
-
-            function _applyFilters(query) {
-                var filter = null;
-                var filters = Object.keys(activeFilters).map(function (k) {
-                    return activeFilters[k];
-                });
-
-                if (filters.length > 1) {
-                    filter = ejs.AndFilter(filters);
-                }
-                else if (filters.length === 1) {
-                    filter = filters[0];
-                }
-
-                return filter ? ejs.FilteredQuery(query, filter) : query;
-            }
-
-            function filter(field, term) {
-                if(_isActiveFilter(field, term)) {
-                    delete activeFilters[field + term];
-                } else {
-                    activeFilters[field + term] = ejs.TermFilter(field, term);
-                }
-            }
-
-            function sort(field, order) {
-                sortField = {};
-                sortField[field] = {'order': order};
-            }
-
-            function execute(callbackFn) {
-                var results;
-                if(sortField) {
-                    results = client
-                        .query(_applyFilters(oQuery.query('*')))
-                        .sort(sortField)
-                        .doSearch();
-                }
-                else {
-                    results = client
-                        .query(_applyFilters(oQuery.query('*')))
-                        .doSearch();
-                }
-                results.then(function(data){
-                    if(data.hasOwnProperty('error')) {
-                        console.error(data.error);
-                    }
-                    else if(angular.isFunction(callbackFn)) {
-                        callbackFn(data);
-                    }
-                });
-            }
-
-            this.filter = filter;
-            this.sort = sort;
-            this.execute = execute;
-        }
-
         $scope.filterLoading = false;
         $scope.eventsFilter = {
             'type': null,
@@ -403,7 +328,7 @@ angular.module('cosmoUi')
             'nodes': null
         };
 
-        var events = new EsEvents('http://cosmoes.gsdev.info'), // '/backend/events'
+        var events = new RestService.getEvents('http://cosmoes.gsdev.info'), // '/backend/events'
             lastNodeSearch = $scope.eventsFilter.nodes;
 
         $scope.eventsFilter = {
@@ -412,17 +337,27 @@ angular.module('cosmoUi')
             'nodes': null
         };
 
-        function executeEvents() {
+        function executeEvents(autoPull) {
             $scope.filterLoading = true;
-            events.execute(function(data){
-                if(data) {
-                    $scope.eventHits = data.hits.hits;
-                }
-                else {
-                    console.warn('Cant load events, undefined data.');
-                }
-                $scope.filterLoading = false;
-            });
+            var troubleShoot = 0,
+                executeRetry = 10;
+
+            events
+                .execute(function(data){
+                    if(data) {
+                        $scope.eventHits = data.hits.hits;
+                    }
+                    else {
+                        console.warn('Cant load events, undefined data.');
+                        troubleShoot++;
+                    }
+                    $scope.filterLoading = false;
+
+                    // Stop AutoPull after 10 failures
+                    if(troubleShoot === executeRetry) {
+                        events.stopAutoPull();
+                    }
+                }, autoPull);
         }
 
         function filterEvents(field, newValue, oldValue, execute) {
@@ -443,7 +378,7 @@ angular.module('cosmoUi')
         (function _LoadEvents() {
             filterEvents('type', {value: 'cloudify_event'}, null);
             filterEvents('context.execution_id', {value: id}, null);
-            executeEvents();
+            executeEvents(true);
         })();
 
         $scope.$watch('eventsFilter.type', function(newValue, oldValue){
