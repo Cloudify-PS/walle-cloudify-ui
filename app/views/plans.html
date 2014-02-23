@@ -26,14 +26,6 @@
                 </div>
                 <pre ng-switch-when="relationships">{{showProperties.relationships | yaml:'No relationships to display' }} </pre>
                 <pre ng-switch-when="interfaces">{{showProperties.interfaces | yaml:'No interfaces to display' }} </pre>
-                <div ng-switch-when="policies">
-                    <pre>{{showProperties.policies | yaml:'No policies to display' }} </pre>
-                    <table>
-                        <tr ng-repeat="(key, value) in showProperties.policies">
-                            <td>{{key}}:</td><td>{{value}}</td>
-                        </tr>
-                    </table>
-                </div>
             </div>
         </div>
     </div>
