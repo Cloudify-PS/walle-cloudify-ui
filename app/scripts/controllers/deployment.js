@@ -363,16 +363,24 @@ angular.module('cosmoUi')
                 }
             }
 
-            function sort(field) {
-                sortField = field;
+            function sort(field, order) {
+                sortField = {};
+                sortField[field] = {'order': order};
             }
 
             function execute(callbackFn) {
-                var results = client.query(_applyFilters(oQuery.query('*')));
-                if(sortField !== false) {
-                    results = results.sort(sortField);
+                var results;
+                if(sortField) {
+                    results = client
+                        .query(_applyFilters(oQuery.query('*')))
+                        .sort(sortField)
+                        .doSearch();
                 }
-                results.doSearch();
+                else {
+                    results = client
+                        .query(_applyFilters(oQuery.query('*')))
+                        .doSearch();
+                }
                 results.then(function(data){
                     if(data.hasOwnProperty('error')) {
                         console.error(data.error);
@@ -476,7 +484,7 @@ angular.module('cosmoUi')
             $scope.eventSortList.current = field;
 
             // Apply Sort
-            events.sort(field);
+            events.sort(field, $scope.eventSortList[field]);
             executeEvents();
         };
 
