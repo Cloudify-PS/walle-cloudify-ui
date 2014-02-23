@@ -282,14 +282,20 @@
             }
         }
         .disableBox {
-            border-color:silver;
+            $disableBoxColor: "#eee";
+            border-color: #eee;
             > .head {
-                background-color: silver;
+                background-color: #eee;
             }
-            > .icon {
-                background-color: silver;
-                > .badge {
-                    background-color: silver;
+            > .piProgress {
+                .circle {
+                    background-color: #eee;
+                    > .icon {
+                        background-color: #eee;
+                        > .badge {
+                            background-color: #eee;
+                        }
+                    }
                 }
             }
         }

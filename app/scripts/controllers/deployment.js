@@ -231,9 +231,9 @@ angular.module('cosmoUi')
 
         // Execution Listener
         $scope.$watch('nodes', function(nodes){
-
-            /*console.log(["nodes", nodes]);*/
-
+            if(nodes === undefined) {
+                return;
+            }
             // Organizing the data by id
             var IndexedNodes = {}, completed = 0, failed = 0, install = 0;
             for (var i = 0; i < nodes.length; i++) {
@@ -415,7 +415,12 @@ angular.module('cosmoUi')
         function executeEvents() {
             $scope.filterLoading = true;
             events.execute(function(data){
-                $scope.eventHits = data.hits.hits;
+                if(data) {
+                    $scope.eventHits = data.hits.hits;
+                }
+                else {
+                    console.warn('Cant load events, undefined data.');
+                }
                 $scope.filterLoading = false;
             });
         }
