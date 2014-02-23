@@ -55,18 +55,17 @@
         </div>
     </div>
 
-    <div ng-show="isDeployDialogVisible">
+    <div ng-show="isDeployDialogVisible" ng-controller="DeployDialogCtrl">
         <div class="dialogBoxBg"></div>
         <div id="confirmationDialogContainer" class="dialogBox">
             <div class="dialogTitle">{{ 'blueprints.deployDialog.title' | i18n }} {{selectedBlueprint.id}}</div>
             <div class="dialogDeploymentName">
                 <label>{{ 'blueprints.deployDialog.deployName' | i18n }}</label>
-                <input type="text" id="deploymentName">
+                <input type="text" ng-model="deploymentId">
             </div>
-            <!--<div class="dialogDescription">{{ 'blueprints.deployDialog.description' | i18n }} {{selectedBlueprint.id}}?</div>-->
             <div class="buttonsContainer">
                 <button id="cancelBtn" class="dialogButton" ng-click="toggleDeployDialog()">{{ 'blueprints.deployDialog.cancelBtn' | i18n }}</button>
-                <button id="deployBtn" class="dialogButton" ng-click="deployBlueprint()">{{ 'blueprints.deployDialog.deployBtn' | i18n }}</button>
+                <button id="deployBtn" class="dialogButton" ng-class="{disabled: !isDeployEnabled(), enabled: isDeployEnabled()}" ng-click="deployBlueprint(selectedBlueprint)">{{ 'blueprints.deployDialog.deployBtn' | i18n }}</button>
             </div>
         </div>
     </div>

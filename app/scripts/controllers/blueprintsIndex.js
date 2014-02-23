@@ -5,7 +5,6 @@ angular.module('cosmoUi')
         $scope.isAddDialogVisible = false;
         $scope.isDeployDialogVisible = false;
         $scope.lastExecutedPlan = null;
-        $scope.deploymentId = null;
         $scope.selectedBlueprint = null;
         var _blueprintsArr = [];
         var cosmoError = false;
@@ -52,10 +51,17 @@ angular.module('cosmoUi')
         };
 
         $scope.deployBlueprint = function() {
-            RestService.deployBlueprint($scope.selectedBlueprint.id)
-                .then(function() {
-                    $scope.redirectToDeployments($scope.selectedBlueprint);
-                });
+            var params = {
+                blueprintId: $scope.selectedBlueprint.id,
+                deploymentId: $scope.deploymentId
+            }
+
+            if ($scope.isDeployEnabled()) {
+                RestService.deployBlueprint(params)
+                    .then(function() {
+                        $scope.redirectToDeployments($scope.selectedBlueprint);
+                    });
+            }
         };
 
         $scope.redirectToDeployments = function(blueprint) {

@@ -35,6 +35,14 @@
                     border-top: none;
                     border-left: none;
                     float: left;
+
+                    &.disabled {
+                      background: $COSMOUI_BUTTON_DISABLED_BACKGROUND;
+                    }
+
+                    &.enabled {
+                      background: $COSMOUI_BUTTON_BACKGROUND;
+                    }
                 }
                 .deployments-number {
                     background: #CADBEC center;

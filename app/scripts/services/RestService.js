@@ -75,7 +75,7 @@ angular.module('cosmoUi')
             var callParams = {
                 url: '/backend/deployments/create',
                 method: 'POST',
-                data: {'blueprintId': params}
+                data: {'blueprintId': params.blueprintId, 'deploymentId': params.deploymentId}
             };
 
             return _load('deployments/create', callParams);
