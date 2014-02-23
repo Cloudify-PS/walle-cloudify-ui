@@ -5,7 +5,27 @@ table.table {
         th {
             background: $COSMOUI_LIST_COLUMN_HEADER_BACKGROUND;
             color: $COSMOUI_LIST_COLUMN_HEADER_TEXT_COLOR;
+            vertical-align: middle !important;
+            height: 60px;
+            border: none;
             font-weight: normal;
+            &.sorting {
+                padding-left: 20px;
+                cursor: pointer;
+                &.asc {
+                    background-image: url('../images/sort-asc.gif');
+                    background-repeat: no-repeat;
+                    background-position: left 5px center;
+                }
+                &.desc {
+                    background-image: url('../images/sort-desc.gif');
+                    background-repeat: no-repeat;
+                    background-position: left 5px center;
+                }
+                &:hover {
+                    background-color: #D9EDFC;
+                }
+            }
         }
     }
     tbody {
@@ -20,7 +40,6 @@ table.table {
                     font-weight: $COSMOUI_LIST_HOVER_ACTION_FONT_WEIGHT;
                 }
             }
-
             &:nth-child(even) {
               background-color: #ededed;
             }

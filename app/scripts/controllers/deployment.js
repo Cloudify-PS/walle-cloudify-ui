@@ -11,7 +11,7 @@ angular.module('cosmoUi')
         $scope.deployment = null;
         $scope.nodes = [];
         $scope.events = [];
-        $scope.section = 'topology';
+        $scope.section = 'events';
         $scope.topologySettings = [
             {name: 'connections',   state: true},
             {name: 'modules',       state: false},
@@ -444,6 +444,35 @@ angular.module('cosmoUi')
             }
             filterEvents('context.node_name', {value: $scope.eventsFilter.nodes}, {value: lastNodeSearch}, true);
             lastNodeSearch = $scope.eventsFilter.nodes;
+        };
+
+        $scope.eventSortList = {};
+        $scope.sortEvents = function (field) {
+            if (!$scope.eventSortList.hasOwnProperty(field)) {
+                $scope.eventSortList[field] = false;
+                $scope.eventSortList.current = false;
+            }
+            if ($scope.eventSortList.current !== field) {
+                $scope.eventSortList[field] = false;
+            }
+            switch ($scope.eventSortList[field]) {
+            case false:
+                $scope.eventSortList[field] = 'desc';
+                break;
+            case 'desc':
+                $scope.eventSortList[field] = 'asc';
+                break;
+            case 'asc':
+                $scope.eventSortList[field] = false;
+                break;
+            }
+            $scope.eventSortList.current = field;
+        };
+
+        $scope.isSorted = function (field) {
+            if ($scope.eventSortList.current === field) {
+                return $scope.eventSortList[field];
+            }
         };
 
     });
