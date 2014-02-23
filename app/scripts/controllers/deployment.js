@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('cosmoUi')
-    .controller('DeploymentCtrl', function ($scope, $rootScope, $cookieStore, $routeParams, RestService, BreadcrumbsService, YamlService, PlanDataConvert, blueprintCoordinateService, $http, ejsResource) {
+    .controller('DeploymentCtrl', function ($scope, $rootScope, $cookieStore, $routeParams, RestService, BreadcrumbsService, YamlService, PlanDataConvert, blueprintCoordinateService) {
 
         var totalNodes = 0,
             appStatus = {},
@@ -187,7 +187,7 @@ angular.module('cosmoUi')
                         });
 
                     // Execution
-                    RestService.getDeploymentNodes({deploymentId : id})
+                    RestService.getDeploymentNodes({deploymentId : id/*, reachable: true*/})
                         .then(null, null, function(dataNodes) {
                             $scope.nodes = dataNodes;
                         });
@@ -231,6 +231,9 @@ angular.module('cosmoUi')
 
         // Execution Listener
         $scope.$watch('nodes', function(nodes){
+            if(nodes === undefined) {
+                return;
+            }
             // Organizing the data by id
             var IndexedNodes = {}, completed = 0, failed = 0, install = 0;
             for (var i = 0; i < nodes.length; i++) {
@@ -303,13 +306,13 @@ angular.module('cosmoUi')
 
         /* Filters DEMO - start */
         $scope.workflowsList = [
-            {'value': '', 'label': 'All'},
+            {'value': null, 'label': 'All'},
             {'value': 'install', 'label': 'Install'},
             {'value': 'complete', 'label': 'Complete'},
             {'value': 'failed', 'label': 'Failed'}
         ];
         $scope.eventTypeList = [
-            {'value': '', 'label': 'All'},
+            {'value': null, 'label': 'All'},
             {'value': 'workflow_stage', 'label': 'Workflow Stage'},
             {'value': 'workflow_started', 'label': 'Workflow Started'},
             {'value': 'workflow_succeeded', 'label': 'Workflow Succeeded'},
@@ -318,71 +321,117 @@ angular.module('cosmoUi')
         ];
         /* Filters DEMO - end */
 
-        // Events Connected to Elastic Search
-        var filter = {};
-        var server = 'http://cosmoes.gsdev.info/';
-        var ejs = ejsResource(server);
-        var oQuery = ejs.QueryStringQuery();
-        var client = ejs.Request()
-            .query(ejs.MatchQuery('type', 'cloudify_event'))
-            .query(ejs.MatchQuery('context.execution_id', id));
-
-
-        $scope.filterEventsByWorkflow = function( filter ){
-            filterEvents('context.workflow_id', (filter && filter.value !== '') ? filter.value : null);
+        $scope.filterLoading = false;
+        $scope.eventsFilter = {
+            'type': null,
+            'workflow': null,
+            'nodes': null
         };
 
-        $scope.filterEventsByType = function( filter ) {
-            filterEvents('event_type', (filter && filter.value !== '') ? filter.value : null);
+        var events = new RestService.getEvents('http://cosmoes.gsdev.info'), // '/backend/events'
+            lastNodeSearch = $scope.eventsFilter.nodes;
+
+        $scope.eventsFilter = {
+            'type': null,
+            'workflow': null,
+            'nodes': null
         };
 
-        $scope.filterByNodes = function() {
+        function executeEvents(autoPull) {
+            $scope.filterLoading = true;
+            var troubleShoot = 0,
+                executeRetry = 10;
 
-            //console.log(["filterByNodes", $scope.searchNode]);
-
-        };
-
-        /*$scope.searchNode = 'test';
-        $scope.$watch("searchNode", function(dataVal){
-            console.log(["searchNode", dataVal]);
-        });*/
-
-        function filterEvents(type, value) {
-            if(value) {
-                filter[type] = value;
-            }
-            else if(filter.hasOwnProperty(type)) {
-                delete filter[type];
-            }
-            filterEventsExecute(filterEventsQuery());
-        }
-
-        function filterEventsQuery() {
-            if(Object.keys(filter).length > 0) {
-                var filterQuery = client;
-                for(var type in filter) {
-                    switch(type) {
-                    default:
-                        filterQuery = filterQuery.query(ejs.MatchQuery(type, filter[type]));
-                        break;
+            events
+                .execute(function(data){
+                    if(data) {
+                        $scope.eventHits = data.hits.hits;
                     }
-                }
-                return filterQuery;
+                    else {
+                        console.warn('Cant load events, undefined data.');
+                        troubleShoot++;
+                    }
+                    $scope.filterLoading = false;
+
+                    // Stop AutoPull after 10 failures
+                    if(troubleShoot === executeRetry) {
+                        events.stopAutoPull();
+                    }
+                }, autoPull);
+        }
+
+        function filterEvents(field, newValue, oldValue, execute) {
+            if(newValue === null) {
+                return;
             }
-            return client.query(oQuery.query('*'));
+            if(oldValue !== null && oldValue.value !== null) {
+                events.filter(field, oldValue.value);
+            }
+            if(newValue.value !== null) {
+                events.filter(field, newValue.value);
+            }
+            if(execute === true) {
+                executeEvents();
+            }
         }
 
-        function filterEventsExecute(query) {
-            query.doSearch().then(function(data){
-                if(data.hasOwnProperty('error')) {
-                    console.error(data.error);
-                }
-                else {
-                    $scope.eventHits = data.hits.hits;
-                }
-            });
-        }
+        (function _LoadEvents() {
+            filterEvents('type', {value: 'cloudify_event'}, null);
+            filterEvents('context.execution_id', {value: id}, null);
+            executeEvents(true);
+        })();
 
-        // Execute and Show All
-        filterEvents(null);
+        $scope.$watch('eventsFilter.type', function(newValue, oldValue){
+            if(newValue !== null && oldValue !== null) {
+                filterEvents('event_type', newValue, oldValue, true);
+            }
+        });
+
+        $scope.$watch('eventsFilter.workflow', function(newValue, oldValue){
+            if(newValue !== null && oldValue !== null) {
+                filterEvents('context.workflow_id', newValue, oldValue, true);
+            }
+        });
+
+        $scope.eventFindNodes = function() {
+            if($scope.eventsFilter.nodes === '') {
+                $scope.eventsFilter.nodes = null;
+            }
+            filterEvents('context.node_name', {value: $scope.eventsFilter.nodes}, {value: lastNodeSearch}, true);
+            lastNodeSearch = $scope.eventsFilter.nodes;
+        };
+
+        $scope.eventSortList = {};
+        $scope.sortEvents = function (field) {
+            if (!$scope.eventSortList.hasOwnProperty(field)) {
+                $scope.eventSortList[field] = false;
+                $scope.eventSortList.current = false;
+            }
+            if ($scope.eventSortList.current !== field) {
+                $scope.eventSortList[field] = false;
+            }
+            switch ($scope.eventSortList[field]) {
+            case false:
+                $scope.eventSortList[field] = 'desc';
+                break;
+            case 'desc':
+                $scope.eventSortList[field] = 'asc';
+                break;
+            case 'asc':
+                $scope.eventSortList[field] = false;
+                break;
+            }
+            $scope.eventSortList.current = field;
+
+            // Apply Sort
+            events.sort(field, $scope.eventSortList[field]);
+            executeEvents();
+        };
+
+        $scope.isSorted = function (field) {
+            if ($scope.eventSortList.current === field) {
+                return $scope.eventSortList[field];
+            }
+        };
+
     });

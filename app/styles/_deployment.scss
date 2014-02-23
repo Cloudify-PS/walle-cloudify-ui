@@ -1,125 +1,184 @@
 #deployment {
 
-  #plans-index-events-widget {
-    position: absolute;
-    right: $COSMOUI_DEPLOYMENT_EVENT_WIDGET_RIGHT;
-    top: $COSMOUI_DEPLOYMENT_EVENT_WIDGET_TOP;
-  }
-
-  #deployment-header {
-    width: $COSMOUI_DEPLOYMENT_HEADER_WIDTH;
-
-    .header-left {
-      #settings-button {
-        display: inline-block;
-        margin-top: 10px;
-        margin-left: 10px;
-         cursor: pointer;
-      }
+    #plans-index-events-widget {
+        position: absolute;
+        right: $COSMOUI_DEPLOYMENT_EVENT_WIDGET_RIGHT;
+        top: $COSMOUI_DEPLOYMENT_EVENT_WIDGET_TOP;
     }
 
-    .header-right {
-      position: relative;
-      width: $COSMOUI_DEPLOYMENT_RIGHT_HEADER_WIDTH;
-      float: right;
+    #deployment-header {
+        width: $COSMOUI_DEPLOYMENT_HEADER_WIDTH;
 
-      #appStatus {
-        float: right;
-        width: $COSMOUI_DEPLOYMENT_APP_STATUS_WIDTH;
-        height: $COSMOUI_DEPLOYMENT_APP_STATUS_HEIGHT;
-        background: $COSMOUI_DEPLOYMENT_APP_STATUS_BACKGROUND;
-        border-bottom-left-radius: $COSMOUI_DEPLOYMENT_APP_STATUS_BORDER_BOTTOM_LEFT_RADIUS;
-        border-left: $COSMOUI_DEPLOYMENT_APP_STATUS_BORDER;
-        border-bottom: $COSMOUI_DEPLOYMENT_APP_STATUS_BORDER;
-      }
-    }
-  }
-
-  .content-section{
-    width: 100%;
-    height: 100%;
-    margin: 0 10px;
-
-      .filters {
-          margin: 0 0 10px 0;
-          .multiSelectMenu {
-              margin: 0 15px 0 5px;
-              vertical-align: middle;
-          }
-          .search {
-              display: inline-block;
-              vertical-align: middle;
-              input {
-                  border-style: solid;
-                  border-color: #ccc;
-                  border-width: 1px 0 1px 1px;
-                  padding: 5px 10px;
-                  border-radius: 3px 0 0 3px;
-              }
-              button {
-                  background-color: #f5f5f5;
-                  border-style: solid;
-                  border-color: #ccc;
-                  border-width: 1px 1px 1px 0;
-                  padding: 5px 10px;
-                  border-radius: 0 3px 3px 0;
-              }
-          }
-      }
-
-    table.table {
-      width: $COSMOUI_LIST_WIDTH;
-      margin: 0px;
-
-      i {
-        color: $COSMOUI_EVENTS_LIST_ITEM_COLOR;
-      }
-
-      tr:first-child td {
-        background: $COSMOUI_LIST_COLUMN_HEADER_BACKGROUND;
-        color: $COSMOUI_LIST_COLUMN_HEADER_TEXT_COLOR;
-      }
-
-      tr {
-        cursor: $COSMOUI_DIALOG_CURSOR;
-
-        &:hover:not(:first-child) td{
-          background-color: $COSMOUI_LIST_HOVER_BACKGROUND;
-
-          &,i {color: $COSMOUI_LIST_HOVER_ACTION_TEXT_COLOR; }
-          i {font-weight: $COSMOUI_LIST_HOVER_ACTION_FONT_WEIGHT;}
+        .header-left {
+            #settings-button {
+                display: inline-block;
+                margin-top: 10px;
+                margin-left: 10px;
+                cursor: pointer;
+            }
         }
 
-        td {
-          vertical-align: middle;
-          height: 60px;
-          color: #333;
+        .header-right {
+            position: relative;
+            width: $COSMOUI_DEPLOYMENT_RIGHT_HEADER_WIDTH;
+            float: right;
 
-          &.type {width:150px;}
-          &.icon { width:60px;}
-          &.node, &.task, &.workflow { width: 110px;}
-          &.task { width: auto; }
-          &.date { width: 200px;}
-
-          &.event-text-green {
-            color: $COSMOUI_EVENTS_LIST_TEXT_SUCCESS;
-          }
-
-          &.event-text-red {
-            color: $COSMOUI_EVENTS_LIST_TEXT_FAILED;
-          }
-
-          &.event-icon-workflow-started {background: url("#{$img-workflow-started}") no-repeat center center;}
-          &.event-icon-workflow-end-successfully {background: url("#{$img-workflow-end-successfully}") no-repeat center center;}
-          &.event-icon-workflow-failed {background: url("#{$img-workflow-failed}") no-repeat center center;}
-          &.event-icon-task-started {background: url("#{$img-task-started}") no-repeat center center;}
-          &.event-icon-task-failed {background: url("#{$img-task-failed}") no-repeat center center;}
-          &.event-icon-task-sent {background: url("#{$img-task-sent}") no-repeat center center;}
-          &.event-icon-task-success {background: url("#{$img-task-success}") no-repeat center center;}
-          &.event-icon-policy-success {background: url("#{$img-policy-success}") no-repeat center center;}
-          &.event-icon-policy-failed {background: url("#{$img-policy-failed}") no-repeat center center;}
+            #appStatus {
+                float: right;
+                width: $COSMOUI_DEPLOYMENT_APP_STATUS_WIDTH;
+                height: $COSMOUI_DEPLOYMENT_APP_STATUS_HEIGHT;
+                background: $COSMOUI_DEPLOYMENT_APP_STATUS_BACKGROUND;
+                border-bottom-left-radius: $COSMOUI_DEPLOYMENT_APP_STATUS_BORDER_BOTTOM_LEFT_RADIUS;
+                border-left: $COSMOUI_DEPLOYMENT_APP_STATUS_BORDER;
+                border-bottom: $COSMOUI_DEPLOYMENT_APP_STATUS_BORDER;
+            }
         }
-      }
     }
-  }
+
+    .content-section {
+        width: 100%;
+        height: 100%;
+        padding: 20px 10px 10px;
+
+        .filters {
+            position: relative;
+            margin: 0 0 10px 0;
+            .multiSelectMenu {
+                margin: 0 15px 0 5px;
+                vertical-align: middle;
+            }
+            .search {
+                display: inline-block;
+                vertical-align: middle;
+                input {
+                    border-style: solid;
+                    border-color: #ccc;
+                    border-width: 1px 1px 1px 1px;
+                    padding: 5px 10px;
+                    border-radius: 3px 0 0 3px;
+                    outline: none;
+                    &:focus {
+                        border-color: #29A9EE;
+                    }
+                }
+                button {
+                    background-color: #f5f5f5;
+                    border-style: solid;
+                    border-color: #ccc;
+                    border-width: 1px 1px 1px 0;
+                    padding: 5px 10px;
+                    border-radius: 0 3px 3px 0;
+                    outline: none;
+                    &:hover {
+                        border-color: #29A9EE;
+                        background-color: #29A9EE;
+                        color: #fff;
+                    }
+                }
+            }
+            .loading {
+                position: absolute;
+                top: 0;
+                right: 0;
+                width: 120px;
+                height: 30px;
+                background-image: url('../images/loading-dots.gif');
+                background-repeat: no-repeat;
+                background-position: center center;
+            }
+        }
+
+        .emptyTable {
+            display: block;
+            text-align: center;
+            padding: 20px;
+        }
+
+        table.table {
+            width: 100%;
+            margin: 0px;
+
+            i {
+                color: $COSMOUI_EVENTS_LIST_ITEM_COLOR;
+            }
+
+            tr:first-child td {
+                background: $COSMOUI_LIST_COLUMN_HEADER_BACKGROUND;
+                color: $COSMOUI_LIST_COLUMN_HEADER_TEXT_COLOR;
+            }
+
+            tr {
+                cursor: $COSMOUI_DIALOG_CURSOR;
+
+                &:hover:not(:first-child) td {
+                    background-color: $COSMOUI_LIST_HOVER_BACKGROUND;
+
+                    &, i {
+                        color: $COSMOUI_LIST_HOVER_ACTION_TEXT_COLOR;
+                    }
+                    i {
+                        font-weight: $COSMOUI_LIST_HOVER_ACTION_FONT_WEIGHT;
+                    }
+                }
+
+                td {
+                    vertical-align: middle;
+                    height: 60px;
+                    color: #333;
+
+                    &.type {
+                        width: 150px;
+                    }
+                    &.icon {
+                        width: 60px;
+                    }
+                    &.node, &.task, &.workflow {
+                        width: 110px;
+                    }
+                    &.task {
+                        width: auto;
+                    }
+                    &.date {
+                        width: 200px;
+                    }
+
+                    &.event-text-green {
+                        color: $COSMOUI_EVENTS_LIST_TEXT_SUCCESS;
+                    }
+
+                    &.event-text-red {
+                        color: $COSMOUI_EVENTS_LIST_TEXT_FAILED;
+                    }
+
+                    &.event-icon-workflow-started {
+                        background: url("#{$img-workflow-started}") no-repeat center center;
+                    }
+                    &.event-icon-workflow-end-successfully {
+                        background: url("#{$img-workflow-end-successfully}") no-repeat center center;
+                    }
+                    &.event-icon-workflow-failed {
+                        background: url("#{$img-workflow-failed}") no-repeat center center;
+                    }
+                    &.event-icon-task-started {
+                        background: url("#{$img-task-started}") no-repeat center center;
+                    }
+                    &.event-icon-task-failed {
+                        background: url("#{$img-task-failed}") no-repeat center center;
+                    }
+                    &.event-icon-task-sent {
+                        background: url("#{$img-task-sent}") no-repeat center center;
+                    }
+                    &.event-icon-task-success {
+                        background: url("#{$img-task-success}") no-repeat center center;
+                    }
+                    &.event-icon-policy-success {
+                        background: url("#{$img-policy-success}") no-repeat center center;
+                    }
+                    &.event-icon-policy-failed {
+                        background: url("#{$img-policy-failed}") no-repeat center center;
+                    }
+                }
+            }
+        }
+    }
 }

@@ -198,7 +198,7 @@ Cloudify4node.getDeploymentById = function(deployment_id, callback) {
 
 Cloudify4node.getDeploymentNodes = function(deployment_id, callback) {
     var requestData = createRequestData({
-        path: '/deployments/' + deployment_id + '/nodes',
+        path: '/deployments/' + deployment_id + '/nodes?reachable=true',
         method: 'GET'
     });
 
@@ -235,7 +235,6 @@ Cloudify4node.getEvents = function(query, callback) {
     var data = query;
     var requestData = createRequestData({
         hostname: conf.esServer,
-        path: '/_search',
         data: data,
         method: 'POST',
         headers: {

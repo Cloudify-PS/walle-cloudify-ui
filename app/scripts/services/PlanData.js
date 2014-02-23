@@ -404,7 +404,7 @@ angular.module('cosmoUi').service('PlanDataConvert', function () {
         case 'host':
             return 'host';
         case 'router':
-            return 'network';
+            return 'router';
         }
     }
 

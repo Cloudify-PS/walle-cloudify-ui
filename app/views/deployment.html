@@ -1,4 +1,5 @@
 <div class="cosmo-layout" id="deployment">
+
     <!-- Side Panel - START -->
     <div class="properties-panel right-panel" ng-hide="!showProperties">
         <div class="title">
@@ -121,36 +122,42 @@
                     <div class="filters">
                         Workflow: <div multi:select:menu
                              data-options="workflowsList"
-                             data-ng-model="eventType"
-                             data-init="['']"
+                             data-ng-model="eventsFilter.workflow"
+                             data-init="[null]"
                              data-text="Choose Workflow"
                              data-onchange="filterEventsByWorkflow(filter)"></div>
                         Event Type: <div multi:select:menu
                              data-options="eventTypeList"
-                             data-ng-model="eventType"
-                             data-init="['']"
+                             data-ng-model="eventsFilter.type"
+                             data-init="[null]"
                              data-text="Choose Type"
                              data-onchange="filterEventsByType(filter)"></div>
                         <div class="search">
-                            <input type="text" data-ng-model="searchNode" placeholder="Search Node"><button data-ng-click="filterByNodes()">Find</button>
+                            <input type="text" data-ng-model="eventsFilter.nodes" placeholder="Search Node"><button data-ng-click="eventFindNodes()">Find</button>
                         </div>
+                        <div class="loading" data-ng-show="filterLoading"></div>
                     </div>
                     <table class="table table-striped">
-                        <tr>
-                            <td class="icon"><!-- icon --></td>
-                            <td class="date">Timestamp</td>
-                            <td class="type">{{ 'deployment.table.heading.eventType' | i18n }}</td>
-                            <td class="node">{{ 'deployment.table.heading.node' | i18n }}</td>
-                            <td class="task">{{ 'deployment.table.heading.task' | i18n }}</td>
-                        </tr>
-                        <tr ng-repeat="event in eventHits">
-                            <td class="icon" ng-class="getEventIcon(event._source.event_type)"></td>
-                            <td class="date">{{event._source.timestamp == undefined && 'N/A' || event._source.timestamp}}</td>
-                            <td class="type">{{event._source.event_type == undefined && 'N/A' || event._source.event_type}}</td>
-                            <td class="node">{{event._source.context.node_name == undefined && 'N/A' || event._source.context.node_name}}</td>
-                            <td class="task">{{event._source.message.text == undefined && 'N/A' || event._source.message.text}}</td>
-                        </tr>
+                        <thead>
+                            <tr>
+                                <th class="icon"><!-- icon --></th>
+                                <th class="date sorting" data-ng-click="sortEvents('timestamp')" data-ng-class="isSorted('timestamp')">Timestamp</th>
+                                <th class="type sorting" data-ng-click="sortEvents('eventType')" data-ng-class="isSorted('eventType')">{{ 'deployment.table.heading.eventType' | i18n }}</th>
+                                <th class="node">{{ 'deployment.table.heading.node' | i18n }}</th>
+                                <th class="task">{{ 'deployment.table.heading.task' | i18n }}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="event in eventHits">
+                                <td class="icon" ng-class="getEventIcon(event._source.event_type)"></td>
+                                <td class="date">{{event._source.timestamp == undefined && 'N/A' || event._source.timestamp}}</td>
+                                <td class="type">{{event._source.event_type == undefined && 'N/A' || event._source.event_type}}</td>
+                                <td class="node">{{event._source.context.node_name == undefined && 'N/A' || event._source.context.node_name}}</td>
+                                <td class="task">{{event._source.message.text == undefined && 'N/A' || event._source.message.text}}</td>
+                            </tr>
+                        </tbody>
                     </table>
+                    <div class="emptyTable" data-ng-hide="eventHits.length">There is no events at this moment...</div>
                 </div>
                 <!-- Events Tab - END -->
             </div>
