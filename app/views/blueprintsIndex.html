@@ -39,9 +39,9 @@
     <div ng-show="isAddDialogVisible" ng-controller="FileSelectionDialogCtrl">
         <div class="dialogBoxBg"></div>
         <div id="uploadDialogContainer" class="dialogBox">
-            <div class="dialogClose dialogButton" ng-click="closeDialog()">X</div>
             <div class="dialogTitle">{{ 'blueprints.uploadPopup.title' | i18n }}</div>
             <div class="dialogDescription">{{ 'blueprints.uploadPopup.description' | i18n }}</div>
+            <div class="dialogClose dialogButton" ng-click="closeDialog()">X</div>
             <form id="uploadForm" name="uploadForm">
                 <div id="browse">
                     <div id="browseBtn" class="dialogButton">{{ 'blueprints.uploadPopup.browseBtn' | i18n }}</div>

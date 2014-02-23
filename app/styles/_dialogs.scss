@@ -77,8 +77,8 @@
 }
 
 #uploadDialogContainer {
-  width: 690px;
-  height: 400px;
+  width: 600px;
+  height: 330px;
   background: $COSMOUI_DIALOG_BACKGROUND;
   border: 10px solid $COSMOUI_DIALOG_BORDER_COLOR;
   box-shadow: 0px 0px 10px $COSMOUI_DIALOG_SHADOW_COLOR;
@@ -94,12 +94,13 @@
     position: relative;
     float: left;
     left: 20px;
-    height: 240px;
+    height: 190px;
     width: 100%;
+    top: 60px;
 
     #browse {
       position: relative;
-      left: 120px;
+      left: 80px;
       top: 30px;
 
       #fileInput {
