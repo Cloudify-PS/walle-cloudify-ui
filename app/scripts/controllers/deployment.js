@@ -333,6 +333,7 @@ angular.module('cosmoUi')
                 .from(0)
                 .size(100);
             var activeFilters = {};
+            var sortField = false;
 
             function _isActiveFilter(field, term) {
                 return activeFilters.hasOwnProperty(field + term);
@@ -362,11 +363,16 @@ angular.module('cosmoUi')
                 }
             }
 
-            function execute(callbackFn) {
-                var results = client
-                    .query(_applyFilters(oQuery.query('*')))
-                    .doSearch();
+            function sort(field) {
+                sortField = field;
+            }
 
+            function execute(callbackFn) {
+                var results = client.query(_applyFilters(oQuery.query('*')));
+                if(sortField !== false) {
+                    results = results.sort(sortField);
+                }
+                results.doSearch();
                 results.then(function(data){
                     if(data.hasOwnProperty('error')) {
                         console.error(data.error);
@@ -378,6 +384,7 @@ angular.module('cosmoUi')
             }
 
             this.filter = filter;
+            this.sort = sort;
             this.execute = execute;
         }
 
@@ -467,6 +474,10 @@ angular.module('cosmoUi')
                 break;
             }
             $scope.eventSortList.current = field;
+
+            // Apply Sort
+            events.sort(field);
+            executeEvents();
         };
 
         $scope.isSorted = function (field) {
