@@ -50,20 +50,6 @@ angular.module('cosmoUi')
                 });
         };
 
-        $scope.deployBlueprint = function() {
-            var params = {
-                blueprintId: $scope.selectedBlueprint.id,
-                deploymentId: $scope.deploymentId
-            }
-
-            if ($scope.isDeployEnabled()) {
-                RestService.deployBlueprint(params)
-                    .then(function() {
-                        $scope.redirectToDeployments($scope.selectedBlueprint);
-                    });
-            }
-        };
-
         $scope.redirectToDeployments = function(blueprint) {
             $location.path('/deployments').search({blueprint: blueprint});
         };

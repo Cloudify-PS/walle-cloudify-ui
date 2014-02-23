@@ -12,7 +12,7 @@ angular.module('cosmoUi')
             var params = {
                 blueprintId: blueprint.id,
                 deploymentId: $scope.deploymentId
-            }
+            };
 
             if ($scope.isDeployEnabled()) {
                 RestService.deployBlueprint(params)
