@@ -27,7 +27,8 @@
             "title": "Deploy",
             "description": "Create deployment of",
             "cancelBtn": "Cancel",
-            "deployBtn": "Deploy"
+            "deployBtn": "Deploy",
+            "deployName": "Please enter deployment name"
         }
     },
     "config": {
