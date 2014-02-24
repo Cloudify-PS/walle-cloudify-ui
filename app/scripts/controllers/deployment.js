@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('cosmoUi')
-    .controller('DeploymentCtrl', function ($scope, $rootScope, $cookieStore, $routeParams, RestService, BreadcrumbsService, YamlService, PlanDataConvert, blueprintCoordinateService) {
+    .controller('DeploymentCtrl', function ($scope, $rootScope, $cookieStore, $routeParams, RestService, EventsService, BreadcrumbsService, YamlService, PlanDataConvert, blueprintCoordinateService) {
 
         var totalNodes = 0,
             appStatus = {},
@@ -330,7 +330,7 @@ angular.module('cosmoUi')
             'nodes': null
         };
 
-        var events = new RestService.getEvents('http://cosmoes.gsdev.info'), // '/backend/events'
+        var events = EventsService.newInstance('http://cosmoes.gsdev.info'), // '/backend/events'
             lastNodeSearch = $scope.eventsFilter.nodes;
 
         $scope.eventsFilter = {
