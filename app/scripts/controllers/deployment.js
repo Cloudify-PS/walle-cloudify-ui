@@ -377,7 +377,7 @@ angular.module('cosmoUi')
 
         (function _LoadEvents() {
             filterEvents('type', {value: 'cloudify_event'}, null);
-            filterEvents('context.execution_id', {value: id}, null);
+            filterEvents('context.deployment_id', {value: id}, null);
             executeEvents(true);
         })();
 
