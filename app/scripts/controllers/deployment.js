@@ -105,27 +105,6 @@ angular.module('cosmoUi')
             return eventMap !== undefined ? eventMap : event.type;
         }
 
-        /*function _loadEvents() {
-            if (id === undefined) {
-                return;
-            }
-            RestService.loadEvents({ deploymentId : id, from: from, to: to })
-                .then(null, null, function(data) {
-                    if (data.id !== undefined && data.lastEvent !== undefined) {
-
-                        if (data.events && data.events.length > 0) {
-                            $scope.events = $scope.events.concat(data.events);
-
-                            for (var i = 0; i < $scope.events.length; i++) {
-                                if (typeof($scope.events[0]) === 'string') {    // walkaround if the events returned as strings and not JSONs
-                                    $scope.events[i] = JSON.parse($scope.events[i]);
-                                }
-                            }
-                        }
-                    }
-                });
-        }*/
-
         // Define Deployment Model in the first time
         function _setDeploymentModel( data ) {
             for (var i = 0; i < data.plan.nodes.length; i++) {
@@ -342,12 +321,16 @@ angular.module('cosmoUi')
         function executeEvents(autoPull) {
             $scope.filterLoading = true;
             var troubleShoot = 0,
-                executeRetry = 10;
+                executeRetry = 10,
+                lastAmount = 0;
 
             events
                 .execute(function(data){
                     if(data) {
-                        $scope.eventHits = data.hits.hits;
+                        if(data.hits.hits.length !== lastAmount) {
+                            $scope.eventHits = data.hits.hits;
+                            lastAmount = data.hits.hits.length;
+                        }
                     }
                     else {
                         console.warn('Cant load events, undefined data.');

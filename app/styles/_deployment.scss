@@ -97,35 +97,29 @@
         table.table {
             width: 100%;
             margin: 0px;
-
-            i {
-                color: $COSMOUI_EVENTS_LIST_ITEM_COLOR;
-            }
-
-            /*tr:first-child td {
-                background: $COSMOUI_LIST_COLUMN_HEADER_BACKGROUND;
-                color: $COSMOUI_LIST_COLUMN_HEADER_TEXT_COLOR;
-            }*/
-
-            tr {
-                cursor: $COSMOUI_DIALOG_CURSOR;
-
-                &:hover:not(:first-child) td {
-                    background-color: $COSMOUI_LIST_HOVER_BACKGROUND;
-
-                    &, i {
-                        color: $COSMOUI_LIST_HOVER_ACTION_TEXT_COLOR;
+            tr.details {
+                background-color: #f5f5f5;
+                border-bottom: 1px solid #ccc;
+                padding: 10px;
+                .group {
+                    display: inline-block;
+                    border-right: 1px dotted #ccc;
+                    min-width: 250px;
+                    height: 100%;
+                    font-size: 13px;
+                    vertical-align: top;
+                    > span {
+                        display: block;
+                        padding: 5px 0;
+                        margin: 0 10px;
                     }
-                    i {
-                        font-weight: $COSMOUI_LIST_HOVER_ACTION_FONT_WEIGHT;
+                    &:last-child {
+                        border: 0px;
                     }
                 }
-
+            }
+            tr {
                 td {
-                    vertical-align: middle;
-                    height: 60px;
-                    color: #333;
-
                     &.type {
                         width: 150px;
                     }
@@ -141,15 +135,12 @@
                     &.date {
                         width: 200px;
                     }
-
                     &.event-text-green {
                         color: $COSMOUI_EVENTS_LIST_TEXT_SUCCESS;
                     }
-
                     &.event-text-red {
                         color: $COSMOUI_EVENTS_LIST_TEXT_FAILED;
                     }
-
                     &.event-icon-workflow-started {
                         background: url("#{$img-workflow-started}") no-repeat center center;
                     }
