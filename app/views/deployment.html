@@ -137,7 +137,7 @@
                         </div>
                         <div class="loading" data-ng-show="filterLoading"></div>
                     </div>
-                    <table class="table table-striped">
+                    <table class="table">
                         <thead>
                             <tr>
                                 <th class="icon"><!-- icon --></th>
@@ -147,13 +147,26 @@
                                 <th class="task sorting" data-ng-click="sortEvents('task')" data-ng-class="isSorted('task')">{{ 'deployment.table.heading.task' | i18n }}</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            <tr ng-repeat="event in eventHits">
+                        <tbody ng-repeat="event in eventHits" ng-init="isOpen=false">
+                            <tr data-ng-click="isOpen=!isOpen">
                                 <td class="icon" ng-class="getEventIcon(event._source.event_type)"></td>
                                 <td class="date">{{event._source.timestamp == undefined && 'N/A' || event._source.timestamp | dateFormat: 'yyyy-MM-dd HH:mm:ss'}}</td>
                                 <td class="type">{{getEventText(event._source.event_type) == undefined && 'N/A' || getEventText(event._source.event_type)}}</td>
                                 <td class="node">{{event._source.context.node_name == undefined && 'N/A' || event._source.context.node_name}}</td>
                                 <td class="task">{{event._source.message.text == undefined && 'N/A' || event._source.message.text}}</td>
+                            </tr>
+                            <tr class="details" data-ng-show="isOpen">
+                                <td colspan="5">
+                                    <div class="group">
+                                        <span><b>Execution ID:</b> {{ event._source.context.execution_id == undefined && 'N/A' || event._source.context.execution_id }}</span>
+                                        <span><b>Node ID:</b> {{ event._source.context.node_id == undefined && 'N/A' || event._source.context.node_id }}</span>
+                                    </div>
+                                    <div class="group">
+                                        <span><b>Task Name:</b> {{ event._source.context.task_name == undefined && 'N/A' || event._source.context.task_name }}</span>
+                                        <span><b>Plugin:</b> {{ event._source.context.plugin == undefined && 'N/A' || event._source.context.plugin }}</span>
+                                        <span><b>Operation:</b> {{ event._source.context.operation == undefined && 'N/A' || event._source.context.operation }}</span>
+                                    </div>
+                                </td>
                             </tr>
                         </tbody>
                     </table>
