@@ -57,14 +57,16 @@ angular.module('cosmoUi')
         };
 
         $scope.getEventIcon = function(event) {
-            //return _getCssMapField( event, 'icon');
             if(eventCSSMap.hasOwnProperty(event)) {
                 return eventCSSMap[event].icon;
             }
         };
 
         $scope.getEventText = function(event) {
-            return _getCssMapField( event, 'text') || event.type;
+            if(eventCSSMap.hasOwnProperty(event)) {
+                return eventCSSMap[event].text;
+            }
+            return event;
         };
 
         function _getCssMapField( event, field ){
