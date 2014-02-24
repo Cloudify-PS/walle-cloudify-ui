@@ -10,7 +10,6 @@ module.exports = Cloudify4node;
 function Cloudify4node(options) {}
 
 function createRequest(requestData, callback) {
-    console.log(requestData);
     var _callback = function(res) {
         var data = '';
         var result = '';
@@ -45,7 +44,6 @@ function createRequest(requestData, callback) {
     var req = ajax.request(requestData.options, _callback);
     req.on('error', onError);
 
-
     if (requestData.post_data !== undefined) {
         req.write(JSON.stringify(requestData.post_data));
     }
@@ -61,9 +59,13 @@ function createRequestData(options) {
     if (options !== undefined) {
         requestData.options = {
             hostname: options.hostname !== undefined ? options.hostname : conf.cosmoServer,
-            path: options.path,
+//            path: options.path,
             method: options.method
         };
+
+        if (options.path !== undefined) {
+            requestData.options.path = options.path;
+        }
 
         if (options.port !== undefined) {
             requestData.options.port = options.port;
@@ -235,11 +237,13 @@ Cloudify4node.getEvents = function(query, callback) {
     var data = query;
     var requestData = createRequestData({
         hostname: conf.esServer,
+        path: '/_search/',
         data: data,
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
-            'Content-Length': JSON.stringify(data).length
+            'Content-Length': JSON.stringify(data).length,
+            'Connection': 'close'
         }
     });
 

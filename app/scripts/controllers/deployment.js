@@ -330,7 +330,7 @@ angular.module('cosmoUi')
             'nodes': null
         };
 
-        var events = EventsService.newInstance('http://cosmoes.gsdev.info'), // '/backend/events'
+        var events = EventsService.newInstance('/backend/events'),
             lastNodeSearch = $scope.eventsFilter.nodes;
 
         $scope.eventsFilter = {
