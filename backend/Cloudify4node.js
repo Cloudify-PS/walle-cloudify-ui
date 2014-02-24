@@ -236,8 +236,7 @@ Cloudify4node.executeDeployment = function(requestBody, callback) {
 Cloudify4node.getEvents = function(query, callback) {
     var data = query;
     var requestData = createRequestData({
-        hostname: conf.esServer,
-        path: '/_search/',
+        path: '/events',
         data: data,
         method: 'POST',
         headers: {
