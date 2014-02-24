@@ -11,7 +11,7 @@ angular.module('cosmoUi')
         $scope.deployment = null;
         $scope.nodes = [];
         $scope.events = [];
-        $scope.section = 'events';
+        $scope.section = 'topology';
         $scope.topologySettings = [
             {name: 'connections',   state: true},
             {name: 'modules',       state: false},
@@ -57,14 +57,16 @@ angular.module('cosmoUi')
         };
 
         $scope.getEventIcon = function(event) {
-            //return _getCssMapField( event, 'icon');
             if(eventCSSMap.hasOwnProperty(event)) {
                 return eventCSSMap[event].icon;
             }
         };
 
         $scope.getEventText = function(event) {
-            return _getCssMapField( event, 'text') || event.type;
+            if(eventCSSMap.hasOwnProperty(event)) {
+                return eventCSSMap[event].text;
+            }
+            return event;
         };
 
         function _getCssMapField( event, field ){

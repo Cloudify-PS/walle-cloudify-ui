@@ -143,15 +143,15 @@
                                 <th class="icon"><!-- icon --></th>
                                 <th class="date sorting" data-ng-click="sortEvents('timestamp')" data-ng-class="isSorted('timestamp')">Timestamp</th>
                                 <th class="type sorting" data-ng-click="sortEvents('eventType')" data-ng-class="isSorted('eventType')">{{ 'deployment.table.heading.eventType' | i18n }}</th>
-                                <th class="node">{{ 'deployment.table.heading.node' | i18n }}</th>
-                                <th class="task">{{ 'deployment.table.heading.task' | i18n }}</th>
+                                <th class="node sorting" data-ng-click="sortEvents('node')" data-ng-class="isSorted('node')">{{ 'deployment.table.heading.node' | i18n }}</th>
+                                <th class="task sorting" data-ng-click="sortEvents('task')" data-ng-class="isSorted('task')">{{ 'deployment.table.heading.task' | i18n }}</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr ng-repeat="event in eventHits">
                                 <td class="icon" ng-class="getEventIcon(event._source.event_type)"></td>
-                                <td class="date">{{event._source.timestamp == undefined && 'N/A' || event._source.timestamp}}</td>
-                                <td class="type">{{event._source.event_type == undefined && 'N/A' || event._source.event_type}}</td>
+                                <td class="date">{{event._source.timestamp == undefined && 'N/A' || event._source.timestamp | dateFormat: 'yyyy-MM-dd HH:mm:ss'}}</td>
+                                <td class="type">{{getEventText(event._source.event_type) == undefined && 'N/A' || getEventText(event._source.event_type)}}</td>
                                 <td class="node">{{event._source.context.node_name == undefined && 'N/A' || event._source.context.node_name}}</td>
                                 <td class="task">{{event._source.message.text == undefined && 'N/A' || event._source.message.text}}</td>
                             </tr>

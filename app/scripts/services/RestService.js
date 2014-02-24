@@ -202,9 +202,15 @@ angular.module('cosmoUi')
                 .from(0)
                 .size(100);
             var activeFilters = {};
-            var sortField = false;
             var isAutoPull = false;
             var autoPullTimer = '3000';
+            var sortField = false;
+            var fieldIndex = {
+                'timestamp': '@timestamp',
+                'eventType': 'event_type',
+                'node': 'context.node_name',
+                'task': 'message.text'
+            };
 
             function _isActiveFilter(field, term) {
                 return activeFilters.hasOwnProperty(field + term);
@@ -252,8 +258,16 @@ angular.module('cosmoUi')
             }
 
             function sort(field, order) {
-                sortField = {};
-                sortField[field] = {'order': order};
+                var _innerField = fieldIndex.hasOwnProperty(field) ? fieldIndex[field] : field;
+                switch(order) {
+                case 'desc':
+                case 'asc':
+                    sortField = ejs.Sort(_innerField).order(order);
+                    break;
+                default:
+                    sortField = false;
+                    break;
+                }
             }
 
             function stopAutoPull() {
@@ -265,12 +279,13 @@ angular.module('cosmoUi')
                 if(sortField) {
                     results = client
                         .query(_applyFilters(oQuery.query('*')))
-                        .sort(sortField)
+                        .sort([sortField])
                         .doSearch();
                 }
                 else {
                     results = client
                         .query(_applyFilters(oQuery.query('*')))
+                        .sort([ejs.Sort('@timestamp').order('asc')])
                         .doSearch();
                 }
                 results.then(function(data){
