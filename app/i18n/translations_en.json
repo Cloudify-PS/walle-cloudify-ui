@@ -95,7 +95,17 @@
             "networkName": "Network Name",
             "subnetName": "Subnet Name",
             "privateNetwork": "Private Network"
+        },
+        "details": {
+            "details": "details",
+            "key": "Key",
+            "value": "Value",
+            "target": "Target node",
+            "type": "Relationship type",
+            "interface": "Interface Implementation",
+            "noRelationships": "No relationships to display"
         }
+
     },
     "toggleSwitch": {
         "on": "ON",
