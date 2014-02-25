@@ -15,8 +15,8 @@
                 <th class="actions">{{ 'blueprints.table.heading.action' | i18n }}</th>
             </tr>
         </thead>
-        <tbody>
-            <tr ng-repeat="blueprint in blueprints">
+        <tbody ng-repeat="blueprint in blueprints">
+            <tr>
                 <td class="icon"><i class="gs-icon-deployments"></i></td>
                 <td class="name" ng-click="redirectTo(blueprint)">{{ blueprint.id }}</td>
                 <td class="version">{{ blueprint.version }}</td>
@@ -63,7 +63,7 @@
                 <label>{{ 'blueprints.deployDialog.deployName' | i18n }}</label>
                 <input type="text" ng-model="deploymentId">
             </div>
-            <div class="buttonsContainer">
+            <div class="buttonsContainer deployButtons">
                 <button id="cancelBtn" class="dialogButton" ng-click="toggleDeployDialog()">{{ 'blueprints.deployDialog.cancelBtn' | i18n }}</button>
                 <button id="deployBtn" class="dialogButton" ng-class="{disabled: !isDeployEnabled(), enabled: isDeployEnabled()}" ng-click="deployBlueprint(selectedBlueprint)">{{ 'blueprints.deployDialog.deployBtn' | i18n }}</button>
             </div>
