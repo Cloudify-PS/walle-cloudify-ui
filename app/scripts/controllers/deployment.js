@@ -326,7 +326,7 @@ angular.module('cosmoUi')
 
             events
                 .execute(function(data){
-                    if(data) {
+                    if(data && data.hasOwnProperty('hits')) {
                         if(data.hits.hits.length !== lastAmount) {
                             $scope.eventHits = data.hits.hits;
                             lastAmount = data.hits.hits.length;
