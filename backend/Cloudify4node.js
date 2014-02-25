@@ -94,14 +94,14 @@ Cloudify4node.getBlueprints = function(callback) {
     createRequest(requestData, callback);
 }
 
-Cloudify4node.addBlueprint = function(application_archive, callback) {
+Cloudify4node.addBlueprint = function(application_archive, blueprint_id, callback) {
     var myFile = application_archive;
-    var path = '/blueprints';
+    var path = '/blueprints' + (blueprint_id === undefined ? '' : '/' + blueprint_id);
     var options = {
         hostname: conf.cosmoServer,
         port: conf.cosmoPort,
         path: path,
-        method: 'POST',
+        method: blueprint_id === undefined ? 'POST' : 'PUT',
         headers: {
             'Content-Type': 'application/octet-stream',
             'Transfer-Encoding': 'chunked'
@@ -176,13 +176,16 @@ Cloudify4node.getDeployments = function(callback) {
 }
 
 Cloudify4node.addDeployment = function(requestBody, callback) {
+    var data = {
+        'blueprintId': requestBody.blueprintId
+    };
     var requestData = createRequestData({
-        path: '/deployments',
-        data: requestBody,
-        method: 'POST',
+        path: '/deployments/' + requestBody.deploymentId,
+        data: data,
+        method: 'PUT',
         headers: {
             'Content-Type': 'application/json',
-            'Content-Length': JSON.stringify(requestBody).length
+            'Content-Length': JSON.stringify(data).length
         }
     });
 

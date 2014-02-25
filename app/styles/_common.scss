@@ -38,18 +38,9 @@ table.table {
                 border: none;
                 background-color: transparent;
             }
-            &:nth-child(even) {
-                background-color: #ededed;
-            }
-            &:hover {
-                background-color: $COSMOUI_LIST_HOVER_BACKGROUND;
-                cursor: $COSMOUI_DIALOG_CURSOR;
-            }
-        }
-    }
-    tbody:nth-child(even) {
-        tr {
-            background-color: #ededed;
+              &:nth-child(even) {
+                  background-color: #ededed;
+              }
             &:hover {
                 background-color: $COSMOUI_LIST_HOVER_BACKGROUND;
                 cursor: $COSMOUI_DIALOG_CURSOR;
