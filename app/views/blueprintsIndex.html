@@ -15,8 +15,8 @@
                 <th class="actions">{{ 'blueprints.table.heading.action' | i18n }}</th>
             </tr>
         </thead>
-        <tbody>
-            <tr ng-repeat="blueprint in blueprints">
+        <tbody ng-repeat="blueprint in blueprints">
+            <tr>
                 <td class="icon"><i class="gs-icon-deployments"></i></td>
                 <td class="name" ng-click="redirectTo(blueprint)">{{ blueprint.id }}</td>
                 <td class="version">{{ blueprint.version }}</td>
