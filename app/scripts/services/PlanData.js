@@ -150,6 +150,7 @@ angular.module('cosmoUi').service('PlanDataConvert', function () {
                     dataTable.push({
                         'id': node.id,
                         'type': getNodeType(node),
+                        'iconType': getIconByType(node.type),
                         'name': node.name,
                         'instances': node.general.numOfInstances,
                         'contained_in': getContainedIn(node, data.edges),
@@ -203,7 +204,8 @@ angular.module('cosmoUi').service('PlanDataConvert', function () {
         'neutron_network': 'network',
         'neutron_subnet': 'subnet',
         'neutron_router': 'router',
-        'cloudify.types.host': 'host'
+        'cloudify.types.host': 'host',
+        'cloudify.types.web_server': 'server'
     };
 
     this.nodesToNetworks = function (data) {
@@ -402,6 +404,8 @@ angular.module('cosmoUi').service('PlanDataConvert', function () {
 
     function getIconByType(type) {
         switch(getTypeByMap(type)) {
+        case 'server':
+            return 'server';
         case 'host':
             return 'host';
         case 'router':
