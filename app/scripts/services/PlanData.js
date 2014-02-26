@@ -148,6 +148,7 @@ angular.module('cosmoUi').service('PlanDataConvert', function () {
                 if(data.nodes[i]) {
                     var node = data.nodes[i];
                     dataTable.push({
+                        'id': node.id,
                         'type': getNodeType(node),
                         'name': node.name,
                         'instances': node.general.numOfInstances,
