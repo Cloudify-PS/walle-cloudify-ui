@@ -90,6 +90,10 @@ angular.module('cosmoUi')
                     return 'app-server';
                 case 'host':
                     return 'host';
+                case 'router':
+                    return 'router';
+                default:
+                    return type;
                 }
             };
 
