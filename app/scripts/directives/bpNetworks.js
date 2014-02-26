@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('cosmoUi')
-    .directive('bpNetworks', function (bpNetworkService) {
+    .directive('bpNetworks', function (bpNetworkService, $timeout) {
         return {
             restrict: 'A',
             require: '?ngModel',
@@ -46,8 +46,7 @@ angular.module('cosmoUi')
                 document.addEventListener('DOMContentLoaded', broadcastResize, false);
                 window.onresize = broadcastResize;
 
-                ngModel.$render = function () {
-                    var data = ngModel.$viewValue || false;
+                function draw(data) {
                     if (data) {
                         group.selectAll('path')
                             .remove();
@@ -63,6 +62,26 @@ angular.module('cosmoUi')
                             })
                             .attr('stroke-width', '4px');
                     }
+                }
+
+                ngModel.$render = function () {
+                    var grabLoops = 0;
+                    (function grabData() {
+                        if(grabLoops === 60) {
+                            grabLoops = 0;
+                            return;
+                        }
+                        var data = ngModel.$viewValue || false;
+                        if(!data || !data.length) {
+                            $timeout(function(){
+                                grabData();
+                            }, 1000);
+                        }
+                        else {
+                            draw(data);
+                        }
+                        grabLoops++;
+                    })();
                 };
 
                 $scope.$watch(function() {
@@ -102,14 +121,16 @@ angular.module('cosmoUi')
     });
 
 angular.module('cosmoUi')
-    .service('bpNetworkService', function(){
+    .service('bpNetworkService', function($timeout){
 
         var elements = {},
             coordinates = [],
             map = {};
 
         this.render = function () {
-            render();
+            $timeout(function(){
+                render();
+            }, 1500);
         };
 
         function render() {
