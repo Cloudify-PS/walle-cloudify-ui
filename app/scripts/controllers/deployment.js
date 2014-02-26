@@ -42,8 +42,16 @@ angular.module('cosmoUi')
             'policy_failed': {text: 'Policy failed', icon: 'event-icon-policy-failed', class: 'event-text-red'}
         };
         var id = $routeParams.id;
+        var blueprintId = $routeParams.blueprintId;
         //var from = 0;
         //var to = 5;
+
+        BreadcrumbsService.push('deployments',
+            {
+                href: '#/deployments?blueprint_id=' + blueprintId,
+                label: blueprintId,
+                id: 'deployment_id'
+            });
 
         BreadcrumbsService.push('deployments',
             {
