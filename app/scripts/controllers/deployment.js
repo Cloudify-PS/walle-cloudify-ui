@@ -311,7 +311,7 @@ angular.module('cosmoUi')
                 if (data.hasOwnProperty('workflows')) {
                     for (var wfid in data.workflows) {
                         var wfItem = data.workflows[wfid];
-                        workflows.push({value: wfItem.name, label: wfItem.name});
+                        workflows.push({'value': wfItem.name, 'label': wfItem.name});
                     }
                 }
                 $scope.workflowsList = workflows;
@@ -321,7 +321,7 @@ angular.module('cosmoUi')
             var eventTypeList = [{'value': null, 'label': 'All'}];
             for(var eventType in eventCSSMap) {
                 var eventItem = eventCSSMap[eventType];
-                eventTypeList.push({value: eventType, label: eventItem.text});
+                eventTypeList.push({'value': eventType, 'label': eventItem.text});
             }
             $scope.eventTypeList = eventTypeList;
         })();
