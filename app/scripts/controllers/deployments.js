@@ -71,7 +71,7 @@ angular.module('cosmoUi')
 
         $scope.redirectTo = function (deployment) {
             console.log(['redirecting to', deployment]);
-            $location.path('/deployment').search({id: deployment.id});
+            $location.path('/deployment').search({id: deployment.id, blueprintId: deployment.blueprintId});
         };
 
         $scope.cosmoConnectionError = function() {
@@ -91,7 +91,7 @@ angular.module('cosmoUi')
 
         _loadDeployments();
 
-        if ($routeParams.blueprint !== undefined) {
-            $scope.showDeployments($routeParams.blueprint.id);
+        if ($routeParams.blueprint_id !== undefined) {
+            $scope.showDeployments($routeParams.blueprint_id);
         }
     });
