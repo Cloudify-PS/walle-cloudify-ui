@@ -293,29 +293,38 @@ angular.module('cosmoUi')
             $scope.showProperties = null;
         };
 
-        /* Filters DEMO - start */
-        $scope.workflowsList = [
-            {'value': null, 'label': 'All'},
-            {'value': 'install', 'label': 'Install'},
-            {'value': 'complete', 'label': 'Complete'},
-            {'value': 'failed', 'label': 'Failed'}
-        ];
-        $scope.eventTypeList = [
-            {'value': null, 'label': 'All'},
-            {'value': 'workflow_stage', 'label': 'Workflow Stage'},
-            {'value': 'workflow_started', 'label': 'Workflow Started'},
-            {'value': 'workflow_succeeded', 'label': 'Workflow Succeeded'},
-            {'value': 'task_succeeded', 'label': 'Task Succeeded'},
-            {'value': 'sending_task', 'label': 'Sending Task'}
-        ];
-        /* Filters DEMO - end */
-
+        /**
+         * Events
+         */
+        $scope.workflowsList = [];
+        $scope.eventTypeList = [];
         $scope.filterLoading = false;
         $scope.eventsFilter = {
             'type': null,
             'workflow': null,
             'nodes': null
         };
+
+        RestService.getWorkflows({deploymentId: id})
+            .then(function (data) {
+                var workflows = [{'value': null, 'label': 'All'}];
+                if (data.hasOwnProperty('workflows')) {
+                    for (var wfid in data.workflows) {
+                        var wfItem = data.workflows[wfid];
+                        workflows.push({value: wfItem.name, label: wfItem.name});
+                    }
+                }
+                $scope.workflowsList = workflows;
+            });
+
+        (function eventListForMenu() {
+            var eventTypeList = [{'value': null, 'label': 'All'}];
+            for(var eventType in eventCSSMap) {
+                var eventItem = eventCSSMap[eventType];
+                eventTypeList.push({value: eventType, label: eventItem.text});
+            }
+            $scope.eventTypeList = eventTypeList;
+        })();
 
         var events = EventsService.newInstance('/backend/events'),
             lastNodeSearch = $scope.eventsFilter.nodes;
