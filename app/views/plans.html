@@ -169,6 +169,11 @@
                 </div>
                 <div class="devices">
                     <div data-ng-repeat="device in network.devices" class="device" bp:network:coordinate ng-model="device">
+                        <div class="buttons no-embed">
+                            <ul>
+                                <li data-ng-click="viewNode(device)" class="topology-glyph node-details"></li><li class="topology-glyph edit-node"></li>
+                            </ul>
+                        </div>
                         <i class="topology-glyph {{ device.icon }}"></i>
                     </div>
                 </div>

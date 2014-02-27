@@ -444,6 +444,49 @@
                 > .device:last-child {
                     margin-bottom: 0px;
                 }
+                .buttons {
+                    display: none;
+                    position: absolute;
+                    top: -30px;
+                    left: -19px;
+                    z-index: 100;
+                    > ul {
+                        display: inline-block;
+                        list-style-type: none;
+                        white-space: nowrap;
+                        margin: 0;
+                        padding: 0;
+                        li {
+                            display: inline-block;
+                            width: 36px;
+                            height: 28px;
+                            border-width: 2px 0 2px 2px;
+                            border-style: solid;
+                            border-color: #ddd;
+                            background-color: #fff;
+                            cursor: pointer;
+                            position: relative;
+                            &:after {
+                                position: absolute;
+                                top: -8px;
+                                left: 9px;
+                                font-size: 30px;
+                            }
+                        }
+                        li:first-child {
+                            border-top-left-radius: 14px;
+                            border-bottom-left-radius: 14px;
+                        }
+                        li:last-child {
+                            border-width: 2px;
+                            border-top-right-radius: 14px;
+                            border-bottom-right-radius: 14px;
+                        }
+                    }
+                }
+                :hover > .buttons {
+                    display: inline;
+                }
             }
         }
         .network:nth-child(even) .devices .device {
