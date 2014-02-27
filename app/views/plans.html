@@ -194,8 +194,8 @@
                         <th><!--Actions--></th>
                     </tr>
                 </thead>
-                <tbody>
-                    <tr data-ng-repeat="row in dataTable">
+                <tbody data-ng-repeat="row in dataTable">
+                    <tr>
                         <td><i class="topology-glyph {{ getIcon(row.iconType) }}"></i></td>
                         <td>{{ row.name }}</td>
                         <td>{{ row.type }}</td>
