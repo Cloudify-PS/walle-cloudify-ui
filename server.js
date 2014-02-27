@@ -138,6 +138,12 @@ app.post('/backend/events/_search', function(request, response) {
     });
 });
 
+app.post('/backend/deployments/workflows/get', function(request, response) {
+    cloudify4node.getWorkflows(request.body.deploymentId, function(err, data) {
+        response.send(err !== null ? err : data);
+    });
+});
+
 
 // ui settings REST APIs
 

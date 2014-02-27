@@ -251,3 +251,12 @@ Cloudify4node.getEvents = function(query, callback) {
 
     createRequest(requestData, callback);
 }
+
+Cloudify4node.getWorkflows = function(deployment_id, callback) {
+    var requestData = createRequestData({
+        path: '/deployments/' + deployment_id + '/workflows',
+        method: 'GET'
+    });
+
+    createRequest(requestData, callback);
+}

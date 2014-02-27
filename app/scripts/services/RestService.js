@@ -163,6 +163,16 @@ angular.module('cosmoUi')
             return deferred.promise;
         }
 
+        function _getWorkflows(params) {
+            var callParams = {
+                url: '/backend/deployments/workflows/get',
+                method: 'POST',
+                data: {'deploymentId': params.deploymentId}
+            };
+
+            return _load('deployments/workflows/get', callParams);
+        }
+
         function _setSettings(data) {
             var callParams = {
                 url: '/backend/settings',
@@ -197,6 +207,7 @@ angular.module('cosmoUi')
         this.getDeploymentNodes = _getDeploymentNodes;
         this.loadEvents = _loadEvents;
         this.loadDeployments = _loadDeployments;
+        this.getWorkflows = _getWorkflows;
         this.getSettings = _getSettings;
         this.setSettings = _setSettings;
         this.getConfiguration = _getConfiguration;
