@@ -1,6 +1,6 @@
 <div class="events-widget">
     <div id="events-widget-closed-tab" ng-show="!isOpen()" ng-click="toggleWidget()">
-        <div id="events-widget-tab-text">Events ({{eventsData.length}})</div>
+        <div id="events-widget-tab-text">Events ({{ eventsData.length || 0 }})</div>
     </div>
     <div id="events-widget-opened-widget" ng-show="isOpen()">
         <div id="events-widget-header">
@@ -11,9 +11,9 @@
             <table id="events-widget-events-list">
                 <tr ng-repeat="event in eventsData">
                     <td>
-                        <div id="event-icon" ng-class="getEventIcon(event)"></div>
-                        <div id="event-type">{{getEventText(event)}}</div>
-                        <div id="event-time">{{event.timestamp}}</div>
+                        <div id="event-icon" ng-class="getEventIcon(event._source.event_type)"></div>
+                        <div id="event-type">{{ getEventText(event._source.event_type) }}</div>
+                        <div id="event-time">{{ event._source.timestamp | dateFormat: 'yyyy-MM-dd HH:mm:ss' }}</div>
                     </td>
                 </tr>
             </table>
