@@ -150,7 +150,7 @@ angular.module('cosmoUi').service('PlanDataConvert', function () {
                     dataTable.push({
                         'id': node.id,
                         'type': getNodeType(node),
-                        'iconType': getIconByType(node.type),
+                        'iconType': getIconByType(node.type) || getNodeType(node),
                         'name': node.name,
                         'instances': node.general.numOfInstances,
                         'contained_in': getContainedIn(node, data.edges),
@@ -267,7 +267,7 @@ angular.module('cosmoUi').service('PlanDataConvert', function () {
         if(networkMap.hasOwnProperty(type)) {
             return networkMap[type];
         }
-        return false;
+        return type;
     }
 
     function getRandomColor() {
