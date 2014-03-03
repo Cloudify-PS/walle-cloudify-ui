@@ -8,10 +8,12 @@ angular.module('cosmoUi')
             deploymentModel = {},
             instances = 0;
 
+        var planData/*:PlanData*/ = null;
         $scope.deployment = null;
         $scope.nodes = [];
         $scope.events = [];
         $scope.section = 'topology';
+        $scope.propSection = 'general';
         $scope.topologySettings = [
             {name: 'connections',   state: true},
             {name: 'modules',       state: false},
@@ -170,6 +172,7 @@ angular.module('cosmoUi')
                     RestService.getBlueprintById({id: deploymentData.blueprintId})
                         .then(function(data){
                             YamlService.loadJSON(id, data, function(err, data){
+                                planData = data;
                                 // Draw Blueprint Plan
                                 _drawPlan(data.getJSON());
                             });
@@ -280,14 +283,14 @@ angular.module('cosmoUi')
         /**
          * Side panel
          */
-        $scope.viewNode = function () {
+        $scope.viewNode = function (node) {
+            var realNode = planData.getNode(node.id);
             $scope.showProperties = {
-                properties: {},
-                policies: {},
-                general: {}
+                properties: planData.getProperties(realNode),
+                relationships: planData.getRelationships(realNode),
+                general: planData.getGeneralInfo(realNode)
             };
         };
-
 
         $scope.hideProperties = function () {
             $scope.showProperties = null;

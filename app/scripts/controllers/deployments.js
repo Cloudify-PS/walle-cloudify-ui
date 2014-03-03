@@ -57,7 +57,7 @@ angular.module('cosmoUi')
         };
 
         $scope.isExecuting = function(deploymentId) {
-            return deploymentId === $cookieStore.get('deploymentId');
+            return deploymentId === $cookieStore.get('deploymentId');   // TODO: Use REST API to check execution
         };
 
         $scope.isExecuteEnabled = function() {
