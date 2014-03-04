@@ -121,14 +121,19 @@ angular.module('cosmoUi')
                     deploymentModel[node.name] = {
                         'status': {},
                         'process': {},
-                        'completed':  0,
-                        'instances': node.instances.deploy
+                        'completed': 0,
+                        'instances': 0
                     };
                 }
                 deploymentModel[node.name].status[node.id] = {
                     'reachable': null
                 };
-                instances += node.instances.deploy;
+                instances++;
+            }
+            for (var depId in deploymentModel) {
+                if(Object.keys(deploymentModel[depId].status).hasOwnProperty('length')) {
+                    deploymentModel[depId].instances = Object.keys(deploymentModel[depId].status).length;
+                }
             }
         }
 
@@ -186,8 +191,8 @@ angular.module('cosmoUi')
         // Update deployments process and values
         function updateDeployments() {
             for (var i in deploymentModel) {
+                var completed = 0, failed = 0;
                 for (var instanceID in deploymentModel[i].status) {
-                    var completed = 0, failed = 0, install = 0;
                     switch (deploymentModel[i].status[instanceID]) {
                     case true:
                         completed++;
@@ -195,17 +200,13 @@ angular.module('cosmoUi')
                     case false:
                         failed++;
                         break;
-                    case null:
-                        install++;
-                        break;
                     }
-                    deploymentModel[i].completed = completed;
-                    deploymentModel[i].process = {
-                        'done': processCalc(completed, deploymentModel[i].instances),
-                        'failed': processCalc(failed, deploymentModel[i].instances)/*,
-                        'install': processCalc(install, deploymentModel[i].instances)*/
-                    };
                 }
+                deploymentModel[i].completed = completed;
+                deploymentModel[i].process = {
+                    'done': processCalc(completed, deploymentModel[i].instances),
+                    'failed': processCalc(failed, deploymentModel[i].instances)
+                };
             }
         }
 
@@ -224,7 +225,7 @@ angular.module('cosmoUi')
                 return;
             }
             // Organizing the data by id
-            var IndexedNodes = {}, completed = 0, failed = 0, install = 0;
+            var IndexedNodes = {}, completed = 0, failed = 0;
             for (var i = 0; i < nodes.length; i++) {
                 var node = nodes[i];
                 IndexedNodes[node.id] = node.reachable;
@@ -235,9 +236,6 @@ angular.module('cosmoUi')
                 case false:
                     failed++;
                     break;
-                /*case null:
-                    install++;
-                    break;*/
                 }
             }
             // Update Deployment Model with new Data
@@ -252,8 +250,7 @@ angular.module('cosmoUi')
             // Total App Status
             appStatus = {
                 'done': processCalc(completed, instances),
-                'failed': processCalc(failed, instances),
-                'install': processCalc(install, instances)
+                'failed': processCalc(failed, instances)
             };
         }, true);
 
