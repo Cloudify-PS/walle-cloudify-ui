@@ -11,7 +11,7 @@ angular.module('cosmoUi')
         $scope.deployment = null;
         $scope.nodes = [];
         $scope.events = [];
-        $scope.section = 'topology';
+        $scope.section = 'events';
         $scope.topologySettings = [
             {name: 'connections',   state: true},
             {name: 'modules',       state: false},
