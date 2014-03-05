@@ -4,7 +4,6 @@
   "dependencies": {
     "jquery": "2.1.0",
     "bootstrap-sass": "~3.0.2",
-    "angular": "~1.2.10",
     "json3": "~3.2.4",
     "es5-shim": "~2.0.8",
     "gs-ui-infra": "git://github.com/guy-mograbi-at-gigaspaces/gs-ui-infra.git",
@@ -12,14 +11,15 @@
     "font-awesome": "~4.0.0",
     "yamljs": "git://github.com/jeremyfa/yaml.js.git",
     "ng-file-upload": "1.1.10",
-    "angular-route": "~1.2.10",
-    "angular-sanitize": "~1.2.10",
+    "angular-route": "~1.2.14",
+    "angular-sanitize": "~1.2.14",
     "i18next": "1.7.2",
     "elastic.js": "~1.1.1",
+    "angular": "~1.2.14",
     "angular-animate": "~1.2.14"
   },
   "devDependencies": {
-    "angular-mocks": "~1.2.10",
-    "angular-scenario": "~1.2.10"
+    "angular-mocks": "~1.2.14",
+    "angular-scenario": "~1.2.14"
   }
 }

@@ -1,3 +1,10 @@
+.ng-enter, .ng-leave { }
+.ng-enter { }        /* starting animations for enter */
+.ng-enter-active { } /* terminal animations for enter */
+.ng-leave { }        /* starting animations for leave */
+.ng-leave-active { } /* terminal animations for leave */
+
+
 .animate-repeat {
     line-height: 40px;
     list-style: none;
