@@ -6,7 +6,7 @@
             <i ng-click="hideProperties()" class="fa fa-times-circle right"></i>
         </div>
         <div class="content">
-            <div class="buttons-group" checkbox-toggle value="propSection">
+            <div class="buttons-group no-embed" checkbox-toggle value="propSection">
                 <button ng-repeat="(key, value) in showProperties" type="button" class="btn btn-default" value="{{key}}">{{ 'plans.' + key | i18n }}</button>
             </div>
             <div ng-switch="propSection" class="content-section">
@@ -51,7 +51,6 @@
                         </tr>
                     </table>
                 </div>
-                <!--<pre ng-switch-when="relationships">{{showProperties.relationships | yaml:'No relationships to display' }} </pre>-->
                 <pre ng-switch-when="interfaces">{{showProperties.interfaces | yaml:'No interfaces to display' }} </pre>
             </div>
         </div>
@@ -60,7 +59,6 @@
     <!-- Breadcrumbs - START -->
     <div class="content-header no-embed">
         <div class="breadcrumbs"><ul id="blueprints" breadcrumbs></ul></div>
-        <!--<div class="breadcrumbs"><ul><li>Blueprints</li><li>{{planName}}</li></ul></div>-->
      </div>
     <!-- Breadcrumbs - END -->
     <!-- Settings - START -->

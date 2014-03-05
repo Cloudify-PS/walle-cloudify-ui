@@ -8,10 +8,12 @@ angular.module('cosmoUi')
             deploymentModel = {},
             instances = 0;
 
+        var planData/*:PlanData*/ = null;
         $scope.deployment = null;
         $scope.nodes = [];
         $scope.events = [];
         $scope.section = 'topology';
+        $scope.propSection = 'general';
         $scope.topologySettings = [
             {name: 'connections',   state: true},
             {name: 'modules',       state: false},
@@ -24,6 +26,7 @@ angular.module('cosmoUi')
             'modules': true,
             'connections': true
         };
+        $scope.selectedRelationship = '';
 
         var eventCSSMap = {
             'workflow_received': {text: 'Workflow received', icon: 'event-icon-workflow-started', class: 'event-text-green'},
@@ -75,6 +78,18 @@ angular.module('cosmoUi')
                 return eventCSSMap[event].text;
             }
             return event;
+        };
+
+        $scope.showRelationship = function(relationship_target_id) {
+            if (relationship_target_id === $scope.selectedRelationship) {
+                $scope.selectedRelationship = '';
+            } else {
+                $scope.selectedRelationship = relationship_target_id;
+            }
+        };
+
+        $scope.showRelationshipList = function(target_id) {
+            return $scope.selectedRelationship === target_id;
         };
 
         function _getCssMapField( event, field ){
@@ -175,6 +190,7 @@ angular.module('cosmoUi')
                     RestService.getBlueprintById({id: deploymentData.blueprintId})
                         .then(function(data){
                             YamlService.loadJSON(id, data, function(err, data){
+                                planData = data;
                                 // Draw Blueprint Plan
                                 _drawPlan(data.getJSON());
                             });
@@ -277,14 +293,14 @@ angular.module('cosmoUi')
         /**
          * Side panel
          */
-        $scope.viewNode = function () {
+        $scope.viewNode = function (node) {
+            var realNode = planData.getNode(node.id);
             $scope.showProperties = {
-                properties: {},
-                policies: {},
-                general: {}
+                properties: planData.getProperties(realNode),
+                relationships: planData.getRelationships(realNode),
+                general: planData.getGeneralInfo(realNode)
             };
         };
-
 
         $scope.hideProperties = function () {
             $scope.showProperties = null;
