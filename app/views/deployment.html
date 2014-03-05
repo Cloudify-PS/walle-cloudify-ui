@@ -36,22 +36,46 @@
                     </div>
                     <div ng-switch-when="relationships">
                         <div ng-show="showProperties.relationships.length == undefined">{{ 'plans.details.noRelationships' | i18n }}</div>
-                        <table ng-show="showProperties.relationships.length != undefined">
-                            <tr>
-                                <td>{{ 'plans.details.target' | i18n }}</td>
-                                <td>{{ 'plans.details.type' | i18n }}</td>
-                                <td>{{ 'plans.details.interface' | i18n }}</td>
-                            </tr>
+
+                        <table class="relationships-table" ng-show="showProperties.relationships.length != undefined">
                             <tr ng-repeat="relationship in showProperties.relationships">
-                                <td>{{relationship.target_id}}</td>
-                                <td>{{relationship.type}}</td>
                                 <td>
-                                    <!--<ul ng-repeat="(key, value) in relationship.source_interfaces">-->
-                                    <!--<li>{{value}}</li>-->
-                                    <!--</ul>-->
+
+                                    <table class="interfaces-table">
+                                        <tr>
+                                            <td>{{ 'plans.details.target' | i18n }}</td>
+                                            <td>{{ 'plans.details.type' | i18n }}</td>
+                                        </tr>
+                                        <tr ng-click="showRelationship(relationship.target_id)">
+                                            <td>{{relationship.target_id}}</td>
+                                            <td>{{relationship.type}}</td>
+                                        </tr>
+                                        <tr ng-show="selectedRelationship == relationship.target_id">
+                                            <td colspan="2">
+
+                                                <table>
+                                                    <tr>
+                                                        <td>{{ 'plans.details.interface' | i18n }}</td>
+                                                        <td>{{ 'plans.details.methods' | i18n }}</td>
+                                                    </tr>
+                                                    <tr ng-repeat="(key, value) in relationship.target_interfaces">
+                                                        <td>{{key}}</td>
+                                                        <td>
+                                                            <ul ng-repeat="val in value">
+                                                                <li>{{val}}</li>
+                                                            </ul>
+                                                        </td>
+                                                    </tr>
+                                                </table>
+
+                                            </td>
+                                        </tr>
+                                    </table>
+
                                 </td>
                             </tr>
                         </table>
+
                     </div>
                     <pre ng-switch-when="interfaces">{{showProperties.interfaces | yaml:'No interfaces to display' }} </pre>
                 </div>

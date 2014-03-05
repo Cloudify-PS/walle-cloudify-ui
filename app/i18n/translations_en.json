@@ -103,6 +103,7 @@
             "target": "Target node",
             "type": "Relationship type",
             "interface": "Interface Implementation",
+            "methods": "Interface Methods",
             "noRelationships": "No relationships to display"
         }
 

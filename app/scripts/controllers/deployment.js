@@ -26,6 +26,7 @@ angular.module('cosmoUi')
             'modules': true,
             'connections': true
         };
+        $scope.selectedRelationship = '';
 
         var eventCSSMap = {
             'workflow_received': {text: 'Workflow received', icon: 'event-icon-workflow-started', class: 'event-text-green'},
@@ -77,6 +78,18 @@ angular.module('cosmoUi')
                 return eventCSSMap[event].text;
             }
             return event;
+        };
+
+        $scope.showRelationship = function(relationship_target_id) {
+            if (relationship_target_id === $scope.selectedRelationship) {
+                $scope.selectedRelationship = '';
+            } else {
+                $scope.selectedRelationship = relationship_target_id;
+            }
+        };
+
+        $scope.showRelationshipList = function(target_id) {
+            return $scope.selectedRelationship === target_id;
         };
 
         function _getCssMapField( event, field ){

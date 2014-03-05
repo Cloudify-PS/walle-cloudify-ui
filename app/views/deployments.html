@@ -14,7 +14,7 @@
                         <td><div class="deployments-number">{{blueprint.deployments.length}}</div></td>
                     </tr>
                     <tr ng-show="selectedBlueprint == blueprint.id">
-                        <td>
+                        <td colspan="2">
                             <div ng-show="blueprint.deployments.length == 0">{{ 'deployments.emptyMessage' | i18n }}</div>
                             <table class="table table-striped" ng-show="blueprint.deployments.length > 0">
                                 <tr>
