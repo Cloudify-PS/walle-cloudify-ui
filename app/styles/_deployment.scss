@@ -47,8 +47,16 @@
                 border-bottom: none;
                 cursor: pointer;
 
-                &:first-child {
-                  background-color: transparent;
+                //&:first-child {
+                //  background-color: transparent;
+                //}
+
+                &:first-child td {
+                  background-color: #d3dfe2;
+                  height: 30px;
+                  color: #333333;
+                  font-size: 13px;
+                  padding-left: 5px;
                 }
 
                 td {
@@ -62,12 +70,16 @@
                     tr {
 
                       &:first-child td {
-                        background-color: #d3dfe2;
-                        height: 30px;
-                        color: #333333;
-                        font-size: 13px;
-                        padding-left: 5px;
+                        background-color: #fff;
                       }
+
+                      //&:first-child td {
+                      //  background-color: #d3dfe2;
+                      //  height: 30px;
+                      //  color: #333333;
+                      //  font-size: 13px;
+                      //  padding-left: 5px;
+                      //}
 
                       &:hover:not(:first-child) td{
                         background: none;

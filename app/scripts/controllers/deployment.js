@@ -80,16 +80,16 @@ angular.module('cosmoUi')
             return event;
         };
 
-        $scope.showRelationship = function(relationship_target_id) {
-            if (relationship_target_id === $scope.selectedRelationship) {
+        $scope.showRelationship = function(relationship) {
+            if (relationship === $scope.selectedRelationship) {
                 $scope.selectedRelationship = '';
             } else {
-                $scope.selectedRelationship = relationship_target_id;
+                $scope.selectedRelationship = relationship;
             }
         };
 
         $scope.showRelationshipList = function(target_id) {
-            return $scope.selectedRelationship === target_id;
+            return $scope.selectedRelationship.target_id === target_id;
         };
 
         function _getCssMapField( event, field ){
