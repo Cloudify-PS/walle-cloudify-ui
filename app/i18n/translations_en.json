@@ -18,10 +18,11 @@
         "emptyMessage": "No Blueprints",
         "uploadPopup": {
             "title": "Upload Blueprint",
-            "description": "Select blueprint file to upload, and press 'Upload' button",
+            "description": "Select blueprint file to upload, and press 'Upload' button. Entering blueprint name is optional.",
             "browseBtn": "Browse",
             "fileLabel": "Application file: ",
-            "uploadBtn": "Upload"
+            "uploadBtn": "Upload",
+            "blueprintName": "Name"
         },
         "deployDialog": {
             "title": "Deploy",

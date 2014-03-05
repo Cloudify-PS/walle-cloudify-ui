@@ -6,6 +6,7 @@ angular.module('cosmoUi')
         $scope.uploadEnabled = false;
         $scope.uploadInProcess = false;
         $scope.selectedFile = '';
+        $scope.blueprintName = '';
         $scope.uploadError = false;
         $scope.errorMessage = 'Error uploading blueprint';
 
@@ -23,6 +24,9 @@ angular.module('cosmoUi')
 
             var planForm = new FormData();
             planForm.append('application_archive', $scope.selectedFile);
+            if ($scope.blueprintName !== '') {
+                planForm.append('blueprintId', $scope.blueprintName);
+            }
             $scope.uploadInProcess = true;
             $scope.uploadError = false;
 

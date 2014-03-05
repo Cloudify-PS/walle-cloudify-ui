@@ -136,6 +136,27 @@
       }
     }
 
+    #name {
+      position: relative;
+      left: 112px;
+      top: 30px;
+
+      label {
+        top: 30px;
+        position: relative;
+      }
+
+      input {
+        left: 10px;
+        position: relative;
+        top: 30px;
+        width: 300px;
+        height: 30px;
+        border-radius: 5px;
+        padding-left: 10px;
+      }
+    }
+
     #mainFile {
       position: relative;
       float: left;
