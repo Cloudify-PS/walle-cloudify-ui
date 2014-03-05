@@ -37,7 +37,7 @@ angular.module('cosmoUi')
 //
 //        });
 
-        YamlService.load($routeParams.id, function (err, data) {
+        YamlService.load($routeParams.id, function (err, data, source) {
 
             planData = data;
             var dataPlan = data.getJSON(),
@@ -81,7 +81,7 @@ angular.module('cosmoUi')
             $scope.map = dataMap['cloudify.relationships.contained_in'];
             $scope.coordinates = blueprintCoordinateService.getCoordinates();
             $scope.dataTable = PlanDataConvert.nodesToTable(dataPlan);
-            $scope.dataCode = dataPlan;
+            $scope.dataCode = source;
 
             // Get Icon by Type
             $scope.getIcon = function (type) {

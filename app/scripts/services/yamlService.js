@@ -56,7 +56,7 @@ angular.module('cosmoUi')
                 }
 
                 if (_isLoadingDone()) {
-                    callbackFunc(null, parser.getParsedResult());
+                    callbackFunc(null, parser.getParsedResult(), data.plan);
                 }
             }
 

@@ -25,8 +25,8 @@
                                 </tr>
                                 <tr ng-repeat="deployment in blueprint.deployments">
                                     <td class="id" ng-click="redirectTo(deployment)">{{deployment.id}}</td>
-                                    <td class="create">{{deployment.createdAt}}</td>
-                                    <td class="description">{{deployment.updatedAt}}</td>
+                                    <td class="create" ng-click="redirectTo(deployment)">{{deployment.createdAt}}</td>
+                                    <td class="description" ng-click="redirectTo(deployment)">{{deployment.updatedAt}}</td>
                                     <td class="actions">
                                         <select ng-model="selectedWorkflow"
                                                 ng-options="option.name as option.name for option in getWorkflows(deployment)"

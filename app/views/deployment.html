@@ -214,7 +214,7 @@
                                 <th class="task sorting" data-ng-click="sortEvents('task')" data-ng-class="isSorted('task')">{{ 'deployment.table.heading.task' | i18n }}</th>
                             </tr>
                         </thead>
-                        <tbody ng-repeat="event in eventHits" ng-init="isOpen=false">
+                        <tbody class="animate-repeat" ng-repeat="event in eventHits" ng-init="isOpen=false">
                             <tr data-ng-click="isOpen=!isOpen">
                                 <td class="icon" ng-class="getEventIcon(event._source.event_type)"></td>
                                 <td class="date">{{event._source.timestamp == undefined && 'N/A' || event._source.timestamp | dateFormat: 'yyyy-MM-dd HH:mm:ss'}}</td>

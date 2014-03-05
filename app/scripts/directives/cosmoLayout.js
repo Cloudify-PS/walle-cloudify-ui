@@ -16,15 +16,15 @@ angular.module('cosmoUi')
             transclude: true,
             replace: true,
             link: function postLink(scope, element/*, attrs*/) {
-                try {
+                function doIt(){
                     var rightPanel = element.find('.right-panel');
+                    console.log(rightPanel.length);
                     $('#right-side-menu').remove();
                     $('#left-side-menu').after(rightPanel);
                     rightPanel.attr('id', 'right-side-menu');
-                } catch (e) {
-                    console.log(e);
-
+                    console.log('did it!');
                 }
+                setTimeout(doIt, 0);
 
                 scope.embeded = ($routeParams.hasOwnProperty('embed') && $routeParams.embed === 'true') ? true : false;
             }
