@@ -67,7 +67,7 @@ angular.module('cosmoUi')
             var callParams = {
                 'executionId': $cookieStore.get('executionId'),
                 'state': 'cancel'
-            }
+            };
             RestService.updateExecutionState(callParams).then(function() {
                 $cookieStore.remove('deploymentId');
                 $cookieStore.remove('executionId');
