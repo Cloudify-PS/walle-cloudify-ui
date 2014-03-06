@@ -31,7 +31,10 @@ angular.module('cosmoUi')
                 RestService.executeDeployment({
                     deploymentId: $scope.selectedDeployment.id,
                     workflowId: selectedWorkflow
+                }).then(function(execution) {
+                    $cookieStore.put('executionId', execution.id);
                 });
+
                 $cookieStore.remove('deploymentId');
                 $cookieStore.put('deploymentId', $scope.selectedDeployment.id);
                 $cookieStore.put('executingWorkflow', selectedWorkflow);
@@ -58,6 +61,18 @@ angular.module('cosmoUi')
 
         $scope.isExecuting = function(deploymentId) {
             return deploymentId === $cookieStore.get('deploymentId');   // TODO: Use REST API to check execution
+        };
+
+        $scope.cancelExecution = function() {
+            var callParams = {
+                'executionId': $cookieStore.get('executionId'),
+                'state': 'cancel'
+            }
+            RestService.updateExecutionState(callParams).then(function() {
+                $cookieStore.remove('deploymentId');
+                $cookieStore.remove('executionId');
+                $scope.showDeployments($scope.selectedBlueprint);
+            });
         };
 
         $scope.isExecuteEnabled = function() {

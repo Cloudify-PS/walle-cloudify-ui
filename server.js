@@ -96,6 +96,12 @@ app.get('/backend/executions', function(request, response) {
     });
 });
 
+app.post('/backend/executions/update', function(request, response) {
+    cloudify4node.updateExecutionState(request.body.executionId, request.body.state, function(err, data) {
+        response.send(err !== null ? err : data);
+    });
+});
+
 app.get('/backend/deployments', function(request, response) {
     cloudify4node.getDeployments(function(err, data) {
         response.send(err !== null ? err : data);

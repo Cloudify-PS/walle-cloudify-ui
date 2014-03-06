@@ -39,6 +39,7 @@
                                         <div class="executingWorkflow" ng-show="isExecuting(deployment.id)">{{executingWorkflow}}</div>
                                         <i class="fa fa-play-circle-o" ng-click="toggleConfirmationDialog(deployment)" ng-show="!isExecuting(deployment.id)"></i>
                                         <i ng-class="{deploymentExecute: isExecuting(deployment.id)}" ng-show="isExecuting(deployment.id)"></i>
+                                        <i class="cancel-execution fa fa-times-circle left" ng-show="isExecuting(deployment.id)" ng-click="cancelExecution(deployment.id)"></i>
                                     </td>
                                 </tr>
                             </table>
