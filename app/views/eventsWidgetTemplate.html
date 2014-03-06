@@ -9,7 +9,7 @@
         </div>
         <div id="events-widget-list-container">
             <table id="events-widget-events-list">
-                <tr ng-repeat="event in eventsData">
+                <tr class="animate-repeat" ng-repeat="event in eventsData">
                     <td>
                         <div id="event-icon" ng-class="getEventIcon(event._source.event_type)"></div>
                         <div id="event-type">{{ getEventText(event._source.event_type) }}</div>

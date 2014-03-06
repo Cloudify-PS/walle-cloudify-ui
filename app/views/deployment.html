@@ -204,6 +204,11 @@
                         </div>
                         <div class="loading" data-ng-show="filterLoading"></div>
                     </div>
+
+                    <div class="newEvents" data-ng-show="newEvents>0">
+                        <p data-ng-click="scrollToTop()">{{ newEvents }} new events</p>
+                    </div>
+
                     <table class="table">
                         <thead>
                             <tr>

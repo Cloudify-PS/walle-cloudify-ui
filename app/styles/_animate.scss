@@ -14,8 +14,8 @@
 .animate-repeat.ng-move,
 .animate-repeat.ng-enter,
 .animate-repeat.ng-leave {
-    -webkit-transition: all linear 0.5s;
-    transition: all linear 0.5s;
+    -webkit-transition: all linear 1s;
+    transition: all linear 1s;
 }
 
 .animate-repeat.ng-leave.ng-leave-active,
@@ -30,4 +30,5 @@
 .animate-repeat.ng-enter.ng-enter-active {
     opacity: 1;
     max-height: 40px;
+    color: #049cdb;
 }

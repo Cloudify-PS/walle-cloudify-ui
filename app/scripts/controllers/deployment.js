@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('cosmoUi')
-    .controller('DeploymentCtrl', function ($scope, $rootScope, $cookieStore, $routeParams, RestService, EventsService, BreadcrumbsService, YamlService, PlanDataConvert, blueprintCoordinateService) {
+    .controller('DeploymentCtrl', function ($scope, $rootScope, $cookieStore, $routeParams, RestService, EventsService, BreadcrumbsService, YamlService, PlanDataConvert, blueprintCoordinateService, $location, $anchorScroll/*, $http, $timeout*/) {
 
         var totalNodes = 0,
             appStatus = {},
@@ -12,7 +12,7 @@ angular.module('cosmoUi')
         $scope.deployment = null;
         $scope.nodes = [];
         $scope.events = [];
-        $scope.section = 'topology';
+        $scope.section = 'events';
         $scope.propSection = 'general';
         $scope.topologySettings = [
             {name: 'connections',   state: true},
@@ -350,16 +350,29 @@ angular.module('cosmoUi')
 
         function executeEvents(autoPull) {
             $scope.filterLoading = true;
+            $scope.newEvents = 0;
             var troubleShoot = 0,
                 executeRetry = 10,
-                lastAmount = 0;
+                lastAmount = 0,
+                eventsCollect = [];
+
+            function _reverse(array) {
+                var copy = [].concat(array);
+                return copy.reverse();
+            }
 
             events
                 .execute(function(data){
                     if(data && data.hasOwnProperty('hits')) {
                         if(data.hits.hits.length !== lastAmount) {
-                            $scope.eventHits = data.hits.hits;
-                            lastAmount = data.hits.hits.length;
+                            if(document.body.scrollTop === 0) {
+                                $scope.newEvents = 0;
+                                $scope.eventHits = _reverse(data.hits.hits);
+                                lastAmount = data.hits.hits.length;
+                            }
+                            else {
+                                $scope.newEvents = eventsCollect.length-$scope.eventHits.length;
+                            }
                         }
                     }
                     else {
@@ -395,6 +408,53 @@ angular.module('cosmoUi')
             filterEvents('context.deployment_id', {value: id}, null);
             executeEvents(true);
         })();
+
+        /* Mockup for Events Animation - START */
+
+//        $http.get("events_mock.json").success(function (data) {
+//            console.log(["events mock", data]);
+//            eventMock( data.hits.hits, 1 );
+//        });
+//
+//        $scope.newEvents = 0;
+//        var eventsCollect = [];
+//        function eventMock( data, num ) {
+//
+//            function _reverse(array) {
+//                var copy = [].concat(array);
+//                return copy.reverse();
+//            }
+//
+//            console.log(["Scroll offset", document.body.scrollTop])
+//
+//            if(document.body.scrollTop == 0) {
+//                console.log(["add row to event", num]);
+//
+//                $scope.newEvents = 0;
+//
+//                $scope.eventHits = _reverse(data.slice(0, num));
+//
+//                if(num < data.length) {
+//                    $timeout(function(){
+//                        eventMock(data, num+1);
+//                    }, 2000);
+//                }
+//            }
+//            else {
+//                eventsCollect = data.slice(0, num);
+//                console.log(["New Events", eventsCollect.length-$scope.eventHits.length]);
+//                $scope.newEvents = eventsCollect.length-$scope.eventHits.length;
+//                $timeout(function(){
+//                    eventMock(data, num+1);
+//                }, 2000);
+//            }
+//        }
+//
+        $scope.scrollToTop = function(){
+            $anchorScroll();
+        };
+
+        /* Mockup for Events Animation - END */
 
         $scope.$watch('eventsFilter.type', function(newValue, oldValue){
             if(newValue !== null && oldValue !== null) {
