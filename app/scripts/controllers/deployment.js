@@ -368,11 +368,12 @@ angular.module('cosmoUi')
                             if(document.body.scrollTop === 0) {
                                 $scope.newEvents = 0;
                                 $scope.eventHits = _reverse(data.hits.hits);
-                                lastAmount = data.hits.hits.length;
                             }
                             else {
-                                $scope.newEvents = eventsCollect.length-$scope.eventHits.length;
+                                eventsCollect = _reverse(data.hits.hits);
+                                $scope.newEvents = eventsCollect.length - $scope.eventHits.length;
                             }
+                            lastAmount = data.hits.hits.length;
                         }
                     }
                     else {
