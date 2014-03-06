@@ -38,19 +38,22 @@
                         <div ng-show="showProperties.relationships.length == undefined">{{ 'plans.details.noRelationships' | i18n }}</div>
 
                         <table class="relationships-table" ng-show="showProperties.relationships.length != undefined">
+                            <tr>
+                                <td>{{ 'plans.details.target' | i18n }}</td>
+                                <td>{{ 'plans.details.type' | i18n }}</td>
+                            </tr>
                             <tr ng-repeat="relationship in showProperties.relationships">
-                                <td>
-
+                                <td colspan="2">
                                     <table class="interfaces-table">
-                                        <tr>
-                                            <td>{{ 'plans.details.target' | i18n }}</td>
-                                            <td>{{ 'plans.details.type' | i18n }}</td>
-                                        </tr>
-                                        <tr ng-click="showRelationship(relationship.target_id)">
+                                        <!--<tr>-->
+                                            <!--<td>{{ 'plans.details.target' | i18n }}</td>-->
+                                            <!--<td>{{ 'plans.details.type' | i18n }}</td>-->
+                                        <!--</tr>-->
+                                        <tr ng-click="showRelationship(relationship)">
                                             <td>{{relationship.target_id}}</td>
                                             <td>{{relationship.type}}</td>
                                         </tr>
-                                        <tr ng-show="selectedRelationship == relationship.target_id">
+                                        <tr ng-show="selectedRelationship.target_id == relationship.target_id && selectedRelationship.type == relationship.type">
                                             <td colspan="2">
 
                                                 <table>
