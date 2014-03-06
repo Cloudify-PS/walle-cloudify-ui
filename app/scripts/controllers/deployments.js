@@ -8,6 +8,7 @@ angular.module('cosmoUi')
         $scope.executingWorkflow = $cookieStore.get('executingWorkflow');
         $scope.isConfirmationDialogVisible = false;
         $scope.selectedDeployment = null;
+        $scope.confirmationType = '';
         var selectedWorkflow = null;
         var cosmoError = false;
 
@@ -31,7 +32,10 @@ angular.module('cosmoUi')
                 RestService.executeDeployment({
                     deploymentId: $scope.selectedDeployment.id,
                     workflowId: selectedWorkflow
+                }).then(function(execution) {
+                    $cookieStore.put('executionId', execution.id);
                 });
+
                 $cookieStore.remove('deploymentId');
                 $cookieStore.put('deploymentId', $scope.selectedDeployment.id);
                 $cookieStore.put('executingWorkflow', selectedWorkflow);
@@ -60,13 +64,35 @@ angular.module('cosmoUi')
             return deploymentId === $cookieStore.get('deploymentId');   // TODO: Use REST API to check execution
         };
 
+        $scope.cancelExecution = function() {
+            var callParams = {
+                'executionId': $cookieStore.get('executionId'),
+                'state': 'cancel'
+            };
+            RestService.updateExecutionState(callParams).then(function() {
+                $cookieStore.remove('deploymentId');
+                $cookieStore.remove('executionId');
+                $scope.showDeployments($scope.selectedBlueprint);
+            });
+        };
+
         $scope.isExecuteEnabled = function() {
             return selectedWorkflow !== null;
         };
 
-        $scope.toggleConfirmationDialog = function(deployment) {
+        $scope.toggleConfirmationDialog = function(deployment, confirmationType) {
+            $scope.confirmationType = confirmationType;
             $scope.selectedDeployment = deployment || null;
             $scope.isConfirmationDialogVisible = $scope.isConfirmationDialogVisible === false;
+        };
+
+        $scope.confirmConfirmationDialog = function() {
+            if ($scope.confirmationType === 'execute') {
+                $scope.executeDeployment();
+            } else if ($scope.confirmationType === 'cancel') {
+                $scope.cancelExecution();
+                $scope.toggleConfirmationDialog();
+            }
         };
 
         $scope.redirectTo = function (deployment) {

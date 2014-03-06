@@ -168,6 +168,23 @@ Cloudify4node.getExecutionById = function(execution_id, callback) {
     createRequest(requestData, callback);
 }
 
+Cloudify4node.updateExecutionState = function(execution_id, new_state, callback) {
+    var data = {
+        'action': new_state
+    };
+    var requestData = createRequestData({
+        path: '/executions/' + execution_id,
+        data: data,
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Content-Length': JSON.stringify(data).length
+        }
+    });
+
+    createRequest(requestData, callback);
+}
+
 Cloudify4node.getDeployments = function(callback) {
     var requestData = createRequestData({
         path: '/deployments',

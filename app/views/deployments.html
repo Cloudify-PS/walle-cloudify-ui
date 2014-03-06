@@ -37,8 +37,9 @@
                                             <option value="">-- Select workflow --</option>
                                         </select>
                                         <div class="executingWorkflow" ng-show="isExecuting(deployment.id)">{{executingWorkflow}}</div>
-                                        <i class="fa fa-play-circle-o" ng-click="toggleConfirmationDialog(deployment)" ng-show="!isExecuting(deployment.id)"></i>
+                                        <i class="fa fa-play-circle-o" ng-click="toggleConfirmationDialog(deployment, 'execute')" ng-show="!isExecuting(deployment.id)"></i>
                                         <i ng-class="{deploymentExecute: isExecuting(deployment.id)}" ng-show="isExecuting(deployment.id)"></i>
+                                        <i class="cancel-execution fa fa-times-circle left" ng-show="isExecuting(deployment.id)" ng-click="toggleConfirmationDialog(deployment, 'cancel')"></i>
                                     </td>
                                 </tr>
                             </table>
@@ -60,10 +61,11 @@
         <div id="dialogBoxBg"></div>
         <div id="confirmationDialogContainer" class="dialogBox">
             <div class="dialogTitle">{{ 'deployments.confirmationPopup.title' | i18n }}</div>
-            <div class="dialogDescription">{{ 'deployments.confirmationPopup.description' | i18n }} {{selectedDeployment.id}}?</div>
+            <div class="dialogDescription" ng-show="confirmationType == 'execute'">{{ 'deployments.confirmationPopup.descriptionExecute' | i18n }} {{selectedDeployment.id}}?</div>
+            <div class="dialogDescription" ng-show="confirmationType == 'cancel'">{{ 'deployments.confirmationPopup.descriptionCancel' | i18n }} {{selectedDeployment.id}}?</div>
             <div class="buttonsContainer confirmationButtons">
                 <button id="cancelBtn" class="dialogButton" ng-click="toggleConfirmationDialog()">{{ 'deployments.confirmationPopup.cancelBtn' | i18n }}</button>
-                <button id="confirmBtn" class="dialogButton" ng-click="executeDeployment()">{{ 'deployments.confirmationPopup.confirmBtn' | i18n }}</button>
+                <button id="confirmBtn" class="dialogButton" ng-click="confirmConfirmationDialog()">{{ 'deployments.confirmationPopup.confirmBtn' | i18n }}</button>
             </div>
         </div>
     </div>
