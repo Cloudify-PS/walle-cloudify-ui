@@ -8,6 +8,7 @@ angular.module('cosmoUi')
         $scope.executingWorkflow = $cookieStore.get('executingWorkflow');
         $scope.isConfirmationDialogVisible = false;
         $scope.selectedDeployment = null;
+        $scope.confirmationType = '';
         var selectedWorkflow = null;
         var cosmoError = false;
 
@@ -79,9 +80,19 @@ angular.module('cosmoUi')
             return selectedWorkflow !== null;
         };
 
-        $scope.toggleConfirmationDialog = function(deployment) {
+        $scope.toggleConfirmationDialog = function(deployment, confirmationType) {
+            $scope.confirmationType = confirmationType;
             $scope.selectedDeployment = deployment || null;
             $scope.isConfirmationDialogVisible = $scope.isConfirmationDialogVisible === false;
+        };
+
+        $scope.confirmConfirmationDialog = function() {
+            if ($scope.confirmationType === 'execute') {
+                $scope.executeDeployment();
+            } else if ($scope.confirmationType === 'cancel') {
+                $scope.cancelExecution();
+                $scope.toggleConfirmationDialog();
+            }
         };
 
         $scope.redirectTo = function (deployment) {
