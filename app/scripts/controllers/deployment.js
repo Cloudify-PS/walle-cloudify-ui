@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('cosmoUi')
-    .controller('DeploymentCtrl', function ($scope, $rootScope, $cookieStore, $routeParams, RestService, EventsService, BreadcrumbsService, YamlService, PlanDataConvert, blueprintCoordinateService) {
+    .controller('DeploymentCtrl', function ($scope, $rootScope, $cookieStore, $routeParams, RestService, EventsService, BreadcrumbsService, YamlService, PlanDataConvert, blueprintCoordinateService, $location, $anchorScroll) {
 
         var totalNodes = 0,
             appStatus = {},
@@ -350,15 +350,30 @@ angular.module('cosmoUi')
 
         function executeEvents(autoPull) {
             $scope.filterLoading = true;
+            $scope.newEvents = 0;
+            $scope.eventHits = [];
             var troubleShoot = 0,
                 executeRetry = 10,
-                lastAmount = 0;
+                lastAmount = 0,
+                eventsCollect = [];
+
+            function _reverse(array) {
+                var copy = [].concat(array);
+                return copy.reverse();
+            }
 
             events
                 .execute(function(data){
                     if(data && data.hasOwnProperty('hits')) {
                         if(data.hits.hits.length !== lastAmount) {
-                            $scope.eventHits = data.hits.hits;
+                            if(document.body.scrollTop === 0) {
+                                $scope.newEvents = 0;
+                                $scope.eventHits = _reverse(data.hits.hits);
+                            }
+                            else {
+                                eventsCollect = _reverse(data.hits.hits);
+                                $scope.newEvents = eventsCollect.length - $scope.eventHits.length;
+                            }
                             lastAmount = data.hits.hits.length;
                         }
                     }
@@ -395,6 +410,10 @@ angular.module('cosmoUi')
             filterEvents('context.deployment_id', {value: id}, null);
             executeEvents(true);
         })();
+
+        $scope.scrollToTop = function(){
+            $anchorScroll();
+        };
 
         $scope.$watch('eventsFilter.type', function(newValue, oldValue){
             if(newValue !== null && oldValue !== null) {

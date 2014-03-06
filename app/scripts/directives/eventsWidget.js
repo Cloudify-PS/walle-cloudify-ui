@@ -26,13 +26,18 @@ angular.module('cosmoUi')
                     'policy_failed': {text: 'Policy failed', icon: 'event-icon-policy-failed', class: 'event-text-red'}
                 };
 
+                function _reverse(array) {
+                    var copy = [].concat(array);
+                    return copy.reverse();
+                }
+
                 scope.widgetOpen = false;
                 scope.eventsData = [];
 
                 ngModel.$render = function(){
                     var data = ngModel.$viewValue || false;
                     try {
-                        scope.eventsData = data;
+                        scope.eventsData = _reverse(data);
                     } catch(e) {}
                 };
 

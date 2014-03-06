@@ -18,11 +18,9 @@ angular.module('cosmoUi')
             link: function postLink(scope, element/*, attrs*/) {
                 function doIt(){
                     var rightPanel = element.find('.right-panel');
-                    console.log(rightPanel.length);
                     $('#right-side-menu').remove();
                     $('#left-side-menu').after(rightPanel);
                     rightPanel.attr('id', 'right-side-menu');
-                    console.log('did it!');
                 }
                 setTimeout(doIt, 0);
 

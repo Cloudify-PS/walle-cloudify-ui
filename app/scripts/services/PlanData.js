@@ -202,7 +202,9 @@ angular.module('cosmoUi').service('PlanDataConvert', function () {
 
     var networkMap = {
         'neutron_network': 'network',
+        'cloudify.openstack.network': 'network',
         'neutron_subnet': 'subnet',
+        'cloudify.openstack.subnet': 'subnet',
         'neutron_router': 'router',
         'cloudify.types.host': 'host',
         'cloudify.types.web_server': 'server'

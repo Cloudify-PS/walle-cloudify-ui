@@ -47,8 +47,10 @@ function createRequest(requestData, callback) {
     if (requestData.post_data !== undefined) {
         req.write(JSON.stringify(requestData.post_data));
     }
+    else {
+        req.write(JSON.stringify(requestData));
+    }
 
-    req.write(JSON.stringify(requestData));
     req.end();
 }
 
