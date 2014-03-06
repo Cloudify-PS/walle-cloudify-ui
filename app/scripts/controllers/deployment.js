@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('cosmoUi')
-    .controller('DeploymentCtrl', function ($scope, $rootScope, $cookieStore, $routeParams, RestService, EventsService, BreadcrumbsService, YamlService, PlanDataConvert, blueprintCoordinateService, $location, $anchorScroll/*, $http, $timeout*/) {
+    .controller('DeploymentCtrl', function ($scope, $rootScope, $cookieStore, $routeParams, RestService, EventsService, BreadcrumbsService, YamlService, PlanDataConvert, blueprintCoordinateService, $location, $anchorScroll) {
 
         var totalNodes = 0,
             appStatus = {},
@@ -409,52 +409,9 @@ angular.module('cosmoUi')
             executeEvents(true);
         })();
 
-        /* Mockup for Events Animation - START */
-
-//        $http.get("events_mock.json").success(function (data) {
-//            console.log(["events mock", data]);
-//            eventMock( data.hits.hits, 1 );
-//        });
-//
-//        $scope.newEvents = 0;
-//        var eventsCollect = [];
-//        function eventMock( data, num ) {
-//
-//            function _reverse(array) {
-//                var copy = [].concat(array);
-//                return copy.reverse();
-//            }
-//
-//            console.log(["Scroll offset", document.body.scrollTop])
-//
-//            if(document.body.scrollTop == 0) {
-//                console.log(["add row to event", num]);
-//
-//                $scope.newEvents = 0;
-//
-//                $scope.eventHits = _reverse(data.slice(0, num));
-//
-//                if(num < data.length) {
-//                    $timeout(function(){
-//                        eventMock(data, num+1);
-//                    }, 2000);
-//                }
-//            }
-//            else {
-//                eventsCollect = data.slice(0, num);
-//                console.log(["New Events", eventsCollect.length-$scope.eventHits.length]);
-//                $scope.newEvents = eventsCollect.length-$scope.eventHits.length;
-//                $timeout(function(){
-//                    eventMock(data, num+1);
-//                }, 2000);
-//            }
-//        }
-//
         $scope.scrollToTop = function(){
             $anchorScroll();
         };
-
-        /* Mockup for Events Animation - END */
 
         $scope.$watch('eventsFilter.type', function(newValue, oldValue){
             if(newValue !== null && oldValue !== null) {
