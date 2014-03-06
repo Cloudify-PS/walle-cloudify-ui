@@ -351,6 +351,7 @@ angular.module('cosmoUi')
         function executeEvents(autoPull) {
             $scope.filterLoading = true;
             $scope.newEvents = 0;
+            $scope.eventHits = [];
             var troubleShoot = 0,
                 executeRetry = 10,
                 lastAmount = 0,
@@ -365,7 +366,7 @@ angular.module('cosmoUi')
                 .execute(function(data){
                     if(data && data.hasOwnProperty('hits')) {
                         if(data.hits.hits.length !== lastAmount) {
-                            if($scope.section === 'events' && document.body.scrollTop === 0) {
+                            if($scope.section !== 'events' || document.body.scrollTop === 0) {
                                 $scope.newEvents = 0;
                                 $scope.eventHits = _reverse(data.hits.hits);
                             }
