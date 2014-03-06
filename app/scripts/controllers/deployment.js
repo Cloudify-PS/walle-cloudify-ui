@@ -366,7 +366,7 @@ angular.module('cosmoUi')
                 .execute(function(data){
                     if(data && data.hasOwnProperty('hits')) {
                         if(data.hits.hits.length !== lastAmount) {
-                            if($scope.section !== 'events' || document.body.scrollTop === 0) {
+                            if(document.body.scrollTop === 0) {
                                 $scope.newEvents = 0;
                                 $scope.eventHits = _reverse(data.hits.hits);
                             }
