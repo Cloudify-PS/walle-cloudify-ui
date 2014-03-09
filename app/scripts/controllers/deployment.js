@@ -27,6 +27,7 @@ angular.module('cosmoUi')
             'connections': true
         };
         $scope.selectedRelationship = '';
+        $scope.allNodesArr = [];
         $scope.selectNodesArr = [];
         $scope.selectedNode = null;
 
@@ -200,10 +201,7 @@ angular.module('cosmoUi')
                     // Set Deployment Model
                     _setDeploymentModel(deploymentData);
 
-                    $scope.selectNodesArr = deploymentData.plan.nodes;
-                    if ($scope.selectedNode === null) {
-                        $scope.selectedNode = $scope.selectNodesArr[0];
-                    }
+                    $scope.allNodesArr = deploymentData.plan.nodes;
 
                     // Blueprint
                     RestService.getBlueprintById({id: deploymentData.blueprintId})
@@ -319,7 +317,19 @@ angular.module('cosmoUi')
                 relationships: planData.getRelationships(realNode),
                 general: planData.getGeneralInfo(realNode)
             };
+
+            _filterSelectionBoxData(realNode.name);
         };
+
+        function _filterSelectionBoxData(nodeId) {
+            $scope.selectNodesArr = [];
+            for (var i = 0; i < $scope.allNodesArr.length; i++) {
+                if ($scope.allNodesArr[i].name === nodeId) {
+                    $scope.selectNodesArr.push($scope.allNodesArr[i]);
+                }
+            }
+            $scope.selectedNode = $scope.selectNodesArr[0];
+        }
 
         $scope.hideProperties = function () {
             $scope.showProperties = null;
