@@ -4,7 +4,7 @@
         <div class="breadcrumbs"><ul id="deployments" breadcrumbs></ul></div>
     </div>
 
-    <table ng-show="!cosmoConnectionError()">
+    <table ng-show="!cosmoConnectionError()" id="deploymentTable">
         <tr ng-repeat="blueprint in blueprints">
             <td>
 
@@ -16,7 +16,7 @@
                     <tr ng-show="selectedBlueprint == blueprint.id">
                         <td colspan="2">
                             <div ng-show="blueprint.deployments.length == 0">{{ 'deployments.emptyMessage' | i18n }}</div>
-                            <table class="table table-striped" ng-show="blueprint.deployments.length > 0">
+                            <table class="table table-striped deploys" ng-show="blueprint.deployments.length > 0">
                                 <tr>
                                     <td class="id">{{ 'deployments.table.heading.id' | i18n }}</td>
                                     <td class="create">{{ 'deployments.table.heading.createDate' | i18n }}</td>
