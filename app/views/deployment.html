@@ -8,12 +8,11 @@
         </div>
         <div class="content">
 
-            <select ng-model="selectedNode" ng-change="nodeSelected(selectedNode)" ng-options="node.id for node in selectNodesArr">
-            </select>
+            <select ng-model="selectedNode" ng-change="nodeSelected(selectedNode)" ng-options="node.id for node in selectNodesArr"></select>
             <div class="selectbox-arrow"></div>
 
             <div class="buttons-group no-embed" checkbox-toggle value="propSection">
-                <button ng-repeat="(key, value) in showProperties" type="button" class="btn btn-default" value="{{key}}">{{ 'plans.' + key | i18n }}</button>
+                <button ng-repeat="(key, value) in showProperties" type="button" class="btn btn-default" ng-class="{active: key == propSection}" value="{{key}}">{{ 'plans.' + key | i18n }}</button>
             </div>
 
             <div ng-switch="section" class="content-section">
