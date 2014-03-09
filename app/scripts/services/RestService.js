@@ -101,6 +101,15 @@ angular.module('cosmoUi')
             return _load('executions/update', callParams);
         }
 
+        function _getNode(params) {
+            var callParams = {
+                url: '/backend/nodes/get',
+                method: 'GET',
+                params: params
+            };
+            return _load('nodes/get', callParams);
+        }
+
 //        function _loadEvents(params) {
 //            var deferred = $q.defer();
 //
@@ -219,6 +228,7 @@ angular.module('cosmoUi')
         this.loadEvents = _loadEvents;
         this.loadDeployments = _loadDeployments;
         this.getWorkflows = _getWorkflows;
+        this.getNode = _getNode;
         this.getSettings = _getSettings;
         this.setSettings = _setSettings;
         this.getConfiguration = _getConfiguration;

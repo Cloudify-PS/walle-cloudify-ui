@@ -27,6 +27,8 @@ angular.module('cosmoUi')
             'connections': true
         };
         $scope.selectedRelationship = '';
+        $scope.selectNodesArr = [];
+        $scope.selectedNode = null;
 
         var eventCSSMap = {
             'workflow_received': {text: 'Workflow received', icon: 'event-icon-workflow-started', class: 'event-text-green'},
@@ -101,6 +103,18 @@ angular.module('cosmoUi')
                 return '';
             }
         }
+
+        $scope.nodeSelected = function(node) {
+            $scope.selectedNode = node;
+            $scope.showProperties = {
+                properties: node.properties,
+                relationships: node.relationships,
+                general: {
+                    'name': node.id,
+                    'type': node.type
+                }
+            };
+        };
 
         function getEventMapping(event) {
             var eventMap;
@@ -185,6 +199,11 @@ angular.module('cosmoUi')
                 .then(function(deploymentData) {
                     // Set Deployment Model
                     _setDeploymentModel(deploymentData);
+
+                    $scope.selectNodesArr = deploymentData.plan.nodes;
+                    if ($scope.selectedNode === null) {
+                        $scope.selectedNode = $scope.selectNodesArr[0];
+                    }
 
                     // Blueprint
                     RestService.getBlueprintById({id: deploymentData.blueprintId})
