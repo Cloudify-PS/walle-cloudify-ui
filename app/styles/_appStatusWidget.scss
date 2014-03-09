@@ -21,6 +21,12 @@
             background: $clr-base-01;
             line-height: 35px;
             font-size: 11px;
+            box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.4);
+        }
+        .shadow {
+            position: absolute;
+            top: 0px;
+            left: 23px;
         }
         .gauge::after {
             content: "%";
