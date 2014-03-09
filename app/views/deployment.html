@@ -50,7 +50,7 @@
                                             <!--<td>{{ 'plans.details.type' | i18n }}</td>-->
                                         <!--</tr>-->
                                         <tr ng-click="showRelationship(relationship)">
-                                            <td>{{relationship.target_id}}</td>
+                                            <td><div class="relationship-arrow right" ng-class="{'down': selectedRelationship == relationship, 'right': selectedRelationship != relationship}"></div>{{relationship.target_id}}</td>
                                             <td>{{relationship.type}}</td>
                                         </tr>
                                         <tr ng-show="selectedRelationship.target_id == relationship.target_id && selectedRelationship.type == relationship.type">
