@@ -104,7 +104,7 @@ angular.module('cosmoUi')
                     .css('width', width)
                     .css('height', height)
                     .css('border-radius', width / 2)
-                    .css('box-shadow', 'inset 0px 0px ' + ((width - innerSize) / ratio) + 'px rgba(241, 241, 241, 0.5)');
+                    .css('box-shadow', 'inset 1px 1px ' + ((width - innerSize) / ratio) + 'px rgba(0, 0, 0, 0.4) ');
 
                 // Fit circle inside
                 $element.find('.circle')

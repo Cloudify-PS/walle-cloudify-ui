@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('cosmoUi')
-    .controller('DeploymentCtrl', function ($scope, $rootScope, $cookieStore, $routeParams, RestService, EventsService, BreadcrumbsService, YamlService, PlanDataConvert, blueprintCoordinateService, $location, $anchorScroll) {
+    .controller('DeploymentCtrl', function ($scope, $rootScope, $cookieStore, $routeParams, RestService, EventsService, BreadcrumbsService, YamlService, PlanDataConvert, blueprintCoordinateService, bpNetworkService, $location, $anchorScroll, $timeout) {
 
         var totalNodes = 0,
             appStatus = {},
@@ -170,6 +170,23 @@ angular.module('cosmoUi')
         function _drawPlan( dataPlan ) {
             var dataMap;
 
+            /**
+             * Networks
+             */
+                // Filter data for Networks
+            PlanDataConvert.nodesToNetworks(dataPlan);
+            $scope.networks = dataPlan.network;
+            bpNetworkService.setMap(dataPlan.network.relations);
+
+            // Render Networks
+            $timeout(function(){
+                $scope.networkcoords = bpNetworkService.getCoordinates();
+                bpNetworkService.render();
+            }, 1500);
+
+            /**
+             * Blueprint
+             */
             // Convert edges to angular format
             if (dataPlan.hasOwnProperty('edges') && !!dataPlan.edges) {
                 dataMap = PlanDataConvert.edgesToBlueprint(dataPlan.edges);
