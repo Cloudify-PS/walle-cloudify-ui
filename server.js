@@ -150,6 +150,11 @@ app.post('/backend/deployments/workflows/get', function(request, response) {
     });
 });
 
+app.get('/backend/node/get', function(request, response) {
+    cloudify4node.getNode(request.body.nodeId, function(err, data) {
+        response.send(err !== null ? err : data);
+    });
+});
 
 // ui settings REST APIs
 
