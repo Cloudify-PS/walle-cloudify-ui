@@ -345,7 +345,6 @@ angular.module('cosmoUi')
                     $scope.selectNodesArr.push($scope.allNodesArr[i]);
                 }
             }
-            $scope.selectedNode = $scope.selectNodesArr[0];
         }
 
         $scope.hideProperties = function () {

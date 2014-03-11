@@ -9,7 +9,9 @@
 
         <div class="content">
 
-            <select ng-model="selectedNode" ng-change="nodeSelected(selectedNode)" ng-options="node.id for node in selectNodesArr"></select>
+            <select ng-model="selectedNode" ng-change="nodeSelected(selectedNode)" ng-options="node.id for node in selectNodesArr">
+                <option value="">-- Select instance --</option>
+            </select>
             <div class="selectbox-arrow"></div>
 
             <div class="buttons-group no-embed" checkbox-toggle value="propSection">
