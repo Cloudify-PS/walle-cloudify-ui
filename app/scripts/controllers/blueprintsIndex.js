@@ -36,6 +36,7 @@ angular.module('cosmoUi')
 
         $scope.loadBlueprints = function() {
             $scope.isLoadingBlueprints = true;
+            $scope.blueprints = null;
             RestService.loadBlueprints()
                 .then(function(data) {
                     cosmoError = false;
