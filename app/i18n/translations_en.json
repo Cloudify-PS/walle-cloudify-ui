@@ -9,8 +9,8 @@
         "table": {
             "heading": {
                 "name": "Name",
-                "version": "Version",
-                "description": "Description",
+                "created": "Create date",
+                "updated": "Update date",
                 "action": "Action"
             },
             "deployBtn": "Create Deployment"
