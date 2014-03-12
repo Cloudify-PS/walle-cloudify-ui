@@ -101,6 +101,15 @@ angular.module('cosmoUi')
             return _load('executions/update', callParams);
         }
 
+        function _getDeploymentExecutions(params) {
+            var callParams = {
+                url: '/backend/deployments/executions/get',
+                method: 'POST',
+                data: {'deploymentId': params}
+            };
+            return _load('deployments/executions/get', callParams);
+        }
+
         function _getNode(params) {
             var callParams = {
                 url: '/backend/nodes/get',
@@ -221,6 +230,7 @@ angular.module('cosmoUi')
         this.addBlueprint = _addBlueprint;
         this.getBlueprintById = _getBlueprintById;
         this.deployBlueprint = _deployBlueprint;
+        this.getDeploymentExecutions = _getDeploymentExecutions;
         this.executeDeployment = _executeDeployment;
         this.updateExecutionState = _updateExecutionState;
         this.getDeploymentById = _getDeploymentById;
