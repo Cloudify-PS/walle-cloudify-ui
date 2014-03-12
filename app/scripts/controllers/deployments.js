@@ -45,7 +45,8 @@ angular.module('cosmoUi')
             }
         };
 
-        $scope.getWorkflows = function(deployment) {var plan = deployment.plan;
+        $scope.getWorkflows = function(deployment) {
+            var plan = deployment.plan;
             var workflows = [];
             for (var i in plan.workflows) {
                 workflows.push({
@@ -106,19 +107,14 @@ angular.module('cosmoUi')
             return cosmoError;
         };
 
-        function _loadExecutions(blueprints) {
-            for (var j = 0; j < blueprints.length; j++) {
-                var deployments = blueprints[j].deployments;
-                for (var i = 0; i < deployments.length; i++) {
-                    RestService.getDeploymentExecutions(deployments[i].id)
-                        .then(function(data) {
-                            if (data.length > 0) {
-                                $scope.executedDeployments[data[0].blueprintId] = [];
-                                $scope.executedDeployments[data[0].blueprintId][data[0].deploymentId] = data;
-                            }
-                        });
-                }
-            }
+        function _loadExecutions(blueprintId, deploymentId) {
+            RestService.getDeploymentExecutions(deploymentId)
+                .then(function(data) {
+                    if (data.length > 0) {
+                        $scope.executedDeployments[blueprintId] = [];
+                        $scope.executedDeployments[blueprintId][deploymentId] = data;
+                    }
+                });
         }
 
         function _loadDeployments() {
@@ -126,7 +122,13 @@ angular.module('cosmoUi')
                 .then(function(data) {
                     cosmoError = false;
                     $scope.blueprints = data;
-                    _loadExecutions(data);
+
+                    for (var j = 0; j < data.length; j++) {
+                        var deployments = data[j].deployments;
+                        for (var i = 0; i < deployments.length; i++) {
+                            _loadExecutions(deployments[i].blueprintId, deployments[i].id);
+                        }
+                    }
                 },
                 function() {
                     cosmoError = true;
