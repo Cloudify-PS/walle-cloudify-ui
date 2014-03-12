@@ -9,6 +9,7 @@ angular.module('cosmoUi')
         $scope.isConfirmationDialogVisible = false;
         $scope.selectedDeployment = null;
         $scope.confirmationType = '';
+        $scope.executedDeployments = [];
         var selectedWorkflow = null;
         var cosmoError = false;
 
@@ -44,9 +45,7 @@ angular.module('cosmoUi')
             }
         };
 
-        $scope.getWorkflows = function(deployment) {
-//            var plan = JSON.parse(deployment.plan.replace('\\\\n','').replace('\\',''));
-            var plan = deployment.plan;
+        $scope.getWorkflows = function(deployment) {var plan = deployment.plan;
             var workflows = [];
             for (var i in plan.workflows) {
                 workflows.push({
@@ -60,11 +59,13 @@ angular.module('cosmoUi')
             selectedWorkflow = workflow;
         };
 
-        $scope.isExecuting = function(deploymentId) {
-            return deploymentId === $cookieStore.get('deploymentId');   // TODO: Use REST API to check execution
+        $scope.isExecuting = function(blueprintId, deploymentId) {
+            return $scope.executedDeployments[blueprintId] !== undefined &&
+                $scope.executedDeployments[blueprintId][deploymentId] !== null &&
+                $scope.executedDeployments[blueprintId][deploymentId].length > 0;
         };
 
-        $scope.cancelExecution = function() {
+        $scope.cancelExecution = function(deployment) {
             var callParams = {
                 'executionId': $cookieStore.get('executionId'),
                 'state': 'cancel'
@@ -72,6 +73,7 @@ angular.module('cosmoUi')
             RestService.updateExecutionState(callParams).then(function() {
                 $cookieStore.remove('deploymentId');
                 $cookieStore.remove('executionId');
+                $scope.executedDeployments[deployment.blueprintId][deployment.id] = null;
                 $scope.showDeployments($scope.selectedBlueprint);
             });
         };
@@ -86,11 +88,11 @@ angular.module('cosmoUi')
             $scope.isConfirmationDialogVisible = $scope.isConfirmationDialogVisible === false;
         };
 
-        $scope.confirmConfirmationDialog = function() {
+        $scope.confirmConfirmationDialog = function(deployment) {
             if ($scope.confirmationType === 'execute') {
                 $scope.executeDeployment();
             } else if ($scope.confirmationType === 'cancel') {
-                $scope.cancelExecution();
+                $scope.cancelExecution(deployment);
                 $scope.toggleConfirmationDialog();
             }
         };
@@ -104,11 +106,27 @@ angular.module('cosmoUi')
             return cosmoError;
         };
 
+        function _loadExecutions(blueprints) {
+            for (var j = 0; j < blueprints.length; j++) {
+                var deployments = blueprints[j].deployments;
+                for (var i = 0; i < deployments.length; i++) {
+                    RestService.getDeploymentExecutions(deployments[i].id)
+                        .then(function(data) {
+                            if (data.length > 0) {
+                                $scope.executedDeployments[data[0].blueprintId] = [];
+                                $scope.executedDeployments[data[0].blueprintId][data[0].deploymentId] = data;
+                            }
+                        });
+                }
+            }
+        }
+
         function _loadDeployments() {
             RestService.loadBlueprints()
                 .then(function(data) {
                     cosmoError = false;
                     $scope.blueprints = data;
+                    _loadExecutions(data);
                 },
                 function() {
                     cosmoError = true;
