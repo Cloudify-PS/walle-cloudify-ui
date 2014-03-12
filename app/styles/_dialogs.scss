@@ -171,6 +171,18 @@
       }
     }
 
+    .upload-process-anim {
+      width: 25px;
+      height: 25px;
+      background: url("/images/progress.gif") no-repeat center center;
+      background-color: #fff;
+      border-radius: 25px;
+      position: absolute;
+      float: right;
+      right: 110px;
+      bottom: 2px;
+    }
+
     #uploadBtn {
       position: absolute;
       float: right;
