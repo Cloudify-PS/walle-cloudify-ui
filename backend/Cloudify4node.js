@@ -220,9 +220,9 @@ Cloudify4node.getDeploymentById = function(deployment_id, callback) {
     createRequest(requestData, callback);
 }
 
-Cloudify4node.getDeploymentNodes = function(deployment_id, callback) {
+Cloudify4node.getDeploymentNodes = function(deployment_id, state, callback) {
     var requestData = createRequestData({
-        path: '/deployments/' + deployment_id + '/nodes?reachable=true',
+        path: '/deployments/' + deployment_id + '/nodes?state=' + state,
         method: 'GET'
     });
 
@@ -280,9 +280,16 @@ Cloudify4node.getWorkflows = function(deployment_id, callback) {
     createRequest(requestData, callback);
 }
 
-Cloudify4node.getNode = function(node_id, callback) {
+Cloudify4node.getNode = function(node_id, queryParams, callback) {
+    var queryStr = '';
+    if (queryParams !== null) {
+        queryStr = '?'
+        for (var param in queryParams) {
+            queryStr += param + '=' + queryParams[param] + '&';
+        }
+    }
     var requestData = createRequestData({
-        path: '/nodes/' + node_id,
+        path: '/nodes/' + node_id + queryStr,
         method: 'GET'
     });
 
