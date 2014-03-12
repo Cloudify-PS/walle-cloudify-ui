@@ -19,8 +19,8 @@
             <tr>
                 <td class="icon"><i class="gs-icon-deployments"></i></td>
                 <td class="name" ng-click="redirectTo(blueprint)">{{ blueprint.id }}</td>
-                <td class="created">{{ blueprint.createdAt }}</td>
-                <td class="updated">{{ blueprint.updatedAt }}</td>
+                <td class="created">{{ blueprint.createdAt | dateFormat: 'yyyy-MM-dd HH:mm:ss' }}</td>
+                <td class="updated">{{ blueprint.updatedAt | dateFormat: 'yyyy-MM-dd HH:mm:ss' }}</td>
                 <td class="actions">
                     <button class="deploy-button" ng-click="toggleDeployDialog(blueprint)">{{ 'blueprints.table.deployBtn' | i18n }}</button>
                     <div class="deployments-number" ng-click="redirectToDeployments(blueprint)">{{ blueprint.deployments.length }}</div>
