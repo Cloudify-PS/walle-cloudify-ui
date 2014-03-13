@@ -112,10 +112,20 @@ angular.module('cosmoUi')
                 relationships: node.relationships,
                 general: {
                     'name': node.id,
-                    'type': node.type
+                    'type': node.type,
+                    'reachable': _getNodeStateData(node.id).reachable,
+                    'state': _getNodeStateData(node.id).state
                 }
             };
         };
+
+        function _getNodeStateData(nodeId) {
+            for(var i = 0; i < $scope.nodes.length; i++) {
+                if ($scope.nodes[i].id === nodeId) {
+                    return $scope.nodes[i];
+                }
+            }
+        }
 
         function getEventMapping(event) {
             var eventMap;
@@ -231,7 +241,7 @@ angular.module('cosmoUi')
                         });
 
                     // Execution
-                    RestService.getDeploymentNodes({deploymentId : id/*, reachable: true*/})
+                    RestService.getDeploymentNodes({deploymentId : id, state: true})
                         .then(null, null, function(dataNodes) {
                             $scope.nodes = dataNodes;
                         });
