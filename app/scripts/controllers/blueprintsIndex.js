@@ -30,10 +30,6 @@ angular.module('cosmoUi')
             $scope.isDeployDialogVisible = $scope.isDeployDialogVisible === false;
         };
 
-        $scope.closeDialog = function() {
-            $scope.toggleConfirmationDialog();
-        };
-
         $scope.loadBlueprints = function() {
             $scope.isLoadingBlueprints = true;
             $scope.blueprints = null;
@@ -45,6 +41,10 @@ angular.module('cosmoUi')
                     } else {
                         $scope.blueprints = data;
                         updateDeployments();
+
+                        if ($scope.isAddDialogVisible) {
+                            $scope.toggleAddDialog();
+                        }
                     }
                     $scope.isLoadingBlueprints = false;
                 }, function() {

@@ -71,6 +71,16 @@ angular.module('cosmoUi')
             return _load('blueprints/get', callParams);
         }
 
+        function _getBlueprintSource(params) {
+            var callParams = {
+                url: '/backend/blueprints/source',
+                method: 'GET',
+                params: params
+            };
+
+            return _load('blueprints/source', callParams);
+        }
+
         function _deployBlueprint(params) {
             var callParams = {
                 url: '/backend/deployments/create',
@@ -229,6 +239,7 @@ angular.module('cosmoUi')
         this.loadBlueprints = _loadBlueprints;
         this.addBlueprint = _addBlueprint;
         this.getBlueprintById = _getBlueprintById;
+        this.getBlueprintSource = _getBlueprintSource;
         this.deployBlueprint = _deployBlueprint;
         this.getDeploymentExecutions = _getDeploymentExecutions;
         this.executeDeployment = _executeDeployment;

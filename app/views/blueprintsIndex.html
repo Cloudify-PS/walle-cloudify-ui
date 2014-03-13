@@ -10,8 +10,8 @@
             <tr>
                 <th class="icon"><!-- icon --></th>
                 <th class="name">{{ 'blueprints.table.heading.name' | i18n }}</th>
-                <th class="version">{{ 'blueprints.table.heading.version' | i18n }}</th>
-                <th class="description">{{ 'blueprints.table.heading.description' | i18n }}</th>
+                <th class="created">{{ 'blueprints.table.heading.created' | i18n }}</th>
+                <th class="updated">{{ 'blueprints.table.heading.updated' | i18n }}</th>
                 <th class="actions">{{ 'blueprints.table.heading.action' | i18n }}</th>
             </tr>
         </thead>
@@ -19,8 +19,8 @@
             <tr>
                 <td class="icon"><i class="gs-icon-deployments"></i></td>
                 <td class="name" ng-click="redirectTo(blueprint)">{{ blueprint.id }}</td>
-                <td class="version">{{ blueprint.version }}</td>
-                <td class="description">{{ blueprint.description }}</td>
+                <td class="created">{{ blueprint.createdAt | dateFormat: 'yyyy-MM-dd HH:mm:ss' }}</td>
+                <td class="updated">{{ blueprint.updatedAt | dateFormat: 'yyyy-MM-dd HH:mm:ss' }}</td>
                 <td class="actions">
                     <button class="deploy-button" ng-click="toggleDeployDialog(blueprint)">{{ 'blueprints.table.deployBtn' | i18n }}</button>
                     <div class="deployments-number" ng-click="redirectToDeployments(blueprint)">{{ blueprint.deployments.length }}</div>
@@ -54,6 +54,7 @@
                 </div>
                 <div id="mainFile" style="display:none">Application file: <input type="text" ng-model="mainFileName"></div>
                 <div id="upload-error-message" ng-show="isUploadError()">{{errorMessage}}</div>
+                <div class="upload-process-anim" ng-show="uploadInProcess == true"></div>
                 <button id="uploadBtn" class="dialogButton" ng-class="{disabled: !isUploadEnabled(), enabled: isUploadEnabled()}" ng-click="uploadFile()">Upload</button>
             </form>
         </div>

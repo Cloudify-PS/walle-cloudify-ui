@@ -43,7 +43,6 @@ angular.module('cosmoUi')
                         $scope.uploadInProcess = false;
                     });
                     $scope.loadBlueprints();
-//                    $scope.closeDialog();
                 },
                 error: function(e) {
                     $scope.errorMessage = JSON.parse(e.responseText).message;
