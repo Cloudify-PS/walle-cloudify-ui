@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('cosmoUi')
-    .controller('PlansCtrl', function ($scope, YamlService, Layout, Render, $routeParams, BreadcrumbsService, PlanDataConvert, blueprintCoordinateService, bpNetworkService, $http, $timeout) {
+    .controller('PlansCtrl', function ($scope, YamlService, Layout, Render, $routeParams, BreadcrumbsService, PlanDataConvert, blueprintCoordinateService, bpNetworkService, $http, $timeout, RestService) {
 
         var planData/*:PlanData*/ = null;
         $scope.section = 'topology';
@@ -81,7 +81,10 @@ angular.module('cosmoUi')
             $scope.map = dataMap['cloudify.relationships.contained_in'];
             $scope.coordinates = blueprintCoordinateService.getCoordinates();
             $scope.dataTable = PlanDataConvert.nodesToTable(dataPlan);
-            $scope.dataCode = source;
+            RestService.getBlueprintSource($routeParams.id)
+                .then(function(code) {
+                    $scope.dataCode = code.source;
+                });
 
             // Get Icon by Type
             $scope.getIcon = function (type) {

@@ -85,7 +85,7 @@ app.get('/backend/blueprints/get', function(request, response) {
 });
 
 app.post('/backend/blueprints/source', function(request, response) {
-    cloudify4node.getBlueprintSource(request.query.blueprintId, function(err, data) {
+    cloudify4node.getBlueprintSource(request.body.blueprintId, function(err, data) {
         response.send(err !== null ? err : data);
     });
 });
