@@ -74,8 +74,8 @@ angular.module('cosmoUi')
         function _getBlueprintSource(params) {
             var callParams = {
                 url: '/backend/blueprints/source',
-                method: 'GET',
-                params: params
+                method: 'POST',
+                data: {'blueprintId': params}
             };
 
             return _load('blueprints/source', callParams);

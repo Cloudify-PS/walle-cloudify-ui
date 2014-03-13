@@ -121,9 +121,19 @@ angular.module('cosmoUi')
                 relationships: node.relationships,
                 general: {
                     'name': node.id,
-                    'type': node.type
+                    'type': node.type,
+                    'reachable': $scope.getNodeStateData(node.id).reachable,
+                    'state': $scope.getNodeStateData(node.id).state
                 }
             };
+        };
+
+        $scope.getNodeStateData = function(nodeId) {
+            for(var i = 0; i < $scope.nodes.length; i++) {
+                if ($scope.nodes[i].id === nodeId) {
+                    return $scope.nodes[i];
+                }
+            }
         };
 
         function getEventMapping(event) {
@@ -346,6 +356,7 @@ angular.module('cosmoUi')
                     $scope.selectNodesArr.push($scope.allNodesArr[i]);
                 }
             }
+            $scope.nodeSelected($scope.selectNodesArr[0]);
         }
 
         $scope.hideProperties = function () {

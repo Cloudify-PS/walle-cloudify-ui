@@ -50,7 +50,7 @@
         select {
           background: #FFFFFF;
           height: 28px;
-          width: 220px;
+          width: 180px;
           float: left;
           font-size: 14px;
           box-shadow: none;
@@ -66,7 +66,6 @@
 
         .selectbox-arrow {
           float: left;
-          float: left;
           top: 10px;
           position: relative;
           right: 20px;
@@ -79,6 +78,17 @@
 
         .content-section {
           padding-left: 0px;
+
+          .overview-node-name {
+            font-size: 16px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 5px;
+          }
+
+          table.overview-data {
+            margin-bottom: 30px;
+          }
 
           table.relationships-table {
               width: 100%;

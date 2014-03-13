@@ -31,8 +31,6 @@ angular.module('cosmoUi')
         };
 
         $scope.loadBlueprints = function() {
-            $scope.isLoadingBlueprints = true;
-            $scope.blueprints = null;
             RestService.loadBlueprints()
                 .then(function(data) {
                     cosmoError = false;
@@ -46,7 +44,7 @@ angular.module('cosmoUi')
                             $scope.toggleAddDialog();
                         }
                     }
-                    $scope.isLoadingBlueprints = false;
+
                 }, function() {
                     cosmoError = true;
                 });
