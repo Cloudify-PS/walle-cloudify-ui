@@ -4,9 +4,18 @@ angular.module('cosmoUi')
     .controller('DeploymentCtrl', function ($scope, $rootScope, $cookieStore, $routeParams, RestService, EventsService, BreadcrumbsService, YamlService, PlanDataConvert, blueprintCoordinateService, bpNetworkService, $location, $anchorScroll, $timeout) {
 
         var totalNodes = 0,
-            appStatus = {},
             deploymentModel = {},
-            instances = 0;
+            statesIndex = ['uninitialized', 'initializing', 'creating', 'created', 'configuring', 'configured', 'starting', 'started'];
+
+
+        var deploymentDataModel = {
+            'reachables': 0,
+            'states': 0,
+            'completed': 0,
+            'total': 0,
+            'process': 0,
+            'instancesIds': []
+        };
 
         var planData/*:PlanData*/ = null;
         $scope.deployment = null;
@@ -143,30 +152,6 @@ angular.module('cosmoUi')
             return eventMap !== undefined ? eventMap : event.type;
         }
 
-        // Define Deployment Model in the first time
-        function _setDeploymentModel( data ) {
-            for (var i = 0; i < data.plan.nodes.length; i++) {
-                var node = data.plan.nodes[i];
-                if(!deploymentModel.hasOwnProperty(node.name)) {
-                    deploymentModel[node.name] = {
-                        'status': {},
-                        'process': {},
-                        'completed': 0,
-                        'instances': 0
-                    };
-                }
-                deploymentModel[node.name].status[node.id] = {
-                    'reachable': null
-                };
-                instances++;
-            }
-            for (var depId in deploymentModel) {
-                if(Object.keys(deploymentModel[depId].status).hasOwnProperty('length')) {
-                    deploymentModel[depId].instances = Object.keys(deploymentModel[depId].status).length;
-                }
-            }
-        }
-
         function _drawPlan( dataPlan ) {
             var dataMap;
 
@@ -209,7 +194,6 @@ angular.module('cosmoUi')
             $scope.map = dataMap['cloudify.relationships.contained_in'];
             $scope.coordinates = blueprintCoordinateService.getCoordinates();
             $scope.deployments = deploymentModel;
-            $scope.appStatus = appStatus;
         }
 
         function _loadDeployment() {
@@ -231,82 +215,99 @@ angular.module('cosmoUi')
                         });
 
                     // Execution
-                    RestService.getDeploymentNodes({deploymentId : id/*, reachable: true*/})
+                    RestService.getDeploymentNodes({deploymentId : id, state: true})
                         .then(null, null, function(dataNodes) {
                             $scope.nodes = dataNodes;
                         });
                 });
         }
 
-        // Update deployments process and values
-        function updateDeployments() {
-            for (var i in deploymentModel) {
-                var completed = 0, failed = 0;
-                for (var instanceID in deploymentModel[i].status) {
-                    switch (deploymentModel[i].status[instanceID]) {
-                    case true:
-                        completed++;
-                        break;
-                    case false:
-                        failed++;
-                        break;
-                    }
+        // Define Deployment Model in the first time
+        function _setDeploymentModel( data ) {
+            deploymentModel['*'] = angular.copy(deploymentDataModel);
+            for (var nodeId in data.plan.nodes) {
+                var node = data.plan.nodes[nodeId];
+                if(!deploymentModel.hasOwnProperty(node.name)) {
+                    deploymentModel[node.name] = angular.copy(deploymentDataModel);
                 }
-                deploymentModel[i].completed = completed;
-                deploymentModel[i].process = {
-                    'done': processCalc(completed, deploymentModel[i].instances),
-                    'failed': processCalc(failed, deploymentModel[i].instances)
-                };
+                deploymentModel['*'].instancesIds.push(node.id);
+                deploymentModel['*'].total++;
+                deploymentModel[node.name].instancesIds.push(node.id);
+                deploymentModel[node.name].total++;
             }
         }
 
-        // Calculate value by percents for pieProgress
-        function processCalc(partOf, instances) {
+        function _updateDeploymentModel( nodes ) {
+            var IndexedNodes = {};
+            for (var i in nodes) {
+                var node = nodes[i];
+                IndexedNodes[node.id] = {
+                    reachable: node.reachable,
+                    state: node.state
+                };
+            }
+            for (var d in deploymentModel) {
+                var deployment = deploymentModel[d];
+                var _reachable = 0;
+                var _states = 0;
+                var _completed = 0;
+                for (var n in deployment.instancesIds) {
+                    var nodeId = deployment.instancesIds[n];
+                    var nodeInstance = IndexedNodes[nodeId];
+                    if(IndexedNodes.hasOwnProperty(nodeId)) {
+                        if(nodeInstance.reachable) {
+                            _reachable++;
+                        }
+                        if(statesIndex.indexOf(nodeInstance.state) > 0 || statesIndex.indexOf(nodeInstance.state) < 7) {
+                            var stateNum = statesIndex.indexOf(nodeInstance.state);
+                            if(stateNum === 6) {
+                                _completed++;
+                            }
+                            _states += stateNum;
+                        }
+                    }
+                }
+                deployment.completed = _completed;
+                deployment.reachables = _reachable;
+                deployment.states = calcState(_states, deployment.total);
+
+                // Calculate percents for progressbar
+                var processDone = 0;
+                if(deployment.states < 100) {
+                    processDone = deployment.states;
+                    deployment.process = {
+                        'done': deployment.states,
+                        'failed': 0
+                    };
+                }
+                else {
+                    processDone = calcProgress(deployment.reachables, deployment.total);
+                    deployment.process = {
+                        'done': calcProgress(deployment.reachables, deployment.total),
+                        'failed': 100 - processDone
+                    };
+                }
+            }
+        }
+
+        function calcState(state, instances) {
+            return Math.round(state > 0 ? (state / instances / 6 * 100) : 0);
+        }
+
+        function calcProgress(partOf, instances) {
             return Math.round(partOf > 0 ? 100 * partOf / instances : 0);
         }
 
         // Init
         _loadDeployment();
-        //_loadEvents();
 
         // Execution Listener
         $scope.$watch('nodes', function(nodes){
             if(nodes === undefined) {
                 return;
             }
-            // Organizing the data by id
-            var IndexedNodes = {}, completed = 0, failed = 0;
-            for (var i = 0; i < nodes.length; i++) {
-                var node = nodes[i];
-                IndexedNodes[node.id] = node.reachable;
-                switch (node.reachable) {
-                case true:
-                    completed++;
-                    break;
-                case false:
-                    failed++;
-                    break;
-                }
-            }
-            // Update Deployment Model with new Data
-            for (var d in deploymentModel) {
-                var deployment = deploymentModel[d];
-                for (var nodeId in deployment.status) {
-                    if(IndexedNodes.hasOwnProperty(nodeId)) {
-                        deployment.status[nodeId] = IndexedNodes[nodeId];
-                    }
-                }
-            }
-            // Total App Status
-            appStatus = {
-                'done': processCalc(completed, instances),
-                'failed': processCalc(failed, instances)
-            };
-        }, true);
-
-        // Listener for deployments, update process values
-        $scope.$watch('deployments', function(){
-            updateDeployments();
+            // Update nodes with new data
+            _updateDeploymentModel(nodes);
         }, true);
 
         // TODO: return the right status by formula, need to ask Yaron or Guy
