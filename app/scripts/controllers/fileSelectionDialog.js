@@ -18,7 +18,7 @@ angular.module('cosmoUi')
         $scope.uploadFile = function() {
             console.log(['upload: ', selectedFile]);
 
-            if (!$scope.isUploadEnabled()) {
+            if (!$scope.isUploadEnabled() || !_validateBlueprintName($scope.blueprintName)) {
                 return;
             }
 
@@ -64,4 +64,16 @@ angular.module('cosmoUi')
         $scope.isUploadError = function() {
             return $scope.uploadError;
         };
+
+        // Temporary solution - should be handled by Cosmo, not UI side
+        function _validateBlueprintName(blueprintName) {
+            if(/[^a-zA-Z0-9]/.test(blueprintName)) {
+                $scope.errorMessage = 'Invalid blueprint name. Only Alphanumeric text allowed.';
+                $scope.uploadError = true;
+                $scope.uploadInProcess = false;
+
+                return false;
+            }
+            return true;
+        }
     });
