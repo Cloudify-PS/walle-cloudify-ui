@@ -37,7 +37,7 @@ angular.module('cosmoUi')
 //
 //        });
 
-        YamlService.load($routeParams.id, function (err, data, source) {
+        YamlService.load($routeParams.id, function (err, data) {
 
             planData = data;
             var dataPlan = data.getJSON(),
