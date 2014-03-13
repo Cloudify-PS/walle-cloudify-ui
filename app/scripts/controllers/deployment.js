@@ -113,13 +113,13 @@ angular.module('cosmoUi')
                 general: {
                     'name': node.id,
                     'type': node.type,
-                    'reachable': _getNodeStateData(node.id).reachable,
-                    'state': _getNodeStateData(node.id).state
+                    'reachable': $scope.getNodeStateData(node.id).reachable,
+                    'state': $scope.getNodeStateData(node.id).state
                 }
             };
         };
 
-        function _getNodeStateData(nodeId) {
+        $scope.getNodeStateData = function(nodeId) {
             for(var i = 0; i < $scope.nodes.length; i++) {
                 if ($scope.nodes[i].id === nodeId) {
                     return $scope.nodes[i];

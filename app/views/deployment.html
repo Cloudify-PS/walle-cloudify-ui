@@ -15,6 +15,7 @@
 
             <div class="buttons-group no-embed" checkbox-toggle value="propSection">
                 <button ng-repeat="(key, value) in showProperties" type="button" class="btn btn-default" ng-class="{active: key == propSection}" value="{{key}}">{{ 'plans.' + key | i18n }}</button>
+                <button type="button" class="btn btn-default" ng-class="{active: key == propSection}" value="overview">{{ 'plans.overview' | i18n }}</button>
             </div>
 
             <div ng-switch="section" class="content-section">
@@ -88,7 +89,24 @@
                         </table>
 
                     </div>
+
                     <pre ng-switch-when="interfaces">{{showProperties.interfaces | yaml:'No interfaces to display' }} </pre>
+
+                    <div ng-switch-when="overview">
+                        <div ng-repeat="node in selectNodesArr">
+                            <div class="overview-node-name">{{node.id}}</div>
+                            <table class="overview-data">
+                                <tr>
+                                    <td>{{ 'plans.details.key' | i18n }}</td>
+                                    <td>{{ 'plans.details.value' | i18n }}</td>
+                                </tr>
+                                <tr ng-repeat="(key, value) in getNodeStateData(node.id)">
+                                    <td>{{key}}</td><td>{{value}}</td>
+                                </tr>
+                            </table>
+                        </div>
+
+                    </div>
                 </div>
             </div>
         </div>
