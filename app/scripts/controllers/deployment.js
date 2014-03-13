@@ -125,7 +125,7 @@ angular.module('cosmoUi')
                     return $scope.nodes[i];
                 }
             }
-        }
+        };
 
         function getEventMapping(event) {
             var eventMap;
