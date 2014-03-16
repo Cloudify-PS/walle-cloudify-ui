@@ -63,6 +63,7 @@ angular.module('cosmoUi')
         $scope.isExecuting = function(blueprintId, deploymentId) {
             return $scope.executedDeployments[blueprintId] !== undefined &&
                 $scope.executedDeployments[blueprintId][deploymentId] !== null &&
+                $scope.executedDeployments[blueprintId][deploymentId] !== undefined &&
                 $scope.executedDeployments[blueprintId][deploymentId].length > 0;
         };
 

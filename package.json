@@ -64,7 +64,8 @@
     "js-yaml",
     "jade",
     "log4js",
-    "restler"
+    "restler",
+    "lodash"
   ],
   "engines": {
     "node": ">=0.8.0"

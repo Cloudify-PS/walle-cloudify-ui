@@ -4,6 +4,7 @@
         position: absolute;
         right: $COSMOUI_DEPLOYMENT_EVENT_WIDGET_RIGHT;
         top: $COSMOUI_DEPLOYMENT_EVENT_WIDGET_TOP;
+        z-index: 9998;
     }
 
     #deployment-header {
@@ -50,7 +51,7 @@
         select {
           background: #FFFFFF;
           height: 28px;
-          width: 180px;
+          width: 170px;
           float: left;
           font-size: 14px;
           box-shadow: none;
@@ -62,6 +63,7 @@
           border: 1px solid #d3dfe2;
           cursor: pointer;
           margin: 6px 4px 0px 4px;
+          padding-right: 17px;
         }
 
         .selectbox-arrow {

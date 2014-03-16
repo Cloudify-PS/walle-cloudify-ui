@@ -31,7 +31,7 @@ angular.module('cosmoUi')
                     return copy.reverse();
                 }*/
 
-                scope.widgetOpen = false;
+                scope.widgetOpen = true;
                 scope.eventsData = [];
 
                 ngModel.$render = function(){
