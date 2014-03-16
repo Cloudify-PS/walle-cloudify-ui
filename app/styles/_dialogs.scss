@@ -213,4 +213,14 @@
   right: 0;
   margin: auto;
   margin-top: 100px;
+
+  #deploy-error-message {
+    float: left;
+    left: 38px;
+    position: absolute;
+    color: #f00;
+    width: 300px;
+    top: 135px;
+    text-align: center;
+  }
 }

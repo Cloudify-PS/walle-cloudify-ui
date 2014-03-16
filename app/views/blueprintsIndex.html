@@ -68,6 +68,7 @@
                 <label>{{ 'blueprints.deployDialog.deployName' | i18n }}</label>
                 <input type="text" ng-model="deploymentId">
             </div>
+            <div id="deploy-error-message" ng-show="isDeployError()">{{deployErrorMessage}}</div>
             <div class="buttonsContainer deployButtons">
                 <button id="cancelBtn" class="dialogButton" ng-click="toggleDeployDialog()">{{ 'blueprints.deployDialog.cancelBtn' | i18n }}</button>
                 <button id="deployBtn" class="dialogButton" ng-class="{disabled: !isDeployEnabled(), enabled: isDeployEnabled()}" ng-click="deployBlueprint(selectedBlueprint)">{{ 'blueprints.deployDialog.deployBtn' | i18n }}</button>
