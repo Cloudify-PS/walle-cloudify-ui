@@ -3,6 +3,9 @@
 angular.module('cosmoUi')
     .service('RestService', function RestService($http, $timeout, $q) {
 
+        var autoPull = [],
+            autoPullPromise = {};
+
         function RestLoader() {
 
             this.load = function (rest, params) {
@@ -56,6 +59,27 @@ angular.module('cosmoUi')
             });
 
             return deferred.promise;
+        }
+
+        function _autoPull(name, params, fn) {
+            var deferred = $q.defer();
+            if(autoPull.indexOf(name) === -1) {
+                autoPull.push(name);
+                (function _internalLoad(){
+                    fn(params).then(function(data){
+                        deferred.notify(data);
+                        autoPullPromise[name] = $timeout(_internalLoad, 3000);
+                    });
+                })();
+            }
+            return deferred.promise;
+        }
+
+        function _autoPullStop(name) {
+            if(autoPull.indexOf(name) !== -1) {
+                autoPull.splice(autoPull.indexOf(name), 1);
+                $timeout.cancel(autoPullPromise[name]);
+            }
         }
 
         function _addBlueprint(params) {
@@ -129,34 +153,6 @@ angular.module('cosmoUi')
             return _load('nodes/get', callParams);
         }
 
-//        function _loadEvents(params) {
-//            var deferred = $q.defer();
-//
-//            function _internalLoadEvents(){
-//                //console.log(['loading events', params]);
-//
-//                var callParams = {
-//                    url: '/backend/events',
-//                    method: 'POST',
-//                    data: params
-//                };
-//
-//                _load('events', callParams).then(function(data) {
-//                    if ( params.from < data.lastEvent){
-//                        params.from = data.lastEvent + 1;
-//
-//                        deferred.notify(data);
-//                    }
-//
-//                    $timeout(_internalLoadEvents, 3000);
-//                });
-//            }
-//
-//            _internalLoadEvents();
-//
-//            return deferred.promise;
-//        }
-
         function _loadEvents(query) {
             var callParams = {
                 url: '/backend/events',
@@ -180,20 +176,12 @@ angular.module('cosmoUi')
         }
 
         function _getDeploymentNodes(params) {
-            var deferred = $q.defer();
-            function _internalLoadNodes(){
-                var callParams = {
-                    url: '/backend/deployments/nodes',
-                    method: 'POST',
-                    data: params
-                };
-                _load('nodes', callParams).then(function(data) {
-                    deferred.notify(data.nodes);
-                    $timeout(_internalLoadNodes, 3000);
-                });
-            }
-            _internalLoadNodes();
-            return deferred.promise;
+            var callParams = {
+                url: '/backend/deployments/nodes',
+                method: 'POST',
+                data: params
+            };
+            return _load('nodes', callParams);
         }
 
         function _getWorkflows(params) {
@@ -248,4 +236,6 @@ angular.module('cosmoUi')
         this.getSettings = _getSettings;
         this.setSettings = _setSettings;
         this.getConfiguration = _getConfiguration;
+        this.autoPull = _autoPull;
+        this.autoPullStop = _autoPullStop;
     });

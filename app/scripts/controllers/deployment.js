@@ -7,7 +7,6 @@ angular.module('cosmoUi')
             deploymentModel = {},
             statesIndex = ['uninitialized', 'initializing', 'creating', 'created', 'configuring', 'configured', 'starting', 'started'];
 
-
         var deploymentDataModel = {
             'status': 0, // 0 = (install) in progress, 1 = (done) all done and reachable, 2 = (alert) all done but half reachable, 3 = (failed) all done and not reachable
             'reachables': 0,
@@ -20,6 +19,7 @@ angular.module('cosmoUi')
 
         var planData/*:PlanData*/ = null;
         $scope.deployment = null;
+        $scope.deploymentInProgress = false;
         $scope.nodes = [];
         $scope.events = [];
         $scope.section = 'topology';
@@ -225,11 +225,30 @@ angular.module('cosmoUi')
                             });
                         });
 
-                    // Execution
-                    RestService.getDeploymentNodes({deploymentId : id, state: true})
-                        .then(null, null, function(dataNodes) {
-                            $scope.nodes = dataNodes;
+
+
+                    RestService.autoPull('getDeploymentExecutions', id, RestService.getDeploymentExecutions)
+                        .then(null, null, function(dataExec) {
+                            if(dataExec.length > 0) {
+                                $scope.deploymentInProgress = true;
+                                RestService.autoPull('getDeploymentNodes', {deploymentId : id, state: true}, RestService.getDeploymentNodes)
+                                    .then(null, null, function(dataNodes) {
+                                        $scope.nodes = dataNodes.nodes;
+                                    });
+                            }
+                            else {
+                                $scope.deploymentInProgress = false;
+                                RestService.autoPullStop('getDeploymentNodes');
+                            }
                         });
+
+//                    // Dummy progress stoped!
+//                    $timeout(function(){
+//                        console.log(["Progress Stopeed!"]);
+//                        RestService.autoPullStop("getDeploymentExecutions");
+//                        $scope.deploymentInProgress = false;
+//                    }, 10000);
+
                 });
         }
 
@@ -290,26 +309,38 @@ angular.module('cosmoUi')
                         'done': deployment.states,
                         'failed': 0
                     };
-                    deployment.status = 0;
                 }
                 else {
                     processDone = calcProgress(deployment.reachables, deployment.total);
-                    if(processDone === 100) {
-                        deployment.status = 1;
-                    }
-                    else if(processDone > 0 && processDone < 100) {
-                        deployment.status = 2;
-                    }
-                    else if(processDone === 0) {
-                        deployment.status = 3;
-                    }
                     deployment.process = {
                         'done': processDone,
                         'failed': 100 - processDone
                     };
                 }
+
+                // Set Status by Workflow Execution Progress
+                if($scope.deploymentInProgress) {
+                    setDeploymentStatus(deployment, false);
+                }
+                else {
+                    setDeploymentStatus(deployment, processDone);
+                }
             }
-            //console.log(["deploymentModel", deploymentModel]);
+        }
+
+        function setDeploymentStatus(deployment, process) {
+            if(process === false) {
+                deployment.status = 0;
+            }
+            else if(process === 100) {
+                deployment.status = 1;
+            }
+            else if(process > 0 && process < 100) {
+                deployment.status = 2;
+            }
+            else if(process === 0) {
+                deployment.status = 3;
+            }
         }
 
         function calcState(state, instances) {
@@ -332,7 +363,10 @@ angular.module('cosmoUi')
             _updateDeploymentModel(nodes);
         }, true);
 
-        // TODO: return the right status by formula, need to ask Yaron or Guy
+        $scope.$watch('deploymentInProgress', function(){
+            _updateDeploymentModel($scope.nodes);
+        });
+
         $scope.getBadgeStatus = function(status) {
             switch(status) {
             case 0:
