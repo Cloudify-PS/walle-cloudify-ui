@@ -9,6 +9,7 @@ angular.module('cosmoUi')
 
 
         var deploymentDataModel = {
+            'status': 0, // 0 = (install) in progress, 1 = (done) all done and reachable, 2 = (alert) all done but half reachable, 3 = (failed) all done and not reachable
             'reachables': 0,
             'states': 0,
             'completed': 0,
@@ -289,15 +290,26 @@ angular.module('cosmoUi')
                         'done': deployment.states,
                         'failed': 0
                     };
+                    deployment.status = 0;
                 }
                 else {
                     processDone = calcProgress(deployment.reachables, deployment.total);
+                    if(processDone === 100) {
+                        deployment.status = 1;
+                    }
+                    else if(processDone > 0 && processDone < 100) {
+                        deployment.status = 2;
+                    }
+                    else if(processDone === 0) {
+                        deployment.status = 3;
+                    }
                     deployment.process = {
-                        'done': calcProgress(deployment.reachables, deployment.total),
+                        'done': processDone,
                         'failed': 100 - processDone
                     };
                 }
             }
+            //console.log(["deploymentModel", deploymentModel]);
         }
 
         function calcState(state, instances) {
@@ -321,8 +333,19 @@ angular.module('cosmoUi')
         }, true);
 
         // TODO: return the right status by formula, need to ask Yaron or Guy
-        $scope.getBadgeStatus = function() {
-            return 'install';
+        $scope.getBadgeStatus = function(status) {
+            switch(status) {
+            case 0:
+                return 'install';
+            case 1:
+                return 'done';
+            case 2:
+                return 'alerts';
+            case 3:
+                return 'failed';
+            default:
+                return 'install';
+            }
         };
 
         // Get Icon by Type

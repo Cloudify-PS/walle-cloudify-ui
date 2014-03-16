@@ -255,6 +255,17 @@
                     fill: $failed;
                 }
             }
+            .piProgress:not([status='0']) {
+                > svg {
+                    display: none;
+                }
+                > .circle {
+                    box-shadow: none;
+                    > .shadow {
+                        display: none;
+                    }
+                }
+            }
             .head {
                 display: block;
                 background-color: #136e9d;
