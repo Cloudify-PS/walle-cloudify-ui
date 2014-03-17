@@ -10,12 +10,13 @@
         <div class="content">
 
             <select ng-model="selectedNode" ng-change="nodeSelected(selectedNode)" ng-options="node.id for node in selectNodesArr">
+                <option value="">{{ 'plans.all' | i18n }}</option>
             </select>
             <div class="selectbox-arrow"></div>
 
-            <div class="buttons-group no-embed" checkbox-toggle value="propSection">
+            <div class="buttons-group no-embed" checkbox-toggle value="propSection" ng-show="selectedNode != null">
                 <button ng-repeat="(key, value) in showProperties" type="button" class="btn btn-default" ng-class="{active: key == propSection}" value="{{key}}">{{ 'plans.' + key | i18n }}</button>
-                <button type="button" class="btn btn-default" ng-class="{active: key == propSection}" value="overview">{{ 'plans.overview' | i18n }}</button>
+                <!--<button type="button" class="btn btn-default" ng-class="{active: key == propSection}" value="overview">{{ 'plans.overview' | i18n }}</button>-->
             </div>
 
             <div ng-switch="section" class="content-section">
@@ -54,10 +55,6 @@
                             <tr ng-repeat="relationship in showProperties.relationships">
                                 <td colspan="2">
                                     <table class="interfaces-table">
-                                        <!--<tr>-->
-                                            <!--<td>{{ 'plans.details.target' | i18n }}</td>-->
-                                            <!--<td>{{ 'plans.details.type' | i18n }}</td>-->
-                                        <!--</tr>-->
                                         <tr ng-click="showRelationship(relationship)">
                                             <td><div class="relationship-arrow right" ng-class="{'down': selectedRelationship == relationship, 'right': selectedRelationship != relationship}"></div>{{relationship.target_id}}</td>
                                             <td>{{relationship.type}}</td>
@@ -105,7 +102,6 @@
                                 </tr>
                             </table>
                         </div>
-
                     </div>
                 </div>
             </div>

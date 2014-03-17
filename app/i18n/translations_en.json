@@ -87,11 +87,11 @@
         }
     },
     "plans": {
+        "all": "All",
         "general": "General",
         "properties": "Properties",
         "policies": "Policies",
         "relationships": "Relationships",
-        "overview": "Overview",
         "topology": "Topology",
         "network": "Network",
         "topology": {
