@@ -132,7 +132,7 @@ angular.module('cosmoUi')
                     }
                 }
             }
-        }
+        };
 
         function _loadDeployments() {
             RestService.loadBlueprints()
