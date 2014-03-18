@@ -16,7 +16,6 @@
 
             <div class="buttons-group no-embed" checkbox-toggle value="propSection" ng-show="selectedNode != null">
                 <button ng-repeat="(key, value) in showProperties" type="button" class="btn btn-default" ng-class="{active: key == propSection}" value="{{key}}">{{ 'plans.' + key | i18n }}</button>
-                <!--<button type="button" class="btn btn-default" ng-class="{active: key == propSection}" value="overview">{{ 'plans.overview' | i18n }}</button>-->
             </div>
 
             <div ng-switch="section" class="content-section">
@@ -128,6 +127,22 @@
                 <button type="button" class="btn btn-default" value="events">Events</button>
             </div>
             <div settings-toggles id="settings-button" class="no-embed" toggles="toggleBar"></div>
+
+            <div class="actions">
+                <select ng-model="selectedWorkflow"
+                        ng-options="option.label as option.label for option in workflowsList"
+                        ng-change="workflowSelected(selectedWorkflow)"
+                        ng-disabled="isExecuting()"
+                        ng-class="{disable: isExecuting()}"
+                        ng-show="!isExecuting()">
+                    <option value="">-- Select workflow --</option>
+                </select>
+                <div class="executingWorkflow" ng-show="isExecuting()">{{executingWorkflow}}</div>
+                <i class="fa fa-play-circle-o" ng-click="toggleConfirmationDialog(deployment, 'execute')" ng-show="!isExecuting()"></i>
+                <i ng-class="{deploymentExecute: isExecuting()}" ng-show="isExecuting()"></i>
+                <i class="cancel-execution fa fa-times-circle left" ng-show="isExecuting()" ng-click="toggleConfirmationDialog(deployment, 'cancel')"></i>
+            </div>
+
             <!-- Settings - END -->
 
             <div ng-switch="section" class="content-section">
@@ -310,6 +325,19 @@
                     <div class="emptyTable" data-ng-hide="eventHits.length">There are no events at this moment...</div>
                 </div>
                 <!-- Events Tab - END -->
+            </div>
+        </div>
+    </div>
+
+    <div ng-show="isConfirmationDialogVisible">
+        <div class="dialogBoxBg"></div>
+        <div id="confirmationDialogContainer" class="dialogBox">
+            <div class="dialogTitle">{{ 'deployments.confirmationPopup.title' | i18n }}</div>
+            <div class="dialogDescription" ng-show="confirmationType == 'execute'">{{ 'deployments.confirmationPopup.descriptionExecute' | i18n }} {{selectedWorkflow}}?</div>
+            <div class="dialogDescription" ng-show="confirmationType == 'cancel'">{{ 'deployments.confirmationPopup.descriptionCancel' | i18n }} {{executedData.workflowId}}?</div>
+            <div class="buttonsContainer confirmationButtons">
+                <button id="cancelBtn" class="dialogButton" ng-click="toggleConfirmationDialog()">{{ 'deployments.confirmationPopup.cancelBtn' | i18n }}</button>
+                <button id="confirmBtn" class="dialogButton" ng-click="confirmConfirmationDialog(selectedWorkflow)">{{ 'deployments.confirmationPopup.confirmBtn' | i18n }}</button>
             </div>
         </div>
     </div>

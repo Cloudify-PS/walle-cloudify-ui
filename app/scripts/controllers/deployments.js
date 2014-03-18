@@ -5,7 +5,6 @@ angular.module('cosmoUi')
 
         $scope.blueprints = null;
         $scope.selectedBlueprint = '';
-        $scope.executingWorkflow = $cookieStore.get('executingWorkflow');
         $scope.isConfirmationDialogVisible = false;
         $scope.selectedDeployment = null;
         $scope.confirmationType = '';
@@ -33,14 +32,7 @@ angular.module('cosmoUi')
                 RestService.executeDeployment({
                     deploymentId: $scope.selectedDeployment.id,
                     workflowId: selectedWorkflow
-                }).then(function(execution) {
-                    $cookieStore.put('executionId', execution.id);
                 });
-
-                $cookieStore.remove('deploymentId');
-                $cookieStore.put('deploymentId', $scope.selectedDeployment.id);
-                $cookieStore.put('executingWorkflow', selectedWorkflow);
-                $scope.executingWorkflow = selectedWorkflow;
                 $scope.redirectTo($scope.selectedDeployment);
             }
         };
@@ -64,17 +56,19 @@ angular.module('cosmoUi')
             return $scope.executedDeployments[blueprintId] !== undefined &&
                 $scope.executedDeployments[blueprintId][deploymentId] !== null &&
                 $scope.executedDeployments[blueprintId][deploymentId] !== undefined &&
+                $scope.executedDeployments[blueprintId][deploymentId].status !== 'failed' &&
+                $scope.executedDeployments[blueprintId][deploymentId].status !== 'terminated' &&
+                $scope.executedDeployments[blueprintId][deploymentId].status !== 'canceled' &&
+                $scope.executedDeployments[blueprintId][deploymentId].status !== null &&
                 $scope.executedDeployments[blueprintId][deploymentId].length > 0;
         };
 
         $scope.cancelExecution = function(deployment) {
             var callParams = {
-                'executionId': $cookieStore.get('executionId'),
+                'executionId': $scope.getExecutionAttr(deployment, 'id'),
                 'state': 'cancel'
             };
             RestService.updateExecutionState(callParams).then(function() {
-                $cookieStore.remove('deploymentId');
-                $cookieStore.remove('executionId');
                 $scope.executedDeployments[deployment.blueprintId][deployment.id] = null;
                 $scope.showDeployments($scope.selectedBlueprint);
             });
@@ -112,10 +106,32 @@ angular.module('cosmoUi')
             RestService.getDeploymentExecutions(deploymentId)
                 .then(function(data) {
                     if (data.length > 0) {
-                        $scope.executedDeployments[blueprintId] = [];
-                        $scope.executedDeployments[blueprintId][deploymentId] = data;
+                        if ($scope.executedDeployments[blueprintId] === undefined) {
+                            $scope.executedDeployments[blueprintId] = [];
+                        }
+
+                        for (var i = 0; i < data.length; i++) {
+                            if (data[i].status !== null && data[i].status !== 'failed' && data[i].status !== 'terminated' && data[i].status !== 'canceled') {
+                                $scope.executedDeployments[blueprintId][deploymentId] = data[i];
+                            }
+                        }
+
                     }
                 });
+        }
+
+        $scope.getExecutionAttr = function(deployment, attr) {
+            for (var blueprint in $scope.executedDeployments) {
+                for (var dep in $scope.executedDeployments[blueprint]) {
+                    if ($scope.executedDeployments[blueprint][dep] !== null) {
+                        for (var i = 0; i < $scope.executedDeployments[blueprint][dep].length; i++) {
+                            if (deployment.id === $scope.executedDeployments[blueprint][dep][i].deploymentId) {
+                                return $scope.executedDeployments[blueprint][dep][i][attr];
+                            }
+                        }
+                    }
+                }
+            }
         }
 
         function _loadDeployments() {

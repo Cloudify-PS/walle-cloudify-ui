@@ -7,9 +7,12 @@
   top: 0px;
   left: 0px;
   opacity: 0;
+  z-index: 9995;
 }
 
 .dialogBox {
+  z-index: 9996;
+
   .dialogButton {
     color: white;
     font-weight: bold;

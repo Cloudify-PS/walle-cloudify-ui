@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('cosmoUi')
-    .controller('DeploymentCtrl', function ($scope, $rootScope, $cookieStore, $routeParams, RestService, EventsService, BreadcrumbsService, YamlService, PlanDataConvert, blueprintCoordinateService, bpNetworkService, $location, $anchorScroll, $timeout) {
+    .controller('DeploymentCtrl', function ($scope, $rootScope, $cookieStore, $routeParams, RestService, EventsService, BreadcrumbsService, YamlService, PlanDataConvert, blueprintCoordinateService, bpNetworkService, $route, $anchorScroll, $timeout) {
 
         var totalNodes = 0,
             deploymentModel = {},
@@ -18,7 +18,7 @@ angular.module('cosmoUi')
         };
 
         var planData/*:PlanData*/ = null;
-        $scope.deployment = null;
+        $scope.selectedWorkflow = null;
         $scope.deploymentInProgress = false;
         $scope.nodes = [];
         $scope.events = [];
@@ -40,6 +40,8 @@ angular.module('cosmoUi')
         $scope.allNodesArr = [];
         $scope.selectNodesArr = [];
         $scope.selectedNode = null;
+        $scope.executingWorkflow = $cookieStore.get('executingWorkflow');
+        $scope.executedData = null;
 
         var eventCSSMap = {
             'workflow_received': {text: 'Workflow received', icon: 'event-icon-workflow-started', class: 'event-text-green'},
@@ -59,8 +61,6 @@ angular.module('cosmoUi')
         };
         var id = $routeParams.id;
         var blueprintId = $routeParams.blueprintId;
-        //var from = 0;
-        //var to = 5;
 
         BreadcrumbsService.push('deployments',
             {
@@ -141,6 +141,78 @@ angular.module('cosmoUi')
             }
         };
 
+        $scope.executeDeployment = function() {
+            if ($scope.isExecuteEnabled()) {
+                RestService.executeDeployment({
+                    deploymentId: id,
+                    workflowId: $scope.selectedWorkflow
+                }).then(function(execution) {
+                    $cookieStore.put('executionId', execution.id);
+                });
+
+                $cookieStore.remove('deploymentId');
+                $cookieStore.put('deploymentId', id);
+                $cookieStore.put('executingWorkflow', $scope.selectedWorkflow);
+                $scope.executingWorkflow = $scope.selectedWorkflow;
+                $scope.refreshPage();
+            }
+        };
+
+        $scope.workflowSelected = function(workflow) {
+            $scope.selectedWorkflow = workflow;
+        };
+
+        $scope.isExecuting = function() {
+            return $scope.executedData !== undefined && $scope.executedData !== null;
+        };
+
+        $scope.cancelExecution = function() {
+            var callParams = {
+                'executionId': $scope.executedData.id,
+                'state': 'cancel'
+            };
+            RestService.updateExecutionState(callParams).then(function() {
+                $scope.executedData = null;
+            });
+        };
+
+        $scope.isExecuteEnabled = function() {
+            return $scope.selectedWorkflow !== null;
+        };
+
+        $scope.toggleConfirmationDialog = function(deployment, confirmationType) {
+            $scope.confirmationType = confirmationType;
+            $scope.selectedDeployment = deployment || null;
+            $scope.isConfirmationDialogVisible = $scope.isConfirmationDialogVisible === false;
+        };
+
+        $scope.confirmConfirmationDialog = function(deployment) {
+            if ($scope.confirmationType === 'execute') {
+                $scope.executeDeployment();
+            } else if ($scope.confirmationType === 'cancel') {
+                $scope.cancelExecution(deployment);
+                $scope.toggleConfirmationDialog();
+            }
+        };
+
+        $scope.refreshPage = function () {
+            console.log('refreshing deployment page');
+            $route.reload();
+        };
+
+        function _loadExecutions() {
+            RestService.getDeploymentExecutions(id)
+                .then(function(data) {
+                    if (data.length > 0) {
+                        for (var i = 0; i < data.length; i++) {
+                            if (data[i].status !== null && data[i].status !== 'failed' && data[i].status !== 'terminated' && data[i].status !== 'canceled') {
+                                $scope.executedData = data[i];
+                            }
+                        }
+                    }
+                });
+        }
+
         function getEventMapping(event) {
             var eventMap;
 
@@ -216,6 +288,7 @@ angular.module('cosmoUi')
                 .then(function(deploymentData) {
                     // Set Deployment Model
                     _setDeploymentModel(deploymentData);
+                    _loadExecutions(deploymentData.id);
 
                     $scope.allNodesArr = deploymentData.plan.nodes;
 
@@ -438,7 +511,7 @@ angular.module('cosmoUi')
 
         RestService.getWorkflows({deploymentId: id})
             .then(function (data) {
-                var workflows = [{'value': null, 'label': 'All'}];
+                var workflows = [];
                 if (data.hasOwnProperty('workflows')) {
                     for (var wfid in data.workflows) {
                         var wfItem = data.workflows[wfid];
