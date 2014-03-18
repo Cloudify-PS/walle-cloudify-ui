@@ -112,6 +112,28 @@
       left: 10px;
     }
 
+    .deploy-button {
+      color: white;
+      font-weight: bold;
+      padding: 5px 10px 5px 10px;
+      background-color: #29aaee;
+      border-radius: 3px;
+      border-bottom: 1px solid #198ed9;
+      border-right: 1px solid #198ed9;
+      border-top: none;
+      border-left: none;
+      display: inline-block;
+      margin-left: 20px;
+
+      &.disabled {
+        background: $COSMOUI_BUTTON_DISABLED_BACKGROUND;
+      }
+
+      &.enabled {
+        background: $COSMOUI_BUTTON_BACKGROUND;
+      }
+    }
+
     .toggles-bar {
         display: inline-block;
     }

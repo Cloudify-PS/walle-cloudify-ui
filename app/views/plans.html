@@ -70,6 +70,8 @@
     </div>
     <div settings-toggles id="settings-button" class="no-embed" toggles="toggleBar"></div>
     <!-- Settings - END -->
+    <button class="deploy-button" ng-click="toggleDeployDialog(blueprint)">{{ 'blueprints.table.deployBtn' | i18n }}</button>
+
     <div ng-switch="section" class="content-section">
         <!-- Blueprint Contianter - START -->
         <div class="bpContainer" ng-switch-default="topology" blueprint:resize data-ng-class="{
@@ -221,6 +223,22 @@
             <pre>{{ dataCode | yaml:'Code not found' }}</pre>
         </div>
         <!-- Code - END -->
+    </div>
+
+    <div ng-show="isDeployDialogVisible" ng-controller="DeployDialogCtrl">
+        <div class="dialogBoxBg"></div>
+        <div id="confirmationDialogContainer" class="dialogBox">
+            <div class="dialogTitle">{{ 'blueprints.deployDialog.title' | i18n }} {{selectedBlueprint.id}}</div>
+            <div class="dialogDeploymentName">
+                <label>{{ 'blueprints.deployDialog.deployName' | i18n }}</label>
+                <input type="text" ng-model="deploymentId">
+            </div>
+            <div id="deploy-error-message" ng-show="isDeployError()">{{deployErrorMessage}}</div>
+            <div class="buttonsContainer deployButtons">
+                <button id="cancelBtn" class="dialogButton" ng-click="toggleDeployDialog()">{{ 'blueprints.deployDialog.cancelBtn' | i18n }}</button>
+                <button id="deployBtn" class="dialogButton" ng-class="{disabled: !isDeployEnabled(), enabled: isDeployEnabled()}" ng-click="deployBlueprint(blueprint)">{{ 'blueprints.deployDialog.deployBtn' | i18n }}</button>
+            </div>
+        </div>
     </div>
 </div>
 
