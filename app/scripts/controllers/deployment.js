@@ -19,7 +19,7 @@ angular.module('cosmoUi')
 
         var planData/*:PlanData*/ = null;
         $scope.selectedWorkflow = null;
-        $scope.deploymentInProgress = false;
+        $scope.deploymentInProgress = null;
         $scope.nodes = [];
         $scope.events = [];
         $scope.section = 'topology';
@@ -302,31 +302,34 @@ angular.module('cosmoUi')
                             });
                         });
 
-
-
+                    // Execution
                     RestService.autoPull('getDeploymentExecutions', id, RestService.getDeploymentExecutions)
                         .then(null, null, function(dataExec) {
-                            if(dataExec.length > 0) {
+                            var currentExeution = _getCurrentExecution(dataExec);
+                            if(!currentExeution && $scope.deploymentInProgress) {
+                                RestService.autoPullStop('getDeploymentNodes');
+                                $scope.deploymentInProgress = false;
+                            }
+                            else if($scope.deploymentInProgress === null || currentExeution !== false) {
                                 $scope.deploymentInProgress = true;
                                 RestService.autoPull('getDeploymentNodes', {deploymentId : id, state: true}, RestService.getDeploymentNodes)
                                     .then(null, null, function(dataNodes) {
                                         $scope.nodes = dataNodes.nodes;
                                     });
                             }
-                            else {
-                                $scope.deploymentInProgress = false;
-                                RestService.autoPullStop('getDeploymentNodes');
-                            }
                         });
 
-//                    // Dummy progress stoped!
-//                    $timeout(function(){
-//                        console.log(["Progress Stopeed!"]);
-//                        RestService.autoPullStop("getDeploymentExecutions");
-//                        $scope.deploymentInProgress = false;
-//                    }, 10000);
-
                 });
+        }
+
+        function _getCurrentExecution(executions) {
+            for(var i in executions) {
+                var execution = executions[i];
+                if(execution.status !== 'failed') {
+                    return execution;
+                }
+            }
+            return false;
         }
 
         // Define Deployment Model in the first time

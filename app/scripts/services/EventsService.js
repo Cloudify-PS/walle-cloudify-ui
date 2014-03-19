@@ -107,8 +107,7 @@ angular.module('cosmoUi')
 
             function execute(callbackFn, autoPull) {
                 var results;
-                // debug //
-                console.log(['execute', client.query(_applyFilters(oQuery.query('*'))).toString()]);
+                // debug // console.log(['execute', client.query(_applyFilters(oQuery.query('*'))).toString()]);
                 if(sortField) {
                     results = client
                         .query(_applyFilters(oQuery.query('*')))
