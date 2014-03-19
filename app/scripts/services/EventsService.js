@@ -17,6 +17,7 @@ angular.module('cosmoUi')
                 .from(0)
                 .size(100);
             var activeFilters = {};
+            var rangePrefix = 'range';
             var isAutoPull = false;
             var autoPullTimer = '3000';
             var sortField = false;
@@ -65,10 +66,25 @@ angular.module('cosmoUi')
             }
 
             function filter(field, term) {
-                if(_isActiveFilter(field, term)) {
+                if(_isActiveFilter(activeFilters, field, term)) {
                     delete activeFilters[field + term];
                 } else {
                     activeFilters[field + term] = ejs.TermFilter(field, term);
+                }
+            }
+
+            function filterRange(field, conditions) {
+                if(_isActiveFilter(field, rangePrefix)) {
+                    delete activeFilters[field + rangePrefix];
+                }
+                if(conditions !== undefined) {
+                    activeFilters[field + rangePrefix] = ejs.RangeFilter(field);
+                    for(var c in conditions) {
+                        var condition = conditions[c];
+                        if(activeFilters[field + rangePrefix].hasOwnProperty(c)) {
+                            activeFilters[field + rangePrefix] = activeFilters[field + rangePrefix][c](condition);
+                        }
+                    }
                 }
             }
 
@@ -91,6 +107,8 @@ angular.module('cosmoUi')
 
             function execute(callbackFn, autoPull) {
                 var results;
+                // debug //
+                console.log(['execute', client.query(_applyFilters(oQuery.query('*'))).toString()]);
                 if(sortField) {
                     results = client
                         .query(_applyFilters(oQuery.query('*')))
@@ -117,6 +135,7 @@ angular.module('cosmoUi')
             }
 
             _this.filter = filter;
+            _this.filterRange = filterRange;
             _this.sort = sort;
             _this.stopAutoPull = stopAutoPull;
             _this.execute = execute;
