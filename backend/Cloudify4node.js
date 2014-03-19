@@ -240,7 +240,7 @@ Cloudify4node.getDeploymentNodes = function(deployment_id, state, callback) {
 
 Cloudify4node.getDeploymentExecutions = function(deployment_id, callback) {
     var requestData = createRequestData({
-        path: '/deployments/' + deployment_id + '/executions',
+        path: '/deployments/' + deployment_id + '/executions?statuses=true',
         method: 'GET'
     });
 

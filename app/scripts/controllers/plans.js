@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('cosmoUi')
-    .controller('PlansCtrl', function ($scope, YamlService, Layout, Render, $routeParams, BreadcrumbsService, PlanDataConvert, blueprintCoordinateService, bpNetworkService, $http, $timeout, RestService) {
+    .controller('PlansCtrl', function ($scope, YamlService, Layout, Render, $routeParams, BreadcrumbsService, PlanDataConvert, blueprintCoordinateService, bpNetworkService, $http, $timeout, $location, RestService) {
 
         var planData/*:PlanData*/ = null;
         $scope.section = 'topology';
@@ -15,27 +15,14 @@ angular.module('cosmoUi')
             'connections': true
         };
 
+        $scope.isDeployDialogVisible = false;
+
         BreadcrumbsService.push('blueprints',
             {
                 href: '#/blueprint?id=' + $routeParams.id,
                 label: $routeParams.id,
                 id: 'blueprint'
             });
-
-//        $http.get("network_mock.json").success(function(data){
-//
-//            $scope.networks = data;
-//
-//            bpNetworkService.setMap(data.relations);
-//
-//            $timeout(function(){
-//                $scope.networkcoords = bpNetworkService.getCoordinates();
-//                bpNetworkService.render();
-//            }, 1500);
-//
-//            console.log(["network mock", data]);
-//
-//        });
 
         YamlService.load($routeParams.id, function (err, data) {
 
@@ -112,8 +99,19 @@ angular.module('cosmoUi')
             };
         };
 
-
         $scope.hideProperties = function () {
             $scope.showProperties = null;
+        };
+
+        $scope.toggleDeployDialog = function() {
+            RestService.getBlueprintById({id: $routeParams.id})
+                .then(function(data) {
+                    $scope.blueprint = data || null;
+                    $scope.isDeployDialogVisible = $scope.isDeployDialogVisible === false;
+                });
+        };
+
+        $scope.redirectToDeployments = function(blueprint) {
+            $location.path('/deployments').search({blueprint_id: blueprint.id});
         };
     });
