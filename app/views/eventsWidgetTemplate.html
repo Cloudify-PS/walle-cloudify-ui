@@ -12,7 +12,7 @@
                 <tr class="animate-repeat" ng-repeat="event in eventsData">
                     <td>
                         <div id="event-icon" ng-class="getEventIcon(event._source.event_type)"></div>
-                        <div id="event-type">{{ getEventText(event._source.event_type) }}</div>
+                        <div id="event-type">{{ getEventText(event._source.event_type) }} {{ event._source.context.node_name ? ' - ' + event._source.context.node_name : '' }}</div>
                         <div id="event-time">{{ event._source.timestamp | dateFormat: 'yyyy-MM-dd HH:mm:ss' }}</div>
                     </td>
                 </tr>
