@@ -19,7 +19,7 @@ angular.module('cosmoUi')
 
         var planData/*:PlanData*/ = null;
         $scope.deployment = null;
-        $scope.deploymentInProgress = false;
+        $scope.deploymentInProgress = null;
         $scope.nodes = [];
         $scope.events = [];
         $scope.section = 'topology';
