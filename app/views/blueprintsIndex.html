@@ -32,7 +32,7 @@
 
     <div class="connect-error-message" ng-show="cosmoConnectionError()">{{ 'connectError' | i18n }}</div>
 
-    <div class="loading" ng-show="isLoadingBlueprints == true && !cosmoConnectionError()"></div>
+    <div class="loading" ng-show="blueprints == null && !cosmoConnectionError()"></div>
 
     <div class="no-blueprints-message" ng-show="blueprints.length == 0">{{ 'blueprints.emptyMessage' | i18n }}</div>
 
