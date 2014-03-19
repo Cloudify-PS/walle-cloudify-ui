@@ -59,8 +59,7 @@ angular.module('cosmoUi')
                 $scope.executedDeployments[blueprintId][deploymentId].status !== 'failed' &&
                 $scope.executedDeployments[blueprintId][deploymentId].status !== 'terminated' &&
                 $scope.executedDeployments[blueprintId][deploymentId].status !== 'canceled' &&
-                $scope.executedDeployments[blueprintId][deploymentId].status !== null &&
-                $scope.executedDeployments[blueprintId][deploymentId].length > 0;
+                $scope.executedDeployments[blueprintId][deploymentId].status !== null;
         };
 
         $scope.cancelExecution = function(deployment) {
@@ -124,10 +123,8 @@ angular.module('cosmoUi')
             for (var blueprint in $scope.executedDeployments) {
                 for (var dep in $scope.executedDeployments[blueprint]) {
                     if ($scope.executedDeployments[blueprint][dep] !== null) {
-                        for (var i = 0; i < $scope.executedDeployments[blueprint][dep].length; i++) {
-                            if (deployment.id === $scope.executedDeployments[blueprint][dep][i].deploymentId) {
-                                return $scope.executedDeployments[blueprint][dep][i][attr];
-                            }
+                        if (deployment.id === $scope.executedDeployments[blueprint][dep].deploymentId) {
+                            return $scope.executedDeployments[blueprint][dep][attr];
                         }
                     }
                 }
