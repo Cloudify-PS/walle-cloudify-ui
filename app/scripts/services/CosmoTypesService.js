@@ -8,4 +8,14 @@ angular.module('cosmoUi')
                 baseType: 'baseType'
             }
         ];
+
+        function _getTypeData(typeName) {
+            for (var i = 0; i < typeData.length; i++) {
+                if (typeData[i].name === typeName) {
+                    return typeData[i];
+                }
+            }
+        }
+
+        this.getTypeData = _getTypeData;
     });
