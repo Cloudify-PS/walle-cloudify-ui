@@ -50,16 +50,18 @@
                             <tr>
                                 <td>{{ 'plans.details.target' | i18n }}</td>
                                 <td>{{ 'plans.details.type' | i18n }}</td>
+                                <td>{{ 'plans.details.source' | i18n }}</td>
                             </tr>
                             <tr ng-repeat="relationship in showProperties.relationships">
-                                <td colspan="2">
+                                <td colspan="3">
                                     <table class="interfaces-table">
                                         <tr ng-click="showRelationship(relationship)">
                                             <td><div class="relationship-arrow right" ng-class="{'down': selectedRelationship == relationship, 'right': selectedRelationship != relationship}"></div>{{relationship.target_id}}</td>
                                             <td>{{relationship.type}}</td>
+                                            <td>{{showProperties.general.name}}</td>
                                         </tr>
                                         <tr ng-show="selectedRelationship.target_id == relationship.target_id && selectedRelationship.type == relationship.type">
-                                            <td colspan="2">
+                                            <td colspan="3">
 
                                                 <table>
                                                     <tr>

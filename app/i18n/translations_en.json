@@ -104,6 +104,7 @@
             "key": "Key",
             "value": "Value",
             "target": "Target node",
+            "source": "Source node",
             "type": "Relationship type",
             "interface": "Interface Implementation",
             "methods": "Interface Methods",
