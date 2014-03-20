@@ -87,29 +87,28 @@ angular.module('cosmoUi').service('PlanDataConvert', function () {
      */
     this.edgesToBlueprint = function (data) {
         var result = {};
-        for (var i = 0; i < data.length; i++) {
-
+        for (var i in data) {
             var edge = data[i];
-
             if (!result.hasOwnProperty(edge.type)) {
                 result[edge.type] = [];
             }
-
-            var sourceNode = findNode(result[edge.type], edge.type, edge.source);
-            var targetNode = findNode(result[edge.type], edge.type, edge.target);
-
-            if (sourceNode === null) {
-                sourceNode = {'id': edge.source, type: edge.type};
+            if(edge.type.search('contained_in') !== -1) {
+                var sourceNode = findNode(result[edge.type], edge.type, edge.source);
+                var targetNode = findNode(result[edge.type], edge.type, edge.target);
+                if (sourceNode === null) {
+                    sourceNode = {'id': edge.source, type: edge.type};
+                }
+                if (targetNode === null) {
+                    targetNode = {'id': edge.target, type: edge.type};
+                    result[edge.type].push(targetNode);
+                }
+                addChild(targetNode, sourceNode);
+                if (result[edge.type].indexOf(sourceNode) >= 0) {
+                    result[edge.type].splice(result[edge.type].indexOf(sourceNode), 1);
+                }
             }
-
-            if (targetNode === null) {
-                targetNode = {'id': edge.target, type: edge.type};
-                result[edge.type].push(targetNode);
-            }
-
-            addChild(targetNode, sourceNode);
-            if (result[edge.type].indexOf(sourceNode) >= 0) {
-                result[edge.type].splice(result[edge.type].indexOf(sourceNode), 1);
+            else {
+                result[edge.type].push(edge);
             }
         }
         return result;

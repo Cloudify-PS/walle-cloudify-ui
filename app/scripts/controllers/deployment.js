@@ -10,6 +10,7 @@ angular.module('cosmoUi')
         var deploymentDataModel = {
             'status': 0, // 0 = (install) in progress, 1 = (done) all done and reachable, 2 = (alert) all done but half reachable, 3 = (failed) all done and not reachable
             'reachables': 0,
+            'state': 0,
             'states': 0,
             'completed': 0,
             'total': 0,
@@ -60,6 +61,7 @@ angular.module('cosmoUi')
             'policy_failed': {text: 'Policy failed', icon: 'event-icon-policy-failed', class: 'event-text-red'}
         };
         var id = $routeParams.id;
+        //var executionId = null;
         var blueprintId = $routeParams.blueprintId;
 
         BreadcrumbsService.push('deployments',
@@ -128,7 +130,10 @@ angular.module('cosmoUi')
                         'state': $scope.getNodeStateData(node.id).state
                     }
                 };
+<<<<<<< HEAD
                 $scope.propSection = 'general';
+=======
+>>>>>>> 520678bfc6fcd7beb8c4d4bb0b7f816af0b5ef14
             } else {
                 $scope.propSection = 'overview';
             }
@@ -303,31 +308,34 @@ angular.module('cosmoUi')
                             });
                         });
 
-
-
+                    // Execution
                     RestService.autoPull('getDeploymentExecutions', id, RestService.getDeploymentExecutions)
                         .then(null, null, function(dataExec) {
-                            if(dataExec.length > 0) {
+                            var currentExeution = _getCurrentExecution(dataExec);
+                            if(!currentExeution && $scope.deploymentInProgress) {
+                                RestService.autoPullStop('getDeploymentNodes');
+                                $scope.deploymentInProgress = false;
+                            }
+                            else if($scope.deploymentInProgress === null || currentExeution !== false) {
                                 $scope.deploymentInProgress = true;
                                 RestService.autoPull('getDeploymentNodes', {deploymentId : id, state: true}, RestService.getDeploymentNodes)
                                     .then(null, null, function(dataNodes) {
                                         $scope.nodes = dataNodes.nodes;
                                     });
                             }
-                            else {
-                                $scope.deploymentInProgress = false;
-                                RestService.autoPullStop('getDeploymentNodes');
-                            }
                         });
 
-//                    // Dummy progress stoped!
-//                    $timeout(function(){
-//                        console.log(["Progress Stopeed!"]);
-//                        RestService.autoPullStop("getDeploymentExecutions");
-//                        $scope.deploymentInProgress = false;
-//                    }, 10000);
-
                 });
+        }
+
+        function _getCurrentExecution(executions) {
+            for(var i in executions) {
+                var execution = executions[i];
+                if(execution.status !== 'failed') {
+                    return execution;
+                }
+            }
+            return false;
         }
 
         // Define Deployment Model in the first time
@@ -377,6 +385,7 @@ angular.module('cosmoUi')
                 }
                 deployment.completed = _completed;
                 deployment.reachables = _reachable;
+                deployment.state = Math.round(_states / deployment.total);
                 deployment.states = calcState(_states, deployment.total);
 
                 // Calculate percents for progressbar
@@ -468,6 +477,14 @@ angular.module('cosmoUi')
             case 'host':
                 return 'host';
             }
+        };
+
+        $scope.piePercents = function( process ) {
+            var value = 0;
+            for(var p in process) {
+                value += process[p];
+            }
+            return value;
         };
 
         /**
@@ -600,6 +617,7 @@ angular.module('cosmoUi')
         (function _LoadEvents() {
             filterEvents('type', {value: 'cloudify_event'}, null);
             filterEvents('context.deployment_id', {value: id}, null);
+//            filterEvents('context.execution_id', {value: executionIdexecutionId}, null);
             executeEvents(true);
         })();
 

@@ -177,33 +177,6 @@
                 top: -11px;
                 left: 6px;
             }
-            > .badge {
-                position: absolute;
-                z-index: 1;
-                top: -10px;
-                left: 25px;
-                background-color: $install;
-                text-decoration: none;
-                font-family: "OpenSansBold";
-                font-size: 14px;
-                color: #fff;
-                line-height: 15px;
-                font-style: normal;
-                font-weight: normal;
-                opacity: 1;
-                &.install {
-                    background-color: $install;
-                }
-                &.done {
-                    background-color: $done;
-                }
-                &.alerts {
-                    background-color: $alerts;
-                }
-                &.failed {
-                    background-color: $failed;
-                }
-            }
         }
         .box {
             position: relative;
@@ -216,6 +189,7 @@
             vertical-align: top;
             padding: 2px;
             border-radius: 3px;
+            margin: 0 30px 40px 0px;
             .box {
                 border-color: #3aaeda;
                 min-width: 270px;
@@ -259,6 +233,33 @@
                     border-style: solid;
                     border-color: white;
                     box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.4);
+                    > .badge {
+                        position: absolute;
+                        z-index: 1;
+                        top: -10px;
+                        left: 25px;
+                        background-color: $install;
+                        text-decoration: none;
+                        font-family: "OpenSansBold";
+                        font-size: 14px;
+                        color: #fff;
+                        line-height: 15px;
+                        font-style: normal;
+                        font-weight: normal;
+                        opacity: 1;
+                        &.install {
+                            background-color: $install;
+                        }
+                        &.done {
+                            background-color: $done;
+                        }
+                        &.alerts {
+                            background-color: $alerts;
+                        }
+                        &.failed {
+                            background-color: $failed;
+                        }
+                    }
                 }
                 .shadow {
                     position: absolute;
@@ -361,7 +362,13 @@
             text-align: center;
             border-radius: 3px;
             margin: 10px;
+            .piProgress {
+                top: 0px;
+                left: 64px;
+            }
             p {
+                position: relative;
+                top: 45px;
                 margin: 0px;
                 color: #555869;
                 font-size: 16px;
