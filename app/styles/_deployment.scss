@@ -411,4 +411,56 @@
             cursor: pointer;
         }
     }
+
+    .piProgress {
+        .percents {
+            display: none;
+            text-align: center;
+            position: relative;
+            top: 9px;
+            &::after {
+                content: "%";
+            }
+        }
+        .pieInProgress {
+            -webkit-transition: background-color 0.5s;
+            transition: background-color 0.5s;
+            i {
+                display: none;
+            }
+            .percents {
+                display: block;
+            }
+        }
+        &[status='0'] {
+            .circle[state='0'] {
+                @extend .pieInProgress;
+                background-color: #dddddd !important;
+            }
+            .circle[state='1'] {
+                @extend .pieInProgress;
+                background-color: #bebebe !important;
+            }
+            .circle[state='2'] {
+                @extend .pieInProgress;
+                background-color: #3aaaeda !important;
+            }
+            .circle[state='3'] {
+                @extend .pieInProgress;
+                background-color: #66a2c5 !important;
+            }
+            .circle[state='4'] {
+                @extend .pieInProgress;
+                background-color: #136e9d !important;
+            }
+            .circle[state='5'] {
+                @extend .pieInProgress;
+                background-color: #136e9d !important;
+            }
+            .circle[state='6'] {
+                @extend .pieInProgress;
+                background-color: #136e9d !important;
+            }
+        }
+    }
 }

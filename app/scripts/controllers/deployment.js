@@ -10,6 +10,7 @@ angular.module('cosmoUi')
         var deploymentDataModel = {
             'status': 0, // 0 = (install) in progress, 1 = (done) all done and reachable, 2 = (alert) all done but half reachable, 3 = (failed) all done and not reachable
             'reachables': 0,
+            'state': 0,
             'states': 0,
             'completed': 0,
             'total': 0,
@@ -60,6 +61,7 @@ angular.module('cosmoUi')
             'policy_failed': {text: 'Policy failed', icon: 'event-icon-policy-failed', class: 'event-text-red'}
         };
         var id = $routeParams.id;
+        //var executionId = null;
         var blueprintId = $routeParams.blueprintId;
 
         BreadcrumbsService.push('deployments',
@@ -379,6 +381,7 @@ angular.module('cosmoUi')
                 }
                 deployment.completed = _completed;
                 deployment.reachables = _reachable;
+                deployment.state = Math.round(_states / deployment.total);
                 deployment.states = calcState(_states, deployment.total);
 
                 // Calculate percents for progressbar
@@ -470,6 +473,14 @@ angular.module('cosmoUi')
             case 'host':
                 return 'host';
             }
+        };
+
+        $scope.piePercents = function( process ) {
+            var value = 0;
+            for(var p in process) {
+                value += process[p];
+            }
+            return value;
         };
 
         /**
@@ -602,6 +613,7 @@ angular.module('cosmoUi')
         (function _LoadEvents() {
             filterEvents('type', {value: 'cloudify_event'}, null);
             filterEvents('context.deployment_id', {value: id}, null);
+//            filterEvents('context.execution_id', {value: executionIdexecutionId}, null);
             executeEvents(true);
         })();
 
