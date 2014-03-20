@@ -69,7 +69,9 @@ angular.module('cosmoUi')
             $scope.dataTable = PlanDataConvert.nodesToTable(dataPlan);
             RestService.getBlueprintSource($routeParams.id)
                 .then(function(code) {
-                    $scope.dataCode = code.source;
+                    $scope.dataCode = {
+                        data: code.source
+                    };
                 });
 
             // Get Icon by Type
@@ -113,4 +115,6 @@ angular.module('cosmoUi')
         $scope.redirectToDeployments = function(blueprint) {
             $location.path('/deployments').search({blueprint_id: blueprint.id});
         };
+
+        SyntaxHighlighter.all();
     });
