@@ -17,7 +17,7 @@
 //
 // Begin anonymous function. This is used to contain local scope variables without polutting global scope.
 //
-var SyntaxHighlighter = function() { 
+var SyntaxHighlighter = function() {
 
 // CommonJS
 if (typeof(require) != 'undefined' && typeof(XRegExp) == 'undefined')
@@ -120,8 +120,8 @@ var sh = {
 		singleLinePerlComments		: /#.*$/gm,
 		doubleQuotedString			: /"([^\\"\n]|\\.)*"/g,
 		singleQuotedString			: /'([^\\'\n]|\\.)*'/g,
-		multiLineDoubleQuotedString	: new XRegExp('"([^\\\\"]|\\\\.)*"', 'gs'),
-		multiLineSingleQuotedString	: new XRegExp("'([^\\\\']|\\\\.)*'", 'gs'),
+//		multiLineDoubleQuotedString	: new XRegExp('"([^\\\\"]|\\\\.)*"', 'gs'),
+//		multiLineSingleQuotedString	: new XRegExp("'([^\\\\']|\\\\.)*'", 'gs'),
 		xmlComments					: /(&lt;|<)!--[\s\S]*?--(&gt;|>)/gm,
 		url							: /\w+:\/\/[\w-.\/?%&=:@;]*/g,
 		
