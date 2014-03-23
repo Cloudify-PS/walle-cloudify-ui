@@ -115,6 +115,4 @@ angular.module('cosmoUi')
         $scope.redirectToDeployments = function(blueprint) {
             $location.path('/deployments').search({blueprint_id: blueprint.id});
         };
-
-        SyntaxHighlighter.all();
     });

@@ -130,10 +130,7 @@ angular.module('cosmoUi')
                         'state': $scope.getNodeStateData(node.id).state
                     }
                 };
-<<<<<<< HEAD
                 $scope.propSection = 'general';
-=======
->>>>>>> 520678bfc6fcd7beb8c4d4bb0b7f816af0b5ef14
             } else {
                 $scope.propSection = 'overview';
             }

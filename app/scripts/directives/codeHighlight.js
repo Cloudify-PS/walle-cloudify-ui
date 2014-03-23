@@ -8,7 +8,9 @@ angular.module('cosmoUi')
             transclude: true,
             scope: true,
             link: function postLink($scope, $element, $attrs, ngModel) {
-                if (!ngModel) return; // do nothing if no ngModel
+                if (!ngModel) { // do nothing if no ngModel
+                    return;
+                }
                 var options = {
                     'brush': $attrs.codeHighlight,
                     'auto-links': true,
@@ -31,7 +33,7 @@ angular.module('cosmoUi')
                     });
                     if (config.hasOwnProperty('data') && config.data !== '') {
                         $element[0].innerHTML = config.data;
-                        SyntaxHighlighter.highlight(options, $element[0], false);
+                        window.SyntaxHighlighter.highlight(options, $element[0], false);
                     }
                 };
             }
