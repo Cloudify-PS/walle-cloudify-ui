@@ -1562,7 +1562,7 @@ sh.Highlighter.prototype = {
 		if (this.getParam('light') == true)
 			this.params.toolbar = this.params.gutter = false;
 
-		className = 'syntaxhighlighter';
+		var className = 'syntaxhighlighter';
 
 		if (this.getParam('collapse') == true)
 			classes.push('collapsed');
