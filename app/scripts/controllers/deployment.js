@@ -184,6 +184,9 @@ angular.module('cosmoUi')
         };
 
         $scope.toggleConfirmationDialog = function(deployment, confirmationType) {
+            if (confirmationType === 'execute' && $scope.selectedWorkflow === null) {
+                return;
+            }
             $scope.confirmationType = confirmationType;
             $scope.selectedDeployment = deployment || null;
             $scope.isConfirmationDialogVisible = $scope.isConfirmationDialogVisible === false;

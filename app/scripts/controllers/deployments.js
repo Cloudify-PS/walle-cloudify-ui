@@ -9,7 +9,7 @@ angular.module('cosmoUi')
         $scope.selectedDeployment = null;
         $scope.confirmationType = '';
         $scope.executedDeployments = [];
-        var selectedWorkflow = null;
+        $scope.selectedWorkflow = null;
         var cosmoError = false;
 
         BreadcrumbsService.push('deployments',
@@ -31,7 +31,7 @@ angular.module('cosmoUi')
             if ($scope.isExecuteEnabled()) {
                 RestService.executeDeployment({
                     deploymentId: $scope.selectedDeployment.id,
-                    workflowId: selectedWorkflow
+                    workflowId: $scope.selectedWorkflow
                 });
                 $scope.redirectTo($scope.selectedDeployment);
             }
@@ -49,7 +49,7 @@ angular.module('cosmoUi')
         };
 
         $scope.workflowSelected = function(workflow) {
-            selectedWorkflow = workflow;
+            $scope.selectedWorkflow = workflow;
         };
 
         $scope.isExecuting = function(blueprintId, deploymentId) {
@@ -74,10 +74,13 @@ angular.module('cosmoUi')
         };
 
         $scope.isExecuteEnabled = function() {
-            return selectedWorkflow !== null;
+            return $scope.selectedWorkflow !== null;
         };
 
         $scope.toggleConfirmationDialog = function(deployment, confirmationType) {
+            if (confirmationType === 'execute' && $scope.selectedWorkflow === null) {
+                return;
+            }
             $scope.confirmationType = confirmationType;
             $scope.selectedDeployment = deployment || null;
             $scope.isConfirmationDialogVisible = $scope.isConfirmationDialogVisible === false;

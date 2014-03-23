@@ -17,6 +17,7 @@
     color: white;
     font-weight: bold;
     padding: 5px 10px 5px 10px;
+    margin: 0px 10px 0px 10px;
     background-color: $COSMOUI_BUTTON_BACKGROUND;
     border-radius: 3px;
     border-bottom: 1px solid $COSMOUI_BUTTON_BOTTOM_BORDER_COLOR;
@@ -71,7 +72,7 @@
   }
 
   .buttonsContainer {
-    width: 160px;
+    width: 200px;
     position: relative;
     margin-right: auto;
     margin-left: auto;
