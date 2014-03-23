@@ -1557,6 +1557,7 @@ sh.Highlighter.prototype = {
 			matches,
 			lineNumbers
 			;
+
 		
 		// process light mode
 		if (this.getParam('light') == true)
@@ -1566,8 +1567,9 @@ sh.Highlighter.prototype = {
 
 		if (this.getParam('collapse') == true)
 			classes.push('collapsed');
-		
-		if ((gutter = this.getParam('gutter')) == false)
+
+        var gutter = this.getParam('gutter');
+		if (gutter == false)
 			classes.push('nogutter');
 
 		// add custom user style name
