@@ -15,7 +15,7 @@ html, body, .layout {
   min-height: 100%;
   height: 100%;
   background: $COSMOUI_BACKGROUND;
-  font-family: "OpenSansRegular";
+  font-family: "OpenSansLight";
 }
 
 .layout[class] {
@@ -159,12 +159,12 @@ html, body, .layout {
 
 .content-header {
   height: 66px;
-  padding: 10px 20px 20px 0px;
+  padding: 10px 0px 20px 0px;
   vertical-align: middle;
-  border-bottom: 3px solid $COSMOUI_MAIN_CONTENT_TITLE_SEPERATOR_COLOR;
+  border-bottom: 1px solid $COSMOUI_MAIN_CONTENT_TITLE_SEPERATOR_COLOR;
   margin-bottom: 20px;
-  width: 98%;
   margin-left: 20px;
+  margin-right: 20px;
 
   .breadcrumbs{
     color:$COSMOUI_BREADCRUMB_ITEM_COLOR;
@@ -225,7 +225,7 @@ html, body, .layout {
       border-right: 1px solid $COSMOUI_BUTTON_RIGHT_BORDER_COLOR;
       border-top: none;
       border-left: none;
-      margin-top: 7px;
+      margin-top: 9px;
     }
   }
 }

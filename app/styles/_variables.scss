@@ -19,7 +19,7 @@ $LEFT_MENU_WIDTH:163px !default;
 $RIGHT_MENU_WIDTH:0 !default;
 $RIGHT_MENU_BACKGROUND: $clr-base-01;
 $COSMOUI_MENU_BACKGROUND: $clr-base-01;
-$COSMOUI_MENU_FONT_FAMILY: "OpenSansCondLight", Helvetica, Arial, sans-serif;
+$COSMOUI_MENU_FONT_FAMILY: "OpenSansLight", Helvetica, Arial, sans-serif;
 $COSMOUI_MENU_FONT_SIZE: 17px !default;
 $COSMOUI_MENU_PADDING: 0px !default;
 $COSMOUI_MENU_MARGIN_LEFT: 23px !default;
@@ -58,7 +58,10 @@ $COSMOUI_LIST_HOVER_ACTION_FONT_WEIGHT: normal !default;
 $COSMOUI_LIST_HOVER_ACTION_FONT_SIZE: 35px !default;
 $COSMOUI_LIST_HOVER_ACTION_WIDTH: 245px !default;
 $COSMOUI_LIST_WIDTH: 97% !default;
+$COSMOUI_LIST_HEADER_HEIGHT: 32px !default;
+$COSMOUI_LIST_LINE_HEIGHT: 53px !default;
 $COSMOUI_LIST_MARGIN: 10px auto !default;
+$COSMOUI_LIST_LINE_IDD_BACKGROUND: $clr-base-23;
 
 /** Popup **/
 $COSMOUI_DIALOG_BACKGROUND: $clr-base-01;
