@@ -39,7 +39,7 @@ table.table {
                 background-color: transparent;
             }
             //&:nth-child(odd) {
-            //    background-color: $COSMOUI_LIST_LINE_IDD_BACKGROUND;
+            //    background-color: $COSMOUI_LIST_LINE_ODD_BACKGROUND;
             //}
             &:hover {
                 background-color: $COSMOUI_LIST_HOVER_BACKGROUND;
@@ -49,7 +49,7 @@ table.table {
     }
     tbody:nth-child(odd) {
       tr {
-        background-color: $COSMOUI_LIST_LINE_IDD_BACKGROUND;
+        background-color: $COSMOUI_LIST_LINE_ODD_BACKGROUND;
         &:hover {
           background-color: $COSMOUI_LIST_HOVER_BACKGROUND;
           cursor: $COSMOUI_DIALOG_CURSOR;
