@@ -200,20 +200,20 @@ html, body, .layout {
       color: $COSMOUI_BREADCRUMB_LAST_ITEM_COLOR;
       cursor: default;
     }
-    li:last-child:not(:first-child):after{
-      content: "\f057";
-      display: inline-block;
-      font-family: FontAwesome;
-      font-style: normal;
-      font-weight: normal;
-      line-height: 1;
-      -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
-      cursor: pointer;
-      color: $COSMOUI_BREADCRUMB_LAST_ITEM_COLOR;
-      top: 2px;
-      position: relative;
-    }
+    //li:last-child:not(:first-child):after{
+    //  content: "\f057";
+    //  display: inline-block;
+    //  font-family: FontAwesome;
+    //  font-style: normal;
+    //  font-weight: normal;
+    //  line-height: 1;
+    //  -webkit-font-smoothing: antialiased;
+    //  -moz-osx-font-smoothing: grayscale;
+    //  cursor: pointer;
+    //  color: $COSMOUI_BREADCRUMB_LAST_ITEM_COLOR;
+    //  top: 2px;
+    //  position: relative;
+    //}
   }
   .right {
     float: right;
