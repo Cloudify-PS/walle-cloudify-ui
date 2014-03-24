@@ -1,6 +1,8 @@
 table.table {
     width: $COSMOUI_LIST_WIDTH;
     margin: $COSMOUI_LIST_MARGIN;
+    margin-left: 20px;
+
     thead {
         th {
             border: 0px !important;
