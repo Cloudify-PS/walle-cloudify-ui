@@ -51,7 +51,7 @@ angular.module('cosmoUi')
 
         $scope.getSelectedWorkflows = function() {
             return selectedWorkflow;
-        }
+        };
 
         $scope.workflowSelected = function(workflow, deployment) {
             $scope.selectedDeployment = deployment || null;
