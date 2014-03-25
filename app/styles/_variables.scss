@@ -10,6 +10,7 @@ $FOOTER_BACKGROUND:0 !default;
 
 /** Layout **/
 $COSMOUI_CONTENT_TITLE_COLOR: $clr-base-10;
+$COSMOUI_BREADCRUMB_FONT_FAMILY: "OpenSansLight", Helvetica, Arial, sans-serif;
 $COSMOUI_BREADCRUMB_ITEM_COLOR: $clr-base-22;
 $COSMOUI_BREADCRUMB_LAST_ITEM_COLOR: $clr-base-11;
 $COSMOUI_BREADCRUMB_ITEM_COLOR_HOVER: $clr-base-20;
@@ -19,13 +20,13 @@ $LEFT_MENU_WIDTH:163px !default;
 $RIGHT_MENU_WIDTH:0 !default;
 $RIGHT_MENU_BACKGROUND: $clr-base-01;
 $COSMOUI_MENU_BACKGROUND: $clr-base-01;
-$COSMOUI_MENU_FONT_FAMILY: "OpenSansLight", Helvetica, Arial, sans-serif;
+$COSMOUI_MENU_FONT_FAMILY: "OpenSansCondLight", Helvetica, Arial, sans-serif;
 $COSMOUI_MENU_FONT_SIZE: 17px !default;
 $COSMOUI_MENU_PADDING: 0px !default;
 $COSMOUI_MENU_MARGIN_LEFT: 23px !default;
 $COSMOUI_MENU_TITLE_HEIGHT: 25px !default;
 $COSMOUI_MENU_TITLE_TOP: 20px !default;
-$COSMOUI_MENU_TITLE_FONT_SIZE: 14px !default;
+$COSMOUI_MENU_TITLE_FONT_SIZE: 15px !default;
 $COSMOUI_MENU_ITEM_WIDTH: 115px !default;
 $COSMOUI_MENU_ITEM_HEIGHT: 78px !default;
 $COSMOUI_MENU_ITEM_COLOR: $clr-base-11;
