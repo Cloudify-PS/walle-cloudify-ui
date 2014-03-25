@@ -18,6 +18,43 @@
     width: $COSMOUI_LIST_WIDTH;
     margin: $COSMOUI_LIST_MARGIN;
 
+    tr {
+      td {
+        cursor: $COSMOUI_DIALOG_CURSOR;
+
+        &.actions {
+          width: $COSMOUI_LIST_HOVER_ACTION_WIDTH;
+          font-size:$COSMOUI_LIST_HOVER_ACTION_FONT_SIZE;
+
+          select {
+            background: #cce4f6;
+            height: 35px;
+            width: 160px;
+            float: left;
+            font-size: 14px;
+            box-shadow: none;
+            border: none;
+            border-radius: 0px;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            padding: 7px;
+            cursor: pointer;
+
+            &.disable {
+              background: transparent;
+              color: #000;
+            }
+          }
+
+          i {
+            color: $COSMOUI_LIST_HOVER_ACTION_TEXT_COLOR;
+            font-weight: $COSMOUI_LIST_HOVER_ACTION_FONT_WEIGHT;
+          }
+        }
+      }
+    }
+
     i {
       color: $COSMOUI_EVENTS_LIST_ITEM_COLOR;
       padding-left: 7px;
@@ -35,122 +72,7 @@
       float: left;
       margin-top: 10px;
       width: 155px;
-    }
-
-    table {
-      tr:first-child td {
-        background: $COSMOUI_LIST_COLUMN_HEADER_BACKGROUND;
-        color: $COSMOUI_LIST_COLUMN_HEADER_TEXT_COLOR;
-        border-bottom: 2px solid #fff;
-        font-size: 16px;
-      }
-
-      tr.hide {
-        display: none;
-      }
-
-      tr.show {
-        display: block;
-      }
-
-      tr.blueprint-name {
-        &:hover:first-child td {
-          background-color: #e8edf2;
-        }
-      }
-
-      tr {
-        cursor: $COSMOUI_DIALOG_CURSOR;
-
-        td {
-          vertical-align: middle;
-          height: 60px;
-          border: none;
-          padding: 8px;
-          line-height: 1.42857;
-
-          .blueprint-arrow {
-            float: left;
-            margin-top: 7px;
-            margin-right: 10px;
-
-            &.right {
-              border-top: 5px solid transparent;
-              border-bottom: 5px solid transparent;
-
-              border-left: 5px solid #fff;
-            }
-
-            &.down {
-              border-left: 5px solid transparent;
-              border-right: 5px solid transparent;
-
-              border-top: 5px solid #fff;
-            }
-          }
-
-          .deployments-number {
-            background: #fff center;
-            width: 20px;
-            height: 20px;
-            border-radius: 10px;
-            float: right;
-            text-align: center;
-            margin-left: 10px;
-            margin-top: 5px;
-            font-size: 14px;
-          }
-
-          table {
-            tr:first-child td {
-              background: #E5EFF7;
-              color: $COSMOUI_LIST_COLUMN_HEADER_TEXT_COLOR;
-              border-bottom: 2px solid #fff;
-            }
-
-            tr {
-              &:hover:not(:first-child) td{
-                background-color: $COSMOUI_LIST_HOVER_BACKGROUND;
-
-                &,i {color: $COSMOUI_LIST_HOVER_ACTION_TEXT_COLOR; }
-                i {font-weight: $COSMOUI_LIST_HOVER_ACTION_FONT_WEIGHT;}
-              }
-
-              td {
-                vertical-align: middle;
-                height: 60px;
-                color: #333;
-              }
-              &:not(:first-child) td.actions{
-                width: $COSMOUI_LIST_HOVER_ACTION_WIDTH;
-                font-size:$COSMOUI_LIST_HOVER_ACTION_FONT_SIZE;
-
-                select {
-                  background: #cce4f6;
-                  height: 35px;
-                  width: 160px;
-                  float: left;
-                  font-size: 14px;
-                  box-shadow: none;
-                  border: none;
-                  border-radius: 0px;
-                  -webkit-appearance: none;
-                  -moz-appearance: none;
-                  appearance: none;
-                  padding: 7px;
-                  cursor: pointer;
-
-                  &.disable {
-                    background: transparent;
-                    color: #000;
-                  }
-                }
-              }
-            }
-          }
-
-        }
-      }
+      padding-left: 10px;
     }
   }
 

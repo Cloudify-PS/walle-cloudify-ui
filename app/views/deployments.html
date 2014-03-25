@@ -4,51 +4,39 @@
         <div class="breadcrumbs"><ul id="deployments" breadcrumbs></ul></div>
     </div>
 
-    <table ng-show="!cosmoConnectionError()" id="deploymentTable">
-        <tr ng-repeat="blueprint in blueprints">
-            <td>
-
-                <table>
-                    <tr class="blueprint-name" ng-click="showDeployments(blueprint.id)">
-                        <td><div class="blueprint-arrow" ng-class="{'down': selectedBlueprint == blueprint.id, 'right': selectedBlueprint != blueprint.id}"></div>{{blueprint.id}}</td>
-                        <td><div class="deployments-number">{{blueprint.deployments.length}}</div></td>
-                    </tr>
-                    <tr ng-show="selectedBlueprint == blueprint.id">
-                        <td colspan="2">
-                            <div ng-show="blueprint.deployments.length == 0">{{ 'deployments.emptyMessage' | i18n }}</div>
-                            <table class="table table-striped deploys" ng-show="blueprint.deployments.length > 0">
-                                <tr>
-                                    <td class="id">{{ 'deployments.table.heading.id' | i18n }}</td>
-                                    <td class="create">{{ 'deployments.table.heading.createDate' | i18n }}</td>
-                                    <td class="update">{{ 'deployments.table.heading.updated' | i18n }}</td>
-                                    <td class="actions">{{ 'deployments.table.heading.action' | i18n }}</td>
-                                </tr>
-                                <tr ng-repeat="deployment in blueprint.deployments">
-                                    <td class="id" ng-click="redirectTo(deployment)">{{deployment.id}}</td>
-                                    <td class="create" ng-click="redirectTo(deployment)">{{deployment.createdAt | dateFormat: 'yyyy-MM-dd HH:mm:ss'}}</td>
-                                    <td class="description" ng-click="redirectTo(deployment)">{{deployment.updatedAt | dateFormat: 'yyyy-MM-dd HH:mm:ss'}}</td>
-                                    <td class="actions">
-                                        <select ng-model="selectedWorkflow"
-                                                ng-options="option.name as option.name for option in getWorkflows(deployment)"
-                                                ng-change="workflowSelected(selectedWorkflow)"
-                                                ng-disabled="isExecuting(blueprint.id, deployment.id)"
-                                                ng-class="{disable: isExecuting(blueprint.id, deployment.id)}"
-                                                ng-show="!isExecuting(blueprint.id, deployment.id)">
-                                            <option value="">-- Select workflow --</option>
-                                        </select>
-                                        <div class="executingWorkflow" ng-show="isExecuting(blueprint.id, deployment.id)">{{getExecutionAttr(deployment, 'workflowId')}}</div>
-                                        <i class="fa fa-play-circle-o" ng-click="toggleConfirmationDialog(deployment, 'execute')" ng-show="!isExecuting(blueprint.id, deployment.id)"></i>
-                                        <i ng-class="{deploymentExecute: isExecuting(blueprint.id, deployment.id)}" ng-show="isExecuting(blueprint.id, deployment.id)"></i>
-                                        <i class="cancel-execution fa fa-times-circle left" ng-show="isExecuting(blueprint.id, deployment.id)" ng-click="toggleConfirmationDialog(deployment, 'cancel')"></i>
-                                    </td>
-                                </tr>
-                            </table>
-                        </td>
-                    </tr>
-                </table>
-
-            </td>
-        </tr>
+    <table ng-show="!cosmoConnectionError()" id="deploymentTable" class="table">
+        <thead>
+            <tr>
+                <th class="id">{{ 'deployments.table.heading.id' | i18n }}</th>
+                <th class="blueprint">{{ 'deployments.table.heading.blueprint' | i18n }}</th>
+                <th class="create">{{ 'deployments.table.heading.createDate' | i18n }}</th>
+                <th class="update">{{ 'deployments.table.heading.updated' | i18n }}</th>
+                <th class="actions">{{ 'deployments.table.heading.action' | i18n }}</th>
+            </tr>
+        </thead>
+        <tbody ng-repeat="deployment in deployments">
+            <tr>
+                <td class="id" ng-click="redirectTo(deployment)">{{deployment.id}}</td>
+                <td class="blueprint" ng-click="redirectTo(deployment)">{{deployment.blueprintId}}</td>
+                <td class="create" ng-click="redirectTo(deployment)">{{deployment.createdAt | dateFormat: 'yyyy-MM-dd HH:mm:ss'}}</td>
+                <td class="description" ng-click="redirectTo(deployment)">{{deployment.updatedAt | dateFormat: 'yyyy-MM-dd HH:mm:ss'}}</td>
+                <td class="actions">
+                    <select
+                        ng-model="selectedWorkflow"
+                        ng-options="option.name as option.name for option in getWorkflows(deployment)"
+                        ng-change="workflowSelected(selectedWorkflow, deployment)"
+                        ng-disabled="isExecuting(blueprint.id, deployment.id)"
+                        ng-class="{disable: isExecuting(blueprint.id, deployment.id)}"
+                        ng-show="!isExecuting(blueprint.id, deployment.id)">
+                        <option value="">-- Select workflow --</option>
+                    </select>
+                    <div class="executingWorkflow" ng-show="isExecuting(blueprint.id, deployment.id)">{{getExecutionAttr(deployment, 'workflowId')}}</div>
+                    <i class="fa fa-play-circle-o" ng-click="toggleConfirmationDialog(deployment, 'execute')" ng-show="!isExecuting(blueprint.id, deployment.id)"></i>
+                    <i ng-class="{deploymentExecute: isExecuting(blueprint.id, deployment.id)}" ng-show="isExecuting(blueprint.id, deployment.id)"></i>
+                    <i class="cancel-execution fa fa-times-circle left" ng-show="isExecuting(blueprint.id, deployment.id)" ng-click="toggleConfirmationDialog(deployment, 'cancel')"></i>
+                </td>
+            </tr>
+        </tbody>
     </table>
 
     <div class="no-blueprints-message" ng-show="blueprints.length == 0">{{ 'blueprints.emptyMessage' | i18n }}</div>
@@ -61,8 +49,8 @@
         <div class="dialogBoxBg"></div>
         <div id="confirmationDialogContainer" class="dialogBox">
             <div class="dialogTitle">{{ 'deployments.confirmationPopup.title' | i18n }}</div>
-            <div class="dialogDescription" ng-show="confirmationType == 'execute'">{{ 'deployments.confirmationPopup.descriptionExecute' | i18n }} {{selectedWorkflow}}?</div>
-            <div class="dialogDescription" ng-show="confirmationType == 'cancel'">{{ 'deployments.confirmationPopup.descriptionCancel' | i18n }} {{selectedWorkflow}}?</div>
+            <div class="dialogDescription" ng-show="confirmationType == 'execute'">{{ 'deployments.confirmationPopup.descriptionExecute' | i18n }} {{getSelectedWorkflows()}}?</div>
+            <div class="dialogDescription" ng-show="confirmationType == 'cancel'">{{ 'deployments.confirmationPopup.descriptionCancel' | i18n }} {{getSelectedWorkflows()}}?</div>
             <div class="buttonsContainer confirmationButtons">
                 <button id="cancelBtn" class="dialogButton" ng-click="toggleConfirmationDialog()">{{ 'deployments.confirmationPopup.cancelBtn' | i18n }}</button>
                 <button id="confirmBtn" class="dialogButton" ng-click="confirmConfirmationDialog(selectedDeployment)">{{ 'deployments.confirmationPopup.confirmBtn' | i18n }}</button>

@@ -66,14 +66,14 @@ angular.module('cosmoUi')
 
         BreadcrumbsService.push('deployments',
             {
-                href: '#/deployments?blueprint_id=' + blueprintId,
+                href: '#/deployments',
                 label: blueprintId,
                 id: 'deployment_id'
             });
 
         BreadcrumbsService.push('deployments',
             {
-                href: '#/deployment?id=' + id,
+                href: '#/deployment',
                 label: id,
                 id: 'deployment'
             });
