@@ -1,55 +1,62 @@
 table.table {
     width: $COSMOUI_LIST_WIDTH;
     margin: $COSMOUI_LIST_MARGIN;
+    margin-left: 20px;
+
     thead {
+      tr {
         th {
-            border: 0px !important;
-            background: $COSMOUI_LIST_COLUMN_HEADER_BACKGROUND;
-            color: $COSMOUI_LIST_COLUMN_HEADER_TEXT_COLOR;
-            vertical-align: middle !important;
-            height: 60px;
-            border: none;
-            font-weight: normal;
-            &.sorting {
-                padding-left: 20px;
-                cursor: pointer;
-                &.asc {
-                    background-image: url('../images/sort-asc.gif');
-                    background-repeat: no-repeat;
-                    background-position: left 5px center;
-                }
-                &.desc {
-                    background-image: url('../images/sort-desc.gif');
-                    background-repeat: no-repeat;
-                    background-position: left 5px center;
-                }
-                &:hover {
-                    background-color: #D9EDFC;
-                }
+          border: 0px !important;
+          background: $COSMOUI_LIST_COLUMN_HEADER_BACKGROUND;
+          color: $COSMOUI_LIST_COLUMN_HEADER_TEXT_COLOR;
+          vertical-align: middle !important;
+          height: 32px;
+          border: none;
+          font-weight: normal;
+          padding: 5px 0px 5px 10px;
+
+          &.sorting {
+            padding-left: 20px;
+            cursor: pointer;
+            &.asc {
+              background-image: url('../images/sort-asc.gif');
+              background-repeat: no-repeat;
+              background-position: left 5px center;
             }
+            &.desc {
+              background-image: url('../images/sort-desc.gif');
+              background-repeat: no-repeat;
+              background-position: left 5px center;
+            }
+            &:hover {
+              background-color: #D9EDFC;
+            }
+          }
         }
+      }
     }
     tbody {
         border: 0px !important;
         tr {
             td {
                 vertical-align: middle;
-                height: 60px;
+                height: 53px;
                 border: none;
                 background-color: transparent;
+                padding: 5px 0px 5px 10px;
             }
-            &:nth-child(even) {
-                background-color: #ededed;
-            }
+            //&:nth-child(odd) {
+            //    background-color: $COSMOUI_LIST_LINE_ODD_BACKGROUND;
+            //}
             &:hover {
                 background-color: $COSMOUI_LIST_HOVER_BACKGROUND;
                 cursor: $COSMOUI_DIALOG_CURSOR;
             }
         }
     }
-    tbody:nth-child(even) {
+    tbody:nth-child(odd) {
       tr {
-        background-color: #ededed;
+        background-color: $COSMOUI_LIST_LINE_ODD_BACKGROUND;
         &:hover {
           background-color: $COSMOUI_LIST_HOVER_BACKGROUND;
           cursor: $COSMOUI_DIALOG_CURSOR;

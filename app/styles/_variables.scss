@@ -19,13 +19,13 @@ $LEFT_MENU_WIDTH:163px !default;
 $RIGHT_MENU_WIDTH:0 !default;
 $RIGHT_MENU_BACKGROUND: $clr-base-01;
 $COSMOUI_MENU_BACKGROUND: $clr-base-01;
-$COSMOUI_MENU_FONT_FAMILY: "OpenSansCondLight", Helvetica, Arial, sans-serif;
+$COSMOUI_MENU_FONT_FAMILY: "OpenSansLight", Helvetica, Arial, sans-serif;
 $COSMOUI_MENU_FONT_SIZE: 17px !default;
 $COSMOUI_MENU_PADDING: 0px !default;
 $COSMOUI_MENU_MARGIN_LEFT: 23px !default;
 $COSMOUI_MENU_TITLE_HEIGHT: 25px !default;
 $COSMOUI_MENU_TITLE_TOP: 20px !default;
-$COSMOUI_MENU_TITLE_FONT_SIZE: 17px !default;
+$COSMOUI_MENU_TITLE_FONT_SIZE: 14px !default;
 $COSMOUI_MENU_ITEM_WIDTH: 115px !default;
 $COSMOUI_MENU_ITEM_HEIGHT: 78px !default;
 $COSMOUI_MENU_ITEM_COLOR: $clr-base-11;
@@ -53,12 +53,15 @@ $COSMOUI_USERNAME_TEXT_COLOR: $clr-base-04;
 $COSMOUI_LIST_COLUMN_HEADER_BACKGROUND: $clr-base-05;
 $COSMOUI_LIST_COLUMN_HEADER_TEXT_COLOR: $clr-base-06;
 $COSMOUI_LIST_HOVER_BACKGROUND: $clr-base-07;
-$COSMOUI_LIST_HOVER_ACTION_TEXT_COLOR: $clr-base-01;
+$COSMOUI_LIST_HOVER_ACTION_TEXT_COLOR: $clr-base-16;
 $COSMOUI_LIST_HOVER_ACTION_FONT_WEIGHT: normal !default;
 $COSMOUI_LIST_HOVER_ACTION_FONT_SIZE: 35px !default;
 $COSMOUI_LIST_HOVER_ACTION_WIDTH: 245px !default;
 $COSMOUI_LIST_WIDTH: 97% !default;
+$COSMOUI_LIST_HEADER_HEIGHT: 32px !default;
+$COSMOUI_LIST_LINE_HEIGHT: 53px !default;
 $COSMOUI_LIST_MARGIN: 10px auto !default;
+$COSMOUI_LIST_LINE_ODD_BACKGROUND: $clr-base-23;
 
 /** Popup **/
 $COSMOUI_DIALOG_BACKGROUND: $clr-base-01;
@@ -109,6 +112,7 @@ $COSMOUI_EVENTS_WIDGET_OPENED_EVENT_TIME_MARGIN_LEFT: 10px;
 
 /** Event icons **/
 $COSMOUI_EVENT_ICON_BACKGROUND_WORKFLOW_STARTED: url("#{$img-workflow-started}") no-repeat center center;
+$COSMOUI_EVENT_ICON_BACKGROUND_WORKFLOW_STAGE: url("#{$img-workflow-stage}") no-repeat center center;
 $COSMOUI_EVENT_ICON_BACKGROUND_WORKFLOW_END_SUCCESSFULLY: url("#{$img-workflow-end-successfully}") no-repeat center center;
 $COSMOUI_EVENT_ICON_BACKGROUND_WORKFLOW_FAILED: url("#{$img-workflow-failed}") no-repeat center center;
 $COSMOUI_EVENT_ICON_BACKGROUND_TASK_STARTED: url("#{$img-task-started}") no-repeat center center;

@@ -4,6 +4,7 @@ angular.module('cosmoUi')
     .controller('DeploymentsCtrl', function ($scope, RestService, $cookieStore, $location, $routeParams, BreadcrumbsService) {
 
         $scope.blueprints = null;
+        $scope.deployments = [];
         $scope.selectedBlueprint = '';
         $scope.isConfirmationDialogVisible = false;
         $scope.selectedDeployment = null;
@@ -48,7 +49,12 @@ angular.module('cosmoUi')
             return workflows;
         };
 
-        $scope.workflowSelected = function(workflow) {
+        $scope.getSelectedWorkflows = function() {
+            return selectedWorkflow;
+        };
+
+        $scope.workflowSelected = function(workflow, deployment) {
+            $scope.selectedDeployment = deployment || null;
             selectedWorkflow = workflow;
         };
 
@@ -78,8 +84,10 @@ angular.module('cosmoUi')
         };
 
         $scope.toggleConfirmationDialog = function(deployment, confirmationType) {
+            if (confirmationType === 'execute' && (selectedWorkflow === null || deployment.id !== $scope.selectedDeployment.id)) {
+                return;
+            }
             $scope.confirmationType = confirmationType;
-            $scope.selectedDeployment = deployment || null;
             $scope.isConfirmationDialogVisible = $scope.isConfirmationDialogVisible === false;
         };
 
@@ -136,9 +144,11 @@ angular.module('cosmoUi')
                 .then(function(data) {
                     cosmoError = false;
                     $scope.blueprints = data;
+                    $scope.deployments = [];
 
                     for (var j = 0; j < data.length; j++) {
                         var deployments = data[j].deployments;
+                        $scope.deployments = $scope.deployments.concat(data[j].deployments);
                         for (var i = 0; i < deployments.length; i++) {
                             _loadExecutions(deployments[i].blueprintId, deployments[i].id);
                         }

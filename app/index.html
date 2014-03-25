@@ -15,6 +15,8 @@
 
     <!-- build:css({.tmp,app}) styles/main.css -->
     <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="bower_components/SyntaxHighlighter/styles/shCore.css">
+    <link rel="stylesheet" href="bower_components/SyntaxHighlighter/styles/shThemeDefault.css">
     <!-- endbuild -->
 
 </head>
@@ -79,6 +81,11 @@
     <script src="bower_components/angular-route/angular-route.js"></script>
     <script src="bower_components/angular-animate/angular-animate.js"></script>
     <script src="bower_components/ng-file-upload/angular-file-upload.js"></script>
+
+    <script src="bower_components/SyntaxHighlighter/scripts/XRegExp.js"></script>
+    <script src="bower_components/SyntaxHighlighter/scripts/shCore.js"></script>
+    <script src="bower_components/SyntaxHighlighter/scripts/shLegacy.js"></script>
+    <script src="bower_components/SyntaxHighlighter/scripts/shAutoloader.js"></script>
     <!-- endbuild -->
 
     <!-- build:js scripts/modules.js -->
@@ -90,6 +97,7 @@
     <script src="scripts/controllers/deployments.js"></script>
     <script src="scripts/controllers/config.js"></script>
     <script src="scripts/controllers/deployment.js"></script>
+    <script src="scripts/controllers/deployDialog.js"></script>
     <script src="scripts/directives/sideMenu.js"></script>
     <script src="scripts/directives/toolBar.js"></script>
     <script src="scripts/directives/cosmoLayout.js"></script>
@@ -100,26 +108,24 @@
     <script src="scripts/directives/appStatusWidget.js"></script>
     <script src="scripts/directives/settingsToggles.js"></script>
     <script src="scripts/directives/breadcrumbs.js"></script>
+    <script src="scripts/directives/pieProgress.js"></script>
+    <script src="scripts/directives/bpNetworks.js"></script>
+    <script src="scripts/directives/codeHighlight.js"></script>
     <script src="scripts/services/yamlService.js"></script>
     <script src="scripts/services/YamlTreeParser.js"></script>
     <script src="scripts/services/YamlGraphParser.js"></script>
     <script src="scripts/services/PlanData.js"></script>
     <script src="scripts/services/RestService.js"></script>
     <script src="scripts/services/BreadcrumbsService.js"></script>
+    <script src="scripts/services/EventsService.js"></script>
+    <script src="scripts/services/CosmoTypesService.js"></script>
+    <script src="scripts/services/d3Networks.js"></script>
     <script src="scripts/filters/yaml.js"></script>
     <script src="scripts/filters/eventTimeFilter.js"></script>
-    <script src="scripts/directives/pieProgress.js"></script>
-    <script src="scripts/services/d3Networks.js"></script>
-    <script src="scripts/directives/bpNetworks.js"></script>
-    <script src="scripts/controllers/deployDialog.js"></script>
     <script src="scripts/filters/dateFormat.js"></script>
-    <script src="scripts/services/EventsService.js"></script>
-<<<<<<< HEAD
     <script src="scripts/controllers/logs.js"></script>
-=======
-    <script src="scripts/services/CosmoTypesService.js"></script>
->>>>>>> a39bf3c47679629885d6668ad6d6139a3e4a9e25
     <script src="scripts/services/LogsModel.js"></script>
+    <script src="styles/SyntaxHighlighter/shBrushYaml.js"></script>
     <!-- endbuild -->
 
 </body>

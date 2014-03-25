@@ -58,6 +58,7 @@
         "table": {
             "heading": {
                 "id": "ID",
+                "blueprint": "Blueprint",
                 "createDate": "Created",
                 "updated": "Updated",
                 "action": "Action"

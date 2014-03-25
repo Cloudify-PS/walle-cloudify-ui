@@ -7,6 +7,14 @@
         tr {
           color: $text-color;
 
+            th {
+              height: $COSMOUI_LIST_HEADER_HEIGHT;
+            }
+
+            td {
+              height: $COSMOUI_LIST_LINE_HEIGHT;
+            }
+
             td, th {
               border: none;
 

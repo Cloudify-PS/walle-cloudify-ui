@@ -20,7 +20,7 @@ angular.module('cosmoUi')
 
         var planData/*:PlanData*/ = null;
         $scope.selectedWorkflow = null;
-        $scope.deploymentInProgress = null;
+        $scope.deploymentInProgress = false;
         $scope.nodes = [];
         $scope.events = [];
         $scope.section = 'topology';
@@ -66,14 +66,14 @@ angular.module('cosmoUi')
 
         BreadcrumbsService.push('deployments',
             {
-                href: '#/deployments?blueprint_id=' + blueprintId,
+                href: '#/deployments',
                 label: blueprintId,
                 id: 'deployment_id'
             });
 
         BreadcrumbsService.push('deployments',
             {
-                href: '#/deployment?id=' + id,
+                href: '#/deployment',
                 label: id,
                 id: 'deployment'
             });
@@ -130,6 +130,7 @@ angular.module('cosmoUi')
                         'state': $scope.getNodeStateData(node.id).state
                     }
                 };
+                $scope.propSection = 'general';
             } else {
                 $scope.propSection = 'overview';
             }
@@ -183,6 +184,9 @@ angular.module('cosmoUi')
         };
 
         $scope.toggleConfirmationDialog = function(deployment, confirmationType) {
+            if (confirmationType === 'execute' && $scope.selectedWorkflow === null) {
+                return;
+            }
             $scope.confirmationType = confirmationType;
             $scope.selectedDeployment = deployment || null;
             $scope.isConfirmationDialogVisible = $scope.isConfirmationDialogVisible === false;

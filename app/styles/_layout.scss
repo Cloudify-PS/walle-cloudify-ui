@@ -15,7 +15,7 @@ html, body, .layout {
   min-height: 100%;
   height: 100%;
   background: $COSMOUI_BACKGROUND;
-  font-family: "OpenSansRegular";
+  font-family: "OpenSansLight";
 }
 
 .layout[class] {
@@ -159,14 +159,12 @@ html, body, .layout {
 
 .content-header {
   height: 66px;
-  padding: 10px 20px;
+  padding: 10px 0px 20px 0px;
   vertical-align: middle;
-
-  padding-bottom: 20px;
-  border-bottom: 3px solid $COSMOUI_MAIN_CONTENT_TITLE_SEPERATOR_COLOR;
+  border-bottom: 1px solid $COSMOUI_MAIN_CONTENT_TITLE_SEPERATOR_COLOR;
   margin-bottom: 20px;
-  width: 98%;
-  margin: 0 auto 0px auto;
+  margin-left: 20px;
+  margin-right: 20px;
 
   .breadcrumbs{
     color:$COSMOUI_BREADCRUMB_ITEM_COLOR;
@@ -176,7 +174,6 @@ html, body, .layout {
     li {
       display:inline-block;
       padding-right:5px;
-      padding-left:5px;
 
       a, a:link, a:visited, a:hover, a:active {
         text-decoration: none;
@@ -200,20 +197,20 @@ html, body, .layout {
       color: $COSMOUI_BREADCRUMB_LAST_ITEM_COLOR;
       cursor: default;
     }
-    li:last-child:not(:first-child):after{
-      content: "\f057";
-      display: inline-block;
-      font-family: FontAwesome;
-      font-style: normal;
-      font-weight: normal;
-      line-height: 1;
-      -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
-      cursor: pointer;
-      color: $COSMOUI_BREADCRUMB_LAST_ITEM_COLOR;
-      top: 2px;
-      position: relative;
-    }
+    //li:last-child:not(:first-child):after{
+    //  content: "\f057";
+    //  display: inline-block;
+    //  font-family: FontAwesome;
+    //  font-style: normal;
+    //  font-weight: normal;
+    //  line-height: 1;
+    //  -webkit-font-smoothing: antialiased;
+    //  -moz-osx-font-smoothing: grayscale;
+    //  cursor: pointer;
+    //  color: $COSMOUI_BREADCRUMB_LAST_ITEM_COLOR;
+    //  top: 2px;
+    //  position: relative;
+    //}
   }
   .right {
     float: right;
@@ -228,7 +225,7 @@ html, body, .layout {
       border-right: 1px solid $COSMOUI_BUTTON_RIGHT_BORDER_COLOR;
       border-top: none;
       border-left: none;
-      margin-top: 7px;
+      margin-top: 9px;
     }
   }
 }
@@ -241,6 +238,8 @@ html, body, .layout {
     $RADIUS: 30px;
     display: inline-block;
     margin: 4px 4px 0px 4px;
+    margin-left: 10px;
+
     button {
         display: inline-block;
         height: $COSMOUI_BLUEPRINT_DETAILS_BUTTON_HEIGHT;
