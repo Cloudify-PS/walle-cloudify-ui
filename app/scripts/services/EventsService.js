@@ -66,11 +66,17 @@ angular.module('cosmoUi')
             }
 
             function filter(field, term) {
-                if(_isActiveFilter(activeFilters, field, term)) {
-                    delete activeFilters[field + term];
-                } else {
-                    activeFilters[field + term] = ejs.TermFilter(field, term);
+                if(!filterRemove(field, term)) {
+                    activeFilters[field + term] = ejs.TermFilter(field, term.toLowerCase());
                 }
+            }
+
+            function filterRemove(field, term) {
+                if(_isActiveFilter(field, term)) {
+                    delete activeFilters[field + term];
+                    return true;
+                }
+                return false;
             }
 
             function filterRange(field, conditions) {
@@ -135,6 +141,7 @@ angular.module('cosmoUi')
             }
 
             _this.filter = filter;
+            _this.filterRemove = filterRemove;
             _this.filterRange = filterRange;
             _this.sort = sort;
             _this.stopAutoPull = stopAutoPull;

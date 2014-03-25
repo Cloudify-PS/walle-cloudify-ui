@@ -6,18 +6,50 @@
 
     <div class="content-section">
         <div class="filters">
-            Execution: <div multi:select:menu
-                           data-options="executionList"
-                           data-ng-model="eventsFilter.executions"
-                           data-init="[null]"
-                           data-text="Choose Execution"
-                           data-onchange="filterEventsByExecution(filter)"></div>
-            Timeframe: <div multi:select:menu
-                            data-options="timeframeList"
-                            data-ng-model="eventsFilter.timeframe"
-                            data-init="[{{defaultTimeframe}}]"
-                            data-text="Choose timeframe"
-                            data-onchange="filterEventsByTimeframe(filter)"></div>
+
+            <span>
+                Blueprints:<br>
+                <div multi:select:menu
+                     data-multiple="true"
+                     data-options="blueprintsList"
+                     data-ng-model="eventsFilter.blueprints"
+                     data-init="[null]"
+                     data-text="Choose Blueprints"></div>
+            </span>
+
+            <span data-ng-show="deploymentsList">
+                Deployments:<br>
+                <div multi:select:menu
+                     data-multiple="true"
+                     data-options="deploymentsList"
+                     data-ng-model="eventsFilter.deployments"
+                     data-filter="eventsFilter.blueprints"
+                     data-init="[null]"
+                     data-text="Choose Deployments"></div>
+            </span>
+
+            <span data-ng-show="executionList">
+                Executions:<br>
+                <div multi:select:menu
+                     data-multiple="true"
+                     data-options="executionList"
+                     data-ng-model="eventsFilter.executions"
+                     data-init="[null]"
+                     data-text="Choose Execution"></div>
+            </span>
+
+            <span>
+                Timeframe:<br>
+                <div multi:select:menu
+                     data-options="timeframeList"
+                     data-ng-model="eventsFilter.timeframe"
+                     data-init="[{{defaultTimeframe}}]"
+                     data-text="Choose timeframe"
+                     data-onchange="filterEventsByTimeframe(filter)"></div>
+            </span>
+
+            <button class="gs-btn">Go</button>
+
             <div class="loading" data-ng-show="filterLoading"></div>
         </div>
 

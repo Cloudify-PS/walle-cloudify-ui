@@ -8,7 +8,7 @@
             position: relative;
             margin: 0 0 10px 0;
             .multiSelectMenu {
-                margin: 0 15px 0 5px;
+                margin: 5px 10px 0 0px;
                 vertical-align: middle;
             }
             .search {
@@ -49,6 +49,10 @@
                 background-image: url('../images/loading-dots.gif');
                 background-repeat: no-repeat;
                 background-position: center center;
+            }
+            > span {
+                margin: 0 0 10px 0;
+                display: inline-block;
             }
         }
 

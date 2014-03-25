@@ -60,3 +60,16 @@ table.table {
         color: $COSMOUI_EVENTS_LIST_ITEM_COLOR;
     }
 }
+
+.gs-btn {
+    color: white;
+    font-weight: bold;
+    padding: 5px 10px 5px 10px;
+    background-color: $COSMOUI_BUTTON_BACKGROUND;
+    border-radius: 3px;
+    border-bottom: 1px solid $COSMOUI_BUTTON_BOTTOM_BORDER_COLOR;
+    border-right: 1px solid $COSMOUI_BUTTON_RIGHT_BORDER_COLOR;
+    border-top: none;
+    border-left: none;
+    vertical-align: middle;
+}
