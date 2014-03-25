@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('cosmoUi')
-    .controller('LogsCtrl', function ($scope, BreadcrumbsService, RestService, EventsService, $location, $anchorScroll, $filter) {
+    .controller('LogsCtrl', function ($scope, BreadcrumbsService, RestService, EventsService, $location, $anchorScroll, $filter, $routeParams, LogsModel, $window) {
 
         /**
          * Breadcrumbs
@@ -12,6 +12,9 @@ angular.module('cosmoUi')
             id: 'logs'
         });
 
+        /**
+         * Logs
+         */
         var events = EventsService.newInstance('/backend/events'),
             _deploymentsList = [],
             _executionList = [];
@@ -27,82 +30,66 @@ angular.module('cosmoUi')
             'timeframe': null
         };
 
-        RestService.loadBlueprints()
-            .then(function (data) {
-                for (var j in data) {
-                    var blueprint = data[j];
-                    $scope.blueprintsList.push({'value': blueprint.id, 'label': blueprint.id});
-                    for (var i in blueprint.deployments) {
-                        var deployemnt = blueprint.deployments[i];
-                        _deploymentsList.push({'value': deployemnt.id, 'label': deployemnt.id, 'parent': blueprint.id});
-                        _loadExecutions(deployemnt.id);
-                    }
-                }
-            });
+        $scope.timeframeFrom = 'now';
 
-        function _loadExecutions(deploymentId) {
-            RestService.getDeploymentExecutions(deploymentId)
-                .then(function(data) {
-                    if(data.hasOwnProperty('length') && data.length > 0) {
-                        for(var eid in data) {
-                            var execute = data[eid];
-                            _executionList.push({'value': execute.deploymentId, 'label': execute.deploymentId, 'parent': deploymentId});
-                        }
-                    }
-                });
-        }
-
-
-        /**
-         * Logs
-         */
-        $scope.events = [];
         $scope.defaultTimeframe = 1000 * 60 * 5;
         $scope.timeframeList = [
-            {'value': 1000 * 60 * 5, 'label': 'Last 5 Minute'},
-            {'value': 1000 * 60 * 10, 'label': 'Last 10 Minute'},
-            {'value': 1000 * 60 * 15, 'label': 'Last 15 Minute'},
-            {'value': 1000 * 60 * 30, 'label': 'Last 30 Minute'},
-            {'value': 1000 * 60 * 45, 'label': 'Last 45 Minute'},
-            {'value': 1000 * 60 * 60, 'label': 'Last Hour'},
-            {'value': 1000 * 60 * 60 * 2, 'label': 'Last 2 Hours'},
-            {'value': 1000 * 60 * 60 * 5, 'label': 'Last 5 Hours'},
-            {'value': 1000 * 60 * 60 * 10, 'label': 'Last 10 Hours'},
-            {'value': 1000 * 60 * 60 * 15, 'label': 'Last 15 Hours'},
-            {'value': 1000 * 60 * 60 * 15, 'label': 'Last 20 Hours'},
-            {'value': 1000 * 60 * 60 * 24, 'label': 'Last Day'},
-            {'value': 1000 * 60 * 60 * 24 * 2, 'label': 'Last 2 Days'}
+            {'value': 1000 * 60 * 5, 'label': '5 Minute'},
+            {'value': 1000 * 60 * 10, 'label': '10 Minute'},
+            {'value': 1000 * 60 * 15, 'label': '15 Minute'},
+            {'value': 1000 * 60 * 30, 'label': '30 Minute'},
+            {'value': 1000 * 60 * 60, 'label': '1 Hour'},
+            {'value': 1000 * 60 * 60 * 3, 'label': '3 Hours'},
+            {'value': 1000 * 60 * 60 * 6, 'label': '6 Hours'},
+            {'value': 1000 * 60 * 60 * 12, 'label': '12 Hours'},
+            {'value': 1000 * 60 * 60 * 24, 'label': '1 Day'},
+            {'value': 1000 * 60 * 60 * 24 * 2, 'label': '2 Days'},
+            {'value': 1000 * 60 * 60 * 24 * 3, 'label': '3 Days'},
+            {'value': 1000 * 60 * 60 * 24 * 4, 'label': '4 Days'},
+            {'value': 1000 * 60 * 60 * 24 * 5, 'label': '5 Days'}
         ];
         $scope.eventTypeList = [];
         $scope.filterLoading = false;
 
         function executeEvents(autoPull) {
             $scope.filterLoading = true;
-            $scope.newEvents = 0;
-            $scope.eventHits = [];
+            $scope.newLogs = 0;
+            $scope.logsHits = [];
             var troubleShoot = 0,
                 executeRetry = 10,
                 lastAmount = 0,
-                eventsCollect = [];
+                eventsCollect = [],
+                lastData = [];
 
             function _reverse(array) {
                 var copy = [].concat(array);
                 return copy.reverse();
             }
 
+            function pushLogs() {
+                $scope.newLogs = 0;
+                $scope.logsHits = _reverse(lastData);
+            }
+
+            angular.element($window).bind('scroll', function(){
+                if(lastData.length !== $scope.logsHits.length && document.body.scrollTop === 0) {
+                    pushLogs();
+                }
+            });
+
             events
                 .execute(function(data){
                     if(data && data.hasOwnProperty('hits')) {
-                        if(data.hits.hits.length !== lastAmount) {
+                        lastData = data.hits.hits;
+                        if(lastData.length !== lastAmount) {
                             if(document.body.scrollTop === 0) {
-                                $scope.newEvents = 0;
-                                $scope.eventHits = _reverse(data.hits.hits);
+                                pushLogs();
                             }
                             else {
-                                eventsCollect = _reverse(data.hits.hits);
-                                $scope.newEvents = eventsCollect.length - $scope.eventHits.length;
+                                eventsCollect = _reverse(lastData);
+                                $scope.newLogs = eventsCollect.length - $scope.logsHits.length;
                             }
-                            lastAmount = data.hits.hits.length;
+                            lastAmount = lastData.length;
                         }
                     }
                     else {
@@ -116,6 +103,49 @@ angular.module('cosmoUi')
                         events.stopAutoPull();
                     }
                 }, autoPull);
+        }
+
+        if($routeParams.filter) {
+            var filterParams;
+            try {
+                filterParams = JSON.parse($routeParams.filter);
+            }
+            catch(exception) {
+                filterParams = null;
+            }
+            if(filterParams) {
+                LogsModel.set(filterParams);
+            }
+        }
+        else {
+            executeEvents();
+        }
+        $scope.filterModel = LogsModel.get();
+
+        RestService.loadBlueprints()
+            .then(function (data) {
+                for (var j in data) {
+                    var blueprint = data[j];
+                    $scope.blueprintsList.push({'value': blueprint.id, 'label': blueprint.id});
+                    for (var i in blueprint.deployments) {
+                        var deployemnt = blueprint.deployments[i];
+                        _deploymentsList.push({'value': deployemnt.id, 'label': deployemnt.id, 'parent': blueprint.id});
+                        _loadExecutions(deployemnt.id);
+                    }
+                }
+                executeEvents();
+            });
+
+        function _loadExecutions(deploymentId) {
+            RestService.getDeploymentExecutions(deploymentId)
+                .then(function(data) {
+                    if(data.hasOwnProperty('length') && data.length > 0) {
+                        for(var eid in data) {
+                            var execute = data[eid];
+                            _executionList.push({'value': execute.deploymentId, 'label': execute.deploymentId, 'parent': deploymentId});
+                        }
+                    }
+                });
         }
 
         function filterLogs(field, newValue, oldValue, execute) {
@@ -169,8 +199,11 @@ angular.module('cosmoUi')
         (function _LoadEvents() {
             filterLogsByRange('@timestamp', _filterByTimeframe($scope.defaultTimeframe), null);
             filterLogs('type', {value: 'cloudify_log'}, null);
-            executeEvents();
         })();
+
+        $scope.execute = function() {
+            executeEvents();
+        };
 
         $scope.scrollToTop = function(){
             $anchorScroll();
@@ -178,22 +211,22 @@ angular.module('cosmoUi')
 
         $scope.$watch('eventsFilter.blueprints', function(newValue, oldValue){
             $scope.deploymentsList = $filter('filterListByList')(_deploymentsList, newValue);
-            filterLogsByList('context.blueprint_id', newValue, oldValue, true);
+            filterLogsByList('context.blueprint_id', newValue, oldValue, false);
         }, true);
 
         $scope.$watch('eventsFilter.deployments', function(newValue, oldValue){
             $scope.executionList = $filter('filterListByList')(_executionList, newValue);
-            filterLogsByList('context.deployment_id', newValue, oldValue, true);
+            filterLogsByList('context.deployment_id', newValue, oldValue, false);
         }, true);
 
         $scope.$watch('eventsFilter.executions', function(newValue, oldValue){
             $scope.executionList = $filter('filterListByList')(_executionList, newValue);
-            filterLogsByList('context.execution_id', newValue, oldValue, true);
+            filterLogsByList('context.execution_id', newValue, oldValue, false);
         }, true);
 
         $scope.$watch('eventsFilter.timeframe', function(newValue){
             if(newValue !== null && newValue !== undefined && newValue.hasOwnProperty('value')) {
-                filterLogsByRange('@timestamp', _filterByTimeframe(newValue.value), true);
+                filterLogsByRange('@timestamp', _filterByTimeframe(newValue.value), false);
             }
         });
 
@@ -231,8 +264,6 @@ angular.module('cosmoUi')
         };
 
     });
-
-
 
 angular.module('cosmoUi')
     .filter('filterListByList', function filterListByList() {

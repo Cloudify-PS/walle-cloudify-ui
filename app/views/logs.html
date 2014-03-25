@@ -13,7 +13,7 @@
                      data-multiple="true"
                      data-options="blueprintsList"
                      data-ng-model="eventsFilter.blueprints"
-                     data-init="[null]"
+                     data-init="{{ filterModel.blueprints }}"
                      data-text="Choose Blueprints"></div>
             </span>
 
@@ -24,7 +24,7 @@
                      data-options="deploymentsList"
                      data-ng-model="eventsFilter.deployments"
                      data-filter="eventsFilter.blueprints"
-                     data-init="[null]"
+                     data-init="{{ filterModel.deployments }}"
                      data-text="Choose Deployments"></div>
             </span>
 
@@ -34,27 +34,28 @@
                      data-multiple="true"
                      data-options="executionList"
                      data-ng-model="eventsFilter.executions"
-                     data-init="[null]"
+                     data-init="{{ filterModel.executions }}"
                      data-text="Choose Execution"></div>
             </span>
 
             <span>
-                Timeframe:<br>
+                Timeframe (from {{ timeframeFrom }}):<br>
                 <div multi:select:menu
                      data-options="timeframeList"
                      data-ng-model="eventsFilter.timeframe"
-                     data-init="[{{defaultTimeframe}}]"
+                     data-init="{{ filterModel.timeframe }}"
                      data-text="Choose timeframe"
                      data-onchange="filterEventsByTimeframe(filter)"></div>
+
             </span>
 
-            <button class="gs-btn">Go</button>
+            <button class="gs-btn" data-ng-click="execute()">Show</button>
 
             <div class="loading" data-ng-show="filterLoading"></div>
         </div>
 
-        <div class="newEvents" data-ng-show="newEvents>0">
-            <p data-ng-click="scrollToTop()">{{ newEvents }} new events</p>
+        <div class="newLogs" data-ng-show="newLogs>0">
+            <p data-ng-click="scrollToTop()">{{ newLogs }} new logs</p>
         </div>
 
         <table class="table">
@@ -67,30 +68,30 @@
                 <th class="task sorting" data-ng-click="sortEvents('task')" data-ng-class="isSorted('task')">{{ 'deployment.table.heading.task' | i18n }}</th>
             </tr>
             </thead>
-            <tbody class="animate-repeat" ng-repeat="event in eventHits" ng-init="isOpen=false">
+            <tbody class="animate-repeat" ng-repeat="log in logsHits" ng-init="isOpen=false">
             <tr data-ng-click="isOpen=!isOpen">
-                <td class="icon" ng-class="getEventIcon(event._source.event_type)"></td>
-                <td class="date">{{event._source.timestamp == undefined && 'N/A' || event._source.timestamp | dateFormat: 'yyyy-MM-dd HH:mm:ss'}}</td>
-                <td class="type">{{getEventText(event._source.event_type) == undefined && 'N/A' || getEventText(event._source.event_type)}}</td>
-                <td class="node">{{event._source.context.node_name == undefined && 'N/A' || event._source.context.node_name}}</td>
-                <td class="task">{{event._source.context.task_name == undefined && 'N/A' || event._source.context.task_name}}</td>
+                <td class="icon" ng-class="getEventIcon(log._source.event_type)"></td>
+                <td class="date">{{log._source.timestamp == undefined && 'N/A' || log._source.timestamp | dateFormat: 'yyyy-MM-dd HH:mm:ss'}}</td>
+                <td class="type">{{getEventText(log._source.event_type) == undefined && 'N/A' || getEventText(log._source.event_type)}}</td>
+                <td class="node">{{log._source.context.node_name == undefined && 'N/A' || log._source.context.node_name}}</td>
+                <td class="task">{{log._source.context.task_name == undefined && 'N/A' || log._source.context.task_name}}</td>
             </tr>
             <tr class="details" data-ng-show="isOpen">
                 <td colspan="5">
                     <div class="group">
-                        <span><b>Execution ID:</b> {{ event._source.context.execution_id == undefined && 'N/A' || event._source.context.execution_id }}</span>
-                        <span><b>Node ID:</b> {{ event._source.context.node_id == undefined && 'N/A' || event._source.context.node_id }}</span>
+                        <span><b>Execution ID:</b> {{ log._source.context.execution_id == undefined && 'N/A' || log._source.context.execution_id }}</span>
+                        <span><b>Node ID:</b> {{ log._source.context.node_id == undefined && 'N/A' || log._source.context.node_id }}</span>
                     </div>
                     <div class="group">
-                        <span><b>Task Name:</b> {{ event._source.context.task_name == undefined && 'N/A' || event._source.context.task_name }}</span>
-                        <span><b>Plugin:</b> {{ event._source.context.plugin == undefined && 'N/A' || event._source.context.plugin }}</span>
-                        <span><b>Operation:</b> {{ event._source.context.operation == undefined && 'N/A' || event._source.context.operation }}</span>
+                        <span><b>Task Name:</b> {{ log._source.context.task_name == undefined && 'N/A' || log._source.context.task_name }}</span>
+                        <span><b>Plugin:</b> {{ log._source.context.plugin == undefined && 'N/A' || log._source.context.plugin }}</span>
+                        <span><b>Operation:</b> {{ log._source.context.operation == undefined && 'N/A' || log._source.context.operation }}</span>
                     </div>
                 </td>
             </tr>
             </tbody>
         </table>
-        <div class="emptyTable" data-ng-hide="eventHits.length">There are no events at this moment...</div>
+        <div class="emptyTable" data-ng-hide="logsHits.length">There are no events at this moment...</div>
     </div>
 
 </div>

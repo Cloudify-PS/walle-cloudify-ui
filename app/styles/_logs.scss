@@ -42,7 +42,7 @@
             }
             .loading {
                 position: absolute;
-                top: 0;
+                top: 22px;
                 right: 0;
                 width: 120px;
                 height: 30px;
@@ -141,7 +141,7 @@
         }
     }
 
-    .newEvents {
+    .newLogs {
         position: fixed;
         top: 30px;
         left: 0;
@@ -158,6 +158,10 @@
             box-shadow: 1px 1px 0px #0482c7;
             cursor: pointer;
         }
+    }
+
+    .gs-btn {
+        margin-top: 4px;
     }
 
 }
