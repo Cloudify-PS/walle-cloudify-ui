@@ -77,11 +77,13 @@
               margin-left: $COSMOUI_EVENTS_WIDGET_OPENED_EVENT_TYPE_MARGIN_LEFT;
               float: left;
               width: $COSMOUI_EVENTS_WIDGET_OPENED_EVENT_TYPE_WIDTH;
+              font-size: 12px;
             }
 
             #event-time {
               margin-left: $COSMOUI_EVENTS_WIDGET_OPENED_EVENT_TIME_MARGIN_LEFT;
               float: left;
+              font-size: 12px;
             }
 
             .event-icon-workflow-started {background: $COSMOUI_EVENT_ICON_BACKGROUND_WORKFLOW_STARTED;}
