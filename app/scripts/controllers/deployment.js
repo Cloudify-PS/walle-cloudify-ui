@@ -8,7 +8,7 @@ angular.module('cosmoUi')
             statesIndex = ['uninitialized', 'initializing', 'creating', 'created', 'configuring', 'configured', 'starting', 'started'];
 
         var deploymentDataModel = {
-            'status': 0, // 0 = (install) in progress, 1 = (done) all done and reachable, 2 = (alert) all done but half reachable, 3 = (failed) all done and not reachable
+            'status': -1, // -1 = not executed, 0 = (install) in progress, 1 = (done) all done and reachable, 2 = (alert) all done but half reachable, 3 = (failed) all done and not reachable
             'reachables': 0,
             'state': 0,
             'states': 0,
@@ -20,7 +20,7 @@ angular.module('cosmoUi')
 
         var planData/*:PlanData*/ = null;
         $scope.selectedWorkflow = null;
-        $scope.deploymentInProgress = false;
+        $scope.deploymentInProgress = true;
         $scope.nodes = [];
         $scope.events = [];
         $scope.section = 'topology';
@@ -331,7 +331,7 @@ angular.module('cosmoUi')
         function _getCurrentExecution(executions) {
             for(var i in executions) {
                 var execution = executions[i];
-                if(execution.status !== 'failed') {
+                if(execution.status !== 'failed' && execution.status !== 'terminated' && execution.status !== 'canceled') {
                     return execution;
                 }
             }
@@ -367,6 +367,7 @@ angular.module('cosmoUi')
                 var _reachable = 0;
                 var _states = 0;
                 var _completed = 0;
+
                 for (var n in deployment.instancesIds) {
                     var nodeId = deployment.instancesIds[n];
                     var nodeInstance = IndexedNodes[nodeId];
