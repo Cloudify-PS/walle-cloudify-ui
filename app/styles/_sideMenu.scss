@@ -9,18 +9,17 @@
 
     ul {
       padding: $COSMOUI_MENU_PADDING;
-      margin-left: $COSMOUI_MENU_MARGIN_LEFT;
 
       li {
         list-style: none;
         border-bottom: 1px solid $COSMOUI_MENU_ITEM_SEPERATOR;
         text-align: center;
-        width: $COSMOUI_MENU_ITEM_WIDTH;
         height: $COSMOUI_MENU_ITEM_HEIGHT;
 
         &.selected {
           a {
             color: $COSMOUI_MENU_ITEM_COLOR_SELECTED;
+            background-color: $COSMOUI_MENU_ITEM_BACKGROUND_COLOR_SELECTED;
           }
 
           &:after{
@@ -34,9 +33,9 @@
             border-top-color: transparent;
             border-right-color: transparent;
             border-bottom-color: transparent;
-            border-left-color: $COSMOUI_MENU_BACKGROUND;
+            border-left-color: $clr-base-05;
             position: relative;
-            left: 140px;
+            left: 163px;
             top: -50px;
           }
         }
@@ -46,12 +45,11 @@
           color: $COSMOUI_MENU_ITEM_COLOR;
           display: block;
           text-decoration: none;
-          width: $COSMOUI_MENU_ITEM_WIDTH;
           height: $COSMOUI_MENU_ITEM_HEIGHT;
 
-          &:hover:not(.disabled){
-            color: $COSMOUI_MENU_ITEM_COLOR_HOVER;
-          }
+          //&:hover:not(.disabled){
+          //  color: $COSMOUI_MENU_ITEM_COLOR_HOVER;
+          //}
 
           &.disabled {
             color: $COSMOUI_MENU_ITEM_COLOR_DISABLED;
