@@ -600,6 +600,14 @@
     }
 
     .table {
+        tr {
+          cursor: default;
+        }
+
+        .node-details {
+          cursor: pointer;
+        }
+
         .topology-glyph {
             display: inline-block;
             line-height: 0.7;
