@@ -51,7 +51,7 @@ angular.module('cosmoUi')
         $scope.eventTypeList = [];
         $scope.filterLoading = false;
 
-        function executeEvents(autoPull) {
+        function executeLogs(autoPull) {
             $scope.filterLoading = true;
             $scope.newLogs = 0;
             $scope.logsHits = [];
@@ -117,9 +117,6 @@ angular.module('cosmoUi')
                 LogsModel.set(filterParams);
             }
         }
-        else {
-            executeEvents();
-        }
         $scope.filterModel = LogsModel.get();
 
         RestService.loadBlueprints()
@@ -133,7 +130,7 @@ angular.module('cosmoUi')
                         _loadExecutions(deployemnt.id);
                     }
                 }
-                executeEvents();
+                executeLogs();
             });
 
         function _loadExecutions(deploymentId) {
@@ -142,7 +139,7 @@ angular.module('cosmoUi')
                     if(data.hasOwnProperty('length') && data.length > 0) {
                         for(var eid in data) {
                             var execute = data[eid];
-                            _executionList.push({'value': execute.deploymentId, 'label': execute.deploymentId, 'parent': deploymentId});
+                            _executionList.push({'value': execute.id, 'label': execute.workflowId + ' ('+ $filter('dateFormat')(execute.createdAt, 'yyyy-MM-dd HH:mm:ss') +')', 'parent': deploymentId});
                         }
                     }
                 });
@@ -159,7 +156,7 @@ angular.module('cosmoUi')
                 events.filter(field, newValue.value);
             }
             if(execute === true) {
-                executeEvents();
+                executeLogs();
             }
         }
 
@@ -171,7 +168,7 @@ angular.module('cosmoUi')
                 events.filter(field, newValues[ni].value);
             }
             if(execute === true) {
-                executeEvents();
+                executeLogs();
             }
         }
 
@@ -183,7 +180,7 @@ angular.module('cosmoUi')
                 events.filterRange(field, newValue);
             }
             if(execute === true) {
-                executeEvents();
+                executeLogs();
             }
         }
 
@@ -202,7 +199,7 @@ angular.module('cosmoUi')
         })();
 
         $scope.execute = function() {
-            executeEvents();
+            executeLogs();
         };
 
         $scope.scrollToTop = function(){
@@ -220,7 +217,6 @@ angular.module('cosmoUi')
         }, true);
 
         $scope.$watch('eventsFilter.executions', function(newValue, oldValue){
-            $scope.executionList = $filter('filterListByList')(_executionList, newValue);
             filterLogsByList('context.execution_id', newValue, oldValue, false);
         }, true);
 
@@ -254,7 +250,7 @@ angular.module('cosmoUi')
 
             // Apply Sort
             events.sort(field, $scope.eventSortList[field]);
-            executeEvents();
+            executeLogs();
         };
 
         $scope.isSorted = function (field) {
