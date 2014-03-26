@@ -24,7 +24,7 @@ angular.module('cosmoUi')
             if ($scope.isDeployEnabled()) {
                 RestService.deployBlueprint(params)
                     .then(function() {
-                        $scope.redirectToDeployments(blueprint);
+                        $scope.redirectToDeployments($scope.deploymentId, blueprint);
                     });
             }
         };

@@ -24,7 +24,7 @@
             line-height: $COSMOUI_BLUEPRINT_DETAILS_TITLE_LINE_HEIGHT;
             color:$COSMOUI_BLUEPRINT_DETAILS_TITLE_COLOR;
             font-size: $COSMOUI_BLUEPRINT_DETAILS_TITLE_FONT_SIZE;
-            border-bottom:4px solid $COSMOUI_BLUEPRINT_DETAILS_TITLE_BOTTOM_BORDER_COLOR;
+            border-bottom:1px solid $COSMOUI_BLUEPRINT_DETAILS_TITLE_BOTTOM_BORDER_COLOR;
             i { float:right; }
         }
 
@@ -36,7 +36,7 @@
                 padding: 9.5px;
                 font-size: 13px;
                 color: #333333;
-                width: 98%;
+                width: 100%;
 
                 tr {
                   height: 30px;
@@ -123,7 +123,8 @@
       border-top: none;
       border-left: none;
       display: inline-block;
-      margin-left: 20px;
+      margin-right: 20px;
+      float: right;
 
       &.disabled {
         background: $COSMOUI_BUTTON_DISABLED_BACKGROUND;
@@ -202,6 +203,11 @@
                 .head {
                     background-color: #3aaeda;
                 }
+                .piProgress {
+                  .circle {
+                    background-color: #3aaeda;
+                  }
+                }
                 .holder {
                     text-align: center;
                 }
@@ -229,7 +235,7 @@
             }
             .piProgress {
                 position: absolute;
-                top: -5px;
+                top: -25px;
                 left: -27px;
                 z-index: 1;
                 .circle {
@@ -599,6 +605,14 @@
     }
 
     .table {
+        tr {
+          cursor: default;
+        }
+
+        .node-details {
+          cursor: pointer;
+        }
+
         .topology-glyph {
             display: inline-block;
             line-height: 0.7;
