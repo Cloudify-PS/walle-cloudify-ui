@@ -1,6 +1,7 @@
 <div class="app-status-widget">
     <div class="title">{{ 'appStatus.title' | i18n }}</div>
     <div pie:progress="status" class="piProgress" size="50">
+        <div class="background"></div>
         <div class="gauge">{{ total }}</div>
         <div class="shadow"></div>
     </div>

@@ -417,7 +417,8 @@
             display: none;
             text-align: center;
             position: relative;
-            top: 9px;
+            top: 10px;
+            font-size: 11px;
             &::after {
                 content: "%";
             }
