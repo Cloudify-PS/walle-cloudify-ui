@@ -312,7 +312,6 @@ angular.module('cosmoUi')
                     // Execution
                     RestService.autoPull('getDeploymentExecutions', id, RestService.getDeploymentExecutions)
                         .then(null, null, function (dataExec) {
-                            console.log(["dataExec", dataExec, $scope.deploymentInProgress]);
                             if (dataExec.length > 0) {
                                 currentExeution = _getCurrentExecution(dataExec);
                                 if (!currentExeution && $scope.deploymentInProgress) {
