@@ -18,18 +18,19 @@
         "emptyMessage": "No Blueprints",
         "uploadPopup": {
             "title": "Upload Blueprint",
-            "description": "Select blueprint file to upload, and press 'Upload' button. Entering blueprint name is optional.",
-            "browseBtn": "Browse",
+            "description": "Select blueprint file to upload, and press 'Save'",
+            "browseText": "upload file",
+            "browseBtn": "+",
             "fileLabel": "Application file: ",
-            "uploadBtn": "Upload",
-            "blueprintName": "Name"
+            "uploadBtn": "Save",
+            "blueprintName": "*optional name"
         },
         "deployDialog": {
             "title": "Deploy",
             "description": "Create deployment of",
             "cancelBtn": "Cancel",
             "deployBtn": "Deploy",
-            "deployName": "Please enter deployment name"
+            "deployName": "Name"
         }
     },
     "config": {

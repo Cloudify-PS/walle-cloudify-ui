@@ -43,17 +43,16 @@
             <form id="uploadForm" name="uploadForm">
                 <div id="browse">
                     <div id="browseBtn" class="dialogButton">{{ 'blueprints.uploadPopup.browseBtn' | i18n }}</div>
-                    <input type="text" id="browseTxt" ng-model="selectedFile.name">
+                    <input type="text" id="browseTxt" ng-model="selectedFile.name" placeholder="{{ 'blueprints.uploadPopup.browseText' | i18n }}">
                     <input type="file" name="fileInput" id="fileInput" accept=".tar,.gz,.yaml" ng-file-select="onFileSelect($files)">
                 </div>
                 <div id="name">
-                    <label>{{ 'blueprints.uploadPopup.blueprintName' | i18n }}</label>
-                    <input type="text" ng-model="blueprintName">
+                    <input type="text" ng-model="blueprintName" placeholder="{{ 'blueprints.uploadPopup.blueprintName' | i18n }}">
                 </div>
                 <div id="mainFile" style="display:none">Application file: <input type="text" ng-model="mainFileName"></div>
                 <div id="upload-error-message" ng-show="isUploadError()">{{errorMessage}}</div>
                 <div class="upload-process-anim" ng-show="uploadInProcess == true"></div>
-                <button id="uploadBtn" class="dialogButton" ng-class="{disabled: !isUploadEnabled(), enabled: isUploadEnabled()}" ng-click="uploadFile()">Upload</button>
+                <button id="uploadBtn" class="dialogButton" ng-class="{disabled: !isUploadEnabled(), enabled: isUploadEnabled()}" ng-click="uploadFile()">{{ 'blueprints.uploadPopup.uploadBtn' | i18n }}</button>
             </form>
         </div>
     </div>

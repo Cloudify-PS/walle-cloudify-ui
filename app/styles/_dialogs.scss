@@ -1,4 +1,4 @@
-.dialogBoxBg {
+  .dialogBoxBg {
   width: 100%;
   height: 100%;
   background: $COSMOUI_DIALOG_BACKGROUND;
@@ -12,6 +12,10 @@
 
 .dialogBox {
   z-index: 9996;
+  border: 2px solid $COSMOUI_DIALOG_BORDER_COLOR;
+  border-radius: 4px;
+  box-shadow: 0px 0px 5px $COSMOUI_DIALOG_SHADOW_COLOR;
+  background: $COSMOUI_DIALOG_BACKGROUND;
 
   .dialogButton {
     color: white;
@@ -27,28 +31,39 @@
 
     &.disabled {
       background: $COSMOUI_BUTTON_DISABLED_BACKGROUND;
+      border-bottom: 1px solid $COSMOUI_BUTTON_DISABLED_BORDER_COLOR;
+      border-right: 1px solid $COSMOUI_BUTTON_DISABLED_BORDER_COLOR;
+      color: $COSMOUI_BUTTON_DISABLED_BORDER_COLOR;
+      cursor: default;
     }
 
     &.enabled {
       background: $COSMOUI_BUTTON_BACKGROUND;
+      cursor: pointer;
     }
 
     &.dialogClose {
       float: right;
       position: absolute;
-      right: 10px;
-      top: 10px;
+      right: 0px;
+      top: 5px;
       cursor: pointer;
+      background-color: transparent;
+      border: none;
+      padding-right: 0px;
     }
   }
 
   .dialogTitle {
     width: 100%;
+    height: 51px;
     color: $COSMOUI_DIALOG_TITLE_COLOR;
-    font-size: 30px;
+    line-height: 28px;
+    font-size: 32px;
     float: left;
     padding-left: 20px;
     padding-top: 10px;
+    background-color: $clr-base-00;
   }
 
   .dialogDeploymentName {
@@ -69,6 +84,8 @@
     width: 100%;
     height: 30px;
     text-align: center;
+    font-size: 16px;
+    font-family: 'OpenSansRegular';
   }
 
   .buttonsContainer {
@@ -88,11 +105,8 @@
 }
 
 #uploadDialogContainer {
-  width: 600px;
-  height: 330px;
-  background: $COSMOUI_DIALOG_BACKGROUND;
-  border: 10px solid $COSMOUI_DIALOG_BORDER_COLOR;
-  box-shadow: 0px 0px 10px $COSMOUI_DIALOG_SHADOW_COLOR;
+  width: 430px;
+  height: 280px;
   position: absolute;
   top: 0;
   bottom: 0;
@@ -104,60 +118,66 @@
   #uploadForm {
     position: relative;
     float: left;
-    left: 20px;
-    height: 190px;
+    height: 160px;
     width: 100%;
-    top: 60px;
+    top: 40px;
 
     #browse {
       position: relative;
-      left: 80px;
       top: 30px;
 
       #fileInput {
         top: 5px;
         position: relative;
         opacity: 0;
+        left: 20px;
+        z-index: 9998;
+        width: 390px;
       }
 
       #browseBtn {
-        position: absolute;
         top: 0px;
-        width: 80px;
-        float: left;
+        width: 32px;
+        height: 32px;
+        float: right;
         cursor: pointer;
+        margin-right: 20px;
+        font-size: 30px;
+        padding: 0px 8px 0px 7px;
+        line-height: 33px;
       }
 
       #browseTxt {
-        width: 300px;
-        height: 30px;
+        width: 340px;
+        height: 32px;
         float: left;
         position: absolute;
         top: 0px;
-        border-radius: 5px;
-        left: 90px;
+        border-radius: 3px;
+        left: 20px;
         padding-left: 10px;
+        background-clip: padding-box;
+        background-color: $clr-base-10;
+        border: 0;
       }
     }
 
     #name {
       position: relative;
-      left: 112px;
-      top: 30px;
-
-      label {
-        top: 30px;
-        position: relative;
-      }
+      top: 15px;
+      margin-bottom: 10px;
 
       input {
-        left: 10px;
+        left: 20px;
         position: relative;
         top: 30px;
-        width: 300px;
-        height: 30px;
-        border-radius: 5px;
+        width: 385px;
+        height: 32px;
+        border-radius: 3px;
         padding-left: 10px;
+        background-clip: padding-box;
+        background-color: $clr-base-10;
+        border: 0;
       }
     }
 
@@ -188,10 +208,10 @@
     }
 
     #uploadBtn {
-      position: absolute;
+      position: relative;
       float: right;
-      right: 30px;
-      bottom: 0px;
+      right: 10px;
+      top: 60px;
     }
 
     #upload-error-message {
@@ -207,9 +227,6 @@
 #confirmationDialogContainer {
   width: 400px;
   height: 250px;
-  background: white;
-  border: 10px solid #496685;
-  box-shadow: 0px 0px 10px rgba(208, 208, 208, 0.8);
   position: absolute;
   top: 0;
   bottom: 0;
