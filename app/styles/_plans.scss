@@ -156,7 +156,6 @@
     .bpContainer {
         position: relative;
         display: block;
-        font-family: 'trebuchet ms', verdana, arial;
         width: 100%;
         height: 100%;
         padding: 20px 40px;
@@ -180,14 +179,14 @@
             color: white;
             &:after {
                 position: absolute;
-                top: -11px;
-                left: 6px;
+                top: -10px;
+                left: 8px;
             }
         }
         .box {
             position: relative;
             display: inline-block;
-            min-height: 164px;
+            min-height: 140px;
             border-width: 2px;
             border-color: #136e9d;
             border-style: solid;
@@ -195,10 +194,10 @@
             vertical-align: top;
             padding: 2px;
             border-radius: 3px;
-            margin: 0 30px 40px 0px;
+            margin: 0 60px 40px 0px;
             .box {
                 border-color: #3aaeda;
-                min-width: 270px;
+                min-width: 170px;
                 margin: 15px;
                 .head {
                     background-color: #3aaeda;
@@ -235,20 +234,21 @@
             }
             .piProgress {
                 position: absolute;
-                top: -25px;
+                top: -11px;
                 left: -27px;
                 z-index: 1;
+
                 .circle {
                     background: #136e9d;
-                    border-width: 2px;
+                    border-width: 1px;
                     border-style: solid;
                     border-color: white;
                     box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.4);
                     > .badge {
                         position: absolute;
                         z-index: 1;
-                        top: -10px;
-                        left: 25px;
+                        top: -8px;
+                        left: 20px;
                         background-color: $install;
                         text-decoration: none;
                         font-family: "OpenSansBold";
@@ -274,8 +274,8 @@
                 }
                 .shadow {
                     position: absolute;
-                    top: -9px;
-                    left: -9px;
+                    top: -6px;
+                    left: -6px;
                 }
                 path.install {
                     fill: $install;
@@ -294,6 +294,9 @@
                 > svg {
                     display: none;
                 }
+                > .background {
+                    display: none;
+                }
                 > .circle {
                     box-shadow: none;
                     > .shadow {
@@ -305,14 +308,14 @@
                 display: block;
                 background-color: #136e9d;
                 color: white;
-                padding: 6px 10px 6px 25px;
+                padding: 2px 10px 3px 25px;
                 border-radius: 3px;
-                font-size: 18px;
+                font-size: 15px;
             }
             .holder {
                 display: block;
                 background-color: white;
-                padding: 10px;
+                padding: 5px 15px;
             }
             .hoverup {
                 position: absolute;
@@ -368,21 +371,21 @@
         }
         .app {
             position: relative;
-            min-width: 180px;
+            min-width: 130px;
             display: inline-block;
             text-align: center;
             border-radius: 3px;
             margin: 10px;
             .piProgress {
-                top: 0px;
-                left: 64px;
+                top: 1.5px;
+                left: 37px;
             }
             p {
                 position: relative;
-                top: 45px;
+                top: 50px;
                 margin: 0px;
                 color: #555869;
-                font-size: 16px;
+                font-size: 15px;
             }
             i.icon {
                 display: inline-block;
@@ -438,7 +441,6 @@
             }
         }
     }
-
 
     .networksContainer {
         position: relative;

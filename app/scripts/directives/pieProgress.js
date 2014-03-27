@@ -10,7 +10,7 @@ angular.module('cosmoUi')
             link: function postLink($scope, $element, $attrs) {
 
                 var defaultSize = 200,
-                    ratio = 3.5,
+                    ratio = 4.7,
                     width = $attrs.size || defaultSize,
                     height = $attrs.size || defaultSize,
                     innerSize = width - (width / ratio),
@@ -105,6 +105,12 @@ angular.module('cosmoUi')
                     .css('height', height)
                     .css('border-radius', width / 2)
                     .css('box-shadow', 'inset 1px 1px ' + ((width - innerSize) / ratio) + 'px rgba(0, 0, 0, 0.4) ');
+
+                // Fit background
+                $element.find('.background')
+                    .css('width', width)
+                    .css('height', height)
+                    .css('border-radius', width / 2);
 
                 // Fit circle inside
                 $element.find('.circle')

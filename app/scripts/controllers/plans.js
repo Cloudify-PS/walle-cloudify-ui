@@ -64,7 +64,7 @@ angular.module('cosmoUi')
             blueprintCoordinateService.setMap(dataMap['cloudify.relationships.connected_to']);
 
             // Connection between nodes
-            $scope.map = dataMap['cloudify.relationships.contained_in'];
+            $scope.map = dataMap['cloudify.relationships.contained_in'].reverse();
             $scope.coordinates = blueprintCoordinateService.getCoordinates();
             $scope.dataTable = PlanDataConvert.nodesToTable(dataPlan);
             RestService.getBlueprintSource($routeParams.id)

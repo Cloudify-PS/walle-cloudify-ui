@@ -9,6 +9,7 @@
         background-color: #46b8da;
         color: white;
         font-size: 100%;
+        z-index: 3;
         p {
             margin: 0px;
         }
@@ -16,10 +17,22 @@
             content: "%";
         }
     }
+    .background {
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: 1;
+        background-color: #fff;
+    }
     .shadow {
         position: absolute;
         top: 0;
         left: 0;
+        z-index: 1;
+    }
+    svg {
+        position: relative;
+        z-index: 2;
     }
     path.progress {
         fill: #cce80b;
