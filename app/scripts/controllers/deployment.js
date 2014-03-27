@@ -6,7 +6,8 @@ angular.module('cosmoUi')
         var totalNodes = 0,
             deploymentModel = {},
             statesIndex = ['uninitialized', 'initializing', 'creating', 'created', 'configuring', 'configured', 'starting', 'started'],
-            currentExeution = null;
+            currentExeution = null,
+            isGotExecuteNodes = false;
 
         var deploymentDataModel = {
             'status': -1, // -1 = not executed, 0 = (install) in progress, 1 = (done) all done and reachable, 2 = (alert) all done but half reachable, 3 = (failed) all done and not reachable
@@ -315,6 +316,12 @@ angular.module('cosmoUi')
                             if (dataExec.length > 0) {
                                 currentExeution = _getCurrentExecution(dataExec);
                                 if (!currentExeution && $scope.deploymentInProgress) {
+                                    if(!isGotExecuteNodes) {
+                                        RestService.autoPull('getDeploymentNodes', {deploymentId: id, state: true}, RestService.getDeploymentNodes)
+                                            .then(null, null, function (dataNodes) {
+                                                $scope.nodes = dataNodes.nodes;
+                                            });
+                                    }
                                     RestService.autoPullStop('getDeploymentNodes');
                                     $scope.deploymentInProgress = false;
                                 }
@@ -323,13 +330,14 @@ angular.module('cosmoUi')
                                     RestService.autoPull('getDeploymentNodes', {deploymentId: id, state: true}, RestService.getDeploymentNodes)
                                         .then(null, null, function (dataNodes) {
                                             $scope.nodes = dataNodes.nodes;
+                                            isGotExecuteNodes = true;
                                         });
                                 }
                             }
                         });
 
                     // Stop pull when leave this view
-                    $scope.$on("$destroy", function(){
+                    $scope.$on('$destroy', function(){
                         RestService.autoPullStop('getDeploymentExecutions');
                         RestService.autoPullStop('getDeploymentNodes');
                     });

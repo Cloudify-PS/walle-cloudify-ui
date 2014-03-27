@@ -444,7 +444,7 @@
             }
             .circle[state='2'] {
                 @extend .pieInProgress;
-                background-color: #3aaaeda !important;
+                background-color: #3aaaed !important;
             }
             .circle[state='3'] {
                 @extend .pieInProgress;

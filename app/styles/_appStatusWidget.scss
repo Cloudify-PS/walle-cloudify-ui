@@ -83,7 +83,7 @@
     &[status='2'] {
         .gauge {
             @extend .pieInProgress;
-            background-color: #3aaaeda !important;
+            background-color: #3aaaed !important;
         }
     }
     &[status='3'] {
