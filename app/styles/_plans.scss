@@ -30,6 +30,7 @@
 
         .content{
             margin-top: $COSMOUI_BLUEPRINT_DETAILS_CONTENT_MARGIN_TOP;
+
             .content-section{
 
               table {
@@ -138,6 +139,12 @@
     .toggles-bar {
         display: inline-block;
     }
+
+    .content-header {
+      border-bottom: 3px solid #d3dfe2;
+      height: 66px;
+    }
+
     .content-section {
         padding: 30px 0;
 
