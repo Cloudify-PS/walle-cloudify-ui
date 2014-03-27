@@ -51,8 +51,8 @@ angular.module('cosmoUi')
                 });
         };
 
-        $scope.redirectToDeployments = function(deploymentId, blueprint) {
-            $location.path('/deployment').search({id: deploymentId, blueprintId: blueprint.id});
+        $scope.redirectToDeployments = function() {
+            $location.path('/deployments');
         };
 
         $scope.cosmoConnectionError = function() {
