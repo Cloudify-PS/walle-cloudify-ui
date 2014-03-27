@@ -11,6 +11,7 @@
                 "name": "Name",
                 "created": "Create date",
                 "updated": "Update date",
+                "deployments": "# of Deployments",
                 "action": "Action"
             },
             "deployBtn": "Create Deployment"

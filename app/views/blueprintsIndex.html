@@ -11,6 +11,7 @@
                 <th class="name">{{ 'blueprints.table.heading.name' | i18n }}</th>
                 <th class="created">{{ 'blueprints.table.heading.created' | i18n }}</th>
                 <th class="updated">{{ 'blueprints.table.heading.updated' | i18n }}</th>
+                <th class="deployments">{{ 'blueprints.table.heading.deployments' | i18n }}</th>
                 <th class="actions">{{ 'blueprints.table.heading.action' | i18n }}</th>
             </tr>
         </thead>
@@ -19,9 +20,10 @@
                 <td class="name" ng-click="redirectTo(blueprint)">{{ blueprint.id }}</td>
                 <td class="created">{{ blueprint.createdAt | dateFormat: 'yyyy-MM-dd HH:mm:ss' }}</td>
                 <td class="updated">{{ blueprint.updatedAt | dateFormat: 'yyyy-MM-dd HH:mm:ss' }}</td>
+                <td class="deployments"><div class="deployments-number" ng-click="redirectToDeployments(blueprint)">{{ blueprint.deployments.length }}</div></td>
                 <td class="actions">
                     <button class="deploy-button" ng-click="toggleDeployDialog(blueprint)">{{ 'blueprints.table.deployBtn' | i18n }}</button>
-                    <div class="deployments-number" ng-click="redirectToDeployments(blueprint)">{{ blueprint.deployments.length }}</div>
+
                     <!--i id="blueprint-down" class="fa  fa-chevron-circle-down"></i><i class="fa  fa-play-circle-o" ng-click="deployBlueprint(blueprint)"></i-->
                 </td>
             </tr>
