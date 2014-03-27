@@ -26,7 +26,7 @@
                     width: 33%;
                 }
                 &.deployments {
-                  min-width: 150px;
+                  min-width: 125px;
                 }
                 &.actions {
                     min-width: 220px;
@@ -52,14 +52,13 @@
                     }
                 }
                 .deployments-number {
+                    margin: auto;
                     border: 2px solid #CADBEC;
                     background-color: $clr-base-01;
                     width: 32px;
                     height: 32px;
                     border-radius: 5px;
-                    float: left;
                     text-align: center;
-                    margin-left: 10px;
                     color: $clr-base-20;
                     padding-top: 4px;
                 }
