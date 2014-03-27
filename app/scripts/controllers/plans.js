@@ -77,12 +77,16 @@ angular.module('cosmoUi')
             // Get Icon by Type
             $scope.getIcon = function (type) {
                 switch (type) {
+                case 'db_server':
+                case 'web_server':
                 case 'server':
                     return 'app-server';
                 case 'host':
                     return 'host';
                 case 'router':
                     return 'router';
+                case 'app_module':
+                    return 'app-module';
                 default:
                     return type;
                 }

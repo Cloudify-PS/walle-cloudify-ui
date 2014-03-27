@@ -60,6 +60,10 @@ angular.module('cosmoUi')
                     return typeData[i];
                 }
             }
+            return {
+                baseType: typeName,
+                name: typeName
+            };
         }
 
         this.getTypeData = _getTypeData;
