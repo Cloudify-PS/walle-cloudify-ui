@@ -90,7 +90,7 @@
                 </div>
                 <div pie:progress="piProgress2" class="piProgress" size="47">
                     <div class="circle">
-                        <i class="icon topology-glyph host"></i>
+                        <i class="icon topology-glyph {{ indexNodes[rootNode.id].type.baseType }}"></i>
                         <div class="badge">{{ indexNodes[rootNode.id].general.numOfInstances }}</div>
                     </div>
                 </div>
@@ -107,7 +107,7 @@
                         </div>
                         <div pie:progress="piProgress2" class="piProgress" size="47">
                             <div class="circle">
-                                <i class="icon topology-glyph app-server"></i>
+                                <i class="icon topology-glyph {{ indexNodes[subNode.id].type.baseType }}"></i>
                                 <div class="badge">{{ indexNodes[subNode.id].general.numOfInstances }}</div>
                             </div>
                         </div>
@@ -124,7 +124,7 @@
                                 </div>
                                 <div pie:progress="piProgress2" class="piProgress" size="47">
                                     <div class="circle" blueprint:coordinate="{{ appNode.id }}">
-                                        <i class="icon topology-glyph app-module"></i>
+                                        <i class="icon topology-glyph {{ indexNodes[appNode.id].type.baseType }}"></i>
                                         <div class="badge">{{ indexNodes[appNode.id].general.numOfInstances }}</div>
                                     </div>
                                 </div>
@@ -193,7 +193,7 @@
                 </thead>
                 <tbody data-ng-repeat="row in dataTable">
                     <tr>
-                        <td><i class="topology-glyph {{ row.type.baseType }}"></i>{{ row.type.baseType }}</td>
+                        <td><i class="topology-glyph {{ row.type.baseType }}"></i></td>
                         <td>{{ row.name }}</td>
                         <td>{{ row.type.name }}</td>
                         <td>{{ row.instances }}</td>
