@@ -48,7 +48,6 @@
     <div ng-show="isConfirmationDialogVisible">
         <div class="dialogBoxBg"></div>
         <div id="confirmationDialogContainer" class="dialogBox">
-            <div class="dialogTitle">{{ 'deployments.confirmationPopup.title' | i18n }}</div>
             <div class="dialogDescription" ng-show="confirmationType == 'execute'">{{ 'deployments.confirmationPopup.descriptionExecute' | i18n }} {{getSelectedWorkflows()}}?</div>
             <div class="dialogDescription" ng-show="confirmationType == 'cancel'">{{ 'deployments.confirmationPopup.descriptionCancel' | i18n }} {{getSelectedWorkflows()}}?</div>
             <div class="buttonsContainer confirmationButtons">

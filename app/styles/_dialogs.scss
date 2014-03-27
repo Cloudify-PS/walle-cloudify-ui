@@ -250,3 +250,38 @@
     text-align: center;
   }
 }
+
+  #confirmationDialogContainer {
+    width: 320px;
+    height: 180px;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+    margin-top: 100px;
+
+    .dialogDescription {
+      font-size: 20px;
+      padding-right: 50px;
+      padding-left: 50px;
+      line-height: 28px;
+      color: $clr-base-00;
+    }
+
+    .confirmationButtons {
+      margin-top: 90px;
+      width: 250px;
+
+      #cancelBtn {
+        color: $COSMOUI_BUTTON_BACKGROUND;
+        font-weight: bold;
+        padding: 5px 10px 5px 10px;
+        margin: 0px 10px 0px 10px;
+        background-color: $clr-base-10;
+        border-bottom: 1px solid $COSMOUI_BUTTON_BACKGROUND;
+        border-right: 1px solid $COSMOUI_BUTTON_BACKGROUND;
+      }
+    }
+  }
