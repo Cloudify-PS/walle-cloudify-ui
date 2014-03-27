@@ -68,10 +68,10 @@
                         position: relative;
                         padding: $COSMOUI_EVENTS_WIDGET_OPENED_LIST_TABLE_TD_PADDING;
                         min-height: 55px;
+                        padding-top: 10px;
 
                         .event-icon {
                             position: absolute;
-                            top: 10px;
                             left: 10px;
                             width: $COSMOUI_EVENTS_WIDGET_OPENED_EVENT_ICON_WIDTH;
                             height: $COSMOUI_EVENTS_WIDGET_OPENED_EVENT_ICON_HEIGHT;
@@ -91,9 +91,17 @@
                             position: relative;
                             left: 30px;
                             margin-left: $COSMOUI_EVENTS_WIDGET_OPENED_EVENT_TIME_MARGIN_LEFT;
-                            font-size: 13px;
+                            font-size: 11px;
                             line-height: 18px;
-                            color: #333;
+                            color: #555;
+                        }
+
+                        .event-message {
+                            width: 235px;
+                            line-height: 18px;
+                            font-size: 12px;
+                            word-wrap: break-word;
+                            margin: 5px 0 0 0;
                         }
 
                         .event-icon-workflow-started {
