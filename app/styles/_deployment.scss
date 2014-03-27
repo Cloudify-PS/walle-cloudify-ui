@@ -10,10 +10,14 @@
     #deployment-header {
         width: $COSMOUI_DEPLOYMENT_HEADER_WIDTH;
 
+        .content-header {
+          border-bottom: 3px solid $COSMOUI_MAIN_CONTENT_TITLE_SEPERATOR_COLOR;
+          height: 66px;
+        }
+
         .header-left {
             #settings-button {
                 display: inline-block;
-                margin-top: 10px;
                 margin-left: 10px;
                 cursor: pointer;
             }
@@ -34,7 +38,6 @@
                 -moz-appearance: none;
                 appearance: none;
                 padding-left: 7px;
-                margin-top: 18px;
                 cursor: pointer;
 
                 &.disable {
