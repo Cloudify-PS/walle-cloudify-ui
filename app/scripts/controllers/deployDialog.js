@@ -33,6 +33,10 @@ angular.module('cosmoUi')
             return $scope.deployError;
         };
 
+        $scope.closeDialog = function() {
+            $scope.toggleDeployDialog();
+        };
+
         // Temporary solution - should be handled by Cosmo, not UI side
         function _validateDeploymentName(deploymentName) {
             if(/[^a-zA-Z0-9]/.test(deploymentName)) {

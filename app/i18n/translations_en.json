@@ -28,10 +28,10 @@
         },
         "deployDialog": {
             "title": "Deploy",
-            "description": "Create deployment of",
+            "description": "Please enter deployment name",
             "cancelBtn": "Cancel",
             "deployBtn": "Deploy",
-            "deployName": "Name"
+            "deployName": "Deployment name"
         }
     },
     "config": {
