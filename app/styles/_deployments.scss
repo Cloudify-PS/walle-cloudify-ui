@@ -26,27 +26,6 @@
           width: $COSMOUI_LIST_HOVER_ACTION_WIDTH;
           font-size:$COSMOUI_LIST_HOVER_ACTION_FONT_SIZE;
 
-          select {
-            background: #cce4f6;
-            height: 35px;
-            width: 160px;
-            float: left;
-            font-size: 14px;
-            box-shadow: none;
-            border: none;
-            border-radius: 0px;
-            -webkit-appearance: none;
-            -moz-appearance: none;
-            appearance: none;
-            padding: 7px;
-            cursor: pointer;
-
-            &.disable {
-              background: transparent;
-              color: #000;
-            }
-          }
-
           i {
             color: $COSMOUI_LIST_HOVER_ACTION_TEXT_COLOR;
             font-weight: $COSMOUI_LIST_HOVER_ACTION_FONT_WEIGHT;

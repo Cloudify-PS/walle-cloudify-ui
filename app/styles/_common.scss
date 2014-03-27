@@ -80,3 +80,24 @@ table.table {
     border-left: none;
     vertical-align: middle;
 }
+
+.gs-select {
+  background: #cce4f6;
+  height: 35px;
+  width: 160px;
+  float: left;
+  font-size: 14px;
+  box-shadow: none;
+  border: none;
+  border-radius: 0px;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  padding: 7px;
+  cursor: pointer;
+
+  &.disable {
+    background: transparent;
+    color: #000;
+  }
+}

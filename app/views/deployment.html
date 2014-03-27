@@ -131,7 +131,8 @@
             <div settings-toggles id="settings-button" class="no-embed" toggles="toggleBar"></div>
 
             <div class="actions">
-                <select ng-model="selectedWorkflow"
+                <select class="gs-select"
+                        ng-model="selectedWorkflow"
                         ng-options="option.label as option.label for option in workflowsList"
                         ng-change="workflowSelected(selectedWorkflow)"
                         ng-disabled="isExecuting()"
