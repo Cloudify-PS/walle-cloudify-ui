@@ -148,7 +148,7 @@ angular.module('cosmoUi').service('PlanDataConvert', function (Cosmotypesservice
                     var node = data.nodes[i];
                     dataTable.push({
                         'id': node.id,
-                        'type': Cosmotypesservice.getTypeData(node.type[0]),
+                        'type': node.type,
                         'name': node.name,
                         'instances': node.general.numOfInstances,
                         'contained_in': getContainedIn(node, data.edges),
