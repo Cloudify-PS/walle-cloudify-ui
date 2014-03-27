@@ -79,7 +79,7 @@ angular.module('cosmoUi').service('PlanData', function () {
 });
 
 
-angular.module('cosmoUi').service('PlanDataConvert', function () {
+angular.module('cosmoUi').service('PlanDataConvert', function (Cosmotypesservice) {
     /**
      * Convert Edges to Blueprint format
      * @param data
@@ -148,8 +148,7 @@ angular.module('cosmoUi').service('PlanDataConvert', function () {
                     var node = data.nodes[i];
                     dataTable.push({
                         'id': node.id,
-                        'type': getNodeType(node),
-                        'iconType': getIconByType(node.type) || getNodeType(node),
+                        'type': node.type,
                         'name': node.name,
                         'instances': node.general.numOfInstances,
                         'contained_in': getContainedIn(node, data.edges),
@@ -163,10 +162,6 @@ angular.module('cosmoUi').service('PlanDataConvert', function () {
             console.warn('Missing data: cannot convert nodes to table [ PlanDataConvert.nodesToTable() ]');
         }
     };
-
-    function getNodeType(node) {
-        return node.type[0].split('_')[1];
-    }
 
     function getContainedIn(node, edges) {
         for (var x = 0; x < edges.length; x++) {
@@ -199,16 +194,6 @@ angular.module('cosmoUi').service('PlanDataConvert', function () {
     var colorIndex = 0,
         colors = ['#d54931', '#f89406', '#149bdf', '#555869', '#8eaf26', '#330033', '#4b6c8b', '#550000', '#dc322f', '#FF6600', '#cce80b', '#003300', '#805e00'];
 
-    var networkMap = {
-        'neutron_network': 'network',
-        'cloudify.openstack.network': 'network',
-        'neutron_subnet': 'subnet',
-        'cloudify.openstack.subnet': 'subnet',
-        'neutron_router': 'router',
-        'cloudify.types.host': 'host',
-        'cloudify.types.web_server': 'server'
-    };
-
     this.nodesToNetworks = function (data) {
         var topologyNodes = [];
         data.network = {
@@ -231,7 +216,7 @@ angular.module('cosmoUi').service('PlanDataConvert', function () {
         if (data.hasOwnProperty('nodes')) {
             // First Locate Networks
             _filterNodesToNetwork(data.nodes, function(node){
-                switch (getTypeByMap(node.type[0])) {
+                switch (Cosmotypesservice.getTypeData(node.type[0])) {
                 case 'network':
                     addNetwork(data, node);
                     break;
@@ -239,7 +224,7 @@ angular.module('cosmoUi').service('PlanDataConvert', function () {
             });
             // Locate Subnets
             _filterNodesToNetwork(data.nodes, function(node){
-                switch (getTypeByMap(node.type[0])) {
+                switch (Cosmotypesservice.getTypeData(node.type[0])) {
                 case 'subnet':
                     addSubnet(data, node);
                     break;
@@ -247,7 +232,7 @@ angular.module('cosmoUi').service('PlanDataConvert', function () {
             });
             // Locate the rest
             _filterNodesToNetwork(data.nodes, function(node){
-                switch (getTypeByMap(node.type[0])) {
+                switch (Cosmotypesservice.getTypeData(node.type[0])) {
                 case 'router':
                     addRouter(data, node);
                     break;
@@ -263,13 +248,6 @@ angular.module('cosmoUi').service('PlanDataConvert', function () {
             data.nodes = topologyNodes;
         }
     };
-
-    function getTypeByMap(type) {
-        if(networkMap.hasOwnProperty(type)) {
-            return networkMap[type];
-        }
-        return type;
-    }
 
     function getRandomColor() {
         var color;
@@ -319,7 +297,7 @@ angular.module('cosmoUi').service('PlanDataConvert', function () {
                         'id': node.id,
                         'name': node.name,
                         'type': 'device',
-                        'icon': getIconByType(node.type[0])
+                        'icon': Cosmotypesservice.getTypeData(node.type[0])
                     });
                     addRelation(data, edge, true);
                 }
@@ -338,7 +316,7 @@ angular.module('cosmoUi').service('PlanDataConvert', function () {
                             'id': node.id,
                             'name': node.name,
                             'type': 'device',
-                            'icon': getIconByType(node.type[0])
+                            'icon': Cosmotypesservice.getTypeData(node.type[0])
                         });
                     }
                 }
@@ -362,7 +340,7 @@ angular.module('cosmoUi').service('PlanDataConvert', function () {
                 'id': node.id,
                 'name': node.name,
                 'type': 'device',
-                'icon': getIconByType(node.type[0])
+                'icon': Cosmotypesservice.getTypeData(node.type[0])
             });
             addRelation(data, {
                 'source': 0,
@@ -401,17 +379,6 @@ angular.module('cosmoUi').service('PlanDataConvert', function () {
             }
         }
         return null;
-    }
-
-    function getIconByType(type) {
-        switch(getTypeByMap(type)) {
-        case 'server':
-            return 'server';
-        case 'host':
-            return 'host';
-        case 'router':
-            return 'router';
-        }
     }
 
 });

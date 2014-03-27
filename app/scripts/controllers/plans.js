@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('cosmoUi')
-    .controller('PlansCtrl', function ($scope, YamlService, Layout, Render, $routeParams, BreadcrumbsService, PlanDataConvert, blueprintCoordinateService, bpNetworkService, $http, $timeout, $location, RestService) {
+    .controller('PlansCtrl', function ($scope, YamlService, Layout, Render, $routeParams, BreadcrumbsService, PlanDataConvert, blueprintCoordinateService, bpNetworkService, $http, $timeout, $location, RestService, Cosmotypesservice) {
 
         var planData/*:PlanData*/ = null;
         $scope.section = 'topology';
@@ -57,6 +57,7 @@ angular.module('cosmoUi')
                 $scope.indexNodes = {};
                 dataPlan.nodes.forEach(function (node) {
                     $scope.indexNodes[node.id] = node;
+                    $scope.indexNodes[node.id].type = Cosmotypesservice.getTypeData(node.type[0]);
                 });
             }
 
@@ -73,20 +74,6 @@ angular.module('cosmoUi')
                         data: code.source
                     };
                 });
-
-            // Get Icon by Type
-            $scope.getIcon = function (type) {
-                switch (type) {
-                case 'server':
-                    return 'app-server';
-                case 'host':
-                    return 'host';
-                case 'router':
-                    return 'router';
-                default:
-                    return type;
-                }
-            };
 
         });
 

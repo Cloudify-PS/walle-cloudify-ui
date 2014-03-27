@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('cosmoUi')
-    .controller('DeploymentCtrl', function ($scope, $rootScope, $cookieStore, $routeParams, RestService, EventsService, BreadcrumbsService, YamlService, PlanDataConvert, blueprintCoordinateService, bpNetworkService, $route, $anchorScroll, $timeout) {
+    .controller('DeploymentCtrl', function ($scope, $rootScope, $cookieStore, $routeParams, RestService, EventsService, BreadcrumbsService, YamlService, PlanDataConvert, blueprintCoordinateService, bpNetworkService, $route, $anchorScroll, $timeout, Cosmotypesservice) {
 
         var totalNodes = 0,
             deploymentModel = {},
@@ -278,6 +278,7 @@ angular.module('cosmoUi')
                 $scope.indexNodes = {};
                 dataPlan.nodes.forEach(function (node) {
                     $scope.indexNodes[node.id] = node;
+                    $scope.indexNodes[node.id].type = Cosmotypesservice.getTypeData(node.type[0]);
                     totalNodes++;
                 });
             }
