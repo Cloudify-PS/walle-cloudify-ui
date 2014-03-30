@@ -13,6 +13,7 @@
         .content-header {
           border-bottom: 3px solid $COSMOUI_MAIN_CONTENT_TITLE_SEPERATOR_COLOR;
           height: 66px;
+          margin-bottom: 10px;
         }
 
         .header-left {
@@ -20,31 +21,13 @@
                 display: inline-block;
                 margin-left: 10px;
                 cursor: pointer;
+                float: left;
             }
 
             .actions {
               display: inline-block;
               margin-left: 30px;
-
-              select {
-                background: #cce4f6;
-                height: 25px;
-                width: 160px;
-                font-size: 14px;
-                box-shadow: none;
-                border: none;
-                border-radius: 0px;
-                -webkit-appearance: none;
-                -moz-appearance: none;
-                appearance: none;
-                padding-left: 7px;
-                cursor: pointer;
-
-                &.disable {
-                  background: transparent;
-                  color: #000;
-                }
-              }
+              float: left;
 
               .fa {
                 position: relative;

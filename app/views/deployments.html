@@ -21,7 +21,7 @@
                 <td class="create" ng-click="redirectTo(deployment)">{{deployment.createdAt | dateFormat: 'yyyy-MM-dd HH:mm:ss'}}</td>
                 <td class="description" ng-click="redirectTo(deployment)">{{deployment.updatedAt | dateFormat: 'yyyy-MM-dd HH:mm:ss'}}</td>
                 <td class="actions">
-                    <select
+                    <select class="gs-select"
                         ng-model="selectedWorkflow"
                         ng-options="option.name as option.name for option in getWorkflows(deployment)"
                         ng-change="workflowSelected(selectedWorkflow, deployment)"
