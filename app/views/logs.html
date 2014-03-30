@@ -83,7 +83,7 @@
                 <td class="task">{{log._source.context.task_name == undefined && 'N/A' || log._source.context.task_name}}</td>
             </tr>
             <tr class="details" data-ng-show="isOpen">
-                <td colspan="5">
+                <td colspan="8">
                     <div class="group">
                         <span><b>Execution ID:</b> {{ log._source.context.execution_id == undefined && 'N/A' || log._source.context.execution_id }}</span>
                         <span><b>Node ID:</b> {{ log._source.context.node_id == undefined && 'N/A' || log._source.context.node_id }}</span>
