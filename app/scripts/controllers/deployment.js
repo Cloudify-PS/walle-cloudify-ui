@@ -716,4 +716,10 @@ angular.module('cosmoUi')
             $location.url('logs').search('filter', JSON.stringify(logsFilter));
         };
 
+        $scope.viewAllLogs = function() {
+            if($scope.eventHits.length > 0) {
+                $scope.viewLogsByEvent($scope.eventHits[0]);
+            }
+        };
+
     });

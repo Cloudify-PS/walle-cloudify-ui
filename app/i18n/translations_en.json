@@ -49,8 +49,12 @@
         "table": {
             "heading": {
                 "eventType": "Event Type",
-                "node": "Node",
+                "logLevel": "Log Level",
+                "operation": "Operation",
+                "node": "Node Name",
+                "nodeId": "Node ID",
                 "task": "Task",
+                "message": "Message",
                 "workflow": "Workflow"
             }
         }

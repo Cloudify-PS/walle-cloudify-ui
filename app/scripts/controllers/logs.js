@@ -144,20 +144,20 @@ angular.module('cosmoUi')
                 });
         }
 
-        function filterLogs(field, newValue, oldValue, execute) {
-            if(newValue === null) {
-                return;
-            }
-            if(oldValue !== null && oldValue.value !== null) {
-                events.filter(field, oldValue.value);
-            }
-            if(newValue.value !== null) {
-                events.filter(field, newValue.value);
-            }
-            if(execute === true) {
-                executeLogs();
-            }
-        }
+//        function filterLogs(field, newValue, oldValue, execute) {
+//            if(newValue === null) {
+//                return;
+//            }
+//            if(oldValue !== null && oldValue.value !== null) {
+//                events.filter(field, oldValue.value);
+//            }
+//            if(newValue.value !== null) {
+//                events.filter(field, newValue.value);
+//            }
+//            if(execute === true) {
+//                executeLogs();
+//            }
+//        }
 
         function filterLogsByList(field, newValues, oldValues, execute) {
             for(var oi in oldValues) {
@@ -187,13 +187,14 @@ angular.module('cosmoUi')
             var fromTime = new Date();
             return {
                 'gte': new Date(fromTime.setTime(startdate - timestamp)),
-                'lte': new Date(fromTime.setTime(startdate))
+                'lte': new Date(fromTime.setTime(startdate + (1000 * 60 * 5)))
             };
         }
 
         (function _LoadEvents() {
             filterLogsByRange('@timestamp', _filterByTimeframe($scope.defaultTimeframe, $scope.filterModel.startdate), null);
-            filterLogs('type', {value: 'cloudify_log'}, null);
+            //filterLogs('type', {value: 'cloudify_log'}, null);
+            //filterLogs('type', {value: 'cloudify_event'}, null);
         })();
 
         $scope.execute = function() {
