@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('cosmoUi')
-    .controller('DeploymentCtrl', function ($scope, $rootScope, $cookieStore, $routeParams, RestService, EventsService, BreadcrumbsService, YamlService, PlanDataConvert, blueprintCoordinateService, bpNetworkService, $route, $anchorScroll, $timeout, Cosmotypesservice) {
+    .controller('DeploymentCtrl', function ($scope, $rootScope, $cookieStore, $routeParams, RestService, EventsService, BreadcrumbsService, YamlService, PlanDataConvert, blueprintCoordinateService, bpNetworkService, $route, $anchorScroll, $timeout, Cosmotypesservice, $location) {
 
         var totalNodes = 0,
             deploymentModel = {},
@@ -694,6 +694,23 @@ angular.module('cosmoUi')
             if ($scope.eventSortList.current === field) {
                 return $scope.eventSortList[field];
             }
+        };
+
+        $scope.viewLogsByEvent = function(event) {
+            var logsFilter = {
+                'blueprints': [
+                    event._source.context.blueprint_id
+                ],
+                'deployments': [
+                    event._source.context.deployment_id
+                ],
+                'executions': [
+                    event._source.context.execution_id
+                ],
+                'timeframe': [300000],
+                'startdate': new Date(event._source.timestamp).getTime()
+            };
+            $location.url('logs').search('filter', JSON.stringify(logsFilter));
         };
 
     });

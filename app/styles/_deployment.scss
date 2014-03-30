@@ -355,8 +355,14 @@
                     &.task {
                         width: auto;
                     }
+                    &.action {
+                        width: 75px;
+                    }
                     &.date {
                         width: 200px;
+                    }
+                    &.cliclable {
+                        cursor: pointer;
                     }
                     &.event-text-green {
                         color: $COSMOUI_EVENTS_LIST_TEXT_SUCCESS;
