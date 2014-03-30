@@ -262,7 +262,7 @@ angular.module('cosmoUi')
             $timeout(function(){
                 $scope.networkcoords = bpNetworkService.getCoordinates();
                 bpNetworkService.render();
-            }, 1500);
+            }, 3000);
 
             /**
              * Blueprint
@@ -287,9 +287,12 @@ angular.module('cosmoUi')
             blueprintCoordinateService.setMap(dataMap['cloudify.relationships.connected_to']);
 
             // Connection between nodes
-            $scope.map = dataMap['cloudify.relationships.contained_in'];
+            $scope.map = dataMap['cloudify.relationships.contained_in'].reverse();
             $scope.coordinates = blueprintCoordinateService.getCoordinates();
             $scope.deployments = deploymentModel;
+
+            // Draw
+            blueprintCoordinateService.draw();
         }
 
         function _loadDeployment() {

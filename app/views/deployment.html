@@ -156,7 +156,7 @@
                 disableModules: !toggleBar.modules,
                 disableConnections: !toggleBar.connections
                 }">
-                    <div data-type="compute" data-ng-repeat="rootNode in map" class="box" blueprint:coordinate="rootNode.id">
+                    <div data-type="compute" data-ng-repeat="rootNode in map" class="box" blueprint:coordinate="{{ rootNode.id }}">
                         <div class="hoverup">
                             <div class="buttons no-embed">
                                 <ul>
@@ -178,7 +178,7 @@
                         <div class="head">{{ indexNodes[rootNode.id].name }}</div>
                         <div class="holder">
                             <!-- Middleware::start -->
-                            <div data-type="middleware" data-ng-repeat="subNode in rootNode.children" class="box" blueprint:coordinate="subNode.id">
+                            <div data-type="middleware" data-ng-repeat="subNode in rootNode.children" class="box" blueprint:coordinate="{{ subNode.id }}">
                                 <div class="hoverup">
                                     <div class="buttons no-embed">
                                         <ul>
@@ -210,7 +210,7 @@
                                         </div>
                                         <div pie:progress="deployments[indexNodes[appNode.id].nodeId].process" class="piProgress" size="47" status="{{ deployments[indexNodes[appNode.id].nodeId].status }}">
                                             <div class="background"></div>
-                                            <div class="circle" blueprint:coordinate="appNode.id" state="{{ deployments[indexNodes[appNode.id].nodeId].state }}">
+                                            <div class="circle" blueprint:coordinate="{{ appNode.id }}" state="{{ deployments[indexNodes[appNode.id].nodeId].state }}">
                                                 <i class="icon topology-glyph {{ indexNodes[appNode.id].type.baseType }}"></i>
                                                 <div class="badge" data-ng-class="getBadgeStatus(deployments[indexNodes[appNode.id].nodeId].status)">
                                                     {{ deployments[indexNodes[appNode.id].nodeId].completed }}/{{ deployments[indexNodes[appNode.id].nodeId].total }}
@@ -227,7 +227,7 @@
                             <!-- Middleware::end -->
                         </div>
                     </div>
-                    <div class="coordinates" blueprint:arrows="coordinates"></div>
+                    <div class="coordinates" blueprint:arrows="coordinates" arrow="true" color="#7A7A7A"></div>
                 </div>
                 <!-- Topology Tab - END -->
                 <!-- Network Tab - START -->
