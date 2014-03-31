@@ -134,12 +134,12 @@
                 <div class="gs-selection-button">
                     <div multi:select:menu
                          class="gs-select"
-                         data-options="getWorkflows(deployment)"
+                         data-options="workflowsList"
                          data-ng-model="selectedWorkflow.data"
                          data-text="Select workflow"></div>
                     <div class="select-list-arrow"></div>
                 </div>
-                <div class="executingWorkflow" ng-show="isExecuting()">{{executingWorkflow}}</div>
+                <div class="executingWorkflow" ng-show="isExecuting()">{{executedData.workflowId}}</div>
                 <i class="fa fa-play-circle-o" ng-click="toggleConfirmationDialog(deployment, 'execute')" ng-show="!isExecuting()"></i>
                 <i ng-class="{deploymentExecute: isExecuting()}" ng-show="isExecuting()"></i>
                 <i class="cancel-execution fa fa-times-circle left" ng-show="isExecuting()" ng-click="toggleConfirmationDialog(deployment, 'cancel')"></i>
@@ -338,7 +338,7 @@
         <div class="dialogBoxBg"></div>
         <div id="confirmationDialogContainer" class="dialogBox">
             <div class="dialogTitle">{{ 'deployments.confirmationPopup.title' | i18n }}</div>
-            <div class="dialogDescription" ng-show="confirmationType == 'execute'">{{ 'deployments.confirmationPopup.descriptionExecute' | i18n }} {{selectedWorkflow}}?</div>
+            <div class="dialogDescription" ng-show="confirmationType == 'execute'">{{ 'deployments.confirmationPopup.descriptionExecute' | i18n }} {{selectedWorkflow.data.value}}?</div>
             <div class="dialogDescription" ng-show="confirmationType == 'cancel'">{{ 'deployments.confirmationPopup.descriptionCancel' | i18n }} {{executedData.workflowId}}?</div>
             <div class="buttonsContainer confirmationButtons">
                 <button id="cancelBtn" class="dialogButton" ng-click="toggleConfirmationDialog()">{{ 'deployments.confirmationPopup.cancelBtn' | i18n }}</button>
