@@ -81,23 +81,114 @@ table.table {
     vertical-align: middle;
 }
 
-.gs-select {
-  background: #cce4f6;
-  height: 35px;
-  width: 160px;
-  float: left;
-  font-size: 14px;
-  box-shadow: none;
-  border: none;
-  border-radius: 0px;
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
-  padding: 7px;
-  cursor: pointer;
+//.select-list-button {
+//  width: 160px;
+//  height: 35px;
+//  float: left;
+//
+//  .gs-select {
+//    color: $clr-base-20;
+//    background-color: $clr-base-01;
+//    font-weight: bold;
+//    padding: 5px 10px 5px 10px;
+//    border-radius: 5px;
+//    border: 2px solid $clr-base-04;
+//
+//    height: 35px;
+//    width: 160px;
+//    float: left;
+//    font-size: 14px;
+//    box-shadow: none;
+//    -webkit-appearance: none;
+//    -moz-appearance: none;
+//    appearance: none;
+//    cursor: pointer;
+//
+//    &.disable {
+//      background: transparent;
+//      color: $clr-base-27;
+//    }
+//  }
+//
+//  .select-list-arrow {
+//    background-color: $clr-base-01;
+//    width: 24px;
+//    height: 31px;
+//    position: relative;
+//    left: 132px;
+//    top: 2px;
+//    border-left: 2px solid $clr-base-09;
+//
+//    &:after {
+//      content: "";
+//      position: relative;
+//      left: 7px;
+//      bottom: 17px;
+//      border-left: 5px solid transparent;
+//      border-right: 5px solid transparent;
+//      border-top: 5px solid $clr-base-20;
+//    }
+//  }
+//}
 
-  &.disable {
-    background: transparent;
-    color: #000;
+.gs-selection-button {
+  width: 150px;
+  height: 35px;
+  float: left;
+
+  .gs-select {
+    min-width: 0px;
+    height: 35px;
+    width: 150px;
+    color: $clr-base-20;
+    background-color: $clr-base-01;
+    font-weight: bold;
+    padding: 5px 10px 5px 10px;
+    border-radius: 5px;
+    border: 2px solid $clr-base-04;
+    float: left;
+    font-size: 14px;
+    box-shadow: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    cursor: pointer;
+
+    &.disable {
+      background: transparent;
+      color: $clr-base-27;
+    }
+
+    div.button {
+      background-color: $clr-base-01;
+      border: none;
+
+      label {
+        padding: 0px;
+      }
+    }
+    &.open {
+      height: 35px;
+    }
+  }
+
+  .select-list-arrow {
+    background-color: $clr-base-01;
+    width: 24px;
+    height: 31px;
+    position: relative;
+    left: 122px;
+    top: 2px;
+    border-left: 2px solid $clr-base-09;
+
+    &:after {
+      content: "";
+      position: relative;
+      left: 7px;
+      bottom: 17px;
+      border-left: 5px solid transparent;
+      border-right: 5px solid transparent;
+      border-top: 5px solid $clr-base-20;
+    }
   }
 }

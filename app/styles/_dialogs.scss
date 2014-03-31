@@ -204,7 +204,7 @@
       width: 25px;
       height: 25px;
       background: url("/images/progress.gif") no-repeat center center;
-      background-color: #fff;
+      background-color: $clr-base-01;
       border-radius: 25px;
       position: absolute;
       float: right;
@@ -224,7 +224,7 @@
       bottom: 5px;
       right: 120px;
       position: absolute;
-      color: #f00;
+      color: $clr-base-26;
     }
   }
 }
@@ -244,7 +244,7 @@
     float: left;
     left: 38px;
     position: absolute;
-    color: #f00;
+    color: $clr-base-26;
     width: 300px;
     top: 135px;
     text-align: center;
