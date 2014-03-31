@@ -131,7 +131,7 @@
             <div settings-toggles id="settings-button" class="no-embed" toggles="toggleBar"></div>
 
             <div class="actions">
-                <div class="gs-selection-button">
+                <div class="gs-selection-button" ng-show="!isExecuting()">
                     <div multi:select:menu
                          class="gs-select"
                          data-options="workflowsList"

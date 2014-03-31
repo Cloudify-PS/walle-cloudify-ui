@@ -32,7 +32,6 @@
 
               .fa {
                 position: relative;
-                top: 4px;
                 left: 3px;
                 font-size: 25px;
                 color: #bcbcbc;
@@ -40,8 +39,7 @@
               }
 
               .deploymentExecute {
-                margin-top: 10px;
-                margin-left: 4px;
+                float: left;
                 width: 25px;
                 height: 25px;
                 background: url("/images/progress.gif") no-repeat center center;
@@ -49,7 +47,6 @@
                 border-radius: 25px;
                 display: inline-block;
                 position: relative;
-                top: 7px;
                 cursor: pointer;
               }
 
@@ -57,6 +54,9 @@
                 font-size: 14px;
                 width: 65px;
                 display: inline-block;
+                float: left;
+                position: relative;
+                top: 5px;
               }
             }
         }
