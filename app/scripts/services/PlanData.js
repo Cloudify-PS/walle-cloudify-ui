@@ -14,7 +14,6 @@ angular.module('cosmoUi').service('PlanData', function () {
         // returns node from which we inherit or NULL if cannot find one
         function _addType(type) {
             if (!typesMap.hasOwnProperty(type.name)) {
-                console.log(['adding type', type.name, type]);
                 typesMap[type.name] = type;
                 typesList.push(type);
             } else {
@@ -214,9 +213,10 @@ angular.module('cosmoUi').service('PlanDataConvert', function (Cosmotypesservice
         }
 
         if (data.hasOwnProperty('nodes')) {
+
             // First Locate Networks
             _filterNodesToNetwork(data.nodes, function(node){
-                switch (Cosmotypesservice.getTypeData(node.type[0])) {
+                switch (Cosmotypesservice.getTypeData(node.type[0]).baseType) {
                 case 'network':
                     addNetwork(data, node);
                     break;
@@ -224,7 +224,7 @@ angular.module('cosmoUi').service('PlanDataConvert', function (Cosmotypesservice
             });
             // Locate Subnets
             _filterNodesToNetwork(data.nodes, function(node){
-                switch (Cosmotypesservice.getTypeData(node.type[0])) {
+                switch (Cosmotypesservice.getTypeData(node.type[0]).baseType) {
                 case 'subnet':
                     addSubnet(data, node);
                     break;
@@ -232,7 +232,7 @@ angular.module('cosmoUi').service('PlanDataConvert', function (Cosmotypesservice
             });
             // Locate the rest
             _filterNodesToNetwork(data.nodes, function(node){
-                switch (Cosmotypesservice.getTypeData(node.type[0])) {
+                switch (Cosmotypesservice.getTypeData(node.type[0]).baseType) {
                 case 'router':
                     addRouter(data, node);
                     break;
@@ -292,12 +292,12 @@ angular.module('cosmoUi').service('PlanDataConvert', function (Cosmotypesservice
             var edge = data.edges[i];
             if (edge.type.search('connected_to') && node.id === edge.source) {
                 var network = getNetworkById(data.network.networks, edge.target);
-                if (network !== null) {
+                if (network !== null && network.hasOwnProperty('devices')) {
                     network.devices.push({
                         'id': node.id,
                         'name': node.name,
                         'type': 'device',
-                        'icon': Cosmotypesservice.getTypeData(node.type[0])
+                        'icon': Cosmotypesservice.getTypeData(node.type[0]).baseType
                     });
                     addRelation(data, edge, true);
                 }
@@ -316,7 +316,7 @@ angular.module('cosmoUi').service('PlanDataConvert', function (Cosmotypesservice
                             'id': node.id,
                             'name': node.name,
                             'type': 'device',
-                            'icon': Cosmotypesservice.getTypeData(node.type[0])
+                            'icon': Cosmotypesservice.getTypeData(node.type[0]).baseType
                         });
                     }
                 }
@@ -340,7 +340,7 @@ angular.module('cosmoUi').service('PlanDataConvert', function (Cosmotypesservice
                 'id': node.id,
                 'name': node.name,
                 'type': 'device',
-                'icon': Cosmotypesservice.getTypeData(node.type[0])
+                'icon': Cosmotypesservice.getTypeData(node.type[0]).baseType
             });
             addRelation(data, {
                 'source': 0,
@@ -366,6 +366,7 @@ angular.module('cosmoUi').service('PlanDataConvert', function (Cosmotypesservice
                 return network;
             }
         }
+        return null;
     }
 
     function getNetworkBySubnetId(networks, id) {
