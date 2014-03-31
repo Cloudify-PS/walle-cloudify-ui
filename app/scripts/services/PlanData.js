@@ -14,6 +14,7 @@ angular.module('cosmoUi').service('PlanData', function () {
         // returns node from which we inherit or NULL if cannot find one
         function _addType(type) {
             if (!typesMap.hasOwnProperty(type.name)) {
+                console.log(['adding type', type.name, type]);
                 typesMap[type.name] = type;
                 typesList.push(type);
             } else {
@@ -237,6 +238,7 @@ angular.module('cosmoUi').service('PlanDataConvert', function (Cosmotypesservice
                     addRouter(data, node);
                     break;
                 case 'host':
+                case 'port':
                     addDevice(data, node);
                     topologyNodes.push(node);
                     break;
@@ -292,7 +294,7 @@ angular.module('cosmoUi').service('PlanDataConvert', function (Cosmotypesservice
             var edge = data.edges[i];
             if (edge.type.search('connected_to') && node.id === edge.source) {
                 var network = getNetworkById(data.network.networks, edge.target);
-                if (network !== null && network.hasOwnProperty('devices')) {
+                if (network !== null) {
                     network.devices.push({
                         'id': node.id,
                         'name': node.name,
