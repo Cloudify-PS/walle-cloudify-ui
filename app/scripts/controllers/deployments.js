@@ -143,7 +143,7 @@ angular.module('cosmoUi')
                         $scope.deployments = $scope.deployments.concat(data[j].deployments);
                         for (var i = 0; i < deployments.length; i++) {
                             _loadExecutions(deployments[i].blueprintId, deployments[i].id);
-                            workflows[deployments[i].id] = []
+                            workflows[deployments[i].id] = [];
                             for (var workflow in deployments[i].plan.workflows) {
                                 workflows[deployments[i].id].push({
                                     value: workflow,
