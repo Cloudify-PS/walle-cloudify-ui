@@ -617,14 +617,13 @@
         tr {
           cursor: default;
         }
-
         .node-details {
           cursor: pointer;
         }
-
         .topology-glyph {
             display: inline-block;
             line-height: 0.7;
+            color: #53bbf1;
         }
     }
 }
