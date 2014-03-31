@@ -213,9 +213,11 @@ angular.module('cosmoUi')
         $scope.$watch('eventsFilter.deployments', function(newValue, oldValue){
             $scope.executionList = $filter('filterListByList')(_executionList, newValue);
             filterLogsByList('context.deployment_id', newValue, oldValue, false);
+            $scope.$watch(function(){ return _executionList; }, function(){
+                $scope.executionList = $filter('filterListByList')(_executionList, newValue);
+            }, true);
         }, true);
 
-        // TODO:
         $scope.$watch('eventsFilter.executions', function(newValue, oldValue){
             filterLogsByList('context.execution_id', newValue, oldValue, false);
         }, true);
