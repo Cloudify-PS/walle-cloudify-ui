@@ -666,6 +666,11 @@ angular.module('cosmoUi')
             lastNodeSearch = $scope.eventsFilter.nodes;
         };
 
+        $scope.clearFindNode = function() {
+            $scope.eventsFilter.nodes = '';
+            $scope.eventFindNodes();
+        };
+
         $scope.eventSortList = {};
         $scope.sortEvents = function (field) {
             if (!$scope.eventSortList.hasOwnProperty(field)) {

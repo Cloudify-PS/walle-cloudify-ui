@@ -273,22 +273,31 @@
                 <!-- Events Tab - START -->
                 <div ng-switch-when="events">
                     <div class="filters">
-                        Workflow: <div multi:select:menu
-                             data-options="workflowsList"
-                             data-ng-model="eventsFilter.workflow"
-                             data-init="[null]"
-                             data-text="Choose Workflow"
-                             data-onchange="filterEventsByWorkflow(filter)"></div>
-                        Event Type: <div multi:select:menu
-                             data-options="eventTypeList"
-                             data-ng-model="eventsFilter.type"
-                             data-init="[null]"
-                             data-text="Choose Type"
-                             data-onchange="filterEventsByType(filter)"></div>
-                        <div class="search">
-                            <input type="text" data-ng-model="eventsFilter.nodes" placeholder="Search Node"><button data-ng-click="eventFindNodes()">Find</button>
-                        </div>
-                        <button class="gs-btn" data-ng-click="viewAllLogs()">All logs</button>
+                        <span>
+                            Workflow: <div multi:select:menu
+                                 data-options="workflowsList"
+                                 data-ng-model="eventsFilter.workflow"
+                                 data-init="[null]"
+                                 data-text="Choose Workflow"
+                                 data-onchange="filterEventsByWorkflow(filter)"></div>
+                        </span>
+                        <span>
+                            Event Type: <div multi:select:menu
+                                 data-options="eventTypeList"
+                                 data-ng-model="eventsFilter.type"
+                                 data-init="[null]"
+                                 data-text="Choose Type"
+                                 data-onchange="filterEventsByType(filter)"></div>
+                        </span>
+                        <span>
+                            <div class="search">
+                                <input type="text" name="findNode" ng-enter="eventFindNodes()" data-ng-model="eventsFilter.nodes" placeholder="Search Node"><button data-ng-click="eventFindNodes()">Find</button>
+                                <span class="close" data-ng-click="clearFindNode()" data-ng-show="eventsFilter.nodes.length">x</span>
+                            </div>
+                        </span>
+                        <span>
+                            <button class="gs-btn" data-ng-click="viewAllLogs()">All logs</button>
+                        </span>
                         <div class="loading" data-ng-show="filterLoading"></div>
                     </div>
 
