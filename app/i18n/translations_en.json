@@ -76,7 +76,7 @@
         }
     },
     "settingsToggles": {
-        "title": "Topology view settings"
+        "title": "Select view"
     },
     "eventsWidget": {
         "title": "Events"

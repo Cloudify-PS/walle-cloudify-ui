@@ -31,6 +31,11 @@
         .content{
             margin-top: $COSMOUI_BLUEPRINT_DETAILS_CONTENT_MARGIN_TOP;
 
+            .buttons-group {
+              float: left;
+              margin-left: 0px;
+            }
+
             .content-section{
 
               table {
@@ -109,7 +114,6 @@
     #settings-button {
       display: inline-block;
       position: relative;
-      top: 8px;
       left: 10px;
     }
 
