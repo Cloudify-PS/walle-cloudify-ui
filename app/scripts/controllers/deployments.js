@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('cosmoUi')
-    .controller('DeploymentsCtrl', function ($scope, RestService, $cookieStore, $location, $routeParams, BreadcrumbsService) {
+    .controller('DeploymentsCtrl', function ($scope, RestService, $cookieStore, $location, $routeParams, BreadcrumbsService, $timeout) {
 
         $scope.blueprints = null;
         $scope.deployments = [];
@@ -117,6 +117,12 @@ angular.module('cosmoUi')
                         }
                     }
                 });
+
+            if ($location.path() === '/deployments') {
+                $timeout(function(){
+                    _loadExecutions(blueprintId, deploymentId);
+                }, 3000);
+            }
         }
 
         $scope.getExecutionAttr = function(deployment, attr) {

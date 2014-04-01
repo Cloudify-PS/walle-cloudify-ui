@@ -217,7 +217,14 @@ angular.module('cosmoUi')
                             }
                         }
                     }
+
                 });
+
+            if ($location.path() === '/deployment') {
+                $timeout(function(){
+                    _loadExecutions();
+                }, 3000);
+            }
         }
 
         function getEventMapping(event) {
@@ -299,7 +306,8 @@ angular.module('cosmoUi')
                 .then(function(deploymentData) {
                     // Set Deployment Model
                     _setDeploymentModel(deploymentData);
-                    _loadExecutions(deploymentData.id);
+
+                    _loadExecutions();
 
                     $scope.allNodesArr = deploymentData.plan.nodes;
 
