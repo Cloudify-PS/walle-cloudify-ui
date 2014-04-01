@@ -7,10 +7,13 @@ angular.module('cosmoUi')
         $scope.deployments = [];
         $scope.selectedBlueprint = '';
         $scope.isConfirmationDialogVisible = false;
-        $scope.selectedDeployment = null;
         $scope.confirmationType = '';
         $scope.executedDeployments = [];
-        var selectedWorkflow = null;
+        $scope.selectedWorkflow = {
+            data: null
+        };
+        var selectedWorkflows = [];
+        var workflows = [];
         var cosmoError = false;
 
         BreadcrumbsService.push('deployments',
@@ -20,42 +23,32 @@ angular.module('cosmoUi')
                 id: 'deployments'
             });
 
-        $scope.showDeployments = function(blueprintId) {
-            if (blueprintId === $scope.selectedBlueprint) {
-                $scope.selectedBlueprint = '';
-            } else {
-                $scope.selectedBlueprint = blueprintId;
-            }
-        };
-
-        $scope.executeDeployment = function() {
-            if ($scope.isExecuteEnabled()) {
+        $scope.executeDeployment = function(deployment) {
+            if ($scope.isExecuteEnabled(deployment)) {
                 RestService.executeDeployment({
                     deploymentId: $scope.selectedDeployment.id,
-                    workflowId: selectedWorkflow
+                    workflowId: selectedWorkflows[$scope.selectedDeployment.id]
                 });
                 $scope.redirectTo($scope.selectedDeployment);
             }
         };
 
-        $scope.getWorkflows = function(deployment) {
-            var plan = deployment.plan;
-            var workflows = [];
-            for (var i in plan.workflows) {
-                workflows.push({
-                    'name': i
-                });
+        $scope.$watch('selectedWorkflow', function() {
+            if ($scope.selectedWorkflow.data !== null) {
+                $scope.selectedDeployment = $scope.selectedWorkflow.data.deployment || null;
+
+                selectedWorkflows[$scope.selectedDeployment.id] = $scope.selectedWorkflow.data.value;
             }
-            return workflows;
+        }, true);
+
+        $scope.getWorkflows = function(deployment) {
+            return workflows[deployment.id];
         };
 
-        $scope.getSelectedWorkflows = function() {
-            return selectedWorkflow;
-        };
-
-        $scope.workflowSelected = function(workflow, deployment) {
-            $scope.selectedDeployment = deployment || null;
-            selectedWorkflow = workflow;
+        $scope.getSelectedWorkflow = function() {
+            if ($scope.selectedDeployment !== undefined && selectedWorkflows[$scope.selectedDeployment.id] !== null) {
+                return selectedWorkflows[$scope.selectedDeployment.id];
+            }
         };
 
         $scope.isExecuting = function(blueprintId, deploymentId) {
@@ -75,25 +68,25 @@ angular.module('cosmoUi')
             };
             RestService.updateExecutionState(callParams).then(function() {
                 $scope.executedDeployments[deployment.blueprintId][deployment.id] = null;
-                $scope.showDeployments($scope.selectedBlueprint);
             });
         };
 
         $scope.isExecuteEnabled = function() {
-            return selectedWorkflow !== null;
+            return selectedWorkflows[$scope.selectedDeployment.id] !== undefined;
         };
 
         $scope.toggleConfirmationDialog = function(deployment, confirmationType) {
-            if (confirmationType === 'execute' && (selectedWorkflow === null || deployment.id !== $scope.selectedDeployment.id)) {
+            if (confirmationType === 'execute' && selectedWorkflows[deployment.id] === undefined) {
                 return;
             }
+            $scope.selectedDeployment = deployment;
             $scope.confirmationType = confirmationType;
             $scope.isConfirmationDialogVisible = $scope.isConfirmationDialogVisible === false;
         };
 
         $scope.confirmConfirmationDialog = function(deployment) {
             if ($scope.confirmationType === 'execute') {
-                $scope.executeDeployment();
+                $scope.executeDeployment(deployment);
             } else if ($scope.confirmationType === 'cancel') {
                 $scope.cancelExecution(deployment);
                 $scope.toggleConfirmationDialog();
@@ -122,7 +115,6 @@ angular.module('cosmoUi')
                                 $scope.executedDeployments[blueprintId][deploymentId] = data[i];
                             }
                         }
-
                     }
                 });
         }
@@ -151,6 +143,14 @@ angular.module('cosmoUi')
                         $scope.deployments = $scope.deployments.concat(data[j].deployments);
                         for (var i = 0; i < deployments.length; i++) {
                             _loadExecutions(deployments[i].blueprintId, deployments[i].id);
+                            workflows[deployments[i].id] = [];
+                            for (var workflow in deployments[i].plan.workflows) {
+                                workflows[deployments[i].id].push({
+                                    value: workflow,
+                                    label: workflow,
+                                    deployment: deployments[i]
+                                });
+                            }
                         }
                     }
                 },
@@ -160,8 +160,4 @@ angular.module('cosmoUi')
         }
 
         _loadDeployments();
-
-        if ($routeParams.blueprint_id !== undefined) {
-            $scope.showDeployments($routeParams.blueprint_id);
-        }
     });

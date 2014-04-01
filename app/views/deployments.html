@@ -21,19 +21,18 @@
                 <td class="create" ng-click="redirectTo(deployment)">{{deployment.createdAt | dateFormat: 'yyyy-MM-dd HH:mm:ss'}}</td>
                 <td class="description" ng-click="redirectTo(deployment)">{{deployment.updatedAt | dateFormat: 'yyyy-MM-dd HH:mm:ss'}}</td>
                 <td class="actions">
-                    <select class="gs-select"
-                        ng-model="selectedWorkflow"
-                        ng-options="option.name as option.name for option in getWorkflows(deployment)"
-                        ng-change="workflowSelected(selectedWorkflow, deployment)"
-                        ng-disabled="isExecuting(blueprint.id, deployment.id)"
-                        ng-class="{disable: isExecuting(blueprint.id, deployment.id)}"
-                        ng-show="!isExecuting(blueprint.id, deployment.id)">
-                        <option value="">-- Select workflow --</option>
-                    </select>
-                    <div class="executingWorkflow" ng-show="isExecuting(blueprint.id, deployment.id)">{{getExecutionAttr(deployment, 'workflowId')}}</div>
-                    <i class="fa fa-play-circle-o" ng-click="toggleConfirmationDialog(deployment, 'execute')" ng-show="!isExecuting(blueprint.id, deployment.id)"></i>
-                    <i ng-class="{deploymentExecute: isExecuting(blueprint.id, deployment.id)}" ng-show="isExecuting(blueprint.id, deployment.id)"></i>
-                    <i class="cancel-execution fa fa-times-circle left" ng-show="isExecuting(blueprint.id, deployment.id)" ng-click="toggleConfirmationDialog(deployment, 'cancel')"></i>
+                    <div class="gs-selection-button" ng-show="!isExecuting(deployment.blueprintId, deployment.id)">
+                        <div multi:select:menu
+                             class="gs-select"
+                             data-options="getWorkflows(deployment)"
+                             data-ng-model="selectedWorkflow.data"
+                             data-text="Select workflow"></div>
+                        <div class="select-list-arrow"></div>
+                    </div>
+                    <div class="executingWorkflow" ng-show="isExecuting(deployment.blueprintId, deployment.id)">{{getExecutionAttr(deployment, 'workflowId')}}</div>
+                    <i class="fa fa-play-circle-o" ng-click="toggleConfirmationDialog(deployment, 'execute')" ng-show="!isExecuting(deployment.blueprintId, deployment.id)"></i>
+                    <i ng-class="{deploymentExecute: isExecuting(deployment.blueprintId, deployment.id)}" ng-show="isExecuting(deployment.blueprintId, deployment.id)"></i>
+                    <i class="cancel-execution fa fa-times-circle left" ng-show="isExecuting(deployment.blueprintId, deployment.id)" ng-click="toggleConfirmationDialog(deployment, 'cancel')"></i>
                 </td>
             </tr>
         </tbody>
@@ -48,9 +47,8 @@
     <div ng-show="isConfirmationDialogVisible">
         <div class="dialogBoxBg"></div>
         <div id="confirmationDialogContainer" class="dialogBox">
-            <div class="dialogTitle">{{ 'deployments.confirmationPopup.title' | i18n }}</div>
-            <div class="dialogDescription" ng-show="confirmationType == 'execute'">{{ 'deployments.confirmationPopup.descriptionExecute' | i18n }} {{getSelectedWorkflows()}}?</div>
-            <div class="dialogDescription" ng-show="confirmationType == 'cancel'">{{ 'deployments.confirmationPopup.descriptionCancel' | i18n }} {{getSelectedWorkflows()}}?</div>
+            <div class="dialogDescription" ng-show="confirmationType == 'execute'">{{ 'deployments.confirmationPopup.descriptionExecute' | i18n }} {{getSelectedWorkflow()}}?</div>
+            <div class="dialogDescription" ng-show="confirmationType == 'cancel'">{{ 'deployments.confirmationPopup.descriptionCancel' | i18n }} {{getSelectedWorkflow()}}?</div>
             <div class="buttonsContainer confirmationButtons">
                 <button id="cancelBtn" class="dialogButton" ng-click="toggleConfirmationDialog()">{{ 'deployments.confirmationPopup.cancelBtn' | i18n }}</button>
                 <button id="confirmBtn" class="dialogButton" ng-click="confirmConfirmationDialog(selectedDeployment)">{{ 'deployments.confirmationPopup.confirmBtn' | i18n }}</button>

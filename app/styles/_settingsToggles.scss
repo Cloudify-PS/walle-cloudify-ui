@@ -1,27 +1,22 @@
 .settings-toggles {
 
   #settings-toggles-button {
-    border: 1px solid transparent; // setting default width border to prevent layout flicks
-    width: 16px;
-    height: 16px;
-    background: url("#{$img-topology-settings}") no-repeat center center;
-    padding: 10px;
+    width: 150px;
+    height: 35px;
     cursor: pointer;
-
-    &.bordered {
-      border: 1px solid $clr-base-04;
-    }
+    position: absolute;
+    z-index: 9999;
   }
 
   #settings-toggles-container {
     position: absolute;
-    width: 170px;
-    height: 160px;
+    top: 30px;
+    width: 150px;
+    height: 125px;
     background: $clr-base-01;
-    border: 1px solid $clr-base-04;
-    margin-top: 5px;
-    box-shadow: -2px 2px 3px rgba(144, 144, 144, 0.5);
-
+    border: 2px solid $clr-base-04;
+    border-radius: 5px;
+    padding-top: 5px;
     z-index: 9999;  // TO BE REMOVED!!
 
     #settings-toggles-title {
@@ -39,7 +34,7 @@
       .toggle-switch {
         float: none;
         margin-left: 5px;
-        width: 160px;
+        width: 145px;
 
         #toggle-switch-button {
           float: right;

@@ -73,14 +73,14 @@
         },
         "confirmationPopup": {
             "title": "Confirm",
-            "descriptionExecute": "Execute",
+            "descriptionExecute": "Are you sure you want to execute",
             "descriptionCancel": "Cancel",
             "confirmBtn": "Confirm",
             "cancelBtn": "Cancel"
         }
     },
     "settingsToggles": {
-        "title": "Topology view settings"
+        "title": "Select view"
     },
     "eventsWidget": {
         "title": "Events"

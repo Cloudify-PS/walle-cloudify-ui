@@ -21,7 +21,9 @@ angular.module('cosmoUi')
         };
 
         var planData/*:PlanData*/ = null;
-        $scope.selectedWorkflow = null;
+        $scope.selectedWorkflow = {
+            data: null
+        };
         $scope.deploymentInProgress = true;
         $scope.nodes = [];
         $scope.events = [];
@@ -43,7 +45,6 @@ angular.module('cosmoUi')
         $scope.allNodesArr = [];
         $scope.selectNodesArr = [];
         $scope.selectedNode = null;
-        $scope.executingWorkflow = $cookieStore.get('executingWorkflow');
         $scope.executedData = null;
 
         var eventCSSMap = {
@@ -150,21 +151,19 @@ angular.module('cosmoUi')
             if ($scope.isExecuteEnabled()) {
                 RestService.executeDeployment({
                     deploymentId: id,
-                    workflowId: $scope.selectedWorkflow
+                    workflowId: $scope.selectedWorkflow.data.value
                 }).then(function(execution) {
                     $cookieStore.put('executionId', execution.id);
                 });
 
                 $cookieStore.remove('deploymentId');
                 $cookieStore.put('deploymentId', id);
-                $cookieStore.put('executingWorkflow', $scope.selectedWorkflow);
-                $scope.executingWorkflow = $scope.selectedWorkflow;
                 $scope.refreshPage();
             }
         };
 
         $scope.workflowSelected = function(workflow) {
-            $scope.selectedWorkflow = workflow;
+            $scope.selectedWorkflow.data = workflow;
         };
 
         $scope.isExecuting = function() {
@@ -182,11 +181,11 @@ angular.module('cosmoUi')
         };
 
         $scope.isExecuteEnabled = function() {
-            return $scope.selectedWorkflow !== null;
+            return $scope.selectedWorkflow.data !== null;
         };
 
         $scope.toggleConfirmationDialog = function(deployment, confirmationType) {
-            if (confirmationType === 'execute' && $scope.selectedWorkflow === null) {
+            if (confirmationType === 'execute' && $scope.selectedWorkflow.data === null) {
                 return;
             }
             $scope.confirmationType = confirmationType;
