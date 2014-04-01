@@ -30,6 +30,11 @@ angular.module('cosmoUi')
             var dataPlan = data.getJSON(),
                 dataMap;
 
+            RestService.getBlueprintById({id: $routeParams.id})
+                .then(function(data) {
+                    $scope.blueprint = data || null;
+                });
+
             /**
              * Networks
              */
@@ -77,7 +82,6 @@ angular.module('cosmoUi')
                         data: code.source
                     };
                 });
-
         });
 
 
@@ -95,11 +99,7 @@ angular.module('cosmoUi')
         };
 
         $scope.toggleDeployDialog = function() {
-            RestService.getBlueprintById({id: $routeParams.id})
-                .then(function(data) {
-                    $scope.blueprint = data || null;
-                    $scope.isDeployDialogVisible = $scope.isDeployDialogVisible === false;
-                });
+            $scope.isDeployDialogVisible = $scope.isDeployDialogVisible === false;
         };
 
         $scope.redirectToDeployments = function(blueprint) {
