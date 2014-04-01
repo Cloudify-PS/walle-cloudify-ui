@@ -38,6 +38,7 @@ angular.module('cosmoUi')
             $scope.networks = dataPlan.network;
             bpNetworkService.setMap(dataPlan.network.relations);
 
+
             // Render Networks
             $timeout(function(){
                 $scope.networkcoords = bpNetworkService.getCoordinates();
