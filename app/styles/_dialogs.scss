@@ -54,6 +54,14 @@
       background-color: transparent;
       border: none;
       padding-right: 0px;
+
+      &:hover {
+        background: url("/images/x_hover.png") no-repeat center center;
+      }
+
+      &:active {
+        background: url("/images/x_pressed.png") no-repeat center center;
+      }
     }
   }
 
