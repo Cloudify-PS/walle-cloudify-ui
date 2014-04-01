@@ -17,7 +17,7 @@
                      data-text="Choose Blueprints"></div>
             </span>
 
-            <span data-ng-show="deploymentsList">
+            <span data-ng-show="deploymentsList.length">
                 Deployments:<br>
                 <div multi:select:menu
                      data-multiple="true"
@@ -28,7 +28,7 @@
                      data-text="Choose Deployments"></div>
             </span>
 
-            <span data-ng-show="executionList">
+            <span data-ng-show="executionList.length">
                 Executions:<br>
                 <div multi:select:menu
                      data-multiple="true"
@@ -64,8 +64,11 @@
                 <th class="icon"><!-- icon --></th>
                 <th class="date sorting" data-ng-click="sortEvents('timestamp')" data-ng-class="isSorted('timestamp')">Timestamp</th>
                 <th class="type sorting" data-ng-click="sortEvents('eventType')" data-ng-class="isSorted('eventType')">{{ 'deployment.table.heading.eventType' | i18n }}</th>
+                <th class="node sorting" data-ng-click="sortEvents('node')" data-ng-class="isSorted('node')">{{ 'deployment.table.heading.logLevel' | i18n }}</th>
+                <th class="node sorting" data-ng-click="sortEvents('node')" data-ng-class="isSorted('node')">{{ 'deployment.table.heading.operation' | i18n }}</th>
                 <th class="node sorting" data-ng-click="sortEvents('node')" data-ng-class="isSorted('node')">{{ 'deployment.table.heading.node' | i18n }}</th>
-                <th class="task sorting" data-ng-click="sortEvents('task')" data-ng-class="isSorted('task')">{{ 'deployment.table.heading.task' | i18n }}</th>
+                <th class="node sorting" data-ng-click="sortEvents('node')" data-ng-class="isSorted('node')">{{ 'deployment.table.heading.nodeId' | i18n }}</th>
+                <th class="task sorting" data-ng-click="sortEvents('task')" data-ng-class="isSorted('task')">{{ 'deployment.table.heading.message' | i18n }}</th>
             </tr>
             </thead>
             <tbody class="animate-repeat" ng-repeat="log in logsHits" ng-init="isOpen=false">
@@ -73,11 +76,14 @@
                 <td class="icon" ng-class="getEventIcon(log._source.event_type)"></td>
                 <td class="date">{{log._source.timestamp == undefined && 'N/A' || log._source.timestamp | dateFormat: 'yyyy-MM-dd HH:mm:ss'}}</td>
                 <td class="type">{{getEventText(log._source.event_type) == undefined && 'N/A' || getEventText(log._source.event_type)}}</td>
+                <td class="node">{{log._source.level == undefined && 'N/A' || log._source.level}}</td>
+                <td class="node">{{log._source.context.operation == undefined && 'N/A' || log._source.context.operation}}</td>
                 <td class="node">{{log._source.context.node_name == undefined && 'N/A' || log._source.context.node_name}}</td>
+                <td class="node">{{log._source.context.node_id == undefined && 'N/A' || log._source.context.node_id}}</td>
                 <td class="task">{{log._source.context.task_name == undefined && 'N/A' || log._source.context.task_name}}</td>
             </tr>
             <tr class="details" data-ng-show="isOpen">
-                <td colspan="5">
+                <td colspan="8">
                     <div class="group">
                         <span><b>Execution ID:</b> {{ log._source.context.execution_id == undefined && 'N/A' || log._source.context.execution_id }}</span>
                         <span><b>Node ID:</b> {{ log._source.context.node_id == undefined && 'N/A' || log._source.context.node_id }}</span>

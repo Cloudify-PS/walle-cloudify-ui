@@ -204,7 +204,7 @@
             background-color: white;
             vertical-align: top;
             padding: 2px;
-            border-radius: 3px;
+            border-radius: 6px;
             margin: 0 60px 40px 0px;
             .box {
                 border-color: #3aaeda;
@@ -538,7 +538,7 @@
                     display: block;
                     width: 39px;
                     height: 39px;
-                    background-color: #fff;
+                    background-color: #f5f5f5;
                     color: #797B86;
                     border-radius: 20px;
                     margin: 0 auto 40px;
@@ -621,14 +621,13 @@
         tr {
           cursor: default;
         }
-
         .node-details {
           cursor: pointer;
         }
-
         .topology-glyph {
             display: inline-block;
             line-height: 0.7;
+            color: #53bbf1;
         }
     }
 }

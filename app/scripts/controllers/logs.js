@@ -30,8 +30,6 @@ angular.module('cosmoUi')
             'timeframe': null
         };
 
-        $scope.timeframeFrom = 'now';
-
         $scope.defaultTimeframe = 1000 * 60 * 5;
         $scope.timeframeList = [
             {'value': 1000 * 60 * 5, 'label': '5 Minute'},
@@ -118,6 +116,7 @@ angular.module('cosmoUi')
             }
         }
         $scope.filterModel = LogsModel.get();
+        $scope.timeframeFrom = LogsModel.getFromTimeText();
 
         RestService.loadBlueprints()
             .then(function (data) {
@@ -145,20 +144,20 @@ angular.module('cosmoUi')
                 });
         }
 
-        function filterLogs(field, newValue, oldValue, execute) {
-            if(newValue === null) {
-                return;
-            }
-            if(oldValue !== null && oldValue.value !== null) {
-                events.filter(field, oldValue.value);
-            }
-            if(newValue.value !== null) {
-                events.filter(field, newValue.value);
-            }
-            if(execute === true) {
-                executeLogs();
-            }
-        }
+//        function filterLogs(field, newValue, oldValue, execute) {
+//            if(newValue === null) {
+//                return;
+//            }
+//            if(oldValue !== null && oldValue.value !== null) {
+//                events.filter(field, oldValue.value);
+//            }
+//            if(newValue.value !== null) {
+//                events.filter(field, newValue.value);
+//            }
+//            if(execute === true) {
+//                executeLogs();
+//            }
+//        }
 
         function filterLogsByList(field, newValues, oldValues, execute) {
             for(var oi in oldValues) {
@@ -184,18 +183,18 @@ angular.module('cosmoUi')
             }
         }
 
-        function _filterByTimeframe( timestamp ) {
+        function _filterByTimeframe( timestamp, startdate ) {
             var fromTime = new Date();
-            var toTime = new Date();
             return {
-                'gte': fromTime.setTime(fromTime.getTime() - timestamp),
-                'lte': toTime
+                'gte': new Date(fromTime.setTime(startdate - timestamp)),
+                'lte': new Date(fromTime.setTime(startdate + (1000 * 60 * 5)))
             };
         }
 
         (function _LoadEvents() {
-            filterLogsByRange('@timestamp', _filterByTimeframe($scope.defaultTimeframe), null);
-            filterLogs('type', {value: 'cloudify_log'}, null);
+            filterLogsByRange('@timestamp', _filterByTimeframe($scope.defaultTimeframe, $scope.filterModel.startdate), null);
+            //filterLogs('type', {value: 'cloudify_log'}, null);
+            //filterLogs('type', {value: 'cloudify_event'}, null);
         })();
 
         $scope.execute = function() {
@@ -214,16 +213,18 @@ angular.module('cosmoUi')
         $scope.$watch('eventsFilter.deployments', function(newValue, oldValue){
             $scope.executionList = $filter('filterListByList')(_executionList, newValue);
             filterLogsByList('context.deployment_id', newValue, oldValue, false);
+            $scope.$watch(function(){ return _executionList; }, function(){
+                $scope.executionList = $filter('filterListByList')(_executionList, newValue);
+            }, true);
         }, true);
 
-        // TODO:
         $scope.$watch('eventsFilter.executions', function(newValue, oldValue){
             filterLogsByList('context.execution_id', newValue, oldValue, false);
         }, true);
 
         $scope.$watch('eventsFilter.timeframe', function(newValue){
             if(newValue !== null && newValue !== undefined && newValue.hasOwnProperty('value')) {
-                filterLogsByRange('@timestamp', _filterByTimeframe(newValue.value), false);
+                filterLogsByRange('@timestamp', _filterByTimeframe(newValue.value, $scope.filterModel.startdate), false);
             }
         });
 

@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('cosmoUi')
-    .controller('DeploymentCtrl', function ($scope, $rootScope, $cookieStore, $routeParams, RestService, EventsService, BreadcrumbsService, YamlService, PlanDataConvert, blueprintCoordinateService, bpNetworkService, $route, $anchorScroll, $timeout, Cosmotypesservice) {
+    .controller('DeploymentCtrl', function ($scope, $rootScope, $cookieStore, $routeParams, RestService, EventsService, BreadcrumbsService, YamlService, PlanDataConvert, blueprintCoordinateService, bpNetworkService, $route, $anchorScroll, $timeout, Cosmotypesservice, $location) {
 
         var totalNodes = 0,
             deploymentModel = {},
@@ -261,7 +261,7 @@ angular.module('cosmoUi')
             $timeout(function(){
                 $scope.networkcoords = bpNetworkService.getCoordinates();
                 bpNetworkService.render();
-            }, 1500);
+            }, 3000);
 
             /**
              * Blueprint
@@ -286,9 +286,12 @@ angular.module('cosmoUi')
             blueprintCoordinateService.setMap(dataMap['cloudify.relationships.connected_to']);
 
             // Connection between nodes
-            $scope.map = dataMap['cloudify.relationships.contained_in'];
+            $scope.map = dataMap['cloudify.relationships.contained_in'].reverse();
             $scope.coordinates = blueprintCoordinateService.getCoordinates();
             $scope.deployments = deploymentModel;
+
+            // Draw
+            blueprintCoordinateService.draw();
         }
 
         function _loadDeployment() {
@@ -662,6 +665,11 @@ angular.module('cosmoUi')
             lastNodeSearch = $scope.eventsFilter.nodes;
         };
 
+        $scope.clearFindNode = function() {
+            $scope.eventsFilter.nodes = '';
+            $scope.eventFindNodes();
+        };
+
         $scope.eventSortList = {};
         $scope.sortEvents = function (field) {
             if (!$scope.eventSortList.hasOwnProperty(field)) {
@@ -692,6 +700,29 @@ angular.module('cosmoUi')
         $scope.isSorted = function (field) {
             if ($scope.eventSortList.current === field) {
                 return $scope.eventSortList[field];
+            }
+        };
+
+        $scope.viewLogsByEvent = function(event) {
+            var logsFilter = {
+                'blueprints': [
+                    event._source.context.blueprint_id
+                ],
+                'deployments': [
+                    event._source.context.deployment_id
+                ],
+                'executions': [
+                    event._source.context.execution_id
+                ],
+                'timeframe': [300000],
+                'startdate': new Date(event._source.timestamp).getTime()
+            };
+            $location.url('logs').search('filter', JSON.stringify(logsFilter));
+        };
+
+        $scope.viewAllLogs = function() {
+            if($scope.eventHits.length > 0) {
+                $scope.viewLogsByEvent($scope.eventHits[0]);
             }
         };
 

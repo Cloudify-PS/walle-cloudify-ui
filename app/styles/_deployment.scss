@@ -254,13 +254,14 @@
                 vertical-align: middle;
             }
             .search {
+                position: relative;
                 display: inline-block;
                 vertical-align: middle;
                 input {
                     border-style: solid;
                     border-color: #ccc;
                     border-width: 1px 1px 1px 1px;
-                    padding: 5px 10px;
+                    padding: 5px 25px 5px 10px;
                     border-radius: 3px 0 0 3px;
                     outline: none;
                     &:focus {
@@ -281,6 +282,13 @@
                         color: #fff;
                     }
                 }
+                .close {
+                    position: absolute;
+                    right: 51px;
+                    top: 1px;
+                    padding: 5px;
+                    font-size: 17px;
+                }
             }
             .loading {
                 position: absolute;
@@ -291,6 +299,10 @@
                 background-image: url('../images/loading-dots.gif');
                 background-repeat: no-repeat;
                 background-position: center center;
+            }
+            > span {
+                margin: 0 0 10px 0;
+                display: inline-block;
             }
         }
 
@@ -342,8 +354,14 @@
                     &.task {
                         width: auto;
                     }
+                    &.action {
+                        width: 75px;
+                    }
                     &.date {
                         width: 200px;
+                    }
+                    &.cliclable {
+                        cursor: pointer;
                     }
                     &.event-text-green {
                         color: $COSMOUI_EVENTS_LIST_TEXT_SUCCESS;

@@ -214,9 +214,10 @@ angular.module('cosmoUi').service('PlanDataConvert', function (Cosmotypesservice
         }
 
         if (data.hasOwnProperty('nodes')) {
+
             // First Locate Networks
             _filterNodesToNetwork(data.nodes, function(node){
-                switch (Cosmotypesservice.getTypeData(node.type[0])) {
+                switch (Cosmotypesservice.getTypeData(node.type[0]).baseType) {
                 case 'network':
                     addNetwork(data, node);
                     break;
@@ -224,7 +225,7 @@ angular.module('cosmoUi').service('PlanDataConvert', function (Cosmotypesservice
             });
             // Locate Subnets
             _filterNodesToNetwork(data.nodes, function(node){
-                switch (Cosmotypesservice.getTypeData(node.type[0])) {
+                switch (Cosmotypesservice.getTypeData(node.type[0]).baseType) {
                 case 'subnet':
                     addSubnet(data, node);
                     break;
@@ -232,11 +233,12 @@ angular.module('cosmoUi').service('PlanDataConvert', function (Cosmotypesservice
             });
             // Locate the rest
             _filterNodesToNetwork(data.nodes, function(node){
-                switch (Cosmotypesservice.getTypeData(node.type[0])) {
+                switch (Cosmotypesservice.getTypeData(node.type[0]).baseType) {
                 case 'router':
                     addRouter(data, node);
                     break;
                 case 'host':
+                case 'port':
                     addDevice(data, node);
                     topologyNodes.push(node);
                     break;
@@ -297,7 +299,7 @@ angular.module('cosmoUi').service('PlanDataConvert', function (Cosmotypesservice
                         'id': node.id,
                         'name': node.name,
                         'type': 'device',
-                        'icon': Cosmotypesservice.getTypeData(node.type[0])
+                        'icon': Cosmotypesservice.getTypeData(node.type[0]).baseType
                     });
                     addRelation(data, edge, true);
                 }
@@ -316,7 +318,7 @@ angular.module('cosmoUi').service('PlanDataConvert', function (Cosmotypesservice
                             'id': node.id,
                             'name': node.name,
                             'type': 'device',
-                            'icon': Cosmotypesservice.getTypeData(node.type[0])
+                            'icon': Cosmotypesservice.getTypeData(node.type[0]).baseType
                         });
                     }
                 }
@@ -340,7 +342,7 @@ angular.module('cosmoUi').service('PlanDataConvert', function (Cosmotypesservice
                 'id': node.id,
                 'name': node.name,
                 'type': 'device',
-                'icon': Cosmotypesservice.getTypeData(node.type[0])
+                'icon': Cosmotypesservice.getTypeData(node.type[0]).baseType
             });
             addRelation(data, {
                 'source': 0,
@@ -366,6 +368,7 @@ angular.module('cosmoUi').service('PlanDataConvert', function (Cosmotypesservice
                 return network;
             }
         }
+        return null;
     }
 
     function getNetworkBySubnetId(networks, id) {
