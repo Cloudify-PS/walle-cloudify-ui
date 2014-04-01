@@ -44,10 +44,6 @@ angular.module('cosmoUi')
                     });
 
                     $scope.uploadDone($scope.blueprintName);
-//                    $scope.redirectTo({
-//                        id: $scope.blueprintName
-//                    });
-//                    $scope.loadBlueprints();
                 },
                 error: function(e) {
                     $scope.errorMessage = JSON.parse(e.responseText).message;

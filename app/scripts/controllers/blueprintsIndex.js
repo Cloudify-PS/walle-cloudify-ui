@@ -63,6 +63,10 @@ angular.module('cosmoUi')
             $location.path('/deployments');
         };
 
+        $scope.redirectToDeployment = function(deployment_id, blueprint_id) {
+            $location.path('/deployment').search({id: deployment_id, blueprintId: blueprint_id});
+        };
+
         $scope.cosmoConnectionError = function() {
             return cosmoError;
         };
