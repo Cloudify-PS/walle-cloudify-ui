@@ -557,15 +557,14 @@
                     i.topology-glyph {
                         display: inline-block;
                         color: inherit;
-                        width: 39px;
-                        height: 39px;
+                        width: 30px;
+                        height: 30px;
                         font-size: 60px;
-                        line-height: 18px;
                     }
                     i.topology-glyph::after {
                         font-size: 60px;
-                        position: relative;
-                        top: 2px;
+                        position: absolute;
+                        top: -26px;
                         left: 0px;
                     }
                     .portarea {
@@ -587,8 +586,8 @@
                 .buttons {
                     display: none;
                     position: absolute;
-                    top: 6px;
-                    left: 3px;
+                    top: 2px;
+                    left: -41px;
                     z-index: 100;
                     > ul {
                         display: inline-block;
