@@ -40,11 +40,27 @@ angular.module('cosmoUi')
                 baseType: 'floating-ip'
             },
             {
+                name: 'cloudfiy.openstack.virtual_ip',
+                baseType: 'floating-ip'
+            },
+            {
+                name: 'cloudify.openstack.floatingip',
+                baseType: 'floating-ip'
+            },
+            {
+                name: 'cloudfiy.openstack.floatingip',
+                baseType: 'floating-ip'
+            },
+            {
                 name: 'virtual_ip',
                 baseType: 'floating-ip'
             },
             {
                 name: 'cloudify.openstack.security_group',
+                baseType: 'security-group'
+            },
+            {
+                name: 'cloudfiy.openstack.security_group',
                 baseType: 'security-group'
             },
             {

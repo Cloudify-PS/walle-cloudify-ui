@@ -137,6 +137,54 @@ angular.module('cosmoUi').service('PlanDataConvert', function (Cosmotypesservice
         node.children.push(child);
     }
 
+    this.nodesToTopology = function(data){
+
+        var noneTopologyTypes = ['network', 'subnet', 'port', 'router', 'floating-ip', 'security-group'];
+        var topologyModel = {
+            'edges': [],
+            'nodes': []
+        };
+
+        function _foreach(data, fnCallback) {
+            for (var i in data) {
+                fnCallback(data[i]);
+            }
+        }
+
+        function _isNotType(type, equalTo) {
+            return equalTo.indexOf(Cosmotypesservice.getTypeData(type).baseType) === -1;
+        }
+
+        function _getRelations(nodeId, type) {
+            var _edges = [];
+            _foreach(data.edges, function (edge) {
+                var edgeType = edge.type.split('.').slice(-1)[0];
+                if ((edge.source === nodeId || edge.target === nodeId) && (type === undefined || type.indexOf(edgeType) > -1)) {
+                    _edges.push(edge);
+                }
+            });
+            return _edges;
+        }
+
+        function _addRelation(relation) {
+            if(topologyModel.edges.indexOf(relation) === -1) {
+                topologyModel.edges.push(relation);
+            }
+        }
+
+        _foreach(data.nodes, function(node){
+            if(_isNotType(node.type[0], noneTopologyTypes)) {
+                var relations = _getRelations(node.id, ['connected_to', 'contained_in']);
+                topologyModel.nodes.push(node);
+                _foreach(relations, function(relation){
+                    _addRelation(relation);
+                });
+            }
+        });
+
+        return topologyModel;
+    };
+
     /**
      * Convert nodes data to table format
      */
@@ -191,197 +239,241 @@ angular.module('cosmoUi').service('PlanDataConvert', function (Cosmotypesservice
     /***
      * Networks
      */
-    var colorIndex = 0,
-        colors = ['#d54931', '#f89406', '#149bdf', '#555869', '#8eaf26', '#330033', '#4b6c8b', '#550000', '#dc322f', '#FF6600', '#cce80b', '#003300', '#805e00'];
 
     this.nodesToNetworks = function (data) {
-        var topologyNodes = [];
-        data.network = {
-            'external': [{
-                'name': 'External Netowrk',
-                'subnets': [],
-                'devices': []
-            }],
-            'networks': [],
-            'relations': []
-        };
 
-        function _filterNodesToNetwork(nodes, callback) {
-            for (var i in nodes) {
-                var node = nodes[i];
-                callback(node);
+        var colorIndex = 0,
+            colors = ['#d54931', '#f89406', '#149bdf', '#555869', '#8eaf26', '#330033', '#4b6c8b', '#550000', '#dc322f', '#FF6600', '#cce80b', '#003300', '#805e00'],
+            networkModel = {
+                'external': [
+                    {
+                        'name': 'External Netowrk',
+                        'subnets': [],
+                        'devices': []
+                    }
+                ],
+                'networks': [],
+                'relations': []
+            };
+
+        function _foreach(data, fnCallback) {
+            for (var i in data) {
+                fnCallback(data[i]);
             }
         }
 
-        if (data.hasOwnProperty('nodes')) {
-
-            // First Locate Networks
-            _filterNodesToNetwork(data.nodes, function(node){
-                switch (Cosmotypesservice.getTypeData(node.type[0]).baseType) {
-                case 'network':
-                    addNetwork(data, node);
-                    break;
-                }
-            });
-            // Locate Subnets
-            _filterNodesToNetwork(data.nodes, function(node){
-                switch (Cosmotypesservice.getTypeData(node.type[0]).baseType) {
-                case 'subnet':
-                    addSubnet(data, node);
-                    break;
-                }
-            });
-            // Locate the rest
-            _filterNodesToNetwork(data.nodes, function(node){
-                switch (Cosmotypesservice.getTypeData(node.type[0]).baseType) {
-                case 'router':
-                    addRouter(data, node);
-                    break;
-                case 'host':
-                case 'port':
-                    addDevice(data, node);
-                    topologyNodes.push(node);
-                    break;
-                default:
-                    topologyNodes.push(node);
-                    break;
-                }
-            });
-            data.nodes = topologyNodes;
+        function _isType(type, equalTo) {
+            return equalTo.indexOf(Cosmotypesservice.getTypeData(type).baseType) > -1;
         }
-    };
 
-    function getRandomColor() {
-        var color;
-        if(colorIndex >= colors.length) {
-            colorIndex = 0;
+        function _addRelation(edge) {
+            networkModel.relations.push(edge);
         }
-        color = colors[colorIndex];
-        colorIndex++;
-        return color;
-    }
 
-    function addNetwork(data, node) {
-        data.network.networks.push({
-            'id': node.id,
-            'name': node.name,
-            'subnets': [],
-            'devices': []
-        });
-        data.nodes.splice(data.nodes.indexOf(node), 1);
-    }
+        function _getRelationsBySource(source, type) {
+            var _edges = [];
+            _foreach(data.edges, function (edge) {
+                var edgeType = edge.type.split('.').slice(-1)[0];
+                if (edge.source === source && (type === undefined || type.indexOf(edgeType) > -1)) {
+                    _edges.push(edge);
+                }
+            });
+            return _edges;
+        }
 
-    function addSubnet(data, node) {
-        for (var i in data.edges) {
-            var edge = data.edges[i];
-            if (edge.type.search('contained_in') > 0 && node.id === edge.source) {
-                var network = getNetworkById(data.network.networks, edge.target);
-                network.subnets.push({
-                    'id': node.id,
-                    'name': node.name,
-                    'cidr': '0.0.0.0/24',
-                    'color': getRandomColor(),
-                    'type': 'subnet'
-                });
-                addRelation(data, edge, true);
+        function _getRelationsByTarget(target, type) {
+            var _edges = [];
+            _foreach(data.edges, function (edge) {
+                var edgeType = edge.type.split('.').slice(-1)[0];
+                if (edge.target === target && (type === undefined || type.indexOf(edgeType) > -1)) {
+                    _edges.push(edge);
+                }
+            });
+            return _edges;
+        }
+
+        function _getNetworkById(id) {
+            for (var i in networkModel.networks) {
+                var network = networkModel.networks[i];
+                if (network.id === id) {
+                    return network;
+                }
             }
+            return null;
         }
-        data.nodes.splice(data.nodes.indexOf(node), 1);
-    }
 
-    function addDevice(data, node) {
-        for (var i in data.edges) {
-            var edge = data.edges[i];
-            if (edge.type.search('connected_to') && node.id === edge.source) {
-                var network = getNetworkById(data.network.networks, edge.target);
-                if (network !== null) {
+        function _getSubnetNetworkById(id) {
+            for (var i in networkModel.networks) {
+                var network = networkModel.networks[i];
+                for (var s in network.subnets) {
+                    var subnet = network.subnets[s];
+                    if (subnet.id === id) {
+                        return network;
+                    }
+                }
+            }
+            return null;
+        }
+
+        function _getPortById(id) {
+            var port = null;
+            _foreach(data.nodes, function (node) {
+                if (node.id === id && _isType(node.type[0], ['port'])) {
+                    port = node;
+                    return;
+                }
+            });
+            return port;
+        }
+
+        function _getRandomColor() {
+            var color;
+            if (colorIndex >= colors.length) {
+                colorIndex = 0;
+            }
+            color = colors[colorIndex];
+            colorIndex++;
+            return color;
+        }
+
+        function _addNetworks(nodes) {
+            _foreach(nodes, function (node) {
+                if (_isType(node.type[0], ['network'])) {
+                    networkModel.networks.push({
+                        'id': node.id,
+                        'name': node.name,
+                        'subnets': [],
+                        'devices': []
+                    });
+                }
+            });
+        }
+
+        function _addSubnets(nodes) {
+            _foreach(nodes, function (node) {
+                if (_isType(node.type[0], ['subnet'])) {
+                    var relations = _getRelationsBySource(node.id, ['contained_in']);
+                    _foreach(relations, function (relation) {
+                        var network = _getNetworkById(relation.target);
+                        if (network !== null) {
+                            network.subnets.push({
+                                'id': node.id,
+                                'name': node.name,
+                                'cidr': node.properties.subnet.cidr,
+                                'color': _getRandomColor(),
+                                'type': 'subnet'
+                            });
+                            _addRelation(relation);
+                        }
+                    });
+                }
+            });
+        }
+
+        function _addDevices(nodes) {
+            _foreach(nodes, function (node) {
+                if (_isType(node.type[0], ['host'])) {
+                    var relations = _getRelationsBySource(node.id, ['connected_to', 'depends_on']);
+                    _foreach(relations, function (relation) {
+                        var port = _getPortById(relation.target);
+                        if (port !== null) {
+                            _addPort(port, node);
+                        }
+                        else {
+                            var network = _getSubnetNetworkById(relation.target);
+                            if (network !== null) {
+                                network.devices.push({
+                                    'id': node.id,
+                                    'name': node.name,
+                                    'type': 'device',
+                                    'icon': Cosmotypesservice.getTypeData(node.type[0]).baseType
+                                });
+                                _addRelation({source: relation.target, target: relation.source});
+                            }
+                        }
+                    });
+                }
+            });
+        }
+
+        function _addRouters(nodes) {
+            _foreach(nodes, function (node) {
+                if (_isType(node.type[0], ['router'])) {
+                    var relations = _getRelationsByTarget(node.id, ['subnet_connected_to_router']);
+                    _foreach(relations, function (relation) {
+                        if(!_addExternalGateway(node)) {
+                            var network = _getSubnetNetworkById(relation.target);
+                            if (network !== null) {
+                                network.devices.push({
+                                    'id': node.id,
+                                    'name': node.name,
+                                    'type': 'device',
+                                    'icon': Cosmotypesservice.getTypeData(node.type[0]).baseType,
+                                    'ports': node.ports
+                                });
+                            }
+                        }
+                        _addRelation(relation);
+                    });
+                }
+            });
+        }
+
+        function _addPort(port, node) {
+            if(!node.hasOwnProperty('ports')) {
+                node.ports = [];
+            }
+            node.ports.push({
+                'id': port.id,
+                'name': port.name,
+                'type': 'device',
+                'icon': Cosmotypesservice.getTypeData(port.type[0]).baseType
+            });
+            var relations = _getRelationsBySource(port.id, ['depends_on']);
+            _foreach(relations, function(relation){
+                var network = _getSubnetNetworkById(relation.target);
+                if(network !== null) {
                     network.devices.push({
                         'id': node.id,
                         'name': node.name,
                         'type': 'device',
-                        'icon': Cosmotypesservice.getTypeData(node.type[0]).baseType
+                        'icon': Cosmotypesservice.getTypeData(node.type[0]).baseType,
+                        'ports': node.ports
                     });
-                    addRelation(data, edge, true);
+                    _addRelation({source: relation.target, target: relation.source});
                 }
-            }
-        }
-    }
-
-    function addRouter(data, node) {
-        for (var i in data.edges) {
-            var edge = data.edges[i];
-            if (edge.type.search('connected_to') && node.id === edge.target) {
-                if(!addExternalGateway(data, node)) {
-                    var network = getNetworkBySubnetId(data.network.networks, edge.source);
-                    if (network !== null) {
-                        network.devices.push({
-                            'id': node.id,
-                            'name': node.name,
-                            'type': 'device',
-                            'icon': Cosmotypesservice.getTypeData(node.type[0]).baseType
-                        });
-                    }
-                }
-                addRelation(data, edge, true);
-            }
-        }
-    }
-
-    function addExternalGateway(data, node) {
-        if (node.properties.router.hasOwnProperty('external_gateway_info')) {
-            var gateway = node.properties.router.external_gateway_info,
-                external = data.network.external[0];
-
-            external.subnets.push({
-                'id': 0,
-                'name': gateway.network_name,
-                'color': '#999',
-                'type': 'subnet'
             });
-            external.devices.push({
-                'id': node.id,
-                'name': node.name,
-                'type': 'device',
-                'icon': Cosmotypesservice.getTypeData(node.type[0]).baseType
-            });
-            addRelation(data, {
-                'source': 0,
-                'target': node.id
-            }, false);
-
-            return true;
         }
-        return false;
-    }
 
-    function addRelation(data, edge, remove) {
-        data.network.relations.push(edge);
-        if(remove === true) {
-            data.edges.splice(data.edges.indexOf(edge), 1);
-        }
-    }
-
-    function getNetworkById(networks, id) {
-        for (var i = 0; i < networks.length; i++) {
-            var network = networks[i];
-            if (network.id === id) {
-                return network;
+        function _addExternalGateway(node) {
+            if (node.properties.router.hasOwnProperty('external_gateway_info')) {
+                var gateway = node.properties.router.external_gateway_info, external = networkModel.external[0];
+                external.subnets.push({
+                    'id': 0,
+                    'name': gateway.network_name,
+                    'color': '#999',
+                    'type': 'subnet'
+                });
+                external.devices.push({
+                    'id': node.id,
+                    'name': node.name,
+                    'type': 'device',
+                    'icon': Cosmotypesservice.getTypeData(node.type[0]).baseType
+                });
+                _addRelation({'source': 0, 'target': node.id});
+                return true;
             }
+            return false;
         }
-        return null;
-    }
 
-    function getNetworkBySubnetId(networks, id) {
-        for (var i = 0; i < networks.length; i++) {
-            var network = networks[i];
-            for(var s in network.subnets) {
-                var subnet = network.subnets[s];
-                if (subnet.id === id) {
-                    return network;
-                }
-            }
+        if (data.hasOwnProperty('nodes')) {
+            _addNetworks(data.nodes);
+            _addSubnets(data.nodes);
+            _addDevices(data.nodes);
+            _addRouters(data.nodes);
         }
-        return null;
-    }
+
+        return networkModel;
+    };
 
 });

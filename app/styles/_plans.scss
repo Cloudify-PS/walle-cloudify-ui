@@ -534,16 +534,15 @@
                 height: 500px;
                 vertical-align: top;
                 > .device {
-                    position: relative;
                     display: block;
-                    width: 39px;
-                    height: 39px;
-                    background-color: #f5f5f5;
                     color: #797B86;
                     border-radius: 20px;
-                    margin: 0 auto 40px;
                     vertical-align: top;
                     margin: 47px auto;
+                    .inner {
+                        display: inline-block;
+                        position: relative;
+                    }
                     label {
                         display: block;
                         background-color: #000;
@@ -554,14 +553,31 @@
                     > p {
                         margin: 5px;
                     }
-                    > i.topology-glyph {
+                    i.topology-glyph {
+                        display: inline-block;
                         color: inherit;
+                        width: 39px;
+                        height: 39px;
+                        font-size: 60px;
+                        line-height: 18px;
                     }
-                    > i.topology-glyph::after {
-                        position: absolute;
+                    i.topology-glyph::after {
+                        font-size: 60px;
+                        position: relative;
+                        top: 2px;
                         left: 0px;
-                        top: -34px;
-                        font-size: 75px;
+                    }
+                    .portarea {
+                        display: inline-block;
+                        width: auto;
+                        height: auto;
+                        padding: 5px;
+                        border-radius: 5px;
+                        background-color: #f5f5f5;
+                        border: 1px solid #ccc;
+                    }
+                    .ports {
+                        position: relative;
                     }
                 }
                 > .device:last-child {
@@ -570,8 +586,8 @@
                 .buttons {
                     display: none;
                     position: absolute;
-                    top: -30px;
-                    left: -19px;
+                    top: 6px;
+                    left: 3px;
                     z-index: 100;
                     > ul {
                         display: inline-block;

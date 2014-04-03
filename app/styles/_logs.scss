@@ -136,6 +136,12 @@
                     &.event-icon-policy-failed {
                         background: url("#{$img-policy-failed}") no-repeat center center;
                     }
+                    &.gs-icon-logs {
+                        padding-left: 16px;
+                        color: #049cdb;
+                        line-height: 46px;
+                        font-size: 55px;
+                    }
                 }
             }
         }
