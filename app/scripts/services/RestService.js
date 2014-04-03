@@ -146,9 +146,9 @@ angular.module('cosmoUi')
 
         function _getNode(params) {
             var callParams = {
-                url: '/backend/nodes/get',
-                method: 'GET',
-                params: params
+                url: '/backend/node/get',
+                method: 'POST',
+                data: params
             };
             return _load('nodes/get', callParams);
         }

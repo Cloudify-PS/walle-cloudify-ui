@@ -121,22 +121,30 @@ angular.module('cosmoUi')
         }
 
         $scope.nodeSelected = function(node) {
-            $scope.selectedNode = node;
-
-            if (node !== null) {
-                $scope.showProperties = {
-                    properties: node.properties,
-                    relationships: node.relationships,
-                    general: {
-                        'name': node.id,
-                        'type': node.type,
-                        'state': $scope.getNodeStateData(node.id).state
-                    }
-                };
-                $scope.propSection = 'general';
-            } else {
-                $scope.propSection = 'overview';
+            var params = {
+                nodeId: node.id,
+                runtime: true,
+                state: true
             }
+            RestService.getNode(params)
+                .then(function (data) {
+                    $scope.selectedNode = data;
+
+                    if (node !== null) {
+                        $scope.showProperties = {
+                            properties: node.properties,
+                            relationships: node.relationships,
+                            general: {
+                                'name': node.id,
+                                'type': node.type,
+                                'state': $scope.getNodeStateData(node.id).state
+                            }
+                        };
+                        $scope.propSection = 'general';
+                    } else {
+                        $scope.propSection = 'overview';
+                    }
+                });
         };
 
         $scope.getNodeStateData = function(nodeId) {
