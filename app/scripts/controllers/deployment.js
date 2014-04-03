@@ -125,7 +125,7 @@ angular.module('cosmoUi')
                 nodeId: node.id,
                 runtime: true,
                 state: true
-            }
+            };
             RestService.getNode(params)
                 .then(function (data) {
                     $scope.selectedNode = data;
@@ -442,8 +442,7 @@ angular.module('cosmoUi')
                 else {
                     processDone = calcProgress(deployment.reachables, deployment.total);
                     deployment.process = {
-                        'done': processDone,
-                        'failed': 100 - processDone
+                        'done': 100 - processDone
                     };
                 }
 
@@ -473,7 +472,7 @@ angular.module('cosmoUi')
         }
 
         function calcState(state, instances) {
-            return Math.round(state > 0 ? (state / instances / 6 * 100) : 0);
+            return Math.round(state > 0 ? (state / instances / 7 * 100) : 0);
         }
 
         function calcProgress(partOf, instances) {
