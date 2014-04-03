@@ -157,7 +157,7 @@ app.post('/backend/deployments/workflows/get', function(request, response) {
     });
 });
 
-app.get('/backend/node/get', function(request, response) {
+app.post('/backend/node/get', function(request, response) {
     var queryParams = {};
     if (request.body.state !== undefined) {
         queryParams.state = request.body.state;

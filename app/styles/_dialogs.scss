@@ -47,10 +47,21 @@
       position: absolute;
       right: 0px;
       top: 5px;
+      background: url("/images/x_idle.png") no-repeat center center;
+      width: 32px;
+      height: 32px;
       cursor: pointer;
       background-color: transparent;
       border: none;
       padding-right: 0px;
+
+      &:hover {
+        background: url("/images/x_hover.png") no-repeat center center;
+      }
+
+      &:active {
+        background: url("/images/x_pressed.png") no-repeat center center;
+      }
     }
   }
 
@@ -64,6 +75,14 @@
     padding-left: 20px;
     padding-top: 10px;
     background-color: $clr-base-00;
+
+    label {
+      width: 95%;
+      height: 100%;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      overflow: hidden;
+    }
   }
 
   .dialogDeploymentName {

@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('cosmoUi')
-    .controller('BlueprintsIndexCtrl', function ($scope, $location, $cookieStore, RestService, BreadcrumbsService) {
+    .controller('BlueprintsIndexCtrl', function ($scope, $location, $cookieStore, RestService, BreadcrumbsService, $timeout) {
         $scope.isAddDialogVisible = false;
         $scope.isDeployDialogVisible = false;
         $scope.lastExecutedPlan = null;
@@ -42,7 +42,9 @@ angular.module('cosmoUi')
                         updateDeployments();
 
                         if ($scope.isAddDialogVisible) {
-                            $scope.toggleAddDialog();
+                            $timeout(function() {
+                                $scope.toggleAddDialog();
+                            }, 100);
                         }
                     }
 
@@ -51,8 +53,18 @@ angular.module('cosmoUi')
                 });
         };
 
+        $scope.uploadDone = function(blueprint_id) {
+            $scope.redirectTo({
+                id: blueprint_id
+            });
+        };
+
         $scope.redirectToDeployments = function() {
             $location.path('/deployments');
+        };
+
+        $scope.redirectToDeployment = function(deployment_id, blueprint_id) {
+            $location.path('/deployment').search({id: deployment_id, blueprintId: blueprint_id});
         };
 
         $scope.cosmoConnectionError = function() {

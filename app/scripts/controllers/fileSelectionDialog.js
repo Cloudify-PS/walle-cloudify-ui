@@ -40,8 +40,10 @@ angular.module('cosmoUi')
                 success: function() {
                     $scope.$apply(function() {
                         $scope.uploadError = false;
+                        $scope.uploadDone($scope.blueprintName);
                     });
-                    $scope.loadBlueprints();
+
+                    $scope.uploadDone($scope.blueprintName);
                 },
                 error: function(e) {
                     $scope.errorMessage = JSON.parse(e.responseText).message;

@@ -41,7 +41,7 @@
         <div id="uploadDialogContainer" class="dialogBox">
             <div class="dialogTitle">{{ 'blueprints.uploadPopup.title' | i18n }}</div>
             <div class="dialogDescription">{{ 'blueprints.uploadPopup.description' | i18n }}</div>
-            <div class="dialogClose dialogButton" ng-click="closeDialog()">X</div>
+            <div class="dialogClose dialogButton" ng-click="closeDialog()"></div>
             <form id="uploadForm" name="uploadForm">
                 <div id="browse">
                     <div id="browseBtn" class="dialogButton">{{ 'blueprints.uploadPopup.browseBtn' | i18n }}</div>
@@ -62,9 +62,11 @@
     <div ng-show="isDeployDialogVisible" ng-controller="DeployDialogCtrl">
         <div class="dialogBoxBg"></div>
         <div id="deployDialogContainer" class="dialogBox">
-            <div class="dialogTitle">{{ 'blueprints.deployDialog.title' | i18n }} {{selectedBlueprint.id}}</div>
+            <div class="dialogTitle">
+                <label>{{ 'blueprints.deployDialog.title' | i18n }} {{selectedBlueprint.id}}</label>
+            </div>
             <div class="dialogDescription">{{ 'blueprints.deployDialog.description' | i18n }}</div>
-            <div class="dialogClose dialogButton" ng-click="closeDialog()">X</div>
+            <div class="dialogClose dialogButton" ng-click="closeDialog()"></div>
             <div class="dialogDeploymentName">
                 <input type="text" ng-model="deploymentId" placeholder="{{ 'blueprints.deployDialog.deployName' | i18n }}">
             </div>
