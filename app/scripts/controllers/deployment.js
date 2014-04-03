@@ -130,14 +130,15 @@ angular.module('cosmoUi')
                 .then(function (data) {
                     $scope.selectedNode = data;
 
-                    if (node !== null) {
+                    if (data !== null) {
                         $scope.showProperties = {
-                            properties: node.properties,
-                            relationships: node.relationships,
+                            properties: data.properties,
+                            relationships: data.relationships,
                             general: {
-                                'name': node.id,
-                                'type': node.type,
-                                'state': $scope.getNodeStateData(node.id).state
+                                'name': data.id,
+                                'type': data.type,
+                                'state': $scope.getNodeStateData(data.id).state,
+                                'ip': data.runtimeInfo !== null ? data.runtimeInfo.ip : ''
                             }
                         };
                         $scope.propSection = 'general';
@@ -301,7 +302,10 @@ angular.module('cosmoUi')
             blueprintCoordinateService.setMap(dataMap['cloudify.relationships.connected_to']);
 
             // Connection between nodes
-            $scope.map = dataMap['cloudify.relationships.contained_in'].reverse();
+            $scope.map = [];
+            if (dataMap['cloudify.relationships.contained_in'] !== undefined) {
+                $scope.map = dataMap['cloudify.relationships.contained_in'].reverse();
+            }
             $scope.coordinates = blueprintCoordinateService.getCoordinates();
             $scope.deployments = deploymentModel;
 
