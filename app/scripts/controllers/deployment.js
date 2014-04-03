@@ -268,23 +268,26 @@ angular.module('cosmoUi')
             /**
              * Networks
              */
-                // Filter data for Networks
-            PlanDataConvert.nodesToNetworks(dataPlan);
-            $scope.networks = dataPlan.network;
-            bpNetworkService.setMap(dataPlan.network.relations);
+            // Filter data for Networks
+            var networks = PlanDataConvert.nodesToNetworks(dataPlan);
+            $scope.networks = networks;
+            bpNetworkService.setMap(networks.relations);
+
 
             // Render Networks
             $timeout(function(){
                 $scope.networkcoords = bpNetworkService.getCoordinates();
                 bpNetworkService.render();
-            }, 3000);
+            }, 100);
 
             /**
              * Blueprint
              */
+            var topology = PlanDataConvert.nodesToTopology(dataPlan);
+
             // Convert edges to angular format
-            if (dataPlan.hasOwnProperty('edges') && !!dataPlan.edges) {
-                dataMap = PlanDataConvert.edgesToBlueprint(dataPlan.edges);
+            if (topology.hasOwnProperty('edges') && !!topology.edges) {
+                dataMap = PlanDataConvert.edgesToBlueprint(topology.edges);
             }
 
             // Index data by ID
@@ -302,8 +305,7 @@ angular.module('cosmoUi')
             blueprintCoordinateService.setMap(dataMap['cloudify.relationships.connected_to']);
 
             // Connection between nodes
-            $scope.map = [];
-            if (dataMap['cloudify.relationships.contained_in'] !== undefined) {
+            if(dataMap.hasOwnProperty('cloudify.relationships.contained_in')) {
                 $scope.map = dataMap['cloudify.relationships.contained_in'].reverse();
             }
             $scope.coordinates = blueprintCoordinateService.getCoordinates();
@@ -440,8 +442,7 @@ angular.module('cosmoUi')
                 else {
                     processDone = calcProgress(deployment.reachables, deployment.total);
                     deployment.process = {
-                        'done': processDone,
-                        'failed': 100 - processDone
+                        'done': 100 - processDone
                     };
                 }
 
@@ -471,7 +472,7 @@ angular.module('cosmoUi')
         }
 
         function calcState(state, instances) {
-            return Math.round(state > 0 ? (state / instances / 6 * 100) : 0);
+            return Math.round(state > 0 ? (state / instances / 7 * 100) : 0);
         }
 
         function calcProgress(partOf, instances) {
@@ -506,16 +507,6 @@ angular.module('cosmoUi')
                 return 'failed';
             default:
                 return 'install';
-            }
-        };
-
-        // Get Icon by Type
-        $scope.getIcon = function (type) {
-            switch (type) {
-            case 'server':
-                return 'app-server';
-            case 'host':
-                return 'host';
             }
         };
 

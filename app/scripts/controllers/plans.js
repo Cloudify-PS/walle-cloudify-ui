@@ -39,9 +39,9 @@ angular.module('cosmoUi')
              * Networks
              */
             // Filter data for Networks
-            PlanDataConvert.nodesToNetworks(dataPlan);
-            $scope.networks = dataPlan.network;
-            bpNetworkService.setMap(dataPlan.network.relations);
+            var networks = PlanDataConvert.nodesToNetworks(dataPlan);
+            $scope.networks = networks;
+            bpNetworkService.setMap(networks.relations);
 
 
             // Render Networks
@@ -53,9 +53,11 @@ angular.module('cosmoUi')
             /**
              * Blueprint
              */
+            var topology = PlanDataConvert.nodesToTopology(dataPlan);
+
             // Convert edges to angular format
-            if (dataPlan.hasOwnProperty('edges') && !!dataPlan.edges) {
-                dataMap = PlanDataConvert.edgesToBlueprint(dataPlan.edges);
+            if (topology.hasOwnProperty('edges') && !!topology.edges) {
+                dataMap = PlanDataConvert.edgesToBlueprint(topology.edges);
             }
 
             // Index data by ID
