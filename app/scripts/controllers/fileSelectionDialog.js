@@ -69,7 +69,7 @@ angular.module('cosmoUi')
 
         // Temporary solution - should be handled by Cosmo, not UI side
         function _validateBlueprintName(blueprintName) {
-            if(/[^a-zA-Z0-9]/.test(blueprintName)) {
+            if(/[^a-zA-Z0-9_]/.test(blueprintName)) {
                 $scope.errorMessage = 'Invalid blueprint name. Only Alphanumeric text allowed.';
                 $scope.uploadError = true;
                 $scope.uploadInProcess = false;
