@@ -15,7 +15,7 @@ angular.module('cosmoUi')
                     { 'route' : ['#blueprints', '#blueprint'] ,                       'icon' : 'plans' ,                'label':'Blueprints'},
                     { 'route' : ['#deployments', '#deployment'] ,                     'icon' : 'deployments' ,          'label':'Deployments'},
                     { 'route' : ['#monitoring'] ,                                     'icon' : 'monitoring' ,           'label':'Monitoring',       isDisabled: true},
-                    { 'route' : ['#logs'] ,                                           'icon' : 'logs' ,                 'label':'Logs'},
+                    { 'route' : ['#logs'] ,                                           'icon' : 'logs' ,                 'label':'Logs & Events'},
                     { 'route' : ['#hosts'] ,                                          'icon' : 'hosts' ,                'label':'Hosts',            isDisabled: true},
                     { 'route' : ['#networks'] ,                                       'icon' : 'networks' ,             'label':'Networks',         isDisabled: true},
                     { 'route' : ['#floating-ips'] ,                                   'icon' : 'floating-ips' ,         'label':'Floating IPs',     isDisabled: true},
