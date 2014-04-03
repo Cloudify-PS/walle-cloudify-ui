@@ -125,7 +125,7 @@ angular.module('cosmoUi')
                 nodeId: node.id,
                 runtime: true,
                 state: true
-            }
+            };
             RestService.getNode(params)
                 .then(function (data) {
                     $scope.selectedNode = data;
