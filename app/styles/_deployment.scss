@@ -31,13 +31,26 @@
               float: left;
               width: 200px;
 
-              .fa {
+              i {
                 position: relative;
                 top: 2px;
                 left: 3px;
-                font-size: 35px;
-                color: #bcbcbc;
                 cursor: pointer;
+                width: 32px;
+                height: 32px;
+                display: inline-block;
+
+                &.play {
+                  background-image: url('../images/play_idle.png');
+                }
+
+                &.disabled {
+                  background-image: url('../images/play_disabled.png');
+                }
+
+                &:hover {
+                  background-image: url('../images/play_selected.png');
+                }
               }
 
               .deploymentExecute {
