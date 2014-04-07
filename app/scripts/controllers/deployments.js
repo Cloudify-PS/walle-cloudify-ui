@@ -121,7 +121,7 @@ angular.module('cosmoUi')
             if ($location.path() === '/deployments') {
                 $timeout(function(){
                     _loadExecutions(blueprintId, deploymentId);
-                }, 3000);
+                }, 10000);
             }
         }
 
