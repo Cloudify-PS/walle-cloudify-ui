@@ -46,6 +46,7 @@ table.table {
                 padding: 5px 0px 5px 10px;
 
               i {
+                color: $clr-base-11;
                 width: 32px;
                 height: 32px;
                 display: inline-block;
@@ -68,6 +69,8 @@ table.table {
                 }
 
                 &.deployment-pause {
+                  margin-top: 2px;
+
                   &.pause {
                     background-image: url($img-deployment-pause);
                   }
@@ -114,20 +117,20 @@ table.table {
 
 .gs-selection-button {
   width: 150px;
-  height: 35px;
+  //height: 35px;
   float: left;
   margin-right: 5px;
 
   .gs-select {
     min-width: 0px;
-    height: 35px;
+    height: 32px;
     width: 150px;
-    color: $clr-base-20;
+    color: $clr-base-11;
     background-color: $clr-base-01;
     font-weight: bold;
     padding: 5px 10px 5px 10px;
     border-radius: 5px;
-    border: 2px solid $clr-base-04;
+    border: 1px solid $clr-base-04;
     float: left;
     font-size: 14px;
     box-shadow: none;
@@ -157,7 +160,7 @@ table.table {
   .select-list-arrow {
     background-color: $clr-base-01;
     width: 24px;
-    height: 31px;
+    height: 29px;
     position: relative;
     left: 122px;
     top: 2px;
@@ -167,7 +170,7 @@ table.table {
       content: "";
       position: relative;
       left: 7px;
-      bottom: 17px;
+      bottom: 15px;
       border-left: 5px solid transparent;
       border-right: 5px solid transparent;
       border-top: 5px solid $clr-base-20;

@@ -39,16 +39,17 @@
     }
 
     .executingWorkflow {
-      margin-top: 10px;
       min-width: 0px;
-      height: 35px;
+      height: 32px;
       width: 150px;
-      color: #53bbf1;
-      background-color: white;
+      color: $clr-base-11;
+      background-color: $clr-base-05;
       font-weight: bold;
       padding: 5px 10px 5px 10px;
+      margin-right: 5px;
+      margin-top: 2px;
       border-radius: 5px;
-      border: 2px solid #cadbec;
+      border: 1px solid #cadbec;
       float: left;
       font-size: 14px;
       box-shadow: none;

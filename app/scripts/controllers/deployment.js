@@ -232,7 +232,7 @@ angular.module('cosmoUi')
             if ($location.path() === '/deployment') {
                 $timeout(function(){
                     _loadExecutions();
-                }, 3000);
+                }, 60000);
             }
         }
 
