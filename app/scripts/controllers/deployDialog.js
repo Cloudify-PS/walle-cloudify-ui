@@ -39,7 +39,7 @@ angular.module('cosmoUi')
 
         // Temporary solution - should be handled by Cosmo, not UI side
         function _validateDeploymentName(deploymentName) {
-            if(/[^a-zA-Z0-9]/.test(deploymentName)) {
+            if(/[^a-zA-Z0-9_]/.test(deploymentName)) {
                 $scope.deployErrorMessage = 'Invalid deployment name. Only Alphanumeric text allowed.';
                 $scope.deployError = true;
 
