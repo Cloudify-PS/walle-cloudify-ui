@@ -38,17 +38,24 @@
       float: left;
     }
 
-    .cancel-execution {
-      padding-top: 8px;
-      font-size: 30px;
-    }
-
     .executingWorkflow {
-      font-size: 14px;
-      float: left;
       margin-top: 10px;
-      width: 155px;
-      padding-left: 10px;
+      min-width: 0px;
+      height: 35px;
+      width: 150px;
+      color: #53bbf1;
+      background-color: white;
+      font-weight: bold;
+      padding: 5px 10px 5px 10px;
+      border-radius: 5px;
+      border: 2px solid #cadbec;
+      float: left;
+      font-size: 14px;
+      box-shadow: none;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      appearance: none;
+      cursor: default;
     }
   }
 

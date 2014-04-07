@@ -40,39 +40,62 @@
                 height: 32px;
                 display: inline-block;
 
-                &.play {
-                  background-image: url('../images/play_idle.png');
+                &.deployment-play {
+                  &.play {
+                    background-image: url($img-deployment-play);
+                  }
+
+                  &.disabled {
+                    background-image: url($img-deployment-play-disabled);
+                  }
+
+                  &:hover {
+                    background-image: url($img-deployment-play-selected);
+                  }
                 }
 
-                &.disabled {
-                  background-image: url('../images/play_disabled.png');
-                }
+                &.deployment-pause {
+                  &.pause {
+                    background-image: url($img-deployment-pause);
+                  }
 
-                &:hover {
-                  background-image: url('../images/play_selected.png');
+                  &:hover {
+                    background-image: url($img-deployment-pause-selected);
+                  }
                 }
               }
 
-              .deploymentExecute {
-                float: left;
-                width: 25px;
-                height: 25px;
-                background: url("/images/progress.gif") no-repeat center center;
-                background-color: #fff;
-                border-radius: 25px;
-                display: inline-block;
-                position: relative;
-                top: 2px;
-                cursor: pointer;
-              }
+              //.deploymentExecute {
+              //  float: left;
+              //  width: 25px;
+              //  height: 25px;
+              //  background: url("/images/progress.gif") no-repeat center center;
+              //  background-color: #fff;
+              //  border-radius: 25px;
+              //  display: inline-block;
+              //  position: relative;
+              //  top: 2px;
+              //  cursor: pointer;
+              //}
 
               .executingWorkflow {
-                font-size: 14px;
-                width: 65px;
-                display: inline-block;
+                margin-top: 10px;
+                min-width: 0px;
+                height: 35px;
+                width: 150px;
+                color: #53bbf1;
+                background-color: white;
+                font-weight: bold;
+                padding: 5px 10px 5px 10px;
+                border-radius: 5px;
+                border: 2px solid #cadbec;
                 float: left;
-                position: relative;
-                top: 5px;
+                font-size: 14px;
+                box-shadow: none;
+                -webkit-appearance: none;
+                -moz-appearance: none;
+                appearance: none;
+                cursor: default;
               }
             }
         }
