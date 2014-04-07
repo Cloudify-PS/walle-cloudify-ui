@@ -44,6 +44,27 @@ table.table {
                 border: none;
                 background-color: transparent;
                 padding: 5px 0px 5px 10px;
+
+              i {
+                width: 32px;
+                height: 32px;
+                display: inline-block;
+                line-height: 1;
+                -webkit-font-smoothing: antialiased;
+                -moz-osx-font-smoothing: grayscale;
+
+                &.play {
+                  background-image: url('../images/play_idle.png');
+                }
+
+                &.disabled {
+                  background-image: url('../images/play_disabled.png');
+                }
+
+                &.selected {
+                  background-image: url('../images/play_selected.png');
+                }
+              }
             }
             //&:nth-child(odd) {
             //    background-color: $COSMOUI_LIST_LINE_ODD_BACKGROUND;

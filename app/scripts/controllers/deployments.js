@@ -24,7 +24,7 @@ angular.module('cosmoUi')
             });
 
         $scope.executeDeployment = function(deployment) {
-            if ($scope.isExecuteEnabled(deployment)) {
+            if ($scope.isExecuteEnabled(deployment.id)) {
                 RestService.executeDeployment({
                     deploymentId: $scope.selectedDeployment.id,
                     workflowId: selectedWorkflows[$scope.selectedDeployment.id]
@@ -71,8 +71,8 @@ angular.module('cosmoUi')
             });
         };
 
-        $scope.isExecuteEnabled = function() {
-            return selectedWorkflows[$scope.selectedDeployment.id] !== undefined;
+        $scope.isExecuteEnabled = function(deployment_id) {
+            return selectedWorkflows[deployment_id] !== undefined;
         };
 
         $scope.toggleConfirmationDialog = function(deployment, confirmationType) {

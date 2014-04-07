@@ -30,7 +30,7 @@
                         <div class="select-list-arrow"></div>
                     </div>
                     <div class="executingWorkflow" ng-show="isExecuting(deployment.blueprintId, deployment.id)">{{getExecutionAttr(deployment, 'workflowId')}}</div>
-                    <i class="fa fa-play-circle-o" ng-click="toggleConfirmationDialog(deployment, 'execute')" ng-show="!isExecuting(deployment.blueprintId, deployment.id)"></i>
+                    <i ng-class="{play: isExecuteEnabled(deployment.id), disabled: !isExecuteEnabled(deployment.id)}" ng-click="toggleConfirmationDialog(deployment, 'execute')" ng-show="!isExecuting(deployment.blueprintId, deployment.id)"></i>
                     <i ng-class="{deploymentExecute: isExecuting(deployment.blueprintId, deployment.id)}" ng-show="isExecuting(deployment.blueprintId, deployment.id)"></i>
                     <i class="cancel-execution fa fa-times-circle left" ng-show="isExecuting(deployment.blueprintId, deployment.id)" ng-click="toggleConfirmationDialog(deployment, 'cancel')"></i>
                 </td>
