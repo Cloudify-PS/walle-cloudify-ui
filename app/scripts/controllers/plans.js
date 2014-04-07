@@ -60,6 +60,8 @@ angular.module('cosmoUi')
                 dataMap = PlanDataConvert.edgesToBlueprint(topology.edges);
             }
 
+            PlanDataConvert.allocateAbandonedNodes(topology, dataMap);
+
             // Index data by ID
             if (dataPlan.hasOwnProperty('nodes') && !!dataPlan.nodes) {
                 $scope.indexNodes = {};

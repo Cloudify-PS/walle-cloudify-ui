@@ -198,6 +198,7 @@
         .box {
             position: relative;
             display: inline-block;
+            min-width: 200px;
             min-height: 140px;
             border-width: 2px;
             border-color: #136e9d;

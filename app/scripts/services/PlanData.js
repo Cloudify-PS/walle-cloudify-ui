@@ -114,6 +114,31 @@ angular.module('cosmoUi').service('PlanDataConvert', function (Cosmotypesservice
         return result;
     };
 
+    this.allocateAbandonedNodes = function (topology, dataMap) {
+        function _isAbandonedNode(node) {
+            for(var t in topology.edges) {
+                var edge = topology.edges[t];
+                if(edge.source === node.id || edge.target === node.id) {
+                    return false;
+                }
+            }
+            return true;
+        }
+        if(!dataMap.hasOwnProperty('cloudify.relationships.contained_in')) {
+            dataMap['cloudify.relationships.contained_in'] = [];
+        }
+        for (var n in topology.nodes) {
+            var node = topology.nodes[n];
+            if(_isAbandonedNode(node)) {
+                dataMap['cloudify.relationships.contained_in'].push({
+                    'children': [],
+                    'id': node.id,
+                    'type': 'cloudify.relationships.contained_in'
+                });
+            }
+        }
+    };
+
     function findNode(tree, type, id) {
         for (var i = 0; i < tree.length; i++) {
             var node = tree[i];
