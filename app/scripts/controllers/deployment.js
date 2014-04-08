@@ -290,6 +290,8 @@ angular.module('cosmoUi')
                 dataMap = PlanDataConvert.edgesToBlueprint(topology.edges);
             }
 
+            PlanDataConvert.allocateAbandonedNodes(topology, dataMap);
+
             // Index data by ID
             if (dataPlan.hasOwnProperty('nodes') && !!dataPlan.nodes) {
                 totalNodes = 0;
@@ -418,7 +420,7 @@ angular.module('cosmoUi')
                         }
                         if(statesIndex.indexOf(nodeInstance.state) > 0 || statesIndex.indexOf(nodeInstance.state) < 7) {
                             var stateNum = statesIndex.indexOf(nodeInstance.state);
-                            if(stateNum === 6) {
+                            if(stateNum === 7) {
                                 _completed++;
                             }
                             _states += stateNum;
@@ -454,6 +456,8 @@ angular.module('cosmoUi')
                     setDeploymentStatus(deployment, processDone);
                 }
             }
+
+            console.log(['deploymentModel', deploymentModel]);
         }
 
         function setDeploymentStatus(deployment, process) {

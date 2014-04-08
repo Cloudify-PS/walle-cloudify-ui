@@ -130,7 +130,7 @@ angular.module('cosmoUi')
         this.render = function () {
             $timeout(function(){
                 render();
-            }, 1500);
+            }, 2000);
         };
 
         function render() {
