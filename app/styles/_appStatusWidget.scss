@@ -104,10 +104,10 @@
             background-color: #136e9d !important;
         }
     }
-    &[status='6'] {
-        .gauge {
-            @extend .pieInProgress;
-            background-color: #136e9d !important;
-        }
-    }
+    &[status='6'], &[status='7'] {
+         .gauge {
+             @extend .pieInProgress;
+             background-color: #136e9d !important;
+         }
+     }
 }
