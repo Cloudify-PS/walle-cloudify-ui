@@ -123,7 +123,8 @@ angular.module('cosmoUi')
                         parsedData.relationships.push({
                             source: nodeId,
                             target: nodeIdMapping[relationshipsArr[i].target_id].id,
-                            type: relationshipsArr[i].type
+                            type: relationshipsArr[i].type,
+                            baseType: relationshipsArr[i].base
                         });
                     }
                 }

@@ -72,11 +72,11 @@ angular.module('cosmoUi')
             }
 
             // Set Map
-            blueprintCoordinateService.setMap(dataMap['cloudify.relationships.connected_to']);
+            blueprintCoordinateService.setMap(dataMap.connected);
 
             // Connection between nodes
-            if(dataMap.hasOwnProperty('cloudify.relationships.contained_in')) {
-                $scope.map = dataMap['cloudify.relationships.contained_in'].reverse();
+            if(dataMap.hasOwnProperty('contained')) {
+                $scope.map = dataMap.contained.reverse();
             }
             $scope.coordinates = blueprintCoordinateService.getCoordinates();
             $scope.dataTable = PlanDataConvert.nodesToTable(dataPlan);
