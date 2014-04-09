@@ -106,7 +106,7 @@ angular.module('cosmoUi')
             $scope.isDeployDialogVisible = $scope.isDeployDialogVisible === false;
         };
 
-        $scope.redirectToDeployments = function(blueprint) {
-            $location.path('/deployments').search({blueprint_id: blueprint.id});
+        $scope.redirectToDeployment = function(deployment_id, blueprint_id) {
+            $location.path('/deployment').search({id: deployment_id, blueprintId: blueprint_id});
         };
     });
