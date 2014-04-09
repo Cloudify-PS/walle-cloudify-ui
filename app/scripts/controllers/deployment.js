@@ -437,14 +437,13 @@ angular.module('cosmoUi')
                 if(deployment.states < 100) {
                     processDone = deployment.states;
                     deployment.process = {
-                        'done': deployment.states,
-                        'failed': 0
+                        'done': deployment.states
                     };
                 }
                 else {
                     processDone = calcProgress(deployment.reachables, deployment.total);
                     deployment.process = {
-                        'done': 100 - processDone
+                        'done': processDone
                     };
                 }
 
