@@ -24,7 +24,7 @@ angular.module('cosmoUi')
                 icon: 'event-icon-workflow-started',
                 class: 'event-text-green'
             },
-            'workflow_success': {
+            'workflow_succeeded': {
                 text: 'Workflow end successfully',
                 icon: 'event-icon-workflow-end-successfully',
                 class: 'event-text-green'

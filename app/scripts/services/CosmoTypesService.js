@@ -7,6 +7,8 @@ angular.module('cosmoUi')
             'host': [
                 'cloudify.openstack.server',
                 'cloudify.types.server',
+                'cloudify.types.host',
+                'cloudify.types.middleware_server',
                 'server',
                 'host'
             ],
@@ -80,6 +82,10 @@ angular.module('cosmoUi')
                 'cloudify.types.app_module',
                 'app_module',
                 'app-module'
+            ],
+            'load-balancer': [
+                'cloudify.types.load_balancer',
+                'load-balancer'
             ]
         };
 
