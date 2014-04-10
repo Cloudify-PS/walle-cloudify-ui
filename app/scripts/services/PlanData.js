@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('cosmoUi').service('PlanData', function () {
+angular.module('cosmoUi').service('PlanData', function ($log) {
 
     // AngularJS will instantiate a singleton by calling "new" on this function
 
@@ -14,11 +14,11 @@ angular.module('cosmoUi').service('PlanData', function () {
         // returns node from which we inherit or NULL if cannot find one
         function _addType(type) {
             if (!typesMap.hasOwnProperty(type.name)) {
-                console.log(['adding type', type.name, type]);
+                $log.info(['adding type', type.name, type]);
                 typesMap[type.name] = type;
                 typesList.push(type);
             } else {
-                console.log(['got duplicate definition for type ', type, typesMap[type.name]  ]);
+                $log.info(['got duplicate definition for type ', type, typesMap[type.name]  ]);
             }
         }
 

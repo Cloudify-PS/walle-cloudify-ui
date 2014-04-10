@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('cosmoUi')
-    .directive('header', function () {
+    .directive('header', function ($log) {
         return {
             templateUrl: 'views/headerTemplate.html',
             restrict: ' A',
@@ -11,11 +11,11 @@ angular.module('cosmoUi')
                 };
 
                 scope.searchCloudify = function() {
-                    console.log('search ' + element.find('#search-field').val());
+                    $log.info('search ' + element.find('#search-field').val());
                 };
 
                 scope.logout = function() {
-                    console.log('logout');
+                    $log.info('logout');
                 };
             }
         };

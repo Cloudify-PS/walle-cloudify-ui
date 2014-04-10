@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('cosmoUi')
-    .controller('DeploymentsCtrl', function ($scope, RestService, $cookieStore, $location, $routeParams, BreadcrumbsService, $timeout) {
+    .controller('DeploymentsCtrl', function ($scope, RestService, $cookieStore, $location, $routeParams, BreadcrumbsService, $timeout, $log) {
 
         $scope.blueprints = null;
         $scope.deployments = [];
@@ -94,7 +94,7 @@ angular.module('cosmoUi')
         };
 
         $scope.redirectTo = function (deployment) {
-            console.log(['redirecting to', deployment]);
+            $log.info(['redirecting to', deployment]);
             $location.path('/deployment').search({id: deployment.id, blueprintId: deployment.blueprintId});
         };
 

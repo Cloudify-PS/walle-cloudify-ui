@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('cosmoUi')
-    .controller('DeploymentCtrl', function ($scope, $rootScope, $cookieStore, $routeParams, RestService, EventsService, BreadcrumbsService, YamlService, PlanDataConvert, blueprintCoordinateService, bpNetworkService, $route, $anchorScroll, $timeout, Cosmotypesservice, $location) {
+    .controller('DeploymentCtrl', function ($scope, $rootScope, $cookieStore, $routeParams, RestService, EventsService, BreadcrumbsService, YamlService, PlanDataConvert, blueprintCoordinateService, bpNetworkService, $route, $anchorScroll, $timeout, Cosmotypesservice, $location, $log) {
 
         var totalNodes = 0,
             deploymentModel = {},
@@ -115,7 +115,7 @@ angular.module('cosmoUi')
             if ( !!eventMapping && eventCSSMap.hasOwnProperty(eventMapping) ){
                 return eventCSSMap[eventMapping][field];
             } else {
-                console.log([event, 'does not have field', field]);
+                $log.info([event, 'does not have field', field]);
                 return '';
             }
         }
@@ -212,7 +212,7 @@ angular.module('cosmoUi')
         };
 
         $scope.refreshPage = function () {
-            console.log('refreshing deployment page');
+            $log.info('refreshing deployment page');
             $route.reload();
         };
 
@@ -457,7 +457,7 @@ angular.module('cosmoUi')
                 }
             }
 
-            console.log(['deploymentModel', deploymentModel]);
+            $log.info(['deploymentModel', deploymentModel]);
         }
 
         function setDeploymentStatus(deployment, process) {
@@ -622,7 +622,7 @@ angular.module('cosmoUi')
                         }
                     }
                     else {
-                        console.warn('Cant load events, undefined data.');
+                        $log.info('Cant load events, undefined data.');
                         troubleShoot++;
                     }
                     $scope.filterLoading = false;

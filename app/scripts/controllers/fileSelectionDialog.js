@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('cosmoUi')
-    .controller('FileSelectionDialogCtrl', function ($scope) {
+    .controller('FileSelectionDialogCtrl', function ($scope, $log) {
         var selectedFile = null;
         $scope.uploadEnabled = false;
         $scope.uploadInProcess = false;
@@ -12,11 +12,11 @@ angular.module('cosmoUi')
 
         $scope.onFileSelect = function ($files) {
             $scope.selectedFile = $files[0];
-            console.log(['files were selected', $files]);
+            $log.info(['files were selected', $files]);
         };
 
         $scope.uploadFile = function() {
-            console.log(['upload: ', selectedFile]);
+            $log.info(['upload: ', selectedFile]);
 
             if (!$scope.isUploadEnabled() || !_validateBlueprintName($scope.blueprintName)) {
                 return;
