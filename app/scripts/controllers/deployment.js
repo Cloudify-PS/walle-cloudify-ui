@@ -531,13 +531,13 @@ angular.module('cosmoUi')
             'nodes': null
         };
 
+        var lastAmount = 0;
         function executeEvents(autoPull) {
             $scope.filterLoading = true;
             $scope.newEvents = 0;
             $scope.eventHits = [];
             var troubleShoot = 0,
                 executeRetry = 10,
-                lastAmount = 0,
                 eventsCollect = [];
 
             function _reverse(array) {
@@ -558,6 +558,10 @@ angular.module('cosmoUi')
                                 $scope.newEvents = eventsCollect.length - $scope.eventHits.length;
                             }
                             lastAmount = data.hits.hits.length;
+                        }
+                        else {
+                            $scope.newEvents = 0;
+                            $scope.eventHits = _reverse(data.hits.hits);
                         }
                     }
                     else {

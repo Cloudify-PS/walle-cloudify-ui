@@ -49,13 +49,13 @@ angular.module('cosmoUi')
         $scope.eventTypeList = [];
         $scope.filterLoading = false;
 
+        var lastAmount = 0;
         function executeLogs(autoPull) {
             $scope.filterLoading = true;
             $scope.newLogs = 0;
             $scope.logsHits = [];
             var troubleShoot = 0,
                 executeRetry = 10,
-                lastAmount = 0,
                 eventsCollect = [],
                 lastData = [];
 
@@ -88,6 +88,9 @@ angular.module('cosmoUi')
                                 $scope.newLogs = eventsCollect.length - $scope.logsHits.length;
                             }
                             lastAmount = lastData.length;
+                        }
+                        else {
+                            pushLogs();
                         }
                     }
                     else {
