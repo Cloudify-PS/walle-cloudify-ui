@@ -2,129 +2,95 @@
 
 angular.module('cosmoUi')
     .service('Cosmotypesservice', function Cosmotypesservice() {
-        var typeData = [
-            {
-                name: 'cloudify.openstack.server',
-                baseType: 'host'
-            },
-            {
-                name: 'server',
-                baseType: 'host'
-            },
-            {
-                name: 'cloudify.openstack.network',
-                baseType: 'network'
-            },
-            {
-                name: 'network',
-                baseType: 'network'
-            },
-            {
-                name: 'cloudify.openstack.subnet',
-                baseType: 'subnet'
-            },
-            {
-                name: 'subnet',
-                baseType: 'subnet'
-            },
-            {
-                name: 'cloudify.openstack.router',
-                baseType: 'router'
-            },
-            {
-                name: 'router',
-                baseType: 'router'
-            },
-            {
-                name: 'cloudify.openstack.virtual_ip',
-                baseType: 'floating-ip'
-            },
-            {
-                name: 'cloudfiy.openstack.virtual_ip',
-                baseType: 'floating-ip'
-            },
-            {
-                name: 'cloudify.openstack.floatingip',
-                baseType: 'floating-ip'
-            },
-            {
-                name: 'cloudfiy.openstack.floatingip',
-                baseType: 'floating-ip'
-            },
-            {
-                name: 'virtual_ip',
-                baseType: 'floating-ip'
-            },
-            {
-                name: 'cloudify.openstack.security_group',
-                baseType: 'security-group'
-            },
-            {
-                name: 'cloudfiy.openstack.security_group',
-                baseType: 'security-group'
-            },
-            {
-                name: 'security_group',
-                baseType: 'security-group'
-            },
-            {
-                name: 'cloudify.openstack.port',
-                baseType: 'port'
-            },
-            {
-                name: 'port',
-                baseType: 'port'
-            },
-            {
-                name: 'cloudify.types.bash.web_server',
-                baseType: 'web-server'
-            },
-            {
-                name: 'cloudify.types.web_server',
-                baseType: 'web-server'
-            },
-            {
-                name: 'web_server',
-                baseType: 'web-server'
-            },
-            {
-                name: 'cloudify.types.bash.qpp_server',
-                baseType: 'app-server'
-            },
-            {
-                name: 'qpp_server',
-                baseType: 'app-server'
-            },
-            {
-                name: 'cloudify.types.bash.db_server',
-                baseType: 'db-server'
-            },
-            {
-                name: 'db_server',
-                baseType: 'db-server'
-            },
-            {
-                name: 'cloudify.types.bash.message_bus_server',
-                baseType: 'message-bus-server'
-            },
-            {
-                name: 'message_bus_server',
-                baseType: 'message-bus-server'
-            },
-            {
-                name: 'cloudify.types.bash.app_module',
-                baseType: 'app-module'
-            },
-            {
-                name: 'app_module',
-                baseType: 'app-module'
-            }
-        ];
+
+        var typeData = {
+            'host': [
+                'cloudify.openstack.server',
+                'cloudify.types.server',
+                'server',
+                'host'
+            ],
+            'network': [
+                'cloudify.openstack.network',
+                'cloudify.types.network',
+                'network'
+            ],
+            'subnet': [
+                'cloudify.openstack.subnet',
+                'cloudify.types.subnet',
+                'subnet'
+            ],
+            'router': [
+                'cloudify.openstack.router',
+                'cloudify.types.router',
+                'router'
+            ],
+            'floating-ip': [
+                'cloudify.openstack.virtual_ip',
+                'cloudify.types.virtual_ip',
+                'cloudfiy.openstack.virtual_ip',
+                'cloudfiy.types.virtual_ip',
+                'cloudify.openstack.floatingip',
+                'cloudify.types.floatingip',
+                'cloudfiy.openstack.floatingip',
+                'cloudfiy.types.floatingip',
+                'virtual_ip',
+                'floating-ip'
+            ],
+            'security-group': [
+                'cloudify.openstack.security_group',
+                'cloudify.types.security_group',
+                'cloudfiy.openstack.security_group',
+                'cloudfiy.types.security_group',
+                'security_group',
+                'security-group'
+            ],
+            'port': [
+                'cloudify.openstack.port',
+                'cloudify.types.port',
+                'port'
+            ],
+            'web-server': [
+                'cloudify.types.bash.web_server',
+                'cloudify.openstack.web_server',
+                'cloudify.types.web_server',
+                'web_server',
+                'web-server'
+            ],
+            'app-server': [
+                'cloudify.types.bash.app_server',
+                'cloudify.types.app_server',
+                'app_server',
+                'app-server'
+            ],
+            'db-server': [
+                'cloudify.types.bash.db_server',
+                'cloudify.types.db_server',
+                'db_server',
+                'db-server'
+            ],
+            'message-bus-server': [
+                'cloudify.types.bash.message_bus_server',
+                'cloudify.types.message_bus_server',
+                'message_bus_server',
+                'message-bus-server'
+            ],
+            'app-module': [
+                'cloudify.types.bash.app_module',
+                'cloudify.types.app_module',
+                'app_module',
+                'app-module'
+            ]
+        };
 
         function _getTypeData(typeName) {
-            for (var i = 0; i < typeData.length; i++) {
-                if (typeData[i].name === typeName) {
-                    return typeData[i];
+            for (var baseType in typeData) {
+                var typesList = typeData[baseType];
+                if(typesList.indexOf(typeName) !== -1) {
+                    return {
+                        baseType: baseType,
+                        name: typeName
+                    };
                 }
             }
             return {
