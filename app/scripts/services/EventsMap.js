@@ -34,6 +34,11 @@ angular.module('cosmoUi')
                 icon: 'event-icon-workflow-failed',
                 class: 'event-text-red'
             },
+            'workflow_cancelled': {
+                text: 'Workflow Cancelled',
+                icon: 'event-icon-workflow-cancelled',
+                class: 'event-text-red'
+            },
             'workflow_stage': {
                 text: 'Workflow Stage',
                 icon: 'event-icon-task-sent',
