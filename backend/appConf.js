@@ -39,6 +39,8 @@
  *
  */
 
+var log4js = require('log4js');
+var logger = log4js.getLogger('server');
 
 var publicConfiguration = {
     i18n: {
@@ -78,14 +80,14 @@ var meConf = null;
 try {
     meConf = require("../conf/dev/meConf");
 } catch( e ) {
-    console.log("meConf does not exist. ignoring.. " + e);
+    logger.debug("meConf does not exist. ignoring.. " + e);
 }
 
 var gsSettings = null;
 try {
     gsSettings = require("./gsSettings");
 } catch( e ) {
-    console.log("gsSettings does not exist. ignoring.. " + e);
+    logger.debug("gsSettings does not exist. ignoring.. " + e);
 }
 
 var publicConfigurationInitialized = false;

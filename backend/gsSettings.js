@@ -1,4 +1,6 @@
 var fs = require('fs');
+var log4js = require('log4js');
+var logger = log4js.getLogger('server');
 
 var settingsObj = null;
 
@@ -15,9 +17,9 @@ exports.write = function( settingsObj ) {
 
     fs.writeFile("backend/settings.json", JSON.stringify(settingsObj, null, 2), function(err) {
         if(err) {
-            console.log(err);
+            logger.info(err);
         } else {
-            console.log("settings.json was saved!");
+            logger.info("settings.json was saved!");
         }
     });
 };

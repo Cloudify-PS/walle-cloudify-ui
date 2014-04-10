@@ -19,7 +19,7 @@ function createRequest(requestData, callback) {
             return;
         }
 
-        console.log('STATUS: ' + res.statusCode);
+        logger.info('STATUS: ' + res.statusCode);
 
         res.on('data', function (chunk) {
             result += chunk;
@@ -36,7 +36,7 @@ function createRequest(requestData, callback) {
     };
 
     var onError = function(e) {
-        console.log('problem with request: ' + e.message);
+        logger.info('problem with request: ' + e.message);
         _callback(e, null);
     };
 
@@ -55,7 +55,7 @@ function createRequest(requestData, callback) {
 }
 
 function createRequestData(options) {
-    console.log(options);
+    logger.info(options);
     var requestData = {};
 
     if (options !== undefined) {
@@ -112,7 +112,7 @@ Cloudify4node.addBlueprint = function(application_archive, blueprint_id, callbac
 
     var req = ajax.request(options, function(res) {
         var responseMessage = "";
-        console.log('statusCode: ' + res.statusCode);
+        logger.info('statusCode: ' + res.statusCode);
         res.on('data', function (chunk) {
             responseMessage += chunk.toString();
             logger.debug('chunk: ' + chunk.toString());
@@ -128,7 +128,7 @@ Cloudify4node.addBlueprint = function(application_archive, blueprint_id, callbac
     });
 
     req.on('error', function(e) {
-        console.log('problem with request: ' + e.message);
+        logger.info('problem with request: ' + e.message);
     });
 
     fs.readFile(myFile.path, function(err, data) {

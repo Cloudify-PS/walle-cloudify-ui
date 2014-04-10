@@ -10,12 +10,13 @@ function isLocalhost(){
 
 var express = require('express');
 var _ = require('lodash');
-var ajax = require("http");
 var app = express();
 var port = 9001;
 var gsSettings = require("./backend/gsSettings");
 var conf = require("./backend/appConf");
 var cloudify4node;
+var log4js = require('log4js');
+var logger = log4js.getLogger('server');
 
 
 if (conf.useMock) {
@@ -24,7 +25,7 @@ if (conf.useMock) {
     cloudify4node = require("./backend/Cloudify4node");
 }
 
-console.log(JSON.stringify(conf));
+logger.debug(JSON.stringify(conf));
 
 if (conf.cloudifyLicense !== 'tempLicense') {
     throw new Error('invalid license');
@@ -43,7 +44,7 @@ app.use(express.methodOverride());
  * Express automatically sets the environment to 'development'
  */
 if (process.env.NODE_ENV === 'production' || process.argv[2] === 'production') {
-    console.log('Setting production env variable');
+    logger.debug('Setting production env variable');
     app.set('env', 'production');
 
     // this 'dev' variable is available to Jade templates
@@ -269,7 +270,7 @@ app.use(function(err, req, res, next) {
     // we possibly recovered from the error, simply next().
     res.status(err.status || (err.status = 500));
 
-    console.error('Server error catch-all says: ', err);
+    logger.debug('Server error catch-all says: ', err);
 
     // prevent users from seeing specific error messages in production
     if (app.get('env') !== 'development') {
@@ -329,4 +330,4 @@ app.get('/', function(req, res, next){
 
 
 app.listen(port);
-console.log('Express started on port ' + port);
+logger.debug('Express started on port ' + port);

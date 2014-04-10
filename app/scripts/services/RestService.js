@@ -21,7 +21,6 @@ angular.module('cosmoUi')
                     callParams = params;
                 }
                 return $http(callParams).then(function(data) {
-                    //console.log(['data loaded',data]);
                     return data.data;
                 }, function(e) {
                     throw e;

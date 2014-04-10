@@ -1,12 +1,12 @@
 'use strict';
 
 angular.module('cosmoUi')
-    .controller('MainCtrl', function ($scope, YamlService, $routeParams) {
+    .controller('MainCtrl', function ($scope, YamlService, $routeParams, $log) {
         var appName = $routeParams.name || 'mezzanine-app';
-        console.log(['appName is', appName]);
+        $log.info(['appName is', appName]);
         YamlService.load($routeParams.id, function (err, result) {
             if (err) {
-                console.log(err);
+                $log.info(err);
                 $scope.json = 'ERROR : ' + err.message;
             } else {
                 $scope.dataContainer = result;

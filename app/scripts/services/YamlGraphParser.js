@@ -139,32 +139,6 @@ angular.module('cosmoUi')
             };
 
             this.parseResult = function (result) {
-//                console.log(["parsing",result]);
-
-//                if (result.types !== undefined) {
-//                    for (var type in result.types) {
-//                        if ($.inArray(type, parsedData.types === -1)) {
-//                            var typeArr = [];
-//                            typeArr.push(type);
-//                            if (result.types[type].derived_from !== undefined) {
-//                                typeArr.push(result.types[type].derived_from);
-//                            }
-//                            parsedData.types.push(typeArr);
-//                        }
-//                    }
-//                }
-
-//                if (result.application_template !== undefined) {
-//                    var templateValue = result.application_template;
-//                    var topology = templateValue.hasOwnProperty('topology') ? templateValue.topology : undefined;
-//
-//                    if (parsedData.serviceTemplates.length > 0) {
-//                        parsedData.serviceTemplates.concat(_createNodes(topology));
-//                    } else {
-//                        parsedData.serviceTemplates = _createNodes(topology);
-//                    }
-//                }
-
                 _createNodes(result);
 
                 _generateJSON();

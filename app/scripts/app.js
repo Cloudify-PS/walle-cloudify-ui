@@ -53,7 +53,7 @@ angular.module('cosmoUi', ['gsUiInfraApp', 'angularFileUpload', 'ngCookies', 'ng
             .otherwise({
                 redirectTo: isSettingsExists ? '/blueprints' : '/config'
             });
-    }]).run(['I18next', 'RestService', function(I18next, RestService) {
+    }]).run(['I18next', 'RestService', function(I18next, RestService, $log) {
 
         RestService.getConfiguration().then(function (data) {
             var i18nConf = data.i18n;
@@ -63,7 +63,7 @@ angular.module('cosmoUi', ['gsUiInfraApp', 'angularFileUpload', 'ngCookies', 'ng
                 });
             }
         }, function () {
-            console.log('problem loading configuration for i18n init');
+            $log.info('problem loading configuration for i18n init');
         });
 
     }]);
