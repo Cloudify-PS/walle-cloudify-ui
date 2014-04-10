@@ -304,11 +304,11 @@ angular.module('cosmoUi')
             }
 
             // Set Map
-            blueprintCoordinateService.setMap(dataMap['cloudify.relationships.connected_to']);
+            blueprintCoordinateService.setMap(dataMap.connected);
 
             // Connection between nodes
-            if(dataMap.hasOwnProperty('cloudify.relationships.contained_in')) {
-                $scope.map = dataMap['cloudify.relationships.contained_in'].reverse();
+            if(dataMap.hasOwnProperty('contained')) {
+                $scope.map = dataMap.contained.reverse();
             }
             $scope.coordinates = blueprintCoordinateService.getCoordinates();
             $scope.deployments = deploymentModel;
@@ -437,14 +437,13 @@ angular.module('cosmoUi')
                 if(deployment.states < 100) {
                     processDone = deployment.states;
                     deployment.process = {
-                        'done': deployment.states,
-                        'failed': 0
+                        'done': deployment.states
                     };
                 }
                 else {
                     processDone = calcProgress(deployment.reachables, deployment.total);
                     deployment.process = {
-                        'done': 100 - processDone
+                        'done': processDone
                     };
                 }
 

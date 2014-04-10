@@ -80,7 +80,7 @@
                 <td class="node">{{log._source.context.operation == undefined && '-' || log._source.context.operation}}</td>
                 <td class="node">{{log._source.context.node_name == undefined && '-' || log._source.context.node_name}}</td>
                 <td class="node">{{log._source.context.node_id == undefined && '-' || log._source.context.node_id}}</td>
-                <td class="task">{{log._source.context.task_name == undefined && '-' || log._source.context.task_name}}</td>
+                <td class="task">{{log._source.message.text == undefined && '-' || log._source.message.text}}</td>
             </tr>
             <tr class="details" data-ng-show="isOpen">
                 <td colspan="8">

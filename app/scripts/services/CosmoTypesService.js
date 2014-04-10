@@ -80,6 +80,10 @@ angular.module('cosmoUi')
                 baseType: 'web-server'
             },
             {
+                name: 'cloudify.types.web_server',
+                baseType: 'web-server'
+            },
+            {
                 name: 'web_server',
                 baseType: 'web-server'
             },
