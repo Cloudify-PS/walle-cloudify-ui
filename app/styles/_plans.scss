@@ -187,7 +187,6 @@
             width: 36px;
             height: 36px;
             border-radius: 19px;
-            position: relative;
             color: white;
             &:after {
                 position: absolute;
@@ -259,9 +258,16 @@
                     box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.4);
                     > .badge {
                         position: absolute;
+                        display: inline-block;
                         z-index: 1;
                         top: -8px;
                         left: 20px;
+                        min-width: 20px;
+                        border-radius: 10px;
+                        padding: 3px 7px;
+                        vertical-align: baseline;
+                        white-space: nowrap;
+                        text-align: center;
                         background-color: $install;
                         text-decoration: none;
                         font-family: "OpenSansBold";
