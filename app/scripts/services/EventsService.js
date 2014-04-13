@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('cosmoUi')
-    .service('EventsService', function EventsService($http, $timeout, $q, ejsResource) {
+    .service('EventsService', function EventsService($http, $timeout, $q, ejsResource, $log) {
 
         function Events(server) {
 
@@ -127,7 +127,7 @@ angular.module('cosmoUi')
                 }
                 results.then(function(data){
                     if(data.hasOwnProperty('error')) {
-                        console.error(data.error);
+                        $log.error(data.error);
                     }
                     else if(angular.isFunction(callbackFn)) {
                         callbackFn(data);

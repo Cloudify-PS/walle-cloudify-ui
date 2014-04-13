@@ -7,7 +7,7 @@
     <div class="content-section">
         <div class="filters">
 
-            <span>
+            <div class="filter">
                 Blueprints:<br>
                 <div multi:select:menu
                      data-multiple="true"
@@ -15,9 +15,9 @@
                      data-ng-model="eventsFilter.blueprints"
                      data-init="{{ filterModel.blueprints }}"
                      data-text="Choose Blueprints"></div>
-            </span>
+            </div>
 
-            <span data-ng-show="deploymentsList.length">
+            <div class="filter" data-ng-show="deploymentsList.length">
                 Deployments:<br>
                 <div multi:select:menu
                      data-multiple="true"
@@ -26,9 +26,9 @@
                      data-filter="eventsFilter.blueprints"
                      data-init="{{ filterModel.deployments }}"
                      data-text="Choose Deployments"></div>
-            </span>
+            </div>
 
-            <span data-ng-show="executionList.length">
+            <div class="filter" data-ng-show="executionList.length">
                 Executions:<br>
                 <div multi:select:menu
                      data-multiple="true"
@@ -36,9 +36,9 @@
                      data-ng-model="eventsFilter.executions"
                      data-init="{{ filterModel.executions }}"
                      data-text="Choose Execution"></div>
-            </span>
+            </div>
 
-            <span>
+            <div class="filter">
                 Timeframe (from {{ timeframeFrom }}):<br>
                 <div multi:select:menu
                      data-options="timeframeList"
@@ -47,7 +47,7 @@
                      data-text="Choose timeframe"
                      data-onchange="filterEventsByTimeframe(filter)"></div>
 
-            </span>
+            </div>
 
             <button class="gs-btn" data-ng-click="execute()">Show</button>
 

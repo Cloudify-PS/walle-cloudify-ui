@@ -79,7 +79,7 @@ angular.module('cosmoUi').service('PlanData', function ($log) {
 });
 
 
-angular.module('cosmoUi').service('PlanDataConvert', function (Cosmotypesservice) {
+angular.module('cosmoUi').service('PlanDataConvert', function (Cosmotypesservice, $log) {
     /**
      * Convert Edges to Blueprint format
      * @param data
@@ -231,7 +231,7 @@ angular.module('cosmoUi').service('PlanDataConvert', function (Cosmotypesservice
             return dataTable;
         }
         else {
-            console.warn('Missing data: cannot convert nodes to table [ PlanDataConvert.nodesToTable() ]');
+            $log.warn('Missing data: cannot convert nodes to table [ PlanDataConvert.nodesToTable() ]');
         }
     };
 

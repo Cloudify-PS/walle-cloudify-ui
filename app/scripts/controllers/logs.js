@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('cosmoUi')
-    .controller('LogsCtrl', function ($scope, BreadcrumbsService, RestService, EventsService, $location, $anchorScroll, $filter, $routeParams, LogsModel, $window, EventsMap) {
+    .controller('LogsCtrl', function ($scope, BreadcrumbsService, RestService, EventsService, $location, $anchorScroll, $filter, $routeParams, LogsModel, $window, EventsMap, $log) {
 
         /**
          * Breadcrumbs
@@ -94,7 +94,7 @@ angular.module('cosmoUi')
                         }
                     }
                     else {
-                        console.warn('Cant load events, undefined data.');
+                        $log.warn('Cant load events, undefined data.');
                         troubleShoot++;
                     }
                     $scope.filterLoading = false;

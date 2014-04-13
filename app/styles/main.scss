@@ -26,8 +26,6 @@ $gs-infra-root:'../bower_components/gs-ui-infra';
 $fa-font-path:'../bower_components/font-awesome/fonts';
 @import '../bower_components/font-awesome/scss/font-awesome';
 
-@import '../bower_components/bootstrap-sass/lib/bootstrap';
-
 /** Pages **/
 @import './blueprintsIndex';
 @import './eventsIndex';
@@ -36,6 +34,9 @@ $fa-font-path:'../bower_components/font-awesome/fonts';
 @import './deployment';
 @import './config';
 @import './logs';
+
+/** Bootstap **/
+@import '../bower_components/bootstrap-sass/lib/bootstrap';
 
 .embeded {
     #header, #left-side-menu, #footer, .no-embed {
