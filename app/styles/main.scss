@@ -1,4 +1,5 @@
 
+
 /** White Labeling **/
 @import './whitelabel';
 
@@ -18,15 +19,14 @@
 @import './common';
 @import './animate';
 
-@import '../bower_components/bootstrap-sass/lib/bootstrap';
-
-
 $gs-infra-root:'../bower_components/gs-ui-infra';
 @import '../bower_components/gs-ui-infra/app/styles/main.scss';
 
 /** Fonts **/
 $fa-font-path:'../bower_components/font-awesome/fonts';
 @import '../bower_components/font-awesome/scss/font-awesome';
+
+@import '../bower_components/bootstrap-sass/lib/bootstrap';
 
 /** Pages **/
 @import './blueprintsIndex';
