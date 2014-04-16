@@ -151,12 +151,13 @@
       top: 30px;
 
       #fileInput {
-        top: 5px;
-        position: relative;
+        top: 0px;
+        position: absolute;
         opacity: 0;
         left: 20px;
         z-index: 9998;
         width: 390px;
+        height: 35px;
       }
 
       #browseBtn {
