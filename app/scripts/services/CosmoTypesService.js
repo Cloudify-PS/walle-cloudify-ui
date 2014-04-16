@@ -95,13 +95,15 @@ angular.module('cosmoUi')
                 if(typesList.indexOf(typeName) !== -1) {
                     return {
                         baseType: baseType,
-                        name: typeName
+                        name: typeName,
+                        icon: baseType
                     };
                 }
             }
             return {
                 baseType: typeName,
-                name: typeName
+                name: typeName,
+                icon: 'fa fa-question'
             };
         }
 
