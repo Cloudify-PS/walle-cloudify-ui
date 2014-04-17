@@ -103,7 +103,7 @@ angular.module('cosmoUi')
             return {
                 baseType: typeName,
                 name: typeName,
-                icon: 'fa fa-question'
+                icon: 'fa fa-laptop'
             };
         }
 
