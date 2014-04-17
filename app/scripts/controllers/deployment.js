@@ -559,7 +559,7 @@ angular.module('cosmoUi')
                             }
                             lastAmount = data.hits.hits.length;
                         }
-                        else {
+                        else if(JSON.stringify($scope.eventHits) === JSON.stringify(_reverse(data.hits.hits))) {
                             $scope.newEvents = 0;
                             $scope.eventHits = _reverse(data.hits.hits);
                         }
