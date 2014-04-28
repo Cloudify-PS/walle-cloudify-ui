@@ -31,16 +31,16 @@
                     </div>
                     <div class="executingWorkflow" ng-show="isExecuting(deployment.blueprintId, deployment.id)">{{getExecutionAttr(deployment, 'workflowId')}}</div>
                     <i class="deployment-play" ng-class="{play: isExecuteEnabled(deployment.id), playDisabled: !isExecuteEnabled(deployment.id)}" ng-click="toggleConfirmationDialog(deployment, 'execute')" ng-show="!isExecuting(deployment.blueprintId, deployment.id)"></i>
-                    <div class="deployment-execute">
-                        <!--<i ng-class="{deploymentExecute: isExecuting(deployment.blueprintId, deployment.id)}" ng-show="isExecuting(deployment.blueprintId, deployment.id)"></i>-->
-                    </div>
+                    <!--<div class="deployment-execute">-->
+                        <i ng-class="{deploymentExecute: isExecuting(deployment.blueprintId, deployment.id)}" ng-show="isExecuting(deployment.blueprintId, deployment.id)"></i>
+                    <!--</div>-->
                     <i class="deployment-pause pause" ng-show="isExecuting(deployment.blueprintId, deployment.id)" ng-click="toggleConfirmationDialog(deployment, 'cancel')"></i>
                 </td>
             </tr>
         </tbody>
     </table>
 
-    <div class="no-blueprints-message" ng-show="blueprints.length == 0">{{ 'deployments.emptyMessage' | i18n }}</div>
+    <div class="no-blueprints-message" ng-show="deployments.length == 0">{{ 'deployments.emptyMessage' | i18n }}</div>
 
     <div class="loading" ng-show="blueprints == null && !cosmoConnectionError()"></div>
 

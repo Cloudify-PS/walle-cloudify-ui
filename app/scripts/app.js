@@ -51,7 +51,8 @@ angular.module('cosmoUi', ['gsUiInfraApp', 'angularFileUpload', 'ngCookies', 'ng
                 controller: 'ConfigCtrl'
             })
             .otherwise({
-                redirectTo: isSettingsExists ? '/blueprints' : '/config'
+//                redirectTo: isSettingsExists ? '/blueprints' : '/config'
+                redirectTo: '/blueprints'
             });
     }]).run(['I18next', 'RestService', function(I18next, RestService, $log) {
 
