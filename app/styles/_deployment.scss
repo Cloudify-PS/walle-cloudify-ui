@@ -23,13 +23,11 @@
                 margin-left: 10px;
                 margin-top: 2px;
                 cursor: pointer;
-                float: left;
             }
 
             .actions {
               display: inline-block;
               margin-left: 30px;
-              float: left;
               width: 200px;
 
               i {
@@ -162,15 +160,16 @@
           border-top: 5px solid #333;
         }
 
-        .content-section {
-          padding-left: 0px;
+          .content-section {
+              position: relative;
+              padding-left: 0px;
 
-          .overview-node-name {
-            font-size: 16px;
-            font-weight: bold;
-            color: #333;
-            margin-bottom: 5px;
-          }
+              .overview-node-name {
+                  font-size: 16px;
+                  font-weight: bold;
+                  color: #333;
+                  margin-bottom: 5px;
+              }
 
           table.overview-data {
             margin-bottom: 30px;
