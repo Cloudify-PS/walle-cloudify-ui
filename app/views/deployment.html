@@ -143,7 +143,8 @@
                 <i class="deployment-play" ng-class="{play: isExecuteEnabled(), disabled: !isExecuteEnabled()}" ng-click="toggleConfirmationDialog(deployment, 'execute')" ng-show="!isExecuting()"></i>
 
                 <!--<div class="deployment-execute">-->
-                    <i ng-class="{deploymentExecute: isExecuting()}" ng-show="isExecuting()"></i>
+                <div dots-loader speed="20" ng-show="isExecuting()"></div>
+                    <!--i ng-class="{deploymentExecute: isExecuting()}" ng-show="isExecuting()"></i-->
                 <!--</div>-->
                 <i class="deployment-pause pause" ng-show="isExecuting()" ng-click="toggleConfirmationDialog(deployment, 'cancel')"></i>
             </div>
