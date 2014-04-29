@@ -46,6 +46,7 @@ angular.module('cosmoUi')
         $scope.selectNodesArr = [];
         $scope.selectedNode = null;
         $scope.executedData = null;
+        $scope.isConfirmationDialogVisible = false;
 
 
         var id = $routeParams.id;
