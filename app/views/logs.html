@@ -14,7 +14,8 @@
                      data-options="blueprintsList"
                      data-ng-model="eventsFilter.blueprints"
                      data-init="{{ filterModel.blueprints }}"
-                     data-text="Choose Blueprints"></div>
+                     data-text="Choose Blueprints"
+                     name="blueprints"></div>
             </div>
 
             <div class="filter" data-ng-show="deploymentsList.length">
@@ -25,7 +26,8 @@
                      data-ng-model="eventsFilter.deployments"
                      data-filter="eventsFilter.blueprints"
                      data-init="{{ filterModel.deployments }}"
-                     data-text="Choose Deployments"></div>
+                     data-text="Choose Deployments"
+                     name="deployments"></div>
             </div>
 
             <div class="filter" data-ng-show="executionList.length">
@@ -35,7 +37,8 @@
                      data-options="executionList"
                      data-ng-model="eventsFilter.executions"
                      data-init="{{ filterModel.executions }}"
-                     data-text="Choose Execution"></div>
+                     data-text="Choose Execution"
+                     name="executions"></div>
             </div>
 
             <div class="filter">
@@ -45,7 +48,8 @@
                      data-ng-model="eventsFilter.timeframe"
                      data-init="{{ filterModel.timeframe }}"
                      data-text="Choose timeframe"
-                     data-onchange="filterEventsByTimeframe(filter)"></div>
+                     data-onchange="filterEventsByTimeframe(filter)"
+                     name="timeframe"></div>
 
             </div>
 
