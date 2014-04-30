@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('cosmoUi')
-    .service('RestService', function RestService($http, $timeout, $q) {
+    .service('RestService', function RestService($http, $timeout, $q, $rootScope) {
 
         var autoPull = [],
             autoPullPromise = {};
@@ -67,7 +67,7 @@ angular.module('cosmoUi')
                 (function _internalLoad(){
                     fn(params).then(function(data){
                         deferred.notify(data);
-                        autoPullPromise[name] = $timeout(_internalLoad, 3000);
+                        autoPullPromise[name] = $timeout(_internalLoad, 15000);
                     });
                 })();
             }
@@ -80,6 +80,12 @@ angular.module('cosmoUi')
                 $timeout.cancel(autoPullPromise[name]);
             }
         }
+
+        $rootScope.$on('$locationChangeStart', function() {
+            for(var name in autoPullPromise) {
+                _autoPullStop(name);
+            }
+        });
 
         function _addBlueprint(params) {
             _load('blueprints/add', params);
