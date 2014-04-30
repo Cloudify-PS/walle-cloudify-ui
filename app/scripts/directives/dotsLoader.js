@@ -10,7 +10,6 @@ angular.module('cosmoUi')
             },
             link: function postLink(scope, element) {
                 scope.positionIndex = 1;
-                $timeout(updateDots, scope.speed);
 
                 function updateDots() {
                     element.find('#dotsImg').removeClass('pos-' + scope.positionIndex);
@@ -18,6 +17,8 @@ angular.module('cosmoUi')
                     element.find('#dotsImg').addClass('pos-' + scope.positionIndex);
                     $timeout(updateDots, scope.speed);
                 }
+
+                $timeout(updateDots, scope.speed);
             }
         };
     });

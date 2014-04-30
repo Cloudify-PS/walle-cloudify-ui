@@ -67,12 +67,10 @@
               }
 
               .deploymentExecute {
-                width: 35px;
-                height: 35px;
-                background: url("/images/preloader.gif") no-repeat center center;
-                background-color: #fff;
-                display: inline-block;
                 cursor: default;
+                position: relative;
+                left: 50px;
+                display: inline-block;
               }
 
               .executingWorkflow {

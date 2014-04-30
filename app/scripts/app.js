@@ -4,7 +4,7 @@ angular.module('cosmoUi', ['gsUiInfraApp', 'angularFileUpload', 'ngCookies', 'ng
 
     .config(['$routeProvider', function ($routeProvider) {
 
-        var isSettingsExists = window.isSettingsExists();
+        //var isSettingsExists = window.isSettingsExists();
 
         $routeProvider
             .when('/json', {

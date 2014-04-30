@@ -146,7 +146,8 @@ $COSMOUI_BLUEPRINT_DETAILS_BUTTON_PADDING: 0px 10px 0px 10px !default;
 $COSMOUI_BLUEPRINT_BUTTON_ACTIVE_COLOR: $clr-base-25;
 
 /** Deployment list page **/
-$COSMOUI_DEPLOYMENT_EXECUTE_COLOR: $clr-base-15;
+$COSMOUI_DEPLOYMENT_EXECUTE_COLOR: $clr-base-15 !default;
+$COSMOUI_DEPLOYMENT_RUNNING_WORKFLOW_DOTS: url("#{$img-dots-loader}") no-repeat !default;
 
 /** Deployment page **/
 $COSMOUI_DEPLOYMENT_EVENT_WIDGET_RIGHT: 20px;

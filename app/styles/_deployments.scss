@@ -1,13 +1,10 @@
 #deployments{
 
   .deploymentExecute {
-    margin-top: 10px;
-    margin-left: 4px;
-    width: 35px;
-    height: 35px;
-    background: url("/images/preloader.gif") no-repeat center center;
-    background-color: #fff;
-    border-radius: 25px;
+    cursor: default;
+    position: relative;
+    left: 50px;
+    display: inline-block;
   }
 
   .disable {
