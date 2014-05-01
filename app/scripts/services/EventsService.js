@@ -15,7 +15,7 @@ angular.module('cosmoUi')
             var oQuery = ejs.QueryStringQuery();
             var client = ejs.Request()
                 .from(0)
-                .size(100);
+                .size(1000);
             var activeFilters = {};
             var rangePrefix = 'range';
             var isAutoPull = false;
