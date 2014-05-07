@@ -6,7 +6,7 @@ angular.module('cosmoUi')
             Date.fromISO = (function () {
                 var testIso = '2011-11-24T09:00:27+0200';
                 // Chrome
-                var diso = Date.parse(testIso);
+//                var diso = Date.parse(testIso);
 //                if (diso === 1322118027000) {
 //                    return function (s) {
 //                        return new Date(Date.parse(s));

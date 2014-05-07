@@ -10,6 +10,7 @@ angular.module('cosmoUi')
                 'cloudify.types.host',
                 'cloudify.types.middleware_server',
                 'server',
+                'vm_host',
                 'host'
             ],
             'network': [

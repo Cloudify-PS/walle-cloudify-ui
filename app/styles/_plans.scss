@@ -476,7 +476,7 @@
     .networksContainer {
         position: relative;
         white-space: nowrap;
-        margin: 0 0 0 20px;
+        margin: 40px 0 0 20px;
         .relations {
             position: absolute;
             top: 0;
@@ -579,8 +579,9 @@
                         width: 30px;
                         height: 30px;
                         font-size: 60px;
+                        line-height: 5px;
                     }
-                    i.topology-glyph::before {
+                    i.topology-glyph:before {
                         font-size: 60px;
                         position: absolute;
                         top: -26px;
