@@ -110,8 +110,9 @@
     </div>
     <!-- Side Panel - END -->
 
-
     <div events-widget id="plans-index-events-widget" data-ng-model="eventHits" ng-show="section != 'events'"></div>
+
+
 
     <div id="deployment-header">
         <div class="header-right">
@@ -372,6 +373,8 @@
         </div>
     </div>
 
+    <div class="deployment-progress" ng-include="'views/deploymentProgress.html'"></div>
+
     <div ng-show="isConfirmationDialogVisible">
         <div class="dialogBoxBg"></div>
         <div id="confirmationDialogContainer" class="dialogBox">
@@ -386,4 +389,6 @@
             </div>
         </div>
     </div>
+
 </div>
+

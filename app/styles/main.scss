@@ -19,6 +19,7 @@
 @import './settingsToggles';
 @import './common';
 @import './animate';
+@import './deploymentProgress';
 
 $gs-infra-root:'../bower_components/gs-ui-infra';
 @import '../bower_components/gs-ui-infra/app/styles/main.scss';

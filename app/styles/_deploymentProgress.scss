@@ -1,0 +1,16 @@
+#deployment-progress {
+  width: 100%;
+  background-color: blue;
+//  position: absolute;
+//  bottom: 0px;
+
+  &.closed {
+    height: 20px;
+    border-top: 1px solid $clr-base-17;
+  }
+
+  &.opened {
+    height: 200px;
+    border-top: 20px solid $clr-base-00;
+  }
+}
