@@ -102,7 +102,7 @@ angular.module('cosmoUi')
             if(eventsMap.hasOwnProperty(event)) {
                 return eventsMap[event].icon;
             }
-            return;
+            return 'gs-icon-logs';
         };
 
     });

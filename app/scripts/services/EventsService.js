@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('cosmoUi')
-    .service('EventsService', function EventsService($http, $timeout, $q, ejsResource, $log) {
+    .service('EventsService', function EventsService($http, $timeout, $q, ejsResource, $log, $rootScope) {
 
         function Events(server) {
 
@@ -15,7 +15,7 @@ angular.module('cosmoUi')
             var oQuery = ejs.QueryStringQuery();
             var client = ejs.Request()
                 .from(0)
-                .size(100);
+                .size(1000);
             var activeFilters = {};
             var rangePrefix = 'range';
             var isAutoPull = false;
@@ -27,6 +27,13 @@ angular.module('cosmoUi')
                 'node': 'context.node_name',
                 'task': 'message.text'
             };
+
+            $rootScope.$on('$locationChangeStart', function() {
+                if(isAutoPull) {
+                    isAutoPull = false;
+                    $log.info('Stop pulling events.');
+                }
+            });
 
             function _isActiveFilter(field, term) {
                 return activeFilters.hasOwnProperty(field + term);
@@ -114,12 +121,14 @@ angular.module('cosmoUi')
             function execute(callbackFn, autoPull) {
                 var results;
                 if(sortField) {
+                    //$log.info(['Query 1: ', _applyFilters(oQuery.query('*')).toString()])
                     results = client
                         .query(_applyFilters(oQuery.query('*')))
                         .sort([sortField])
                         .doSearch();
                 }
                 else {
+                    //$log.info(['Query 2: ', _applyFilters(oQuery.query('*')).toString()])
                     results = client
                         .query(_applyFilters(oQuery.query('*')))
                         .sort([ejs.Sort('@timestamp').order('asc')])
