@@ -1,4 +1,16 @@
-<div id="deployment-progress" ng-controller="DeploymentProgressCtrl" ng-class="{'opened': panelOpen == true, 'closed': panelOpen == false}" ng-click="togglePanel()">
-    <div ng-show="!panelOpen">Closed</div>
-    <div ng-show="panelOpen">Opened</div>
+<div id="deployment-progress" ng-controller="DeploymentProgressCtrl" ng-class="{'opened': panelOpen == true, 'closed': panelOpen == false}">
+    <div ng-show="!panelOpen">
+        <div class="data name">Workflow name:</div>
+        <div class="data initialized">No. of instances initialized:</div>
+        <div class="data starting">Starting:</div>
+        <div class="data started">Started:</div>
+        <div class="data ready">Ready:</div>
+        <div class="data start-time">Started time:</div>
+
+        <div class="expand-button" ng-click="togglePanel()"></div>
+    </div>
+
+    <div ng-show="panelOpen">
+        <div class="collapse-button" ng-click="togglePanel()"></div>
+    </div>
 </div>

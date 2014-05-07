@@ -1,16 +1,53 @@
 #deployment-progress {
   width: 100%;
-  background-color: blue;
+  background-color: $clr-base-09;
 //  position: absolute;
 //  bottom: 0px;
 
   &.closed {
-    height: 20px;
-    border-top: 1px solid $clr-base-17;
+    height: 35px;
+    border-top: 1px solid $clr-base-28;
+    padding-left: 10px;
+    padding-top: 7px;
+
+    .data {
+      display: inline-block;
+      color: $clr-base-00;
+      font-size: 12px;
+
+      &.name, &.initialized, &.start-time {
+        width: 200px;
+      }
+
+      &.starting, &.started, &.ready {
+        width: 100px;
+      }
+    }
+
+    .expand-button {
+      background-color: blue;
+      width: 20px;
+      height: 20px;
+      float: right;
+      margin-right: 10px;
+      display: inline-block;
+      cursor: pointer;
+    }
   }
 
   &.opened {
     height: 200px;
     border-top: 20px solid $clr-base-00;
+
+    .collapse-button {
+      background-color: blue;
+      width: 20px;
+      height: 20px;
+      float: right;
+      margin-right: 10px;
+      margin-top: 10px;
+      display: inline-block;
+      cursor: pointer;
+    }
   }
 }
