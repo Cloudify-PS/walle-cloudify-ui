@@ -7,10 +7,28 @@
         <div class="data ready">Ready:</div>
         <div class="data start-time">Started time:</div>
 
+        <div class="panel-progress-bar">
+            <div class="" dots-loader speed="50"></div>
+        </div>
+
         <div class="expand-button" ng-click="togglePanel()"></div>
     </div>
 
     <div ng-show="panelOpen">
         <div class="collapse-button" ng-click="togglePanel()"></div>
+        <table>
+            <thead>
+                <tr>
+                    <th class="data name">Node name</th>
+                    <th class="data initialized">No. of instances initialized</th>
+                    <th class="data starting">Starting</th>
+                    <th class="data started">Started</th>
+                    <th class="data ready">Ready</th>
+                    <th class="data start-time">Started time</th>
+                    <th class="data finish-time">Finish time</th>
+                    <th class="data status">Status</th>
+                </tr>
+            </thead>
+        </table>
     </div>
 </div>
