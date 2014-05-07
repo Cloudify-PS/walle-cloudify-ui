@@ -97,12 +97,15 @@
                     }
                     &.icon {
                         width: 60px;
+                        min-width: 45px;
                     }
                     &.node, &.task, &.workflow {
                         width: 110px;
                     }
                     &.task {
                         width: auto;
+                        min-width: 330px;
+                        word-break: break-word;
                     }
                     &.date {
                         width: 200px;

@@ -340,7 +340,7 @@ angular.module('cosmoUi').service('PlanDataConvert', function (Cosmotypesservice
         function _getPortById(id) {
             var port = null;
             _foreach(data.nodes, function (node) {
-                if (node.id === id && _isType(node.type[0], ['port'])) {
+                if (node.id === id && _isType(Cosmotypesservice.getTypeData(node.type[0]).baseType, ['port'])) {
                     port = node;
                     return;
                 }
@@ -360,7 +360,7 @@ angular.module('cosmoUi').service('PlanDataConvert', function (Cosmotypesservice
 
         function _addNetworks(nodes) {
             _foreach(nodes, function (node) {
-                if (_isType(node.type[0], ['network'])) {
+                if (_isType(Cosmotypesservice.getTypeData(node.type[0]).baseType, ['network'])) {
                     networkModel.networks.push({
                         'id': node.id,
                         'name': node.name,
@@ -373,14 +373,14 @@ angular.module('cosmoUi').service('PlanDataConvert', function (Cosmotypesservice
 
         function _addSubnets(nodes) {
             _foreach(nodes, function (node) {
-                if (_isType(node.type[0], ['subnet'])) {
+                if (_isType(Cosmotypesservice.getTypeData(node.type[0]).baseType, ['subnet'])) {
                     var relations = _getRelationsBySource(node.id, ['contained']);
                     _foreach(relations, function (relation) {
                         var network = _getNetworkById(relation.target);
                         if (network !== null) {
                             network.subnets.push({
                                 'id': node.id,
-                                'name': node.name,
+                                'name': node.properties.subnet.name ? node.properties.subnet.name : node.name,
                                 'cidr': node.properties.subnet.cidr,
                                 'color': _getRandomColor(),
                                 'type': 'subnet'
@@ -394,7 +394,7 @@ angular.module('cosmoUi').service('PlanDataConvert', function (Cosmotypesservice
 
         function _addDevices(nodes) {
             _foreach(nodes, function (node) {
-                if (_isType(node.type[0], ['host'])) {
+                if (_isType(Cosmotypesservice.getTypeData(node.type[0]).baseType, ['host'])) {
                     var relations = _getRelationsBySource(node.id, ['connected', 'depends']);
                     _foreach(relations, function (relation) {
                         var port = _getPortById(relation.target);
@@ -420,7 +420,7 @@ angular.module('cosmoUi').service('PlanDataConvert', function (Cosmotypesservice
 
         function _addRouters(nodes) {
             _foreach(nodes, function (node) {
-                if (_isType(node.type[0], ['router'])) {
+                if (_isType(Cosmotypesservice.getTypeData(node.type[0]).baseType, ['router'])) {
                     var relations = _getRelationsByTarget(node.id, ['connected']);
                     _foreach(relations, function (relation) {
                         if(!_addExternalGateway(node)) {

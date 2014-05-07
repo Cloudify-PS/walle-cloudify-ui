@@ -6,12 +6,12 @@ angular.module('cosmoUi')
             Date.fromISO = (function () {
                 var testIso = '2011-11-24T09:00:27+0200';
                 // Chrome
-                var diso = Date.parse(testIso);
-                if (diso === 1322118027000) {
-                    return function (s) {
-                        return new Date(Date.parse(s));
-                    };
-                }
+//                var diso = Date.parse(testIso);
+//                if (diso === 1322118027000) {
+//                    return function (s) {
+//                        return new Date(Date.parse(s));
+//                    };
+//                }
                 // JS 1.8 gecko
                 var noOffset = function (s) {
                     var day = s.slice(0, -5).split(/\D/).map(function (itm) {
