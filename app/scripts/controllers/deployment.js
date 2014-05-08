@@ -245,6 +245,8 @@ angular.module('cosmoUi')
                 });
             }
 
+            blueprintCoordinateService.resetCoordinates();
+
             // Set Map
             blueprintCoordinateService.setMap(dataMap.connected);
 
