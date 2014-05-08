@@ -105,7 +105,7 @@ angular.module('cosmoUi')
                             general: {
                                 'name': data.id,
                                 'type': data.type,
-                                'state': $scope.getNodeStateData(data.id).state,
+                                'state': data.state,
                                 'ip': data.runtimeInfo !== null ? data.runtimeInfo.ip : ''
                             }
                         };
