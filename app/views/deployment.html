@@ -138,11 +138,15 @@
                          data-ng-model="selectedWorkflow.data"
                          data-text="Select workflow"></div>
                 </div>
-                <div class="executingWorkflow" ng-show="isExecuting()">{{executedData.workflowId}}</div>
+                <div class="executingWorkflow" ng-show="isExecuting()">
+                    {{executedData.workflowId}}
+                    <div class="deploymentExecute" dots-loader speed="50" ng-show="isExecuting()"></div>
+                </div>
                 <i class="deployment-play" ng-class="{play: isExecuteEnabled(), disabled: !isExecuteEnabled()}" ng-click="toggleConfirmationDialog(deployment, 'execute')" ng-show="!isExecuting()"></i>
 
                 <!--<div class="deployment-execute">-->
-                    <i ng-class="{deploymentExecute: isExecuting()}" ng-show="isExecuting()"></i>
+
+                    <!--i ng-class="{deploymentExecute: isExecuting()}" ng-show="isExecuting()"></i-->
                 <!--</div>-->
                 <i class="deployment-pause pause" ng-show="isExecuting()" ng-click="toggleConfirmationDialog(deployment, 'cancel')"></i>
             </div>

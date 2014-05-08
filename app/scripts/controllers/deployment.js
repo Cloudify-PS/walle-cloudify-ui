@@ -46,6 +46,7 @@ angular.module('cosmoUi')
         $scope.selectNodesArr = [];
         $scope.selectedNode = null;
         $scope.executedData = null;
+        $scope.isConfirmationDialogVisible = false;
 
 
         var id = $routeParams.id;
@@ -243,6 +244,8 @@ angular.module('cosmoUi')
                     totalNodes++;
                 });
             }
+
+            blueprintCoordinateService.resetCoordinates();
 
             // Set Map
             blueprintCoordinateService.setMap(dataMap.connected);

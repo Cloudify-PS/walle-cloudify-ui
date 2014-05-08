@@ -41,7 +41,7 @@ angular.module('cosmoUi')
             },
             'workflow_stage': {
                 text: 'Workflow Stage',
-                icon: 'event-icon-task-sent',
+                icon: 'event-icon-workflow-stage',
                 class: 'event-text-green'
             },
             'task_started': {

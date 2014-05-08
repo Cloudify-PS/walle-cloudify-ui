@@ -37,7 +37,10 @@ angular.module('cosmoUi')
                 contentType: false,
                 processData: false,
                 cache: false,
-                success: function() {
+                success: function(data) {
+                    if ($scope.blueprintName === undefined || $scope.blueprintName === '') {
+                        $scope.blueprintName = JSON.parse(data).id;
+                    }
                     $scope.$apply(function() {
                         $scope.uploadError = false;
                         $scope.uploadDone($scope.blueprintName);

@@ -29,6 +29,7 @@
             .actions {
               display: inline-block;
               margin-left: 30px;
+              margin-top: 2px;
               width: 230px;
 
               i {
@@ -66,12 +67,10 @@
               }
 
               .deploymentExecute {
-                width: 35px;
-                height: 35px;
-                background: url("/images/preloader.gif") no-repeat center center;
-                background-color: #fff;
-                display: inline-block;
                 cursor: default;
+                position: relative;
+                left: 50px;
+                display: inline-block;
               }
 
               .executingWorkflow {
@@ -404,6 +403,9 @@
                     }
                     &.event-text-red {
                         color: $COSMOUI_EVENTS_LIST_TEXT_FAILED;
+                    }
+                    &.event-icon-workflow-stage {
+                        background: url("#{$img-workflow-stage}") no-repeat center center;
                     }
                     &.event-icon-workflow-started {
                         background: url("#{$img-workflow-started}") no-repeat center center;

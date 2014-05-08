@@ -1,0 +1,26 @@
+.dots-loader {
+  width: 32px;
+  height: 10px;
+  float: left;
+
+  .dots {
+    width: 100%;
+    height: 100%;
+    background: $COSMOUI_DEPLOYMENT_RUNNING_WORKFLOW_DOTS;
+  }
+
+  .pos-1 {background-position: -17px 0px;}
+  .pos-2 {background-position: -17px -11px;}
+  .pos-3 {background-position: -17px -22px;}
+  .pos-4 {background-position: -17px -33px;}
+  .pos-5 {background-position: -17px -44px;}
+  .pos-6 {background-position: -17px -55px;}
+  .pos-7 {background-position: -17px -66px;}
+  .pos-8 {background-position: -17px -77px;}
+  .pos-9 {background-position: -17px -88px;}
+  .pos-10 {background-position: -17px -99px;}
+  .pos-11 {background-position: -17px -110px;}
+  .pos-12 {background-position: -17px -121px;}
+  .pos-13 {background-position: -17px -132px;}
+  .pos-14 {background-position: -17px -143px;}
+}

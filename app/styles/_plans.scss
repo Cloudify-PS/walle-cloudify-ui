@@ -37,7 +37,6 @@
             }
 
             .content-section{
-
               table {
                 padding: 9.5px;
                 font-size: 13px;
@@ -158,6 +157,10 @@
           margin-right: 20px;
           padding-top: 0px;
           padding-bottom: 0px;
+          -webkit-user-select: none;  /* Chrome all / Safari all */
+          -moz-user-select: none;     /* Firefox all */
+          -ms-user-select: none;      /* IE 10+ */
+          user-select: none;
 
           div {
             background-color: whitesmoke !important;
