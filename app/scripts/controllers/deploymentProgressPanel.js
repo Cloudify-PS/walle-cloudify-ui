@@ -1,9 +1,9 @@
 'use strict';
 
 angular.module('cosmoUi')
-    .controller('DeploymentProgressCtrl', function ($scope) {
+    .controller('DeploymentProgressPanelCtrl', function ($scope) {
         $scope.panelOpen = false;
-        $scope.nodes = [];
+        //$scope.nodes = [];
 
         $scope.togglePanel = function() {
             $scope.panelOpen = $scope.panelOpen === false;

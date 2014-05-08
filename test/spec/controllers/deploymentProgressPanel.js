@@ -1,17 +1,17 @@
 'use strict';
 
-describe('Controller: DeploymentProgressCtrl', function () {
+describe('Controller: DeploymentProgressPanelCtrl', function () {
 
   // load the controller's module
 //  beforeEach(module('cosmoUi'));
 //
-//  var DeploymentprogressCtrl,
+//  var DeploymentProgressPanelCtrl,
 //    scope;
 //
 //  // Initialize the controller and a mock scope
 //  beforeEach(inject(function ($controller, $rootScope) {
 //    scope = $rootScope.$new();
-//    DeploymentprogressCtrl = $controller('DeploymentprogressCtrl', {
+//    DeploymentProgressPanelCtrl = $controller('DeploymentProgressPanelCtrl', {
 //      $scope: scope
 //    });
 //  }));
