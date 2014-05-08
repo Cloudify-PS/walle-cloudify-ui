@@ -29,6 +29,18 @@
                     <th class="data status">Status</th>
                 </tr>
             </thead>
+            <tbody ng-repeat="node in nodes">
+                <tr>
+                    <td class="data name">{{ node.name }}</td>
+                    <td class="data initialized">{{ node.initialized }}</td>
+                    <td class="data starting">{{ node.started }}</td>
+                    <td class="data started">{{ node.started }}</td>
+                    <td class="data ready">{{ node.ready }}</td>
+                    <td class="data start-time">{{ node.startTime }}</td>
+                    <td class="data finish-time">{{ node.finishTime }}</td>
+                    <td class="data status">{{ node.status }}</td>
+                </tr>
+            </tbody>
         </table>
     </div>
 </div>

@@ -1,30 +1,32 @@
 #deployment-progress {
   width: 100%;
-  background-color: $clr-base-09;
+
 //  position: absolute;
 //  bottom: 0px;
 
+  font-size: 12px;
+  color: $clr-base-00;
+
+  .data {
+    display: inline-block;
+    position: relative;
+    bottom: 3px;
+
+    &.name, &.initialized, &.start-time {
+      width: 200px;
+    }
+
+    &.starting, &.started, &.ready {
+      width: 100px;
+    }
+  }
+
   &.closed {
+    background-color: $clr-base-09;
     height: 35px;
     border-top: 1px solid $clr-base-28;
     padding-left: 10px;
 
-    .data {
-      display: inline-block;
-      color: $clr-base-00;
-      font-size: 12px;
-      position: relative;
-      bottom: 3px;
-
-      &.name, &.initialized, &.start-time {
-        width: 200px;
-      }
-
-      &.starting, &.started, &.ready {
-        width: 100px;
-      }
-    }
-    
     .panel-progress-bar {
       width: 60px;
       height: 25px;
@@ -39,7 +41,7 @@
     }
 
     .expand-button {
-      background-color: blue;
+      background: url("#{$img-panel-expand}") no-repeat center center;
       width: 20px;
       height: 20px;
       margin-right: 10px;
@@ -47,16 +49,18 @@
       cursor: pointer;
       position: relative;
       top: 3px;
-      left: 50px;
+      left: 40px;
     }
   }
 
   &.opened {
+//    background-color: $clr-base-01;
+    background-color: $clr-base-09;
     height: 200px;
     border-top: 20px solid $clr-base-00;
 
     .collapse-button {
-      background-color: blue;
+      background: url("#{$img-panel-collapse}") no-repeat center center;
       width: 20px;
       height: 20px;
       float: right;
@@ -64,6 +68,16 @@
       margin-top: 10px;
       display: inline-block;
       cursor: pointer;
+    }
+
+    table {
+      position: relative;
+      top: 10px;
+      left: 10px;
+
+      th {
+        font-weight: normal;
+      }
     }
   }
 }
