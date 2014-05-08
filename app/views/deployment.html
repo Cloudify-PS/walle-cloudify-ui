@@ -112,12 +112,9 @@
 
     <div events-widget id="plans-index-events-widget" data-ng-model="eventHits" ng-show="section != 'events'"></div>
 
-
+    <div app-status-widget id="appStatus" ng-model="deployments['*'].process" status="{{ deployments['*'].state }}"></div>
 
     <div id="deployment-header">
-        <div class="header-right">
-            <div app-status-widget id="appStatus" ng-model="deployments['*'].process" status="{{ deployments['*'].state }}"></div>
-        </div>
         <div class="header-left">
             <div class="content-header">
                 <div class="breadcrumbs"><ul id="deployments" breadcrumbs></ul></div>

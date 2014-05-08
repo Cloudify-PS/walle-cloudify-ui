@@ -7,6 +7,18 @@
         z-index: 9998;
     }
 
+    #appStatus {
+      float: right;
+      width: $COSMOUI_DEPLOYMENT_APP_STATUS_WIDTH;
+      height: $COSMOUI_DEPLOYMENT_APP_STATUS_HEIGHT;
+      background: $COSMOUI_DEPLOYMENT_APP_STATUS_BACKGROUND;
+      border-bottom-left-radius: $COSMOUI_DEPLOYMENT_APP_STATUS_BORDER_BOTTOM_LEFT_RADIUS;
+      border-left: $COSMOUI_DEPLOYMENT_APP_STATUS_BORDER;
+      border-bottom: $COSMOUI_DEPLOYMENT_APP_STATUS_BORDER;
+      position: absolute;
+      right: 20px;
+    }
+
     #deployment-header {
         width: $COSMOUI_DEPLOYMENT_HEADER_WIDTH;
 
@@ -96,21 +108,11 @@
             }
         }
 
-        .header-right {
-            position: relative;
-            width: $COSMOUI_DEPLOYMENT_RIGHT_HEADER_WIDTH;
-            float: right;
-
-            #appStatus {
-                float: right;
-                width: $COSMOUI_DEPLOYMENT_APP_STATUS_WIDTH;
-                height: $COSMOUI_DEPLOYMENT_APP_STATUS_HEIGHT;
-                background: $COSMOUI_DEPLOYMENT_APP_STATUS_BACKGROUND;
-                border-bottom-left-radius: $COSMOUI_DEPLOYMENT_APP_STATUS_BORDER_BOTTOM_LEFT_RADIUS;
-                border-left: $COSMOUI_DEPLOYMENT_APP_STATUS_BORDER;
-                border-bottom: $COSMOUI_DEPLOYMENT_APP_STATUS_BORDER;
-            }
-        }
+//        .header-right {
+//            position: relative;
+//            width: $COSMOUI_DEPLOYMENT_RIGHT_HEADER_WIDTH;
+//            float: right;
+//        }
     }
 
     #right-side-menu {
