@@ -27,7 +27,6 @@
                              data-options="getWorkflows(deployment)"
                              data-ng-model="selectedWorkflow.data"
                              data-text="Select workflow"></div>
-                        <div class="select-list-arrow"></div>
                     </div>
                     <div class="executingWorkflow" ng-show="isExecuting(deployment.blueprintId, deployment.id)">
                         {{getExecutionAttr(deployment, 'workflowId')}}
