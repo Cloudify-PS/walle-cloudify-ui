@@ -1,5 +1,9 @@
 #blueprints-index{
 
+    #main-content-panel {
+      padding-right: 40px;
+    }
+
     table.table {
         .blueprintDeployed {
             color: $COSMOUI_BLUEPRINTS_DEPLOY_COLOR;
