@@ -62,7 +62,7 @@ angular.module('cosmoUi')
 
         BreadcrumbsService.push('deployments',
             {
-                href: '#/deployment',
+                href: '',
                 label: id,
                 id: 'deployment'
             });
