@@ -11,13 +11,14 @@
     display: inline-block;
     position: relative;
     bottom: 3px;
+    width: 20%;
 
-    &.name, &.initialized, &.start-time {
-      width: 200px;
+    &.name, &.status {
+      text-align: left;
     }
 
-    &.starting, &.started, &.ready {
-      width: 100px;
+    &.ready, &.failed, &.in-progress {
+      text-align: center;
     }
   }
 
@@ -26,6 +27,7 @@
     height: 35px;
     border-top: 1px solid $clr-base-28;
     padding-left: 10px;
+    position: relative;
 
     .panel-progress-bar {
       width: 60px;
@@ -44,39 +46,64 @@
       background: url("#{$img-panel-expand}") no-repeat center center;
       width: 20px;
       height: 20px;
-      margin-right: 10px;
       display: inline-block;
       cursor: pointer;
-      position: relative;
-      top: 3px;
-      left: 40px;
+      position: absolute;
+      top: 7px;
+      right: 10px;
     }
   }
 
   &.opened {
-//    background-color: $clr-base-01;
-    background-color: $clr-base-09;
+    background-color: $clr-base-01;
     height: 200px;
     border-top: 20px solid $clr-base-00;
+    position: relative;
 
     .collapse-button {
       background: url("#{$img-panel-collapse}") no-repeat center center;
       width: 20px;
       height: 20px;
-      float: right;
-      margin-right: 10px;
-      margin-top: 10px;
       display: inline-block;
       cursor: pointer;
+      position: absolute;
+      right: 10px;
+      top: 2px;
     }
 
     table {
       position: relative;
       top: 10px;
-      left: 10px;
+      width: 100%;
 
-      th {
-        font-weight: normal;
+      thead {
+        tr {
+          background-color: $clr-base-01;
+
+          th {
+            font-weight: normal;
+            padding-left: 5px;
+          }
+        }
+      }
+
+      tr {
+        background-color: $clr-base-09;
+        border-bottom: 1px solid $clr-base-01;
+
+        td {
+          height: 35px;
+          padding-top: 12px;
+          padding-left: 5px;
+        }
+
+        &.failed {
+          color: $clr-base-26;
+        }
+
+        &.success {
+          color: $clr-base-15;
+        }
       }
     }
   }
