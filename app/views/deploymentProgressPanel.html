@@ -1,12 +1,12 @@
 <div id="deployment-progress-panel" ng-controller="DeploymentProgressPanelCtrl" ng-class="{'opened': panelOpen == true, 'closed': panelOpen == false}">
     <div ng-show="!panelOpen">
         <div class="data name">Workflow name: {{getWorkflow()}}</div>
-        <div class="data in-progress">In progress:</div>
-        <div class="data ready">Ready:</div>
-        <div class="data failed">Failed:</div>
+        <div class="data in-progress">In progress: {{panelNodes.inProgress.count}}</div>
+        <div class="data ready">Ready: {{panelNodes.ready.count}}</div>
+        <div class="data failed">Failed: {{panelNodes.failed.count}}</div>
 
         <div class="panel-progress-bar">
-            <div class="" dots-loader speed="50"></div>
+            <div dots-loader speed="50"></div>
         </div>
 
         <div class="expand-button" ng-click="togglePanel()"></div>
@@ -25,13 +25,13 @@
             </thead>
             <tbody ng-repeat="node in nodes">
                 <tr ng-class="{failed: node.status == 'failed', success: node.status == 'success'}">
-                    <td class="data name">{{ node.name }}</td>
-                    <td class="data in-progress">{{ node.inProgress }}</td>
-                    <td class="data ready">{{ node.ready }}</td>
-                    <td class="data failed">{{ node.failed }}</td>
+                    <td class="data name">{{ node.id }}</td>
+                    <td class="data in-progress">{{ getNodesCount(node, 'inProgress') }}</td>
+                    <td class="data ready">{{ getNodesCount(node, 'ready') }}</td>
+                    <td class="data failed">{{ getNodesCount(node, 'failed') }}</td>
                     <td class="data status">
                         <div ng-show="node.status != 'in progress'">{{ node.status }}</div>
-                        <div class="deploymentExecute" dots-loader speed="50" ng-show="node.status == 'in progress'"></div>
+                        <div dots-loader speed="50" ng-show="getNodesCount(node, 'inProgress') > 0"></div>
                     </td>
                 </tr>
             </tbody>
