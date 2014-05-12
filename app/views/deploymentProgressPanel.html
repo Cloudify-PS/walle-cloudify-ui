@@ -31,7 +31,9 @@
                     <td class="data failed">{{ getNodesCount(node, 'failed') }}</td>
                     <td class="data status">
                         <div ng-show="node.status != 'in progress'">{{ node.status }}</div>
-                        <div dots-loader ng-show="getNodesCount(node, 'inProgress') > 0"></div>
+                        <div class="panel-progress-dots" dots-loader ng-show="getNodesCount(node, 'inProgress') > 0"></div>
+                        <div class="panel-button play" ng-show="getNodesCount(node, 'inProgress') == 0"></div>
+                        <div class="panel-button pause" ng-show="getNodesCount(node, 'inProgress') > 0"></div>
                     </td>
                 </tr>
             </tbody>
