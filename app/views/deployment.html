@@ -138,7 +138,7 @@
                 </div>
                 <div class="executingWorkflow" ng-show="isExecuting()">
                     {{executedData.workflowId}}
-                    <div class="deploymentExecute" dots-loader speed="50" ng-show="isExecuting()"></div>
+                    <div class="deploymentExecute" dots-loader ng-show="isExecuting()"></div>
                 </div>
                 <i class="deployment-play" ng-class="{play: isExecuteEnabled(), disabled: !isExecuteEnabled()}" ng-click="toggleConfirmationDialog(deployment, 'execute')" ng-show="!isExecuting()"></i>
 

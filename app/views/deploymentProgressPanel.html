@@ -6,7 +6,7 @@
         <div class="data failed">Failed: {{panelNodes.failed.count}}</div>
 
         <div class="panel-progress-bar">
-            <div dots-loader speed="50"></div>
+            <div dots-loader></div>
         </div>
 
         <div class="expand-button" ng-click="togglePanel()"></div>
@@ -23,15 +23,15 @@
                     <th class="data status">Status</th>
                 </tr>
             </thead>
-            <tbody ng-repeat="node in nodes">
-                <tr ng-class="{failed: node.status == 'failed', success: node.status == 'success'}">
+            <tbody ng-repeat="node in panelData">
+                <tr ng-class="{failed: node.failed.count > 0, success: node.started.count > 0 || node.inProgress.count == 0 || node.failed.count == 0}">
                     <td class="data name">{{ node.id }}</td>
                     <td class="data in-progress">{{ getNodesCount(node, 'inProgress') }}</td>
-                    <td class="data ready">{{ getNodesCount(node, 'ready') }}</td>
+                    <td class="data ready">{{ getNodesCount(node, 'started') }}</td>
                     <td class="data failed">{{ getNodesCount(node, 'failed') }}</td>
                     <td class="data status">
                         <div ng-show="node.status != 'in progress'">{{ node.status }}</div>
-                        <div dots-loader speed="50" ng-show="getNodesCount(node, 'inProgress') > 0"></div>
+                        <div dots-loader ng-show="getNodesCount(node, 'inProgress') > 0"></div>
                     </td>
                 </tr>
             </tbody>

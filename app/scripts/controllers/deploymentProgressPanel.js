@@ -3,11 +3,7 @@
 angular.module('cosmoUi')
     .controller('DeploymentProgressPanelCtrl', function ($scope) {
         $scope.panelOpen = false;
-        $scope.panelNodes = {
-            inProgress: {count: 0, nodes: []},
-            ready: {count: 0, nodes: []},
-            failed: {count: 0, nodes: []}
-        };
+        $scope.panelData = [];
 
         $scope.getWorkflow = function() {
             if ($scope.selectedWorkflow.data === null) {
@@ -23,35 +19,42 @@ angular.module('cosmoUi')
 
         $scope.getNodesCount = function(node, state) {
             var count = 0;
-            var item = $scope.panelNodes[state].nodes[node.id];
-
-            if (item !== undefined && item.state === state) {
-                count++;
+            for (var i = 0; i < $scope.panelData.length; i++) {
+                if ($scope.panelData[i].id === node.id) {
+                    count = $scope.panelData[i][state].count;
+                }
             }
-            else if (item !== undefined && state !== 'ready' && state !== 'failed' && item.state !== state) {
-                count++;
-            }
-
             return count;
         };
 
         $scope.$watch('nodes', function(data) {
-            $scope.panelNodes.inProgress = {count: 0, nodes: []};
-            $scope.panelNodes.ready = {count: 0, nodes: []};
-            $scope.panelNodes.failed = {count: 0, nodes: []};
-
-            updateData(data);
+            $scope.panelData = [];
+            for (var i = 0; i < $scope.allNodesArr.length; i++) {
+                $scope.panelData.push({
+                    id: $scope.allNodesArr[i].name,
+                    inProgress: {count: 0, nodes: []},
+                    started: {count: 0, nodes: []},
+                    failed: {count: 0, nodes: []}
+                });
+                updateNodeData($scope.allNodesArr[i], i);
+            }
         });
 
-        function updateData(data) {
-            for (var i = 0; i < data.length; i++) {
-                if (data[i].state === 'ready' || data[i].state === 'failed') {
-                    $scope.panelNodes[data[i].state].count++;
-                    $scope.panelNodes[data[i].state].nodes[data[i].id] = data[i];
-                }
-                else {
-                    $scope.panelNodes.inProgress.count++;
-                    $scope.panelNodes.inProgress.nodes[data[i].id] = data[i];
+        function updateNodeData(data, idx) {
+            var node = $scope.panelData[idx];
+
+            for (var j = 0; j < data.dependents.length; j++) {
+                for (var i = 0; i < $scope.nodes.length; i++) {
+                    if ($scope.nodes[i].id === data.dependents[j]) {
+                        if ($scope.nodes[i].state === 'started' || $scope.nodes[i].state === 'failed') {
+                            node[$scope.nodes[i].state].count++;
+                            node[$scope.nodes[i].state].nodes[$scope.nodes[i].id] = $scope.nodes[i];
+                        }
+                        else {
+                            node.inProgress.count++;
+                            node.inProgress.nodes[$scope.nodes[i].id] = $scope.nodes[i];
+                        }
+                    }
                 }
             }
         }
