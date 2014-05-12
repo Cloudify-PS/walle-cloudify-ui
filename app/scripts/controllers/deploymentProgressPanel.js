@@ -7,7 +7,7 @@ angular.module('cosmoUi')
 
         $scope.getWorkflow = function() {
             if ($scope.selectedWorkflow.data === null) {
-                return 'All workflows'
+                return 'All workflows';
             } else {
                 return $scope.selectedWorkflow.data.label;
             }
@@ -31,13 +31,13 @@ angular.module('cosmoUi')
             var _class = 'inProgress';
             if (node.failed.count > 0) {
                 _class = 'failed';
-            } else if (node.started.count > 0 && node.inProgress.count === 0 & node.failed.count === 0) {
+            } else if (node.started.count > 0 && node.inProgress.count === 0 && node.failed.count === 0) {
                 _class = 'success';
             }
             return _class;
         };
 
-        $scope.$watch('nodes', function(data) {
+        $scope.$watch('nodes', function() {
             $scope.panelData = [];
             for (var i = 0; i < $scope.allNodesArr.length; i++) {
                 $scope.panelData.push({
