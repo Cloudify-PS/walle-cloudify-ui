@@ -20,7 +20,10 @@ angular.module('cosmoUi')
         $scope.getNodesCount = function(node, state) {
             var count = 0;
             for (var i = 0; i < $scope.panelData.length; i++) {
-                if ($scope.panelData[i].id === node.id) {
+                if (node === null) {
+                    count += $scope.panelData[i][state].count;
+                }
+                else if ($scope.panelData[i].id === node.id) {
                     count = $scope.panelData[i][state].count;
                 }
             }
