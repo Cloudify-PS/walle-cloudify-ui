@@ -100,30 +100,6 @@
             position: relative;
             top: 5px;
           }
-
-          .panel-button {
-            width: 22px;
-            height: 22px;
-            position: relative;
-            left: 40px;
-            cursor: pointer;
-
-            &.play {
-              background: url("#{$img-panel-play-idle}") no-repeat center center;
-
-              &:hover {
-                background: url("#{$img-panel-play-selected}") no-repeat center center;
-              }
-            }
-
-            &.pause {
-              background: url("#{$img-panel-pause-idle}") no-repeat center center;
-
-              &:hover {
-                background: url("#{$img-panel-pause-selected}") no-repeat center center;
-              }
-            }
-          }
         }
 
         &.failed {
