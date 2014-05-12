@@ -56,7 +56,7 @@
 
   &.opened {
     background-color: $clr-base-01;
-    height: 200px;
+//    height: 200px;
     border-top: 20px solid $clr-base-00;
     position: relative;
 
@@ -103,6 +103,10 @@
 
         &.success {
           color: $clr-base-15;
+        }
+
+        &.inProgress {
+          color: $clr-base-00;
         }
       }
     }

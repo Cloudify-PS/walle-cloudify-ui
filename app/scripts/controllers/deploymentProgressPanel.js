@@ -27,6 +27,16 @@ angular.module('cosmoUi')
             return count;
         };
 
+        $scope.getClass = function(node) {
+            var _class = 'inProgress';
+            if (node.failed.count > 0) {
+                _class = 'failed';
+            } else if (node.started.count > 0 && node.inProgress.count === 0 & node.failed.count === 0) {
+                _class = 'success';
+            }
+            return _class;
+        };
+
         $scope.$watch('nodes', function(data) {
             $scope.panelData = [];
             for (var i = 0; i < $scope.allNodesArr.length; i++) {

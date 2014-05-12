@@ -24,7 +24,7 @@
                 </tr>
             </thead>
             <tbody ng-repeat="node in panelData">
-                <tr ng-class="{failed: node.failed.count > 0, success: node.started.count > 0 || node.inProgress.count == 0 || node.failed.count == 0}">
+                <tr ng-class="getClass(node)">
                     <td class="data name">{{ node.id }}</td>
                     <td class="data in-progress">{{ getNodesCount(node, 'inProgress') }}</td>
                     <td class="data ready">{{ getNodesCount(node, 'started') }}</td>
