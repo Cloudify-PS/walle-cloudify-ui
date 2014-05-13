@@ -265,7 +265,15 @@
           .content-section {
               position: relative;
               padding-left: 0px;
-              top: 10px;
+              top: 30px;
+
+              .prop-section {
+                top: 0px;
+
+                .no-properties {
+                  float: left;
+                }
+              }
 
               .overview-node-name {
                   font-size: 16px;
