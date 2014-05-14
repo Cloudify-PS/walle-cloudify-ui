@@ -143,10 +143,6 @@ angular.module('cosmoUi')
             $scope.selectedWorkflow.data = workflow;
         };
 
-        $scope.isExecuting = function() {
-            return $scope.executedData !== undefined && $scope.executedData !== null;
-        };
-
         $scope.cancelExecution = function() {
             var callParams = {
                 'executionId': $scope.executedData.id,

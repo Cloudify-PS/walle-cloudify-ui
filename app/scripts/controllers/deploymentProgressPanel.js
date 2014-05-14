@@ -48,6 +48,7 @@ angular.module('cosmoUi')
                 if ($scope.allNodesArr[i].dependents.length > 0) {
                     $scope.panelData.push({
                         id: $scope.allNodesArr[i].name,
+                        statue: 'N/A',
                         inProgress: {count: 0, nodes: []},
                         started: {count: 0, nodes: []},
                         failed: {count: 0, nodes: []}
@@ -65,6 +66,7 @@ angular.module('cosmoUi')
                 for (var i = 0; i < $scope.nodes.length; i++) {
                     if ($scope.nodes[i].id === data.dependents[j]) {
                         if ($scope.nodes[i].state === 'started' || $scope.nodes[i].state === 'failed') {
+                            node.state = $scope.nodes[i].state === 'failed' ? 'Failed' : 'Succeed';
                             node[$scope.nodes[i].state].count++;
                             node[$scope.nodes[i].state].nodes[$scope.nodes[i].id] = $scope.nodes[i];
                         }
