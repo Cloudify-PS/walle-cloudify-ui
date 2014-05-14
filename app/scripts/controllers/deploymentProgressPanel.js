@@ -42,14 +42,19 @@ angular.module('cosmoUi')
 
         $scope.$watch('nodes', function() {
             $scope.panelData = [];
+            var panelDataIdx = 0;
+
             for (var i = 0; i < $scope.allNodesArr.length; i++) {
-                $scope.panelData.push({
-                    id: $scope.allNodesArr[i].name,
-                    inProgress: {count: 0, nodes: []},
-                    started: {count: 0, nodes: []},
-                    failed: {count: 0, nodes: []}
-                });
-                updateNodeData($scope.allNodesArr[i], i);
+                if ($scope.allNodesArr[i].dependents.length > 0) {
+                    $scope.panelData.push({
+                        id: $scope.allNodesArr[i].name,
+                        inProgress: {count: 0, nodes: []},
+                        started: {count: 0, nodes: []},
+                        failed: {count: 0, nodes: []}
+                    });
+                    updateNodeData($scope.allNodesArr[i], panelDataIdx);
+                    panelDataIdx++;
+                }
             }
         });
 

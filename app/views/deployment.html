@@ -369,7 +369,7 @@
         </div>
     </div>
 
-    <div class="deployment-progress-panel" ng-include="'views/deploymentProgressPanel.html'"></div>
+    <div class="deployment-progress-panel" ng-include="'views/deploymentProgressPanel.html'" ng-show="deploymentInProgress"></div>
 
     <div ng-show="isConfirmationDialogVisible">
         <div class="dialogBoxBg"></div>
