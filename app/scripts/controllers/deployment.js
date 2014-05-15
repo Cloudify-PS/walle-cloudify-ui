@@ -24,7 +24,7 @@ angular.module('cosmoUi')
         $scope.selectedWorkflow = {
             data: null
         };
-        $scope.deploymentInProgress = true;
+        $scope.deploymentInProgress = false;
         $scope.nodes = [];
         $scope.events = [];
         $scope.section = 'topology';
@@ -141,10 +141,6 @@ angular.module('cosmoUi')
 
         $scope.workflowSelected = function(workflow) {
             $scope.selectedWorkflow.data = workflow;
-        };
-
-        $scope.isExecuting = function() {
-            return $scope.executedData !== undefined && $scope.executedData !== null;
         };
 
         $scope.cancelExecution = function() {
