@@ -24,7 +24,7 @@ angular.module('cosmoUi')
         $scope.selectedWorkflow = {
             data: null
         };
-        $scope.deploymentInProgress = true;
+        $scope.deploymentInProgress = false;
         $scope.nodes = [];
         $scope.events = [];
         $scope.section = 'topology';
