@@ -49,6 +49,7 @@ angular.module('cosmoUi')
                     $scope.panelData.push({
                         id: $scope.allNodesArr[i].name,
                         statue: 'N/A',
+                        totalCount: 0,
                         inProgress: {count: 0, nodes: []},
                         started: {count: 0, nodes: []},
                         failed: {count: 0, nodes: []}
@@ -61,6 +62,7 @@ angular.module('cosmoUi')
 
         function updateNodeData(data, idx) {
             var node = $scope.panelData[idx];
+            node.totalCount = data.dependents.length;
 
             for (var j = 0; j < data.dependents.length; j++) {
                 for (var i = 0; i < $scope.nodes.length; i++) {

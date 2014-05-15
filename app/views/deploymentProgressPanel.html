@@ -26,9 +26,9 @@
             <tbody ng-repeat="node in panelData">
                 <tr ng-class="getClass(node)">
                     <td class="data name">{{ node.id }}</td>
-                    <td class="data in-progress">{{ getNodesCount(node, 'inProgress') }}</td>
-                    <td class="data ready">{{ getNodesCount(node, 'started') }}</td>
-                    <td class="data failed">{{ getNodesCount(node, 'failed') }}</td>
+                    <td class="data in-progress">{{ getNodesCount(node, 'inProgress') }} / {{ node.totalCount }}</td>
+                    <td class="data ready">{{ getNodesCount(node, 'started') }} / {{ node.totalCount }}</td>
+                    <td class="data failed">{{ getNodesCount(node, 'failed') }} / {{ node.totalCount }}</td>
                     <td class="data status">
                         <div ng-show="node.status != 'in progress'">{{ node.status }}</div>
                         <div class="panel-progress-dots" dots-loader ng-show="getNodesCount(node, 'inProgress') > 0"></div>
