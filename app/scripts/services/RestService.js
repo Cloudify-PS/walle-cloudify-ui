@@ -181,6 +181,15 @@ angular.module('cosmoUi')
             return _load('deployments/get', callParams);
         }
 
+        function _deleteDeploymentById(params){
+            var callParams = {
+                url: '/backend/deployments/delete',
+                method: 'POST',
+                data: params
+            };
+            return _load('deployments/delete', callParams);
+        }
+
         function _getDeploymentNodes(params) {
             var callParams = {
                 url: '/backend/deployments/nodes',
@@ -234,6 +243,7 @@ angular.module('cosmoUi')
         this.executeDeployment = _executeDeployment;
         this.updateExecutionState = _updateExecutionState;
         this.getDeploymentById = _getDeploymentById;
+        this.deleteDeploymentById = _deleteDeploymentById;
         this.getDeploymentNodes = _getDeploymentNodes;
         this.loadEvents = _loadEvents;
         this.loadDeployments = _loadDeployments;

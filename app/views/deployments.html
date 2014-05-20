@@ -12,6 +12,7 @@
                 <th class="create">{{ 'deployments.table.heading.createDate' | i18n }}</th>
                 <th class="update">{{ 'deployments.table.heading.updated' | i18n }}</th>
                 <th class="actions">{{ 'deployments.table.heading.action' | i18n }}</th>
+                <th class="delete">{{ 'deployments.table.heading.delete' | i18n }}</th>
             </tr>
         </thead>
         <tbody ng-repeat="deployment in deployments">
@@ -37,6 +38,9 @@
                         <!--<i ng-class="{deploymentExecute: isExecuting(deployment.blueprintId, deployment.id)}" ng-show="isExecuting(deployment.blueprintId, deployment.id)"></i>-->
                     <!--</div>-->
                     <i class="deployment-pause pause" ng-show="isExecuting(deployment.blueprintId, deployment.id)" ng-click="toggleConfirmationDialog(deployment, 'cancel')"></i>
+                </td>
+                <td class="delete">
+                    <button class="gs-btn btn-sm" data-ng-click="deleteDeployment(deployment)">Delete</button>
                 </td>
             </tr>
         </tbody>

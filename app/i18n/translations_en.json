@@ -67,7 +67,8 @@
                 "blueprint": "Blueprint",
                 "createDate": "Created",
                 "updated": "Updated",
-                "action": "Action"
+                "action": "Action",
+                "delete": ""
             },
             "workflowSelect": "-- Select workflow --"
         },

@@ -167,4 +167,11 @@ angular.module('cosmoUi')
         }
 
         _loadDeployments();
+
+        $scope.deleteDeployment = function(deployment) {
+            RestService.deleteDeploymentById({deploymentId: deployment.id})
+                .then(function(){
+                   console.log(['Deployment deleted: ', deployment.id]);
+                });
+        }
     });

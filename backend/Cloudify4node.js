@@ -229,6 +229,15 @@ Cloudify4node.getDeploymentById = function(deployment_id, callback) {
     createRequest(requestData, callback);
 }
 
+Cloudify4node.deleteDeploymentById = function(deployment_id, callback) {
+    var requestData = createRequestData({
+        path: '/deployments/' + deployment_id,
+        method: 'DELETE'
+    });
+
+    createRequest(requestData, callback);
+}
+
 Cloudify4node.getDeploymentNodes = function(deployment_id, state, callback) {
     var requestData = createRequestData({
         path: '/deployments/' + deployment_id + '/nodes?state=' + state,
