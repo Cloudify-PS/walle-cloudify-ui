@@ -128,7 +128,7 @@ app.post('/backend/deployments/get', function(request, response) {
 });
 
 app.post('/backend/deployments/delete', function(request, response) {
-    cloudify4node.deleteDeploymentById(request.body.deploymentId, function(err, data) {
+    cloudify4node.deleteDeploymentById(request.body.deploymentId, request.body.ignoreLiveNodes, function(err, data) {
         response.send(err !== null ? err : data);
     });
 });
