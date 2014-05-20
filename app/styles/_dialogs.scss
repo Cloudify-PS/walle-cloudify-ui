@@ -285,7 +285,7 @@
     margin: auto;
     margin-top: 100px;
 
-    .dialogDescription {
+      .dialogDescription {
       font-size: 20px;
       padding-right: 50px;
       padding-left: 50px;
@@ -307,4 +307,71 @@
         border-right: 1px solid $COSMOUI_BUTTON_BACKGROUND;
       }
     }
+  }
+
+  #deleteDeploymentDialog {
+      width: 450px;
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      margin: auto;
+      margin-top: 100px;
+
+      .dialogTitle {
+          float: none;
+      }
+
+      .dialogClose {
+          top: 11px;
+      }
+
+      .dialogDescription {
+          display: block;
+          font-size: 20px;
+          line-height: 28px;
+          margin: 0 0 40px 0;
+          text-align: left;
+          padding: 0 20px;
+          height: auto;
+          color: $clr-base-00;
+      }
+
+      .dialogCheckbox {
+          float: left;
+          display: inline-block;
+          margin: 3px 0 0 20px;
+          label {
+              cursor: pointer;
+          }
+      }
+
+      .error-message {
+          display: block;
+          color: $clr-base-26;
+          margin: 10px 0;
+          padding: 10px 20px;
+          word-break: break-all;
+          background-color: #f5f5f5;
+          max-height: 300px;
+          overflow-y: auto;
+      }
+
+      .confirmationButtons {
+          display: block;
+          text-align: right;
+          margin: 10px 0;
+          float: none;
+
+          #cancelBtn {
+              display: inline-block;
+              color: $COSMOUI_BUTTON_BACKGROUND;
+              font-weight: bold;
+              padding: 5px 10px 5px 10px;
+              margin: 0px 0px 0px 10px;
+              background-color: $clr-base-10;
+              border-bottom: 1px solid $COSMOUI_BUTTON_BACKGROUND;
+              border-right: 1px solid $COSMOUI_BUTTON_BACKGROUND;
+          }
+      }
   }

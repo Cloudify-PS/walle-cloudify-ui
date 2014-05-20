@@ -7,6 +7,7 @@ angular.module('cosmoUi')
         $scope.deployments = [];
         $scope.selectedBlueprint = '';
         $scope.isConfirmationDialogVisible = false;
+        $scope.isDeleteDeploymentVisible = false;
         $scope.confirmationType = '';
         $scope.executedDeployments = [];
         $scope.selectedWorkflow = {
@@ -15,6 +16,7 @@ angular.module('cosmoUi')
         var selectedWorkflows = [];
         var workflows = [];
         var cosmoError = false;
+        var currentDeplyToDelete = null;
 
         BreadcrumbsService.push('deployments',
             {
@@ -168,10 +170,31 @@ angular.module('cosmoUi')
 
         _loadDeployments();
 
-        $scope.deleteDeployment = function(deployment) {
-            RestService.deleteDeploymentById({deploymentId: deployment.id})
-                .then(function(){
-                   console.log(['Deployment deleted: ', deployment.id]);
-                });
+        function deleteDeployment() {
+            if(currentDeplyToDelete !== null) {
+                RestService.deleteDeploymentById({deploymentId: currentDeplyToDelete.id})
+                    .then(function(data){
+                        console.log(['Deployment deleted response: ', data]);
+                    });
+                currentDeplyToDelete = null;
+            }
         }
+
+        $scope.deleteDeployment = function(deployment) {
+            currentDeplyToDelete = deployment;
+            $scope.isDeleteDeploymentVisible = true;
+        }
+
+        $scope.closeDeleteDialog = function() {
+            $scope.isDeleteDeploymentVisible = false;
+            currentDeplyToDelete = null;
+        }
+
+        $scope.confirmDeleteDeployment = function() {
+            $scope.isDeleteDeploymentVisible = false;
+            deleteDeployment();
+        }
+
+
+
     });

@@ -63,4 +63,19 @@
             </div>
         </div>
     </div>
+
+    <div data-ng-show="isDeleteDeploymentVisible">
+        <div class="dialogBoxBg"></div>
+        <div id="deleteDeploymentDialog" class="dialogBox">
+            <div class="dialogTitle">Delete Deployment</div>
+            <div class="dialogClose dialogButton" ng-click="closeDeleteDialog()"></div>
+            <div class="dialogDescription">Are you sure you want to delete '{{ delDeployName }}'?</div>
+            <div class="error-message">400: Can't delete deployment DeployToDelete2 - There are live nodes for this deployment. Live nodes ids: http_web_server_24956,app_subnet_e03c7,app_network_9ac4a,front_host_82640</div>
+            <div class="buttonsContainer confirmationButtons">
+                <div class="dialogCheckbox"><label><input type="checkbox"> Force Delete</label></div>
+                <button id="cancelBtn" class="dialogButton" ng-click="closeDeleteDialog()">{{ 'deployments.confirmationPopup.cancelBtn' | i18n }}</button>
+                <button id="confirmBtn" class="dialogButton" ng-click="confirmDeleteDeployment()">{{ 'deployments.confirmationPopup.confirmBtn' | i18n }}</button>
+            </div>
+        </div>
+    </div>
 </div>
