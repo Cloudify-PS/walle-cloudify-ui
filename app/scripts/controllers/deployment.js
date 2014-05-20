@@ -11,7 +11,6 @@ angular.module('cosmoUi')
 
         var deploymentDataModel = {
             'status': -1, // -1 = not executed, 0 = (install) in progress, 1 = (done) all done and reachable, 2 = (alert) all done but half reachable, 3 = (failed) all done and not reachable
-            'reachables': 0,
             'state': 0,
             'states': 0,
             'completed': 0,
@@ -47,7 +46,7 @@ angular.module('cosmoUi')
         $scope.selectedNode = null;
         $scope.executedData = null;
         $scope.isConfirmationDialogVisible = false;
-
+        $scope.showProgressPanel = false;
 
         var id = $routeParams.id;
         //var executionId = null;
@@ -156,6 +155,12 @@ angular.module('cosmoUi')
         $scope.isExecuteEnabled = function() {
             return $scope.selectedWorkflow.data !== null;
         };
+
+        $scope.$watch('deploymentInProgress', function() {
+            if ($scope.deploymentInProgress === true) {
+                $scope.showProgressPanel = true;
+            }
+        });
 
         $scope.toggleConfirmationDialog = function(deployment, confirmationType) {
             if (confirmationType === 'execute' && $scope.selectedWorkflow.data === null) {
@@ -341,7 +346,6 @@ angular.module('cosmoUi')
             for (var i in nodes) {
                 var node = nodes[i];
                 IndexedNodes[node.id] = {
-                    reachable: node.reachable,
                     state: node.state
                 };
             }
@@ -355,7 +359,7 @@ angular.module('cosmoUi')
                     var nodeId = deployment.instancesIds[n];
                     var nodeInstance = IndexedNodes[nodeId];
                     if(IndexedNodes.hasOwnProperty(nodeId)) {
-                        if(nodeInstance.reachable) {
+                        if(nodeInstance.state === 'started') {
                             _reachable++;
                         }
                         if(statesIndex.indexOf(nodeInstance.state) > 0 || statesIndex.indexOf(nodeInstance.state) < 7) {
