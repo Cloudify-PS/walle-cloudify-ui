@@ -143,6 +143,9 @@ angular.module('cosmoUi')
         };
 
         function _loadDeployments() {
+            console.log(["_loadDeployments"]);
+            $scope.blueprints = null;
+            $scope.deployments = [];
             RestService.loadBlueprints()
                 .then(function(data) {
                     cosmoError = false;
@@ -178,6 +181,8 @@ angular.module('cosmoUi')
                     .then(function(data){
                         $scope.delDeployError = data.message;
                         console.log(['Deployment deleted response: ', data]);
+                        closeDeleteDialog();
+                        _loadDeployments();
                     });
                 //currentDeplyToDelete = null;
             }
@@ -191,13 +196,13 @@ angular.module('cosmoUi')
             $scope.isDeleteDeploymentVisible = true;
         };
 
-        $scope.closeDeleteDialog = function() {
+        function closeDeleteDialog() {
             $scope.isDeleteDeploymentVisible = false;
             currentDeplyToDelete = null;
-        };
+        }
+        $scope.closeDeleteDialog = closeDeleteDialog;
 
         $scope.confirmDeleteDeployment = function() {
-            console.log(["$scope.ignoreLiveNodes", $scope.ignoreLiveNodes]);
             deleteDeployment();
         };
 

@@ -73,8 +73,8 @@
             <div class="error-message" data-ng-show="delDeployError">{{ delDeployError }}</div>
             <div class="buttonsContainer confirmationButtons">
                 <div class="dialogCheckbox"><label><input type="checkbox" data-ng-model="ignoreLiveNodes" ng-click="toggleIgnoreLiveNodes()"> Force Delete</label></div>
-                <button id="cancelBtn" class="dialogButton" ng-click="closeDeleteDialog()">{{ 'deployments.confirmationPopup.cancelBtn' | i18n }}</button>
-                <button id="confirmBtn" class="dialogButton" ng-click="confirmDeleteDeployment()">{{ 'deployments.confirmationPopup.confirmBtn' | i18n }}</button>
+                <button id="cancelBtnDelDep" class="dialogButton" ng-click="closeDeleteDialog()">{{ 'deployments.confirmationPopup.cancelBtn' | i18n }}</button>
+                <button class="dialogButton" ng-click="confirmDeleteDeployment()">{{ 'deployments.confirmationPopup.confirmBtn' | i18n }}</button>
             </div>
         </div>
     </div>
