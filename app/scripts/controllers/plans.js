@@ -111,4 +111,14 @@ angular.module('cosmoUi')
         $scope.redirectToDeployment = function(deployment_id, blueprint_id) {
             $location.path('/deployment').search({id: deployment_id, blueprintId: blueprint_id});
         };
+
+        $scope.getContainerClass = function(node_id) {
+
+            for (var node in $scope.indexNodes) {
+                if ($scope.indexNodes[node].id === node_id) {
+                    return $scope.indexNodes[node].type.baseType.replace('_', '-');
+                }
+            }
+            return '';
+        };
     });

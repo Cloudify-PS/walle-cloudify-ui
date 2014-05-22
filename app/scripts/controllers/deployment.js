@@ -687,4 +687,13 @@ angular.module('cosmoUi')
             }
         };
 
+        $scope.getContainerClass = function(node_id) {
+
+            for (var node in $scope.indexNodes) {
+                if ($scope.indexNodes[node].id === node_id) {
+                    return $scope.indexNodes[node].type.baseType.replace('_', '-');
+                }
+            }
+            return '';
+        };
     });

@@ -80,7 +80,7 @@
         disableModules: !toggleBar.modules,
         disableConnections: !toggleBar.connections
         }">
-            <div data-type="compute" data-ng-repeat="rootNode in map" class="box" blueprint:coordinate="{{ rootNode.id }}">
+            <div data-type="compute" data-ng-repeat="rootNode in map" class="box" ng-class="getContainerClass(rootNode.id)" blueprint:coordinate="{{ rootNode.id }}">
                 <div class="hoverup">
                     <div class="buttons no-embed">
                         <ul>
@@ -97,7 +97,7 @@
                 <div class="head">{{ indexNodes[rootNode.id].name }}</div>
                 <div class="holder">
                     <!-- Middleware::start -->
-                    <div data-type="middleware" data-ng-repeat="subNode in rootNode.children" class="box" blueprint:coordinate="{{ subNode.id }}">
+                    <div data-type="middleware" data-ng-repeat="subNode in rootNode.children" class="box" ng-class="getContainerClass(subNode.id)" blueprint:coordinate="{{ subNode.id }}">
                         <div class="hoverup">
                             <div class="buttons no-embed">
                                 <ul>
@@ -114,7 +114,7 @@
                         <div class="head">{{ indexNodes[subNode.id].name }}</div>
                         <div class="holder">
                             <!-- Module::start -->
-                            <div data-type="modules" data-ng-repeat="appNode in subNode.children" class="app">
+                            <div data-type="modules" data-ng-repeat="appNode in subNode.children" class="app" ng-class="getContainerClass(appNode.id)">
                                 <div class="hoverup">
                                     <div class="buttons no-embed">
                                         <ul>
