@@ -50,7 +50,7 @@ var publicConfiguration = {
 
 var privateConfiguration = {
     cosmoServer: undefined,
-    cosmoPort: 8100,
+    cosmoPort: 80,
     cloudifyLicense:"tempLicense",
     log4js:{
         appenders: [
