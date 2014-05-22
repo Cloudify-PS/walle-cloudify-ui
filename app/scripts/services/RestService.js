@@ -234,6 +234,22 @@ angular.module('cosmoUi')
             return _load('configuration', callParams);
         }
 
+        function _getMonitorCpu() {
+            var callParams = {
+                url: '/backend/monitor/cpu',
+                method: 'GET'
+            };
+            return _load('monitor/cpu', callParams);
+        }
+
+        function _getMonitorMemory() {
+            var callParams = {
+                url: '/backend/monitor/memory',
+                method: 'GET'
+            };
+            return _load('monitor/memory', callParams);
+        }
+
         this.loadBlueprints = _loadBlueprints;
         this.addBlueprint = _addBlueprint;
         this.getBlueprintById = _getBlueprintById;
@@ -254,4 +270,6 @@ angular.module('cosmoUi')
         this.getConfiguration = _getConfiguration;
         this.autoPull = _autoPull;
         this.autoPullStop = _autoPullStop;
+        this.getMonitorCpu = _getMonitorCpu;
+        this.getMonitorMemory = _getMonitorMemory;
     });

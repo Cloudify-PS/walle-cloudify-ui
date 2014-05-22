@@ -27,7 +27,7 @@ angular.module('cosmoUi')
         $scope.deploymentInProgress = true;
         $scope.nodes = [];
         $scope.events = [];
-        $scope.section = 'topology';
+        $scope.section = 'monitoring';
         $scope.propSection = 'general';
         $scope.topologySettings = [
             {name: 'connections',   state: true},
@@ -400,7 +400,7 @@ angular.module('cosmoUi')
                 }
             }
 
-            $log.info(['deploymentModel', deploymentModel]);
+            //$log.info(['deploymentModel', deploymentModel]);
         }
 
         function setDeploymentStatus(deployment, process) {
@@ -685,6 +685,46 @@ angular.module('cosmoUi')
             if($scope.eventHits.length > 0) {
                 $scope.viewLogsByEvent($scope.eventHits[0]);
             }
+        };
+
+
+        // Monitor Mock's
+        RestService.getMonitorCpu()
+            .then(function(data){
+                $scope.monitorCpu = data;
+            });
+
+        RestService.getMonitorMemory()
+            .then(function(data){
+                $scope.getMonitorMemory = data;
+            });
+
+        RestService.getMonitorCpu()
+            .then(function(dataCpu){
+                RestService.getMonitorMemory()
+                    .then(function(dataMemory){
+                        $scope.monitorMixed = [dataCpu[0], dataMemory[0]];
+                    });
+            });
+
+        RestService.getMonitorMemory()
+            .then(function(data){
+                var dataRandom = [];
+                for(var i in data[0].values) {
+                    dataRandom.push([data[0].values[i][0], Math.random() * 3000]);
+                }
+                $scope.monitorMemoryReversMix = [data[0], {
+                    'key': 'Random',
+                    'values': dataRandom
+                }];
+            });
+
+        $scope.moitorMixColors = ['#E01B5D', '#46b8da'];
+
+        $scope.xAxisTickFormatFunction = function () {
+            return function (d) {
+                return d3.time.format('%x')(new Date(d));
+            };
         };
 
     });

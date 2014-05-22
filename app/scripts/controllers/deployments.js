@@ -143,7 +143,6 @@ angular.module('cosmoUi')
         };
 
         function _loadDeployments() {
-            console.log(["_loadDeployments"]);
             $scope.blueprints = null;
             $scope.deployments = [];
             RestService.loadBlueprints()
@@ -208,6 +207,6 @@ angular.module('cosmoUi')
 
         $scope.toggleIgnoreLiveNodes = function() {
             $scope.ignoreLiveNodes = !$scope.ignoreLiveNodes;
-        }
+        };
 
     });

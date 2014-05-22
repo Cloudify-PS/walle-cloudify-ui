@@ -127,6 +127,7 @@
                 <button type="button" class="btn btn-default" value="topology">Topology</button>
                 <button type="button" class="btn btn-default" value="network">Network</button>
                 <button type="button" class="btn btn-default" value="events">Events</button>
+                <button type="button" class="btn btn-default" value="monitoring">Monitoring</button>
             </div>
             <div settings-toggles id="settings-button" class="no-embed" toggles="toggleBar"></div>
 
@@ -367,6 +368,74 @@
                     <div class="emptyTable" data-ng-hide="eventHits.length">There are no events at this moment...</div>
                 </div>
                 <!-- Events Tab - END -->
+                <div ng-switch-when="monitoring">
+                    <div class="monitor">
+                        <div class="chart">
+                            <nvd3-line-with-focus-chart
+                                    data="monitorCpu"
+                                    id="monitorCpu"
+                                    height="400"
+                                    height2="50"
+                                    showLegend="true"
+                                    tooltips="true"
+                                    interactive="true"
+                                    isArea="true"
+                                    interpolate="basis"
+                                    xAxisTickFormat="xAxisTickFormatFunction()"
+                                    x2AxisTickFormat="xAxisTickFormatFunction()">
+                                <svg></svg>
+                            </nvd3-line-with-focus-chart>
+                        </div>
+                        <div class="chart">
+                            <nvd3-line-with-focus-chart
+                                    data="getMonitorMemory"
+                                    id="getMonitorMemory"
+                                    height="400"
+                                    height2="50"
+                                    showLegend="true"
+                                    tooltips="true"
+                                    interactive="true"
+                                    isArea="false"
+                                    interpolate="basis"
+                                    xAxisTickFormat="xAxisTickFormatFunction()"
+                                    x2AxisTickFormat="xAxisTickFormatFunction()">
+                                <svg></svg>
+                            </nvd3-line-with-focus-chart>
+                        </div>
+                        <div class="chart">
+                            <nvd3-line-with-focus-chart
+                                    data="monitorMixed"
+                                    id="monitorMixed"
+                                    height="400"
+                                    height2="50"
+                                    showLegend="true"
+                                    tooltips="true"
+                                    interactive="true"
+                                    interpolate="basis"
+                                    xAxisTickFormat="xAxisTickFormatFunction()"
+                                    x2AxisTickFormat="xAxisTickFormatFunction()">
+                                <svg></svg>
+                            </nvd3-line-with-focus-chart>
+                        </div>
+                        <div class="chart">
+                            <nvd3-line-with-focus-chart
+                                    data="monitorMemoryReversMix"
+                                    id="monitorMemoryReversMix"
+                                    height="400"
+                                    height2="50"
+                                    showLegend="true"
+                                    tooltips="true"
+                                    interactive="true"
+                                    interpolate="basis"
+                                    color="moitorMixColors"
+                                    legendColor="moitorMixColors"
+                                    xAxisTickFormat="xAxisTickFormatFunction()"
+                                    x2AxisTickFormat="xAxisTickFormatFunction()">
+                                <svg></svg>
+                            </nvd3-line-with-focus-chart>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
