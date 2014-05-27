@@ -267,7 +267,7 @@
             .piProgress {
                 position: absolute;
                 top: -11px;
-                left: -27px;
+                left: -18px;
                 z-index: 1;
 
                 .circle {
@@ -350,11 +350,13 @@
                 padding: 2px 10px 3px 25px;
                 border-radius: 3px;
                 font-size: 15px;
+                height: 26px;
             }
             .holder {
                 display: block;
                 background-color: white;
                 padding: 5px 15px;
+                margin-top: 3px;
             }
             .hoverup {
                 position: absolute;

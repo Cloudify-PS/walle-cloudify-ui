@@ -80,65 +80,67 @@
         disableModules: !toggleBar.modules,
         disableConnections: !toggleBar.connections
         }">
-            <div data-type="compute" data-ng-repeat="rootNode in map" class="box" ng-class="getContainerClass(rootNode.id)" blueprint:coordinate="{{ rootNode.id }}">
-                <div class="hoverup">
-                    <div class="buttons no-embed">
-                        <ul>
-                            <li data-ng-click="viewNode(rootNode)" class="topology-glyph node-details"></li><!--<li class="topology-glyph edit-node"></li>-->
-                        </ul>
-                    </div>
-                </div>
-                <div pie:progress="piProgress2" class="piProgress" size="47">
-                    <div class="circle">
-                        <i class="icon topology-glyph {{ indexNodes[rootNode.id].type.icon }}"></i>
-                        <div class="badge">{{ indexNodes[rootNode.id].general.numOfInstances }}</div>
-                    </div>
-                </div>
-                <div class="head">{{ indexNodes[rootNode.id].name }}</div>
-                <div class="holder">
-                    <!-- Middleware::start -->
-                    <div data-type="middleware" data-ng-repeat="subNode in rootNode.children" class="box" ng-class="getContainerClass(subNode.id)" blueprint:coordinate="{{ subNode.id }}">
-                        <div class="hoverup">
-                            <div class="buttons no-embed">
-                                <ul>
-                                    <li data-ng-click="viewNode(subNode)" class="topology-glyph node-details"></li><!--<li class="topology-glyph edit-node"></li>-->
-                                </ul>
-                            </div>
-                        </div>
-                        <div pie:progress="piProgress2" class="piProgress" size="47">
-                            <div class="circle">
-                                <i class="icon topology-glyph {{ indexNodes[subNode.id].type.icon }}"></i>
-                                <div class="badge">{{ indexNodes[subNode.id].general.numOfInstances }}</div>
-                            </div>
-                        </div>
-                        <div class="head">{{ indexNodes[subNode.id].name }}</div>
-                        <div class="holder">
-                            <!-- Module::start -->
-                            <div data-type="modules" data-ng-repeat="appNode in subNode.children" class="app" ng-class="getContainerClass(appNode.id)">
-                                <div class="hoverup">
-                                    <div class="buttons no-embed">
-                                        <ul>
-                                            <li data-ng-click="viewNode(appNode)" class="topology-glyph node-details"></li><!--<li class="topology-glyph edit-node"></li>-->
-                                        </ul>
-                                    </div>
-                                </div>
-                                <div pie:progress="piProgress2" class="piProgress" size="47">
-                                    <div class="circle" blueprint:coordinate="{{ appNode.id }}">
-                                        <i class="icon topology-glyph {{ indexNodes[appNode.id].type.icon }}"></i>
-                                        <div class="badge">{{ indexNodes[appNode.id].general.numOfInstances }}</div>
-                                    </div>
-                                </div>
-                                <p>{{ indexNodes[appNode.id].name }}</p>
-                            </div>
-                            <!-- Module::end -->
-                        </div>
-                    </div>
-                    <!-- Middleware::end -->
-                </div>
-            </div>
+            <div bp-topology-nodes></div>
+
+            <!--<div data-type="compute" data-ng-repeat="rootNode in map" class="box" ng-class="getContainerClass(rootNode.id)" blueprint:coordinate="{{ rootNode.id }}">-->
+                <!--<div class="hoverup">-->
+                    <!--<div class="buttons no-embed">-->
+                        <!--<ul>-->
+                            <!--<li data-ng-click="viewNode(rootNode)" class="topology-glyph node-details"></li><!--<li class="topology-glyph edit-node"></li>-->-->
+                        <!--</ul>-->
+                    <!--</div>-->
+                <!--</div>-->
+                <!--<div pie:progress="piProgress2" class="piProgress" size="47">-->
+                    <!--<div class="circle">-->
+                        <!--<i class="icon topology-glyph {{ indexNodes[rootNode.id].type.icon }}"></i>-->
+                        <!--<div class="badge">{{ indexNodes[rootNode.id].general.numOfInstances }}</div>-->
+                    <!--</div>-->
+                <!--</div>-->
+                <!--<div class="head">{{ indexNodes[rootNode.id].name }}</div>-->
+                <!--<div class="holder">-->
+                    <!--<!-- Middleware::start -->-->
+                    <!--<div data-type="middleware" data-ng-repeat="subNode in rootNode.children" class="box" ng-class="getContainerClass(subNode.id)" blueprint:coordinate="{{ subNode.id }}">-->
+                        <!--<div class="hoverup">-->
+                            <!--<div class="buttons no-embed">-->
+                                <!--<ul>-->
+                                    <!--<li data-ng-click="viewNode(subNode)" class="topology-glyph node-details"></li><!--<li class="topology-glyph edit-node"></li>-->-->
+                                <!--</ul>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                        <!--<div pie:progress="piProgress2" class="piProgress" size="47">-->
+                            <!--<div class="circle">-->
+                                <!--<i class="icon topology-glyph {{ indexNodes[subNode.id].type.icon }}"></i>-->
+                                <!--<div class="badge">{{ indexNodes[subNode.id].general.numOfInstances }}</div>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                        <!--<div class="head">{{ indexNodes[subNode.id].name }}</div>-->
+                        <!--<div class="holder">-->
+                            <!--<!-- Module::start -->-->
+                            <!--<div data-type="modules" data-ng-repeat="appNode in subNode.children" class="app" ng-class="getContainerClass(appNode.id)">-->
+                                <!--<div class="hoverup">-->
+                                    <!--<div class="buttons no-embed">-->
+                                        <!--<ul>-->
+                                            <!--<li data-ng-click="viewNode(appNode)" class="topology-glyph node-details"></li><!--<li class="topology-glyph edit-node"></li>-->-->
+                                        <!--</ul>-->
+                                    <!--</div>-->
+                                <!--</div>-->
+                                <!--<div pie:progress="piProgress2" class="piProgress" size="47">-->
+                                    <!--<div class="circle" blueprint:coordinate="{{ appNode.id }}">-->
+                                        <!--<i class="icon topology-glyph {{ indexNodes[appNode.id].type.icon }}"></i>-->
+                                        <!--<div class="badge">{{ indexNodes[appNode.id].general.numOfInstances }}</div>-->
+                                    <!--</div>-->
+                                <!--</div>-->
+                                <!--<p>{{ indexNodes[appNode.id].name }}</p>-->
+                            <!--</div>-->
+                            <!--<!-- Module::end -->-->
+                        <!--</div>-->
+                    <!--</div>-->
+                    <!--<!-- Middleware::end -->-->
+                <!--</div>-->
+            <!--</div>-->
             <div class="coordinates" blueprint:arrows="coordinates" arrow="true" color="#7A7A7A"></div>
         </div>
-        <!-- Blueprint Contianter - END -->
+        <!-- Blueprint Container - END -->
         <!-- Network Topology - START -->
         <div class="networksContainer" ng-switch-when="network">
             <div bp:networks class="relations" ng-model="networkcoords"></div>
@@ -261,4 +263,3 @@
         </div>
     </div>
 </div>
-
