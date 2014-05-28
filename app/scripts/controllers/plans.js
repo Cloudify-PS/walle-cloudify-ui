@@ -4,6 +4,7 @@ angular.module('cosmoUi')
     .controller('PlansCtrl', function ($scope, YamlService, Layout, Render, $routeParams, BreadcrumbsService, PlanDataConvert, blueprintCoordinateService, bpNetworkService, $http, $timeout, $location, RestService, Cosmotypesservice) {
 
         var planData/*:PlanData*/ = null;
+        var dataPlan;
         $scope.section = 'topology';
         $scope.propSection = 'general';
         $scope.toggleView = false;
@@ -29,8 +30,8 @@ angular.module('cosmoUi')
         YamlService.load($routeParams.id, function (err, data) {
 
             planData = data;
-            var dataPlan = data.getJSON(),
-                dataMap;
+            dataPlan = data.getJSON();
+            var dataMap;
 
             RestService.getBlueprintById({id: $routeParams.id})
                 .then(function(data) {
@@ -64,15 +65,6 @@ angular.module('cosmoUi')
 
             PlanDataConvert.allocateAbandonedNodes(topology, dataMap);
 
-            // Index data by ID
-            if (dataPlan.hasOwnProperty('nodes') && !!dataPlan.nodes) {
-                $scope.indexNodes = {};
-                dataPlan.nodes.forEach(function (node) {
-                    $scope.indexNodes[node.id] = node;
-                    $scope.indexNodes[node.id].type = Cosmotypesservice.getTypeData(node.type[0]);
-                });
-            }
-
             blueprintCoordinateService.resetCoordinates();
 
             // Set Map
@@ -80,7 +72,7 @@ angular.module('cosmoUi')
 
             // Connection between nodes
             if(dataMap.hasOwnProperty('contained')) {
-                $scope.map = dataMap.contained.reverse();
+                $scope.map = _mergeNodeData(dataMap.contained.reverse());
             }
             $scope.coordinates = blueprintCoordinateService.getCoordinates();
             $scope.dataTable = PlanDataConvert.nodesToTable(dataPlan);
@@ -91,6 +83,26 @@ angular.module('cosmoUi')
                     };
                 });
         });
+
+        function _mergeNodeData(nodesMap) {
+            for (var i = 0; i < nodesMap.length; i++) {
+                dataPlan.nodes.forEach(function (node) {
+                    if (nodesMap[i].id === node.id) {
+                        for (var attr in node) {
+                            nodesMap[i][attr] = node[attr];
+                        }
+                        nodesMap[i].type = Cosmotypesservice.getTypeData(node.type[0]);
+
+                        if (nodesMap[i].children !== undefined && nodesMap[i].children.length > 0) {
+                            for (var j = 0; j < nodesMap[i].children.length; j++) {
+                                nodesMap[i].children = _mergeNodeData(nodesMap[i].children);
+                            }
+                        }
+                    }
+                });
+            }
+            return nodesMap;
+        }
 
 
         $scope.viewNode = function (node_id) {

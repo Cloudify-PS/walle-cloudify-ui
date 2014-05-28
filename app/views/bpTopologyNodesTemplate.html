@@ -1,0 +1,23 @@
+<div data-ng-repeat="node in map" data-type="getDataType(node)" class="box" ng-class="getContainerClass(node.id)" blueprint:coordinate="node.id">
+    <div class="hoverup">
+        <div class="buttons no-embed">
+            <ul>
+                <li data-ng-click="viewNode(node.id)" class="topology-glyph node-details"></li>
+            </ul>
+        </div>
+    </div>
+    <div pie:progress="piProgress2" class="piProgress" size="47">
+        <div class="circle">
+            <i class="icon topology-glyph" ng-class="node.type.icon"></i>
+            <div class="badge">{{ node.general.numOfInstances }}</div>
+        </div>
+    </div>
+
+    <div class="head" ng-show="{node.children.length != 0}">{{ node.name }}</div>
+    <div class="holder" ng-show="{node.children.length != 0}">
+        <!--<div bp-topology-nodes map="node.children"></div>-->
+    </div>
+
+    <p ng-show="{node.children.length == 0}">{{ node.name }}</p>
+
+</div>
