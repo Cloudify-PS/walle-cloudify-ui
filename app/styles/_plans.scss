@@ -213,6 +213,19 @@
                     left: 9px;
                 }
             }
+
+          &.cloudify-types-web-server:after {
+              content: 'l';
+          }
+          &.cloudify-types-app-server:after {
+              content: 'h';
+          }
+          &.cloudify-types-db-server:after {
+            content: 'c';
+          }
+          &.cloudify-types-app-module:after {
+            content: 'a';
+          }
         }
         .box {
             position: relative;

@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('cosmoUi')
-    .controller('PlansCtrl', function ($scope, YamlService, Layout, Render, $routeParams, BreadcrumbsService, PlanDataConvert, blueprintCoordinateService, bpNetworkService, $http, $timeout, $location, RestService, Cosmotypesservice) {
+    .controller('PlansCtrl', function ($scope, YamlService, Layout, Render, $routeParams, BreadcrumbsService, PlanDataConvert, blueprintCoordinateService, bpNetworkService, $http, $timeout, $location, RestService) {
 
         var planData/*:PlanData*/ = null;
         var dataPlan;
@@ -91,7 +91,7 @@ angular.module('cosmoUi')
                         for (var attr in node) {
                             nodesMap[i][attr] = node[attr];
                         }
-                        nodesMap[i].type = Cosmotypesservice.getTypeData(node.type[0]);
+                        nodesMap[i].type = nodesMap[i].type[0].split('.').join('-').split('_').join('-');
 
                         if (nodesMap[i].children !== undefined) {
                             for (var j = 0; j < nodesMap[i].children.length; j++) {
@@ -103,7 +103,6 @@ angular.module('cosmoUi')
             }
             return nodesMap;
         }
-
 
         $scope.viewNode = function (node_id) {
             var realNode = planData.getNode(node_id);
@@ -124,15 +123,5 @@ angular.module('cosmoUi')
 
         $scope.redirectToDeployment = function(deployment_id, blueprint_id) {
             $location.path('/deployment').search({id: deployment_id, blueprintId: blueprint_id});
-        };
-
-        $scope.getContainerClass = function(node_id) {
-
-            for (var node in $scope.indexNodes) {
-                if ($scope.indexNodes[node].id === node_id) {
-                    return $scope.indexNodes[node].type.baseType.replace('_', '-');
-                }
-            }
-            return '';
         };
     });

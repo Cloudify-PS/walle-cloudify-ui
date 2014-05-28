@@ -8,7 +8,7 @@
     </div>
     <div pie:progress="piProgress2" class="piProgress" size="47">
         <div class="circle">
-            <i class="icon topology-glyph" ng-class="node.type.icon"></i>
+            <i class="icon topology-glyph" ng-class="node.type"></i>
             <div class="badge">{{ node.general.numOfInstances }}</div>
         </div>
     </div>
@@ -16,7 +16,7 @@
     <div class="head" ng-show="node.children != undefined">{{ node.name }}</div>
     <div class="holder" ng-show="node.children != undefined">
         <!--<div bp-topology-nodes map="node.children"></div>-->
-        {{ node.children }}
+        <div>{{ node.children }}</div>
     </div>
 
     <p ng-show="node.children == undefined">{{ node.name }}</p>
