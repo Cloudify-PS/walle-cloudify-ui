@@ -177,6 +177,12 @@ app.post('/backend/node/get', function(request, response) {
     });
 });
 
+app.get('/backend/monitor/graphs', function(request, response) {
+    cloudify4node.getMonitorGraphs(function(err, data) {
+        response.send(err !== null ? err : data);
+    });
+});
+
 app.get('/backend/monitor/cpu', function(request, response) {
     cloudify4node.getMonitorCpu(function(err, data) {
         response.send(err !== null ? err : data);

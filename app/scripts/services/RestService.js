@@ -234,6 +234,14 @@ angular.module('cosmoUi')
             return _load('configuration', callParams);
         }
 
+        function _getMonitorGrpahs() {
+            var callParams = {
+                url: '/backend/monitor/graphs',
+                method: 'GET'
+            };
+            return _load('monitor/graphs', callParams);
+        }
+
         function _getMonitorCpu() {
             var callParams = {
                 url: '/backend/monitor/cpu',
@@ -270,6 +278,7 @@ angular.module('cosmoUi')
         this.getConfiguration = _getConfiguration;
         this.autoPull = _autoPull;
         this.autoPullStop = _autoPullStop;
+        this.getMonitorGrpahs = _getMonitorGrpahs;
         this.getMonitorCpu = _getMonitorCpu;
         this.getMonitorMemory = _getMonitorMemory;
     });

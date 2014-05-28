@@ -319,6 +319,10 @@ Cloudify4node.getNode = function(node_id, queryParams, callback) {
 
 
 // Monitor Mock's
+Cloudify4node.getMonitorGraphs = function(callback) {
+    return callback(null, require('./mock/monitorGraphs.json'));
+};
+
 Cloudify4node.getMonitorCpu = function(callback) {
     return callback(null, require('./mock/monitorCPU.json'));
 };
