@@ -1,4 +1,4 @@
-<div data-ng-repeat="node in map" data-type="getDataType(node)" class="box" ng-class="getContainerClass(node.id)" blueprint:coordinate="node.id">
+<div data-ng-repeat="node in map" data-type="getDataType(node)" class="box" ng-class="getContainerClass(node)" blueprint:coordinate="node.id">
     <div class="hoverup">
         <div class="buttons no-embed">
             <ul>
@@ -13,11 +13,12 @@
         </div>
     </div>
 
-    <div class="head" ng-show="{node.children.length != 0}">{{ node.name }}</div>
-    <div class="holder" ng-show="{node.children.length != 0}">
+    <div class="head" ng-show="node.children != undefined">{{ node.name }}</div>
+    <div class="holder" ng-show="node.children != undefined">
         <!--<div bp-topology-nodes map="node.children"></div>-->
+        {{ node.children }}
     </div>
 
-    <p ng-show="{node.children.length == 0}">{{ node.name }}</p>
+    <p ng-show="node.children == undefined">{{ node.name }}</p>
 
 </div>

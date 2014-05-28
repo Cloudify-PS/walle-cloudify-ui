@@ -93,7 +93,7 @@ angular.module('cosmoUi')
                         }
                         nodesMap[i].type = Cosmotypesservice.getTypeData(node.type[0]);
 
-                        if (nodesMap[i].children !== undefined && nodesMap[i].children.length > 0) {
+                        if (nodesMap[i].children !== undefined) {
                             for (var j = 0; j < nodesMap[i].children.length; j++) {
                                 nodesMap[i].children = _mergeNodeData(nodesMap[i].children);
                             }
