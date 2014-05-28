@@ -5,11 +5,10 @@ angular.module('cosmoUi')
         return {
             restrict: 'EA',
             scope: true,
-            link: function postLink(scope, element) {
+                link: function postLink(scope, element) {
 
                 scope.$watch('map', function(data) {
                     if (data.length > 0) {
-//                        element.replaceWith(_updateNodes(data));
                         element.html(_updateNodes(data));
                         compile(element.contents())(scope);
                     }
@@ -23,7 +22,6 @@ angular.module('cosmoUi')
                     var nodeHtml = '';
 
                     for (var i = 0; i < node.length; i++) {
-                        var child = _updateNodes(node[i].children);
                         nodeHtml += '<div data-type="' + Cosmotypesservice.getTypeData(node[i].type).name + '" class="box ' + _getContainerClass(node[i].id) + '" blueprint:coordinate="' + node[i].id + '">' +
                                 '<div class="hoverup">' +
                                     '<div class="buttons no-embed">' +
@@ -37,14 +35,19 @@ angular.module('cosmoUi')
                                     '<i class="icon topology-glyph ' +  scope.indexNodes[node[i].id].type.icon + '"></i>' +
                                     '<div class="badge">' + scope.indexNodes[node[i].id].general.numOfInstances + '</div>' +
                                 '</div>' +
-                            '</div>' +
+                            '</div>';
 
-                            //'<p>' + scope.indexNodes[node[i].id].name + '</p> <!-- module -->' +
-
-                            '<div class="head">' + scope.indexNodes[node[i].id].name + '</  div> <!-- middleware/compute -->' +
-                            '<div class="holder">' + child  + '</div>' +
-                        '</div>';
+                        if (node[i].children !== undefined && node[i].children.length > 0) {
+                            var child = _updateNodes(node[i].children);
+                            nodeHtml += '<div class="head">' + scope.indexNodes[node[i].id].name + '</div>'
+                            nodeHtml += '<div class="holder">' + child  + '</div>'
+                        } else {
+                            nodeHtml += '<p>' + scope.indexNodes[node[i].id].name + '</p>';
+                        }
+                        nodeHtml += '</div>';
                     }
+
+
                     return nodeHtml;
                 }
 
@@ -56,15 +59,6 @@ angular.module('cosmoUi')
                         }
                     }
                     return '';
-                };
-
-                scope.viewNode = function (node_id) {
-                    var realNode = scope.planData.getNode(node_id);
-                    scope.showProperties = {
-                        properties: scope.planData.getProperties(realNode),
-                        relationships: scope.planData.getRelationships(realNode),
-                        general: scope.planData.getGeneralInfo(realNode)
-                    };
                 };
             }
         };

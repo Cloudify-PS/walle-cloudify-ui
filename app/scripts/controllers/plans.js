@@ -3,7 +3,7 @@
 angular.module('cosmoUi')
     .controller('PlansCtrl', function ($scope, YamlService, Layout, Render, $routeParams, BreadcrumbsService, PlanDataConvert, blueprintCoordinateService, bpNetworkService, $http, $timeout, $location, RestService, Cosmotypesservice) {
 
-        $scope.planData/*:PlanData*/ = null;
+        var planData/*:PlanData*/ = null;
         $scope.section = 'topology';
         $scope.propSection = 'general';
         $scope.toggleView = false;
@@ -28,7 +28,7 @@ angular.module('cosmoUi')
 
         YamlService.load($routeParams.id, function (err, data) {
 
-            $scope.planData = data;
+            planData = data;
             var dataPlan = data.getJSON(),
                 dataMap;
 
@@ -93,8 +93,8 @@ angular.module('cosmoUi')
         });
 
 
-        $scope.viewNode = function (node) {
-            var realNode = planData.getNode(node.id);
+        $scope.viewNode = function (node_id) {
+            var realNode = planData.getNode(node_id);
             $scope.showProperties = {
                 properties: planData.getProperties(realNode),
                 relationships: planData.getRelationships(realNode),

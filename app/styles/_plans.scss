@@ -350,7 +350,6 @@
                 padding: 2px 10px 3px 25px;
                 border-radius: 3px;
                 font-size: 15px;
-                height: 26px;
             }
             .holder {
                 display: block;
@@ -393,6 +392,7 @@
                             top: -8px;
                             left: 9px;
                             font-size: 30px;
+                            color: $clr-base-27;
                         }
                     }
                     li:first-child {
