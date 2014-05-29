@@ -62,7 +62,6 @@ angular.module('cosmoUi')
             return attrs;
         }
 
-
         function _getPaginationByData(pages, data, perPage) {
             var numOfPages = Math.floor(data.length / perPage);
 
