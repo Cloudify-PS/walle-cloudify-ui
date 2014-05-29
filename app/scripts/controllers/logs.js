@@ -32,10 +32,10 @@ angular.module('cosmoUi')
 
         $scope.defaultTimeframe = 1000 * 60 * 5;
         $scope.timeframeList = [
-            {'value': 1000 * 60 * 5, 'label': '5 Minute'},
-            {'value': 1000 * 60 * 10, 'label': '10 Minute'},
-            {'value': 1000 * 60 * 15, 'label': '15 Minute'},
-            {'value': 1000 * 60 * 30, 'label': '30 Minute'},
+            {'value': 1000 * 60 * 5, 'label': '5 Minutes'},
+            {'value': 1000 * 60 * 10, 'label': '10 Minutes'},
+            {'value': 1000 * 60 * 15, 'label': '15 Minutes'},
+            {'value': 1000 * 60 * 30, 'label': '30 Minutes'},
             {'value': 1000 * 60 * 60, 'label': '1 Hour'},
             {'value': 1000 * 60 * 60 * 3, 'label': '3 Hours'},
             {'value': 1000 * 60 * 60 * 6, 'label': '6 Hours'},
