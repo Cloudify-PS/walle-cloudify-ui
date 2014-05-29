@@ -25,7 +25,7 @@
             color:$COSMOUI_BLUEPRINT_DETAILS_TITLE_COLOR;
             font-size: $COSMOUI_BLUEPRINT_DETAILS_TITLE_FONT_SIZE;
             border-bottom:1px solid $COSMOUI_BLUEPRINT_DETAILS_TITLE_BOTTOM_BORDER_COLOR;
-            i { float:right; }
+            i { float:right; cursor: pointer; }
         }
 
         .content{
