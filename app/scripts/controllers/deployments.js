@@ -178,10 +178,13 @@ angular.module('cosmoUi')
             if(currentDeplyToDelete !== null) {
                 RestService.deleteDeploymentById({deploymentId: currentDeplyToDelete.id, ignoreLiveNodes: $scope.ignoreLiveNodes})
                     .then(function(data){
-                        $scope.delDeployError = data.message;
-                        console.log(['Deployment deleted response: ', data]);
-                        closeDeleteDialog();
-                        _loadDeployments();
+                        if(data.hasOwnProperty('message')) {
+                            $scope.delDeployError = data.message;
+                        }
+                        else {
+                            closeDeleteDialog();
+                            _loadDeployments();
+                        }
                     });
                 //currentDeplyToDelete = null;
             }
