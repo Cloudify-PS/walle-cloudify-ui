@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('cosmoUi')
-    .directive('bpTopologyNodes', function () {
+    .directive('bpTopologyNodes', ['RecursionHelper', function (RecursionHelper) {
         return {
             templateUrl: 'views/bpTopologyNodesTemplate.html',
             restrict: 'EA',
@@ -10,10 +10,12 @@ angular.module('cosmoUi')
                 map: '='
             },
             link: function postLink(scope) {
-
                 scope.getContainerClass = function(node) {
-                    return node.type;
+                    return node;
                 };
+            },
+            compile: function(element) {
+                return RecursionHelper.compile(element);
             }
         };
-    });
+    }]);

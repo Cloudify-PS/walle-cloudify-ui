@@ -8,7 +8,7 @@ angular.module('cosmoUi')
         $scope.section = 'topology';
         $scope.propSection = 'general';
         $scope.toggleView = false;
-        $scope.map = [];
+        $scope.nodesTree = [];
         $scope.indexNodes = {};
 
         $scope.toggleBar = {
@@ -27,81 +27,124 @@ angular.module('cosmoUi')
                 id: 'blueprint'
             });
 
-        YamlService.load($routeParams.id, function (err, data) {
+        RestService.getBlueprintById({id: $routeParams.id})
+            .then(function(data) {
+                $scope.blueprint = data || null;
+                $scope.nodesTree = _createNodesTree(data.plan.nodes);
+            });
 
-            planData = data;
-            dataPlan = data.getJSON();
-            var dataMap;
+//        YamlService.load($routeParams.id, function (err, data) {
+//
+//            planData = data;
+//            dataPlan = data.getJSON();
+//            var dataMap;
+//
+//            RestService.getBlueprintById({id: $routeParams.id})
+//                .then(function(data) {
+//                    $scope.blueprint = data || null;
+//                });
+//
+//            /**
+//             * Networks
+//             */
+//            // Filter data for Networks
+//            var networks = PlanDataConvert.nodesToNetworks(dataPlan);
+//            $scope.networks = networks;
+//            bpNetworkService.setMap(networks.relations);
+//
+//
+//            // Render Networks
+//            $timeout(function(){
+//                $scope.networkcoords = bpNetworkService.getCoordinates();
+//                bpNetworkService.render();
+//            }, 100);
+//
+//            /**
+//             * Blueprint
+//             */
+//            var topology = PlanDataConvert.nodesToTopology(dataPlan);
+//
+//            // Convert edges to angular format
+//            if (topology.hasOwnProperty('edges') && !!topology.edges) {
+//                dataMap = PlanDataConvert.edgesToBlueprint(topology.edges);
+//            }
+//
+//            PlanDataConvert.allocateAbandonedNodes(topology, dataMap);
+//
+//            blueprintCoordinateService.resetCoordinates();
+//
+//            // Set Map
+//            blueprintCoordinateService.setMap(dataMap.connected);
+//
+//            // Connection between nodes
+//            if(dataMap.hasOwnProperty('contained')) {
+//                $scope.map = _mergeNodeData(dataMap.contained.reverse());
+//            }
+//            $scope.coordinates = blueprintCoordinateService.getCoordinates();
+//            $scope.dataTable = PlanDataConvert.nodesToTable(dataPlan);
+//            RestService.getBlueprintSource($routeParams.id)
+//                .then(function(code) {
+//                    $scope.dataCode = {
+//                        data: code.source
+//                    };
+//                });
+//        });
+//
+//        function _mergeNodeData(nodesMap) {
+//            for (var i = 0; i < nodesMap.length; i++) {
+//                dataPlan.nodes.forEach(function (node) {
+//                    if (nodesMap[i].id === node.id) {
+//                        for (var attr in node) {
+//                            nodesMap[i][attr] = node[attr];
+//                        }
+//                        nodesMap[i].type = nodesMap[i].type[0].split('.').join('-').split('_').join('-');
+//
+//                        if (nodesMap[i].children !== undefined) {
+//                            for (var j = 0; j < nodesMap[i].children.length; j++) {
+//                                nodesMap[i].children = _mergeNodeData(nodesMap[i].children);
+//                            }
+//                        }
+//                    }
+//                });
+//            }
+//            return nodesMap;
+//        }
 
-            RestService.getBlueprintById({id: $routeParams.id})
-                .then(function(data) {
-                    $scope.blueprint = data || null;
-                });
+        function _createNodesTree(nodes) {
+            var roots = [];
+            var nodesList = [];
 
-            /**
-             * Networks
-             */
-            // Filter data for Networks
-            var networks = PlanDataConvert.nodesToNetworks(dataPlan);
-            $scope.networks = networks;
-            bpNetworkService.setMap(networks.relations);
+            nodes.forEach(function(node) {
+                nodesList[node.id] = node;
+            });
 
+            for (var nodeId in nodesList) {
+                var node = nodesList[nodeId];
+                node.class = _getNodeClass(node.type_hierarchy);
 
-            // Render Networks
-            $timeout(function(){
-                $scope.networkcoords = bpNetworkService.getCoordinates();
-                bpNetworkService.render();
-            }, 100);
-
-            /**
-             * Blueprint
-             */
-            var topology = PlanDataConvert.nodesToTopology(dataPlan);
-
-            // Convert edges to angular format
-            if (topology.hasOwnProperty('edges') && !!topology.edges) {
-                dataMap = PlanDataConvert.edgesToBlueprint(topology.edges);
-            }
-
-            PlanDataConvert.allocateAbandonedNodes(topology, dataMap);
-
-            blueprintCoordinateService.resetCoordinates();
-
-            // Set Map
-            blueprintCoordinateService.setMap(dataMap.connected);
-
-            // Connection between nodes
-            if(dataMap.hasOwnProperty('contained')) {
-                $scope.map = _mergeNodeData(dataMap.contained.reverse());
-            }
-            $scope.coordinates = blueprintCoordinateService.getCoordinates();
-            $scope.dataTable = PlanDataConvert.nodesToTable(dataPlan);
-            RestService.getBlueprintSource($routeParams.id)
-                .then(function(code) {
-                    $scope.dataCode = {
-                        data: code.source
-                    };
-                });
-        });
-
-        function _mergeNodeData(nodesMap) {
-            for (var i = 0; i < nodesMap.length; i++) {
-                dataPlan.nodes.forEach(function (node) {
-                    if (nodesMap[i].id === node.id) {
-                        for (var attr in node) {
-                            nodesMap[i][attr] = node[attr];
-                        }
-                        nodesMap[i].type = nodesMap[i].type[0].split('.').join('-').split('_').join('-');
-
-                        if (nodesMap[i].children !== undefined) {
-                            for (var j = 0; j < nodesMap[i].children.length; j++) {
-                                nodesMap[i].children = _mergeNodeData(nodesMap[i].children);
+                if (node.relationships !== undefined) {
+                    for (var i = 0; i < node.relationships.length; i++) {
+                        if (node.relationships[i].base === 'contained') {
+                            var target_id = node.relationships[i].target_id;
+                            if (nodesList[target_id].children === undefined) {
+                                nodesList[target_id].children = [];
                             }
+                            nodesList[target_id].children.push(node);
                         }
                     }
-                });
+                } else {
+                    roots.push(node);
+                }
+            };
+
+            return roots;
+        }
+
+        function _getNodeClass(typeHierarchy) {
+            for (var i = 0; i < typeHierarchy.length; i++) {
+                typeHierarchy[i] = typeHierarchy[i].split('.').join('-').split('_').join('-');
             }
-            return nodesMap;
+            return typeHierarchy.join(' ');
         }
 
         $scope.viewNode = function (node_id) {

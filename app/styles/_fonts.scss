@@ -64,3 +64,43 @@ $gs-icon-prefix:'gs-icon';
 .#{$gs-icon-prefix}-plans:before { content:"j"; }
 .#{$gs-icon-prefix}-deployments:before { content:"k"; }
 .#{$gs-icon-prefix}-storage:before { content:"l"; }
+
+.cloudify-types-base {
+  &:after {
+
+  }
+
+  &.cloudify-types-middleware-server {
+    &:after {
+      content: 'f';
+    }
+
+    &.cloudify-types-web-server {
+      &:after {
+        content: 'l';
+      }
+    }
+
+    &.cloudify-types-app-server {
+      &:after {
+        content: 'h';
+      }
+    }
+
+    &.cloudify-types-db-server {
+      &:after {
+        content: 'c';
+      }
+    }
+
+    &.cloudify-types-app-module {
+      &:after {
+        content: 'a';
+      }
+
+      .no-children {
+        border: 2px solid red;
+      }
+    }
+  }
+}
