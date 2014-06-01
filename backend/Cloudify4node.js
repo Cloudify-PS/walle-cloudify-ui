@@ -317,6 +317,10 @@ Cloudify4node.getNode = function(node_id, queryParams, callback) {
     createRequest(requestData, callback);
 }
 
+Cloudify4node.downloadBlueprint = function(blueprintID, callback) {
+
+}
+
 
 // Monitor Mock's
 Cloudify4node.getMonitorGraphs = function(callback) {

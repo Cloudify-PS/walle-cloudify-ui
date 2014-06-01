@@ -63,6 +63,9 @@ var privateConfiguration = {
             }
         ],
         replaceConsole: true
+    },
+    browseBlueprint: {
+        path: '../tmp/blueprints/'
     }
 }
 
