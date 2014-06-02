@@ -50,7 +50,7 @@ var publicConfiguration = {
 
 var privateConfiguration = {
     cosmoServer: undefined,
-    cosmoPort: 8100,
+    cosmoPort: 80,
     cloudifyLicense:"tempLicense",
     log4js:{
         appenders: [
@@ -65,7 +65,7 @@ var privateConfiguration = {
         replaceConsole: true
     },
     browseBlueprint: {
-        path: '../tmp/blueprints/'
+        path: 'C:/Users/itsik/MyProjects/cosmo-ui/backend/tmp/blueprints'
     }
 }
 
