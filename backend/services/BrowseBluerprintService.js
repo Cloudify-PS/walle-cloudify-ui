@@ -17,6 +17,10 @@ module.exports.browseBlueprint = function (id, callbackFn){
     walker.walk(path.join(conf.browseBlueprint.path, id), callbackFn);
 };
 
+module.exports.fileGetContent = function(id, relativePath, callbackFn) {
+    fs.readFile(path.join(conf.browseBlueprint.path, id, relativePath), 'utf-8', callbackFn);
+};
+
 function Walker() {
     var _finalCallback = null;
     var root = { 'name': 'root', 'children': []};
@@ -33,9 +37,12 @@ function Walker() {
                 children.push(newItem);
                 walkFolder(path.join(rootFolder, file), newItem.children);
             } else {
-                children.push({
-                    'name': file,
-                    'relativePath': path.relative(origRoot, path.join(rootFolder, file))
+                fileIsAscii(path.join(rootFolder, file), function(err, isAscii){
+                    children.push({
+                        'name': file,
+                        'relativePath': path.relative(origRoot, path.join(rootFolder, file)),
+                        'encoding': isAscii ? 'ASCII' : 'BINARY'
+                    });
                 });
             }
             counter--;
@@ -55,6 +62,17 @@ function Walker() {
                     addChild(rootFolder, _list, files[i]);
                 }
             }
+        });
+    }
+
+    function fileIsAscii(filename, callback) {
+        require('fs').readFile(filename, function(err, buf) {
+            if (err) throw err;
+            var isAscii = true;
+            for (var i=0, len=buf.length; i<len; i++) {
+                if (buf[i] > 127) { isAscii=false; break; }
+            }
+            callback(null, isAscii);
         });
     }
 

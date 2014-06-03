@@ -2,6 +2,13 @@ var browseBlueprintService = require('../services/BrowseBluerprintService');
 var cloudify4node = require('../Cloudify4node');
 
 
+browseBlueprintService.fileGetContent('nodecellar', 'cosmo-nodecellar-openstack-master/LICENSE', function(err, content){
+
+    console.log('fileGetContent', err, content);
+
+});
+
+
 //cloudify4node.browseBlueprint('nodecellar' ,function(err, data) {
 //
 //

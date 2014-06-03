@@ -4,7 +4,7 @@ angular.module('cosmoUi')
     .controller('PlansCtrl', function ($scope, YamlService, Layout, Render, $routeParams, BreadcrumbsService, PlanDataConvert, blueprintCoordinateService, bpNetworkService, $http, $timeout, $location, RestService, Cosmotypesservice) {
 
         var planData/*:PlanData*/ = null;
-        $scope.section = 'topology';
+        $scope.section = 'code';
         $scope.propSection = 'general';
         $scope.toggleView = false;
 
@@ -88,8 +88,45 @@ angular.module('cosmoUi')
                         data: code.source
                     };
                 });
+
+            RestService.browseBlueprint({id: $routeParams.id})
+                .then(function(browseData) {
+                    $scope.browseData = [browseData];
+                });
         });
 
+        $scope.setBrowseType = function(data) {
+            if(data.hasOwnProperty('children')) {
+                return 'folder';
+            }
+            return 'file-' + data.encoding;
+        };
+
+        $scope.openSourceFile = function(data) {
+            RestService.browseBlueprintFile({id: $routeParams.id, path: data.relativePath})
+                .then(function(fileContent) {
+                    $scope.dataCode = {
+                        data: fileContent,
+                        brush: getBrashByFile(data.name)
+                    };
+                });
+        };
+
+        function getBrashByFile(file) {
+            var ext = file.split('.');
+            switch(ext[ext.length-1]) {
+            case 'sh':
+                return 'bash';
+            case 'yaml':
+                return 'yml';
+            case 'py':
+                return 'py';
+            case 'md':
+                return 'text';
+            default:
+                return 'text';
+            }
+        }
 
         $scope.viewNode = function (node) {
             var realNode = planData.getNode(node.id);

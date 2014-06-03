@@ -678,4 +678,43 @@
             }
         }
     }
+
+    .source {
+        display: table;
+        width: 100%;
+        margin: 10px 0 0 0;
+        .browseTree {
+            display: table-cell;
+            width: 300px;
+            padding: 0 0 0 20px;
+            font-size: 13px;
+            ul {
+                list-style-type: none;
+                padding: 0px;
+                li {
+                    margin: 3px 0;
+                    span {
+                        &.folder {
+                            font-weight: bold;
+                        }
+                        &.file-BINARY {
+                            small {
+                                color: #999;
+                            }
+                        }
+                        a {
+                            cursor: pointer;
+                        }
+                    }
+                }
+                ul {
+                    padding-left: 15px;
+                }
+            }
+        }
+        .sourcecode {
+            display: table-cell;
+            width: auto;
+        }
+    }
 }

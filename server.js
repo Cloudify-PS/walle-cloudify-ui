@@ -103,6 +103,12 @@ app.get('/backend/blueprints/browse', function(request, response) {
     });
 });
 
+app.get('/backend/blueprints/browse/file', function(request, response) {
+    cloudify4node.browseBlueprintFile(request.query.id, request.query.path ,function(err, data) {
+        response.send(err !== null ? err : data);
+    });
+});
+
 app.get('/backend/executions', function(request, response) {
     cloudify4node.getExecutionById(request.query.executionId, function(err, data) {
         response.send(err !== null ? err : data);

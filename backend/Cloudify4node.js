@@ -222,6 +222,10 @@ Cloudify4node.browseBlueprint = function(blueprint_id, callback) {
     })
 }
 
+Cloudify4node.browseBlueprintFile = function(blueprint_id, relativePath, callback) {
+    browseBlueprint.fileGetContent(blueprint_id, relativePath, callback);
+}
+
 Cloudify4node.getExecutionById = function(execution_id, callback) {
     var requestData = createRequestData({
         path: '/executions/' + execution_id,
