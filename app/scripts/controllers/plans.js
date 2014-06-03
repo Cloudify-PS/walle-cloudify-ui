@@ -123,6 +123,7 @@ angular.module('cosmoUi')
                 var node = nodesList[nodeId];
                 node.class = _getNodeClass(node.type_hierarchy);
                 node.isApp = _isAppNode(node);
+                node.dataType = _getNodeDataType(node);
 
                 if (node.relationships !== undefined && !_isNetworkNode(node)) {
                     for (var i = 0; i < node.relationships.length; i++) {
@@ -169,6 +170,10 @@ angular.module('cosmoUi')
             ];
 
             return networkNodes.indexOf(node.type) !== -1;
+        }
+
+        function _getNodeDataType(node) {
+
         }
 
         function _getNodeClass(typeHierarchy) {

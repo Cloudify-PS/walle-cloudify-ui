@@ -99,50 +99,46 @@ $gs-icon-prefix:'gs-icon';
 
     &.cloudify-types-db-server {
       &:after {
-        font-family: FontAwesome;
-        -webkit-font-smoothing: antialiased;
-        color: inherit;
-        font-size: 20px;
-        content: '\f109';
-        position: relative;
-        top: 8px;
+        content: 'c';
       }
     }
   }
 
   &.cloudify-types-app-module {
     &:after {
-      font-family: FontAwesome;
-      -webkit-font-smoothing: antialiased;
-      color: inherit;
-      font-size: 20px;
-      position: relative;
-      top: 8px;
-      content: '\f109';
+//      font-family: FontAwesome;
+//      -webkit-font-smoothing: antialiased;
+//      color: inherit;
+//      font-size: 20px;
+//      position: relative;
+//      top: 8px;
+//      content: '\f109';
+      content: 'a';
     }
   }
 
   &.cloudify-openstack-floatingip {
     &:after {
-      content: 'c';
+      content: 'd';
     }
   }
 
   &.cloudify-openstack-port {
     &:after {
-      content: 'c';
+      content: 'd';
     }
   }
 
   &.cloudify-openstack-network {
     &:after {
-      content: 'c';
+      font-family: routerregular;
+      content: 'a';
     }
   }
 
   &.cloudify-openstack-subnet {
     &:after {
-      content: 'c';
+      content: 'g';
     }
   }
 
@@ -153,4 +149,5 @@ $gs-icon-prefix:'gs-icon';
       }
     }
   }
+
 }
