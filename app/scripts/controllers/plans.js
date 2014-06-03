@@ -122,22 +122,52 @@ angular.module('cosmoUi')
                 var node = nodesList[nodeId];
                 node.class = _getNodeClass(node.type_hierarchy);
 
-                if (node.relationships !== undefined) {
+                if (node.relationships !== undefined && !_isNetworkNode(node)) {
                     for (var i = 0; i < node.relationships.length; i++) {
+                        node.isApp = _isAppnode(node);
                         if (node.relationships[i].base === 'contained') {
+                            node.isContained = true;
                             var target_id = node.relationships[i].target_id;
                             if (nodesList[target_id].children === undefined) {
                                 nodesList[target_id].children = [];
                             }
                             nodesList[target_id].children.push(node);
                         }
+                        if (i === node.relationships.length - 1 && node.isContained === undefined) {
+                            node.isContained = false;
+                        }
                     }
-                } else {
+                    if (!node.isContained) {
+//                        if (node.children === undefined) {
+//                            node.class = 'no-children ' + node.class;
+//                        }
+                        roots.push(node);
+                    }
+                } else if(!_isNetworkNode(node) && !node.isContained){
                     roots.push(node);
                 }
             };
 
             return roots;
+        }
+
+        function _isAppnode(node) {
+            var networkNodes = [
+                'nodejs_app'
+            ];
+
+            return networkNodes.indexOf(node.type) !== -1;
+        }
+
+        function _isNetworkNode(node) {
+            var networkNodes = [
+                'cloudify.openstack.floatingip',
+                'cloudify.openstack.network',
+                'cloudify.openstack.port',
+                'cloudify.openstack.subnet'
+            ];
+
+            return networkNodes.indexOf(node.type) !== -1;
         }
 
         function _getNodeClass(typeHierarchy) {

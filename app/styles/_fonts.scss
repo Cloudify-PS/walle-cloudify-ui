@@ -70,6 +70,16 @@ $gs-icon-prefix:'gs-icon';
 
   }
 
+//  &.no-children {
+//    border: 2px solid red;
+//    position: relative;
+//    min-width: 130px;
+//    display: inline-block;
+//    text-align: center;
+//    border-radius: 3px;
+//    margin: 10px;
+//  }
+
   &.cloudify-types-middleware-server {
     &:after {
       content: 'f';
@@ -89,17 +99,63 @@ $gs-icon-prefix:'gs-icon';
 
     &.cloudify-types-db-server {
       &:after {
-        content: 'c';
+        font-family: FontAwesome;
+        -webkit-font-smoothing: antialiased;
+        color: inherit;
+        font-size: 20px;
+        position: absolute;
+        top: 8px;
+        left: 7px;
+        content: '\f109';
       }
     }
+  }
 
-    &.cloudify-types-app-module {
-      &:after {
-        content: 'a';
+  &.cloudify-types-app-module {
+    &.cloudify-types-bash-app-module {
+      &.nodejs-app {
+        &:after {
+          font-family: FontAwesome;
+          -webkit-font-smoothing: antialiased;
+          color: inherit;
+          font-size: 20px;
+          position: absolute;
+          top: 8px;
+          left: 7px;
+          content: '\f109';
+        }
       }
+    }
+  }
 
-      .no-children {
-        border: 2px solid red;
+  &.cloudify-openstack-floatingip {
+    &:after {
+      content: 'c';
+    }
+  }
+
+  &.cloudify-openstack-port {
+    &:after {
+      content: 'c';
+    }
+  }
+
+  &.cloudify-openstack-network {
+    &:after {
+      content: 'c';
+    }
+  }
+
+  &.cloudify-openstack-subnet {
+    &:after {
+      content: 'c';
+    }
+  }
+
+  &.cloudify-openstack-server {
+    &.vm-host {
+      &:after {
+        content: 'e';
       }
     }
   }
