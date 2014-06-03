@@ -1,4 +1,4 @@
-<div data-ng-repeat="node in map" data-type="getDataType(node)"  ng-class="{box: !node.isApp, app: node.isApp}" blueprint:coordinate="node.id">
+<div data-ng-repeat="node in map" data-type="node.dataType"  ng-class="{box: !node.isApp, app: node.isApp}" blueprint:coordinate="node.id">
     <div class="hoverup">
         <div class="buttons no-embed">
             <ul>

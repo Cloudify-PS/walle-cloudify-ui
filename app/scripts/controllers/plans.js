@@ -123,7 +123,6 @@ angular.module('cosmoUi')
                 var node = nodesList[nodeId];
                 node.class = _getNodeClass(node.type_hierarchy);
                 node.isApp = _isAppNode(node);
-                node.dataType = _getNodeDataType(node);
 
                 if (node.relationships !== undefined && !_isNetworkNode(node)) {
                     for (var i = 0; i < node.relationships.length; i++) {
@@ -139,6 +138,9 @@ angular.module('cosmoUi')
                             node.isContained = false;
                         }
                     }
+
+                    node.dataType = _getNodeDataType(node);
+
                     if (!node.isContained) {
 //                        if (node.children === undefined) {
 //                            node.class = 'no-children ' + node.class;
@@ -173,7 +175,13 @@ angular.module('cosmoUi')
         }
 
         function _getNodeDataType(node) {
-
+            if (!node.isContained && node.children !== undefined) {
+                return 'compute';
+            } else if (node.isContained && !_isAppNode(node)) {
+                return 'middleware';
+            } else if (node.isContained && _isAppNode(node)) {
+                return 'modules';
+            }
         }
 
         function _getNodeClass(typeHierarchy) {
