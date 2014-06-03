@@ -103,10 +103,9 @@ $gs-icon-prefix:'gs-icon';
         -webkit-font-smoothing: antialiased;
         color: inherit;
         font-size: 20px;
-        position: absolute;
-        top: 8px;
-        left: 7px;
         content: '\f109';
+        position: relative;
+        top: 8px;
       }
     }
   }
@@ -119,9 +118,8 @@ $gs-icon-prefix:'gs-icon';
           -webkit-font-smoothing: antialiased;
           color: inherit;
           font-size: 20px;
-          position: absolute;
+          position: relative;
           top: 8px;
-          left: 7px;
           content: '\f109';
         }
       }

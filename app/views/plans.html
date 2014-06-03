@@ -157,17 +157,17 @@
                 </thead>
                 <tbody data-ng-repeat="row in dataTable">
                     <tr>
-                        <td><i class="topology-glyph {{ row.type.icon }}"></i></td>
+                        <td><i class="topology-glyph {{ row.class }}"></i></td>
                         <td>{{ row.name }}</td>
-                        <td>{{ row.type.name }}</td>
-                        <td>{{ row.instances }}</td>
+                        <td>{{ row.type }}</td>
+                        <td>{{ row.instances.deploy }}</td>
                         <td>
-                            <span data-ng-if="row.contained_in != false">{{ indexNodes[row.contained_in].name }}</span>
-                            <span data-ng-if="row.contained_in == false">--</span>
+                            <span data-ng-if="getRelationshipByType(row, 'contained').length > 0" data-ng-repeat="container in getRelationshipByType(row, 'contained')">{{ container.name }}</span>
+                            <span data-ng-if="getRelationshipByType(row, 'contained').length == 0">--</span>
                         </td>
                         <td>
-                            <span data-ng-if="row.connected_to.length > 0" data-ng-repeat="connection in row.connected_to">{{ indexNodes[connection].name }}</span>
-                            <span data-ng-if="row.connected_to == 0">--</span>
+                            <span data-ng-if="getRelationshipByType(row, 'connected').length > 0" data-ng-repeat="connection in getRelationshipByType(row, 'connected')">{{ connection.name }}</span>
+                            <span data-ng-if="getRelationshipByType(row, 'connected').length == 0">--</span>
                         </td>
                         <td>
                             <ul>

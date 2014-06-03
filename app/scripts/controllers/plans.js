@@ -31,6 +31,7 @@ angular.module('cosmoUi')
             .then(function(data) {
                 $scope.blueprint = data || null;
                 $scope.nodesTree = _createNodesTree(data.plan.nodes);
+                $scope.dataTable = data.plan.nodes;
             });
 
 //        YamlService.load($routeParams.id, function (err, data) {
@@ -124,7 +125,7 @@ angular.module('cosmoUi')
 
                 if (node.relationships !== undefined && !_isNetworkNode(node)) {
                     for (var i = 0; i < node.relationships.length; i++) {
-                        node.isApp = _isAppnode(node);
+                        node.isApp = _isAppNode(node);
                         if (node.relationships[i].base === 'contained') {
                             node.isContained = true;
                             var target_id = node.relationships[i].target_id;
@@ -151,7 +152,7 @@ angular.module('cosmoUi')
             return roots;
         }
 
-        function _isAppnode(node) {
+        function _isAppNode(node) {
             var networkNodes = [
                 'nodejs_app'
             ];
@@ -176,6 +177,20 @@ angular.module('cosmoUi')
             }
             return typeHierarchy.join(' ');
         }
+
+        $scope.getRelationshipByType = function(node, type) {
+            var relationshipData = [];
+
+            if (node.relationships !== undefined) {
+                for (var i = 0; i < node.relationships.length; i++) {
+                    if (node.relationships[i].type === type) {
+                        relationshipData.push(node.relationships[i]);
+                    }
+                }
+            }
+
+            return relationshipData;
+        };
 
         $scope.viewNode = function (node_id) {
             var realNode = planData.getNode(node_id);
