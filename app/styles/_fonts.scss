@@ -111,18 +111,14 @@ $gs-icon-prefix:'gs-icon';
   }
 
   &.cloudify-types-app-module {
-    &.cloudify-types-bash-app-module {
-      &.nodejs-app {
-        &:after {
-          font-family: FontAwesome;
-          -webkit-font-smoothing: antialiased;
-          color: inherit;
-          font-size: 20px;
-          position: relative;
-          top: 8px;
-          content: '\f109';
-        }
-      }
+    &:after {
+      font-family: FontAwesome;
+      -webkit-font-smoothing: antialiased;
+      color: inherit;
+      font-size: 20px;
+      position: relative;
+      top: 8px;
+      content: '\f109';
     }
   }
 
