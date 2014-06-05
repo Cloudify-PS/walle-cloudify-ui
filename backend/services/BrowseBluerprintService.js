@@ -36,6 +36,8 @@ function Walker() {
                 };
                 children.push(newItem);
                 walkFolder(path.join(rootFolder, file), newItem.children);
+                counter--;
+                doFinalCallback();
             } else {
                 fileIsAscii(path.join(rootFolder, file), function(err, isAscii){
                     children.push({
@@ -43,13 +45,17 @@ function Walker() {
                         'relativePath': path.relative(origRoot, path.join(rootFolder, file)),
                         'encoding': isAscii ? 'ASCII' : 'BINARY'
                     });
+                    counter--;
+                    doFinalCallback();
                 });
             }
-            counter--;
-            if (counter == 0) {
-                _finalCallback(null, root);
-            }
         })
+    }
+
+    function doFinalCallback() {
+        if (counter === 0) {
+            _finalCallback(null, root);
+        }
     }
 
     function walkFolder(rootFolder, _list) {
@@ -61,6 +67,7 @@ function Walker() {
                 if(files.hasOwnProperty(i)) {
                     addChild(rootFolder, _list, files[i]);
                 }
+                else counter--;
             }
         });
     }

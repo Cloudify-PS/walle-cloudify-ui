@@ -4,7 +4,7 @@ angular.module('cosmoUi')
     .controller('PlansCtrl', function ($scope, YamlService, Layout, Render, $routeParams, BreadcrumbsService, PlanDataConvert, blueprintCoordinateService, bpNetworkService, $http, $timeout, $location, RestService, Cosmotypesservice) {
 
         var planData/*:PlanData*/ = null;
-        $scope.section = 'code';
+        $scope.section = 'topology';
         $scope.propSection = 'general';
         $scope.toggleView = false;
 
