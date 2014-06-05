@@ -70,16 +70,6 @@ $gs-icon-prefix:'gs-icon';
 
   }
 
-//  &.no-children {
-//    border: 2px solid red;
-//    position: relative;
-//    min-width: 130px;
-//    display: inline-block;
-//    text-align: center;
-//    border-radius: 3px;
-//    margin: 10px;
-//  }
-
   &.cloudify-types-middleware-server {
     &:after {
       content: 'f';
@@ -106,13 +96,6 @@ $gs-icon-prefix:'gs-icon';
 
   &.cloudify-types-app-module {
     &:after {
-//      font-family: FontAwesome;
-//      -webkit-font-smoothing: antialiased;
-//      color: inherit;
-//      font-size: 20px;
-//      position: relative;
-//      top: 8px;
-//      content: '\f109';
       content: 'a';
     }
   }
