@@ -80,7 +80,7 @@ angular.module('cosmoUi')
                 } else if(!_isNetworkNode(node) && !node.isContained){
                     roots.push(node);
                 }
-            };
+            }
 
             return roots.reverse();
         }
@@ -169,7 +169,7 @@ angular.module('cosmoUi')
 
         function _getSubnets(network, nodes) {
             var subnets = [];
-            var colors = ['#d54931', '#f89406', '#149bdf', '#555869', '#8eaf26', '#330033', '#4b6c8b', '#550000', '#dc322f', '#FF6600', '#cce80b', '#003300', '#805e00']
+            var colors = ['#d54931', '#f89406', '#149bdf', '#555869', '#8eaf26', '#330033', '#4b6c8b', '#550000', '#dc322f', '#FF6600', '#cce80b', '#003300', '#805e00'];
 
             nodes.forEach(function (node) {
 
