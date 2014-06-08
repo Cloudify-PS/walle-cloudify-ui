@@ -3,14 +3,11 @@
 angular.module('cosmoUi')
     .controller('PlansCtrl', function ($scope, YamlService, Layout, Render, $routeParams, BreadcrumbsService, PlanDataConvert, blueprintCoordinateService, bpNetworkService, $http, $timeout, $location, RestService) {
 
-        var planData/*:PlanData*/ = null;
-        var dataPlan;
         $scope.section = 'topology';
         $scope.propSection = 'general';
         $scope.toggleView = false;
         $scope.nodesTree = [];
         $scope.networks = [];
-//        var indexedNodes = [];
         var relations = [];
 
         $scope.toggleBar = {
@@ -46,83 +43,6 @@ angular.module('cosmoUi')
                     bpNetworkService.render();
                 }, 100);
             });
-
-//        YamlService.load($routeParams.id, function (err, data) {
-//
-//            planData = data;
-//            dataPlan = data.getJSON();
-//            var dataMap;
-//
-//            RestService.getBlueprintById({id: $routeParams.id})
-//                .then(function(data) {
-//                    $scope.blueprint = data || null;
-//                });
-//
-//            /**
-//             * Networks
-//             */
-//            // Filter data for Networks
-//            var networks = PlanDataConvert.nodesToNetworks(dataPlan);
-//            $scope.networks = networks;
-//            bpNetworkService.setMap(networks.relations);
-//
-//
-//            // Render Networks
-//            $timeout(function(){
-//                $scope.networkcoords = bpNetworkService.getCoordinates();
-//                bpNetworkService.render();
-//            }, 100);
-//
-//            /**
-//             * Blueprint
-//             */
-//            var topology = PlanDataConvert.nodesToTopology(dataPlan);
-//
-//            // Convert edges to angular format
-//            if (topology.hasOwnProperty('edges') && !!topology.edges) {
-//                dataMap = PlanDataConvert.edgesToBlueprint(topology.edges);
-//            }
-//
-//            PlanDataConvert.allocateAbandonedNodes(topology, dataMap);
-//
-//            blueprintCoordinateService.resetCoordinates();
-//
-//            // Set Map
-//            blueprintCoordinateService.setMap(dataMap.connected);
-//
-//            // Connection between nodes
-//            if(dataMap.hasOwnProperty('contained')) {
-//                $scope.map = _mergeNodeData(dataMap.contained.reverse());
-//            }
-//            $scope.coordinates = blueprintCoordinateService.getCoordinates();
-//            $scope.dataTable = PlanDataConvert.nodesToTable(dataPlan);
-//            RestService.getBlueprintSource($routeParams.id)
-//                .then(function(code) {
-//                    $scope.dataCode = {
-//                        data: code.source
-//                    };
-//                });
-//        });
-//
-//        function _mergeNodeData(nodesMap) {
-//            for (var i = 0; i < nodesMap.length; i++) {
-//                dataPlan.nodes.forEach(function (node) {
-//                    if (nodesMap[i].id === node.id) {
-//                        for (var attr in node) {
-//                            nodesMap[i][attr] = node[attr];
-//                        }
-//                        nodesMap[i].type = nodesMap[i].type[0].split('.').join('-').split('_').join('-');
-//
-//                        if (nodesMap[i].children !== undefined) {
-//                            for (var j = 0; j < nodesMap[i].children.length; j++) {
-//                                nodesMap[i].children = _mergeNodeData(nodesMap[i].children);
-//                            }
-//                        }
-//                    }
-//                });
-//            }
-//            return nodesMap;
-//        }
 
         function _createNodesTree(nodes) {
             var roots = [];
