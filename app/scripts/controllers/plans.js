@@ -343,6 +343,10 @@ angular.module('cosmoUi')
             return relationshipData;
         };
 
+        $scope.$root.$on('nodeSelected', function(e, data) {
+            $scope.viewNode(data);
+        });
+
         $scope.viewNode = function (node_id) {
             var _node = _getNodeById(node_id);
             $scope.showProperties = {
