@@ -7,13 +7,15 @@ angular.module('cosmoUi')
             restrict: 'EA',
             transclude: true,
             scope: {
-                map: '='
+                map: '=',
+                selected: '&'
             },
-//            link: function (scope) {
-//
-//            },
             compile: function(element) {
-                return RecursionHelper.compile(element);
+                return RecursionHelper.compile(element, function(scope) {
+                    scope.$watch('map', function(data) {
+                        console.log(data);
+                    });
+                });
             }
         };
     }]);

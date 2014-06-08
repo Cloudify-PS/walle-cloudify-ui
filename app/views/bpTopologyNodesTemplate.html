@@ -1,8 +1,8 @@
-<div data-ng-repeat="node in map" data-type="node.dataType"  ng-class="{box: !node.isApp, app: node.isApp}" blueprint:coordinate="node.id">
+<div data-ng-repeat="node in map" data-type="{{node.dataType}}" ng-class="{box: !node.isApp, app: node.isApp}" blueprint:coordinate="node.id">
     <div class="hoverup">
         <div class="buttons no-embed">
             <ul>
-                <li data-ng-click="viewNode(node.id)" class="topology-glyph node-details"></li>
+                <li data-ng-click="selected({node_id:node.id})" class="topology-glyph node-details"></li>
             </ul>
         </div>
     </div>
@@ -19,5 +19,4 @@
     </div>
 
     <p ng-show="node.isApp == true">{{ node.name }}</p>
-
 </div>

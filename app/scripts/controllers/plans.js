@@ -10,7 +10,8 @@ angular.module('cosmoUi')
         $scope.toggleView = false;
         $scope.nodesTree = [];
         $scope.networks = [];
-        $scope.indexNodes = {};
+//        var indexedNodes = [];
+        var relations = [];
 
         $scope.toggleBar = {
             'compute': true,
@@ -34,6 +35,12 @@ angular.module('cosmoUi')
                 $scope.nodesTree = _createNodesTree(data.plan.nodes);
                 $scope.networks = _createNetworkTree(data.plan.nodes);
                 $scope.dataTable = data.plan.nodes;
+
+                bpNetworkService.setMap($scope.networks.relations);
+                $timeout(function(){
+                    $scope.networkcoords = bpNetworkService.getCoordinates();
+                    bpNetworkService.render();
+                }, 100);
             });
 
 //        YamlService.load($routeParams.id, function (err, data) {
@@ -211,8 +218,10 @@ angular.module('cosmoUi')
                 network.subnets = _getSubnets(network, nodes);
 
                 /* Devices */
-                network.devices = _getDevices(nodes, network.subnets);
+                network.devices = _getDevices(nodes);
             });
+
+            networkModel.relations = relations;
 
             return networkModel;
         }
@@ -252,6 +261,12 @@ angular.module('cosmoUi')
                                 'color': colors[Math.floor((Math.random() * colors.length) + 1)],
                                 'type': 'subnet'
                             });
+                            relations.push({
+                                source: node.id,
+                                target: network.id,
+                                type: relationship.type,
+                                baseType: relationship.base
+                            });
                         }
                     });
                 }
@@ -277,13 +292,16 @@ angular.module('cosmoUi')
 
                     var relationships = $scope.getRelationshipByType(node, 'connected').concat($scope.getRelationshipByType(node, 'depends'));
                     relationships.forEach(function (relationship) {
-
                         ports.forEach(function(port) {
                             if (relationship.target_id === port.id) {
                                 device.ports.push(port);
+
+                                relations.push({
+                                    source: port.subnet,
+                                    target: port.id
+                                });
                             }
                         });
-
                     });
                     devices.push(device);
                 }
@@ -297,11 +315,13 @@ angular.module('cosmoUi')
 
             nodes.forEach(function (node) {
                 if (node.type.indexOf('port') > -1) {
+                    var relationships = $scope.getRelationshipByType(node, 'depends');
                     ports.push({
                         'id': node.id,
                         'name': node.name,
                         'type': 'device',
-                        'icon': 'port'
+                        'icon': 'port',
+                        'subnet': relationships[0].target_id
                     });
                 }
             });
@@ -324,13 +344,26 @@ angular.module('cosmoUi')
         };
 
         $scope.viewNode = function (node_id) {
-            var realNode = planData.getNode(node_id);
+            var _node = _getNodeById(node_id);
             $scope.showProperties = {
-                properties: planData.getProperties(realNode),
-                relationships: planData.getRelationships(realNode),
-                general: planData.getGeneralInfo(realNode)
+                properties: _node.properties,
+                relationships: _node.relationships,
+                general: {
+                    'name': _node.id,
+                    'type': _node.type
+                }
             };
         };
+
+        function _getNodeById(node_id) {
+            var _node = {};
+            $scope.dataTable.forEach(function(node) {
+                if (node.id === node_id) {
+                    _node = node;
+                }
+            });
+            return _node;
+        }
 
         $scope.hideProperties = function () {
             $scope.showProperties = null;
