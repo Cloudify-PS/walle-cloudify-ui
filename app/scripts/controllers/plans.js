@@ -287,27 +287,16 @@ angular.module('cosmoUi')
             $scope.viewNode(data);
         });
 
-        $scope.viewNode = function (node_id) {
-            var _node = _getNodeById(node_id);
+        $scope.viewNode = function (node) {
             $scope.showProperties = {
-                properties: _node.properties,
-                relationships: _node.relationships,
+                properties: node.properties,
+                relationships: node.relationships,
                 general: {
-                    'name': _node.id,
-                    'type': _node.type
+                    'name': node.id,
+                    'type': node.type
                 }
             };
         };
-
-        function _getNodeById(node_id) {
-            var _node = {};
-            $scope.dataTable.forEach(function(node) {
-                if (node.id === node_id) {
-                    _node = node;
-                }
-            });
-            return _node;
-        }
 
         $scope.hideProperties = function () {
             $scope.showProperties = null;

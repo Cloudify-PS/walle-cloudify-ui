@@ -11,8 +11,8 @@ angular.module('cosmoUi')
             },
             compile: function(element) {
                 return RecursionHelper.compile(element, function(scope) {
-                    scope.onNodeSelected = function(node_id) {
-                        scope.$root.$emit('nodeSelected', node_id);
+                    scope.onNodeSelected = function(node) {
+                        scope.$root.$emit('nodeSelected', node);
                     };
                 });
             }
