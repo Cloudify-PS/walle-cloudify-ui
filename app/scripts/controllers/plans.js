@@ -36,6 +36,10 @@ angular.module('cosmoUi')
                 $scope.networks = _createNetworkTree(data.plan.nodes);
                 $scope.dataTable = data.plan.nodes;
 
+                blueprintCoordinateService.resetCoordinates();
+                blueprintCoordinateService.setMap(_getNodesConnections(data.plan.nodes));
+                $scope.coordinates = blueprintCoordinateService.getCoordinates();
+
                 bpNetworkService.setMap($scope.networks.relations);
                 $timeout(function(){
                     $scope.networkcoords = bpNetworkService.getCoordinates();
@@ -158,7 +162,7 @@ angular.module('cosmoUi')
                 }
             };
 
-            return roots;
+            return roots.reverse();
         }
 
         function _isAppNode(node) {
@@ -327,6 +331,22 @@ angular.module('cosmoUi')
             });
 
             return ports;
+        }
+
+        function _getNodesConnections(nodes) {
+            var connections = [];
+            nodes.forEach(function (node) {
+                var relationships = $scope.getRelationshipByType(node, 'connected');
+                relationships.forEach(function(connection) {
+                    connections.push({
+                        source: node.id,
+                        target: connection.target_id,
+                        type: connection.type,
+                        baseType: connection.base
+                    });
+                });
+            });
+            return connections;
         }
 
         $scope.getRelationshipByType = function(node, type) {

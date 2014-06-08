@@ -413,10 +413,12 @@
         .app {
             position: relative;
             min-width: 130px;
+            min-height: 45px;
             display: inline-block;
             text-align: center;
             border-radius: 3px;
             margin: 10px;
+
             .piProgress {
                 top: 1.5px;
                 left: 37px;
