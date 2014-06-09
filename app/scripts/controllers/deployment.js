@@ -3,9 +3,7 @@
 angular.module('cosmoUi')
     .controller('DeploymentCtrl', function ($scope, $rootScope, $cookieStore, $routeParams, RestService, EventsService, BreadcrumbsService, YamlService, blueprintCoordinateService, bpNetworkService, $route, $anchorScroll, $timeout, $location, $log, EventsMap) {
 
-        var totalNodes = 0,
-            deploymentModel = {},
-            statesIndex = ['uninitialized', 'initializing', 'creating', 'created', 'configuring', 'configured', 'starting', 'started'],
+        var statesIndex = ['uninitialized', 'initializing', 'creating', 'created', 'configuring', 'configured', 'starting', 'started'],
             currentExeution = null,
             isGotExecuteNodes = false;
 
@@ -18,6 +16,8 @@ angular.module('cosmoUi')
             'process': 0,
             'instancesIds': []
         };
+
+        var deploymentModel = {};
 
         $scope.selectedWorkflow = {
             data: null
@@ -52,6 +52,7 @@ angular.module('cosmoUi')
         var blueprintId = $routeParams.blueprintId;
         var relations = [];
         var colors = ['#d54931', '#f89406', '#149bdf', '#555869', '#8eaf26', '#330033', '#4b6c8b', '#550000', '#dc322f', '#FF6600', '#cce80b', '#003300', '#805e00'];
+        var nodesList = [];
 
         BreadcrumbsService.push('deployments',
             {
@@ -382,10 +383,11 @@ angular.module('cosmoUi')
                     // Blueprint
                     RestService.getBlueprintById({id: deploymentData.blueprintId})
                         .then(function(data){
-                            $scope.nodesTree = _createNodesTree(data.plan.nodes);
+                            nodesList = data.plan.nodes;
+                            $scope.nodesTree = _createNodesTree(nodesList);
 
                             blueprintCoordinateService.resetCoordinates();
-                            blueprintCoordinateService.setMap(_getNodesConnections(data.plan.nodes));
+                            blueprintCoordinateService.setMap(_getNodesConnections(nodesList));
                             $scope.coordinates = blueprintCoordinateService.getCoordinates();
                             $scope.deployments = deploymentModel;
 
@@ -442,14 +444,14 @@ angular.module('cosmoUi')
 
         function _createNodesTree(nodes) {
             var roots = [];
-            var nodesList = [];
+            var nodesIndexedList = [];
 
             nodes.forEach(function(node) {
-                nodesList[node.id] = node;
+                nodesIndexedList[node.id] = node;
             });
 
-            for (var nodeId in nodesList) {
-                var node = nodesList[nodeId];
+            for (var nodeId in nodesIndexedList) {
+                var node = nodesIndexedList[nodeId];
                 node.class = _getNodeClass(node.type_hierarchy);
                 node.isApp = _isAppNode(node);
 
@@ -458,10 +460,10 @@ angular.module('cosmoUi')
                         if (node.relationships[i].base === 'contained') {
                             node.isContained = true;
                             var target_id = node.relationships[i].target_id;
-                            if (nodesList[target_id].children === undefined) {
-                                nodesList[target_id].children = [];
+                            if (nodesIndexedList[target_id].children === undefined) {
+                                nodesIndexedList[target_id].children = [];
                             }
-                            nodesList[target_id].children.push(node);
+                            nodesIndexedList[target_id].children.push(node);
                         }
                         if (i === node.relationships.length - 1 && node.isContained === undefined) {
                             node.isContained = false;
@@ -600,6 +602,12 @@ angular.module('cosmoUi')
                     setDeploymentStatus(deployment, processDone);
                 }
             }
+
+            nodesList.forEach(function(node) {
+                node.state = deploymentModel[node.id];
+            });
+
+            $scope.nodesTree = _createNodesTree(nodesList);
 
             $log.info(['deploymentModel', deploymentModel]);
         }
