@@ -98,13 +98,13 @@ angular.module('cosmoUi')
                 .then(function (data) {
                     $scope.selectedNode = data;
 
-                    if (data !== null) {
+                    if (data !== null && node !== null) {
                         $scope.showProperties = {
-                            properties: data.properties,
-                            relationships: data.relationships,
+                            properties: node.properties,
+                            relationships: node.relationships,
                             general: {
-                                'name': data.id,
-                                'type': data.type,
+                                'name': node.id,
+                                'type': node.type,
                                 'state': data.state,
                                 'ip': data.runtimeInfo !== null ? data.runtimeInfo.ip : ''
                             }
@@ -694,6 +694,7 @@ angular.module('cosmoUi')
                     $scope.selectNodesArr.push($scope.allNodesArr[i]);
                 }
             }
+//            $scope.nodeSelected($scope.selectNodesArr[0]);
         }
 
         $scope.hideProperties = function () {
