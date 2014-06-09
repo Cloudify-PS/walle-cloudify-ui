@@ -264,6 +264,15 @@ Cloudify4node.executeDeployment = function(requestBody, callback) {
     createRequest(requestData, callback);
 }
 
+Cloudify4node.getProviderContext = function(callback) {
+    var requestData = createRequestData({
+        path: '/provider/context',
+        method: 'GET'
+    });
+
+    createRequest(requestData, callback);
+}
+
 Cloudify4node.getEvents = function(query, callback) {
     var data = query;
     var requestData = createRequestData({

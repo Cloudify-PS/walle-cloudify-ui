@@ -208,16 +208,15 @@ angular.module('cosmoUi')
 
         function _createNetworkTree(nodes) {
             var networkModel = {
-                'external': [
-                    {
-                        'name': 'External Netowrk',
-                        'subnets': [],
-                        'devices': []
-                    }
-                ],
+                'external': [],
                 'networks': [],
                 'relations': []
             };
+
+            RestService.getProviderContext()
+                .then(function(providerData) {
+                    networkModel.external.push(providerData.context.resources.subnet);
+                });
 
             /* Networks */
             networkModel.networks = _getNetworks(nodes);

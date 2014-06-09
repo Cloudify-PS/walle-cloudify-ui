@@ -89,22 +89,10 @@
             <div bp:networks class="relations" ng-model="networkcoords"></div>
             <div data-ng-repeat="network in networks.external" class="network">
                 <div class="line">
-                    <div class="name-space"></div>
-                    <div data-ng-repeat="subnet in network.subnets" class="subnet" bp:network:coordinate ng-model="subnet">
-                        <p>{{ subnet.name }}</p>
+                    <div class="name">{{ network.name }}</div>
+                    <div data-ng-repeat="networks in networks.external" class="subnet" bp:network:coordinate ng-model="subnet">
+                        <p>{{ network.name }}</p>
                         <p class="cidr">External Network</p>
-                    </div>
-                </div>
-                <div class="devices">
-                    <div data-ng-repeat="device in network.devices" class="device">
-                        <div class="inner">
-                            <div class="buttons no-embed">
-                                <ul>
-                                    <li data-ng-click="viewNode(device)" class="topology-glyph node-details"></li>
-                                </ul>
-                            </div>
-                            <i class="topology-glyph {{ device.icon }}" bp:network:coordinate ng-model="device"></i>
-                        </div>
                     </div>
                 </div>
             </div>

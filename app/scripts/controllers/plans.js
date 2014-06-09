@@ -30,12 +30,13 @@ angular.module('cosmoUi')
             .then(function(data) {
                 $scope.blueprint = data || null;
                 $scope.nodesTree = _createNodesTree(data.plan.nodes);
-                $scope.networks = _createNetworkTree(data.plan.nodes);
                 $scope.dataTable = data.plan.nodes;
 
                 blueprintCoordinateService.resetCoordinates();
                 blueprintCoordinateService.setMap(_getNodesConnections(data.plan.nodes));
                 $scope.coordinates = blueprintCoordinateService.getCoordinates();
+
+                $scope.networks = _createNetworkTree(data.plan.nodes);
 
                 bpNetworkService.setMap($scope.networks.relations);
                 $timeout(function(){
@@ -98,7 +99,8 @@ angular.module('cosmoUi')
                 'cloudify.openstack.floatingip',
                 'cloudify.openstack.network',
                 'cloudify.openstack.port',
-                'cloudify.openstack.subnet'
+                'cloudify.openstack.subnet',
+                'subnet'
             ];
 
             return networkNodes.indexOf(node.type) !== -1;
@@ -123,16 +125,15 @@ angular.module('cosmoUi')
 
         function _createNetworkTree(nodes) {
             var networkModel = {
-                    'external': [
-                        {
-                            'name': 'External Netowrk',
-                            'subnets': [],
-                            'devices': []
-                        }
-                    ],
+                    'external': [],
                     'networks': [],
                     'relations': []
                 };
+
+            RestService.getProviderContext()
+                .then(function(providerData) {
+                    networkModel.external.push(providerData.context.resources.subnet);
+                });
 
             /* Networks */
             networkModel.networks = _getNetworks(nodes);
