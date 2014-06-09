@@ -671,7 +671,7 @@ angular.module('cosmoUi')
          * Side panel
          */
 
-        $scope.$root.$on('nodeSelected', function(e, data) {
+        $scope.$root.$on('topologyNodeSelected', function(e, data) {
             $scope.viewNode(data);
         });
 

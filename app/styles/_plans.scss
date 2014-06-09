@@ -23,6 +23,10 @@
         padding-top:20px;
         z-index: 9999;
 
+        .close-properties-button {
+          cursor: pointer;
+        }
+
         .title{
             padding-bottom:$COSMOUI_BLUEPRINT_DETAILS_TITLE_PADDING_BOTTOM;
             line-height: $COSMOUI_BLUEPRINT_DETAILS_TITLE_LINE_HEIGHT;

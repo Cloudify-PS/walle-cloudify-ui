@@ -292,7 +292,7 @@ angular.module('cosmoUi')
             return relationshipData;
         };
 
-        $scope.$root.$on('nodeSelected', function(e, data) {
+        $scope.$root.$on('topologyNodeSelected', function(e, data) {
             $scope.viewNode(data);
         });
 
