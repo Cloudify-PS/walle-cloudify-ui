@@ -52,6 +52,7 @@ angular.module('cosmoUi')
         //var executionId = null;
         var blueprintId = $routeParams.blueprintId;
         var relations = [];
+        var colors = ['#d54931', '#f89406', '#149bdf', '#555869', '#8eaf26', '#330033', '#4b6c8b', '#550000', '#dc322f', '#FF6600', '#cce80b', '#003300', '#805e00'];
 
         BreadcrumbsService.push('deployments',
             {
@@ -206,17 +207,12 @@ angular.module('cosmoUi')
             }
         }
 
-        function _createNetworkTree(nodes) {
+        function _createNetworkTree(nodes, externalNetworks) {
             var networkModel = {
-                'external': [],
+                'external': externalNetworks || [],
                 'networks': [],
                 'relations': []
             };
-
-            RestService.getProviderContext()
-                .then(function(providerData) {
-                    networkModel.external.push(providerData.context.resources.subnet);
-                });
 
             /* Networks */
             networkModel.networks = _getNetworks(nodes);
@@ -226,7 +222,7 @@ angular.module('cosmoUi')
                 network.subnets = _getSubnets(network, nodes);
 
                 /* Devices */
-                network.devices = _getDevices(nodes);
+                network.devices = _getDevices(nodes, networkModel.external);
             });
 
             networkModel.relations = relations;
@@ -253,7 +249,6 @@ angular.module('cosmoUi')
 
         function _getSubnets(network, nodes) {
             var subnets = [];
-            var colors = ['#d54931', '#f89406', '#149bdf', '#555869', '#8eaf26', '#330033', '#4b6c8b', '#550000', '#dc322f', '#FF6600', '#cce80b', '#003300', '#805e00'];
 
             nodes.forEach(function (node) {
 
@@ -283,7 +278,7 @@ angular.module('cosmoUi')
             return subnets;
         }
 
-        function _getDevices(nodes) {
+        function _getDevices(nodes, externalNetworks) {
             /* Ports */
             var ports = _getPorts(nodes);
             var devices = [];
@@ -311,6 +306,14 @@ angular.module('cosmoUi')
                             }
                         });
                     });
+
+                    externalNetworks.forEach(function (extNetwork) {
+                        relations.push({
+                            source: extNetwork.id,
+                            target: node.id
+                        });
+                    });
+
                     devices.push(device);
                 }
             });
@@ -381,18 +384,25 @@ angular.module('cosmoUi')
                     RestService.getBlueprintById({id: deploymentData.blueprintId})
                         .then(function(data){
                             $scope.nodesTree = _createNodesTree(data.plan.nodes);
-                            $scope.networks = _createNetworkTree(data.plan.nodes);
 
                             blueprintCoordinateService.resetCoordinates();
                             blueprintCoordinateService.setMap(_getNodesConnections(data.plan.nodes));
                             $scope.coordinates = blueprintCoordinateService.getCoordinates();
                             $scope.deployments = deploymentModel;
 
-                            bpNetworkService.setMap($scope.networks.relations);
-                            $timeout(function(){
-                                $scope.networkcoords = bpNetworkService.getCoordinates();
-                                bpNetworkService.render();
-                            }, 100);
+                            RestService.getProviderContext()
+                                .then(function(providerData) {
+                                    var _extNetworks = [];
+                                    _extNetworks.push(providerData.context.resources.subnet);
+                                    _extNetworks[0].color = colors[Math.floor((Math.random() * colors.length) + 1)];
+                                    $scope.networks = _createNetworkTree(data.plan.nodes, _extNetworks);
+
+                                    bpNetworkService.setMap($scope.networks.relations);
+                                    $timeout(function(){
+                                        $scope.networkcoords = bpNetworkService.getCoordinates();
+                                        bpNetworkService.render();
+                                    }, 100);
+                                });
 
                             blueprintCoordinateService.draw();
                         });
