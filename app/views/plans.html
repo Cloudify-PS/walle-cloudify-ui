@@ -90,7 +90,7 @@
             <div data-ng-repeat="network in networks.external" class="network">
                 <div class="line">
                     <div class="name">{{ network.name }}</div>
-                    <div data-ng-repeat="networks in networks.external" class="subnet" bp:network:coordinate ng-model="subnet">
+                    <div data-ng-repeat="networks in networks.external" class="subnet" bp:network:coordinate ng-model="network">
                         <p>{{ network.name }}</p>
                         <p class="cidr">External Network</p>
                     </div>
