@@ -41,7 +41,7 @@
                             <td>{{ 'plans.details.interface' | i18n }}</td>
                         </tr>
                         <tr ng-repeat="relationship in showProperties.relationships">
-                            <td>{{relationship.target_id}}</td>
+                            <td ng-click="viewNode(getNodeById(relationship.target_id))">{{relationship.target_id}}</td>
                             <td>{{relationship.type}}</td>
                             <td>
                                 <!--<ul ng-repeat="(key, value) in relationship.source_interfaces">-->

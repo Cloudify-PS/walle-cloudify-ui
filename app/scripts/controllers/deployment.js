@@ -694,7 +694,6 @@ angular.module('cosmoUi')
                     $scope.selectNodesArr.push($scope.allNodesArr[i]);
                 }
             }
-            $scope.nodeSelected($scope.selectNodesArr[0]);
         }
 
         $scope.hideProperties = function () {
@@ -903,5 +902,15 @@ angular.module('cosmoUi')
                 }
             }
             return '';
+        };
+
+        $scope.getNodeById = function(node_id) {
+            var _node = {};
+            $scope.dataTable.forEach(function(node) {
+                if (node.id === node_id) {
+                    _node = node;
+                }
+            });
+            return _node;
         };
     });

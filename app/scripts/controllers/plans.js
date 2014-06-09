@@ -7,6 +7,7 @@ angular.module('cosmoUi')
         $scope.propSection = 'general';
         $scope.toggleView = false;
         $scope.nodesTree = [];
+        $scope.dataTable = [];
         $scope.networks = [];
         var relations = [];
         var colors = ['#d54931', '#f89406', '#149bdf', '#555869', '#8eaf26', '#330033', '#4b6c8b', '#550000', '#dc322f', '#FF6600', '#cce80b', '#003300', '#805e00'];
@@ -309,6 +310,16 @@ angular.module('cosmoUi')
 
         $scope.hideProperties = function () {
             $scope.showProperties = null;
+        };
+
+        $scope.getNodeById = function(node_id) {
+            var _node = {};
+            $scope.dataTable.forEach(function(node) {
+                if (node.id === node_id) {
+                    _node = node;
+                }
+            });
+            return _node;
         };
 
         $scope.toggleDeployDialog = function() {
