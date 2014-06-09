@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('cosmoUi')
-    .controller('DeploymentCtrl', function ($scope, $rootScope, $cookieStore, $routeParams, RestService, EventsService, BreadcrumbsService, YamlService, PlanDataConvert, blueprintCoordinateService, bpNetworkService, $route, $anchorScroll, $timeout, Cosmotypesservice, $location, $log, EventsMap) {
+    .controller('DeploymentCtrl', function ($scope, $rootScope, $cookieStore, $routeParams, RestService, EventsService, BreadcrumbsService, YamlService, blueprintCoordinateService, bpNetworkService, $route, $anchorScroll, $timeout, $location, $log, EventsMap) {
 
         var totalNodes = 0,
             deploymentModel = {},
@@ -19,7 +19,6 @@ angular.module('cosmoUi')
             'instancesIds': []
         };
 
-        var planData/*:PlanData*/ = null;
         $scope.selectedWorkflow = {
             data: null
         };
