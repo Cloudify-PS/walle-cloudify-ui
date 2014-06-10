@@ -12,6 +12,10 @@
             display: block;
             text-align: center;
             margin-top: 5px;
+            svg {
+                left: 23px;
+                top: 1px;
+            }
             .gauge {
                 position: absolute;
                 top: 7px;
@@ -39,7 +43,7 @@
                 content: "%";
             }
             path.install {
-                fill: #2f3334
+                fill: #2f3334;
             }
             path.done {
                 fill: #8eaf26;
