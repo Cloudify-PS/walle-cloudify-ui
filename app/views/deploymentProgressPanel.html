@@ -1,0 +1,41 @@
+<div id="deployment-progress-panel" ng-controller="DeploymentProgressPanelCtrl" ng-class="{'opened': panelOpen == true, 'closed': panelOpen == false}">
+    <div ng-show="!panelOpen">
+        <div class="data name">Workflow name: {{ getWorkflow() }}</div>
+        <div class="data in-progress">In progress: {{ getNodesCount(null, 'inProgress') }}</div>
+        <div class="data ready">Ready: {{ getNodesCount(null, 'started') }}</div>
+        <div class="data failed">Failed: {{ getNodesCount(null, 'failed') }}</div>
+
+        <div class="panel-progress-bar">
+            <div dots-loader></div>
+        </div>
+
+        <div class="expand-button" ng-click="togglePanel()"></div>
+    </div>
+
+    <div ng-show="panelOpen">
+        <table>
+            <thead>
+                <tr>
+                    <th class="data name">Node name</th>
+                    <th class="data in-progress">In progress</th>
+                    <th class="data ready">Ready</th>
+                    <th class="data failed">Failed</th>
+                    <th class="data status">Status</th>
+                </tr>
+            </thead>
+            <tbody ng-repeat="node in panelData">
+                <tr ng-class="getClass(node)">
+                    <td class="data name">{{ node.id }}</td>
+                    <td class="data in-progress">{{ getNodesCount(node, 'inProgress') }} / {{ node.totalCount }}</td>
+                    <td class="data ready">{{ getNodesCount(node, 'started') }} / {{ node.totalCount }}</td>
+                    <td class="data failed">{{ getNodesCount(node, 'failed') }} / {{ node.totalCount }}</td>
+                    <td class="data status">
+                        <div ng-show="node.status != 'in progress'">{{ node.status }}</div>
+                        <div class="panel-progress-dots" dots-loader ng-show="getNodesCount(node, 'inProgress') > 0"></div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="collapse-button" ng-click="togglePanel()"></div>
+    </div>
+</div>

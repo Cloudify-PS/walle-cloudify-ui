@@ -24,7 +24,7 @@ angular.module('cosmoUi')
         $scope.selectedWorkflow = {
             data: null
         };
-        $scope.deploymentInProgress = true;
+        $scope.deploymentInProgress = false;
         $scope.nodes = [];
         $scope.events = [];
         $scope.section = 'topology';
@@ -62,7 +62,7 @@ angular.module('cosmoUi')
 
         BreadcrumbsService.push('deployments',
             {
-                href: '#/deployment',
+                href: '',
                 label: id,
                 id: 'deployment'
             });
@@ -105,7 +105,7 @@ angular.module('cosmoUi')
                             general: {
                                 'name': data.id,
                                 'type': data.type,
-                                'state': $scope.getNodeStateData(data.id).state,
+                                'state': data.state,
                                 'ip': data.runtimeInfo !== null ? data.runtimeInfo.ip : ''
                             }
                         };
@@ -141,10 +141,6 @@ angular.module('cosmoUi')
 
         $scope.workflowSelected = function(workflow) {
             $scope.selectedWorkflow.data = workflow;
-        };
-
-        $scope.isExecuting = function() {
-            return $scope.executedData !== undefined && $scope.executedData !== null;
         };
 
         $scope.cancelExecution = function() {

@@ -34,9 +34,6 @@
                         <div class="deploymentExecute" dots-loader speed="50" ng-show="isExecuting(deployment.blueprintId, deployment.id)"></div>
                     </div>
                     <i class="deployment-play" ng-class="{play: isExecuteEnabled(deployment.id), playDisabled: !isExecuteEnabled(deployment.id)}" ng-click="toggleConfirmationDialog(deployment, 'execute')" ng-show="!isExecuting(deployment.blueprintId, deployment.id)"></i>
-                    <!--<div class="deployment-execute">-->
-                        <!--<i ng-class="{deploymentExecute: isExecuting(deployment.blueprintId, deployment.id)}" ng-show="isExecuting(deployment.blueprintId, deployment.id)"></i>-->
-                    <!--</div>-->
                     <i class="deployment-pause pause" ng-show="isExecuting(deployment.blueprintId, deployment.id)" ng-click="toggleConfirmationDialog(deployment, 'cancel')"></i>
                 </td>
                 <td class="delete">

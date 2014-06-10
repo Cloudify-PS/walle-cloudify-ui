@@ -20,7 +20,7 @@
 
             <div ng-switch="section" class="content-section">
 
-                <div ng-switch="propSection" class="content-section">
+                <div ng-switch="propSection" class="content-section prop-section">
                     <div ng-switch-default="general">
                         <table>
                             <tr>
@@ -44,7 +44,7 @@
                         </table>
                     </div>
                     <div ng-switch-when="relationships">
-                        <div ng-show="showProperties.relationships.length == undefined">{{ 'plans.details.noRelationships' | i18n }}</div>
+                        <div class="no-properties" ng-show="showProperties.relationships.length == undefined">{{ 'plans.details.noRelationships' | i18n }}</div>
 
                         <table class="relationships-table" ng-show="showProperties.relationships.length != undefined">
                             <tr>
@@ -110,13 +110,11 @@
     </div>
     <!-- Side Panel - END -->
 
-
     <div events-widget id="plans-index-events-widget" data-ng-model="eventHits" ng-show="section != 'events'"></div>
 
+    <div app-status-widget id="appStatus" ng-model="deployments['*'].process" status="{{ deployments['*'].state }}"></div>
+
     <div id="deployment-header">
-        <div class="header-right">
-            <div app-status-widget id="appStatus" ng-model="deployments['*'].process" status="{{ deployments['*'].state }}"></div>
-        </div>
         <div class="header-left">
             <div class="content-header">
                 <div class="breadcrumbs"><ul id="deployments" breadcrumbs></ul></div>
@@ -132,24 +130,20 @@
             <div settings-toggles id="settings-button" class="no-embed" toggles="toggleBar"></div>
 
             <div class="actions">
-                <div class="gs-selection-button" ng-show="!isExecuting()">
+                <div class="gs-selection-button" ng-show="!deploymentInProgress">
                     <div multi:select:menu
                          class="gs-select"
                          data-options="workflowsList"
                          data-ng-model="selectedWorkflow.data"
                          data-text="Select workflow"></div>
                 </div>
-                <div class="executingWorkflow" ng-show="isExecuting()">
+                <div class="executingWorkflow" ng-show="deploymentInProgress">
                     {{executedData.workflowId}}
-                    <div class="deploymentExecute" dots-loader speed="50" ng-show="isExecuting()"></div>
+                    <div class="deploymentExecute" dots-loader ng-show="deploymentInProgress"></div>
                 </div>
-                <i class="deployment-play" ng-class="{play: isExecuteEnabled(), disabled: !isExecuteEnabled()}" ng-click="toggleConfirmationDialog(deployment, 'execute')" ng-show="!isExecuting()"></i>
+                <i class="deployment-play" ng-class="{play: isExecuteEnabled(), disabled: !isExecuteEnabled()}" ng-click="toggleConfirmationDialog(deployment, 'execute')" ng-show="!deploymentInProgress"></i>
 
-                <!--<div class="deployment-execute">-->
-
-                    <!--i ng-class="{deploymentExecute: isExecuting()}" ng-show="isExecuting()"></i-->
-                <!--</div>-->
-                <i class="deployment-pause pause" ng-show="isExecuting()" ng-click="toggleConfirmationDialog(deployment, 'cancel')"></i>
+                <i class="deployment-pause pause" ng-show="deploymentInProgress" ng-click="toggleConfirmationDialog(deployment, 'cancel')"></i>
             </div>
 
             <!-- Settings - END -->
@@ -413,6 +407,8 @@
             </div>
         </div>
     </div>
+
+    <div class="deployment-progress-panel" ng-include="'views/deploymentProgressPanel.html'" ng-show="deploymentInProgress"></div>
 
     <div ng-show="isConfirmationDialogVisible">
         <div class="dialogBoxBg"></div>
