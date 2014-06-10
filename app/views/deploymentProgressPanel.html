@@ -1,18 +1,18 @@
 <div id="deployment-progress-panel" ng-controller="DeploymentProgressPanelCtrl" ng-class="{'opened': panelOpen == true, 'closed': panelOpen == false}">
-    <div ng-show="!panelOpen">
+    <div id="closedPanel" ng-show="!panelOpen">
         <div class="data name">Workflow name: {{ getWorkflow() }}</div>
         <div class="data in-progress">In progress: {{ getNodesCount(null, 'inProgress') }}</div>
         <div class="data ready">Ready: {{ getNodesCount(null, 'started') }}</div>
         <div class="data failed">Failed: {{ getNodesCount(null, 'failed') }}</div>
 
-        <div class="panel-progress-bar">
-            <div dots-loader></div>
-        </div>
+        <!--<div class="panel-progress-bar">-->
+            <!--<div dots-loader></div>-->
+        <!--</div>-->
 
         <div class="expand-button" ng-click="togglePanel()"></div>
     </div>
 
-    <div ng-show="panelOpen">
+    <div id="openedPanel" ng-show="panelOpen">
         <table>
             <thead>
                 <tr>

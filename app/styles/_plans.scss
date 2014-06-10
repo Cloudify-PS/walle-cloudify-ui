@@ -23,6 +23,10 @@
         padding-top:20px;
         z-index: 9999;
 
+        .close-properties-button {
+          cursor: pointer;
+        }
+
         .title{
             padding-bottom:$COSMOUI_BLUEPRINT_DETAILS_TITLE_PADDING_BOTTOM;
             line-height: $COSMOUI_BLUEPRINT_DETAILS_TITLE_LINE_HEIGHT;
@@ -210,7 +214,7 @@
                     font-size: 20px;
                     position: absolute;
                     top: 8px;
-                    left: 7px;
+                    left: 9px;
                 }
             }
         }
@@ -355,6 +359,7 @@
                 display: block;
                 background-color: white;
                 padding: 5px 15px;
+                margin-top: 3px;
             }
             .hoverup {
                 position: absolute;
@@ -391,6 +396,7 @@
                             top: -8px;
                             left: 9px;
                             font-size: 30px;
+                            color: $clr-base-27;
                         }
                     }
                     li:first-child {
@@ -411,10 +417,12 @@
         .app {
             position: relative;
             min-width: 130px;
+            min-height: 45px;
             display: inline-block;
             text-align: center;
             border-radius: 3px;
             margin: 10px;
+
             .piProgress {
                 top: 1.5px;
                 left: 37px;

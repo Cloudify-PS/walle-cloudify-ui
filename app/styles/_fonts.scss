@@ -64,3 +64,73 @@ $gs-icon-prefix:'gs-icon';
 .#{$gs-icon-prefix}-plans:before { content:"j"; }
 .#{$gs-icon-prefix}-deployments:before { content:"k"; }
 .#{$gs-icon-prefix}-storage:before { content:"l"; }
+
+.cloudify-types-base {
+  &:after {
+
+  }
+
+  &.cloudify-types-middleware-server {
+    &:after {
+      content: 'f';
+    }
+
+    &.cloudify-types-web-server {
+      &:after {
+        content: 'l';
+      }
+    }
+
+    &.cloudify-types-app-server {
+      &:after {
+        content: 'h';
+      }
+    }
+
+    &.cloudify-types-db-server {
+      &:after {
+        content: 'c';
+      }
+    }
+  }
+
+  &.cloudify-types-app-module {
+    &:after {
+      content: 'a';
+    }
+  }
+
+  &.cloudify-openstack-floatingip {
+    &:after {
+      content: 'd';
+    }
+  }
+
+  &.cloudify-openstack-port {
+    &:after {
+      content: 'd';
+    }
+  }
+
+  &.cloudify-openstack-network {
+    &:after {
+      font-family: routerregular;
+      content: 'a';
+    }
+  }
+
+  &.cloudify-openstack-subnet {
+    &:after {
+      content: 'g';
+    }
+  }
+
+  &.cloudify-openstack-server {
+    &.vm-host {
+      &:after {
+        content: 'e';
+      }
+    }
+  }
+
+}

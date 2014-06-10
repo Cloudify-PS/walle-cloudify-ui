@@ -1,17 +1,14 @@
 'use strict';
 
 angular.module('cosmoUi')
-    .controller('DeploymentCtrl', function ($scope, $rootScope, $cookieStore, $routeParams, RestService, EventsService, BreadcrumbsService, YamlService, PlanDataConvert, blueprintCoordinateService, bpNetworkService, $route, $anchorScroll, $timeout, Cosmotypesservice, $location, $log, EventsMap) {
+    .controller('DeploymentCtrl', function ($scope, $rootScope, $cookieStore, $routeParams, RestService, EventsService, BreadcrumbsService, YamlService, blueprintCoordinateService, bpNetworkService, $route, $anchorScroll, $timeout, $location, $log, EventsMap) {
 
-        var totalNodes = 0,
-            deploymentModel = {},
-            statesIndex = ['uninitialized', 'initializing', 'creating', 'created', 'configuring', 'configured', 'starting', 'started'],
+        var statesIndex = ['uninitialized', 'initializing', 'creating', 'created', 'configuring', 'configured', 'starting', 'started'],
             currentExeution = null,
             isGotExecuteNodes = false;
 
         var deploymentDataModel = {
             'status': -1, // -1 = not executed, 0 = (install) in progress, 1 = (done) all done and reachable, 2 = (alert) all done but half reachable, 3 = (failed) all done and not reachable
-            'reachables': 0,
             'state': 0,
             'states': 0,
             'completed': 0,
@@ -20,7 +17,8 @@ angular.module('cosmoUi')
             'instancesIds': []
         };
 
-        var planData/*:PlanData*/ = null;
+        var deploymentModel = {};
+
         $scope.selectedWorkflow = {
             data: null
         };
@@ -47,11 +45,12 @@ angular.module('cosmoUi')
         $scope.selectedNode = null;
         $scope.executedData = null;
         $scope.isConfirmationDialogVisible = false;
-
+        $scope.showProgressPanel = false;
 
         var id = $routeParams.id;
-        //var executionId = null;
         var blueprintId = $routeParams.blueprintId;
+        var relations = [];
+        var colors = ['#d54931', '#f89406', '#149bdf', '#555869', '#8eaf26', '#330033', '#4b6c8b', '#550000', '#dc322f', '#FF6600', '#cce80b', '#003300', '#805e00'];
 
         BreadcrumbsService.push('deployments',
             {
@@ -98,13 +97,13 @@ angular.module('cosmoUi')
                 .then(function (data) {
                     $scope.selectedNode = data;
 
-                    if (data !== null) {
+                    if (data !== null && node !== null) {
                         $scope.showProperties = {
-                            properties: data.properties,
-                            relationships: data.relationships,
+                            properties: node.properties,
+                            relationships: node.relationships,
                             general: {
-                                'name': data.id,
-                                'type': data.type,
+                                'name': node.id,
+                                'type': node.type,
                                 'state': data.state,
                                 'ip': data.runtimeInfo !== null ? data.runtimeInfo.ip : ''
                             }
@@ -157,6 +156,12 @@ angular.module('cosmoUi')
             return $scope.selectedWorkflow.data !== null;
         };
 
+        $scope.$watch('deploymentInProgress', function() {
+            if ($scope.deploymentInProgress === true) {
+                $scope.showProgressPanel = true;
+            }
+        });
+
         $scope.toggleConfirmationDialog = function(deployment, confirmationType) {
             if (confirmationType === 'execute' && $scope.selectedWorkflow.data === null) {
                 return;
@@ -200,62 +205,176 @@ angular.module('cosmoUi')
             }
         }
 
-        function _drawPlan( dataPlan ) {
-            var dataMap;
+        function _createNetworkTree(nodes, externalNetworks) {
+            var networkModel = {
+                'external': externalNetworks || [],
+                'networks': [],
+                'relations': []
+            };
 
-            /**
-             * Networks
-             */
-            // Filter data for Networks
-            var networks = PlanDataConvert.nodesToNetworks(dataPlan);
-            $scope.networks = networks;
-            bpNetworkService.setMap(networks.relations);
+            /* Networks */
+            networkModel.networks = _getNetworks(nodes);
 
+            networkModel.networks.forEach(function(network) {
+                /* Subnets */
+                network.subnets = _getSubnets(network, nodes);
 
-            // Render Networks
-            $timeout(function(){
-                $scope.networkcoords = bpNetworkService.getCoordinates();
-                bpNetworkService.render();
-            }, 100);
+                /* Devices */
+                network.devices = _getDevices(nodes, networkModel.external);
+            });
 
-            /**
-             * Blueprint
-             */
-            var topology = PlanDataConvert.nodesToTopology(dataPlan);
+            networkModel.relations = relations;
 
-            // Convert edges to angular format
-            if (topology.hasOwnProperty('edges') && !!topology.edges) {
-                dataMap = PlanDataConvert.edgesToBlueprint(topology.edges);
-            }
-
-            PlanDataConvert.allocateAbandonedNodes(topology, dataMap);
-
-            // Index data by ID
-            if (dataPlan.hasOwnProperty('nodes') && !!dataPlan.nodes) {
-                totalNodes = 0;
-                $scope.indexNodes = {};
-                dataPlan.nodes.forEach(function (node) {
-                    $scope.indexNodes[node.id] = node;
-                    $scope.indexNodes[node.id].type = Cosmotypesservice.getTypeData(node.type[0]);
-                    totalNodes++;
-                });
-            }
-
-            blueprintCoordinateService.resetCoordinates();
-
-            // Set Map
-            blueprintCoordinateService.setMap(dataMap.connected);
-
-            // Connection between nodes
-            if(dataMap.hasOwnProperty('contained')) {
-                $scope.map = dataMap.contained.reverse();
-            }
-            $scope.coordinates = blueprintCoordinateService.getCoordinates();
-            $scope.deployments = deploymentModel;
-
-            // Draw
-            blueprintCoordinateService.draw();
+            return networkModel;
         }
+
+        function _getNetworks(nodes) {
+            var networks = [];
+
+            nodes.forEach(function (node) {
+                if (node.type.indexOf('network') > -1) {
+                    networks.push({
+                        'id': node.id,
+                        'name': node.name,
+                        'subnets': [],
+                        'devices': []
+                    });
+                }
+            });
+
+            return networks;
+        }
+
+        function _getSubnets(network, nodes) {
+            var subnets = [];
+
+            nodes.forEach(function (node) {
+
+                /* Subnets */
+                if (node.type.indexOf('subnet') > -1) {
+                    var relationships = $scope.getRelationshipByType(node, 'contained');
+                    relationships.forEach(function (relationship) {
+                        if (network.id === relationship.target_id) {
+                            subnets.push({
+                                'id': node.id,
+                                'name': node.properties.subnet.name ? node.properties.subnet.name : node.name,
+                                'cidr': node.properties.subnet.cidr,
+                                'color': colors[Math.floor((Math.random() * colors.length) + 1)],
+                                'type': 'subnet',
+                                'state': {
+                                    'total': node.instances.deploy,
+                                    'completed': 0
+                                }
+                            });
+                            relations.push({
+                                source: node.id,
+                                target: network.id,
+                                type: relationship.type,
+                                baseType: relationship.base
+                            });
+                        }
+                    });
+                }
+            });
+
+            return subnets;
+        }
+
+        function _getDevices(nodes, externalNetworks) {
+            /* Ports */
+            var ports = _getPorts(nodes);
+            var devices = [];
+
+            nodes.forEach(function (node) {
+                if (node.type.indexOf('host') > -1) {
+                    var device = {
+                        'id': node.id,
+                        'name': node.name,
+                        'type': 'device',
+                        'icon': 'host',
+                        'state': {
+                            'total': node.instances.deploy,
+                            'completed': 0
+                        },
+                        'ports': []
+                    };
+
+                    var relationships = $scope.getRelationshipByType(node, 'connected').concat($scope.getRelationshipByType(node, 'depends'));
+                    relationships.forEach(function (relationship) {
+                        ports.forEach(function(port) {
+                            if (relationship.target_id === port.id) {
+                                device.ports.push(port);
+
+                                relations.push({
+                                    source: port.subnet,
+                                    target: port.id
+                                });
+                            }
+                        });
+                    });
+
+                    externalNetworks.forEach(function (extNetwork) {
+                        relations.push({
+                            source: extNetwork.id,
+                            target: node.id
+                        });
+                    });
+
+                    devices.push(device);
+                }
+            });
+
+            return devices;
+        }
+
+        function _getPorts(nodes) {
+            var ports = [];
+
+            nodes.forEach(function (node) {
+                if (node.type.indexOf('port') > -1) {
+                    var relationships = $scope.getRelationshipByType(node, 'depends');
+                    ports.push({
+                        'id': node.id,
+                        'name': node.name,
+                        'type': 'device',
+                        'icon': 'port',
+                        'subnet': relationships[0].target_id
+                    });
+                }
+            });
+
+            return ports;
+        }
+
+        function _getNodesConnections(nodes) {
+            var connections = [];
+            nodes.forEach(function (node) {
+                var relationships = $scope.getRelationshipByType(node, 'connected');
+                relationships.forEach(function(connection) {
+                    connections.push({
+                        source: node.id,
+                        target: connection.target_id,
+                        type: connection.type,
+                        baseType: connection.base
+                    });
+                });
+            });
+            return connections;
+        }
+
+        $scope.getRelationshipByType = function(node, type) {
+            var relationshipData = [];
+
+            if (node.relationships !== undefined) {
+                for (var i = 0; i < node.relationships.length; i++) {
+                    if (node.relationships[i].base === type) {
+                        relationshipData.push(node.relationships[i]);
+                    }
+                }
+            }
+
+            return relationshipData;
+        };
 
         function _loadDeployment() {
             RestService.getDeploymentById({deploymentId : id})
@@ -270,11 +389,31 @@ angular.module('cosmoUi')
                     // Blueprint
                     RestService.getBlueprintById({id: deploymentData.blueprintId})
                         .then(function(data){
-                            YamlService.loadJSON(id, data, function(err, data){
-                                planData = data;
-                                // Draw Blueprint Plan
-                                _drawPlan(data.getJSON());
-                            });
+//                            nodesList = data.plan.nodes;
+                            $scope.nodesTree = _createNodesTree($scope.allNodesArr);
+
+                            blueprintCoordinateService.resetCoordinates();
+                            blueprintCoordinateService.setMap(_getNodesConnections($scope.allNodesArr));
+                            $scope.coordinates = blueprintCoordinateService.getCoordinates();
+                            $scope.deployments = deploymentModel;
+
+                            RestService.getProviderContext()
+                                .then(function(providerData) {
+                                    var _extNetworks = [];
+                                    if (providerData.context.resources.subnet !== undefined) {
+                                        _extNetworks.push(providerData.context.resources.subnet);
+                                        _extNetworks[0].color = colors[Math.floor((Math.random() * colors.length) + 1)];
+                                    }
+                                    $scope.networks = _createNetworkTree(data.plan.nodes, _extNetworks);
+
+                                    bpNetworkService.setMap($scope.networks.relations);
+                                    $timeout(function(){
+                                        $scope.networkcoords = bpNetworkService.getCoordinates();
+                                        bpNetworkService.render();
+                                    }, 100);
+                                });
+
+                            blueprintCoordinateService.draw();
                         });
 
                     // Execution
@@ -311,6 +450,87 @@ angular.module('cosmoUi')
                 });
         }
 
+        function _createNodesTree(nodes) {
+            var roots = [];
+            var nodesIndexedList = [];
+
+            nodes.forEach(function(node) {
+                nodesIndexedList[node.id] = node;
+            });
+
+            for (var nodeId in nodesIndexedList) {
+                var node = nodesIndexedList[nodeId];
+                node.class = _getNodeClass(node.type_hierarchy);
+                node.isApp = _isAppNode(node);
+
+                if (node.relationships !== undefined && !_isNetworkNode(node)) {
+                    for (var i = 0; i < node.relationships.length; i++) {
+                        if (node.relationships[i].base === 'contained') {
+                            node.isContained = true;
+                            var target_id = node.relationships[i].target_id;
+                            if (nodesIndexedList[target_id].children === undefined) {
+                                nodesIndexedList[target_id].children = [];
+                            }
+                            nodesIndexedList[target_id].children.push(node);
+                        }
+                        if (i === node.relationships.length - 1 && node.isContained === undefined) {
+                            node.isContained = false;
+                        }
+                    }
+
+                    node.state = {
+                        total: node.instances.deploy,
+                        completed: 0
+                    };
+                    node.dataType = _getNodeDataType(node);
+
+                    if (!node.isContained) {
+                        roots.push(node);
+                    }
+                } else if(!_isNetworkNode(node) && !node.isContained){
+                    roots.push(node);
+                }
+            }
+
+            return roots;
+        }
+
+        function _isAppNode(node) {
+            var networkNodes = [
+                'nodejs_app'
+            ];
+
+            return networkNodes.indexOf(node.type) !== -1;
+        }
+
+        function _isNetworkNode(node) {
+            var networkNodes = [
+                'cloudify.openstack.floatingip',
+                'cloudify.openstack.network',
+                'cloudify.openstack.port',
+                'cloudify.openstack.subnet'
+            ];
+
+            return networkNodes.indexOf(node.type) !== -1;
+        }
+
+        function _getNodeDataType(node) {
+            if (!node.isContained && node.children !== undefined) {
+                return 'compute';
+            } else if (node.isContained && !_isAppNode(node)) {
+                return 'middleware';
+            } else if (node.isContained && _isAppNode(node)) {
+                return 'modules';
+            }
+        }
+
+        function _getNodeClass(typeHierarchy) {
+            for (var i = 0; i < typeHierarchy.length; i++) {
+                typeHierarchy[i] = typeHierarchy[i].split('.').join('-').split('_').join('-');
+            }
+            return typeHierarchy.join(' ');
+        }
+
         function _getCurrentExecution(executions) {
             for(var i in executions) {
                 var execution = executions[i];
@@ -341,7 +561,6 @@ angular.module('cosmoUi')
             for (var i in nodes) {
                 var node = nodes[i];
                 IndexedNodes[node.id] = {
-                    reachable: node.reachable,
                     state: node.state
                 };
             }
@@ -355,7 +574,7 @@ angular.module('cosmoUi')
                     var nodeId = deployment.instancesIds[n];
                     var nodeInstance = IndexedNodes[nodeId];
                     if(IndexedNodes.hasOwnProperty(nodeId)) {
-                        if(nodeInstance.reachable) {
+                        if(nodeInstance.state === 'started') {
                             _reachable++;
                         }
                         if(statesIndex.indexOf(nodeInstance.state) > 0 || statesIndex.indexOf(nodeInstance.state) < 7) {
@@ -395,6 +614,12 @@ angular.module('cosmoUi')
                     setDeploymentStatus(deployment, processDone);
                 }
             }
+
+            $scope.allNodesArr.forEach(function(node) {
+                node.state = deploymentModel[node.id];
+            });
+
+            $scope.nodesTree = _createNodesTree($scope.allNodesArr);
 
             $log.info(['deploymentModel', deploymentModel]);
         }
@@ -464,15 +689,22 @@ angular.module('cosmoUi')
         /**
          * Side panel
          */
+
+        $scope.$root.$on('topologyNodeSelected', function(e, data) {
+            $scope.viewNode(data);
+        });
+
         $scope.viewNode = function (node) {
-            var realNode = planData.getNode(node.id);
             $scope.showProperties = {
-                properties: planData.getProperties(realNode),
-                relationships: planData.getRelationships(realNode),
-                general: planData.getGeneralInfo(realNode)
+                properties: node.properties,
+                relationships: node.relationships,
+                general: {
+                    'name': node.id,
+                    'type': node.type
+                }
             };
 
-            _filterSelectionBoxData(realNode.name);
+            _filterSelectionBoxData(node.name);
         };
 
         function _filterSelectionBoxData(nodeId) {
@@ -482,7 +714,7 @@ angular.module('cosmoUi')
                     $scope.selectNodesArr.push($scope.allNodesArr[i]);
                 }
             }
-            $scope.nodeSelected($scope.selectNodesArr[0]);
+//            $scope.nodeSelected($scope.selectNodesArr[0]);
         }
 
         $scope.hideProperties = function () {
@@ -683,4 +915,23 @@ angular.module('cosmoUi')
             }
         };
 
+        $scope.getContainerClass = function(node_id) {
+
+            for (var node in $scope.indexNodes) {
+                if ($scope.indexNodes[node].id === node_id) {
+                    return $scope.indexNodes[node].type.baseType.replace('_', '-');
+                }
+            }
+            return '';
+        };
+
+        $scope.getNodeById = function(node_id) {
+            var _node = {};
+            $scope.dataTable.forEach(function(node) {
+                if (node.id === node_id) {
+                    _node = node;
+                }
+            });
+            return _node;
+        };
     });
