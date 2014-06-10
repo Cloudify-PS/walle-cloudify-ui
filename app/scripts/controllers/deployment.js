@@ -48,11 +48,9 @@ angular.module('cosmoUi')
         $scope.showProgressPanel = false;
 
         var id = $routeParams.id;
-        //var executionId = null;
         var blueprintId = $routeParams.blueprintId;
         var relations = [];
         var colors = ['#d54931', '#f89406', '#149bdf', '#555869', '#8eaf26', '#330033', '#4b6c8b', '#550000', '#dc322f', '#FF6600', '#cce80b', '#003300', '#805e00'];
-        var nodesList = [];
 
         BreadcrumbsService.push('deployments',
             {
@@ -483,7 +481,7 @@ angular.module('cosmoUi')
                     node.state = {
                         total: node.instances.deploy,
                         completed: 0
-                    }
+                    };
                     node.dataType = _getNodeDataType(node);
 
                     if (!node.isContained) {
