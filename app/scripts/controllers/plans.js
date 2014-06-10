@@ -88,8 +88,45 @@ angular.module('cosmoUi')
                         data: code.source
                     };
                 });
+
+            RestService.browseBlueprint({id: $routeParams.id})
+                .then(function(browseData) {
+                    $scope.browseData = [browseData];
+                });
         });
 
+        $scope.setBrowseType = function(data) {
+            if(data.hasOwnProperty('children')) {
+                return 'folder';
+            }
+            return 'file-' + data.encoding;
+        };
+
+        $scope.openSourceFile = function(data) {
+            RestService.browseBlueprintFile({id: $routeParams.id, path: data.relativePath})
+                .then(function(fileContent) {
+                    $scope.dataCode = {
+                        data: fileContent,
+                        brush: getBrashByFile(data.name)
+                    };
+                });
+        };
+
+        function getBrashByFile(file) {
+            var ext = file.split('.');
+            switch(ext[ext.length-1]) {
+            case 'sh':
+                return 'bash';
+            case 'yaml':
+                return 'yml';
+            case 'py':
+                return 'py';
+            case 'md':
+                return 'text';
+            default:
+                return 'text';
+            }
+        }
 
         $scope.viewNode = function (node) {
             var realNode = planData.getNode(node.id);

@@ -32,8 +32,11 @@ angular.module('cosmoUi')
                         }
                     });
                     if (config.hasOwnProperty('data') && config.data !== '') {
-                        $element[0].innerHTML = config.data;
-                        window.SyntaxHighlighter.highlight(options, $element[0], false);
+                        $element.empty();
+                        var tmpSpan = angular.element('<span>');
+                        $element.append(tmpSpan);
+                        tmpSpan.text(config.data);
+                        window.SyntaxHighlighter.highlight(options, tmpSpan[0], false);
                     }
                 };
             }

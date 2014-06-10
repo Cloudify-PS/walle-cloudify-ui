@@ -1,0 +1,12 @@
+<div ng-switch="setBrowseType(data)">
+    <span ng-switch-when="folder" data-ng-class="setBrowseType(data)">&#8226; {{data.name}}</span>
+    <span ng-switch-when="file-ASCII" data-ng-class="setBrowseType(data)">
+        &raquo; <a data-ng-click="openSourceFile(data)">{{data.name}}</a>
+    </span>
+    <span ng-switch-when="file-BINARY" data-ng-class="setBrowseType(data)">{{data.name}} <small>(no preview)</small></span>
+</div>
+
+
+<ul>
+    <li ng-repeat="data in data.children" ng-include="'../views/treeBrowseLevel.html'"></li>
+</ul>

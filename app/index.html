@@ -17,6 +17,7 @@
     <link rel="stylesheet" href="styles/main.css">
     <link rel="stylesheet" href="bower_components/SyntaxHighlighter/styles/shCore.css">
     <link rel="stylesheet" href="bower_components/SyntaxHighlighter/styles/shThemeDefault.css">
+    <link rel="stylesheet" href="bower_components/nvd3/nv.d3.min.css" />
     <!-- endbuild -->
 
 </head>
@@ -48,6 +49,8 @@
     <script src="bower_components/yamljs/bin/yaml.js"></script>
     <script src="bower_components/bootstrap-sass/dist/js/bootstrap.js"></script>
     <script src="bower_components/d3/d3.js"></script>
+    <script src="bower_components/nvd3/nv.d3.min.js"></script>
+    <script src="bower_components/angularjs-nvd3-directives/dist/angularjs-nvd3-directives.min.js"></script>
     <script src="bower_components/elastic.js/dist/elastic.min.js"></script>
     <script src="bower_components/elastic.js/dist/elastic-angular-client.min.js"></script>
     <script src="bower_components/i18next/i18next.min.js"></script>
@@ -74,6 +77,9 @@
     <script src="bower_components/SyntaxHighlighter/scripts/shCore.js"></script>
     <script src="bower_components/SyntaxHighlighter/scripts/shLegacy.js"></script>
     <script src="bower_components/SyntaxHighlighter/scripts/shAutoloader.js"></script>
+    <script src="bower_components/SyntaxHighlighter/scripts/shBrushPython.js"></script>
+    <script src="bower_components/SyntaxHighlighter/scripts/shBrushBash.js"></script>
+    <script src="bower_components/SyntaxHighlighter/scripts/shBrushPlain.js"></script>
     <!-- endbuild -->
 
     <!-- build:js scripts/modules.js -->
@@ -117,6 +123,11 @@
     <script src="scripts/directives/ngEnter.js"></script>
     <script src="scripts/services/EventsMap.js"></script>
     <script src="scripts/directives/dotsLoader.js"></script>
+    <script src="scripts/directives/graphsPager.js"></script>
+    <script src="scripts/services/monitoringGraphs.js"></script>
+    <script src="scripts/directives/bindGraph.js"></script>
+    <script src="scripts/directives/onFinishRender.js"></script>
+    <script src="scripts/filters/limitRange.js"></script>
     <!-- endbuild -->
 
 </body>

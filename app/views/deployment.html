@@ -127,6 +127,7 @@
                 <button type="button" class="btn btn-default" value="topology">Topology</button>
                 <button type="button" class="btn btn-default" value="network">Network</button>
                 <button type="button" class="btn btn-default" value="events">Events</button>
+                <button type="button" class="btn btn-default" value="monitoring">Monitoring</button>
             </div>
             <div settings-toggles id="settings-button" class="no-embed" toggles="toggleBar"></div>
 
@@ -367,6 +368,48 @@
                     <div class="emptyTable" data-ng-hide="eventHits.length">There are no events at this moment...</div>
                 </div>
                 <!-- Events Tab - END -->
+                <div ng-switch-when="monitoring">
+                    <div class="monitor" graphs:pager>
+                        <div class="navigate">
+                            Showing 4 graphs
+                            <div class="arrowBtn left" data-ng-click="scrollLeft()"><i class="fa fa-chevron-left"></i></div>
+                            <div class="arrowBtn right" data-ng-click="scrollRight()"><i class="fa fa-chevron-right"></i></div>
+                        </div>
+                        <div class="pagesFrame" ng-style="{width: pagerWidth}">
+                            <div class="pages" ng-style="{width: pagerLength * pagerWidth + 100}">
+                                <div class="page" ng-style="{width: pagerWidth}" data-ng-repeat="page in graphPages">
+                                    <div class="chart" ng-repeat="graph in graphs | limitRange: page.from : page.to " bind-graph="graph" on-finish-render="fireResizeGraph"></div><!--
+ Fix for break-line margin space --><div class="chart newChart" data-ng-show="graphs.length < page.to">
+                                        <form novalidate class="simple-form">
+                                            <h3>Add New Chart</h3>
+                                            <hr />
+                                            <label>
+                                                Name <br>
+                                                <input type="text" ng-model="newgraph.name">
+                                            </label>
+                                            <label>
+                                                Type <br>
+                                                <select data-ng-model="newgraph.type">
+                                                    <option value="line">Line Chart</option>
+                                                    <option value="area">Area Chart</option>
+                                                </select>
+                                            </label>
+                                            <label>
+                                                Metric <br>
+                                                <select data-ng-model="newgraph.metric">
+                                                    <option value="CPU">CPU</option>
+                                                    <option value="Memory">Memory</option>
+                                                </select>
+                                            </label>
+                                            <br>
+                                            <button class="gs-btn" data-ng-click="addMonitorChart()">Add Monitor Chart</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

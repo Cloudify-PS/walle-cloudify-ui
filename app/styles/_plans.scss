@@ -25,7 +25,7 @@
             color:$COSMOUI_BLUEPRINT_DETAILS_TITLE_COLOR;
             font-size: $COSMOUI_BLUEPRINT_DETAILS_TITLE_FONT_SIZE;
             border-bottom:1px solid $COSMOUI_BLUEPRINT_DETAILS_TITLE_BOTTOM_BORDER_COLOR;
-            i { float:right; }
+            i { float:right; cursor: pointer; }
         }
 
         .content{
@@ -206,7 +206,7 @@
                     font-size: 20px;
                     position: absolute;
                     top: 8px;
-                    left: 7px;
+                    left: 9px;
                 }
             }
         }
@@ -677,5 +677,48 @@
                 }
             }
         }
+    }
+
+    .source {
+        display: table;
+        width: 100%;
+        margin: 10px 0 0 0;
+        .browseTree {
+            display: table-cell;
+            width: 320px;
+            padding: 0 0 0 20px;
+            font-size: 13px;
+            ul {
+                list-style-type: none;
+                padding: 0px;
+                li {
+                    margin: 3px 0;
+                    span {
+                        &.folder {
+                            font-weight: bold;
+                        }
+                        &.file-BINARY {
+                            small {
+                                color: #999;
+                            }
+                        }
+                        a {
+                            cursor: pointer;
+                        }
+                    }
+                }
+                ul {
+                    padding-left: 15px;
+                }
+            }
+        }
+        .sourcecode {
+            display: table-cell;
+            width: auto;
+        }
+    }
+
+    .syntaxhighlighter {
+        margin: -2em 0 -2em 0 !important;
     }
 }

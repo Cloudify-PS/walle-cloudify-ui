@@ -235,10 +235,18 @@
         </div>
         <!-- Nodes - END -->
         <!-- Code - START -->
-        <div ng-switch-when="code">
-            <pre unselectable="on">
-                <div code:highlight="yml" ng-model="dataCode"></div>
-            </pre>
+        <div ng-switch-when="code" class="source">
+            <div class="browseTree">
+                <ul>
+                    <li ng-repeat="data in browseData" ng-include="'../views/treeBrowseLevel.html'"></li>
+                </ul>
+            </div>
+            <div class="sourcecode">
+                <pre unselectable="on">
+                    <!--{{ dataCode.data }}-->
+                    <div code:highlight="yml" ng-model="dataCode"></div>
+                </pre>
+            </div>
         </div>
         <!-- Code - END -->
     </div>

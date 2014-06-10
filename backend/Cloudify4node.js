@@ -4,6 +4,9 @@ var conf = require("../backend/appConf");
 var log4js = require('log4js');
 log4js.configure(conf.log4js);
 var logger = log4js.getLogger('server');
+var path = require('path');
+var targz = require('tar.gz');
+var browseBlueprint = require('./services/BrowseBluerprintService');
 
 module.exports = Cloudify4node;
 
@@ -168,6 +171,61 @@ Cloudify4node.validateBlueprint = function(blueprint_id, callback) {
     createRequest(requestData, callback );
 }
 
+Cloudify4node.archiveBlueprint = function(blueprint_id, callback) {
+    var requestData = {
+        hostname: conf.cosmoServer,
+        port: conf.cosmoPort,
+        path: '/blueprints/' + blueprint_id + '/archive',
+        method: 'GET'
+    };
+    var filepath = path.join(conf.browseBlueprint.path, blueprint_id + '.tar.gz');
+    var file = fs.createWriteStream(filepath);
+    var req = ajax.get(requestData, function(response) {
+        response
+            .on('data', function (data) {
+                file.write(data);
+            })
+            .on('end', function () {
+                file.on('close', function(){
+                    var compress = new targz().extract(filepath, path.join(conf.browseBlueprint.path, blueprint_id), function(err){
+                        if(err) {
+                            console.log('problem with extract: ' + err);
+                        }
+                        else {
+                            console.log('The extraction has ended!');
+                            callback(null, null);
+                        }
+                    });
+                });
+                file.end();
+            });
+    });
+    req.on('error', function(e) {
+        console.log('problem with request: ' + e.message);
+        callback(e.message, null);
+    });
+}
+
+Cloudify4node.browseBlueprint = function(blueprint_id, callback) {
+    browseBlueprint.isBlueprintExist(blueprint_id, function(err, isExist){
+        if(!isExist) {
+            Cloudify4node.archiveBlueprint(blueprint_id, function(err){
+                if(err) {
+                    console.log('Error!', err);
+                }
+                browseBlueprint.browseBlueprint(blueprint_id, callback);
+            });
+        }
+        else {
+            browseBlueprint.browseBlueprint(blueprint_id, callback);
+        }
+    })
+}
+
+Cloudify4node.browseBlueprintFile = function(blueprint_id, relativePath, callback) {
+    browseBlueprint.fileGetContent(blueprint_id, relativePath, callback);
+}
+
 Cloudify4node.getExecutionById = function(execution_id, callback) {
     var requestData = createRequestData({
         path: '/executions/' + execution_id,
@@ -229,9 +287,12 @@ Cloudify4node.getDeploymentById = function(deployment_id, callback) {
     createRequest(requestData, callback);
 }
 
-Cloudify4node.deleteDeploymentById = function(deployment_id, callback) {
+Cloudify4node.deleteDeploymentById = function(deployment_id, ignore_live_nodes, callback) {
     var requestData = createRequestData({
         path: '/deployments/' + deployment_id,
+        data: {
+            ignore_live_nodes: ignore_live_nodes
+        },
         method: 'DELETE'
     });
 
@@ -313,3 +374,17 @@ Cloudify4node.getNode = function(node_id, queryParams, callback) {
 
     createRequest(requestData, callback);
 }
+
+
+// Monitor Mock's
+Cloudify4node.getMonitorGraphs = function(callback) {
+    return callback(null, require('./mock/monitorGraphs.json'));
+};
+
+Cloudify4node.getMonitorCpu = function(callback) {
+    return callback(null, require('./mock/monitorCPU.json'));
+};
+
+Cloudify4node.getMonitorMemory = function(callback) {
+    return callback(null, require('./mock/monitorMemory.json'));
+};

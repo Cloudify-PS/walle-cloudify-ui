@@ -1,0 +1,13 @@
+[
+    {
+        "name": "Graph CPU",
+        "type": "nvd3-line-with-focus-chart",
+        "query": "CPU",
+        "properties": {
+            "id": "graphCpu",
+            "data": "graph.data",
+            "xAxisTickFormat": "xAxisTickFormatFunction()",
+            "x2AxisTickFormat": "xAxisTickFormatFunction()"
+        }
+    }
+]

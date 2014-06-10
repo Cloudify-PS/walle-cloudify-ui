@@ -8,6 +8,8 @@ angular.module('cosmoUi')
         $scope.selectedBlueprint = '';
         $scope.isConfirmationDialogVisible = false;
         $scope.isDeleteDeploymentVisible = false;
+        $scope.delDeployError = false;
+        $scope.ignoreLiveNodes = false;
         $scope.confirmationType = '';
         $scope.executedDeployments = [];
         $scope.selectedWorkflow = {
@@ -141,6 +143,8 @@ angular.module('cosmoUi')
         };
 
         function _loadDeployments() {
+            $scope.blueprints = null;
+            $scope.deployments = [];
             RestService.loadBlueprints()
                 .then(function(data) {
                     cosmoError = false;
@@ -172,29 +176,40 @@ angular.module('cosmoUi')
 
         function deleteDeployment() {
             if(currentDeplyToDelete !== null) {
-                RestService.deleteDeploymentById({deploymentId: currentDeplyToDelete.id})
+                RestService.deleteDeploymentById({deploymentId: currentDeplyToDelete.id, ignoreLiveNodes: $scope.ignoreLiveNodes})
                     .then(function(data){
-                        console.log(['Deployment deleted response: ', data]);
+                        if(data.hasOwnProperty('message')) {
+                            $scope.delDeployError = data.message;
+                        }
+                        else {
+                            closeDeleteDialog();
+                            _loadDeployments();
+                        }
                     });
-                currentDeplyToDelete = null;
+                //currentDeplyToDelete = null;
             }
         }
 
         $scope.deleteDeployment = function(deployment) {
             currentDeplyToDelete = deployment;
+            $scope.delDeployError = false;
+            $scope.ignoreLiveNodes = false;
+            $scope.delDeployName = deployment.id;
             $scope.isDeleteDeploymentVisible = true;
-        }
+        };
 
-        $scope.closeDeleteDialog = function() {
+        function closeDeleteDialog() {
             $scope.isDeleteDeploymentVisible = false;
             currentDeplyToDelete = null;
         }
+        $scope.closeDeleteDialog = closeDeleteDialog;
 
         $scope.confirmDeleteDeployment = function() {
-            $scope.isDeleteDeploymentVisible = false;
             deleteDeployment();
-        }
+        };
 
-
+        $scope.toggleIgnoreLiveNodes = function() {
+            $scope.ignoreLiveNodes = !$scope.ignoreLiveNodes;
+        };
 
     });
