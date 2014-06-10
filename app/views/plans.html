@@ -3,7 +3,7 @@
     <div class="properties-panel right-panel" ng-hide="!showProperties">
         <div class="title">
             {{showProperties.general.name}} {{'plans.details.details' | i18n }}
-            <i ng-click="hideProperties()" class="fa fa-times-circle right"></i>
+            <i ng-click="hideProperties()" class="fa fa-times-circle right close-properties-button"></i>
         </div>
         <div class="content">
             <div class="buttons-group no-embed" checkbox-toggle value="propSection">
@@ -41,7 +41,7 @@
                             <td>{{ 'plans.details.interface' | i18n }}</td>
                         </tr>
                         <tr ng-repeat="relationship in showProperties.relationships">
-                            <td>{{relationship.target_id}}</td>
+                            <td ng-click="viewNode(getNodeById(relationship.target_id))">{{relationship.target_id}}</td>
                             <td>{{relationship.type}}</td>
                             <td>
                                 <!--<ul ng-repeat="(key, value) in relationship.source_interfaces">-->
@@ -80,86 +80,19 @@
         disableModules: !toggleBar.modules,
         disableConnections: !toggleBar.connections
         }">
-            <div data-type="compute" data-ng-repeat="rootNode in map" class="box" blueprint:coordinate="{{ rootNode.id }}">
-                <div class="hoverup">
-                    <div class="buttons no-embed">
-                        <ul>
-                            <li data-ng-click="viewNode(rootNode)" class="topology-glyph node-details"></li><!--<li class="topology-glyph edit-node"></li>-->
-                        </ul>
-                    </div>
-                </div>
-                <div pie:progress="piProgress2" class="piProgress" size="47">
-                    <div class="circle">
-                        <i class="icon topology-glyph {{ indexNodes[rootNode.id].type.icon }}"></i>
-                        <div class="badge">{{ indexNodes[rootNode.id].general.numOfInstances }}</div>
-                    </div>
-                </div>
-                <div class="head">{{ indexNodes[rootNode.id].name }}</div>
-                <div class="holder">
-                    <!-- Middleware::start -->
-                    <div data-type="middleware" data-ng-repeat="subNode in rootNode.children" class="box" blueprint:coordinate="{{ subNode.id }}">
-                        <div class="hoverup">
-                            <div class="buttons no-embed">
-                                <ul>
-                                    <li data-ng-click="viewNode(subNode)" class="topology-glyph node-details"></li><!--<li class="topology-glyph edit-node"></li>-->
-                                </ul>
-                            </div>
-                        </div>
-                        <div pie:progress="piProgress2" class="piProgress" size="47">
-                            <div class="circle">
-                                <i class="icon topology-glyph {{ indexNodes[subNode.id].type.icon }}"></i>
-                                <div class="badge">{{ indexNodes[subNode.id].general.numOfInstances }}</div>
-                            </div>
-                        </div>
-                        <div class="head">{{ indexNodes[subNode.id].name }}</div>
-                        <div class="holder">
-                            <!-- Module::start -->
-                            <div data-type="modules" data-ng-repeat="appNode in subNode.children" class="app">
-                                <div class="hoverup">
-                                    <div class="buttons no-embed">
-                                        <ul>
-                                            <li data-ng-click="viewNode(appNode)" class="topology-glyph node-details"></li><!--<li class="topology-glyph edit-node"></li>-->
-                                        </ul>
-                                    </div>
-                                </div>
-                                <div pie:progress="piProgress2" class="piProgress" size="47">
-                                    <div class="circle" blueprint:coordinate="{{ appNode.id }}">
-                                        <i class="icon topology-glyph {{ indexNodes[appNode.id].type.icon }}"></i>
-                                        <div class="badge">{{ indexNodes[appNode.id].general.numOfInstances }}</div>
-                                    </div>
-                                </div>
-                                <p>{{ indexNodes[appNode.id].name }}</p>
-                            </div>
-                            <!-- Module::end -->
-                        </div>
-                    </div>
-                    <!-- Middleware::end -->
-                </div>
-            </div>
+            <div bp-topology-nodes map="nodesTree" selected="viewNode(node_id)"></div>
             <div class="coordinates" blueprint:arrows="coordinates" arrow="true" color="#7A7A7A"></div>
         </div>
-        <!-- Blueprint Contianter - END -->
+        <!-- Blueprint Container - END -->
         <!-- Network Topology - START -->
         <div class="networksContainer" ng-switch-when="network">
             <div bp:networks class="relations" ng-model="networkcoords"></div>
             <div data-ng-repeat="network in networks.external" class="network">
                 <div class="line">
-                    <div class="name-space"></div>
-                    <div data-ng-repeat="subnet in network.subnets" class="subnet" bp:network:coordinate ng-model="subnet">
-                        <p>{{ subnet.name }}</p>
+                    <div class="name">{{ network.name }}</div>
+                    <div data-ng-repeat="networks in networks.external" class="subnet" bp:network:coordinate ng-model="network">
+                        <p>{{ network.name }}</p>
                         <p class="cidr">External Network</p>
-                    </div>
-                </div>
-                <div class="devices">
-                    <div data-ng-repeat="device in network.devices" class="device">
-                        <div class="inner">
-                            <div class="buttons no-embed">
-                                <ul>
-                                    <li data-ng-click="viewNode(device)" class="topology-glyph node-details"></li>
-                                </ul>
-                            </div>
-                            <i class="topology-glyph {{ device.icon }}" bp:network:coordinate ng-model="device"></i>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -212,17 +145,17 @@
                 </thead>
                 <tbody data-ng-repeat="row in dataTable">
                     <tr>
-                        <td><i class="topology-glyph {{ row.type.icon }}"></i></td>
+                        <td><i class="topology-glyph {{ row.class }}"></i></td>
                         <td>{{ row.name }}</td>
-                        <td>{{ row.type.name }}</td>
-                        <td>{{ row.instances }}</td>
+                        <td>{{ row.type }}</td>
+                        <td>{{ row.instances.deploy }}</td>
                         <td>
-                            <span data-ng-if="row.contained_in != false">{{ indexNodes[row.contained_in].name }}</span>
-                            <span data-ng-if="row.contained_in == false">--</span>
+                            <span data-ng-if="getRelationshipByType(row, 'contained').length > 0" data-ng-repeat="container in getRelationshipByType(row, 'contained')">{{ container.name }}</span>
+                            <span data-ng-if="getRelationshipByType(row, 'contained').length == 0">--</span>
                         </td>
                         <td>
-                            <span data-ng-if="row.connected_to.length > 0" data-ng-repeat="connection in row.connected_to">{{ indexNodes[connection].name }}</span>
-                            <span data-ng-if="row.connected_to == 0">--</span>
+                            <span data-ng-if="getRelationshipByType(row, 'connected').length > 0" data-ng-repeat="connection in getRelationshipByType(row, 'connected')">{{ connection.name }}</span>
+                            <span data-ng-if="getRelationshipByType(row, 'connected').length == 0">--</span>
                         </td>
                         <td>
                             <ul>
@@ -261,4 +194,3 @@
         </div>
     </div>
 </div>
-

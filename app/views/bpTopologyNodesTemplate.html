@@ -1,0 +1,25 @@
+<div data-ng-repeat="node in map" data-type="{{node.dataType}}" ng-class="{box: !node.isApp, app: node.isApp}" blueprint:coordinate="{{node.id}}">
+    <div class="hoverup">
+        <div class="buttons no-embed">
+            <ul>
+                <li data-ng-click="onNodeSelected(node)" class="topology-glyph node-details"></li>
+            </ul>
+        </div>
+    </div>
+    <div pie:progress="piProgress2" class="piProgress" size="47">
+        <div class="circle">
+            <i class="icon topology-glyph" ng-class="node.class"></i>
+            <div class="badge" ng-show="node.state == undefined">{{ node.instances.deploy }}</div>
+            <div class="badge" data-ng-class="getBadgeStatus(node.state.status)" ng-show="node.state != undefined">
+                {{ node.state.completed }}/{{ node.state.total }}
+            </div>
+        </div>
+    </div>
+
+    <div class="head" ng-show="node.isApp == false">{{ node.name }}</div>
+    <div class="holder" ng-show="node.isApp == false">
+        <div bp-topology-nodes map="node.children"></div>
+    </div>
+
+    <p ng-show="node.isApp == true">{{ node.name }}</p>
+</div>

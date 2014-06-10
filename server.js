@@ -146,6 +146,12 @@ app.post('/backend/deployments/execute', function(request, response) {
     });
 });
 
+app.get('/backend/provider/context', function(request, response) {
+    cloudify4node.getProviderContext(function(err, data) {
+        response.send(err !== null ? err : data);
+    });
+});
+
 app.post('/backend/events/_search', function(request, response) {
     cloudify4node.getEvents(request.body, function(err, data) {
         response.send(err !== null ? err : data);

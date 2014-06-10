@@ -870,6 +870,7 @@
       .app {
         position: relative;
         min-width: 130px;
+        min-height: 45px;
         display: inline-block;
         text-align: center;
         border-radius: 3px;
@@ -1003,6 +1004,11 @@
               bottom: 85px;
               text-align: right;
             }
+            .network-badge {
+              position: absolute;
+              top: -5px;
+              left: 15px;
+            }
             &.red {
               background-color: #d54931;
             }
@@ -1016,7 +1022,7 @@
         }
         .devices {
           display: inline-block;
-          width: 150px;
+          width: 160px;
           height: 500px;
           vertical-align: top;
           > .device {

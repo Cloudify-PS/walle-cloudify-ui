@@ -231,7 +231,7 @@ Cloudify4node.getDeploymentById = function(deployment_id, callback) {
 
 Cloudify4node.getDeploymentNodes = function(deployment_id, state, callback) {
     var requestData = createRequestData({
-        path: '/deployments/' + deployment_id + '/nodes?state=' + state,
+        path: '/node-instances?deployment_id=' + deployment_id,
         method: 'GET'
     });
 
@@ -259,6 +259,15 @@ Cloudify4node.executeDeployment = function(requestBody, callback) {
             'Content-Type': 'application/json',
             'Content-Length': JSON.stringify(data).length
         }
+    });
+
+    createRequest(requestData, callback);
+}
+
+Cloudify4node.getProviderContext = function(callback) {
+    var requestData = createRequestData({
+        path: '/provider/context',
+        method: 'GET'
     });
 
     createRequest(requestData, callback);

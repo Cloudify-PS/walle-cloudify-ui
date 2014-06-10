@@ -65,16 +65,16 @@ angular.module('cosmoUi')
             node.totalCount = data.dependents.length;
 
             for (var j = 0; j < data.dependents.length; j++) {
-                for (var i = 0; i < $scope.nodes.length; i++) {
-                    if ($scope.nodes[i].id === data.dependents[j]) {
-                        if ($scope.nodes[i].state === 'started' || $scope.nodes[i].state === 'failed') {
-                            node.state = $scope.nodes[i].state === 'failed' ? 'Failed' : 'Succeed';
-                            node[$scope.nodes[i].state].count++;
-                            node[$scope.nodes[i].state].nodes[$scope.nodes[i].id] = $scope.nodes[i];
+                for (var i = 0; i < $scope.allNodesArr.length; i++) {
+                    if ($scope.allNodesArr[i].id === data.dependents[j]) {
+                        if ($scope.allNodesArr[i].state === 'started' || $scope.allNodesArr[i].state === 'failed') {
+                            node.state = $scope.allNodesArr[i].state === 'failed' ? 'Failed' : 'Succeed';
+                            node[$scope.allNodesArr[i].state].count++;
+                            node[$scope.allNodesArr[i].state].nodes[$scope.allNodesArr[i].id] = $scope.allNodesArr[i];
                         }
                         else {
                             node.inProgress.count++;
-                            node.inProgress.nodes[$scope.nodes[i].id] = $scope.nodes[i];
+                            node.inProgress.nodes[$scope.allNodesArr[i].id] = $scope.allNodesArr[i];
                         }
                     }
                 }
