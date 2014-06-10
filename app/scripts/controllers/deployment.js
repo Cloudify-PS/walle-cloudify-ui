@@ -262,7 +262,11 @@ angular.module('cosmoUi')
                                 'name': node.properties.subnet.name ? node.properties.subnet.name : node.name,
                                 'cidr': node.properties.subnet.cidr,
                                 'color': colors[Math.floor((Math.random() * colors.length) + 1)],
-                                'type': 'subnet'
+                                'type': 'subnet',
+                                'state': {
+                                    'total': node.instances.deploy,
+                                    'completed': 0
+                                }
                             });
                             relations.push({
                                 source: node.id,
@@ -290,6 +294,10 @@ angular.module('cosmoUi')
                         'name': node.name,
                         'type': 'device',
                         'icon': 'host',
+                        'state': {
+                            'total': node.instances.deploy,
+                            'completed': 0
+                        },
                         'ports': []
                     };
 
@@ -383,19 +391,21 @@ angular.module('cosmoUi')
                     // Blueprint
                     RestService.getBlueprintById({id: deploymentData.blueprintId})
                         .then(function(data){
-                            nodesList = data.plan.nodes;
-                            $scope.nodesTree = _createNodesTree(nodesList);
+//                            nodesList = data.plan.nodes;
+                            $scope.nodesTree = _createNodesTree($scope.allNodesArr);
 
                             blueprintCoordinateService.resetCoordinates();
-                            blueprintCoordinateService.setMap(_getNodesConnections(nodesList));
+                            blueprintCoordinateService.setMap(_getNodesConnections($scope.allNodesArr));
                             $scope.coordinates = blueprintCoordinateService.getCoordinates();
                             $scope.deployments = deploymentModel;
 
                             RestService.getProviderContext()
                                 .then(function(providerData) {
                                     var _extNetworks = [];
-                                    _extNetworks.push(providerData.context.resources.subnet);
-                                    _extNetworks[0].color = colors[Math.floor((Math.random() * colors.length) + 1)];
+                                    if (providerData.context.resources.subnet !== undefined) {
+                                        _extNetworks.push(providerData.context.resources.subnet);
+                                        _extNetworks[0].color = colors[Math.floor((Math.random() * colors.length) + 1)];
+                                    }
                                     $scope.networks = _createNetworkTree(data.plan.nodes, _extNetworks);
 
                                     bpNetworkService.setMap($scope.networks.relations);
@@ -470,6 +480,10 @@ angular.module('cosmoUi')
                         }
                     }
 
+                    node.state = {
+                        total: node.instances.deploy,
+                        completed: 0
+                    }
                     node.dataType = _getNodeDataType(node);
 
                     if (!node.isContained) {
@@ -480,7 +494,7 @@ angular.module('cosmoUi')
                 }
             }
 
-            return roots.reverse();
+            return roots;
         }
 
         function _isAppNode(node) {
@@ -603,11 +617,11 @@ angular.module('cosmoUi')
                 }
             }
 
-            nodesList.forEach(function(node) {
+            $scope.allNodesArr.forEach(function(node) {
                 node.state = deploymentModel[node.id];
             });
 
-            $scope.nodesTree = _createNodesTree(nodesList);
+            $scope.nodesTree = _createNodesTree($scope.allNodesArr);
 
             $log.info(['deploymentModel', deploymentModel]);
         }
