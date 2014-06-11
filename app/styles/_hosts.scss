@@ -1,0 +1,183 @@
+#hosts {
+    #main-content-panel {
+        padding-right: 0px;
+    }
+    .content-section {
+        width: 100%;
+        height: 100%;
+        padding: 0px 20px 10px;
+
+        .filters {
+            position: relative;
+            margin: 0 0 10px 0;
+            .multiSelectMenu {
+                margin: 5px 10px 0 0px;
+                vertical-align: middle;
+            }
+            .search {
+                display: inline-block;
+                vertical-align: middle;
+                input {
+                    border-style: solid;
+                    border-color: #ccc;
+                    border-width: 1px 1px 1px 1px;
+                    padding: 5px 10px;
+                    border-radius: 3px 0 0 3px;
+                    outline: none;
+                    &:focus {
+                        border-color: #29A9EE;
+                    }
+                }
+                button {
+                    background-color: #f5f5f5;
+                    border-style: solid;
+                    border-color: #ccc;
+                    border-width: 1px 1px 1px 0;
+                    padding: 5px 10px;
+                    border-radius: 0 3px 3px 0;
+                    outline: none;
+                    &:hover {
+                        border-color: #29A9EE;
+                        background-color: #29A9EE;
+                        color: #fff;
+                    }
+                }
+            }
+            .loading {
+                position: absolute;
+                top: 22px;
+                right: 0;
+                width: 120px;
+                height: 30px;
+                background-image: url('../images/loading-dots.gif');
+                background-repeat: no-repeat;
+                background-position: center center;
+            }
+            .filter {
+                display: inline-block;
+                margin: 0 0 10px 0;
+            }
+        }
+
+        .emptyTable {
+            display: block;
+            text-align: center;
+            padding: 20px;
+        }
+
+        table.table {
+            width: 100%;
+            margin: 0px;
+            tr.details {
+                background-color: #f5f5f5;
+                border-bottom: 1px solid #ccc;
+                padding: 10px;
+                .group {
+                    display: inline-block;
+                    border-right: 1px dotted #ccc;
+                    min-width: 250px;
+                    height: 100%;
+                    font-size: 13px;
+                    vertical-align: top;
+                    > span {
+                        display: block;
+                        padding: 5px 0;
+                        margin: 0 10px;
+                        line-height: 18px;
+                    }
+                    &:last-child {
+                        border: 0px;
+                    }
+                }
+                td {
+                    height: auto;
+                }
+            }
+            tr {
+                td {
+                    &.type {
+                        width: 150px;
+                    }
+                    &.icon {
+                        width: 60px;
+                        min-width: 45px;
+                    }
+                    &.node, &.task, &.workflow {
+                        width: 110px;
+                    }
+                    &.task {
+                        width: auto;
+                        min-width: 330px;
+                        word-break: break-word;
+                    }
+                    &.date {
+                        width: 200px;
+                    }
+                    &.event-text-green {
+                        color: $COSMOUI_EVENTS_LIST_TEXT_SUCCESS;
+                    }
+                    &.event-text-red {
+                        color: $COSMOUI_EVENTS_LIST_TEXT_FAILED;
+                    }
+                    &.event-icon-workflow-started {
+                        background: url("#{$img-workflow-started}") no-repeat center center;
+                    }
+                    &.event-icon-workflow-end-successfully {
+                        background: url("#{$img-workflow-end-successfully}") no-repeat center center;
+                    }
+                    &.event-icon-workflow-failed {
+                        background: url("#{$img-workflow-failed}") no-repeat center center;
+                    }
+                    &.event-icon-task-started {
+                        background: url("#{$img-task-started}") no-repeat center center;
+                    }
+                    &.event-icon-task-failed {
+                        background: url("#{$img-task-failed}") no-repeat center center;
+                    }
+                    &.event-icon-task-sent {
+                        background: url("#{$img-task-sent}") no-repeat center center;
+                    }
+                    &.event-icon-task-success {
+                        background: url("#{$img-task-success}") no-repeat center center;
+                    }
+                    &.event-icon-policy-success {
+                        background: url("#{$img-policy-success}") no-repeat center center;
+                    }
+                    &.event-icon-policy-failed {
+                        background: url("#{$img-policy-failed}") no-repeat center center;
+                    }
+                    &.gs-icon-logs {
+                        padding-left: 16px;
+                        color: #049cdb;
+                        line-height: 46px;
+                        font-size: 55px;
+                    }
+                }
+            }
+        }
+    }
+
+    .newHosts {
+        position: fixed;
+        top: 30px;
+        left: 0;
+        right: 0;
+        font-size: 15px;
+        text-align: center;
+        > p {
+            display: inline-block;
+            background-color: #049cdb;
+            color: #fff;
+            margin: 0 auto;
+            padding: 2px 10px;
+            border-radius: 13px;
+            box-shadow: 1px 1px 0px #0482c7;
+            cursor: pointer;
+        }
+    }
+
+    .gs-btn {
+        margin-top: 4px;
+    }
+
+}

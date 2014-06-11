@@ -375,6 +375,15 @@ Cloudify4node.getNode = function(node_id, queryParams, callback) {
     createRequest(requestData, callback);
 }
 
+Cloudify4node.getNodeInstances = function(deployment_id, callback) {
+    var requestData = createRequestData({
+        path: '/node-instances' + (deployment_id !== undefined ? '?deployment_id=' + deployment_id : ''),
+        method: 'GET'
+    });
+
+    createRequest(requestData, callback);
+}
+
 
 // Monitor Mock's
 Cloudify4node.getMonitorGraphs = function(callback) {

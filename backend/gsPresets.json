@@ -15,7 +15,7 @@
         }
     },
     "staging": {
-        "cosmoServer": "15.126.214.26",
+        "cosmoServer": "cosmo.gsdev.info",
         "cosmoPort": 80,
         "log4js": {
             "appenders": [

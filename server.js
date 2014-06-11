@@ -176,6 +176,12 @@ app.post('/backend/deployments/workflows/get', function(request, response) {
     });
 });
 
+app.get('/backend/node-instances', function(request, response) {
+    cloudify4node.getNodeInstances(request.query.deployment_id, function(err, data) {
+        response.send(err !== null ? err : data);
+    });
+});
+
 app.post('/backend/node/get', function(request, response) {
     var queryParams = {};
     if (request.body.state !== undefined) {

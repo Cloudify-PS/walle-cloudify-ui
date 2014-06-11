@@ -179,6 +179,16 @@ angular.module('cosmoUi')
             return _load('nodes/get', callParams);
         }
 
+        function _getNodeInstances(params) {
+            var callParams = {
+                url: '/backend/node-instances',
+                method: 'GET',
+                params: params
+            };
+
+            return _load('node-instances', callParams);
+        }
+
         function _loadEvents(query) {
             var callParams = {
                 url: '/backend/events',
@@ -295,6 +305,7 @@ angular.module('cosmoUi')
         this.loadDeployments = _loadDeployments;
         this.getWorkflows = _getWorkflows;
         this.getNode = _getNode;
+        this.getNodeInstances = _getNodeInstances;
         this.getSettings = _getSettings;
         this.setSettings = _setSettings;
         this.getConfiguration = _getConfiguration;

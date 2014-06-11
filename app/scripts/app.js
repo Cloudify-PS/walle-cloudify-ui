@@ -35,7 +35,8 @@ angular.module('cosmoUi', ['gsUiInfraApp', 'angularFileUpload', 'ngCookies', 'ng
                 controller: 'LogsCtrl'
             })
             .when('/hosts',{
-                templateUrl: 'views/blueprintsIndex.html'
+                templateUrl: 'views/hosts.html',
+                controller: 'HostsCtrl'
             })
             .when('/networks',{
                 templateUrl: 'views/blueprintsIndex.html'
