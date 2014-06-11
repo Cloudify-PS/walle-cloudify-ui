@@ -97,6 +97,18 @@ app.get('/backend/blueprints/validate', function(request, response) {
     });
 });
 
+app.get('/backend/blueprints/browse', function(request, response) {
+    cloudify4node.browseBlueprint(request.query.id ,function(err, data) {
+        response.send(err !== null ? err : data);
+    });
+});
+
+app.get('/backend/blueprints/browse/file', function(request, response) {
+    cloudify4node.browseBlueprintFile(request.query.id, request.query.path ,function(err, data) {
+        response.send(err !== null ? err : data);
+    });
+});
+
 app.get('/backend/executions', function(request, response) {
     cloudify4node.getExecutionById(request.query.executionId, function(err, data) {
         response.send(err !== null ? err : data);
@@ -123,6 +135,12 @@ app.post('/backend/deployments/create', function(request, response) {
 
 app.post('/backend/deployments/get', function(request, response) {
     cloudify4node.getDeploymentById(request.body.deploymentId, function(err, data) {
+        response.send(err !== null ? err : data);
+    });
+});
+
+app.post('/backend/deployments/delete', function(request, response) {
+    cloudify4node.deleteDeploymentById(request.body.deploymentId, request.body.ignoreLiveNodes, function(err, data) {
         response.send(err !== null ? err : data);
     });
 });
@@ -173,6 +191,24 @@ app.post('/backend/node/get', function(request, response) {
         queryParams.runtime = request.body.runtime;
     }
     cloudify4node.getNode(request.body.nodeId, queryParams, function(err, data) {
+        response.send(err !== null ? err : data);
+    });
+});
+
+app.get('/backend/monitor/graphs', function(request, response) {
+    cloudify4node.getMonitorGraphs(function(err, data) {
+        response.send(err !== null ? err : data);
+    });
+});
+
+app.get('/backend/monitor/cpu', function(request, response) {
+    cloudify4node.getMonitorCpu(function(err, data) {
+        response.send(err !== null ? err : data);
+    });
+});
+
+app.get('/backend/monitor/memory', function(request, response) {
+    cloudify4node.getMonitorMemory(function(err, data) {
         response.send(err !== null ? err : data);
     });
 });

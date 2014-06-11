@@ -1,310 +1,350 @@
-  .dialogBoxBg {
-  width: 100%;
-  height: 100%;
-  background: $COSMOUI_DIALOG_BACKGROUND;
-  overflow: hidden;
-  position: absolute;
-  top: 0px;
-  left: 0px;
-  opacity: 0;
-  z-index: 9995;
+.dialogBoxBg {
+    width: 100%;
+    height: 100%;
+    background: $COSMOUI_DIALOG_BACKGROUND;
+    overflow: hidden;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    opacity: 0;
+    z-index: 9995;
 }
 
 .dialogBox {
-  z-index: 9996;
-  border: 2px solid $COSMOUI_DIALOG_BORDER_COLOR;
-  border-radius: 4px;
-  box-shadow: 0px 0px 5px $COSMOUI_DIALOG_SHADOW_COLOR;
-  background: $COSMOUI_DIALOG_BACKGROUND;
+    z-index: 9996;
+    border: 2px solid $COSMOUI_DIALOG_BORDER_COLOR;
+    border-radius: 4px;
+    box-shadow: 0px 0px 5px $COSMOUI_DIALOG_SHADOW_COLOR;
+    background: $COSMOUI_DIALOG_BACKGROUND;
 
-  .dialogButton {
-    color: white;
-    font-weight: bold;
-    padding: 5px 10px 5px 10px;
-    margin: 0px 10px 0px 10px;
-    background-color: $COSMOUI_BUTTON_BACKGROUND;
-    border-radius: 3px;
-    border-bottom: 1px solid $COSMOUI_BUTTON_BOTTOM_BORDER_COLOR;
-    border-right: 1px solid $COSMOUI_BUTTON_RIGHT_BORDER_COLOR;
-    border-top: none;
-    border-left: none;
+    .dialogButton {
+        color: white;
+        font-weight: bold;
+        padding: 5px 10px 5px 10px;
+        margin: 0px 10px 0px 10px;
+        background-color: $COSMOUI_BUTTON_BACKGROUND;
+        border-radius: 3px;
+        border-bottom: 1px solid $COSMOUI_BUTTON_BOTTOM_BORDER_COLOR;
+        border-right: 1px solid $COSMOUI_BUTTON_RIGHT_BORDER_COLOR;
+        border-top: none;
+        border-left: none;
 
-    &.disabled {
-      background: $COSMOUI_BUTTON_DISABLED_BACKGROUND;
-      border-bottom: 1px solid $COSMOUI_BUTTON_DISABLED_BORDER_COLOR;
-      border-right: 1px solid $COSMOUI_BUTTON_DISABLED_BORDER_COLOR;
-      color: $COSMOUI_BUTTON_DISABLED_BORDER_COLOR;
-      cursor: default;
+        &.disabled {
+            background: $COSMOUI_BUTTON_DISABLED_BACKGROUND;
+            border-bottom: 1px solid $COSMOUI_BUTTON_DISABLED_BORDER_COLOR;
+            border-right: 1px solid $COSMOUI_BUTTON_DISABLED_BORDER_COLOR;
+            color: $COSMOUI_BUTTON_DISABLED_BORDER_COLOR;
+            cursor: default;
+        }
+
+        &.enabled {
+            background: $COSMOUI_BUTTON_BACKGROUND;
+            cursor: pointer;
+        }
+
+        &.dialogClose {
+            float: right;
+            position: absolute;
+            right: 0px;
+            top: 11px;
+            background: url("/images/x_idle.png") no-repeat center center;
+            width: 32px;
+            height: 32px;
+            cursor: pointer;
+            background-color: transparent;
+            border: none;
+            padding-right: 0px;
+
+            &:hover {
+                background: url("/images/x_hover.png") no-repeat center center;
+            }
+
+            &:active {
+                background: url("/images/x_pressed.png") no-repeat center center;
+            }
+        }
     }
 
-    &.enabled {
-      background: $COSMOUI_BUTTON_BACKGROUND;
-      cursor: pointer;
+    .dialogTitle {
+        display: block;
+        width: 100%;
+        height: 51px;
+        color: $COSMOUI_DIALOG_TITLE_COLOR;
+        line-height: 28px;
+        font-size: 32px;
+        padding-left: 20px;
+        padding-top: 10px;
+        background-color: $clr-base-00;
+
+        label {
+            width: 90%;
+            height: 100%;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            overflow: hidden;
+        }
     }
 
-    &.dialogClose {
-      float: right;
-      position: absolute;
-      right: 0px;
-      top: 5px;
-      background: url("/images/x_idle.png") no-repeat center center;
-      width: 32px;
-      height: 32px;
-      cursor: pointer;
-      background-color: transparent;
-      border: none;
-      padding-right: 0px;
+    .dialogDeploymentName {
+        position: relative;
+        width: 100%;
+        text-align: center;
 
-      &:hover {
-        background: url("/images/x_hover.png") no-repeat center center;
-      }
-
-      &:active {
-        background: url("/images/x_pressed.png") no-repeat center center;
-      }
-    }
-  }
-
-  .dialogTitle {
-    width: 100%;
-    height: 51px;
-    color: $COSMOUI_DIALOG_TITLE_COLOR;
-    line-height: 28px;
-    font-size: 32px;
-    float: left;
-    padding-left: 20px;
-    padding-top: 10px;
-    background-color: $clr-base-00;
-
-    label {
-      width: 95%;
-      height: 100%;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-      overflow: hidden;
-    }
-  }
-
-  .dialogDeploymentName {
-    position: relative;
-    top: 30px;
-    width: 100%;
-    height: 100px;
-    text-align: center;
-
-    input {
-      position: relative;
-      top: 30px;
-      width: 310px;
-      height: 32px;
-      border-radius: 3px;
-      padding-left: 10px;
-      background-clip: padding-box;
-      background-color: $clr-base-10;
-      border: 0;
-    }
-  }
-
-  .dialogDescription {
-    position: relative;
-    top: 20px;
-    width: 100%;
-    height: 30px;
-    text-align: center;
-    font-size: 16px;
-    font-family: 'OpenSansRegular';
-  }
-
-  .buttonsContainer {
-    float: right;
-
-    &.confirmationButtons {
-      margin-top: 130px;
+        input {
+            position: relative;
+            width: 310px;
+            height: 32px;
+            border-radius: 3px;
+            padding-left: 10px;
+            background-clip: padding-box;
+            background-color: $clr-base-10;
+            border: 0;
+        }
     }
 
-    &.deployButtons {
-      margin-top: 40px;
+    .dialogDescription {
+        display: block;
+        width: 100%;
+        text-align: center;
+        font-size: 16px;
+        font-family: 'OpenSansRegular';
+        margin: 15px 0;
     }
-  }
+
+    .buttonsContainer {
+        display: block;
+        text-align: center;
+    }
 }
 
 #uploadDialogContainer {
-  width: 430px;
-  height: 280px;
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  margin: auto;
-  margin-top: 100px;
-
-  #uploadForm {
-    position: relative;
-    float: left;
-    height: 160px;
-    width: 100%;
-    top: 40px;
-
-    #browse {
-      position: relative;
-      top: 30px;
-
-      #fileInput {
-        top: 0px;
-        position: absolute;
-        opacity: 0;
-        left: 20px;
-        z-index: 9998;
-        width: 390px;
-        height: 35px;
-      }
-
-      #browseBtn {
-        top: 0px;
-        width: 32px;
-        height: 32px;
-        float: right;
-        cursor: pointer;
-        margin-right: 20px;
-        font-size: 30px;
-        padding: 0px 8px 0px 7px;
-        line-height: 33px;
-      }
-
-      #browseTxt {
-        width: 340px;
-        height: 32px;
-        float: left;
-        position: absolute;
-        top: 0px;
-        border-radius: 3px;
-        left: 20px;
-        padding-left: 10px;
-        background-clip: padding-box;
-        background-color: $clr-base-10;
-        border: 0;
-      }
-    }
-
-    #name {
-      position: relative;
-      top: 15px;
-      margin-bottom: 10px;
-
-      input {
-        left: 20px;
-        position: relative;
-        top: 30px;
-        width: 385px;
-        height: 32px;
-        border-radius: 3px;
-        padding-left: 10px;
-        background-clip: padding-box;
-        background-color: $clr-base-10;
-        border: 0;
-      }
-    }
-
-    #mainFile {
-      position: relative;
-      float: left;
-      left: 120px;
-      top: 63px;
-
-      #mainYamlName {
-        width: 272px;
-        height: 30px;
-        border-radius: 5px;
-        margin-left: 10px;
-      }
-    }
-
-    .upload-process-anim {
-      width: 25px;
-      height: 25px;
-      background: url("/images/progress.gif") no-repeat center center;
-      background-color: $clr-base-01;
-      border-radius: 25px;
-      position: absolute;
-      float: right;
-      right: 110px;
-      bottom: 2px;
-    }
-
-    #uploadBtn {
-      position: relative;
-      float: right;
-      right: 10px;
-      top: 60px;
-    }
-
-    #upload-error-message {
-      float: right;
-      right: 80px;
-      position: absolute;
-      color: $clr-base-26;
-      width: 320px;
-      margin-top: 50px;
-      height: 50px;
-      overflow: hidden;
-    }
-  }
-}
-
-#deployDialogContainer {
-  width: 350px;
-  height: 220px;
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  margin: auto;
-  margin-top: 100px;
-
-  #deploy-error-message {
-    float: left;
-    left: 38px;
-    position: absolute;
-    color: $clr-base-26;
-    width: 300px;
-    top: 135px;
-    text-align: center;
-  }
-}
-
-  #confirmationDialogContainer {
-    width: 320px;
-    height: 180px;
+    width: 430px;
     position: absolute;
     top: 0;
-    bottom: 0;
     left: 0;
     right: 0;
     margin: auto;
     margin-top: 100px;
 
+    #uploadForm {
+        position: relative;
+        display: block;
+
+        #browse {
+            display: block;
+            height: 33px;
+
+            #fileInput {
+                top: 0px;
+                position: absolute;
+                opacity: 0;
+                left: 20px;
+                z-index: 9998;
+                width: 390px;
+                height: 35px;
+            }
+
+            #browseBtn {
+                position: absolute;
+                top: 0px;
+                right: 12px;
+                width: 32px;
+                height: 32px;
+                font-size: 30px;
+                padding: 0px 8px 0px 7px;
+                line-height: 33px;
+                cursor: pointer;
+            }
+
+            #browseTxt {
+                position: absolute;
+                top: 0px;
+                left: 20px;
+                width: 340px;
+                height: 32px;
+                border-radius: 3px;
+                padding-left: 10px;
+                background-clip: padding-box;
+                background-color: $clr-base-10;
+                border: 0;
+            }
+        }
+
+        #name {
+            display: block;
+            position: relative;
+            top: 15px;
+            height: 50px;
+            input {
+                position: relative;
+                left: 20px;
+                width: 385px;
+                height: 32px;
+                border-radius: 3px;
+                padding-left: 10px;
+                background-clip: padding-box;
+                background-color: $clr-base-10;
+                border: 0;
+            }
+        }
+
+        #mainFile {
+            position: relative;
+            float: left;
+            left: 120px;
+            top: 63px;
+
+            #mainYamlName {
+                width: 272px;
+                height: 30px;
+                border-radius: 5px;
+                margin-left: 10px;
+            }
+        }
+
+        .upload-process-anim {
+            width: 25px;
+            height: 25px;
+            background: url("/images/progress.gif") no-repeat center center;
+            background-color: $clr-base-01;
+            border-radius: 25px;
+            position: absolute;
+            right: 81px;
+            bottom: 13px;
+        }
+
+        #uploadBtn {
+            position: relative;
+            margin: 10px 0;
+            left: 355px;
+        }
+
+        #upload-error-message {
+            display: block;
+            color: $clr-base-26;
+            margin: 10px 0 0;
+            padding: 10px 20px;
+            word-break: break-all;
+            background-color: #f5f5f5;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+    }
+}
+
+#deployDialogContainer {
+    width: 350px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+    margin-top: 100px;
+
+    #deploy-error-message {
+        display: block;
+        color: $clr-base-26;
+        margin: 10px 0px;
+        padding: 10px 20px;
+        background-color: #f5f5f5;
+        max-height: 300px;
+        overflow-y: auto;
+    }
+
+    .deployButtons {
+        margin: 10px 0;
+    }
+}
+
+#confirmationDialogContainer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    width: 320px;
+    margin: auto;
+    margin-top: 100px;
+
     .dialogDescription {
-      font-size: 20px;
-      padding-right: 50px;
-      padding-left: 50px;
-      line-height: 28px;
-      color: $clr-base-00;
+        font-size: 20px;
+        padding-right: 50px;
+        padding-left: 50px;
+        line-height: 28px;
+        color: $clr-base-00;
     }
 
     .confirmationButtons {
-      margin-top: 90px;
-      width: 250px;
-
-      #cancelBtn {
-        color: $COSMOUI_BUTTON_BACKGROUND;
-        font-weight: bold;
-        padding: 5px 10px 5px 10px;
-        margin: 0px 10px 0px 10px;
-        background-color: $clr-base-10;
-        border-bottom: 1px solid $COSMOUI_BUTTON_BACKGROUND;
-        border-right: 1px solid $COSMOUI_BUTTON_BACKGROUND;
-      }
+        margin: 15px 0;
+        #cancelBtn {
+            color: $COSMOUI_BUTTON_BACKGROUND;
+            font-weight: bold;
+            padding: 5px 10px 5px 10px;
+            margin: 0px 10px 0px 10px;
+            background-color: $clr-base-10;
+            border-bottom: 1px solid $COSMOUI_BUTTON_BACKGROUND;
+            border-right: 1px solid $COSMOUI_BUTTON_BACKGROUND;
+        }
     }
-  }
+}
+
+#deleteDeploymentDialog {
+    width: 450px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+    margin-top: 100px;
+
+    .dialogClose {
+        top: 11px;
+    }
+
+    .dialogDescription {
+        display: block;
+        font-size: 20px;
+        line-height: 28px;
+        margin: 10px 0 0;
+        text-align: left;
+        padding: 0 20px;
+        height: auto;
+        color: $clr-base-00;
+    }
+
+    .dialogCheckbox {
+        float: left;
+        display: inline-block;
+        margin: 3px 0 0 20px;
+        label {
+            cursor: pointer;
+        }
+    }
+
+    .error-message {
+        display: block;
+        color: $clr-base-26;
+        margin: 10px 0;
+        padding: 10px 20px;
+        word-break: break-all;
+        background-color: #f5f5f5;
+        max-height: 300px;
+        overflow-y: auto;
+    }
+
+    .confirmationButtons {
+        display: block;
+        text-align: right;
+        margin: 10px 0;
+
+        #cancelBtnDelDep {
+            display: inline-block;
+            color: $COSMOUI_BUTTON_BACKGROUND;
+            font-weight: bold;
+            padding: 5px 10px 5px 10px;
+            margin: 0px 0px 0px 10px;
+            background-color: $clr-base-10;
+            border-bottom: 1px solid $COSMOUI_BUTTON_BACKGROUND;
+            border-right: 1px solid $COSMOUI_BUTTON_BACKGROUND;
+        }
+    }
+}

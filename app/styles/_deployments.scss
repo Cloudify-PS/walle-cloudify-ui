@@ -32,6 +32,10 @@
             font-weight: $COSMOUI_LIST_HOVER_ACTION_FONT_WEIGHT;
           }
         }
+        &.delete {
+            width: $COSMOUI_LIST_HOVER_DELETE_WIDTH;
+            text-align: center;
+        }
       }
     }
 

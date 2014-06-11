@@ -111,6 +111,26 @@ angular.module('cosmoUi')
             return _load('blueprints/source', callParams);
         }
 
+        function _browseBlueprint(params) {
+            var callParams = {
+                url: '/backend/blueprints/browse',
+                method: 'GET',
+                params: params
+            };
+
+            return _load('blueprints/browse', callParams);
+        }
+
+        function _browseBlueprintFile(params) {
+            var callParams = {
+                url: '/backend/blueprints/browse/file',
+                method: 'GET',
+                params: params
+            };
+
+            return _load('blueprints/browse/file', callParams);
+        }
+
         function _deployBlueprint(params) {
             var callParams = {
                 url: '/backend/deployments/create',
@@ -181,6 +201,15 @@ angular.module('cosmoUi')
             return _load('deployments/get', callParams);
         }
 
+        function _deleteDeploymentById(params){
+            var callParams = {
+                url: '/backend/deployments/delete',
+                method: 'POST',
+                data: params
+            };
+            return _load('deployments/delete', callParams);
+        }
+
         function _getDeploymentNodes(params) {
             var callParams = {
                 url: '/backend/deployments/nodes',
@@ -229,15 +258,42 @@ angular.module('cosmoUi')
             return _load('configuration', callParams);
         }
 
+        function _getMonitorGrpahs() {
+            var callParams = {
+                url: '/backend/monitor/graphs',
+                method: 'GET'
+            };
+            return _load('monitor/graphs', callParams);
+        }
+
+        function _getMonitorCpu() {
+            var callParams = {
+                url: '/backend/monitor/cpu',
+                method: 'GET'
+            };
+            return _load('monitor/cpu', callParams);
+        }
+
+        function _getMonitorMemory() {
+            var callParams = {
+                url: '/backend/monitor/memory',
+                method: 'GET'
+            };
+            return _load('monitor/memory', callParams);
+        }
+
         this.loadBlueprints = _loadBlueprints;
         this.addBlueprint = _addBlueprint;
         this.getBlueprintById = _getBlueprintById;
         this.getBlueprintSource = _getBlueprintSource;
+        this.browseBlueprint = _browseBlueprint;
+        this.browseBlueprintFile = _browseBlueprintFile;
         this.deployBlueprint = _deployBlueprint;
         this.getDeploymentExecutions = _getDeploymentExecutions;
         this.executeDeployment = _executeDeployment;
         this.updateExecutionState = _updateExecutionState;
         this.getDeploymentById = _getDeploymentById;
+        this.deleteDeploymentById = _deleteDeploymentById;
         this.getDeploymentNodes = _getDeploymentNodes;
         this.loadEvents = _loadEvents;
         this.loadDeployments = _loadDeployments;
@@ -249,4 +305,7 @@ angular.module('cosmoUi')
         this.getConfiguration = _getConfiguration;
         this.autoPull = _autoPull;
         this.autoPullStop = _autoPullStop;
+        this.getMonitorGrpahs = _getMonitorGrpahs;
+        this.getMonitorCpu = _getMonitorCpu;
+        this.getMonitorMemory = _getMonitorMemory;
     });

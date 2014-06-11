@@ -60,6 +60,7 @@ angular.module('cosmoUi')
 
         $scope.closeDialog = function() {
             $scope.toggleAddDialog();
+            $scope.uploadError = false;
         };
 
         $scope.isUploadEnabled = function() {

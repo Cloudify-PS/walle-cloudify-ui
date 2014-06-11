@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('cosmoUi')
-    .controller('DeploymentCtrl', function ($scope, $rootScope, $cookieStore, $routeParams, RestService, EventsService, BreadcrumbsService, YamlService, blueprintCoordinateService, bpNetworkService, $route, $anchorScroll, $timeout, $location, $log, EventsMap) {
+    .controller('DeploymentCtrl', function ($scope, $rootScope, $cookieStore, $routeParams, RestService, EventsService, BreadcrumbsService, YamlService, blueprintCoordinateService, bpNetworkService, $route, $anchorScroll, $timeout, Cosmotypesservice, $location, $log, EventsMap, monitoringGraphs) {
 
         var statesIndex = ['uninitialized', 'initializing', 'creating', 'created', 'configuring', 'configured', 'starting', 'started'],
             currentExeution = null,
@@ -621,7 +621,7 @@ angular.module('cosmoUi')
 
             $scope.nodesTree = _createNodesTree($scope.allNodesArr);
 
-            $log.info(['deploymentModel', deploymentModel]);
+            //$log.info(['deploymentModel', deploymentModel]);
         }
 
         function setDeploymentStatus(deployment, process) {
@@ -933,5 +933,65 @@ angular.module('cosmoUi')
                 }
             });
             return _node;
+        };
+
+        // Monitor Mock's
+        var graphData = [];
+        var graphPages = [];
+        $scope.graphs = graphData;
+        $scope.graphPages = graphPages;
+        $scope.newgraph = {
+            'name': '',
+            'type': 'line',
+            'metric': 'CPU'
+        };
+
+
+        RestService.getMonitorGrpahs()
+            .then(function(data){
+                for(var i in data) {
+                    var graph = data[i];
+                    monitoringGraphs.addGraph(graphData, graph);
+                    monitoringGraphs.executeQuery(graphData, graph);
+                    monitoringGraphs.getDirective(graphData, graph);
+                }
+                _randerPagination();
+            });
+
+        function _randerPagination() {
+            monitoringGraphs.getPaginationByData(graphPages, graphData, 4);
+        }
+
+        $scope.moitorMixColors = ['#E01B5D', '#46b8da'];
+
+        $scope.xAxisTickFormatFunction = function () {
+            return function (d) {
+                return d3.time.format('%x')(new Date(d));
+            };
+        };
+
+        $scope.$on('fireResizeGraph', function() {
+            $timeout(function(){
+                $(window).trigger('resize');
+            }, 1000);
+        });
+
+        $scope.addMonitorChart = function() {
+            var newMonitorChart = {
+                'name': $scope.newgraph.name,
+                'type': 'nvd3-line-with-focus-chart',
+                'query': $scope.newgraph.metric,
+                'properties': {
+                    'id': 'graphCpu'+Math.round(Math.random()*1000),
+                    'data': 'graph.data',
+                    'xAxisTickFormat': 'xAxisTickFormatFunction()',
+                    'x2AxisTickFormat': 'xAxisTickFormatFunction()',
+                    'isArea': $scope.newgraph.type === 'line' ? false : true
+                }
+            };
+            monitoringGraphs.addGraph(graphData, newMonitorChart);
+            monitoringGraphs.executeQuery(graphData, newMonitorChart);
+            monitoringGraphs.getDirective(graphData, newMonitorChart);
+            _randerPagination();
         };
     });
