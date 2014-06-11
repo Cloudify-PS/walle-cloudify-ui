@@ -65,7 +65,7 @@ var privateConfiguration = {
         replaceConsole: true
     },
     browseBlueprint: {
-        path: 'C:/Users/itsik/MyProjects/cosmo-ui/backend/tmp/blueprints'
+        path: './backend/tmp/blueprints'
     }
 }
 
