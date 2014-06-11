@@ -156,77 +156,7 @@
                 disableModules: !toggleBar.modules,
                 disableConnections: !toggleBar.connections
                 }">
-                    <div data-type="compute" data-ng-repeat="rootNode in map" class="box" blueprint:coordinate="{{ rootNode.id }}">
-                        <div class="hoverup">
-                            <div class="buttons no-embed">
-                                <ul>
-                                    <li data-ng-click="viewNode(rootNode)" class="topology-glyph node-details"></li>
-                                </ul>
-                            </div>
-                        </div>
-                        <div pie:progress="deployments[indexNodes[rootNode.id].nodeId].process" class="piProgress" size="47" status="{{ deployments[indexNodes[rootNode.id].nodeId].status }}">
-                            <div class="background"></div>
-                            <div class="circle" state="{{ deployments[indexNodes[rootNode.id].nodeId].state }}">
-                                <i class="icon topology-glyph {{ indexNodes[rootNode.id].type.icon }}"></i>
-                                <div class="badge" data-ng-class="getBadgeStatus(deployments[indexNodes[rootNode.id].nodeId].status)">
-                                    {{ deployments[indexNodes[rootNode.id].nodeId].completed }}/{{ deployments[indexNodes[rootNode.id].nodeId].total }}
-                                </div>
-                                <div class="percents">{{ piePercents(deployments[indexNodes[rootNode.id].nodeId].process) }}</div>
-                                <div class="shadow"></div>
-                            </div>
-                        </div>
-                        <div class="head">{{ indexNodes[rootNode.id].name }}</div>
-                        <div class="holder">
-                            <!-- Middleware::start -->
-                            <div data-type="middleware" data-ng-repeat="subNode in rootNode.children" class="box" blueprint:coordinate="{{ subNode.id }}">
-                                <div class="hoverup">
-                                    <div class="buttons no-embed">
-                                        <ul>
-                                            <li data-ng-click="viewNode(subNode)" class="topology-glyph node-details"></li>
-                                        </ul>
-                                    </div>
-                                </div>
-                                <div pie:progress="deployments[indexNodes[subNode.id].nodeId].process" class="piProgress" size="47" status="{{ deployments[indexNodes[subNode.id].nodeId].status }}">
-                                    <div class="background"></div>
-                                    <div class="circle" state="{{ deployments[indexNodes[subNode.id].nodeId].state }}">
-                                        <i class="icon topology-glyph {{ indexNodes[subNode.id].type.icon }}"></i>
-                                        <div class="badge" data-ng-class="getBadgeStatus(deployments[indexNodes[subNode.id].nodeId].status)">
-                                            {{ deployments[indexNodes[subNode.id].nodeId].completed }}/{{ deployments[indexNodes[subNode.id].nodeId].total }}
-                                        </div>
-                                        <div class="percents">{{ piePercents(deployments[indexNodes[subNode.id].nodeId].process) }}</div>
-                                        <div class="shadow"></div>
-                                    </div>
-                                </div>
-                                <div class="head">{{ indexNodes[subNode.id].name }}</div>
-                                <div class="holder">
-                                    <!-- Module::start -->
-                                    <div data-type="modules" data-ng-repeat="appNode in subNode.children" class="app">
-                                        <div class="hoverup">
-                                            <div class="buttons no-embed">
-                                                <ul>
-                                                    <li data-ng-click="viewNode(appNode)" class="topology-glyph node-details"></li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                        <div pie:progress="deployments[indexNodes[appNode.id].nodeId].process" class="piProgress" size="47" status="{{ deployments[indexNodes[appNode.id].nodeId].status }}">
-                                            <div class="background"></div>
-                                            <div class="circle" blueprint:coordinate="{{ appNode.id }}" state="{{ deployments[indexNodes[appNode.id].nodeId].state }}">
-                                                <i class="icon topology-glyph {{ indexNodes[appNode.id].type.icon }}"></i>
-                                                <div class="badge" data-ng-class="getBadgeStatus(deployments[indexNodes[appNode.id].nodeId].status)">
-                                                    {{ deployments[indexNodes[appNode.id].nodeId].completed }}/{{ deployments[indexNodes[appNode.id].nodeId].total }}
-                                                </div>
-                                                <div class="percents">{{ piePercents(deployments[indexNodes[appNode.id].nodeId].process) }}</div>
-                                                <div class="shadow"></div>
-                                            </div>
-                                        </div>
-                                        <p>{{ indexNodes[appNode.id].name }}</p>
-                                    </div>
-                                    <!-- Module::end -->
-                                </div>
-                            </div>
-                            <!-- Middleware::end -->
-                        </div>
-                    </div>
+                    <div bp-topology-nodes map="nodesTree" selected="viewNode(node_id)"></div>
                     <div class="coordinates" blueprint:arrows="coordinates" arrow="true" color="#7A7A7A"></div>
                 </div>
                 <!-- Topology Tab - END -->
@@ -236,22 +166,10 @@
                     <div bp:networks class="relations" ng-model="networkcoords"></div>
                     <div data-ng-repeat="network in networks.external" class="network">
                         <div class="line">
-                            <div class="name-space"></div>
-                            <div data-ng-repeat="subnet in network.subnets" class="subnet" bp:network:coordinate ng-model="subnet">
-                                <p>{{ subnet.name }}</p>
-                                <p class="cidr">External Network</p>
-                            </div>
-                        </div>
-                        <div class="devices">
-                            <div data-ng-repeat="device in network.devices" class="device">
-                                <div class="inner">
-                                    <div class="buttons no-embed">
-                                        <ul>
-                                            <li data-ng-click="viewNode(device)" class="topology-glyph node-details"></li>
-                                        </ul>
-                                    </div>
-                                    <i class="topology-glyph {{ device.icon }}" bp:network:coordinate ng-model="device"></i>
-                                </div>
+                            <div class="name">{{ network.name }}</div>
+                            <div data-ng-repeat="networks in networks.external" class="subnet" bp:network:coordinate ng-model="network">
+                                <p>{{ network.name }}</p>
+                                <p class="cidr">Network</p>
                             </div>
                         </div>
                     </div>
@@ -260,6 +178,9 @@
                             <div class="name">{{ network.name }}</div>
                             <div data-ng-repeat="subnet in network.subnets" class="subnet" bp:network:coordinate ng-model="subnet">
                                 <p>{{ subnet.name }}</p>
+                                <!--<div class="badge network-badge" data-ng-class="getBadgeStatus(subnet.state.status)">-->
+                                    <!--{{ subnet.state.completed }}/{{ subnet.state.total }}-->
+                                <!--</div>-->
                                 <p class="cidr">{{ subnet.cidr }}</p>
                             </div>
                         </div>
@@ -282,6 +203,9 @@
                                         </div>
                                         <i class="topology-glyph {{ port.icon }}" bp:network:coordinate ng-model="port"></i>
                                     </div>
+                                    <!--<div class="badge">-->
+                                        <!--{{ device.state.completed }}/{{ device.state.total }}-->
+                                    <!--</div>-->
                                 </div>
                             </div>
                         </div>
@@ -408,7 +332,7 @@
         </div>
     </div>
 
-    <div class="deployment-progress-panel" ng-include="'views/deploymentProgressPanel.html'" ng-show="deploymentInProgress"></div>
+    <div class="deployment-progress-panel" ng-include="'views/deploymentProgressPanel.html'" ng-show="showProgressPanel"></div>
 
     <div ng-show="isConfirmationDialogVisible">
         <div class="dialogBoxBg"></div>

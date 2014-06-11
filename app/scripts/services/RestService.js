@@ -239,6 +239,10 @@ angular.module('cosmoUi')
             return _load('deployments/workflows/get', callParams);
         }
 
+        function _getProviderContext() {
+            return _load('provider/context');
+        }
+
         function _setSettings(data) {
             var callParams = {
                 url: '/backend/settings',
@@ -304,6 +308,7 @@ angular.module('cosmoUi')
         this.loadEvents = _loadEvents;
         this.loadDeployments = _loadDeployments;
         this.getWorkflows = _getWorkflows;
+        this.getProviderContext = _getProviderContext;
         this.getNode = _getNode;
         this.getNodeInstances = _getNodeInstances;
         this.getSettings = _getSettings;

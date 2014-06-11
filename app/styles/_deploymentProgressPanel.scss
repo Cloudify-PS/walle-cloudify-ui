@@ -27,20 +27,21 @@
     height: 35px;
     border-top: 1px solid $clr-base-28;
     padding-left: 10px;
+    padding-top: 10px;
     position: relative;
 
-    .panel-progress-bar {
-      width: 60px;
-      height: 25px;
-      border-radius: 5px;
-      background-color: $clr-base-29;
-      border: 2px solid $clr-base-04;
-      display: inline-block;
-      top: 5px;
-      position: relative;
-      padding-top: 5px;
-      padding-left: 10px;
-    }
+//    .panel-progress-bar {
+//      width: 60px;
+//      height: 25px;
+//      border-radius: 5px;
+//      background-color: $clr-base-29;
+//      border: 2px solid $clr-base-04;
+//      display: inline-block;
+//      top: 5px;
+//      position: relative;
+//      padding-top: 5px;
+//      padding-left: 10px;
+//    }
 
     .expand-button {
       background: url("#{$img-panel-expand}") no-repeat center center;

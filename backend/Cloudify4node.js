@@ -178,35 +178,54 @@ Cloudify4node.archiveBlueprint = function(blueprint_id, callback) {
         path: '/blueprints/' + blueprint_id + '/archive',
         method: 'GET'
     };
-    var filepath = path.join(conf.browseBlueprint.path, blueprint_id + '.tar.gz');
-    var file = fs.createWriteStream(filepath);
-    var req = ajax.get(requestData, function(response) {
-        response
-            .on('data', function (data) {
-                file.write(data);
-            })
-            .on('end', function () {
-                file.on('close', function(){
-                    var compress = new targz().extract(filepath, path.join(conf.browseBlueprint.path, blueprint_id), function(err){
-                        if(err) {
-                            console.log('problem with extract: ' + err);
-                        }
-                        else {
-                            console.log('The extraction has ended!');
-                            callback(null, null);
-                        }
-                    });
+
+    fs.exists(conf.browseBlueprint.path, function (exists) {
+        if (!exists) {
+            var pathParts = conf.browseBlueprint.path.split('/');
+            var pathToCreate = '';
+            console.log(pathParts);
+            for (var i = 0; i < pathParts.length; i++) {
+                pathToCreate += pathParts[i] + '/';
+                fs.mkdir(pathToCreate, function(e) {
+                    console.log('folder' + pathParts[i] + ' already exist :: ' + e);
                 });
-                file.end();
-            });
-    });
-    req.on('error', function(e) {
-        console.log('problem with request: ' + e.message);
-        callback(e.message, null);
+                console.log(pathToCreate);
+            }
+        }
+        var filepath = path.join(conf.browseBlueprint.path, blueprint_id + '.tar.gz');
+        var file = fs.createWriteStream(filepath);
+
+        var req = ajax.get(requestData, function(response) {
+            response
+                .on('data', function (data) {
+                    file.write(data);
+                })
+                .on('end', function () {
+                    file.on('close', function(){
+                        var compress = new targz().extract(filepath, path.join(conf.browseBlueprint.path, blueprint_id), function(err){
+                            if(err) {
+                                console.log('problem with extract: ' + err);
+                            }
+                            else {
+                                console.log('The extraction has ended!');
+                                callback(null, null);
+                            }
+                        });
+                    });
+                    file.end();
+                });
+        });
+
+        req.on('error', function(e) {
+            console.log('problem with request: ' + e.message);
+            callback(e.message, null);
+        });
     });
 }
 
 Cloudify4node.browseBlueprint = function(blueprint_id, callback) {
+    console.log('browseBlueprint');
+
     browseBlueprint.isBlueprintExist(blueprint_id, function(err, isExist){
         if(!isExist) {
             Cloudify4node.archiveBlueprint(blueprint_id, function(err){
@@ -223,6 +242,7 @@ Cloudify4node.browseBlueprint = function(blueprint_id, callback) {
 }
 
 Cloudify4node.browseBlueprintFile = function(blueprint_id, relativePath, callback) {
+    console.log('browseBlueprintFile');
     browseBlueprint.fileGetContent(blueprint_id, relativePath, callback);
 }
 
@@ -301,7 +321,7 @@ Cloudify4node.deleteDeploymentById = function(deployment_id, ignore_live_nodes, 
 
 Cloudify4node.getDeploymentNodes = function(deployment_id, state, callback) {
     var requestData = createRequestData({
-        path: '/deployments/' + deployment_id + '/nodes?state=' + state,
+        path: '/node-instances?deployment_id=' + deployment_id,
         method: 'GET'
     });
 
@@ -329,6 +349,15 @@ Cloudify4node.executeDeployment = function(requestBody, callback) {
             'Content-Type': 'application/json',
             'Content-Length': JSON.stringify(data).length
         }
+    });
+
+    createRequest(requestData, callback);
+}
+
+Cloudify4node.getProviderContext = function(callback) {
+    var requestData = createRequestData({
+        path: '/provider/context',
+        method: 'GET'
     });
 
     createRequest(requestData, callback);
