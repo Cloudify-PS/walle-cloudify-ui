@@ -51,6 +51,7 @@ angular.module('cosmoUi')
         var blueprintId = $routeParams.blueprintId;
         var relations = [];
         var colors = ['#d54931', '#f89406', '#149bdf', '#555869', '#8eaf26', '#330033', '#4b6c8b', '#550000', '#dc322f', '#FF6600', '#cce80b', '#003300', '#805e00'];
+        var nodesList = [];
 
         BreadcrumbsService.push('deployments',
             {
@@ -389,11 +390,11 @@ angular.module('cosmoUi')
                     // Blueprint
                     RestService.getBlueprintById({id: deploymentData.blueprintId})
                         .then(function(data){
-//                            nodesList = data.plan.nodes;
-                            $scope.nodesTree = _createNodesTree($scope.allNodesArr);
+                            nodesList = data.plan.nodes;
+                            $scope.nodesTree = _createNodesTree(nodesList);
 
                             blueprintCoordinateService.resetCoordinates();
-                            blueprintCoordinateService.setMap(_getNodesConnections($scope.allNodesArr));
+                            blueprintCoordinateService.setMap(_getNodesConnections(nodesList));
                             $scope.coordinates = blueprintCoordinateService.getCoordinates();
                             $scope.deployments = deploymentModel;
 
@@ -492,7 +493,7 @@ angular.module('cosmoUi')
                 }
             }
 
-            return roots;
+            return roots.reverse();
         }
 
         function _isAppNode(node) {
@@ -615,11 +616,11 @@ angular.module('cosmoUi')
                 }
             }
 
-            $scope.allNodesArr.forEach(function(node) {
+            nodesList.forEach(function(node) {
                 node.state = deploymentModel[node.id];
             });
 
-            $scope.nodesTree = _createNodesTree($scope.allNodesArr);
+            $scope.nodesTree = _createNodesTree(nodesList);
 
             //$log.info(['deploymentModel', deploymentModel]);
         }
