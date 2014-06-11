@@ -297,11 +297,10 @@ angular.module('cosmoUi')
             $scope.viewNode(data);
         });
 
-            RestService.browseBlueprint({id: $routeParams.id})
-                .then(function(browseData) {
-                    $scope.browseData = [browseData];
-                });
-        });
+        RestService.browseBlueprint({id: $routeParams.id})
+            .then(function(browseData) {
+                $scope.browseData = [browseData];
+            });
 
         $scope.setBrowseType = function(data) {
             if(data.hasOwnProperty('children')) {
