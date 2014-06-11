@@ -21,15 +21,18 @@ angular.module('cosmoUi')
         $scope.hostsList = [];
         $scope.blueprintsList = [];
         $scope.deploymentsList = [];
+        $scope.filterLoading = false;
         $scope.eventsFilter = {
             'blueprints': null,
             'deployments': null
         };
 
         function _execute() {
+            $scope.filterLoading = true;
             RestService.getNodeInstances(_filter)
                 .then(function (data) {
                     $scope.hostsList = data;
+                    $scope.filterLoading = false;
                 });
         }
 

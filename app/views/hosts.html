@@ -32,6 +32,10 @@
 
             <button class="gs-btn" data-ng-click="execute()">Show</button>
 
+            <div class="search">
+                <input type="text" placeholder="Search" data-ng-model="searchFilter" />
+            </div>
+
             <div class="loading" data-ng-show="filterLoading"></div>
         </div>
 
@@ -49,7 +53,7 @@
                 <th class="runtimeProperties">Runtime Properties</th>
             </tr>
             </thead>
-            <tbody class="animate-repeat" ng-repeat="row in hostsList" ng-init="isOpen=false">
+            <tbody class="animate-repeat" ng-repeat="row in hostsList | filter: searchFilter" ng-init="isOpen=false">
                 <tr>
                     <td class="id">{{row.id == null && '-' || row.id }}</td>
                     <td class="state">{{row.state == null && '-' || row.state }}</td>
