@@ -46,7 +46,7 @@ angular.module('cosmoUi')
                             if (blueprints[j].deployments === undefined) {
                                 blueprints[j].deployments = [];
                             }
-                            if (deployments[i] !== undefined && deployments[i].blueprintId === blueprints[j].id) {
+                            if (deployments[i] !== undefined && deployments[i].blueprint_id === blueprints[j].id) {
                                 blueprints[j].deployments.push(deployments[i]);
                             }
                         }
@@ -105,7 +105,7 @@ angular.module('cosmoUi')
             var callParams = {
                 url: '/backend/blueprints/source',
                 method: 'POST',
-                data: {'blueprintId': params}
+                data: {'blueprint_id': params}
             };
 
             return _load('blueprints/source', callParams);
@@ -135,7 +135,7 @@ angular.module('cosmoUi')
             var callParams = {
                 url: '/backend/deployments/create',
                 method: 'POST',
-                data: {'blueprintId': params.blueprintId, 'deploymentId': params.deploymentId}
+                data: {'blueprint_id': params.blueprint_id, 'deployment_id': params.deployment_id}
             };
 
             return _load('deployments/create', callParams);
@@ -145,7 +145,7 @@ angular.module('cosmoUi')
             var callParams = {
                 url: '/backend/deployments/execute',
                 method: 'POST',
-                data: {'deploymentId': params.deploymentId, 'workflowId': params.workflowId}
+                data: {'deployment_id': params.deployment_id, 'workflow_id': params.workflow_id}
             };
 
             return _load('deployments/execute', callParams);
@@ -165,7 +165,7 @@ angular.module('cosmoUi')
             var callParams = {
                 url: '/backend/deployments/executions/get',
                 method: 'POST',
-                data: {'deploymentId': params}
+                data: {'deployment_id': params}
             };
             return _load('deployments/executions/get', callParams);
         }
@@ -223,7 +223,7 @@ angular.module('cosmoUi')
             var callParams = {
                 url: '/backend/deployments/workflows/get',
                 method: 'POST',
-                data: {'deploymentId': params.deploymentId}
+                data: {'deployment_id': params.deployment_id}
             };
 
             return _load('deployments/workflows/get', callParams);

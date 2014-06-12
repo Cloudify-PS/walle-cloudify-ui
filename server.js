@@ -74,19 +74,20 @@ app.get('/backend/blueprints', function(request, response, next) {
 });
 
 app.post('/backend/blueprints/add', function(request, response){
-    cloudify4node.addBlueprint(request.files.application_archive, request.body.blueprintId, function(err, data) {
+    cloudify4node.addBlueprint(request.files.application_archive, request.body.blueprint_id, function(err, data) {
         response.send(err !== null ? err : data, err !== null ? data : 200);
     });
 });
 
 app.get('/backend/blueprints/get', function(request, response) {
+    console.log('>>>>>>>> getBlueprintById: ' + request.query.id);
     cloudify4node.getBlueprintById(request.query.id, function(err, data) {
         response.send(err !== null ? err : data);
     });
 });
 
 app.post('/backend/blueprints/source', function(request, response) {
-    cloudify4node.getBlueprintSource(request.body.blueprintId, function(err, data) {
+    cloudify4node.getBlueprintSource(request.body.blueprint_id, function(err, data) {
         response.send(err !== null ? err : data);
     });
 });
@@ -122,6 +123,7 @@ app.post('/backend/executions/update', function(request, response) {
 });
 
 app.get('/backend/deployments', function(request, response) {
+    console.log('>>>>>> deployments');
     cloudify4node.getDeployments(function(err, data) {
         response.send(err !== null ? err : data);
     });
@@ -134,25 +136,25 @@ app.post('/backend/deployments/create', function(request, response) {
 });
 
 app.post('/backend/deployments/get', function(request, response) {
-    cloudify4node.getDeploymentById(request.body.deploymentId, function(err, data) {
+    cloudify4node.getDeploymentById(request.body.deployment_id, function(err, data) {
         response.send(err !== null ? err : data);
     });
 });
 
 app.post('/backend/deployments/delete', function(request, response) {
-    cloudify4node.deleteDeploymentById(request.body.deploymentId, request.body.ignoreLiveNodes, function(err, data) {
+    cloudify4node.deleteDeploymentById(request.body.deployment_id, request.body.ignoreLiveNodes, function(err, data) {
         response.send(err !== null ? err : data);
     });
 });
 
 app.post('/backend/deployments/nodes', function(request, response) {
-    cloudify4node.getDeploymentNodes(request.body.deploymentId, request.body.state, function(err, data) {
+    cloudify4node.getDeploymentNodes(request.body.deployment_id, request.body.state, function(err, data) {
         response.send(err !== null ? err : data);
     });
 });
 
 app.post('/backend/deployments/executions/get', function(request, response) {
-    cloudify4node.getDeploymentExecutions(request.body.deploymentId, function(err, data) {
+    cloudify4node.getDeploymentExecutions(request.body.deployment_id, function(err, data) {
 
         response.send(err !== null ? err : data);
     });
@@ -177,7 +179,7 @@ app.post('/backend/events/_search', function(request, response) {
 });
 
 app.post('/backend/deployments/workflows/get', function(request, response) {
-    cloudify4node.getWorkflows(request.body.deploymentId, function(err, data) {
+    cloudify4node.getWorkflows(request.body.deployment_id, function(err, data) {
         response.send(err !== null ? err : data);
     });
 });

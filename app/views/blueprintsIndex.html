@@ -68,7 +68,7 @@
             <div class="dialogDescription">{{ 'blueprints.deployDialog.description' | i18n }}</div>
             <div class="dialogClose dialogButton" ng-click="closeDialog()"></div>
             <div class="dialogDeploymentName">
-                <input type="text" ng-model="deploymentId" placeholder="{{ 'blueprints.deployDialog.deployName' | i18n }}">
+                <input type="text" ng-model="deployment_id" placeholder="{{ 'blueprints.deployDialog.deployName' | i18n }}">
             </div>
             <div id="deploy-error-message" ng-show="isDeployError()">{{deployErrorMessage}}</div>
             <div class="buttonsContainer deployButtons">

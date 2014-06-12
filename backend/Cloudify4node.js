@@ -143,6 +143,7 @@ Cloudify4node.addBlueprint = function(application_archive, blueprint_id, callbac
 }
 
 Cloudify4node.getBlueprintById = function(blueprint_id, callback) {
+    console.log('>>> blueprint_id: ' + blueprint_id)
     var requestData = createRequestData({
         path: '/blueprints/' + blueprint_id,
         method: 'GET'
@@ -273,6 +274,7 @@ Cloudify4node.updateExecutionState = function(execution_id, new_state, callback)
 }
 
 Cloudify4node.getDeployments = function(callback) {
+    console.log('getDeployments');
     var requestData = createRequestData({
         path: '/deployments',
         method: 'GET'
@@ -283,10 +285,10 @@ Cloudify4node.getDeployments = function(callback) {
 
 Cloudify4node.addDeployment = function(requestBody, callback) {
     var data = {
-        'blueprintId': requestBody.blueprintId
+        'blueprint_id': requestBody.blueprint_id
     };
     var requestData = createRequestData({
-        path: '/deployments/' + requestBody.deploymentId,
+        path: '/deployments/' + requestBody.deployment_id,
         data: data,
         method: 'PUT',
         headers: {
@@ -339,10 +341,10 @@ Cloudify4node.getDeploymentExecutions = function(deployment_id, callback) {
 
 Cloudify4node.executeDeployment = function(requestBody, callback) {
     var data = {
-        'workflowId': requestBody.workflowId
+        'workflow_id': requestBody.workflow_id
     };
     var requestData = createRequestData({
-        path: '/deployments/' + requestBody.deploymentId + '/executions',
+        path: '/deployments/' + requestBody.deployment_id + '/executions',
         data: data,
         method: 'POST',
         headers: {

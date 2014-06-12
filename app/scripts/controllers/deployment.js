@@ -48,7 +48,7 @@ angular.module('cosmoUi')
         $scope.showProgressPanel = false;
 
         var id = $routeParams.id;
-        var blueprintId = $routeParams.blueprintId;
+        var blueprint_id = $routeParams.blueprint_id;
         var relations = [];
         var colors = ['#d54931', '#f89406', '#149bdf', '#555869', '#8eaf26', '#330033', '#4b6c8b', '#550000', '#dc322f', '#FF6600', '#cce80b', '#003300', '#805e00'];
         var nodesList = [];
@@ -56,7 +56,7 @@ angular.module('cosmoUi')
         BreadcrumbsService.push('deployments',
             {
                 href: '#/deployments',
-                label: blueprintId,
+                label: blueprint_id,
                 id: 'deployment_id'
             });
 
@@ -90,7 +90,7 @@ angular.module('cosmoUi')
 
         $scope.nodeSelected = function(node) {
             var params = {
-                nodeId: node.id,
+                node_dd: node.id,
                 runtime: true,
                 state: true
             };
@@ -127,14 +127,14 @@ angular.module('cosmoUi')
         $scope.executeDeployment = function() {
             if ($scope.isExecuteEnabled()) {
                 RestService.executeDeployment({
-                    deploymentId: id,
-                    workflowId: $scope.selectedWorkflow.data.value
+                    deployment_id: id,
+                    workflow_id: $scope.selectedWorkflow.data.value
                 }).then(function(execution) {
                     $cookieStore.put('executionId', execution.id);
                 });
 
-                $cookieStore.remove('deploymentId');
-                $cookieStore.put('deploymentId', id);
+                $cookieStore.remove('deployment_id');
+                $cookieStore.put('deployment_id', id);
                 $scope.refreshPage();
             }
         };
@@ -145,7 +145,7 @@ angular.module('cosmoUi')
 
         $scope.cancelExecution = function() {
             var callParams = {
-                'executionId': $scope.executedData.id,
+                'execution_id': $scope.executedData.id,
                 'state': 'cancel'
             };
             RestService.updateExecutionState(callParams).then(function() {
@@ -378,7 +378,7 @@ angular.module('cosmoUi')
         };
 
         function _loadDeployment() {
-            RestService.getDeploymentById({deploymentId : id})
+            RestService.getDeploymentById({deployment_id : id})
                 .then(function(deploymentData) {
                     // Set Deployment Model
                     _setDeploymentModel(deploymentData);
@@ -388,7 +388,7 @@ angular.module('cosmoUi')
                     $scope.allNodesArr = deploymentData.plan.nodes;
 
                     // Blueprint
-                    RestService.getBlueprintById({id: deploymentData.blueprintId})
+                    RestService.getBlueprintById({id: deploymentData.blueprint_id})
                         .then(function(data){
                             nodesList = data.plan.nodes;
                             $scope.nodesTree = _createNodesTree(nodesList);
@@ -424,7 +424,7 @@ angular.module('cosmoUi')
                                 currentExeution = _getCurrentExecution(dataExec);
                                 if (!currentExeution && $scope.deploymentInProgress) {
                                     if(!isGotExecuteNodes) {
-                                        RestService.autoPull('getDeploymentNodes', {deploymentId: id, state: true}, RestService.getDeploymentNodes)
+                                        RestService.autoPull('getDeploymentNodes', {deployment_id: id, state: true}, RestService.getDeploymentNodes)
                                             .then(null, null, function (dataNodes) {
                                                 $scope.nodes = dataNodes.nodes;
                                             });
@@ -434,7 +434,7 @@ angular.module('cosmoUi')
                                 }
                                 else if ($scope.deploymentInProgress === null || currentExeution !== false) {
                                     $scope.deploymentInProgress = true;
-                                    RestService.autoPull('getDeploymentNodes', {deploymentId: id, state: true}, RestService.getDeploymentNodes)
+                                    RestService.autoPull('getDeploymentNodes', {deployment_id: id, state: true}, RestService.getDeploymentNodes)
                                         .then(null, null, function (dataNodes) {
                                             $scope.nodes = dataNodes.nodes;
                                             isGotExecuteNodes = true;
@@ -734,7 +734,7 @@ angular.module('cosmoUi')
             'nodes': null
         };
 
-        RestService.getWorkflows({deploymentId: id})
+        RestService.getWorkflows({deployment_id: id})
             .then(function (data) {
                 var workflows = [];
                 if (data.hasOwnProperty('workflows')) {
