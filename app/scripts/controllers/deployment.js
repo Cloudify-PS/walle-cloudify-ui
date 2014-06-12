@@ -392,6 +392,7 @@ angular.module('cosmoUi')
                         .then(function(data){
                             nodesList = data.plan.nodes;
                             $scope.nodesTree = _createNodesTree(nodesList);
+                            $scope.dataTable = data.plan.nodes;
 
                             blueprintCoordinateService.resetCoordinates();
                             blueprintCoordinateService.setMap(_getNodesConnections(nodesList));
