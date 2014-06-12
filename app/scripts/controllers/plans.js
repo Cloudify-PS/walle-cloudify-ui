@@ -324,6 +324,12 @@ angular.module('cosmoUi')
             switch(ext[ext.length-1]) {
             case 'sh':
                 return 'bash';
+            case 'bat':
+                return 'bat';
+            case 'cmd':
+                return 'cmd';
+            case 'ps1':
+                return 'powershell';
             case 'yaml':
                 return 'yml';
             case 'py':
