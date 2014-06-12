@@ -41,8 +41,30 @@ angular.module('cosmoUi')
                 RestService.getProviderContext()
                     .then(function(providerData) {
                         var _extNetworks = [];
-                        _extNetworks.push(providerData.context.resources.subnet);
-                        _extNetworks[0].color = colors[Math.floor((Math.random() * colors.length) + 1)];
+                        var externalNetwork = providerData.context.resources.ext_network;
+                        externalNetwork.color = colors[Math.floor((Math.random() * colors.length) + 1)];
+                        externalNetwork.devices = [
+                            {
+                                'id': providerData.context.resources.router.id,
+                                'name': providerData.context.resources.router.name,
+                                'type': providerData.context.resources.router.type,
+                                'icon': "host"
+                            }
+                        ];
+                        relations.push({
+                            source: externalNetwork.id,
+                            target: externalNetwork.devices[0].id
+                        });
+                        _extNetworks.push(externalNetwork);
+
+                        var subNetwork = providerData.context.resources.subnet;
+                        subNetwork.color = colors[Math.floor((Math.random() * colors.length) + 1)];
+                        relations.push({
+                            source: externalNetwork.devices[0].id,
+                            target: subNetwork.id
+                        });
+                        _extNetworks.push(subNetwork);
+
                         $scope.networks = _createNetworkTree(data.plan.nodes, _extNetworks);
 
                         bpNetworkService.setMap($scope.networks.relations);
@@ -232,10 +254,13 @@ angular.module('cosmoUi')
                     });
 
                     externalNetworks.forEach(function (extNetwork) {
-                        relations.push({
-                            source: extNetwork.id,
-                            target: node.id
-                        });
+                        if (extNetwork.type === 'subnet') {
+                            relations.push({
+                                source: extNetwork.id,
+                                target: node.id
+                            });
+                        }
+
                     });
                     devices.push(device);
                 }
