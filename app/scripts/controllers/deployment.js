@@ -388,7 +388,7 @@ angular.module('cosmoUi')
                     $scope.allNodesArr = deploymentData.plan.nodes;
 
                     // Blueprint
-                    RestService.getBlueprintById({id: deploymentData.blueprint_id})
+                    RestService.getBlueprintById({id: deploymentData.blueprintId})
                         .then(function(data){
                             nodesList = data.plan.nodes;
                             $scope.nodesTree = _createNodesTree(nodesList);
@@ -691,8 +691,14 @@ angular.module('cosmoUi')
          * Side panel
          */
 
-        $scope.$root.$on('topologyNodeSelected', function(e, data) {
-            $scope.viewNode(data);
+        $scope.$root.$on('topologyNodeSelected', function(e, eventData) {
+            if ($scope.deploymentInProgress) {
+                RestService.getDeploymentNodes({deployment_id: eventData.id})
+                    .then(function(data) {
+                        $scope.allNodesArr = data;
+                    });
+            }
+            $scope.viewNode(eventData);
         });
 
         $scope.viewNode = function (node) {
