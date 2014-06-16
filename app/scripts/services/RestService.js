@@ -46,7 +46,7 @@ angular.module('cosmoUi')
                             if (blueprints[j].deployments === undefined) {
                                 blueprints[j].deployments = [];
                             }
-                            if (deployments[i] !== undefined && deployments[i].blueprintId === blueprints[j].id) {
+                            if (deployments[i] !== undefined && deployments[i].blueprint_id === blueprints[j].id) {
                                 blueprints[j].deployments.push(deployments[i]);
                             }
                         }

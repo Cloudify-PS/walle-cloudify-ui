@@ -99,7 +99,7 @@ angular.module('cosmoUi')
 
         $scope.redirectTo = function (deployment) {
             $log.info(['redirecting to', deployment]);
-            $location.path('/deployment').search({id: deployment.id, blueprint_id: deployment.blueprintId});
+            $location.path('/deployment').search({id: deployment.id, blueprint_id: deployment.blueprint_id});
         };
 
         $scope.cosmoConnectionError = function() {
