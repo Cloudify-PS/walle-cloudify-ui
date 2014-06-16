@@ -1,5 +1,5 @@
 <div data-ng-repeat="node in map" data-type="{{node.dataType}}" ng-class="{box: !node.isApp, app: node.isApp}" blueprint:coordinate="{{node.id}}">
-    <div class="hoverup">
+    <div class="hoverup" ng-class="{appHoverup: node.isApp}">
         <div class="buttons no-embed">
             <ul>
                 <li data-ng-click="onNodeSelected(node)" class="topology-glyph node-details"></li>

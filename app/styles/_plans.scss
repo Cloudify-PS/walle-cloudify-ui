@@ -257,6 +257,10 @@
                 }
                 .hoverup {
                     z-index: 101;
+
+                    &.appHoverup {
+                      left: 37px;
+                    }
                 }
             }
             > i.icon {
@@ -416,9 +420,8 @@
         }
         .app {
             position: relative;
-            min-width: 130px;
-            min-height: 45px;
-            display: inline-block;
+            width: 47px;
+            height: 47px;
             text-align: center;
             border-radius: 3px;
             margin: 10px;

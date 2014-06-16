@@ -50,7 +50,7 @@ angular.module('cosmoUi')
         var id = $routeParams.id;
         var blueprint_id = $routeParams.blueprint_id;
         var relations = [];
-        var colors = ['#d54931', '#f89406', '#149bdf', '#555869', '#8eaf26', '#330033', '#4b6c8b', '#550000', '#dc322f', '#FF6600', '#cce80b', '#003300', '#805e00'];
+        var colors = ['#1F77B4', '#FF7F0E', '#2CA02C', '#D62728', '#9467BD', '#8C564B', '#4b6c8b', '#550000', '#dc322f', '#FF6600', '#cce80b', '#003300', '#805e00'];
         var nodesList = [];
 
         BreadcrumbsService.push('deployments',
