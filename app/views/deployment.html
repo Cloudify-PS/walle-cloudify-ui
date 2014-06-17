@@ -352,11 +352,8 @@
                                                 </select>
                                             </label>
                                             <label>
-                                                Metric <br>
-                                                <select data-ng-model="newgraph.metric">
-                                                    <option value="CPU">CPU</option>
-                                                    <option value="Memory">Memory</option>
-                                                </select>
+                                                Query <br><small>(Example: select value from cpu limit 100)</small><br>
+                                                <textarea cols="60" rows="4" data-ng-model="newgraph.query"></textarea>
                                             </label>
                                             <br>
                                             <button class="gs-btn" data-ng-click="addMonitorChart()">Add Monitor Chart</button>

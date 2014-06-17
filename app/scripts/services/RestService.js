@@ -268,6 +268,16 @@ angular.module('cosmoUi')
             return _load('configuration', callParams);
         }
 
+        function _influxQuery(data) {
+            var callParams = {
+                url: '/backend/influx',
+                method: 'POST',
+                data: data
+            };
+
+            return _load('influx', callParams);
+        }
+
         function _getMonitorGrpahs() {
             var callParams = {
                 url: '/backend/monitor/graphs',
@@ -316,6 +326,7 @@ angular.module('cosmoUi')
         this.getConfiguration = _getConfiguration;
         this.autoPull = _autoPull;
         this.autoPullStop = _autoPullStop;
+        this.influxQuery = _influxQuery;
         this.getMonitorGrpahs = _getMonitorGrpahs;
         this.getMonitorCpu = _getMonitorCpu;
         this.getMonitorMemory = _getMonitorMemory;

@@ -30,27 +30,32 @@ angular.module('cosmoUi')
 
         function _executeQuery(data, graph) {
             var currnetGraph = data[data.indexOf(graph)];
-            if(currnetGraph && graph.hasOwnProperty('query')) {
-                switch(graph.query) {
-                case 'CPU':
-                    RestService.getMonitorCpu()
-                        .then(function(data){
-                            currnetGraph.data = data;
-                        });
-                    break;
-                case 'Memory':
-                    RestService.getMonitorMemory()
-                        .then(function(data){
-                            currnetGraph.data = data;
-                        });
-                    break;
-                }
+            if(currnetGraph && graph.hasOwnProperty('query') && graph.query !== '') {
+                RestService.influxQuery({query: graph.query})
+                    .then(function(data){
+                        _clearSequenceNumber(data[0].points);
+                        currnetGraph.data = [{
+                            key: data[0].name,
+                            values: data[0].points
+                        }];
+                    });
+            }
+            else {
+                currnetGraph.data = [{
+                    values: []
+                }];
+            }
+        }
+
+        function _clearSequenceNumber(data) {
+            for(var i in data) {
+                data[i].splice(1, 1);
             }
         }
 
         function _getDirective(data, graph) {
             var currnetGraph = data[data.indexOf(graph)];
-            currnetGraph.directive = ('<div ' + graph.type + ' ' + _setProperties(graph.properties).join(' ') + '></div>');
+            currnetGraph.directive = ('<a class="close fa fa-times" ng-click="deleteGraph(graph)"></a><div ' + graph.type + ' ' + _setProperties(graph.properties).join(' ') + '></div>');
         }
 
         function _setProperties(properties) {

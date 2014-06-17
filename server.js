@@ -17,6 +17,7 @@ var conf = require("./backend/appConf");
 var cloudify4node;
 var log4js = require('log4js');
 var logger = log4js.getLogger('server');
+var influx = require('influx');
 
 
 if (conf.useMock) {
@@ -199,6 +200,21 @@ app.post('/backend/node/get', function(request, response) {
     cloudify4node.getNode(request.body.nodeId, queryParams, function(err, data) {
         response.send(err !== null ? err : data);
     });
+});
+
+app.post('/backend/influx', function(request, response) {
+
+    var influxClient = influx({
+        host: '54.74.70.218',
+        username : 'root',
+        password : 'root',
+        database : 'influxdb'
+    });
+
+    influxClient.query(request.body.query, function(err, data){
+        response.send(err !== null ? err : data);
+    });
+
 });
 
 app.get('/backend/monitor/graphs', function(request, response) {

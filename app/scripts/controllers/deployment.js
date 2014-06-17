@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('cosmoUi')
-    .controller('DeploymentCtrl', function ($scope, $rootScope, $cookieStore, $routeParams, RestService, EventsService, BreadcrumbsService, YamlService, blueprintCoordinateService, bpNetworkService, $route, $anchorScroll, $timeout, $location, $log, EventsMap, monitoringGraphs) {
+    .controller('DeploymentCtrl', function ($scope, $rootScope, $cookieStore, $routeParams, RestService, EventsService, BreadcrumbsService, YamlService, blueprintCoordinateService, bpNetworkService, $route, $anchorScroll, $timeout, $location, $log, EventsMap, monitoringGraphs, $localStorage) {
 
         var statesIndex = ['uninitialized', 'initializing', 'creating', 'created', 'configuring', 'configured', 'starting', 'started'],
             currentExeution = null,
@@ -25,7 +25,7 @@ angular.module('cosmoUi')
         $scope.deploymentInProgress = false;
         $scope.nodes = [];
         $scope.events = [];
-        $scope.section = 'topology';
+        $scope.section = 'monitoring';
         $scope.propSection = 'general';
         $scope.topologySettings = [
             {name: 'connections',   state: true},
@@ -380,6 +380,12 @@ angular.module('cosmoUi')
         function _loadDeployment() {
             RestService.getDeploymentById({deploymentId : id})
                 .then(function(deploymentData) {
+
+                    if(deploymentData.hasOwnProperty('error_code')) {
+                        $log.error(deploymentData.message);
+                        return;
+                    }
+
                     // Set Deployment Model
                     _setDeploymentModel(deploymentData);
 
@@ -948,21 +954,34 @@ angular.module('cosmoUi')
             'metric': 'CPU'
         };
 
-
-        RestService.getMonitorGrpahs()
-            .then(function(data){
-                for(var i in data) {
-                    var graph = data[i];
-                    monitoringGraphs.addGraph(graphData, graph);
-                    monitoringGraphs.executeQuery(graphData, graph);
-                    monitoringGraphs.getDirective(graphData, graph);
-                }
-                _randerPagination();
-            });
-
         function _randerPagination() {
             monitoringGraphs.getPaginationByData(graphPages, graphData, 4);
         }
+
+        function _displayMonitoring(data) {
+            for(var i in data) {
+                var graph = data[i];
+                monitoringGraphs.addGraph(graphData, graph);
+                monitoringGraphs.executeQuery(graphData, graph);
+                monitoringGraphs.getDirective(graphData, graph);
+            }
+            _randerPagination();
+        }
+
+        if($localStorage.hasOwnProperty('monitoringData')) {
+            console.log(['$localStorage', $localStorage.monitoringData]);
+            _displayMonitoring($localStorage.monitoringData);
+        }
+        else {
+            RestService.getMonitorGrpahs()
+                .then(function (data) {
+                    _displayMonitoring(data);
+                });
+        }
+
+        $scope.$watch('graphs', function(monitoringData){
+            $localStorage.monitoringData = monitoringData;
+        }, true);
 
         $scope.moitorMixColors = ['#E01B5D', '#46b8da'];
 
@@ -970,6 +989,10 @@ angular.module('cosmoUi')
             return function (d) {
                 return d3.time.format('%x')(new Date(d));
             };
+        };
+
+        $scope.deleteGraph = function (graph) {
+            graphData.splice(graphData.indexOf(graph), 1);
         };
 
         $scope.$on('fireResizeGraph', function() {
@@ -982,7 +1005,7 @@ angular.module('cosmoUi')
             var newMonitorChart = {
                 'name': $scope.newgraph.name,
                 'type': 'nvd3-line-with-focus-chart',
-                'query': $scope.newgraph.metric,
+                'query': $scope.newgraph.query,
                 'properties': {
                     'id': 'graphCpu'+Math.round(Math.random()*1000),
                     'data': 'graph.data',
