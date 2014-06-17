@@ -33,11 +33,14 @@ angular.module('cosmoUi')
             if(currnetGraph && graph.hasOwnProperty('query') && graph.query !== '') {
                 RestService.influxQuery({query: graph.query})
                     .then(function(data){
-                        _clearSequenceNumber(data[0].points);
-                        currnetGraph.data = [{
-                            key: data[0].name,
-                            values: data[0].points
-                        }];
+                        currnetGraph.data = [];
+                        for(var i in data) {
+                            _clearSequenceNumber(data[i].points);
+                            currnetGraph.data.push({
+                                key: data[i].name,
+                                values: data[i].points
+                            });
+                        }
                     });
             }
             else {

@@ -969,7 +969,6 @@ angular.module('cosmoUi')
         }
 
         if($localStorage.hasOwnProperty('monitoringData')) {
-            console.log(['$localStorage', $localStorage.monitoringData]);
             _displayMonitoring($localStorage.monitoringData);
         }
         else {
