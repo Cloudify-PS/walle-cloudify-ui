@@ -151,6 +151,12 @@ app.post('/backend/deployments/nodes', function(request, response) {
     });
 });
 
+app.get('/backend/node-instances', function(request, response) {
+    cloudify4node.getNodeInstances(function(err, data) {
+        response.send(err !== null ? err : data);
+    });
+});
+
 app.post('/backend/deployments/executions/get', function(request, response) {
     cloudify4node.getDeploymentExecutions(request.body.deployment_id, function(err, data) {
 
