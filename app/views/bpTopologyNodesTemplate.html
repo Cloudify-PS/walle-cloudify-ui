@@ -17,7 +17,7 @@
     </div>
 
     <div class="head" ng-show="node.isApp == false">{{ node.name }}</div>
-    <div class="holder" ng-show="node.isApp == false">
+    <div class="holder" ng-show="node.isApp == false" data-ng-if="node.isApp == false">
         <div bp-topology-nodes map="node.children"></div>
     </div>
 

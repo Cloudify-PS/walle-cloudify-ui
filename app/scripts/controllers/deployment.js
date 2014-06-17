@@ -393,7 +393,7 @@ angular.module('cosmoUi')
                             RestService.getProviderContext()
                                 .then(function(providerData) {
                                     var _extNetworks = [];
-                                    if (providerData.context.resources.subnet !== undefined) {
+                                    if (providerData.context !== undefined && providerData.context.resources.subnet !== undefined) {
                                         _extNetworks.push(providerData.context.resources.subnet);
                                         _extNetworks[0].color = colors[Math.floor((Math.random() * colors.length) + 1)];
                                     }
