@@ -428,7 +428,7 @@ angular.module('cosmoUi')
                                     $scope.deploymentInProgress = true;
                                     RestService.autoPull('getDeploymentNodes', {deployment_id: id, state: true}, RestService.getDeploymentNodes)
                                         .then(null, null, function (dataNodes) {
-                                            $scope.nodes = dataNodes.nodes;
+                                            $scope.nodes = dataNodes;
                                             isGotExecuteNodes = true;
                                         });
                                 }
@@ -491,7 +491,7 @@ angular.module('cosmoUi')
                 'nodejs_app'
             ];
 
-            return networkNodes.indexOf(node.type) > 0;
+            return networkNodes.indexOf(node.type) > -1;
         }
 
         function _isNetworkNode(node) {
@@ -502,7 +502,7 @@ angular.module('cosmoUi')
                 'cloudify.openstack.subnet'
             ];
 
-            return networkNodes.indexOf(node.type) > 0;
+            return networkNodes.indexOf(node.type) > -1;
         }
 
         function _getNodeDataType(node) {
@@ -551,7 +551,7 @@ angular.module('cosmoUi')
             var IndexedNodes = {};
             for (var i in nodes) {
                 var node = nodes[i];
-                IndexedNodes[node.id] = {
+                IndexedNodes[node.node_id] = {
                     state: node.state
                 };
             }
@@ -648,7 +648,7 @@ angular.module('cosmoUi')
             }
             // Update nodes with new data
             _updateDeploymentModel(nodes);
-        }, true);
+        });
 
         $scope.$watch('deploymentInProgress', function(){
             _updateDeploymentModel($scope.nodes);
