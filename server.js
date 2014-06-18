@@ -80,7 +80,6 @@ app.post('/backend/blueprints/add', function(request, response){
 });
 
 app.get('/backend/blueprints/get', function(request, response) {
-    console.log('>>>>>>>> getBlueprintById: ' + request.query.id);
     cloudify4node.getBlueprintById(request.query.id, function(err, data) {
         response.send(err !== null ? err : data);
     });
@@ -123,7 +122,6 @@ app.post('/backend/executions/update', function(request, response) {
 });
 
 app.get('/backend/deployments', function(request, response) {
-    console.log('>>>>>> deployments');
     cloudify4node.getDeployments(function(err, data) {
         response.send(err !== null ? err : data);
     });
@@ -149,6 +147,12 @@ app.post('/backend/deployments/delete', function(request, response) {
 
 app.post('/backend/deployments/nodes', function(request, response) {
     cloudify4node.getDeploymentNodes(request.body.deployment_id, request.body.state, function(err, data) {
+        response.send(err !== null ? err : data);
+    });
+});
+
+app.get('/backend/node-instances', function(request, response) {
+    cloudify4node.getNodeInstances(function(err, data) {
         response.send(err !== null ? err : data);
     });
 });
