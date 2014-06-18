@@ -5,24 +5,28 @@
  */
 
 function isLocalhost(){
-    return process.env.GS_UI_NODE_ENV == "localhost";
+    return process.env.GS_UI_NODE_ENV === 'localhost';
+}
+
+if ( isLocalhost() ){
+    console.log('running in localhost');
 }
 
 var express = require('express');
 var _ = require('lodash');
 var app = express();
 var port = 9001;
-var gsSettings = require("./backend/gsSettings");
-var conf = require("./backend/appConf");
+var gsSettings = require('./backend/gsSettings');
+var conf = require('./backend/appConf');
 var cloudify4node;
 var log4js = require('log4js');
 var logger = log4js.getLogger('server');
 
 
 if (conf.useMock) {
-    cloudify4node = require("./backend/Cloudify4node-mock");
+    cloudify4node = require('./backend/Cloudify4node-mock');
 } else {
-    cloudify4node = require("./backend/Cloudify4node");
+    cloudify4node = require('./backend/Cloudify4node');
 }
 
 logger.debug(JSON.stringify(conf));
@@ -31,7 +35,7 @@ if (conf.cloudifyLicense !== 'tempLicense') {
     throw new Error('invalid license');
 }
 
-app.enable("jsonp callback");
+app.enable('jsonp callback');
 
 // app.use(express.favicon());
 app.use(express.cookieParser(/* 'some secret key to sign cookies' */ 'keyboardcat' ));
@@ -67,7 +71,7 @@ if (app.get('env') === 'development') {
 
 // cosmo REST APIs
 
-app.get('/backend/blueprints', function(request, response, next) {
+app.get('/backend/blueprints', function(request, response/*, next*/) {
     cloudify4node.getBlueprints(function(err, data) {
         response.send(err !== null ? err : data);
     });
@@ -223,6 +227,7 @@ app.get('/backend/monitor/memory', function(request, response) {
 
 app.post('/backend/settings', function(request, response) {
     conf.applyConfiguration(request.body.settings);
+    response.send(200);
 });
 
 app.get('/backend/settings', function(request, response) {
@@ -245,10 +250,10 @@ app.get('/backend/configuration', function (request, response) {
         _.extend(dto, conf.getPrivateConfiguration(), conf.getPublicConfiguration());
     }
     response.json(dto);
-})
+});
 
 
-// our custom "verbose errors" setting
+// our custom 'verbose errors' setting
 // which we can use in the templates
 // via settings['verbose errors']
 app.enable('verbose errors');
@@ -260,7 +265,7 @@ if (app.get('env') === 'production') {
 }
 
 
-// "app.router" positions our routes
+// 'app.router' positions our routes
 // above the middleware defined below,
 // this means that Express will attempt
 // to match & call routes _before_ continuing
@@ -281,7 +286,7 @@ if (app.get('env') === 'development') {
 // middleware use()d, we assume 404, as nothing else
 // responded.
 
-app.use(function(req, res, next) {
+app.use(function(req, res) {
     res.status(404);
 
     // respond with html page
@@ -312,7 +317,7 @@ app.use(function(req, res, next) {
 // would remain being executed, however here
 // we simply respond with an error page.
 
-app.use(function(err, req, res, next) {
+app.use(function(err, req, res) {
     // we may use properties of the error object
     // here and next(err) appropriately, or if
     // we possibly recovered from the error, simply next().
@@ -366,13 +371,14 @@ app.get('/403', function(req, res, next){
     err.status = 403;
     next(err);
 });
-
+// todo: do we need this?
 app.get('/500', function(req, res, next){
     // trigger a generic (500) error
     next(new Error('keyboard cat!'));
 });
 
-app.get('/', function(req, res, next){
+// todo: do we need this?
+app.get('/', function(/*req, res, next*/){
 
 });
 
