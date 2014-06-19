@@ -205,10 +205,10 @@ app.post('/backend/node/get', function(request, response) {
 app.post('/backend/influx', function(request, response) {
 
     var influxClient = influx({
-        host: '54.74.70.218',
-        username : 'root',
-        password : 'root',
-        database : 'influxdb'
+        host: conf.influx.host,
+        username : conf.influx.user,
+        password : conf.influx.pass,
+        database : conf.influx.dbname
     });
 
     influxClient.query(request.body.query, function(err, data){
