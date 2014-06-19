@@ -412,9 +412,12 @@ angular.module('cosmoUi')
                     // Execution
                     RestService.autoPull('getDeploymentExecutions', id, RestService.getDeploymentExecutions)
                         .then(null, null, function (dataExec) {
+                            $log.info('data exec', dataExec);
                             if (dataExec.length > 0) {
                                 currentExeution = _getCurrentExecution(dataExec);
-                                if (!currentExeution && $scope.deploymentInProgress) {
+                                $log.info('current execution is', currentExeution, $scope.deploymentInProgress  );
+                                if ( !currentExeution && $scope.deploymentInProgress) { // get info for the first time
+                                    $log.info('getting deployment info', isGotExecuteNodes );
                                     if(!isGotExecuteNodes) {
                                         RestService.autoPull('getDeploymentNodes', {deployment_id: id, state: true}, RestService.getDeploymentNodes)
                                             .then(null, null, function (dataNodes) {
@@ -431,6 +434,13 @@ angular.module('cosmoUi')
                                             $scope.nodes = dataNodes;
                                             isGotExecuteNodes = true;
                                         });
+                                }else{
+                                    RestService.getDeploymentNodes({deployment_id : id, state: true}).then(function(dataNodes){
+                                        $log.info('loading information for first time');
+                                        $scope.nodes = dataNodes;
+                                        isGotExecuteNodes = true;
+                                        _updateDeploymentModel(dataNodes);
+                                    })
                                 }
                             }
                         });
@@ -610,7 +620,7 @@ angular.module('cosmoUi')
                 node.state = deploymentModel[node.id];
             });
 
-            $scope.nodesTree = _createNodesTree(nodesList);
+//            $scope.nodesTree = _createNodesTree(nodesList);
 
             //$log.info(['deploymentModel', deploymentModel]);
         }
