@@ -25,7 +25,7 @@ angular.module('cosmoUi')
         $scope.deploymentInProgress = false;
         $scope.nodes = [];
         $scope.events = [];
-        $scope.section = 'monitoring';
+        $scope.section = 'topology';
         $scope.propSection = 'general';
         $scope.topologySettings = [
             {name: 'connections',   state: true},
@@ -949,9 +949,9 @@ angular.module('cosmoUi')
         $scope.graphs = graphData;
         $scope.graphPages = graphPages;
         $scope.newgraph = {
-            'name': '',
-            'type': 'line',
-            'metric': 'CPU'
+            name: '',
+            type: 'line',
+            isArea: 'false'
         };
 
         function _randerPagination() {
@@ -1001,18 +1001,35 @@ angular.module('cosmoUi')
         });
 
         $scope.addMonitorChart = function() {
-            var newMonitorChart = {
-                'name': $scope.newgraph.name,
-                'type': 'nvd3-line-with-focus-chart',
-                'query': $scope.newgraph.query,
-                'properties': {
-                    'id': 'graphCpu'+Math.round(Math.random()*1000),
-                    'data': 'graph.data',
-                    'xAxisTickFormat': 'xAxisTickFormatFunction()',
-                    'x2AxisTickFormat': 'xAxisTickFormatFunction()',
-                    'isArea': $scope.newgraph.type === 'line' ? false : true
-                }
-            };
+            var newMonitorChart = {};
+            switch($scope.newgraph.type) {
+            case 'line':
+                newMonitorChart = {
+                    'name': $scope.newgraph.name,
+                    'type': 'nvd3-line-with-focus-chart',
+                    'query': $scope.newgraph.query,
+                    'properties': {
+                        'id': 'graphMonitoring'+Math.round(Math.random()*1000),
+                        'data': 'graph.data',
+                        'xAxisTickFormat': 'xAxisTickFormatFunction()',
+                        'x2AxisTickFormat': 'xAxisTickFormatFunction()',
+                        'isArea': $scope.newgraph.isArea === 'true' ? true : false
+                    }
+                };
+                break;
+            case 'bar':
+                newMonitorChart = {
+                    'name': $scope.newgraph.name,
+                    'type': 'nvd3-multi-bar-chart',
+                    'query': $scope.newgraph.query,
+                    'properties': {
+                        'id': 'graphMonitoring'+Math.round(Math.random()*1000),
+                        'data': 'graph.data',
+                        'xAxisTickFormat': 'xAxisTickFormatFunction()'
+                    }
+                };
+                break;
+            }
             monitoringGraphs.addGraph(graphData, newMonitorChart);
             monitoringGraphs.executeQuery(graphData, newMonitorChart);
             monitoringGraphs.getDirective(graphData, newMonitorChart);

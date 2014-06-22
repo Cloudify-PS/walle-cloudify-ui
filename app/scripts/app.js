@@ -11,7 +11,8 @@ angular.module('cosmoUi', [
     'elasticjs.service',
     'ngAnimate',
     'nvd3ChartDirectives',
-    'ngStorage'
+    'ngStorage',
+    'datePicker'
 
 ]).config(['$routeProvider', function ($routeProvider) {
 

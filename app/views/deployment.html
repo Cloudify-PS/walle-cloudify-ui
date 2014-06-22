@@ -348,7 +348,11 @@
                                                 Type <br>
                                                 <select data-ng-model="newgraph.type">
                                                     <option value="line">Line Chart</option>
-                                                    <option value="area">Area Chart</option>
+                                                    <option value="bar">Bar Chart</option>
+                                                </select>
+                                                <select data-ng-model="newgraph.isArea" data-ng-show="newgraph.type == 'line'">
+                                                    <option value="false">Regular</option>
+                                                    <option value="true">Area</option>
                                                 </select>
                                             </label>
                                             <label>

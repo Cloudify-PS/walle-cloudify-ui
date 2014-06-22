@@ -1169,7 +1169,8 @@
         .pagesFrame {
             position: relative;
             display: block;
-            overflow: hidden;
+            overflow-x: hidden;
+            height: 905px;
             .pages {
                 display: block;
                 position: relative;

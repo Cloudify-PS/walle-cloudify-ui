@@ -7,12 +7,20 @@ angular.module('cosmoUi')
             'nvd3-line-with-focus-chart': {
                 'height': '400',
                 'height2': '50',
-                'showLegend': 'false',
+                'showLegend': 'true',
                 'tooltips': 'true',
                 'interactive': 'true',
                 'isArea': 'false',
                 'interpolate': 'basis',
                 'objectequality': 'true'
+            },
+            'nvd3-multi-bar-chart': {
+                'height': '400',
+                'showLegend': 'true',
+                'tooltips': 'true',
+                'showXAxis': 'true',
+                'showYAxis': 'true',
+                'showControls': 'true'
             }
         };
 
@@ -28,20 +36,30 @@ angular.module('cosmoUi')
             data.push(graph);
         }
 
-        function _executeQuery(data, graph) {
-            var currnetGraph = data[data.indexOf(graph)];
-            if(currnetGraph && graph.hasOwnProperty('query') && graph.query !== '') {
-                RestService.influxQuery({query: graph.query})
-                    .then(function(data){
-                        currnetGraph.data = [];
-                        for(var i in data) {
+        function _executeSingleQuery(query, dataBind) {
+            if(query.trim() !== '') {
+                RestService.influxQuery({query: query})
+                    .then(function (data) {
+                        for (var i in data) {
                             _clearSequenceNumber(data[i].points);
-                            currnetGraph.data.push({
+                            dataBind.push({
                                 key: data[i].name,
                                 values: data[i].points
                             });
                         }
                     });
+            }
+        }
+
+        function _executeQuery(data, graph) {
+            var currnetGraph = data[data.indexOf(graph)];
+            if(currnetGraph && graph.hasOwnProperty('query') && graph.query !== '') {
+                currnetGraph.data = [];
+                var multipleQuerys = graph.query.split(',');
+                for(var q in multipleQuerys) {
+                    var query = multipleQuerys[q];
+                    _executeSingleQuery(query, currnetGraph.data);
+                }
             }
             else {
                 currnetGraph.data = [{
