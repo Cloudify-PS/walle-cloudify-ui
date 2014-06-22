@@ -3,8 +3,8 @@
     height: 100%;
     background: $COSMOUI_DIALOG_BACKGROUND;
     overflow: hidden;
-    position: absolute;
-    top: 0px;
+    position: fixed;
+    top: 80px;
     left: 0px;
     opacity: 0;
     z-index: 9995;
@@ -119,8 +119,8 @@
 
 #uploadDialogContainer {
     width: 430px;
-    position: absolute;
-    top: 0;
+    position: fixed;
+    top: 80px;
     left: 0;
     right: 0;
     margin: auto;
@@ -234,8 +234,8 @@
 
 #deployDialogContainer {
     width: 350px;
-    position: absolute;
-    top: 0;
+    position: fixed;
+    top: 80px;
     left: 0;
     right: 0;
     margin: auto;
@@ -257,8 +257,8 @@
 }
 
 #confirmationDialogContainer {
-    position: absolute;
-    top: 0;
+    position: fixed;
+    top: 80px;
     left: 0;
     right: 0;
     width: 320px;
@@ -289,8 +289,8 @@
 
 #deleteDeploymentDialog {
     width: 450px;
-    position: absolute;
-    top: 0;
+    position: fixed;
+    top: 80px;
     left: 0;
     right: 0;
     margin: auto;

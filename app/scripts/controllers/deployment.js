@@ -447,7 +447,7 @@ angular.module('cosmoUi')
                                         $scope.nodes = dataNodes;
                                         isGotExecuteNodes = true;
                                         _updateDeploymentModel(dataNodes);
-                                    })
+                                    });
                                 }
                             }
                         });
