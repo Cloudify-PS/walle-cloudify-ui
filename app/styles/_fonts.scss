@@ -67,7 +67,7 @@ $gs-icon-prefix:'gs-icon';
 
 .cloudify-types-base {
   &:after {
-
+    content: 'a';
   }
 
   &.cloudify-types-middleware-server {
