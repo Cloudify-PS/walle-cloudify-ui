@@ -45,7 +45,7 @@ angular.module('cosmoUi')
             var panelDataIdx = 0;
 
             for (var i = 0; i < $scope.allNodesArr.length; i++) {
-                if ($scope.allNodesArr[i].dependents.length > 0) {
+                if ($scope.allNodesArr[i].dependents !== undefined && $scope.allNodesArr[i].dependents.length > 0) {
                     $scope.panelData.push({
                         id: $scope.allNodesArr[i].name,
                         statue: 'N/A',

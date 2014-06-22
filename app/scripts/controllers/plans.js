@@ -371,7 +371,7 @@ angular.module('cosmoUi')
         };
 
         $scope.redirectToDeployment = function(deployment_id, blueprint_id) {
-            $location.path('/deployment').search({id: deployment_id, blueprintId: blueprint_id});
+            $location.path('/deployment').search({id: deployment_id, blueprint_id: blueprint_id});
         };
 
     });

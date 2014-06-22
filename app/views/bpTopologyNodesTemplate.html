@@ -1,5 +1,5 @@
-<div data-ng-repeat="node in map" data-type="{{node.dataType}}" ng-class="{box: !node.isApp, app: node.isApp}" blueprint:coordinate="{{node.id}}">
-    <div class="hoverup">
+<div data-ng-repeat="node in map track by node.name" data-type="{{node.dataType}}" ng-class="{box: !node.isApp, app: node.isApp}" blueprint:coordinate="{{node.id}}">
+    <div class="hoverup" ng-class="{appHoverup: node.isApp}">
         <div class="buttons no-embed">
             <ul>
                 <li data-ng-click="onNodeSelected(node)" class="topology-glyph node-details"></li>
@@ -17,7 +17,7 @@
     </div>
 
     <div class="head" ng-show="node.isApp == false">{{ node.name }}</div>
-    <div class="holder" ng-show="node.isApp == false">
+    <div class="holder" ng-show="node.isApp == false" data-ng-if="node.isApp == false">
         <div bp-topology-nodes map="node.children"></div>
     </div>
 

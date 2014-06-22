@@ -48,15 +48,15 @@ angular.module('cosmoUi')
         $scope.showProgressPanel = false;
 
         var id = $routeParams.id;
-        var blueprintId = $routeParams.blueprintId;
+        var blueprint_id = $routeParams.blueprint_id;
         var relations = [];
-        var colors = ['#d54931', '#f89406', '#149bdf', '#555869', '#8eaf26', '#330033', '#4b6c8b', '#550000', '#dc322f', '#FF6600', '#cce80b', '#003300', '#805e00'];
+        var colors = ['#1F77B4', '#FF7F0E', '#2CA02C', '#D62728', '#9467BD', '#8C564B', '#4b6c8b', '#550000', '#dc322f', '#FF6600', '#cce80b', '#003300', '#805e00'];
         var nodesList = [];
 
         BreadcrumbsService.push('deployments',
             {
                 href: '#/deployments',
-                label: blueprintId,
+                label: blueprint_id,
                 id: 'deployment_id'
             });
 
@@ -89,31 +89,23 @@ angular.module('cosmoUi')
         };
 
         $scope.nodeSelected = function(node) {
-            var params = {
-                nodeId: node.id,
-                runtime: true,
-                state: true
-            };
-            RestService.getNode(params)
-                .then(function (data) {
-                    $scope.selectedNode = data;
+            $scope.selectedNode = node;
 
-                    if (data !== null && node !== null) {
-                        $scope.showProperties = {
-                            properties: node.properties,
-                            relationships: node.relationships,
-                            general: {
-                                'name': node.id,
-                                'type': node.type,
-                                'state': data.state,
-                                'ip': data.runtimeInfo !== null ? data.runtimeInfo.ip : ''
-                            }
-                        };
-                        $scope.propSection = 'general';
-                    } else {
-                        $scope.propSection = 'overview';
+            if (node !== null) {
+                $scope.showProperties = {
+                    properties: node.properties,
+                    relationships: node.relationships,
+                    general: {
+                        'name': node.id,
+                        'type': node.type,
+                        'state': node.runtime_properties !== null ? node.runtime_properties.state : 'N/A',
+                        'ip': node.runtime_properties !== null ? node.runtime_properties.ip : 'N/A'
                     }
-                });
+                };
+                $scope.propSection = 'general';
+            } else {
+                $scope.propSection = 'overview';
+            }
         };
 
         $scope.getNodeStateData = function(nodeId) {
@@ -127,14 +119,14 @@ angular.module('cosmoUi')
         $scope.executeDeployment = function() {
             if ($scope.isExecuteEnabled()) {
                 RestService.executeDeployment({
-                    deploymentId: id,
-                    workflowId: $scope.selectedWorkflow.data.value
+                    deployment_id: id,
+                    workflow_id: $scope.selectedWorkflow.data.value
                 }).then(function(execution) {
                     $cookieStore.put('executionId', execution.id);
                 });
 
-                $cookieStore.remove('deploymentId');
-                $cookieStore.put('deploymentId', id);
+                $cookieStore.remove('deployment_id');
+                $cookieStore.put('deployment_id', id);
                 $scope.refreshPage();
             }
         };
@@ -145,7 +137,7 @@ angular.module('cosmoUi')
 
         $scope.cancelExecution = function() {
             var callParams = {
-                'executionId': $scope.executedData.id,
+                'execution_id': $scope.executedData.id,
                 'state': 'cancel'
             };
             RestService.updateExecutionState(callParams).then(function() {
@@ -378,7 +370,7 @@ angular.module('cosmoUi')
         };
 
         function _loadDeployment() {
-            RestService.getDeploymentById({deploymentId : id})
+            RestService.getDeploymentById({deployment_id : id})
                 .then(function(deploymentData) {
 
                     if(deploymentData.hasOwnProperty('error_code')) {
@@ -408,7 +400,7 @@ angular.module('cosmoUi')
                             RestService.getProviderContext()
                                 .then(function(providerData) {
                                     var _extNetworks = [];
-                                    if (providerData.context.resources.subnet !== undefined) {
+                                    if (providerData.context !== undefined && providerData.context.resources.subnet !== undefined) {
                                         _extNetworks.push(providerData.context.resources.subnet);
                                         _extNetworks[0].color = colors[Math.floor((Math.random() * colors.length) + 1)];
                                     }
@@ -427,11 +419,14 @@ angular.module('cosmoUi')
                     // Execution
                     RestService.autoPull('getDeploymentExecutions', id, RestService.getDeploymentExecutions)
                         .then(null, null, function (dataExec) {
+                            $log.info('data exec', dataExec);
                             if (dataExec.length > 0) {
                                 currentExeution = _getCurrentExecution(dataExec);
-                                if (!currentExeution && $scope.deploymentInProgress) {
+                                $log.info('current execution is', currentExeution, $scope.deploymentInProgress  );
+                                if ( !currentExeution && $scope.deploymentInProgress) { // get info for the first time
+                                    $log.info('getting deployment info', isGotExecuteNodes );
                                     if(!isGotExecuteNodes) {
-                                        RestService.autoPull('getDeploymentNodes', {deploymentId: id, state: true}, RestService.getDeploymentNodes)
+                                        RestService.autoPull('getDeploymentNodes', {deployment_id: id, state: true}, RestService.getDeploymentNodes)
                                             .then(null, null, function (dataNodes) {
                                                 $scope.nodes = dataNodes.nodes;
                                             });
@@ -441,11 +436,18 @@ angular.module('cosmoUi')
                                 }
                                 else if ($scope.deploymentInProgress === null || currentExeution !== false) {
                                     $scope.deploymentInProgress = true;
-                                    RestService.autoPull('getDeploymentNodes', {deploymentId: id, state: true}, RestService.getDeploymentNodes)
+                                    RestService.autoPull('getDeploymentNodes', {deployment_id: id, state: true}, RestService.getDeploymentNodes)
                                         .then(null, null, function (dataNodes) {
-                                            $scope.nodes = dataNodes.nodes;
+                                            $scope.nodes = dataNodes;
                                             isGotExecuteNodes = true;
                                         });
+                                }else{
+                                    RestService.getDeploymentNodes({deployment_id : id, state: true}).then(function(dataNodes){
+                                        $log.info('loading information for first time');
+                                        $scope.nodes = dataNodes;
+                                        isGotExecuteNodes = true;
+                                        _updateDeploymentModel(dataNodes);
+                                    })
                                 }
                             }
                         });
@@ -470,6 +472,11 @@ angular.module('cosmoUi')
                 var node = nodesIndexedList[nodeId];
                 node.class = _getNodeClass(node.type_hierarchy);
                 node.isApp = _isAppNode(node);
+                node.dataType = _getNodeDataType(node);
+                node.state = {
+                    total: node.instances.deploy,
+                    completed: 0
+                };
 
                 if (node.relationships !== undefined && !_isNetworkNode(node)) {
                     for (var i = 0; i < node.relationships.length; i++) {
@@ -485,13 +492,6 @@ angular.module('cosmoUi')
                             node.isContained = false;
                         }
                     }
-
-                    node.state = {
-                        total: node.instances.deploy,
-                        completed: 0
-                    };
-                    node.dataType = _getNodeDataType(node);
-
                     if (!node.isContained) {
                         roots.push(node);
                     }
@@ -508,7 +508,7 @@ angular.module('cosmoUi')
                 'nodejs_app'
             ];
 
-            return networkNodes.indexOf(node.type) !== -1;
+            return networkNodes.indexOf(node.type) > -1;
         }
 
         function _isNetworkNode(node) {
@@ -519,7 +519,7 @@ angular.module('cosmoUi')
                 'cloudify.openstack.subnet'
             ];
 
-            return networkNodes.indexOf(node.type) !== -1;
+            return networkNodes.indexOf(node.type) > -1;
         }
 
         function _getNodeDataType(node) {
@@ -568,7 +568,7 @@ angular.module('cosmoUi')
             var IndexedNodes = {};
             for (var i in nodes) {
                 var node = nodes[i];
-                IndexedNodes[node.id] = {
+                IndexedNodes[node.node_id] = {
                     state: node.state
                 };
             }
@@ -627,7 +627,7 @@ angular.module('cosmoUi')
                 node.state = deploymentModel[node.id];
             });
 
-            $scope.nodesTree = _createNodesTree(nodesList);
+//            $scope.nodesTree = _createNodesTree(nodesList);
 
             //$log.info(['deploymentModel', deploymentModel]);
         }
@@ -665,7 +665,7 @@ angular.module('cosmoUi')
             }
             // Update nodes with new data
             _updateDeploymentModel(nodes);
-        }, true);
+        });
 
         $scope.$watch('deploymentInProgress', function(){
             _updateDeploymentModel($scope.nodes);
@@ -698,8 +698,22 @@ angular.module('cosmoUi')
          * Side panel
          */
 
-        $scope.$root.$on('topologyNodeSelected', function(e, data) {
-            $scope.viewNode(data);
+        $scope.$root.$on('topologyNodeSelected', function(e, eventData) {
+            RestService.getNodeInstances()
+                .then(function(data) {
+                    $scope.allNodesArr.forEach(function(node) {
+                        data.forEach(function(item) {
+                            if (node.node_instances === undefined) {
+                                node.node_instances = [];
+                            }
+                            if (node.id === item.node_id) {
+                                node.node_instances.push(item);
+                            }
+                        });
+                    });
+//                    $scope.allNodesArr = data;
+                    $scope.viewNode(eventData);
+                });
         });
 
         $scope.viewNode = function (node) {
@@ -717,12 +731,18 @@ angular.module('cosmoUi')
 
         function _filterSelectionBoxData(nodeId) {
             $scope.selectNodesArr = [];
-            for (var i = 0; i < $scope.allNodesArr.length; i++) {
-                if ($scope.allNodesArr[i].name === nodeId) {
-                    $scope.selectNodesArr.push($scope.allNodesArr[i]);
+            $scope.allNodesArr.forEach(function(node) {
+                if (node.id === nodeId) {
+                    var _node = {};
+
+                    for (var attr in node) { _node[attr] = node[attr]; }
+
+                    node.node_instances.forEach(function(instance) {
+                        for (var attr in instance) { _node[attr] = instance[attr]; }
+                    });
+                    $scope.selectNodesArr.push(_node);
                 }
-            }
-//            $scope.nodeSelected($scope.selectNodesArr[0]);
+            });
         }
 
         $scope.hideProperties = function () {
@@ -741,7 +761,7 @@ angular.module('cosmoUi')
             'nodes': null
         };
 
-        RestService.getWorkflows({deploymentId: id})
+        RestService.getWorkflows({deployment_id: id})
             .then(function (data) {
                 var workflows = [];
                 if (data.hasOwnProperty('workflows')) {

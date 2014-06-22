@@ -142,13 +142,13 @@ angular.module('cosmoUi')
                 executeLogs();
             });
 
-        function _loadExecutions(deploymentId) {
-            RestService.getDeploymentExecutions(deploymentId)
+        function _loadExecutions(deployment_id) {
+            RestService.getDeploymentExecutions(deployment_id)
                 .then(function(data) {
                     if(data.hasOwnProperty('length') && data.length > 0) {
                         for(var eid in data) {
                             var execute = data[eid];
-                            _executionList.push({'value': execute.id, 'label': execute.workflowId + ' ('+ $filter('dateFormat')(execute.createdAt, 'yyyy-MM-dd HH:mm:ss') +')', 'parent': deploymentId});
+                            _executionList.push({'value': execute.id, 'label': execute.workflow_id + ' ('+ $filter('dateFormat')(execute.createdAt, 'yyyy-MM-dd HH:mm:ss') +')', 'parent': deployment_id});
                         }
                     }
                 });

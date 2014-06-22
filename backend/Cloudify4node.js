@@ -283,10 +283,10 @@ Cloudify4node.getDeployments = function(callback) {
 
 Cloudify4node.addDeployment = function(requestBody, callback) {
     var data = {
-        'blueprint_id': requestBody.blueprintId
+        'blueprint_id': requestBody.blueprint_id
     };
     var requestData = createRequestData({
-        path: '/deployments/' + requestBody.deploymentId,
+        path: '/deployments/' + requestBody.deployment_id,
         data: data,
         method: 'PUT',
         headers: {
@@ -328,6 +328,15 @@ Cloudify4node.getDeploymentNodes = function(deployment_id, state, callback) {
     createRequest(requestData, callback);
 }
 
+Cloudify4node.getNodeInstances = function(callback) {
+    var requestData = createRequestData({
+        path: '/node-instances',
+        method: 'GET'
+    });
+
+    createRequest(requestData, callback);
+}
+
 Cloudify4node.getDeploymentExecutions = function(deployment_id, callback) {
     var requestData = createRequestData({
         path: '/deployments/' + deployment_id + '/executions?statuses=true',
@@ -339,10 +348,10 @@ Cloudify4node.getDeploymentExecutions = function(deployment_id, callback) {
 
 Cloudify4node.executeDeployment = function(requestBody, callback) {
     var data = {
-        'workflowId': requestBody.workflowId
+        'workflow_id': requestBody.workflow_id
     };
     var requestData = createRequestData({
-        path: '/deployments/' + requestBody.deploymentId + '/executions',
+        path: '/deployments/' + requestBody.deployment_id + '/executions',
         data: data,
         method: 'POST',
         headers: {
@@ -398,15 +407,6 @@ Cloudify4node.getNode = function(node_id, queryParams, callback) {
     }
     var requestData = createRequestData({
         path: '/nodes/' + node_id + queryStr,
-        method: 'GET'
-    });
-
-    createRequest(requestData, callback);
-}
-
-Cloudify4node.getNodeInstances = function(deployment_id, callback) {
-    var requestData = createRequestData({
-        path: '/node-instances' + (deployment_id !== undefined ? '?deployment_id=' + deployment_id : ''),
         method: 'GET'
     });
 

@@ -29,6 +29,7 @@
   },
   "resolutions": {
     "angular-sanitize": "~1.2.14",
-    "angular": "~1.2.14"
+    "angular": "~1.2.14",
+    "d3": "~3.4.1"
   }
 }

@@ -30,10 +30,10 @@
                              data-text="Select workflow"></div>
                     </div>
                     <div class="executingWorkflow" ng-show="isExecuting(deployment.blueprint_id, deployment.id)">
-                        {{getExecutionAttr(deployment, 'workflowId')}}
+                        {{getExecutionAttr(deployment, 'workflow_id')}}
                         <div class="deploymentExecute" dots-loader speed="50" ng-show="isExecuting(deployment.blueprint_id, deployment.id)"></div>
                     </div>
-                    <i class="deployment-play" ng-class="{play: isExecuteEnabled(deployment.id), playDisabled: !isExecuteEnabled(deployment.id)}" ng-click="toggleConfirmationDialog(deployment, 'execute')" ng-show="!isExecuting(deployment.blueprintId, deployment.id)"></i>
+                    <i class="deployment-play" ng-class="{play: isExecuteEnabled(deployment.id), playDisabled: !isExecuteEnabled(deployment.id)}" ng-click="toggleConfirmationDialog(deployment, 'execute')" ng-show="!isExecuting(deployment.blueprint_id, deployment.id)"></i>
                     <i class="deployment-pause pause" ng-show="isExecuting(deployment.blueprint_id, deployment.id)" ng-click="toggleConfirmationDialog(deployment, 'cancel')"></i>
                 </td>
                 <td class="delete">
