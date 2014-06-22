@@ -394,7 +394,7 @@ angular.module('cosmoUi')
                     $scope.allNodesArr = deploymentData.plan.nodes;
 
                     // Blueprint
-                    RestService.getBlueprintById({id: deploymentData.blueprintId})
+                    RestService.getBlueprintById({id: deploymentData.blueprint_id})
                         .then(function(data){
                             nodesList = data.plan.nodes;
                             $scope.nodesTree = _createNodesTree(nodesList);
