@@ -111,6 +111,11 @@ angular.module('cosmoUi')
                         bpNetworkService.addSubnet(data.id, $element, data.color);
                         break;
 
+                    case 'network':
+                        $element.css('backgroundColor', data.color);
+                        bpNetworkService.addNetwork(data.id, $element, data.color);
+                        break;
+
                     default:
                         bpNetworkService.addDevice(data.id, $element);
                         break;
@@ -146,14 +151,18 @@ angular.module('cosmoUi')
 
                 Coords.push({
                     source: {
+                        type: from.type,
                         x: getAttachPoint(from.x, to.x, from.element),
                         y: to.y + (height / 2)
                     },
                     target: {
+                        type: to.type,
                         x: getAttachPoint(to.x, from.x, to.element),
                         y: to.y + (height / 2)
                     },
-                    color: from.color
+                    color: from.color !== undefined ? from.color : to.color,
+                    from: relation.source,
+                    to: relation.target
                 });
             });
             angular.extend(coordinates, Coords);
@@ -184,8 +193,9 @@ angular.module('cosmoUi')
             });
         };
 
-        this.addNetwork = function (id, element) {
+        this.addNetwork = function (id, element, color) {
             elements[id] = angular.extend(elementCoords(element), {
+                'color': color || 'silver',
                 'type': 'network'
             });
         };
