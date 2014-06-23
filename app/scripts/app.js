@@ -59,6 +59,10 @@ angular.module('cosmoUi', [
             .when('/storage',{
                 templateUrl: 'views/blueprintsIndex.html'
             })
+            .when('/interface', {
+                templateUrl: 'views/interface.html',
+                controller: 'InterfaceCtrl'
+            })
             .when('/config', {
                 templateUrl: 'views/config.html',
                 controller: 'ConfigCtrl'

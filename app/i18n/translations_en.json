@@ -135,7 +135,8 @@
         "blueprints": "Blueprints",
         "deployments": "Deployments",
         "logs": "Logs & Events",
-        "hosts": "Hosts"
+        "hosts": "Hosts",
+        "interface": "Interface Elements"
     }
 }
 
