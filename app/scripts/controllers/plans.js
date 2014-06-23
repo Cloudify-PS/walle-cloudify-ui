@@ -288,12 +288,16 @@ angular.module('cosmoUi')
             nodes.forEach(function (node) {
                 if (node.type.indexOf('port') > -1) {
                     var relationships = $scope.getRelationshipByType(node, 'depends_on');
-                    ports.push({
-                        'id': node.id,
-                        'name': node.name,
-                        'type': 'device',
-                        'icon': 'port',
-                        'subnet': relationships[0].target_id
+                    relationships.forEach(function(relationship) {
+                        if (relationship.type.indexOf('depends_on') > -1) {
+                            ports.push({
+                                'id': node.id,
+                                'name': node.name,
+                                'type': 'device',
+                                'icon': 'port',
+                                'subnet': relationship.target_id
+                            });
+                        }
                     });
                 }
             });
