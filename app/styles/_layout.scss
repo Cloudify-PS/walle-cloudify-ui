@@ -39,6 +39,22 @@ html, body, .layout {
   position: relative;
 }
 
+#smallFooter {
+    margin: 10px 0 0;
+    color: #ccc;
+    font-size: 11px;
+
+    ul.links {
+        float: right;
+        list-style-type: none;
+        li {
+            a {
+                color: #fff;
+            }
+        }
+    }
+}
+
 #fix {
   height: $FOOTER_HEIGHT;
   clear: both;
