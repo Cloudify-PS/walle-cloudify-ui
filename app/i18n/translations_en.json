@@ -134,7 +134,9 @@
     "breadcrumb": {
         "blueprints": "Blueprints",
         "deployments": "Deployments",
-        "logs": "Logs & Events"
+        "logs": "Logs & Events",
+        "hosts": "Hosts",
+        "interface": "Interface Elements"
     }
 }
 

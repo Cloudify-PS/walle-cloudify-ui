@@ -143,7 +143,6 @@ Cloudify4node.addBlueprint = function(application_archive, blueprint_id, callbac
 }
 
 Cloudify4node.getBlueprintById = function(blueprint_id, callback) {
-    console.log('>>> blueprint_id: ' + blueprint_id)
     var requestData = createRequestData({
         path: '/blueprints/' + blueprint_id,
         method: 'GET'
@@ -274,7 +273,6 @@ Cloudify4node.updateExecutionState = function(execution_id, new_state, callback)
 }
 
 Cloudify4node.getDeployments = function(callback) {
-    console.log('getDeployments');
     var requestData = createRequestData({
         path: '/deployments',
         method: 'GET'

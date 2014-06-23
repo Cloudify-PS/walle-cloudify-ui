@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('cosmoUi')
-    .controller('DeploymentCtrl', function ($scope, $rootScope, $cookieStore, $routeParams, RestService, EventsService, BreadcrumbsService, blueprintCoordinateService, bpNetworkService, $route, $anchorScroll, $timeout, $location, $log, EventsMap, monitoringGraphs) {
+    .controller('DeploymentCtrl', function ($scope, $rootScope, $cookieStore, $routeParams, RestService, EventsService, BreadcrumbsService, bpNetworkService, $route, $anchorScroll, $timeout, $location, $log, EventsMap, monitoringGraphs, $localStorage) {
 
         var statesIndex = ['uninitialized', 'initializing', 'creating', 'created', 'configuring', 'configured', 'starting', 'started'],
             currentExeution = null,
@@ -372,6 +372,12 @@ angular.module('cosmoUi')
         function _loadDeployment() {
             RestService.getDeploymentById({deployment_id : id})
                 .then(function(deploymentData) {
+
+                    if(deploymentData.hasOwnProperty('error_code')) {
+                        $log.error(deploymentData.message);
+                        return;
+                    }
+
                     // Set Deployment Model
                     _setDeploymentModel(deploymentData);
 
@@ -384,6 +390,7 @@ angular.module('cosmoUi')
                         .then(function(data){
                             nodesList = data.plan.nodes;
                             $scope.nodesTree = _createNodesTree(nodesList);
+                            $scope.dataTable = data.plan.nodes;
 
                             blueprintCoordinateService.resetCoordinates();
                             blueprintCoordinateService.setMap(_getNodesConnections(nodesList));
@@ -456,7 +463,7 @@ angular.module('cosmoUi')
                                         $scope.nodes = dataNodes;
                                         isGotExecuteNodes = true;
                                         _updateDeploymentModel(dataNodes);
-                                    })
+                                    });
                                 }
                             }
                         });
@@ -968,26 +975,38 @@ angular.module('cosmoUi')
         $scope.graphs = graphData;
         $scope.graphPages = graphPages;
         $scope.newgraph = {
-            'name': '',
-            'type': 'line',
-            'metric': 'CPU'
+            name: '',
+            type: 'line',
+            isArea: 'false'
         };
-
-
-        RestService.getMonitorGrpahs()
-            .then(function(data){
-                for(var i in data) {
-                    var graph = data[i];
-                    monitoringGraphs.addGraph(graphData, graph);
-                    monitoringGraphs.executeQuery(graphData, graph);
-                    monitoringGraphs.getDirective(graphData, graph);
-                }
-                _randerPagination();
-            });
 
         function _randerPagination() {
             monitoringGraphs.getPaginationByData(graphPages, graphData, 4);
         }
+
+        function _displayMonitoring(data) {
+            for(var i in data) {
+                var graph = data[i];
+                monitoringGraphs.addGraph(graphData, graph);
+                monitoringGraphs.executeQuery(graphData, graph);
+                monitoringGraphs.getDirective(graphData, graph);
+            }
+            _randerPagination();
+        }
+
+        if($localStorage.hasOwnProperty('monitoringData')) {
+            _displayMonitoring($localStorage.monitoringData);
+        }
+        else {
+            RestService.getMonitorGrpahs()
+                .then(function (data) {
+                    _displayMonitoring(data);
+                });
+        }
+
+        $scope.$watch('graphs', function(monitoringData){
+            $localStorage.monitoringData = monitoringData;
+        }, true);
 
         $scope.moitorMixColors = ['#E01B5D', '#46b8da'];
 
@@ -997,6 +1016,10 @@ angular.module('cosmoUi')
             };
         };
 
+        $scope.deleteGraph = function (graph) {
+            graphData.splice(graphData.indexOf(graph), 1);
+        };
+
         $scope.$on('fireResizeGraph', function() {
             $timeout(function(){
                 $(window).trigger('resize');
@@ -1004,18 +1027,35 @@ angular.module('cosmoUi')
         });
 
         $scope.addMonitorChart = function() {
-            var newMonitorChart = {
-                'name': $scope.newgraph.name,
-                'type': 'nvd3-line-with-focus-chart',
-                'query': $scope.newgraph.metric,
-                'properties': {
-                    'id': 'graphCpu'+Math.round(Math.random()*1000),
-                    'data': 'graph.data',
-                    'xAxisTickFormat': 'xAxisTickFormatFunction()',
-                    'x2AxisTickFormat': 'xAxisTickFormatFunction()',
-                    'isArea': $scope.newgraph.type === 'line' ? false : true
-                }
-            };
+            var newMonitorChart = {};
+            switch($scope.newgraph.type) {
+            case 'line':
+                newMonitorChart = {
+                    'name': $scope.newgraph.name,
+                    'type': 'nvd3-line-with-focus-chart',
+                    'query': $scope.newgraph.query,
+                    'properties': {
+                        'id': 'graphMonitoring'+Math.round(Math.random()*1000),
+                        'data': 'graph.data',
+                        'xAxisTickFormat': 'xAxisTickFormatFunction()',
+                        'x2AxisTickFormat': 'xAxisTickFormatFunction()',
+                        'isArea': $scope.newgraph.isArea === 'true' ? true : false
+                    }
+                };
+                break;
+            case 'bar':
+                newMonitorChart = {
+                    'name': $scope.newgraph.name,
+                    'type': 'nvd3-multi-bar-chart',
+                    'query': $scope.newgraph.query,
+                    'properties': {
+                        'id': 'graphMonitoring'+Math.round(Math.random()*1000),
+                        'data': 'graph.data',
+                        'xAxisTickFormat': 'xAxisTickFormatFunction()'
+                    }
+                };
+                break;
+            }
             monitoringGraphs.addGraph(graphData, newMonitorChart);
             monitoringGraphs.executeQuery(graphData, newMonitorChart);
             monitoringGraphs.getDirective(graphData, newMonitorChart);

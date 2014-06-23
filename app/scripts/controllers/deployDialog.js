@@ -22,9 +22,17 @@ angular.module('cosmoUi')
             };
 
             if ($scope.isDeployEnabled()) {
+                $scope.inProcess = true;
                 RestService.deployBlueprint(params)
-                    .then(function() {
-                        $scope.redirectToDeployment($scope.deployment_id, blueprint.id);
+                    .then(function(data) {
+                        $scope.inProcess = false;
+                        if(data.hasOwnProperty('message')) {
+                            $scope.deployErrorMessage = data.message;
+                            $scope.deployError = true;
+                        }
+                        else {
+                            $scope.redirectToDeployment($scope.deployment_id, blueprint.id);
+                        }
                     });
             }
         };
