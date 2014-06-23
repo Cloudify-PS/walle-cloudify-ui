@@ -117,9 +117,9 @@ angular.module('cosmoUi')
                         break;
 
                     case 'router':
-                            $element.css('backgroundColor', data.color);
-                            bpNetworkService.addRouter(data.id, $element);
-                            break;
+                        $element.css('backgroundColor', data.color);
+                        bpNetworkService.addRouter(data.id, $element);
+                        break;
 
                     default:
                         bpNetworkService.addDevice(data.id, $element);

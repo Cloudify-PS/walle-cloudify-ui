@@ -250,12 +250,19 @@ angular.module('cosmoUi')
                     relationships.forEach(function (relationship) {
                         ports.forEach(function(port) {
                             if (relationship.target_id === port.id) {
-                                device.ports.push(port);
-
-                                relations.push({
-                                    source: port.subnet,
-                                    target: port.id
+                                var _alreadyExists = false;
+                                device.ports.forEach(function(item) {
+                                    if (item.id === port.id) {
+                                        _alreadyExists = true;
+                                    }
                                 });
+                                if (!_alreadyExists) {
+                                    device.ports.push(port);
+                                    relations.push({
+                                        source: port.subnet,
+                                        target: port.id
+                                    });
+                                }
                             }
                         });
                     });
