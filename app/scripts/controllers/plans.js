@@ -42,8 +42,7 @@ angular.module('cosmoUi')
                 RestService.getProviderContext()
                     .then(function(providerData) {
                         var _extNetworks = [];
-                        var externalNetwork = providerData.context.resources.ext_network;
-                        externalNetwork = {
+                        var externalNetwork = {
                             'id': providerData.context.resources.ext_network.id,
                             'name': providerData.context.resources.ext_network.name,
                             'color': getNetworkColor(),

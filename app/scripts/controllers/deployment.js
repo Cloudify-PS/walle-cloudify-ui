@@ -50,7 +50,8 @@ angular.module('cosmoUi')
         var id = $routeParams.id;
         var blueprint_id = $routeParams.blueprint_id;
         var relations = [];
-        var colors = ['#1F77B4', '#FF7F0E', '#2CA02C', '#D62728', '#9467BD', '#8C564B', '#4b6c8b', '#550000', '#dc322f', '#FF6600', '#cce80b', '#003300', '#805e00'];
+        var _colors = ['#1F77B4', '#FF7F0E', '#2CA02C', '#D62728', '#9467BD', '#8C564B', '#4b6c8b', '#550000', '#dc322f', '#FF6600', '#cce80b', '#003300', '#805e00'];
+        var _colorIdx = 0;
         var nodesList = [];
 
         BreadcrumbsService.push('deployments',
@@ -245,14 +246,14 @@ angular.module('cosmoUi')
 
                 /* Subnets */
                 if (node.type.indexOf('subnet') > -1) {
-                    var relationships = $scope.getRelationshipByType(node, 'contained_in');
+                    var relationships = $scope.getRelationshipByType(node, 'contained');
                     relationships.forEach(function (relationship) {
                         if (network.id === relationship.target_id) {
                             subnets.push({
                                 'id': node.id,
                                 'name': node.properties.subnet.name ? node.properties.subnet.name : node.name,
                                 'cidr': node.properties.subnet.cidr,
-                                'color': colors[Math.floor((Math.random() * colors.length) + 1)],
+                                'color': getNetworkColor(),
                                 'type': 'subnet',
                                 'state': {
                                     'total': node.instances.deploy,
@@ -296,21 +297,31 @@ angular.module('cosmoUi')
                     relationships.forEach(function (relationship) {
                         ports.forEach(function(port) {
                             if (relationship.target_id === port.id) {
-                                device.ports.push(port);
-
-                                relations.push({
-                                    source: port.subnet,
-                                    target: port.id
+                                var _alreadyExists = false;
+                                device.ports.forEach(function(item) {
+                                    if (item.id === port.id) {
+                                        _alreadyExists = true;
+                                    }
                                 });
+                                if (!_alreadyExists) {
+                                    device.ports.push(port);
+
+                                    relations.push({
+                                        source: port.subnet,
+                                        target: port.id
+                                    });
+                                }
                             }
                         });
                     });
 
                     externalNetworks.forEach(function (extNetwork) {
-                        relations.push({
-                            source: extNetwork.id,
-                            target: node.id
-                        });
+                        if (extNetwork.type === 'subnet') {
+                            relations.push({
+                                source: extNetwork.id,
+                                target: node.id
+                            });
+                        }
                     });
 
                     devices.push(device);
@@ -326,12 +337,16 @@ angular.module('cosmoUi')
             nodes.forEach(function (node) {
                 if (node.type.indexOf('port') > -1) {
                     var relationships = $scope.getRelationshipByType(node, 'depends_on');
-                    ports.push({
-                        'id': node.id,
-                        'name': node.name,
-                        'type': 'device',
-                        'icon': 'port',
-                        'subnet': relationships[0].target_id
+                    relationships.forEach(function(relationship) {
+                        if (relationship.type.indexOf('depends_on') > -1) {
+                            ports.push({
+                                'id': node.id,
+                                'name': node.name,
+                                'type': 'device',
+                                'icon': 'port',
+                                'subnet': relationship.target_id
+                            });
+                        }
                     });
                 }
             });
@@ -400,10 +415,35 @@ angular.module('cosmoUi')
                             RestService.getProviderContext()
                                 .then(function(providerData) {
                                     var _extNetworks = [];
-                                    if (providerData.context !== undefined && providerData.context.resources.subnet !== undefined) {
-                                        _extNetworks.push(providerData.context.resources.subnet);
-                                        _extNetworks[0].color = colors[Math.floor((Math.random() * colors.length) + 1)];
-                                    }
+                                    var externalNetwork = {
+                                        'id': providerData.context.resources.ext_network.id,
+                                        'name': providerData.context.resources.ext_network.name,
+                                        'color': getNetworkColor(),
+                                        'type': providerData.context.resources.ext_network.type
+                                    };
+                                    externalNetwork.color = getNetworkColor();
+                                    externalNetwork.devices = [
+                                        {
+                                            'id': providerData.context.resources.router.id,
+                                            'name': providerData.context.resources.router.name,
+                                            'type': providerData.context.resources.router.type,
+                                            'icon': 'router'
+                                        }
+                                    ];
+                                    relations.push({
+                                        source: externalNetwork.id,
+                                        target: externalNetwork.devices[0].id
+                                    });
+                                    _extNetworks.push(externalNetwork);
+
+                                    var subNetwork = providerData.context.resources.subnet;
+                                    subNetwork.color = getNetworkColor();
+                                    relations.push({
+                                        source: subNetwork.id,
+                                        target: externalNetwork.devices[0].id
+                                    });
+                                    _extNetworks.push(subNetwork);
+
                                     $scope.networks = _createNetworkTree(data.plan.nodes, _extNetworks);
 
                                     bpNetworkService.setMap($scope.networks.relations);
@@ -1061,4 +1101,9 @@ angular.module('cosmoUi')
             monitoringGraphs.getDirective(graphData, newMonitorChart);
             _randerPagination();
         };
+
+        function getNetworkColor() {
+            _colorIdx = _colorIdx < _colors.length ? _colorIdx + 1 : 0;
+            return _colors[_colorIdx];
+        }
     });
