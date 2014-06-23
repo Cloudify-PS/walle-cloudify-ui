@@ -7,7 +7,7 @@
         </div>
         <div class="content">
             <div class="buttons-group no-embed" checkbox-toggle value="propSection">
-                <button ng-repeat="(key, value) in showProperties" type="button" class="btn btn-default" value="{{key}}">{{ 'plans.' + key | i18n }}</button>
+                <button ng-repeat="(key, value) in showProperties" type="button" class="btn btn-default" ng-class="{active: key == propSection}" value="{{key}}">{{ 'plans.' + key | i18n }}</button>
             </div>
             <div ng-switch="propSection" class="content-section">
                 <div ng-switch-default="general">
