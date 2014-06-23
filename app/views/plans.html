@@ -150,12 +150,12 @@
                         <td>{{ row.type }}</td>
                         <td>{{ row.instances.deploy }}</td>
                         <td>
-                            <span data-ng-if="getRelationshipByType(row, 'contained').length > 0" data-ng-repeat="container in getRelationshipByType(row, 'contained')">{{ container.name }}</span>
-                            <span data-ng-if="getRelationshipByType(row, 'contained').length == 0">--</span>
+                            <span data-ng-if="getRelationshipByType(row, 'contained_in').length > 0" data-ng-repeat="container in getRelationshipByType(row, 'contained_in')">{{ container.name }}</span>
+                            <span data-ng-if="getRelationshipByType(row, 'contained_in').length == 0">--</span>
                         </td>
                         <td>
-                            <span data-ng-if="getRelationshipByType(row, 'connected').length > 0" data-ng-repeat="connection in getRelationshipByType(row, 'connected')">{{ connection.name }}</span>
-                            <span data-ng-if="getRelationshipByType(row, 'connected').length == 0">--</span>
+                            <span data-ng-if="getRelationshipByType(row, 'connected_to').length > 0" data-ng-repeat="connection in getRelationshipByType(row, 'connected_to')">{{ connection.name }}</span>
+                            <span data-ng-if="getRelationshipByType(row, 'connected_to').length == 0">--</span>
                         </td>
                         <td>
                             <ul>

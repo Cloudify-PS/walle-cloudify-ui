@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('cosmoUi')
-    .controller('DeploymentCtrl', function ($scope, $rootScope, $cookieStore, $routeParams, RestService, EventsService, BreadcrumbsService, YamlService, blueprintCoordinateService, bpNetworkService, $route, $anchorScroll, $timeout, $location, $log, EventsMap, monitoringGraphs) {
+    .controller('DeploymentCtrl', function ($scope, $rootScope, $cookieStore, $routeParams, RestService, EventsService, BreadcrumbsService, blueprintCoordinateService, bpNetworkService, $route, $anchorScroll, $timeout, $location, $log, EventsMap, monitoringGraphs) {
 
         var statesIndex = ['uninitialized', 'initializing', 'creating', 'created', 'configuring', 'configured', 'starting', 'started'],
             currentExeution = null,
@@ -245,7 +245,7 @@ angular.module('cosmoUi')
 
                 /* Subnets */
                 if (node.type.indexOf('subnet') > -1) {
-                    var relationships = $scope.getRelationshipByType(node, 'contained');
+                    var relationships = $scope.getRelationshipByType(node, 'contained_in');
                     relationships.forEach(function (relationship) {
                         if (network.id === relationship.target_id) {
                             subnets.push({
@@ -263,7 +263,7 @@ angular.module('cosmoUi')
                                 source: node.id,
                                 target: network.id,
                                 type: relationship.type,
-                                baseType: relationship.base
+                                typeHierarchy: relationship.type_hierarchy
                             });
                         }
                     });
@@ -292,7 +292,7 @@ angular.module('cosmoUi')
                         'ports': []
                     };
 
-                    var relationships = $scope.getRelationshipByType(node, 'connected').concat($scope.getRelationshipByType(node, 'depends'));
+                    var relationships = $scope.getRelationshipByType(node, 'connected_to').concat($scope.getRelationshipByType(node, 'depends_on'));
                     relationships.forEach(function (relationship) {
                         ports.forEach(function(port) {
                             if (relationship.target_id === port.id) {
@@ -325,7 +325,7 @@ angular.module('cosmoUi')
 
             nodes.forEach(function (node) {
                 if (node.type.indexOf('port') > -1) {
-                    var relationships = $scope.getRelationshipByType(node, 'depends');
+                    var relationships = $scope.getRelationshipByType(node, 'depends_on');
                     ports.push({
                         'id': node.id,
                         'name': node.name,
@@ -342,13 +342,13 @@ angular.module('cosmoUi')
         function _getNodesConnections(nodes) {
             var connections = [];
             nodes.forEach(function (node) {
-                var relationships = $scope.getRelationshipByType(node, 'connected');
+                var relationships = $scope.getRelationshipByType(node, 'connected_to');
                 relationships.forEach(function(connection) {
                     connections.push({
                         source: node.id,
                         target: connection.target_id,
                         type: connection.type,
-                        baseType: connection.base
+                        typeHierarchy: connection.type_hierarchy
                     });
                 });
             });
@@ -360,7 +360,7 @@ angular.module('cosmoUi')
 
             if (node.relationships !== undefined) {
                 for (var i = 0; i < node.relationships.length; i++) {
-                    if (node.relationships[i].base === type) {
+                    if (node.relationships[i].type_hierarchy.join(',').indexOf(type) > -1) {
                         relationshipData.push(node.relationships[i]);
                     }
                 }
@@ -489,7 +489,7 @@ angular.module('cosmoUi')
 
                 if (node.relationships !== undefined && !_isNetworkNode(node)) {
                     for (var i = 0; i < node.relationships.length; i++) {
-                        if (node.relationships[i].base === 'contained') {
+                        if (node.relationships[i].type_hierarchy.join(',').indexOf('contained_in') > -1) {
                             node.isContained = true;
                             var target_id = node.relationships[i].target_id;
                             if (nodesIndexedList[target_id].children === undefined) {
@@ -950,16 +950,6 @@ angular.module('cosmoUi')
             if($scope.eventHits.length > 0) {
                 $scope.viewLogsByEvent($scope.eventHits[0]);
             }
-        };
-
-        $scope.getContainerClass = function(node_id) {
-
-            for (var node in $scope.indexNodes) {
-                if ($scope.indexNodes[node].id === node_id) {
-                    return $scope.indexNodes[node].type.baseType.replace('_', '-');
-                }
-            }
-            return '';
         };
 
         $scope.getNodeById = function(node_id) {
