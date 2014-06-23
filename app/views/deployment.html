@@ -139,7 +139,7 @@
                 </div>
                 <div class="executingWorkflow" ng-show="deploymentInProgress">
                     {{executedData.workflow_id}}
-                    <div class="deploymentExecute" dots-loader ng-show="deploymentInProgress"></div>
+                    <div class="deploymentExecute" dots-loader speed="50" ng-show="deploymentInProgress"></div>
                 </div>
                 <i class="deployment-play" ng-class="{play: isExecuteEnabled(), disabled: !isExecuteEnabled()}" ng-click="toggleConfirmationDialog(deployment, 'execute')" ng-show="!deploymentInProgress"></i>
 
@@ -190,8 +190,8 @@
                                     <div class="inner">
                                         <div class="buttons no-embed">
                                             <ul>
-                                                <li data-ng-click="viewNode(device)" class="topology-glyph node-details"></li>
-                                            </ul>
+                                            <li data-ng-click="viewNode(device)" class="topology-glyph node-details"></li>
+                                        </ul>
                                         </div>
                                         <i class="topology-glyph {{ device.icon }}" bp:network:coordinate ng-model="device"></i>
                                     </div>

@@ -30,8 +30,7 @@
                     <td class="data ready">{{ getNodesCount(node, 'started') }} / {{ node.totalCount }}</td>
                     <td class="data failed">{{ getNodesCount(node, 'failed') }} / {{ node.totalCount }}</td>
                     <td class="data status">
-                        <div ng-show="node.status != 'in progress'">{{ node.status }}</div>
-                        <div class="panel-progress-dots" dots-loader ng-show="getNodesCount(node, 'inProgress') > 0"></div>
+                        <div>{{ node.status }}</div>
                     </td>
                 </tr>
             </tbody>

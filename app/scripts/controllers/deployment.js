@@ -419,7 +419,7 @@ angular.module('cosmoUi')
                                 if ( !currentExeution && $scope.deploymentInProgress) { // get info for the first time
                                     $log.info('getting deployment info', isGotExecuteNodes );
                                     if(!isGotExecuteNodes) {
-                                        RestService.autoPull('getDeploymentNodes', {deployment_id: id, state: true}, RestService.getDeploymentNodes)
+                                        RestService.autoPull('getDeploymentNodes', {deployment_id: id}, RestService.getDeploymentNodes)
                                             .then(null, null, function (dataNodes) {
                                                 $scope.nodes = dataNodes.nodes;
                                             });
@@ -429,10 +429,26 @@ angular.module('cosmoUi')
                                 }
                                 else if ($scope.deploymentInProgress === null || currentExeution !== false) {
                                     $scope.deploymentInProgress = true;
-                                    RestService.autoPull('getDeploymentNodes', {deployment_id: id, state: true}, RestService.getDeploymentNodes)
+                                    RestService.autoPull('getDeploymentNodes', {deployment_id: id}, RestService.getDeploymentNodes)
                                         .then(null, null, function (dataNodes) {
-                                            $scope.nodes = dataNodes;
-                                            isGotExecuteNodes = true;
+                                            RestService.getNodeInstances()
+                                                .then(function(data) {
+                                                    dataNodes.forEach(function(node) {
+                                                        data.forEach(function(item) {
+                                                            if (node.node_instances === undefined) {
+                                                                node.node_instances = [];
+                                                            }
+                                                            if (node.node_id === item.node_id) {
+                                                                node.node_instances.push(item);
+                                                            }
+                                                        });
+
+                                                        $scope.nodes = dataNodes;
+                                                        isGotExecuteNodes = true;
+                                                    });
+                                                    $scope.nodes = dataNodes;
+                                                    isGotExecuteNodes = true;
+                                                });
                                         });
                                 }else{
                                     RestService.getDeploymentNodes({deployment_id : id, state: true}).then(function(dataNodes){
