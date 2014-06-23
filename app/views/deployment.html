@@ -179,9 +179,9 @@
                             <div class="name">{{ network.name }}</div>
                             <div data-ng-repeat="subnet in network.subnets" class="subnet" bp:network:coordinate ng-model="subnet">
                                 <p>{{ subnet.name }}</p>
-                                <!--<div class="badge network-badge" data-ng-class="getBadgeStatus(subnet.state.status)">-->
-                                    <!--{{ subnet.state.completed }}/{{ subnet.state.total }}-->
-                                <!--</div>-->
+                                <div class="badge network-badge" data-ng-class="getBadgeStatus(subnet.state.status)">
+                                    {{ subnet.state.completed }}/{{ subnet.state.total }}
+                                </div>
                                 <p class="cidr">{{ subnet.cidr }}</p>
                             </div>
                         </div>
@@ -204,9 +204,9 @@
                                         </div>
                                         <i class="topology-glyph {{ port.icon }}" bp:network:coordinate ng-model="port"></i>
                                     </div>
-                                    <!--<div class="badge">-->
-                                        <!--{{ device.state.completed }}/{{ device.state.total }}-->
-                                    <!--</div>-->
+                                    <div class="badge">
+                                        {{ device.state.completed }}/{{ device.state.total }}
+                                    </div>
                                 </div>
                             </div>
                         </div>

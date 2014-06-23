@@ -406,6 +406,8 @@ angular.module('cosmoUi')
                                     }
                                     $scope.networks = _createNetworkTree(data.plan.nodes, _extNetworks);
 
+                                    console.log(['$scope.networks', $scope.networks]);
+
                                     bpNetworkService.setMap($scope.networks.relations);
                                     $timeout(function(){
                                         $scope.networkcoords = bpNetworkService.getCoordinates();
