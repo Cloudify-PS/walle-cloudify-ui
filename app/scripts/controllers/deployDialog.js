@@ -22,8 +22,10 @@ angular.module('cosmoUi')
             };
 
             if ($scope.isDeployEnabled()) {
+                $scope.inProcess = true;
                 RestService.deployBlueprint(params)
                     .then(function(data) {
+                        $scope.inProcess = false;
                         if(data.hasOwnProperty('message')) {
                             $scope.deployErrorMessage = data.message;
                             $scope.deployError = true;

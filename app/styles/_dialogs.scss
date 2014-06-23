@@ -42,6 +42,13 @@
             cursor: pointer;
         }
 
+        &.loader {
+            color: transparent;
+            background-image: url($img-loading-button);
+            background-repeat: no-repeat;
+            background-position: center center;
+        }
+
         &.dialogClose {
             float: right;
             position: absolute;
