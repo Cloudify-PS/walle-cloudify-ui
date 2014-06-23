@@ -44,17 +44,17 @@ angular.module('cosmoUi')
             $scope.panelData = [];
             var panelDataIdx = 0;
 
-            for (var i = 0; i < $scope.allNodesArr.length; i++) {
-                if ($scope.allNodesArr[i].dependents.length > 0) {
+            for (var i = 0; i < $scope.nodes.length; i++) {
+                if ($scope.nodes[i].node_instances !== undefined && $scope.nodes[i].node_instances.length > 0) {
                     $scope.panelData.push({
-                        id: $scope.allNodesArr[i].name,
-                        statue: 'N/A',
+                        id: $scope.nodes[i].node_id,
+                        status: $scope.nodes[i].state,
                         totalCount: 0,
                         inProgress: {count: 0, nodes: []},
                         started: {count: 0, nodes: []},
                         failed: {count: 0, nodes: []}
                     });
-                    updateNodeData($scope.allNodesArr[i], panelDataIdx);
+                    updateNodeData($scope.nodes[i], panelDataIdx);
                     panelDataIdx++;
                 }
             }
@@ -62,19 +62,18 @@ angular.module('cosmoUi')
 
         function updateNodeData(data, idx) {
             var node = $scope.panelData[idx];
-            node.totalCount = data.dependents.length;
+            node.totalCount = data.node_instances.length;
 
-            for (var j = 0; j < data.dependents.length; j++) {
-                for (var i = 0; i < $scope.allNodesArr.length; i++) {
-                    if ($scope.allNodesArr[i].id === data.dependents[j]) {
-                        if ($scope.allNodesArr[i].state === 'started' || $scope.allNodesArr[i].state === 'failed') {
-                            node.state = $scope.allNodesArr[i].state === 'failed' ? 'Failed' : 'Succeed';
-                            node[$scope.allNodesArr[i].state].count++;
-                            node[$scope.allNodesArr[i].state].nodes[$scope.allNodesArr[i].id] = $scope.allNodesArr[i];
+            for (var j = 0; j < data.node_instances.length; j++) {
+                for (var i = 0; i < $scope.nodes.length; i++) {
+                    if ($scope.nodes[i].id === data.node_instances[j].id) {
+                        if ($scope.nodes[i].state === 'started' || $scope.nodes[i].state === 'failed') {
+                            node[$scope.nodes[i].state].count++;
+                            node[$scope.nodes[i].state].nodes[$scope.nodes[i].id] = $scope.nodes[i];
                         }
                         else {
                             node.inProgress.count++;
-                            node.inProgress.nodes[$scope.allNodesArr[i].id] = $scope.allNodesArr[i];
+                            node.inProgress.nodes[$scope.nodes[i].id] = $scope.nodes[i];
                         }
                     }
                 }

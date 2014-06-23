@@ -64,7 +64,7 @@ angular.module('cosmoUi')
         };
 
         $scope.redirectToDeployment = function(deployment_id, blueprint_id) {
-            $location.path('/deployment').search({id: deployment_id, blueprintId: blueprint_id});
+            $location.path('/deployment').search({id: deployment_id, blueprint_id: blueprint_id});
         };
 
         $scope.cosmoConnectionError = function() {
@@ -78,17 +78,17 @@ angular.module('cosmoUi')
             }
         }
 
-        function _getBlueprintArrNextIndex(blueprintId) {
+        function _getBlueprintArrNextIndex(blueprint_id) {
             var nextIndex = -1;
             for (var j = 0; j < _blueprintsArr.length; j++) {
-                if (_blueprintsArr[j].id === blueprintId) {
+                if (_blueprintsArr[j].id === blueprint_id) {
                     nextIndex = j;
                 }
             }
 
             if (nextIndex === -1) {
                 _blueprintsArr.push({
-                    id: blueprintId,
+                    id: blueprint_id,
                     deployments: []
                 });
                 nextIndex = _blueprintsArr.length - 1;

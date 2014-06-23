@@ -66,6 +66,12 @@ var privateConfiguration = {
     },
     browseBlueprint: {
         path: 'backend/tmp/blueprints'
+    },
+    influx: {
+        host: 'influx.gsdev.info',
+        user: 'root',
+        pass: 'root',
+        dbname: 'influxdb'
     }
 }
 

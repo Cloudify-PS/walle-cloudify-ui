@@ -132,6 +132,9 @@ module.exports = function (grunt) {
             all: [
                 'Gruntfile.js',
                 '<%= yeoman.app %>/scripts/{,*/}*.js'
+            ],
+            backend: [
+                'server.js'
             ]
         },
         coffee: {
@@ -389,9 +392,15 @@ module.exports = function (grunt) {
         grunt.task.run(tasks);
     });
 
+    grunt.registerTask('backend', function() {
+        grunt.config.set('jshint.options.jshintrc', '.backendhintrc');
+        grunt.task.run('jshint:backend');
+    });
+
     grunt.registerTask('default', [
         'jshint',
         'test',
-        'build'
+        'build',
+        'backend'
     ]);
 };

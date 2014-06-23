@@ -46,7 +46,7 @@ angular.module('cosmoUi')
                             if (blueprints[j].deployments === undefined) {
                                 blueprints[j].deployments = [];
                             }
-                            if (deployments[i] !== undefined && deployments[i].blueprintId === blueprints[j].id) {
+                            if (deployments[i] !== undefined && deployments[i].blueprint_id === blueprints[j].id) {
                                 blueprints[j].deployments.push(deployments[i]);
                             }
                         }
@@ -105,7 +105,7 @@ angular.module('cosmoUi')
             var callParams = {
                 url: '/backend/blueprints/source',
                 method: 'POST',
-                data: {'blueprintId': params}
+                data: {'blueprint_id': params}
             };
 
             return _load('blueprints/source', callParams);
@@ -135,7 +135,7 @@ angular.module('cosmoUi')
             var callParams = {
                 url: '/backend/deployments/create',
                 method: 'POST',
-                data: {'blueprintId': params.blueprintId, 'deploymentId': params.deploymentId}
+                data: {'blueprint_id': params.blueprint_id, 'deployment_id': params.deployment_id}
             };
 
             return _load('deployments/create', callParams);
@@ -145,7 +145,7 @@ angular.module('cosmoUi')
             var callParams = {
                 url: '/backend/deployments/execute',
                 method: 'POST',
-                data: {'deploymentId': params.deploymentId, 'workflowId': params.workflowId}
+                data: {'deployment_id': params.deployment_id, 'workflow_id': params.workflow_id}
             };
 
             return _load('deployments/execute', callParams);
@@ -165,7 +165,7 @@ angular.module('cosmoUi')
             var callParams = {
                 url: '/backend/deployments/executions/get',
                 method: 'POST',
-                data: {'deploymentId': params}
+                data: {'deployment_id': params}
             };
             return _load('deployments/executions/get', callParams);
         }
@@ -219,11 +219,20 @@ angular.module('cosmoUi')
             return _load('nodes', callParams);
         }
 
+        function _getNodeInstances(params) {
+            var callParams = {
+                url: '/backend/node-instances',
+                method: 'GET',
+                data: params
+            };
+            return _load('node-instances', callParams);
+        }
+
         function _getWorkflows(params) {
             var callParams = {
                 url: '/backend/deployments/workflows/get',
                 method: 'POST',
-                data: {'deploymentId': params.deploymentId}
+                data: {'deployment_id': params.deployment_id}
             };
 
             return _load('deployments/workflows/get', callParams);
@@ -256,6 +265,16 @@ angular.module('cosmoUi')
                 }
             };
             return _load('configuration', callParams);
+        }
+
+        function _influxQuery(data) {
+            var callParams = {
+                url: '/backend/influx',
+                method: 'POST',
+                data: data
+            };
+
+            return _load('influx', callParams);
         }
 
         function _getMonitorGrpahs() {
@@ -295,6 +314,7 @@ angular.module('cosmoUi')
         this.getDeploymentById = _getDeploymentById;
         this.deleteDeploymentById = _deleteDeploymentById;
         this.getDeploymentNodes = _getDeploymentNodes;
+        this.getNodeInstances = _getNodeInstances;
         this.loadEvents = _loadEvents;
         this.loadDeployments = _loadDeployments;
         this.getWorkflows = _getWorkflows;
@@ -305,6 +325,7 @@ angular.module('cosmoUi')
         this.getConfiguration = _getConfiguration;
         this.autoPull = _autoPull;
         this.autoPullStop = _autoPullStop;
+        this.influxQuery = _influxQuery;
         this.getMonitorGrpahs = _getMonitorGrpahs;
         this.getMonitorCpu = _getMonitorCpu;
         this.getMonitorMemory = _getMonitorMemory;

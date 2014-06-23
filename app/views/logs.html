@@ -15,6 +15,7 @@
                      data-ng-model="eventsFilter.blueprints"
                      data-init="{{ filterModel.blueprints }}"
                      data-text="Choose Blueprints"
+                     data-listner="true"
                      name="blueprints"></div>
             </div>
 
@@ -27,6 +28,7 @@
                      data-filter="eventsFilter.blueprints"
                      data-init="{{ filterModel.deployments }}"
                      data-text="Choose Deployments"
+                     data-listner="true"
                      name="deployments"></div>
             </div>
 
@@ -38,6 +40,7 @@
                      data-ng-model="eventsFilter.executions"
                      data-init="{{ filterModel.executions }}"
                      data-text="Choose Execution"
+                     data-listner="true"
                      name="executions"></div>
             </div>
 
@@ -49,6 +52,7 @@
                      data-init="{{ filterModel.timeframe }}"
                      data-text="Choose timeframe"
                      data-onchange="filterEventsByTimeframe(filter)"
+                     data-listner="true"
                      name="timeframe"></div>
 
             </div>
@@ -72,13 +76,13 @@
                 <th class="node sorting" data-ng-click="sortEvents('operation')" data-ng-class="isSorted('operation')">{{ 'deployment.table.heading.operation' | i18n }}</th>
                 <th class="node sorting" data-ng-click="sortEvents('node')" data-ng-class="isSorted('node')">{{ 'deployment.table.heading.node' | i18n }}</th>
                 <th class="node sorting" data-ng-click="sortEvents('nodeId')" data-ng-class="isSorted('nodeId')">{{ 'deployment.table.heading.nodeId' | i18n }}</th>
-                <th class="task sorting" data-ng-click="sortEvents('message')" data-ng-class="isSorted('message')">{{ 'deployment.table.heading.message' | i18n }}</th>
+                <th class="task sorting" data-ng-click="sortEvents('message.text')" data-ng-class="isSorted('message.text')">{{ 'deployment.table.heading.message' | i18n }}</th>
             </tr>
             </thead>
             <tbody class="animate-repeat" ng-repeat="log in logsHits" ng-init="isOpen=false">
             <tr data-ng-click="isOpen=!isOpen">
                 <td class="icon" ng-class="getEventIcon(log._source.event_type)"></td>
-                <td class="date">{{log._source.timestamp == undefined && '-' || log._source.timestamp | dateFormat: 'yyyy-MM-dd HH:mm:ss'}}</td>
+                <td class="date">{{log._source.timestamp == undefined && '-' || log._source.timestamp}}</td>
                 <td class="type">{{getEventText(log._source.event_type) == undefined && '-' || getEventText(log._source.event_type)}}</td>
                 <td class="node">{{log._source.level == undefined && '-' || log._source.level | uppercase}}</td>
                 <td class="node">{{log._source.context.operation == undefined && '-' || log._source.context.operation}}</td>

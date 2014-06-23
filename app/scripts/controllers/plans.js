@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('cosmoUi')
-    .controller('PlansCtrl', function ($scope, YamlService, Layout, Render, $routeParams, BreadcrumbsService, blueprintCoordinateService, bpNetworkService, $http, $timeout, $location, RestService) {
+    .controller('PlansCtrl', function ($scope, Layout, Render, $routeParams, BreadcrumbsService, blueprintCoordinateService, bpNetworkService, $http, $timeout, $location, RestService) {
 
         $scope.section = 'topology';
         $scope.propSection = 'general';
@@ -90,7 +90,7 @@ angular.module('cosmoUi')
 
                 if (node.relationships !== undefined && !_isNetworkNode(node)) {
                     for (var i = 0; i < node.relationships.length; i++) {
-                        if (node.relationships[i].base === 'contained') {
+                        if (node.relationships[i].type_hierarchy.join(',').indexOf('contained_in') > -1) {
                             node.isContained = true;
                             var target_id = node.relationships[i].target_id;
                             if (nodesList[target_id].children === undefined) {
@@ -214,7 +214,7 @@ angular.module('cosmoUi')
                                 source: node.id,
                                 target: network.id,
                                 type: relationship.type,
-                                baseType: relationship.base
+                                typeHierarchy: relationship.type_hierarchy
                             });
                         }
                     });
@@ -239,7 +239,7 @@ angular.module('cosmoUi')
                         'ports': []
                     };
 
-                    var relationships = $scope.getRelationshipByType(node, 'connected').concat($scope.getRelationshipByType(node, 'depends'));
+                    var relationships = $scope.getRelationshipByType(node, 'connected_to').concat($scope.getRelationshipByType(node, 'depends_on'));
                     relationships.forEach(function (relationship) {
                         ports.forEach(function(port) {
                             if (relationship.target_id === port.id) {
@@ -274,7 +274,7 @@ angular.module('cosmoUi')
 
             nodes.forEach(function (node) {
                 if (node.type.indexOf('port') > -1) {
-                    var relationships = $scope.getRelationshipByType(node, 'depends');
+                    var relationships = $scope.getRelationshipByType(node, 'depends_on');
                     ports.push({
                         'id': node.id,
                         'name': node.name,
@@ -291,13 +291,13 @@ angular.module('cosmoUi')
         function _getNodesConnections(nodes) {
             var connections = [];
             nodes.forEach(function (node) {
-                var relationships = $scope.getRelationshipByType(node, 'connected');
+                var relationships = $scope.getRelationshipByType(node, 'connected_to');
                 relationships.forEach(function(connection) {
                     connections.push({
                         source: node.id,
                         target: connection.target_id,
                         type: connection.type,
-                        baseType: connection.base
+                        typeHierarchy: connection.type_hierarchy
                     });
                 });
             });
@@ -309,7 +309,7 @@ angular.module('cosmoUi')
 
             if (node.relationships !== undefined) {
                 for (var i = 0; i < node.relationships.length; i++) {
-                    if (node.relationships[i].base === type) {
+                    if (node.relationships[i].type_hierarchy.join(',').indexOf(type) > -1) {
                         relationshipData.push(node.relationships[i]);
                     }
                 }
@@ -349,6 +349,12 @@ angular.module('cosmoUi')
             switch(ext[ext.length-1]) {
             case 'sh':
                 return 'bash';
+            case 'bat':
+                return 'bat';
+            case 'cmd':
+                return 'cmd';
+            case 'ps1':
+                return 'powershell';
             case 'yaml':
                 return 'yml';
             case 'py':
@@ -390,7 +396,7 @@ angular.module('cosmoUi')
         };
 
         $scope.redirectToDeployment = function(deployment_id, blueprint_id) {
-            $location.path('/deployment').search({id: deployment_id, blueprintId: blueprint_id});
+            $location.path('/deployment').search({id: deployment_id, blueprint_id: blueprint_id});
         };
 
     });

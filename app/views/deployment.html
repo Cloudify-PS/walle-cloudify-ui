@@ -124,6 +124,7 @@
             <div class="buttons-group no-embed" checkbox-toggle value="section">
                 <button type="button" class="btn btn-default" value="topology">Topology</button>
                 <button type="button" class="btn btn-default" value="network">Network</button>
+                <button type="button" class="btn btn-default" value="nodes">Nodes</button>
                 <button type="button" class="btn btn-default" value="events">Events</button>
                 <button type="button" class="btn btn-default" value="monitoring">Monitoring</button>
             </div>
@@ -138,8 +139,8 @@
                          data-text="Select workflow"></div>
                 </div>
                 <div class="executingWorkflow" ng-show="deploymentInProgress">
-                    {{executedData.workflowId}}
-                    <div class="deploymentExecute" dots-loader ng-show="deploymentInProgress"></div>
+                    {{executedData.workflow_id}}
+                    <div class="deploymentExecute" dots-loader speed="50" ng-show="deploymentInProgress"></div>
                 </div>
                 <i class="deployment-play" ng-class="{play: isExecuteEnabled(), disabled: !isExecuteEnabled()}" ng-click="toggleConfirmationDialog(deployment, 'execute')" ng-show="!deploymentInProgress"></i>
 
@@ -190,8 +191,8 @@
                                     <div class="inner">
                                         <div class="buttons no-embed">
                                             <ul>
-                                                <li data-ng-click="viewNode(device)" class="topology-glyph node-details"></li>
-                                            </ul>
+                                            <li data-ng-click="viewNode(device)" class="topology-glyph node-details"></li>
+                                        </ul>
                                         </div>
                                         <i class="topology-glyph {{ device.icon }}" bp:network:coordinate ng-model="device"></i>
                                     </div>
@@ -213,6 +214,44 @@
                 </div>
                 <!-- Network Topology - END -->
                 <!-- Network Tab - END -->
+                <!-- Nodes - START -->
+                <div ng-switch-when="nodes">
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th></th>
+                            <th>Name</th>
+                            <th>Type</th>
+                            <th>Number of instances</th>
+                            <th>Contained in</th>
+                            <th>Connected to</th>
+                            <th><!--Actions--></th>
+                        </tr>
+                        </thead>
+                        <tbody data-ng-repeat="row in dataTable">
+                        <tr>
+                            <td><i class="topology-glyph {{ row.class }}"></i></td>
+                            <td>{{ row.name }}</td>
+                            <td>{{ row.type }}</td>
+                            <td>{{ row.instances.deploy }}</td>
+                            <td>
+                                <span data-ng-if="getRelationshipByType(row, 'contained').length > 0" data-ng-repeat="container in getRelationshipByType(row, 'contained')">{{ container.name }}</span>
+                                <span data-ng-if="getRelationshipByType(row, 'contained').length == 0">--</span>
+                            </td>
+                            <td>
+                                <span data-ng-if="getRelationshipByType(row, 'connected').length > 0" data-ng-repeat="connection in getRelationshipByType(row, 'connected')">{{ connection.name }}</span>
+                                <span data-ng-if="getRelationshipByType(row, 'connected').length == 0">--</span>
+                            </td>
+                            <td>
+                                <ul>
+                                    <li data-ng-click="viewNode(indexNodes[row.id])" class="topology-glyph node-details"></li>
+                                </ul>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <!-- Nodes - END -->
                 <!-- Events Tab - START -->
                 <div ng-switch-when="events">
                     <div class="filters">
@@ -309,15 +348,16 @@
                                                 Type <br>
                                                 <select data-ng-model="newgraph.type">
                                                     <option value="line">Line Chart</option>
-                                                    <option value="area">Area Chart</option>
+                                                    <option value="bar">Bar Chart</option>
+                                                </select>
+                                                <select data-ng-model="newgraph.isArea" data-ng-show="newgraph.type == 'line'">
+                                                    <option value="false">Regular</option>
+                                                    <option value="true">Area</option>
                                                 </select>
                                             </label>
                                             <label>
-                                                Metric <br>
-                                                <select data-ng-model="newgraph.metric">
-                                                    <option value="CPU">CPU</option>
-                                                    <option value="Memory">Memory</option>
-                                                </select>
+                                                Query <br><small>(Example: select value from cpu limit 100)</small><br>
+                                                <textarea cols="60" rows="4" data-ng-model="newgraph.query"></textarea>
                                             </label>
                                             <br>
                                             <button class="gs-btn" data-ng-click="addMonitorChart()">Add Monitor Chart</button>
@@ -341,7 +381,7 @@
                 <label>{{ 'deployments.confirmationPopup.title' | i18n }}</label>
             </div>
             <div class="dialogDescription" ng-show="confirmationType == 'execute'">{{ 'deployments.confirmationPopup.descriptionExecute' | i18n }} {{selectedWorkflow.data.value}}?</div>
-            <div class="dialogDescription" ng-show="confirmationType == 'cancel'">{{ 'deployments.confirmationPopup.descriptionCancel' | i18n }} {{executedData.workflowId}}?</div>
+            <div class="dialogDescription" ng-show="confirmationType == 'cancel'">{{ 'deployments.confirmationPopup.descriptionCancel' | i18n }} {{executedData.workflow_id}}?</div>
             <div class="buttonsContainer confirmationButtons">
                 <button id="cancelBtn" class="dialogButton" ng-click="toggleConfirmationDialog()">{{ 'deployments.confirmationPopup.cancelBtn' | i18n }}</button>
                 <button id="confirmBtn" class="dialogButton" ng-click="confirmConfirmationDialog(selectedWorkflow)">{{ 'deployments.confirmationPopup.confirmBtn' | i18n }}</button>
