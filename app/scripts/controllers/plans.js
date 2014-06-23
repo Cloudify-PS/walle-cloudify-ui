@@ -55,7 +55,7 @@ angular.module('cosmoUi')
                                 'id': providerData.context.resources.router.id,
                                 'name': providerData.context.resources.router.name,
                                 'type': providerData.context.resources.router.type,
-                                'icon': "host"
+                                'icon': 'router'
                             }
                         ];
                         relations.push({

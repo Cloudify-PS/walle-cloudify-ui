@@ -116,6 +116,11 @@ angular.module('cosmoUi')
                         bpNetworkService.addNetwork(data.id, $element, data.color);
                         break;
 
+                    case 'router':
+                            $element.css('backgroundColor', data.color);
+                            bpNetworkService.addRouter(data.id, $element);
+                            break;
+
                     default:
                         bpNetworkService.addDevice(data.id, $element);
                         break;
@@ -183,6 +188,12 @@ angular.module('cosmoUi')
         this.addDevice = function (id, element) {
             elements[id] = angular.extend(elementCoords(element), {
                 'type': 'device'
+            });
+        };
+
+        this.addRouter = function (id, element) {
+            elements[id] = angular.extend(elementCoords(element), {
+                'type': 'router'
             });
         };
 
