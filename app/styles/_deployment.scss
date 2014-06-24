@@ -134,14 +134,9 @@
 
         .content-header {
           border-bottom: 3px solid $COSMOUI_MAIN_CONTENT_TITLE_SEPERATOR_COLOR;
-          height: 62px;
           margin-bottom: 10px;
           overflow: hidden;
           width: 90%;
-        }
-
-        #settings-toggles-container {
-          top: 103px;
         }
 
         .header-left {
@@ -654,10 +649,11 @@
         height: 36px;
         border-radius: 19px;
         color: white;
+        line-height: 0px;
         &:after {
           position: absolute;
-          top: -10px;
-          left: 8px;
+            top: 19px;
+            left: 8px;
         }
         &.fa {
           display: inline-block;
@@ -893,8 +889,8 @@
           display: inline-block;
           &:after {
             position: absolute;
-            top: -10px;
-            left: 8px;
+              top: 19px;
+              left: 8px;
           }
         }
       }

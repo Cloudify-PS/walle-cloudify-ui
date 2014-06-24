@@ -169,14 +169,13 @@ html, body, .layout {
 
 #main-content-panel {
   background: $COSMOUI_MAIN_CONTENT_BACKGROUND;
-  width: 100%;
+  max-width: 100%;
   min-height: 800px;
 }
 
 .content-header {
-  height: 48px;
   width: 100%;
-  padding: 10px 0px 20px 0px;
+  padding: 10px 0px 10px 0px;
   vertical-align: middle;
   margin-left: 20px;
   margin-bottom: 20px;
@@ -264,7 +263,8 @@ html, body, .layout {
         color: $COSMOUI_BLUEPRINT_BUTTON_GROUP_BACKGROUND;
         border: $COSMOUI_BLUEPRINT_BUTTON_GROUP_BORDER_COLOR;
         border-radius: 0px;
-        margin: 0 -5px 0 0;
+        margin: 0 -6px 0 0;
+        background-color: #fff;
         &:first-child {
             border-radius: $RADIUS 0 0 $RADIUS;
         }

@@ -153,7 +153,6 @@
 
     .content-header {
       border-bottom: 3px solid #d3dfe2;
-      height: 62px;
       overflow: hidden;
     }
 
@@ -199,9 +198,10 @@
             height: 36px;
             border-radius: 19px;
             color: white;
+            line-height: 0px;
             &:after {
                 position: absolute;
-                top: -10px;
+                top: 19px;
                 left: 8px;
             }
             &.fa {
@@ -379,6 +379,7 @@
                 top: -10px;
                 right: 0px;
                 z-index: 100;
+                line-height: 0px;
                 > ul {
                     display: inline-block;
                     list-style-type: none;
@@ -397,7 +398,7 @@
                         position: relative;
                         &:after {
                             position: absolute;
-                            top: -8px;
+                            top: 13px;
                             left: 9px;
                             font-size: 30px;
                             color: $clr-base-27;
@@ -441,7 +442,7 @@
                 display: inline-block;
                 &:after {
                     position: absolute;
-                    top: -10px;
+                    top: 17px;
                     left: 8px;
                 }
             }

@@ -117,18 +117,13 @@ table.table {
 }
 
 .gs-selection-button {
-  width: 150px;
-  //height: 35px;
-  float: left;
   margin-right: 5px;
 
   .gs-select {
     min-width: 0px;
-    height: 32px;
     width: 150px;
     color: $clr-base-11;
     background-color: $clr-base-01;
-    font-weight: bold;
     padding: 5px 10px 5px 10px;
     border-radius: 5px;
     border: 1px solid $clr-base-04;
