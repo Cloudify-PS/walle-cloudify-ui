@@ -25,9 +25,9 @@
         border-radius: $COSMOUI_EVENTS_WIDGET_OPENED_BORDER_RADIUS;
         box-shadow: $COSMOUI_EVENTS_WIDGET_OPENED_SHADOW;
 
+
         #events-widget-header {
-            width: $COSMOUI_EVENTS_WIDGET_OPENED_HEADER_WIDTH;
-            height: $COSMOUI_EVENTS_WIDGET_OPENED_HEADER_HEIGHT;
+            position: relative;
             padding: $COSMOUI_EVENTS_WIDGET_OPENED_HEADER_PADDING;
             color: $COSMOUI_EVENTS_WIDGET_OPENED_HEADER_COLOR;
             font-size: $COSMOUI_EVENTS_WIDGET_OPENED_HEADER_FONT_SIZE;
@@ -35,20 +35,19 @@
             border-bottom: $COSMOUI_EVENTS_WIDGET_OPENED_HEADER_BORDER_BOTTOM;
 
             #event-widget-header-text {
-                float: left;
                 margin-top: $COSMOUI_EVENTS_WIDGET_OPENED_HEADER_TEXT_MARGIN_TOP;
                 margin-left: $COSMOUI_EVENTS_WIDGET_OPENED_HEADER_TEXT_MARGIN_LEFT;
             }
 
             #events-widget-header-close-button {
+                position: absolute;
+                top: 7px;
+                right: 8px;
+                display: inline-block;
                 width: $COSMOUI_EVENTS_WIDGET_OPENED_HEADER_CLOSE_WIDTH;
                 height: $COSMOUI_EVENTS_WIDGET_OPENED_HEADER_CLOSE_HEIGHT;
                 background: $COSMOUI_EVENTS_WIDGET_OPENED_HEADER_CLOSE_BACKGROUND;
                 cursor: pointer;
-                position: relative;
-                right: $COSMOUI_EVENTS_WIDGET_OPENED_HEADER_CLOSE_RIGHT;
-                top: $COSMOUI_EVENTS_WIDGET_OPENED_HEADER_CLOSE_TOP;
-                float: right;
             }
         }
 

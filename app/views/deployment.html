@@ -126,7 +126,7 @@
                 <button type="button" class="btn btn-default" value="network" data-ng-show="networks.networks.length">Network</button>
                 <button type="button" class="btn btn-default" value="nodes">Nodes</button>
                 <button type="button" class="btn btn-default" value="events">Events</button>
-                <button type="button" class="btn btn-default" value="monitoring">Monitoring</button>
+                <!--<button type="button" class="btn btn-default" value="monitoring">Monitoring</button>-->
             </div>
             <div settings-toggles id="settings-button" class="no-embed" toggles="toggleBar"></div>
 
@@ -157,7 +157,7 @@
                 disableModules: !toggleBar.modules,
                 disableConnections: !toggleBar.connections
                 }">
-                    <div bp-topology-nodes map="nodesTree" selected="viewNode(node_id)"></div>
+                    <div bp-topology-nodes map="nodesTree" selected="viewNode(getNodeById(node_id))"></div>
                     <div class="coordinates" blueprint:arrows="coordinates" arrow="true" color="#7A7A7A"></div>
                 </div>
                 <!-- Topology Tab - END -->
@@ -191,7 +191,7 @@
                                     <div class="inner">
                                         <div class="buttons no-embed">
                                             <ul>
-                                                <li data-ng-click="viewNode(device)" class="topology-glyph node-details"></li>
+                                                <li data-ng-click="viewNode(getNodeById(device.id))" class="topology-glyph node-details"></li>
                                             </ul>
                                         </div>
                                         <i class="topology-glyph {{ device.icon }}" bp:network:coordinate ng-model="device"></i>
@@ -199,7 +199,7 @@
                                     <div class="ports" data-ng-repeat="port in device.ports">
                                         <div class="buttons no-embed">
                                             <ul>
-                                                <li data-ng-click="viewNode(device)" class="topology-glyph node-details"></li>
+                                                <li data-ng-click="viewNode(getNodeById(device.id))" class="topology-glyph node-details"></li>
                                             </ul>
                                         </div>
                                         <i class="topology-glyph {{ port.icon }}" bp:network:coordinate ng-model="port"></i>
@@ -244,7 +244,7 @@
                             </td>
                             <td>
                                 <ul>
-                                    <li data-ng-click="viewNode(indexNodes[row.id])" class="topology-glyph node-details"></li>
+                                    <li data-ng-click="viewNode(getNodeById(row.id))" class="topology-glyph node-details"></li>
                                 </ul>
                             </td>
                         </tr>

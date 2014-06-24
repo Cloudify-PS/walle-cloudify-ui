@@ -160,18 +160,20 @@
         padding: 50px 0;
 
         pre {
-          width: 100%;
-          margin-left: 20px;
-          padding-top: 0px;
-          padding-bottom: 0px;
-          -webkit-user-select: none;  /* Chrome all / Safari all */
-          -moz-user-select: none;     /* Firefox all */
-          -ms-user-select: none;      /* IE 10+ */
-          user-select: none;
+            width: 100%;
+            margin-left: 20px;
+            padding: 0px 10px 0;
+            -webkit-user-select: none; /* Chrome all / Safari all */
+            -moz-user-select: none; /* Firefox all */
+            -ms-user-select: none; /* IE 10+ */
+            user-select: none;
+            background-color: whitesmoke;
+            border: 1px solid #cccccc;
+            border-radius: 4px;
 
-          div {
-            background-color: whitesmoke !important;
-          }
+            div {
+                background-color: whitesmoke !important;
+            }
         }
     }
 
