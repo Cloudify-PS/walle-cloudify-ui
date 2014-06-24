@@ -74,10 +74,10 @@ angular.module('cosmoUi')
                         $scope.networks = _createNetworkTree(data.plan.nodes, _extNetworks);
 
                         bpNetworkService.setMap($scope.networks.relations);
-                        $timeout(function(){
+//                        $timeout(function(){
                             $scope.networkcoords = bpNetworkService.getCoordinates();
                             bpNetworkService.render();
-                        }, 100);
+//                        }, 100);
                     });
             });
 

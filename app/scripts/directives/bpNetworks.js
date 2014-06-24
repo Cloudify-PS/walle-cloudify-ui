@@ -75,7 +75,7 @@ angular.module('cosmoUi')
                         if(!data || !data.length) {
                             $timeout(function(){
                                 grabData();
-                            }, 1000);
+                            }, 50);
                         }
                         else {
                             draw(data);
@@ -140,7 +140,7 @@ angular.module('cosmoUi')
         this.render = function () {
             $timeout(function(){
                 render();
-            }, 2000);
+            }, 50);
         };
 
         function render() {
@@ -221,6 +221,8 @@ angular.module('cosmoUi')
 
         this.setMap = function (data) {
             map = data;
+            elements = {};
+            coordinates = [];
         };
 
         this.getCoordinates = function () {
