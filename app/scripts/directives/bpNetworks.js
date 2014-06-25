@@ -1,14 +1,10 @@
 'use strict';
 
 angular.module('cosmoUi')
-    .directive('bpNetworks', function (bpNetworkService, $timeout) {
+    .directive('bpNetworks', function (bpNetworkService) {
         return {
-            restrict: 'EA',
-//            require: '?ngModel',
-//            scope: {
-//                coords: '=coords'
-//            },
-            link: function postLink($scope, $element, $attrs) {
+            restrict: 'A',
+            link: function postLink($scope, $element) {
 
                 var width = '100%',
                     height = '100%';
@@ -69,40 +65,6 @@ angular.module('cosmoUi')
                         draw(data);
                     }
                 });
-
-//                $scope.$watch(ngModel, function() {
-//                    if (ngModel.$viewValue.length > 0) {
-//                        draw(ngModel.$viewValue);
-//                    }
-//                });
-
-//                $scope.$watch(function () {
-//                    return ngModel.$viewValue;
-//                }, function(data) {
-//                    if (data.length > 0) {
-//                        draw(data);
-//                    }
-//                });
-
-//                ngModel.$render = function () {
-//                    var grabLoops = 0;
-//                    (function grabData() {
-//                        if(grabLoops === 60) {
-//                            grabLoops = 0;
-//                            return;
-//                        }
-//                        var data = ngModel.$viewValue || false;
-//                        if(!data || !data.length) {
-//                            $timeout(function(){
-//                                grabData();
-//                            }, 50);
-//                        }
-//                        else {
-//                            draw(data);
-//                        }
-//                        grabLoops++;
-//                    })();
-//                };
 
                 $scope.$watch(function() {
                     return $element.is(':visible');
