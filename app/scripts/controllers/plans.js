@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('cosmoUi')
-    .controller('PlansCtrl', function ($scope, Layout, Render, $routeParams, BreadcrumbsService, blueprintCoordinateService, bpNetworkService, $http, $timeout, $location, RestService) {
+    .controller('PlansCtrl', function ($scope, Layout, Render, $routeParams, BreadcrumbsService, blueprintCoordinateService, bpNetworkService, $http, $location, RestService) {
 
         $scope.section = 'topology';
         $scope.propSection = 'general';
@@ -72,12 +72,8 @@ angular.module('cosmoUi')
                         _extNetworks.push(subNetwork);
 
                         $scope.networks = _createNetworkTree(data.plan.nodes, _extNetworks);
-
                         bpNetworkService.setMap($scope.networks.relations);
-                        $timeout(function(){
-                            $scope.networkcoords = bpNetworkService.getCoordinates();
-                            bpNetworkService.render();
-                        }, 100);
+                        $scope.networkcoords = bpNetworkService.getCoordinates();
                     });
             });
 

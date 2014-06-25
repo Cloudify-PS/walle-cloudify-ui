@@ -43,9 +43,4 @@ angular.module('cosmoUi')
                 target: data.target
             });
         }
-
-        this.getTopology = function () {
-            return topology;
-        };
-
     });
