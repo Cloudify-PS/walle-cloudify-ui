@@ -76,7 +76,7 @@ angular.module('cosmoUi')
                         bpNetworkService.setMap($scope.networks.relations);
 //                        $timeout(function(){
                             $scope.networkcoords = bpNetworkService.getCoordinates();
-                            bpNetworkService.render();
+//                            bpNetworkService.render();
 //                        }, 100);
                     });
             });
