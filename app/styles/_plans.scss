@@ -153,7 +153,6 @@
 
     .content-header {
       border-bottom: 3px solid #d3dfe2;
-      height: 62px;
       overflow: hidden;
     }
 
@@ -161,18 +160,20 @@
         padding: 50px 0;
 
         pre {
-          width: 100%;
-          margin-left: 20px;
-          padding-top: 0px;
-          padding-bottom: 0px;
-          -webkit-user-select: none;  /* Chrome all / Safari all */
-          -moz-user-select: none;     /* Firefox all */
-          -ms-user-select: none;      /* IE 10+ */
-          user-select: none;
+            width: 100%;
+            margin-left: 20px;
+            padding: 0px 10px 0;
+            -webkit-user-select: none; /* Chrome all / Safari all */
+            -moz-user-select: none; /* Firefox all */
+            -ms-user-select: none; /* IE 10+ */
+            user-select: none;
+            background-color: whitesmoke;
+            border: 1px solid #cccccc;
+            border-radius: 4px;
 
-          div {
-            background-color: whitesmoke !important;
-          }
+            div {
+                background-color: whitesmoke !important;
+            }
         }
     }
 
@@ -199,9 +200,10 @@
             height: 36px;
             border-radius: 19px;
             color: white;
+            line-height: 0px;
             &:after {
                 position: absolute;
-                top: -10px;
+                top: 19px;
                 left: 8px;
             }
             &.fa {
@@ -379,6 +381,7 @@
                 top: -10px;
                 right: 0px;
                 z-index: 100;
+                line-height: 0px;
                 > ul {
                     display: inline-block;
                     list-style-type: none;
@@ -397,7 +400,7 @@
                         position: relative;
                         &:after {
                             position: absolute;
-                            top: -8px;
+                            top: 13px;
                             left: 9px;
                             font-size: 30px;
                             color: $clr-base-27;
@@ -441,7 +444,7 @@
                 display: inline-block;
                 &:after {
                     position: absolute;
-                    top: -10px;
+                    top: 17px;
                     left: 8px;
                 }
             }
