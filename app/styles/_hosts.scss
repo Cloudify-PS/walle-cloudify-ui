@@ -121,39 +121,6 @@
                     &.event-text-red {
                         color: $COSMOUI_EVENTS_LIST_TEXT_FAILED;
                     }
-                    &.event-icon-workflow-started {
-                        background: url("#{$img-workflow-started}") no-repeat center center;
-                    }
-                    &.event-icon-workflow-end-successfully {
-                        background: url("#{$img-workflow-end-successfully}") no-repeat center center;
-                    }
-                    &.event-icon-workflow-failed {
-                        background: url("#{$img-workflow-failed}") no-repeat center center;
-                    }
-                    &.event-icon-task-started {
-                        background: url("#{$img-task-started}") no-repeat center center;
-                    }
-                    &.event-icon-task-failed {
-                        background: url("#{$img-task-failed}") no-repeat center center;
-                    }
-                    &.event-icon-task-sent {
-                        background: url("#{$img-task-sent}") no-repeat center center;
-                    }
-                    &.event-icon-task-success {
-                        background: url("#{$img-task-success}") no-repeat center center;
-                    }
-                    &.event-icon-policy-success {
-                        background: url("#{$img-policy-success}") no-repeat center center;
-                    }
-                    &.event-icon-policy-failed {
-                        background: url("#{$img-policy-failed}") no-repeat center center;
-                    }
-                    &.gs-icon-logs {
-                        padding-left: 16px;
-                        color: #049cdb;
-                        line-height: 46px;
-                        font-size: 55px;
-                    }
                 }
             }
         }

@@ -103,36 +103,6 @@
                             margin: 5px 0 0 0;
                         }
 
-                        .event-icon-workflow-started {
-                            background: $COSMOUI_EVENT_ICON_BACKGROUND_WORKFLOW_STARTED;
-                        }
-                        .event-icon-workflow-stage {
-                            background: $COSMOUI_EVENT_ICON_BACKGROUND_WORKFLOW_STAGE;
-                        }
-                        .event-icon-workflow-end-successfully {
-                            background: $COSMOUI_EVENT_ICON_BACKGROUND_WORKFLOW_END_SUCCESSFULLY;
-                        }
-                        .event-icon-workflow-failed {
-                            background: $COSMOUI_EVENT_ICON_BACKGROUND_WORKFLOW_FAILED;
-                        }
-                        .event-icon-task-started {
-                            background: $COSMOUI_EVENT_ICON_BACKGROUND_TASK_STARTED;
-                        }
-                        .event-icon-task-failed {
-                            background: $COSMOUI_EVENT_ICON_BACKGROUND_TASK_FAILED;
-                        }
-                        .event-icon-task-sent {
-                            background: $COSMOUI_EVENT_ICON_BACKGROUND_TASK_SENT;
-                        }
-                        .event-icon-task-success {
-                            background: $COSMOUI_EVENT_ICON_BACKGROUND_TASK_SUCCESS;
-                        }
-                        .event-icon-policy-success {
-                            background: $COSMOUI_EVENT_ICON_BACKGROUND_POLICY_SUCCESS;
-                        }
-                        .event-icon-policy-failed {
-                            background: $COSMOUI_EVENT_ICON_BACKGROUND_POLICY_FAILED;
-                        }
                     }
                 }
             }

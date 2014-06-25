@@ -6,7 +6,7 @@
 
     <div class="content-section">
 
-        <h4>Types Icons </h4>
+        <h4>Types Icons</h4>
         <p>Basic using element to display type icons must be in the pattern <code>&lt;i class=&quot;icon topology-glyph { icon_type }&quot;&gt;&lt;/i&gt;</code></p>
         <table class="table table-striped">
             <thead>
@@ -22,6 +22,27 @@
                     <td class="active text-center"><i class="icon topology-glyph {{ data.icon }}"></i></td>
                     <td><code>&lt;i class=&quot;icon topology-glyph {{ data.icon }}&quot;&gt;&lt;/i&gt;</code></td>
                 </tr>
+            </tbody>
+        </table>
+
+        <hr />
+
+        <h4>Events Icons</h4>
+        <p>Basic using element to display type icons must be in the pattern <code>&lt;i class=&quot;icon { icon_type }&quot;&gt;&lt;/i&gt;</code></p>
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <td>Type</td>
+                <td class="col-sm-1 text-center info">Preview</td>
+                <td>Element</td>
+            </tr>
+            </thead>
+            <tbody>
+            <tr data-ng-repeat="data in eventsList">
+                <td>{{ data.text }}</td>
+                <td class="active text-center"><i class="icon {{ data.icon }}"></i></td>
+                <td><code>&lt;i class=&quot;icon {{ data.icon }}&quot;&gt;&lt;/i&gt;</code></td>
+            </tr>
             </tbody>
         </table>
 
