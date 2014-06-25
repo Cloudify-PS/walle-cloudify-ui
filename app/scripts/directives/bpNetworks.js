@@ -134,6 +134,7 @@ angular.module('cosmoUi')
             return coordinates;
         }, function () {
             $rootScope.$broadcast('coordinatesUpdated', coordinates);
+            coordinates = [];
         }, true);
 
         function _render() {
@@ -210,7 +211,7 @@ angular.module('cosmoUi')
 
         this.setMap = function (data) {
             map = data;
-//            elements = {};
+            elements = {};
             coordinates = [];
         };
 
