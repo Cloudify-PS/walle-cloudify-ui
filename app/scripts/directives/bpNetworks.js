@@ -3,12 +3,12 @@
 angular.module('cosmoUi')
     .directive('bpNetworks', function (bpNetworkService, $timeout) {
         return {
-            restrict: 'A',
-            require: '?ngModel',
-            link: function postLink($scope, $element, $attrs, ngModel) {
-                if (!ngModel) {
-                    return;
-                }
+            restrict: 'EA',
+//            require: '?ngModel',
+//            scope: {
+//                coords: '=coords'
+//            },
+            link: function postLink($scope, $element, $attrs) {
 
                 var width = '100%',
                     height = '100%';
@@ -64,25 +64,45 @@ angular.module('cosmoUi')
                     }
                 }
 
-                ngModel.$render = function () {
-                    var grabLoops = 0;
-                    (function grabData() {
-                        if(grabLoops === 60) {
-                            grabLoops = 0;
-                            return;
-                        }
-                        var data = ngModel.$viewValue || false;
-                        if(!data || !data.length) {
-                            $timeout(function(){
-                                grabData();
-                            }, 50);
-                        }
-                        else {
-                            draw(data);
-                        }
-                        grabLoops++;
-                    })();
-                };
+                $scope.$on('coordinatesUpdated', function(e, data) {
+                    if (data.length > 0) {
+                        draw(data);
+                    }
+                });
+
+//                $scope.$watch(ngModel, function() {
+//                    if (ngModel.$viewValue.length > 0) {
+//                        draw(ngModel.$viewValue);
+//                    }
+//                });
+
+//                $scope.$watch(function () {
+//                    return ngModel.$viewValue;
+//                }, function(data) {
+//                    if (data.length > 0) {
+//                        draw(data);
+//                    }
+//                });
+
+//                ngModel.$render = function () {
+//                    var grabLoops = 0;
+//                    (function grabData() {
+//                        if(grabLoops === 60) {
+//                            grabLoops = 0;
+//                            return;
+//                        }
+//                        var data = ngModel.$viewValue || false;
+//                        if(!data || !data.length) {
+//                            $timeout(function(){
+//                                grabData();
+//                            }, 50);
+//                        }
+//                        else {
+//                            draw(data);
+//                        }
+//                        grabLoops++;
+//                    })();
+//                };
 
                 $scope.$watch(function() {
                     return $element.is(':visible');
@@ -147,6 +167,12 @@ angular.module('cosmoUi')
         $rootScope.$on('elementsUpdated', function() {
             _render();
         });
+
+        $rootScope.$watch(function() {
+            return coordinates;
+        }, function () {
+            $rootScope.$broadcast('coordinatesUpdated', coordinates);
+        }, true);
 
         function _render() {
             var Coords = [];
@@ -222,7 +248,7 @@ angular.module('cosmoUi')
 
         this.setMap = function (data) {
             map = data;
-            elements = {};
+//            elements = {};
             coordinates = [];
         };
 
