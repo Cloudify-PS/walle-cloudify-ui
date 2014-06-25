@@ -23,8 +23,8 @@ angular.module('cosmoUi')
                     var offset = parseInt(offsetString, 10) / 100;
                     if (offsetString.slice(0, 1) === '+') {
                         offset *= -1;
+                        day.setHours(day.getHours() + offset);
                     }
-                    day.setHours(day.getHours() + offset);
                     return day.getTime();
                 };
                 if (noOffset(testIso) === 1322118027000) {
