@@ -212,6 +212,16 @@ app.post('/backend/node/get', function(request, response) {
     });
 });
 
+app.post('/backend/nodes', function(request, response) {
+    var queryParams = {};
+    if (request.body.deployment_id !== undefined) {
+        queryParams.deployment_id = request.body.deployment_id;
+    }
+    cloudify4node.getNodes(queryParams, function(err, data) {
+        response.send(err !== null ? err : data);
+    });
+});
+
 app.post('/backend/influx', function(request, response) {
 
     var influxClient = influx({

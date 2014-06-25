@@ -51,13 +51,8 @@
                 <th class="id">ID</th>
                 <th class="state">State</th>
                 <th class="deploymentId">Deployment ID</th>
-                <th class="version">Version</th>
                 <th class="">Host ID</th>
-                <th class="">Private IPs</th>
                 <th class="">Floating IP</th>
-                <th class="">Security Groups</th>
-                <th class="">Image ID</th>
-                <th class="">Flavor ID</th>
             </tr>
             </thead>
             <tbody class="animate-repeat" ng-repeat="row in hostsList | filter: searchFilter" ng-init="isOpen=false">
@@ -65,13 +60,8 @@
                     <td class="id">{{row.id == null && '-' || row.id }}</td>
                     <td class="state">{{row.state == null && '-' || row.state }}</td>
                     <td class="deploymentId">{{row.deployment_id == null && '-' || row.deployment_id }}</td>
-                    <td class="version">{{row.version == null && '-' || row.version }}</td>
                     <td class="">{{row.runtime_properties.host_id == null && '-' || row.runtime_properties.host_id }}</td>
-                    <td class="">{{row.runtime_properties.private_ips == null && '-' || row.runtime_properties.private_ips }}</td>
                     <td class="">{{row.runtime_properties.floating_ip_address == null && '-' || row.runtime_properties.floating_ip_address }}</td>
-                    <td class="">{{row.runtime_properties.security_groups == null && '-' || row.runtime_properties.security_groups }}</td>
-                    <td class="">{{row.runtime_properties.image_id == null && '-' || row.runtime_properties.image_id }}</td>
-                    <td class="">{{row.runtime_properties.flavor_id == null && '-' || row.runtime_properties.flavor_id }}</td>
                 </tr>
             </tbody>
         </table>

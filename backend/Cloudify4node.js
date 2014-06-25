@@ -413,6 +413,22 @@ Cloudify4node.getNode = function(node_id, queryParams, callback) {
     createRequest(requestData, callback);
 }
 
+Cloudify4node.getNodes = function(queryParams, callback) {
+    var queryStr = '';
+    if (queryParams !== null) {
+        queryStr = '?'
+        for (var param in queryParams) {
+            queryStr += param + '=' + queryParams[param] + '&';
+        }
+    }
+    var requestData = createRequestData({
+        path: '/nodes' + queryStr,
+        method: 'GET'
+    });
+
+    createRequest(requestData, callback);
+}
+
 
 // Monitor Mock's
 Cloudify4node.getMonitorGraphs = function(callback) {

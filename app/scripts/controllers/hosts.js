@@ -29,11 +29,22 @@ angular.module('cosmoUi')
 
         function _execute() {
             $scope.filterLoading = true;
-            RestService.getNodeInstances(_filter)
-                .then(function (data) {
-                    $scope.hostsList = data;
-                    $scope.filterLoading = false;
-                });
+            _deploymentsList.forEach(function(deployment) {
+                RestService.getNodes({deployment_id: deployment.value})
+                    .then(function(nodes) {
+                        RestService.getNodeInstances(_filter)
+                            .then(function (instances) {
+                                instances.forEach(function(instance) {
+                                    nodes.forEach(function(node) {
+                                        if (instance.node_id === node.id && node.type_hierarchy.join(',').indexOf('host') > -1) {
+                                            $scope.hostsList.push(instance);
+                                        }
+                                    });
+                                });
+                            });
+                        $scope.filterLoading = false;
+                    });
+            });
         }
 
         RestService.loadBlueprints()

@@ -176,7 +176,16 @@ angular.module('cosmoUi')
                 method: 'POST',
                 data: params
             };
-            return _load('nodes/get', callParams);
+            return _load('node/get', callParams);
+        }
+
+        function _getNodes(params) {
+            var callParams = {
+                url: '/backend/nodes',
+                method: 'POST',
+                data: params
+            };
+            return _load('/backend/nodes', callParams);
         }
 
         function _loadEvents(query) {
@@ -320,6 +329,7 @@ angular.module('cosmoUi')
         this.getWorkflows = _getWorkflows;
         this.getProviderContext = _getProviderContext;
         this.getNode = _getNode;
+        this.getNodes = _getNodes;
         this.getSettings = _getSettings;
         this.setSettings = _setSettings;
         this.getConfiguration = _getConfiguration;
