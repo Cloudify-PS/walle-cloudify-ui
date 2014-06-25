@@ -138,12 +138,10 @@ angular.module('cosmoUi')
             map = {};
 
         this.render = function () {
-            $timeout(function(){
-                render();
-            }, 50);
+            _render();
         };
 
-        function render() {
+        function _render() {
             var Coords = [];
             angular.forEach(map, function (relation) {
                 if(!elements.hasOwnProperty(relation.source) || !elements.hasOwnProperty(relation.target)) {
@@ -156,18 +154,14 @@ angular.module('cosmoUi')
 
                 Coords.push({
                     source: {
-                        type: from.type,
                         x: getAttachPoint(from.x, to.x, from.element),
                         y: to.y + (height / 2)
                     },
                     target: {
-                        type: to.type,
                         x: getAttachPoint(to.x, from.x, to.element),
                         y: to.y + (height / 2)
                     },
-                    color: from.color !== undefined ? from.color : to.color,
-                    from: relation.source,
-                    to: relation.target
+                    color: from.color !== undefined ? from.color : to.color
                 });
             });
             angular.extend(coordinates, Coords);
