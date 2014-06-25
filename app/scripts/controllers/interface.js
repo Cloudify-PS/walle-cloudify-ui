@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('cosmoUi')
-    .controller('InterfaceCtrl', function ($scope, BreadcrumbsService, topologyTypes) {
+    .controller('InterfaceCtrl', function ($scope, BreadcrumbsService, topologyTypes, EventsMap) {
 
         /**
          * Breadcrumbs
@@ -13,5 +13,7 @@ angular.module('cosmoUi')
         });
 
         $scope.typesList = topologyTypes.getList();
+
+        $scope.eventsList = EventsMap.getEventsList();
 
     });

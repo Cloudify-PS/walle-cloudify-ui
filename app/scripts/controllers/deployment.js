@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('cosmoUi')
-    .controller('DeploymentCtrl', function ($scope, $rootScope, $cookieStore, $routeParams, RestService, EventsService, BreadcrumbsService, blueprintCoordinateService, bpNetworkService, $route, $anchorScroll, $timeout, $location, $log, EventsMap, monitoringGraphs, $localStorage) {
+    .controller('DeploymentCtrl', function ($scope, $rootScope, $cookieStore, $routeParams, RestService, EventsService, BreadcrumbsService, blueprintCoordinateService, bpNetworkService, $route, $anchorScroll, $timeout, $location, $log, EventsMap, monitoringGraphs, $localStorage, $filter) {
 
         var statesIndex = ['uninitialized', 'initializing', 'creating', 'created', 'configuring', 'configured', 'starting', 'started'],
             currentExeution = null,
@@ -446,6 +446,8 @@ angular.module('cosmoUi')
 
                                     $scope.networks = _createNetworkTree(data.plan.nodes, _extNetworks);
 
+                                    console.log(['$scope.networks', $scope.networks]);
+
                                     bpNetworkService.setMap($scope.networks.relations);
                                     $timeout(function(){
                                         $scope.networkcoords = bpNetworkService.getCoordinates();
@@ -860,23 +862,31 @@ angular.module('cosmoUi')
                 return copy.reverse();
             }
 
+            function _convertDates(data) {
+                for(var i in data) {
+                    data[i]._source.timestamp = $filter('dateFormat')(data[i]._source.timestamp, 'yyyy-MM-dd HH:mm:ss');
+                }
+                return data;
+            }
+
             events
                 .execute(function(data){
                     if(data && data.hasOwnProperty('hits')) {
+                        var dataHits = _convertDates(data.hits.hits);
                         if(data.hits.hits.length !== lastAmount) {
                             if(document.body.scrollTop === 0) {
                                 $scope.newEvents = 0;
-                                $scope.eventHits = _reverse(data.hits.hits);
+                                $scope.eventHits = _reverse(dataHits);
                             }
                             else {
-                                eventsCollect = _reverse(data.hits.hits);
+                                eventsCollect = _reverse(dataHits);
                                 $scope.newEvents = eventsCollect.length - $scope.eventHits.length;
                             }
-                            lastAmount = data.hits.hits.length;
+                            lastAmount = dataHits.length;
                         }
-                        else if(JSON.stringify($scope.eventHits) === JSON.stringify(_reverse(data.hits.hits))) {
+                        else if(JSON.stringify($scope.eventHits) === JSON.stringify(_reverse(dataHits))) {
                             $scope.newEvents = 0;
-                            $scope.eventHits = _reverse(data.hits.hits);
+                            $scope.eventHits = _reverse(dataHits);
                         }
                     }
                     else {

@@ -6,23 +6,26 @@
     }
 
     i.icon {
-        position: relative;
-        width: 36px;
-        height: 36px;
-        background: #136e9d;
-        color: #fff;
-        &:after {
-            position: absolute;
-            top: -1px;
-            left: 8px;
+        &.topology-glyph {
+            position: relative;
+            width: 36px;
+            height: 36px;
+            background: #136e9d;
+            color: #fff;
+            border-radius: 19px;
+            &:after {
+                position: absolute;
+                top: -1px;
+                left: 8px;
+            }
         }
-
     }
 
     .table {
         margin-left: 0px;
 
         tr {
+            cursor: default;
             td:nth-child(2) {
                 width: 15px;
                 padding-right: 10px;
