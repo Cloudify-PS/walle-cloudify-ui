@@ -251,8 +251,8 @@ html, body, .layout {
 .buttons-group {
     $RADIUS: 30px;
     display: inline-block;
-    margin: 2px 4px 0px 10px;
-    float: left;
+    margin: 0px 4px 0px 10px;
+    vertical-align: middle;
 
     button {
         display: inline-block;
