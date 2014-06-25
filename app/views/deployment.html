@@ -140,7 +140,7 @@
                 </div>
                 <div class="executingWorkflow" ng-show="deploymentInProgress">
                     {{executedData.workflow_id}}
-                    <div class="deploymentExecute" dots-loader ng-show="deploymentInProgress"></div>
+                    <div class="deploymentExecute" dots-loader speed="50" ng-show="deploymentInProgress"></div>
                 </div>
                 <i class="deployment-play" ng-class="{play: isExecuteEnabled(), disabled: !isExecuteEnabled()}" ng-click="toggleConfirmationDialog(deployment, 'execute')" ng-show="!deploymentInProgress"></i>
 
@@ -165,12 +165,28 @@
                 <!-- Network Topology - START -->
                 <div class="networksContainer" ng-switch-when="network">
                     <div bp:networks class="relations" ng-model="networkcoords"></div>
+
+                    <!-- External networks -->
                     <div data-ng-repeat="network in networks.external" class="network">
                         <div class="line">
                             <div class="name">{{ network.name }}</div>
-                            <div data-ng-repeat="networks in networks.external" class="subnet" bp:network:coordinate ng-model="network">
+                            <div class="subnet" bp:network:coordinate ng-model="network">
                                 <p>{{ network.name }}</p>
-                                <p class="cidr">Network</p>
+                                <p class="cidr">{{ network.type }}</p>
+                            </div>
+                        </div>
+                        <div class="devices">
+                            <div data-ng-repeat="device in network.devices" class="device">
+                                <div data-ng-class="{'true': 'portarea'}[device.ports.length > 0]">
+                                    <div class="inner">
+                                        <div class="buttons no-embed">
+                                            <ul>
+                                                <li data-ng-click="viewNode(device)" class="topology-glyph node-details"></li>
+                                            </ul>
+                                        </div>
+                                        <i class="topology-glyph {{ device.icon }}" bp:network:coordinate ng-model="device"></i>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -191,8 +207,8 @@
                                     <div class="inner">
                                         <div class="buttons no-embed">
                                             <ul>
-                                                <li data-ng-click="viewNode(getNodeById(device.id))" class="topology-glyph node-details"></li>
-                                            </ul>
+                                            <li data-ng-click="viewNode(device)" class="topology-glyph node-details"></li>
+                                        </ul>
                                         </div>
                                         <i class="topology-glyph {{ device.icon }}" bp:network:coordinate ng-model="device"></i>
                                     </div>

@@ -11,7 +11,7 @@ angular.module('cosmoUi')
         $scope.delDeployError = false;
         $scope.ignoreLiveNodes = false;
         $scope.confirmationType = '';
-        $scope.executedDeployments = [];
+        var _executedDeployments = [];
         $scope.selectedWorkflow = {
             data: null
         };
@@ -56,13 +56,13 @@ angular.module('cosmoUi')
         };
 
         $scope.isExecuting = function(blueprint_id, deployment_id) {
-            return $scope.executedDeployments[blueprint_id] !== undefined &&
-                $scope.executedDeployments[blueprint_id][deployment_id] !== null &&
-                $scope.executedDeployments[blueprint_id][deployment_id] !== undefined &&
-                $scope.executedDeployments[blueprint_id][deployment_id].status !== 'failed' &&
-                $scope.executedDeployments[blueprint_id][deployment_id].status !== 'terminated' &&
-                $scope.executedDeployments[blueprint_id][deployment_id].status !== 'canceled' &&
-                $scope.executedDeployments[blueprint_id][deployment_id].status !== null;
+            return _executedDeployments[blueprint_id] !== undefined &&
+                _executedDeployments[blueprint_id][deployment_id] !== null &&
+                _executedDeployments[blueprint_id][deployment_id] !== undefined &&
+                _executedDeployments[blueprint_id][deployment_id].status !== 'failed' &&
+                _executedDeployments[blueprint_id][deployment_id].status !== 'terminated' &&
+                _executedDeployments[blueprint_id][deployment_id].status !== 'canceled' &&
+                _executedDeployments[blueprint_id][deployment_id].status !== null;
         };
 
         $scope.cancelExecution = function(deployment) {
@@ -71,7 +71,7 @@ angular.module('cosmoUi')
                 'state': 'cancel'
             };
             RestService.updateExecutionState(callParams).then(function() {
-                $scope.executedDeployments[deployment.blueprint_id][deployment.id] = null;
+                _executedDeployments[deployment.blueprint_id][deployment.id] = null;
             });
         };
 
@@ -110,32 +110,34 @@ angular.module('cosmoUi')
             RestService.getDeploymentExecutions(deployment_id)
                 .then(function(data) {
                     if (data.length > 0) {
-                        if ($scope.executedDeployments[blueprint_id] === undefined) {
-                            $scope.executedDeployments[blueprint_id] = [];
+                        if (_executedDeployments[blueprint_id] === undefined) {
+                            _executedDeployments[blueprint_id] = [];
                         }
 
                         for (var i = 0; i < data.length; i++) {
                             if (data[i].status !== null && data[i].status !== 'failed' && data[i].status !== 'terminated' && data[i].status !== 'canceled') {
                                 selectedWorkflows[deployment_id] = data[i].workflow_id;
-                                $scope.executedDeployments[blueprint_id][deployment_id] = data[i];
+                                _executedDeployments[blueprint_id][deployment_id] = data[i];
+                            } else if (data[i].status === 'failed' || data[i].status === 'terminated' || data[i].status === 'canceled') {
+                                _executedDeployments[blueprint_id][deployment_id] = null;
                             }
                         }
                     }
                 });
 
             if ($location.path() === '/deployments') {
-//                $timeout(function(){
-//                    _loadExecutions(blueprint_id, deployment_id);
-//                }, 60000);
+                $timeout(function(){
+                    _loadExecutions(blueprint_id, deployment_id);
+                }, 60000);
             }
         }
 
         $scope.getExecutionAttr = function(deployment, attr) {
-            for (var blueprint in $scope.executedDeployments) {
-                for (var dep in $scope.executedDeployments[blueprint]) {
-                    if ($scope.executedDeployments[blueprint][dep] !== null) {
-                        if (deployment.id === $scope.executedDeployments[blueprint][dep].deployment_id) {
-                            return $scope.executedDeployments[blueprint][dep][attr];
+            for (var blueprint in _executedDeployments) {
+                for (var dep in _executedDeployments[blueprint]) {
+                    if (_executedDeployments[blueprint][dep] !== null) {
+                        if (deployment.id === _executedDeployments[blueprint][dep].deployment_id) {
+                            return _executedDeployments[blueprint][dep][attr];
                         }
                     }
                 }

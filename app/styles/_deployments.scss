@@ -61,6 +61,8 @@
       -moz-appearance: none;
       appearance: none;
       cursor: default;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
   }
 

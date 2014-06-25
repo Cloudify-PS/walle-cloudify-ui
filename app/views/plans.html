@@ -7,7 +7,7 @@
         </div>
         <div class="content">
             <div class="buttons-group no-embed" checkbox-toggle value="propSection">
-                <button ng-repeat="(key, value) in showProperties" type="button" class="btn btn-default" value="{{key}}">{{ 'plans.' + key | i18n }}</button>
+                <button ng-repeat="(key, value) in showProperties" type="button" class="btn btn-default" ng-class="{active: key == propSection}" value="{{key}}">{{ 'plans.' + key | i18n }}</button>
             </div>
             <div ng-switch="propSection" class="content-section">
                 <div ng-switch-default="general">
@@ -87,15 +87,33 @@
         <!-- Network Topology - START -->
         <div class="networksContainer" ng-switch-when="network">
             <div bp:networks class="relations" ng-model="networkcoords"></div>
+
+            <!-- External networks -->
             <div data-ng-repeat="network in networks.external" class="network">
                 <div class="line">
                     <div class="name">{{ network.name }}</div>
-                    <div data-ng-repeat="networks in networks.external" class="subnet" bp:network:coordinate ng-model="network">
+                    <div class="subnet" bp:network:coordinate ng-model="network">
                         <p>{{ network.name }}</p>
-                        <p class="cidr">External Network</p>
+                        <p class="cidr">{{ network.type }}</p>
+                    </div>
+                </div>
+                <div class="devices">
+                    <div data-ng-repeat="device in network.devices" class="device">
+                        <div data-ng-class="{'true': 'portarea'}[device.ports.length > 0]">
+                            <div class="inner">
+                                <div class="buttons no-embed">
+                                    <ul>
+                                        <li data-ng-click="viewNode(device)" class="topology-glyph node-details"></li>
+                                    </ul>
+                                </div>
+                                <i class="topology-glyph {{ device.icon }}" bp:network:coordinate ng-model="device"></i>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
+
+            <!-- Blueprint networks -->
             <div data-ng-repeat="network in networks.networks" class="network">
                 <div class="line">
                     <div class="name">{{ network.name }}</div>
@@ -104,6 +122,8 @@
                         <p class="cidr">{{ subnet.cidr }}</p>
                     </div>
                 </div>
+
+                <!-- Network devices -->
                 <div class="devices">
                     <div data-ng-repeat="device in network.devices" class="device">
                         <div data-ng-class="{'true': 'portarea'}[device.ports.length > 0]">
@@ -126,6 +146,7 @@
                         </div>
                     </div>
                 </div>
+
             </div>
         </div>
         <!-- Network Topology - END -->
@@ -150,12 +171,12 @@
                         <td>{{ row.type }}</td>
                         <td>{{ row.instances.deploy }}</td>
                         <td>
-                            <span data-ng-if="getRelationshipByType(row, 'contained').length > 0" data-ng-repeat="container in getRelationshipByType(row, 'contained')">{{ container.name }}</span>
-                            <span data-ng-if="getRelationshipByType(row, 'contained').length == 0">--</span>
+                            <span data-ng-if="getRelationshipByType(row, 'contained_in').length > 0" data-ng-repeat="container in getRelationshipByType(row, 'contained_in')">{{ container.name }}</span>
+                            <span data-ng-if="getRelationshipByType(row, 'contained_in').length == 0">--</span>
                         </td>
                         <td>
-                            <span data-ng-if="getRelationshipByType(row, 'connected').length > 0" data-ng-repeat="connection in getRelationshipByType(row, 'connected')">{{ connection.name }}</span>
-                            <span data-ng-if="getRelationshipByType(row, 'connected').length == 0">--</span>
+                            <span data-ng-if="getRelationshipByType(row, 'connected_to').length > 0" data-ng-repeat="connection in getRelationshipByType(row, 'connected_to')">{{ connection.name }}</span>
+                            <span data-ng-if="getRelationshipByType(row, 'connected_to').length == 0">--</span>
                         </td>
                         <td>
                             <ul>
