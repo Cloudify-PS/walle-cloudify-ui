@@ -29,10 +29,15 @@ angular.module('cosmoUi')
 
         function _execute() {
             $scope.filterLoading = true;
+            $scope.hostsList = [];
             _deploymentsList.forEach(function(deployment) {
                 RestService.getNodes({deployment_id: deployment.value})
                     .then(function(nodes) {
-                        RestService.getNodeInstances(_filter)
+                        var _loadMethod = 'getNodeInstances';
+                        if (_filter.deployment_id !== undefined) {
+                            _loadMethod = 'getDeploymentNodes';
+                        }
+                        RestService[_loadMethod](_filter)
                             .then(function (instances) {
                                 instances.forEach(function(instance) {
                                     nodes.forEach(function(node) {
