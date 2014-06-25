@@ -99,10 +99,11 @@ angular.module('cosmoUi')
         return {
             restrict: 'A',
             require: '?ngModel',
-            link: function ($scope, $element, $attr, ngModel) {
+            link: function ($scope, $element, $attr, ngModel, $rootScope) {
                 if (!ngModel) {
                     return;
                 }
+
                 ngModel.$render = function () {
                     var data = ngModel.$viewValue || false;
                     switch (data.type) {
@@ -125,13 +126,15 @@ angular.module('cosmoUi')
                         bpNetworkService.addDevice(data.id, $element);
                         break;
                     }
+
+                    $scope.$root.$broadcast('elementsUpdated');
                 };
             }
         };
     });
 
 angular.module('cosmoUi')
-    .service('bpNetworkService', function($timeout){
+    .service('bpNetworkService', ['$rootScope', function($rootScope){
 
         var elements = {},
             coordinates = [],
@@ -140,6 +143,10 @@ angular.module('cosmoUi')
         this.render = function () {
             _render();
         };
+
+        $rootScope.$on('elementsUpdated', function() {
+            _render();
+        });
 
         function _render() {
             var Coords = [];
@@ -223,4 +230,4 @@ angular.module('cosmoUi')
             return coordinates;
         };
 
-    });
+    }]);
