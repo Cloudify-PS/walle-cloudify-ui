@@ -149,15 +149,15 @@
             #settings-button {
                 display: inline-block;
                 margin-left: 10px;
-                margin-top: 2px;
                 cursor: pointer;
+                vertical-align: middle;
             }
 
             .actions {
                 display: inline-block;
                 margin-left: 30px;
-                margin-top: 2px;
                 width: 230px;
+                vertical-align: middle;
 
                 i {
                     position: relative;

@@ -12,7 +12,7 @@
     #settings-toggles-container {
         position: absolute;
         top: 28px;
-        width: 150px;
+        width: 160px;
         height: 125px;
         background: $clr-base-01;
         border: 1px solid $clr-base-04;
@@ -41,7 +41,7 @@
 
                 #toggle-switch-button {
                     float: right;
-                    margin-right: 5px;
+                    margin-right: -3px;
                 }
             }
         }

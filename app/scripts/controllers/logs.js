@@ -148,7 +148,7 @@ angular.module('cosmoUi')
                     if(data.hasOwnProperty('length') && data.length > 0) {
                         for(var eid in data) {
                             var execute = data[eid];
-                            _executionList.push({'value': execute.id, 'label': execute.workflow_id + ' ('+ $filter('dateFormat')(execute.createdAt, 'yyyy-MM-dd HH:mm:ss') +')', 'parent': deployment_id});
+                            _executionList.push({'value': execute.id, 'label': execute.workflow_id + ' ('+ $filter('dateFormat')(execute.created_at, 'yyyy-MM-dd HH:mm:ss') +')', 'parent': deployment_id});
                         }
                     }
                 });
