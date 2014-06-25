@@ -99,7 +99,7 @@ angular.module('cosmoUi')
         return {
             restrict: 'A',
             require: '?ngModel',
-            link: function ($scope, $element, $attr, ngModel, $rootScope) {
+            link: function ($scope, $element, $attr, ngModel) {
                 if (!ngModel) {
                     return;
                 }
