@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('cosmoUi')
+angular.module('cosmoUiApp')
     .directive('settingsToggles', function () {
         return {
             templateUrl: 'views/settingsTogglesTemplate.html',

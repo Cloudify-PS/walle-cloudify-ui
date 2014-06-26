@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('cosmoUi')
+angular.module('cosmoUiApp')
     .controller('DeployDialogCtrl', function ($scope, RestService) {
         $scope.deployment_id = null;
         $scope.deployError = false;

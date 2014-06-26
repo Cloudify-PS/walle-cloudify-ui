@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('cosmoUi')
+angular.module('cosmoUiApp')
     .controller('LogsCtrl', function ($scope, BreadcrumbsService, RestService, EventsService, $location, $anchorScroll, $filter, $routeParams, LogsModel, $window, EventsMap, $log) {
 
         /**
@@ -281,7 +281,7 @@ angular.module('cosmoUi')
 
     });
 
-angular.module('cosmoUi')
+angular.module('cosmoUiApp')
     .filter('filterListByList', function filterListByList() {
         return function (list, filterList) {
             var results = [];

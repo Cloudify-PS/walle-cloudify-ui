@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('cosmoUi')
+angular.module('cosmoUiApp')
     .service('RestService', function RestService($http, $timeout, $q, $rootScope, $log) {
 
         var autoPull = [],

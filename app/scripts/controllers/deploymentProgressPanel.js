@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('cosmoUi')
+angular.module('cosmoUiApp')
     .controller('DeploymentProgressPanelCtrl', function ($scope) {
         $scope.panelOpen = false;
         $scope.panelData = [];

@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('cosmoUi')
+angular.module('cosmoUiApp')
     .service('monitoringGraphs', function monitoringGraphs(RestService) {
 
         var defaults = {

@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('cosmoUi')
+angular.module('cosmoUiApp')
     .service('LogsModel', function LogsModel() {
         var filterModelDefaults = {
             'blueprints': [null],

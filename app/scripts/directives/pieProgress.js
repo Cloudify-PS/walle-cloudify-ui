@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('cosmoUi')
+angular.module('cosmoUiApp')
     .directive('pieProgress', function () {
         return {
             restrict: 'A',

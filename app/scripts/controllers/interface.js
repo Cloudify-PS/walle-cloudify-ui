@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('cosmoUi')
+angular.module('cosmoUiApp')
     .controller('InterfaceCtrl', function ($scope, BreadcrumbsService, topologyTypes, EventsMap) {
 
         /**

@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('cosmoUi')
+angular.module('cosmoUiApp')
     .service('EventsMap', function EventsMap() {
 
         var eventsMap = {

@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('cosmoUi')
+angular.module('cosmoUiApp')
     .controller('PlansCtrl', function ($scope, Layout, Render, $routeParams, BreadcrumbsService, blueprintCoordinateService, bpNetworkService, $http, $location, RestService) {
 
         $scope.section = 'topology';

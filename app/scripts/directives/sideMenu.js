@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('cosmoUi')
+angular.module('cosmoUiApp')
     .directive('sideMenu', function ($location) {
         return {
             templateUrl: 'views/sideMenuTemplate.html',

@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('cosmoUi')
+angular.module('cosmoUiApp')
     .directive('bpNetworks', function (bpNetworkService) {
         return {
             restrict: 'A',
@@ -76,7 +76,7 @@ angular.module('cosmoUi')
         };
     });
 
-angular.module('cosmoUi')
+angular.module('cosmoUiApp')
     .directive('bpNetworkCoordinate', function (bpNetworkService) {
         return {
             restrict: 'A',
@@ -115,7 +115,7 @@ angular.module('cosmoUi')
         };
     });
 
-angular.module('cosmoUi')
+angular.module('cosmoUiApp')
     .service('bpNetworkService', ['$rootScope', function($rootScope){
 
         var elements = {},

@@ -8,7 +8,7 @@
 
  Use it wisely
  **/
-angular.module('cosmoUi')
+angular.module('cosmoUiApp')
     .directive('cosmoLayout', function ($routeParams) {
         return {
             templateUrl: 'views/cosmoLayoutTemplate.html',

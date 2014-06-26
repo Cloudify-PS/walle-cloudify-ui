@@ -3,7 +3,7 @@
 describe('Service: EventsMap', function () {
 
   // load the service's module
-//  beforeEach(module('cosmoUi'));
+//  beforeEach(module('cosmoUiApp'));
 //
 //  // instantiate service
 //  var EventsMap;

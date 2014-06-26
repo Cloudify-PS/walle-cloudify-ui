@@ -1,7 +1,7 @@
 'use strict';
 
 // this service will load yamls and send to parser.
-angular.module('cosmoUi')
+angular.module('cosmoUiApp')
     .service('YamlService', function YamlService($http, YamlTreeParser, YamlGraphParser ) {
 
         this.newInstance = function(){

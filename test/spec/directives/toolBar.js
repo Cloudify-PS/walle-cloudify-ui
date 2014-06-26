@@ -1,7 +1,7 @@
 'use strict';
 
 describe('Directive: toolBar', function () {
-//  beforeEach(module('cosmoUi'));
+//  beforeEach(module('cosmoUiApp'));
 
 //  var element;
 

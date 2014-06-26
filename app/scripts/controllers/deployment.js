@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('cosmoUi')
+angular.module('cosmoUiApp')
     .controller('DeploymentCtrl', function ($scope, $rootScope, $cookieStore, $routeParams, RestService, EventsService, BreadcrumbsService, blueprintCoordinateService, bpNetworkService, $route, $anchorScroll, $timeout, $location, $log, EventsMap, monitoringGraphs, $localStorage, $filter) {
 
         var statesIndex = ['uninitialized', 'initializing', 'creating', 'created', 'configuring', 'configured', 'starting', 'started'],

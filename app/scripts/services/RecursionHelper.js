@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('cosmoUi').factory('RecursionHelper', ['$compile', function($compile) {
+angular.module('cosmoUiApp').factory('RecursionHelper', ['$compile', function($compile) {
     return {
         compile: function(element, link){
             // Normalize the link parameter

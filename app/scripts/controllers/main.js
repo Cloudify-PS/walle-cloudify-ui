@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('cosmoUi')
+angular.module('cosmoUiApp')
     .controller('MainCtrl', function ($scope, /*YamlService,*/ $routeParams, $log) {
         var appName = $routeParams.name || 'mezzanine-app';
         $log.info(['appName is', appName]);

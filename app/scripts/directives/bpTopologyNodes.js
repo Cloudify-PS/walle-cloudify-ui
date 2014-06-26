@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('cosmoUi')
+angular.module('cosmoUiApp')
     .directive('bpTopologyNodes', ['RecursionHelper', function (RecursionHelper) {
         return {
             templateUrl: 'views/bpTopologyNodesTemplate.html',

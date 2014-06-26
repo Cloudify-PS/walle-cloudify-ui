@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('cosmoUi')
+angular.module('cosmoUiApp')
     .service('EventsService', function EventsService($http, $timeout, $q, ejsResource, $log, $rootScope) {
 
         function Events(server) {

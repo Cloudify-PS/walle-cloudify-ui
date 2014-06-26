@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('cosmoUi')
+angular.module('cosmoUiApp')
     .directive('appStatusWidget', function () {
         return {
             templateUrl: 'views/appStatusWidgetTemplate.html',

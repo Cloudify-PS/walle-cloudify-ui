@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('cosmoUi')
+angular.module('cosmoUiApp')
     .directive('graphsPager', function ($window) {
         return {
             restrict: 'A',

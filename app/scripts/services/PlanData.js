@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('cosmoUi').service('PlanData', function ($log) {
+angular.module('cosmoUiApp').service('PlanData', function ($log) {
 
     // AngularJS will instantiate a singleton by calling "new" on this function
 
@@ -79,7 +79,7 @@ angular.module('cosmoUi').service('PlanData', function ($log) {
 });
 
 
-angular.module('cosmoUi').service('PlanDataConvert', function (Cosmotypesservice, $log) {
+angular.module('cosmoUiApp').service('PlanDataConvert', function (Cosmotypesservice, $log) {
     /**
      * Convert Edges to Blueprint format
      * @param data
