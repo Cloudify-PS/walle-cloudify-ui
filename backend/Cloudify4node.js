@@ -151,15 +151,6 @@ Cloudify4node.getBlueprintById = function(blueprint_id, callback) {
     createRequest(requestData, callback );
 }
 
-Cloudify4node.getBlueprintSource = function(blueprint_id, callback) {
-    var requestData = createRequestData({
-        path: '/blueprints/' + blueprint_id + '/source',
-        method: 'GET'
-    });
-
-    createRequest(requestData, callback );
-}
-
 Cloudify4node.validateBlueprint = function(blueprint_id, callback) {
     var requestData = createRequestData({
         hostname: conf.cosmoServer,

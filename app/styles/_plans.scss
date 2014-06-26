@@ -190,7 +190,8 @@
     .bpContainer {
         position: relative;
         display: block;
-        width: 100%;
+        width: calc(100% + 120px);
+        margin-right: -120px;
         height: 100%;
         padding: 20px 40px;
         .coordinates {
@@ -743,6 +744,11 @@
         .sourcecode {
             display: table-cell;
             width: auto;
+            p.empty {
+                display: block;
+                text-align: center;
+                margin-top: 70px;
+            }
         }
     }
 

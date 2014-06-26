@@ -101,16 +101,6 @@ angular.module('cosmoUiApp')
             return _load('blueprints/get', callParams);
         }
 
-        function _getBlueprintSource(params) {
-            var callParams = {
-                url: '/backend/blueprints/source',
-                method: 'POST',
-                data: {'blueprint_id': params}
-            };
-
-            return _load('blueprints/source', callParams);
-        }
-
         function _browseBlueprint(params) {
             var callParams = {
                 url: '/backend/blueprints/browse',
@@ -313,7 +303,6 @@ angular.module('cosmoUiApp')
         this.loadBlueprints = _loadBlueprints;
         this.addBlueprint = _addBlueprint;
         this.getBlueprintById = _getBlueprintById;
-        this.getBlueprintSource = _getBlueprintSource;
         this.browseBlueprint = _browseBlueprint;
         this.browseBlueprintFile = _browseBlueprintFile;
         this.deployBlueprint = _deployBlueprint;
