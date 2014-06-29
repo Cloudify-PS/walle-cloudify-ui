@@ -32,6 +32,13 @@ function createRequest(requestData, callback) {
             var jsonStr = JSON.stringify(result);
             data = JSON.parse(jsonStr);
 
+            /* CFY-824 CHECK ONLY - TO BE REMOVED!!!! */
+            if (requestData.options.path.indexOf('/blueprints/') > -1) {
+                data = JSON.parse(data);
+                delete data.plan;
+            }
+            /* END OF CHECK */
+
             logger.info(['Request done, data: ',data]);
 
             callback(null, data);
@@ -183,13 +190,11 @@ Cloudify4node.archiveBlueprint = function(blueprint_id, callback) {
         if (!exists) {
             var pathParts = conf.browseBlueprint.path.split('/');
             var pathToCreate = '';
-            console.log(pathParts);
             for (var i = 0; i < pathParts.length; i++) {
                 pathToCreate += pathParts[i] + '/';
                 fs.mkdir(pathToCreate, function(e) {
                     console.log('folder' + pathParts[i] + ' already exist :: ' + e);
                 });
-                console.log(pathToCreate);
             }
         }
         var filepath = path.join(conf.browseBlueprint.path, blueprint_id + '.tar.gz');
@@ -224,8 +229,6 @@ Cloudify4node.archiveBlueprint = function(blueprint_id, callback) {
 }
 
 Cloudify4node.browseBlueprint = function(blueprint_id, callback) {
-    console.log('browseBlueprint');
-
     browseBlueprint.isBlueprintExist(blueprint_id, function(err, isExist){
         if(!isExist) {
             Cloudify4node.archiveBlueprint(blueprint_id, function(err){
@@ -242,7 +245,6 @@ Cloudify4node.browseBlueprint = function(blueprint_id, callback) {
 }
 
 Cloudify4node.browseBlueprintFile = function(blueprint_id, relativePath, callback) {
-    console.log('browseBlueprintFile');
     browseBlueprint.fileGetContent(blueprint_id, relativePath, callback);
 }
 

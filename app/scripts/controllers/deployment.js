@@ -229,7 +229,7 @@ angular.module('cosmoUiApp')
                 if (node.type.indexOf('network') > -1) {
                     networks.push({
                         'id': node.id,
-                        'name': node.name,
+                        'name': node.id,
                         'subnets': [],
                         'devices': []
                     });
@@ -256,7 +256,7 @@ angular.module('cosmoUiApp')
                                 'color': getNetworkColor(),
                                 'type': 'subnet',
                                 'state': {
-                                    'total': node.instances.deploy,
+                                    'total': node.number_of_instances,
                                     'completed': 0
                                 }
                             });
@@ -287,7 +287,7 @@ angular.module('cosmoUiApp')
                         'type': 'device',
                         'icon': 'host',
                         'state': {
-                            'total': node.instances.deploy,
+                            'total': node.number_of_instances,
                             'completed': 0
                         },
                         'ports': []
@@ -398,14 +398,26 @@ angular.module('cosmoUiApp')
 
                     _loadExecutions();
 
-                    $scope.allNodesArr = deploymentData.plan.nodes;
+                    RestService.getNodeInstances()
+                        .then(function(instances) {
+                            instances.forEach(function(instance) {
+                                if (instance.deployment_id === deploymentData.id) {
+                                    $scope.allNodesArr.push(instance);
+                                }
+                            });
+                        });
 
-                    // Blueprint
-                    RestService.getBlueprintById({id: deploymentData.blueprint_id})
-                        .then(function(data){
-                            nodesList = data.plan.nodes;
+                    RestService.getNodes()
+                        .then(function(data) {
+                            var nodes = [];
+                            data.forEach(function(node) {
+                                if (node.deployment_id === deploymentData.id) {
+                                    nodes.push(node);
+                                }
+                            });
+                            nodesList = nodes;
                             $scope.nodesTree = _createNodesTree(nodesList);
-                            $scope.dataTable = data.plan.nodes;
+                            $scope.dataTable = nodes;
 
                             blueprintCoordinateService.resetCoordinates();
                             blueprintCoordinateService.setMap(_getNodesConnections(nodesList));
@@ -444,7 +456,7 @@ angular.module('cosmoUiApp')
                                     });
                                     _extNetworks.push(subNetwork);
 
-                                    $scope.networks = _createNetworkTree(data.plan.nodes, _extNetworks);
+                                    $scope.networks = _createNetworkTree(nodes, _extNetworks);
 
                                     console.log(['$scope.networks', $scope.networks]);
 
@@ -532,7 +544,7 @@ angular.module('cosmoUiApp')
                 node.isApp = _isAppNode(node);
                 node.dataType = _getNodeDataType(node);
                 node.state = {
-                    total: node.instances.deploy,
+                    total: node.number_of_instances,
                     completed: 0
                 };
 
@@ -764,12 +776,11 @@ angular.module('cosmoUiApp')
                             if (node.node_instances === undefined) {
                                 node.node_instances = [];
                             }
-                            if (node.id === item.node_id) {
+                            if (node.id === item.id) {
                                 node.node_instances.push(item);
                             }
                         });
                     });
-//                    $scope.allNodesArr = data;
                     $scope.viewNode(eventData);
                 });
         });
@@ -784,13 +795,13 @@ angular.module('cosmoUiApp')
                 }
             };
 
-            _filterSelectionBoxData(node.name);
+            _filterSelectionBoxData(node.id);
         };
 
         function _filterSelectionBoxData(nodeId) {
             $scope.selectNodesArr = [];
             $scope.allNodesArr.forEach(function(node) {
-                if (node.id === nodeId) {
+                if (node.node_id === nodeId) {
                     var _node = {};
 
                     for (var attr in node) { _node[attr] = node[attr]; }
