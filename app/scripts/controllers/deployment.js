@@ -229,7 +229,7 @@ angular.module('cosmoUiApp')
                 if (node.type.indexOf('network') > -1) {
                     networks.push({
                         'id': node.id,
-                        'name': node.id,
+                        'name': node.name,
                         'subnets': [],
                         'devices': []
                     });
@@ -256,7 +256,7 @@ angular.module('cosmoUiApp')
                                 'color': getNetworkColor(),
                                 'type': 'subnet',
                                 'state': {
-                                    'total': node.number_of_instances,
+                                    'total': node.instances.deploy,
                                     'completed': 0
                                 }
                             });
@@ -287,7 +287,7 @@ angular.module('cosmoUiApp')
                         'type': 'device',
                         'icon': 'host',
                         'state': {
-                            'total': node.number_of_instances,
+                            'total': node.instances.deploy,
                             'completed': 0
                         },
                         'ports': []
@@ -394,31 +394,18 @@ angular.module('cosmoUiApp')
                     }
 
                     // Set Deployment Model
-                    ;
+                    _setDeploymentModel(deploymentData);
 
                     _loadExecutions();
 
-                    RestService.getNodeInstances()
-                        .then(function(instances) {
-                            instances.forEach(function(instance) {
-                                if (instance.deployment_id === deploymentData.id) {
-                                    $scope.allNodesArr.push(instance);
-                                }
-                                _setDeploymentModel();
-                            });
-                        });
+                    $scope.allNodesArr = deploymentData.plan.nodes;
 
-                    RestService.getNodes()
-                        .then(function(data) {
-                            var nodes = [];
-                            data.forEach(function(node) {
-                                if (node.deployment_id === deploymentData.id) {
-                                    nodes.push(node);
-                                }
-                            });
-                            nodesList = nodes;
+                    // Blueprint
+                    RestService.getBlueprintById({id: deploymentData.blueprint_id})
+                        .then(function(data){
+                            nodesList = data.plan.nodes;
                             $scope.nodesTree = _createNodesTree(nodesList);
-                            $scope.dataTable = nodes;
+                            $scope.dataTable = data.plan.nodes;
 
                             blueprintCoordinateService.resetCoordinates();
                             blueprintCoordinateService.setMap(_getNodesConnections(nodesList));
@@ -457,7 +444,7 @@ angular.module('cosmoUiApp')
                                     });
                                     _extNetworks.push(subNetwork);
 
-                                    $scope.networks = _createNetworkTree(nodes, _extNetworks);
+                                    $scope.networks = _createNetworkTree(data.plan.nodes, _extNetworks);
 
                                     console.log(['$scope.networks', $scope.networks]);
 
@@ -545,7 +532,7 @@ angular.module('cosmoUiApp')
                 node.isApp = _isAppNode(node);
                 node.dataType = _getNodeDataType(node);
                 node.state = {
-                    total: node.number_of_instances,
+                    total: node.instances.deploy,
                     completed: 0
                 };
 
@@ -621,17 +608,17 @@ angular.module('cosmoUiApp')
         }
 
         // Define Deployment Model in the first time
-        function _setDeploymentModel( nodes ) {
+        function _setDeploymentModel( data ) {
             deploymentModel['*'] = angular.copy(deploymentDataModel);
-            for (var i = 0; i < $scope.allNodesArr.length; i++) {
-                var node = $scope.allNodesArr[i];
-                if(!deploymentModel.hasOwnProperty(node.id)) {
-                    deploymentModel[node.node_id] = angular.copy(deploymentDataModel);
+            for (var nodeId in data.plan.nodes) {
+                var node = data.plan.nodes[nodeId];
+                if(!deploymentModel.hasOwnProperty(node.name)) {
+                    deploymentModel[node.name] = angular.copy(deploymentDataModel);
                 }
                 deploymentModel['*'].instancesIds.push(node.id);
                 deploymentModel['*'].total++;
-                deploymentModel[node.node_id].instancesIds.push(node.id);
-                deploymentModel[node.node_id].total++;
+                deploymentModel[node.name].instancesIds.push(node.id);
+                deploymentModel[node.name].total++;
             }
         }
 
@@ -777,11 +764,12 @@ angular.module('cosmoUiApp')
                             if (node.node_instances === undefined) {
                                 node.node_instances = [];
                             }
-                            if (node.id === item.id) {
+                            if (node.id === item.node_id) {
                                 node.node_instances.push(item);
                             }
                         });
                     });
+//                    $scope.allNodesArr = data;
                     $scope.viewNode(eventData);
                 });
         });
@@ -796,13 +784,13 @@ angular.module('cosmoUiApp')
                 }
             };
 
-            _filterSelectionBoxData(node.id);
+            _filterSelectionBoxData(node.name);
         };
 
         function _filterSelectionBoxData(nodeId) {
             $scope.selectNodesArr = [];
             $scope.allNodesArr.forEach(function(node) {
-                if (node.node_id === nodeId) {
+                if (node.id === nodeId) {
                     var _node = {};
 
                     for (var attr in node) { _node[attr] = node[attr]; }
