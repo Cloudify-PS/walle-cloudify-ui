@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('cosmoUi')
+angular.module('cosmoUiApp')
     .directive('bindGraph', function ($compile) {
         return {
             template: '<div></div>',

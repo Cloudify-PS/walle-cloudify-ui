@@ -339,6 +339,22 @@ Cloudify4node.getNodeInstances = function(callback) {
     createRequest(requestData, callback);
 }
 
+Cloudify4node.getNodeInstancesByDeploymentId = function(queryParams, callback) {
+    var queryStr = '';
+    if (queryParams !== null) {
+        queryStr = '?'
+        for (var param in queryParams) {
+            queryStr += param + '=' + queryParams[param];
+        }
+    }
+    var requestData = createRequestData({
+        path: '/node-instances' + queryStr,
+        method: 'GET'
+    });
+
+    createRequest(requestData, callback);
+}
+
 Cloudify4node.getDeploymentExecutions = function(deployment_id, callback) {
     var requestData = createRequestData({
         path: '/deployments/' + deployment_id + '/executions?statuses=true',
@@ -409,6 +425,22 @@ Cloudify4node.getNode = function(node_id, queryParams, callback) {
     }
     var requestData = createRequestData({
         path: '/nodes/' + node_id + queryStr,
+        method: 'GET'
+    });
+
+    createRequest(requestData, callback);
+}
+
+Cloudify4node.getNodes = function(queryParams, callback) {
+    var queryStr = '';
+    if (queryParams !== null) {
+        queryStr = '?'
+        for (var param in queryParams) {
+            queryStr += param + '=' + queryParams[param] + '&';
+        }
+    }
+    var requestData = createRequestData({
+        path: '/nodes' + queryStr,
         method: 'GET'
     });
 

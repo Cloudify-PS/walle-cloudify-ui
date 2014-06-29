@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('cosmoUi')
+angular.module('cosmoUiApp')
     .directive('sideMenu', function ($location) {
         return {
             templateUrl: 'views/sideMenuTemplate.html',
@@ -16,7 +16,7 @@ angular.module('cosmoUi')
                     { 'route' : ['#deployments', '#deployment'] ,                     'icon' : 'deployments' ,          'label':'Deployments'},
                     { 'route' : ['#monitoring'] ,                                     'icon' : 'monitoring' ,           'label':'Monitoring',       isDisabled: true},
                     { 'route' : ['#logs'] ,                                           'icon' : 'logs' ,                 'label':'Logs & Events'},
-                    { 'route' : ['#hosts'] ,                                          'icon' : 'hosts' ,                'label':'Hosts',            isDisabled: true},
+                    { 'route' : ['#hosts'] ,                                          'icon' : 'hosts' ,                'label':'Hosts'},
                     { 'route' : ['#networks'] ,                                       'icon' : 'networks' ,             'label':'Networks',         isDisabled: true},
                     { 'route' : ['#floating-ips'] ,                                   'icon' : 'floating-ips' ,         'label':'Floating IPs',     isDisabled: true},
                     { 'route' : ['#storage'] ,                                        'icon' : 'storage' ,              'label':'Storage',          isDisabled: true}

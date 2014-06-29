@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('cosmoUi')
-    .controller('DeploymentCtrl', function ($scope, $rootScope, $cookieStore, $routeParams, RestService, EventsService, BreadcrumbsService, YamlService, blueprintCoordinateService, bpNetworkService, $route, $anchorScroll, $timeout, $location, $log, EventsMap, monitoringGraphs) {
+angular.module('cosmoUiApp')
+    .controller('DeploymentCtrl', function ($scope, $rootScope, $cookieStore, $routeParams, RestService, EventsService, BreadcrumbsService, blueprintCoordinateService, bpNetworkService, $route, $anchorScroll, $timeout, $location, $log, EventsMap, monitoringGraphs, $localStorage, $filter) {
 
         var statesIndex = ['uninitialized', 'initializing', 'creating', 'created', 'configuring', 'configured', 'starting', 'started'],
             currentExeution = null,
@@ -50,7 +50,8 @@ angular.module('cosmoUi')
         var id = $routeParams.id;
         var blueprint_id = $routeParams.blueprint_id;
         var relations = [];
-        var colors = ['#1F77B4', '#FF7F0E', '#2CA02C', '#D62728', '#9467BD', '#8C564B', '#4b6c8b', '#550000', '#dc322f', '#FF6600', '#cce80b', '#003300', '#805e00'];
+        var _colors = ['#1F77B4', '#FF7F0E', '#2CA02C', '#D62728', '#9467BD', '#8C564B', '#4b6c8b', '#550000', '#dc322f', '#FF6600', '#cce80b', '#003300', '#805e00'];
+        var _colorIdx = 0;
         var nodesList = [];
 
         BreadcrumbsService.push('deployments',
@@ -252,7 +253,7 @@ angular.module('cosmoUi')
                                 'id': node.id,
                                 'name': node.properties.subnet.name ? node.properties.subnet.name : node.name,
                                 'cidr': node.properties.subnet.cidr,
-                                'color': colors[Math.floor((Math.random() * colors.length) + 1)],
+                                'color': getNetworkColor(),
                                 'type': 'subnet',
                                 'state': {
                                     'total': node.instances.deploy,
@@ -263,7 +264,7 @@ angular.module('cosmoUi')
                                 source: node.id,
                                 target: network.id,
                                 type: relationship.type,
-                                baseType: relationship.base
+                                typeHierarchy: relationship.type_hierarchy
                             });
                         }
                     });
@@ -292,25 +293,35 @@ angular.module('cosmoUi')
                         'ports': []
                     };
 
-                    var relationships = $scope.getRelationshipByType(node, 'connected').concat($scope.getRelationshipByType(node, 'depends'));
+                    var relationships = $scope.getRelationshipByType(node, 'connected_to').concat($scope.getRelationshipByType(node, 'depends_on'));
                     relationships.forEach(function (relationship) {
                         ports.forEach(function(port) {
                             if (relationship.target_id === port.id) {
-                                device.ports.push(port);
-
-                                relations.push({
-                                    source: port.subnet,
-                                    target: port.id
+                                var _alreadyExists = false;
+                                device.ports.forEach(function(item) {
+                                    if (item.id === port.id) {
+                                        _alreadyExists = true;
+                                    }
                                 });
+                                if (!_alreadyExists) {
+                                    device.ports.push(port);
+
+                                    relations.push({
+                                        source: port.subnet,
+                                        target: port.id
+                                    });
+                                }
                             }
                         });
                     });
 
                     externalNetworks.forEach(function (extNetwork) {
-                        relations.push({
-                            source: extNetwork.id,
-                            target: node.id
-                        });
+                        if (extNetwork.type === 'subnet') {
+                            relations.push({
+                                source: extNetwork.id,
+                                target: node.id
+                            });
+                        }
                     });
 
                     devices.push(device);
@@ -325,13 +336,17 @@ angular.module('cosmoUi')
 
             nodes.forEach(function (node) {
                 if (node.type.indexOf('port') > -1) {
-                    var relationships = $scope.getRelationshipByType(node, 'depends');
-                    ports.push({
-                        'id': node.id,
-                        'name': node.name,
-                        'type': 'device',
-                        'icon': 'port',
-                        'subnet': relationships[0].target_id
+                    var relationships = $scope.getRelationshipByType(node, 'depends_on');
+                    relationships.forEach(function(relationship) {
+                        if (relationship.type.indexOf('depends_on') > -1) {
+                            ports.push({
+                                'id': node.id,
+                                'name': node.name,
+                                'type': 'device',
+                                'icon': 'port',
+                                'subnet': relationship.target_id
+                            });
+                        }
                     });
                 }
             });
@@ -342,13 +357,13 @@ angular.module('cosmoUi')
         function _getNodesConnections(nodes) {
             var connections = [];
             nodes.forEach(function (node) {
-                var relationships = $scope.getRelationshipByType(node, 'connected');
+                var relationships = $scope.getRelationshipByType(node, 'connected_to');
                 relationships.forEach(function(connection) {
                     connections.push({
                         source: node.id,
                         target: connection.target_id,
                         type: connection.type,
-                        baseType: connection.base
+                        typeHierarchy: connection.type_hierarchy
                     });
                 });
             });
@@ -360,7 +375,7 @@ angular.module('cosmoUi')
 
             if (node.relationships !== undefined) {
                 for (var i = 0; i < node.relationships.length; i++) {
-                    if (node.relationships[i].base === type) {
+                    if (node.relationships[i].type_hierarchy.join(',').indexOf(type) > -1) {
                         relationshipData.push(node.relationships[i]);
                     }
                 }
@@ -372,6 +387,12 @@ angular.module('cosmoUi')
         function _loadDeployment() {
             RestService.getDeploymentById({deployment_id : id})
                 .then(function(deploymentData) {
+
+                    if(deploymentData.hasOwnProperty('error_code')) {
+                        $log.error(deploymentData.message);
+                        return;
+                    }
+
                     // Set Deployment Model
                     _setDeploymentModel(deploymentData);
 
@@ -384,6 +405,7 @@ angular.module('cosmoUi')
                         .then(function(data){
                             nodesList = data.plan.nodes;
                             $scope.nodesTree = _createNodesTree(nodesList);
+                            $scope.dataTable = data.plan.nodes;
 
                             blueprintCoordinateService.resetCoordinates();
                             blueprintCoordinateService.setMap(_getNodesConnections(nodesList));
@@ -393,11 +415,38 @@ angular.module('cosmoUi')
                             RestService.getProviderContext()
                                 .then(function(providerData) {
                                     var _extNetworks = [];
-                                    if (providerData.context !== undefined && providerData.context.resources.subnet !== undefined) {
-                                        _extNetworks.push(providerData.context.resources.subnet);
-                                        _extNetworks[0].color = colors[Math.floor((Math.random() * colors.length) + 1)];
-                                    }
+                                    var externalNetwork = {
+                                        'id': providerData.context.resources.ext_network.id,
+                                        'name': providerData.context.resources.ext_network.name,
+                                        'color': getNetworkColor(),
+                                        'type': providerData.context.resources.ext_network.type
+                                    };
+                                    externalNetwork.color = getNetworkColor();
+                                    externalNetwork.devices = [
+                                        {
+                                            'id': providerData.context.resources.router.id,
+                                            'name': providerData.context.resources.router.name,
+                                            'type': providerData.context.resources.router.type,
+                                            'icon': 'router'
+                                        }
+                                    ];
+                                    relations.push({
+                                        source: externalNetwork.id,
+                                        target: externalNetwork.devices[0].id
+                                    });
+                                    _extNetworks.push(externalNetwork);
+
+                                    var subNetwork = providerData.context.resources.subnet;
+                                    subNetwork.color = getNetworkColor();
+                                    relations.push({
+                                        source: subNetwork.id,
+                                        target: externalNetwork.devices[0].id
+                                    });
+                                    _extNetworks.push(subNetwork);
+
                                     $scope.networks = _createNetworkTree(data.plan.nodes, _extNetworks);
+
+                                    console.log(['$scope.networks', $scope.networks]);
 
                                     bpNetworkService.setMap($scope.networks.relations);
                                     $timeout(function(){
@@ -419,7 +468,7 @@ angular.module('cosmoUi')
                                 if ( !currentExeution && $scope.deploymentInProgress) { // get info for the first time
                                     $log.info('getting deployment info', isGotExecuteNodes );
                                     if(!isGotExecuteNodes) {
-                                        RestService.autoPull('getDeploymentNodes', {deployment_id: id, state: true}, RestService.getDeploymentNodes)
+                                        RestService.autoPull('getDeploymentNodes', {deployment_id: id}, RestService.getDeploymentNodes)
                                             .then(null, null, function (dataNodes) {
                                                 $scope.nodes = dataNodes.nodes;
                                             });
@@ -429,10 +478,26 @@ angular.module('cosmoUi')
                                 }
                                 else if ($scope.deploymentInProgress === null || currentExeution !== false) {
                                     $scope.deploymentInProgress = true;
-                                    RestService.autoPull('getDeploymentNodes', {deployment_id: id, state: true}, RestService.getDeploymentNodes)
+                                    RestService.autoPull('getDeploymentNodes', {deployment_id: id}, RestService.getDeploymentNodes)
                                         .then(null, null, function (dataNodes) {
-                                            $scope.nodes = dataNodes;
-                                            isGotExecuteNodes = true;
+                                            RestService.getNodeInstances()
+                                                .then(function(data) {
+                                                    dataNodes.forEach(function(node) {
+                                                        data.forEach(function(item) {
+                                                            if (node.node_instances === undefined) {
+                                                                node.node_instances = [];
+                                                            }
+                                                            if (node.node_id === item.node_id) {
+                                                                node.node_instances.push(item);
+                                                            }
+                                                        });
+
+                                                        $scope.nodes = dataNodes;
+                                                        isGotExecuteNodes = true;
+                                                    });
+                                                    $scope.nodes = dataNodes;
+                                                    isGotExecuteNodes = true;
+                                                });
                                         });
                                 }else{
                                     RestService.getDeploymentNodes({deployment_id : id, state: true}).then(function(dataNodes){
@@ -440,7 +505,7 @@ angular.module('cosmoUi')
                                         $scope.nodes = dataNodes;
                                         isGotExecuteNodes = true;
                                         _updateDeploymentModel(dataNodes);
-                                    })
+                                    });
                                 }
                             }
                         });
@@ -473,7 +538,7 @@ angular.module('cosmoUi')
 
                 if (node.relationships !== undefined && !_isNetworkNode(node)) {
                     for (var i = 0; i < node.relationships.length; i++) {
-                        if (node.relationships[i].base === 'contained') {
+                        if (node.relationships[i].type_hierarchy.join(',').indexOf('contained_in') > -1) {
                             node.isContained = true;
                             var target_id = node.relationships[i].target_id;
                             if (nodesIndexedList[target_id].children === undefined) {
@@ -797,23 +862,31 @@ angular.module('cosmoUi')
                 return copy.reverse();
             }
 
+            function _convertDates(data) {
+                for(var i in data) {
+                    data[i]._source.timestamp = $filter('dateFormat')(data[i]._source.timestamp, 'yyyy-MM-dd HH:mm:ss');
+                }
+                return data;
+            }
+
             events
                 .execute(function(data){
                     if(data && data.hasOwnProperty('hits')) {
+                        var dataHits = _convertDates(data.hits.hits);
                         if(data.hits.hits.length !== lastAmount) {
                             if(document.body.scrollTop === 0) {
                                 $scope.newEvents = 0;
-                                $scope.eventHits = _reverse(data.hits.hits);
+                                $scope.eventHits = _reverse(dataHits);
                             }
                             else {
-                                eventsCollect = _reverse(data.hits.hits);
+                                eventsCollect = _reverse(dataHits);
                                 $scope.newEvents = eventsCollect.length - $scope.eventHits.length;
                             }
-                            lastAmount = data.hits.hits.length;
+                            lastAmount = dataHits.length;
                         }
-                        else if(JSON.stringify($scope.eventHits) === JSON.stringify(_reverse(data.hits.hits))) {
+                        else if(JSON.stringify($scope.eventHits) === JSON.stringify(_reverse(dataHits))) {
                             $scope.newEvents = 0;
-                            $scope.eventHits = _reverse(data.hits.hits);
+                            $scope.eventHits = _reverse(dataHits);
                         }
                     }
                     else {
@@ -936,16 +1009,6 @@ angular.module('cosmoUi')
             }
         };
 
-        $scope.getContainerClass = function(node_id) {
-
-            for (var node in $scope.indexNodes) {
-                if ($scope.indexNodes[node].id === node_id) {
-                    return $scope.indexNodes[node].type.baseType.replace('_', '-');
-                }
-            }
-            return '';
-        };
-
         $scope.getNodeById = function(node_id) {
             var _node = {};
             $scope.dataTable.forEach(function(node) {
@@ -962,26 +1025,38 @@ angular.module('cosmoUi')
         $scope.graphs = graphData;
         $scope.graphPages = graphPages;
         $scope.newgraph = {
-            'name': '',
-            'type': 'line',
-            'metric': 'CPU'
+            name: '',
+            type: 'line',
+            isArea: 'false'
         };
-
-
-        RestService.getMonitorGrpahs()
-            .then(function(data){
-                for(var i in data) {
-                    var graph = data[i];
-                    monitoringGraphs.addGraph(graphData, graph);
-                    monitoringGraphs.executeQuery(graphData, graph);
-                    monitoringGraphs.getDirective(graphData, graph);
-                }
-                _randerPagination();
-            });
 
         function _randerPagination() {
             monitoringGraphs.getPaginationByData(graphPages, graphData, 4);
         }
+
+        function _displayMonitoring(data) {
+            for(var i in data) {
+                var graph = data[i];
+                monitoringGraphs.addGraph(graphData, graph);
+                monitoringGraphs.executeQuery(graphData, graph);
+                monitoringGraphs.getDirective(graphData, graph);
+            }
+            _randerPagination();
+        }
+
+        if($localStorage.hasOwnProperty('monitoringData')) {
+            _displayMonitoring($localStorage.monitoringData);
+        }
+        else {
+            RestService.getMonitorGrpahs()
+                .then(function (data) {
+                    _displayMonitoring(data);
+                });
+        }
+
+        $scope.$watch('graphs', function(monitoringData){
+            $localStorage.monitoringData = monitoringData;
+        }, true);
 
         $scope.moitorMixColors = ['#E01B5D', '#46b8da'];
 
@@ -991,6 +1066,10 @@ angular.module('cosmoUi')
             };
         };
 
+        $scope.deleteGraph = function (graph) {
+            graphData.splice(graphData.indexOf(graph), 1);
+        };
+
         $scope.$on('fireResizeGraph', function() {
             $timeout(function(){
                 $(window).trigger('resize');
@@ -998,21 +1077,43 @@ angular.module('cosmoUi')
         });
 
         $scope.addMonitorChart = function() {
-            var newMonitorChart = {
-                'name': $scope.newgraph.name,
-                'type': 'nvd3-line-with-focus-chart',
-                'query': $scope.newgraph.metric,
-                'properties': {
-                    'id': 'graphCpu'+Math.round(Math.random()*1000),
-                    'data': 'graph.data',
-                    'xAxisTickFormat': 'xAxisTickFormatFunction()',
-                    'x2AxisTickFormat': 'xAxisTickFormatFunction()',
-                    'isArea': $scope.newgraph.type === 'line' ? false : true
-                }
-            };
+            var newMonitorChart = {};
+            switch($scope.newgraph.type) {
+            case 'line':
+                newMonitorChart = {
+                    'name': $scope.newgraph.name,
+                    'type': 'nvd3-line-with-focus-chart',
+                    'query': $scope.newgraph.query,
+                    'properties': {
+                        'id': 'graphMonitoring'+Math.round(Math.random()*1000),
+                        'data': 'graph.data',
+                        'xAxisTickFormat': 'xAxisTickFormatFunction()',
+                        'x2AxisTickFormat': 'xAxisTickFormatFunction()',
+                        'isArea': $scope.newgraph.isArea === 'true' ? true : false
+                    }
+                };
+                break;
+            case 'bar':
+                newMonitorChart = {
+                    'name': $scope.newgraph.name,
+                    'type': 'nvd3-multi-bar-chart',
+                    'query': $scope.newgraph.query,
+                    'properties': {
+                        'id': 'graphMonitoring'+Math.round(Math.random()*1000),
+                        'data': 'graph.data',
+                        'xAxisTickFormat': 'xAxisTickFormatFunction()'
+                    }
+                };
+                break;
+            }
             monitoringGraphs.addGraph(graphData, newMonitorChart);
             monitoringGraphs.executeQuery(graphData, newMonitorChart);
             monitoringGraphs.getDirective(graphData, newMonitorChart);
             _randerPagination();
         };
+
+        function getNetworkColor() {
+            _colorIdx = _colorIdx < _colors.length ? _colorIdx + 1 : 0;
+            return _colors[_colorIdx];
+        }
     });

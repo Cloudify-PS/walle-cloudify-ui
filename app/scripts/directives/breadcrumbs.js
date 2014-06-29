@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('cosmoUi')
+angular.module('cosmoUiApp')
     .directive('breadcrumbs', function(BreadcrumbsService) {
     return {
         restrict: 'EA',

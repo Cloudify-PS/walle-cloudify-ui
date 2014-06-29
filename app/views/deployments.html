@@ -19,8 +19,8 @@
             <tr>
                 <td class="id" ng-click="redirectTo(deployment)">{{deployment.id}}</td>
                 <td class="blueprint" ng-click="redirectTo(deployment)">{{deployment.blueprint_id}}</td>
-                <td class="create" ng-click="redirectTo(deployment)">{{deployment.createdAt | dateFormat: 'yyyy-MM-dd HH:mm:ss'}}</td>
-                <td class="description" ng-click="redirectTo(deployment)">{{deployment.updatedAt | dateFormat: 'yyyy-MM-dd HH:mm:ss'}}</td>
+                <td class="create" ng-click="redirectTo(deployment)">{{deployment.created_at | dateFormat: 'yyyy-MM-dd HH:mm:ss'}}</td>
+                <td class="description" ng-click="redirectTo(deployment)">{{deployment.updated_at | dateFormat: 'yyyy-MM-dd HH:mm:ss'}}</td>
                 <td class="actions">
                     <div class="gs-selection-button" ng-show="!isExecuting(deployment.blueprint_id, deployment.id)">
                         <div multi:select:menu

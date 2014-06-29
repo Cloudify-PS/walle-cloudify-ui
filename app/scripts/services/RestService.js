@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('cosmoUi')
+angular.module('cosmoUiApp')
     .service('RestService', function RestService($http, $timeout, $q, $rootScope, $log) {
 
         var autoPull = [],
@@ -176,7 +176,16 @@ angular.module('cosmoUi')
                 method: 'POST',
                 data: params
             };
-            return _load('nodes/get', callParams);
+            return _load('node/get', callParams);
+        }
+
+        function _getNodes(params) {
+            var callParams = {
+                url: '/backend/nodes',
+                method: 'POST',
+                data: params
+            };
+            return _load('/backend/nodes', callParams);
         }
 
         function _loadEvents(query) {
@@ -267,6 +276,16 @@ angular.module('cosmoUi')
             return _load('configuration', callParams);
         }
 
+        function _influxQuery(data) {
+            var callParams = {
+                url: '/backend/influx',
+                method: 'POST',
+                data: data
+            };
+
+            return _load('influx', callParams);
+        }
+
         function _getMonitorGrpahs() {
             var callParams = {
                 url: '/backend/monitor/graphs',
@@ -310,11 +329,13 @@ angular.module('cosmoUi')
         this.getWorkflows = _getWorkflows;
         this.getProviderContext = _getProviderContext;
         this.getNode = _getNode;
+        this.getNodes = _getNodes;
         this.getSettings = _getSettings;
         this.setSettings = _setSettings;
         this.getConfiguration = _getConfiguration;
         this.autoPull = _autoPull;
         this.autoPullStop = _autoPullStop;
+        this.influxQuery = _influxQuery;
         this.getMonitorGrpahs = _getMonitorGrpahs;
         this.getMonitorCpu = _getMonitorCpu;
         this.getMonitorMemory = _getMonitorMemory;

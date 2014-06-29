@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('cosmoUi')
+angular.module('cosmoUiApp')
     .directive('onFinishRender', function ($timeout) {
         return {
             restrict: 'A',

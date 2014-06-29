@@ -123,9 +123,10 @@
             <!-- Settings - START -->
             <div class="buttons-group no-embed" checkbox-toggle value="section">
                 <button type="button" class="btn btn-default" value="topology">Topology</button>
-                <button type="button" class="btn btn-default" value="network">Network</button>
+                <button type="button" class="btn btn-default" value="network" data-ng-show="networks.networks.length">Network</button>
+                <button type="button" class="btn btn-default" value="nodes">Nodes</button>
                 <button type="button" class="btn btn-default" value="events">Events</button>
-                <button type="button" class="btn btn-default" value="monitoring">Monitoring</button>
+                <!--<button type="button" class="btn btn-default" value="monitoring">Monitoring</button>-->
             </div>
             <div settings-toggles id="settings-button" class="no-embed" toggles="toggleBar"></div>
 
@@ -139,7 +140,7 @@
                 </div>
                 <div class="executingWorkflow" ng-show="deploymentInProgress">
                     {{executedData.workflow_id}}
-                    <div class="deploymentExecute" dots-loader ng-show="deploymentInProgress"></div>
+                    <div class="deploymentExecute" dots-loader speed="50" ng-show="deploymentInProgress"></div>
                 </div>
                 <i class="deployment-play" ng-class="{play: isExecuteEnabled(), disabled: !isExecuteEnabled()}" ng-click="toggleConfirmationDialog(deployment, 'execute')" ng-show="!deploymentInProgress"></i>
 
@@ -156,32 +157,22 @@
                 disableModules: !toggleBar.modules,
                 disableConnections: !toggleBar.connections
                 }">
-                    <div bp-topology-nodes map="nodesTree" selected="viewNode(node_id)"></div>
+                    <div bp-topology-nodes map="nodesTree" selected="viewNode(getNodeById(node_id))"></div>
                     <div class="coordinates" blueprint:arrows="coordinates" arrow="true" color="#7A7A7A"></div>
                 </div>
                 <!-- Topology Tab - END -->
                 <!-- Network Tab - START -->
                 <!-- Network Topology - START -->
                 <div class="networksContainer" ng-switch-when="network">
-                    <div bp:networks class="relations" ng-model="networkcoords"></div>
+                    <div bp:networks class="relations"></div>
+
+                    <!-- External networks -->
                     <div data-ng-repeat="network in networks.external" class="network">
                         <div class="line">
                             <div class="name">{{ network.name }}</div>
-                            <div data-ng-repeat="networks in networks.external" class="subnet" bp:network:coordinate ng-model="network">
+                            <div class="subnet" bp:network:coordinate ng-model="network">
                                 <p>{{ network.name }}</p>
-                                <p class="cidr">Network</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div data-ng-repeat="network in networks.networks" class="network">
-                        <div class="line">
-                            <div class="name">{{ network.name }}</div>
-                            <div data-ng-repeat="subnet in network.subnets" class="subnet" bp:network:coordinate ng-model="subnet">
-                                <p>{{ subnet.name }}</p>
-                                <!--<div class="badge network-badge" data-ng-class="getBadgeStatus(subnet.state.status)">-->
-                                    <!--{{ subnet.state.completed }}/{{ subnet.state.total }}-->
-                                <!--</div>-->
-                                <p class="cidr">{{ subnet.cidr }}</p>
+                                <p class="cidr">{{ network.type }}</p>
                             </div>
                         </div>
                         <div class="devices">
@@ -195,17 +186,43 @@
                                         </div>
                                         <i class="topology-glyph {{ device.icon }}" bp:network:coordinate ng-model="device"></i>
                                     </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div data-ng-repeat="network in networks.networks" class="network">
+                        <div class="line">
+                            <div class="name">{{ network.name }}</div>
+                            <div data-ng-repeat="subnet in network.subnets" class="subnet" bp:network:coordinate ng-model="subnet">
+                                <p>{{ subnet.name }}</p>
+                                <div class="badge network-badge" data-ng-class="getBadgeStatus(subnet.state.status)">
+                                    {{ subnet.state.completed }}/{{ subnet.state.total }}
+                                </div>
+                                <p class="cidr">{{ subnet.cidr }}</p>
+                            </div>
+                        </div>
+                        <div class="devices">
+                            <div data-ng-repeat="device in network.devices" class="device">
+                                <div data-ng-class="{'true': 'portarea'}[device.ports.length > 0]">
+                                    <div class="inner">
+                                        <div class="buttons no-embed">
+                                            <ul>
+                                            <li data-ng-click="viewNode(device)" class="topology-glyph node-details"></li>
+                                        </ul>
+                                        </div>
+                                        <i class="topology-glyph {{ device.icon }}" bp:network:coordinate ng-model="device"></i>
+                                    </div>
                                     <div class="ports" data-ng-repeat="port in device.ports">
                                         <div class="buttons no-embed">
                                             <ul>
-                                                <li data-ng-click="viewNode(device)" class="topology-glyph node-details"></li>
+                                                <li data-ng-click="viewNode(getNodeById(device.id))" class="topology-glyph node-details"></li>
                                             </ul>
                                         </div>
                                         <i class="topology-glyph {{ port.icon }}" bp:network:coordinate ng-model="port"></i>
                                     </div>
-                                    <!--<div class="badge">-->
-                                        <!--{{ device.state.completed }}/{{ device.state.total }}-->
-                                    <!--</div>-->
+                                    <div class="badge">
+                                        {{ device.state.completed }}/{{ device.state.total }}
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -213,6 +230,44 @@
                 </div>
                 <!-- Network Topology - END -->
                 <!-- Network Tab - END -->
+                <!-- Nodes - START -->
+                <div ng-switch-when="nodes">
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th></th>
+                            <th>Name</th>
+                            <th>Type</th>
+                            <th>Number of instances</th>
+                            <th>Contained in</th>
+                            <th>Connected to</th>
+                            <th><!--Actions--></th>
+                        </tr>
+                        </thead>
+                        <tbody data-ng-repeat="row in dataTable">
+                        <tr>
+                            <td><i class="topology-glyph {{ row.class }}"></i></td>
+                            <td>{{ row.name }}</td>
+                            <td>{{ row.type }}</td>
+                            <td>{{ row.instances.deploy }}</td>
+                            <td>
+                                <span data-ng-if="getRelationshipByType(row, 'contained').length > 0" data-ng-repeat="container in getRelationshipByType(row, 'contained')">{{ container.name }}</span>
+                                <span data-ng-if="getRelationshipByType(row, 'contained').length == 0">--</span>
+                            </td>
+                            <td>
+                                <span data-ng-if="getRelationshipByType(row, 'connected').length > 0" data-ng-repeat="connection in getRelationshipByType(row, 'connected')">{{ connection.name }}</span>
+                                <span data-ng-if="getRelationshipByType(row, 'connected').length == 0">--</span>
+                            </td>
+                            <td>
+                                <ul>
+                                    <li data-ng-click="viewNode(getNodeById(row.id))" class="topology-glyph node-details"></li>
+                                </ul>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <!-- Nodes - END -->
                 <!-- Events Tab - START -->
                 <div ng-switch-when="events">
                     <div class="filters">
@@ -262,7 +317,7 @@
                         <tbody class="animate-repeat" ng-repeat="event in eventHits" ng-init="isOpen=false">
                             <tr>
                                 <td data-ng-click="isOpen=!isOpen" class="icon cliclable" ng-class="getEventIcon(event._source.event_type)"></td>
-                                <td data-ng-click="isOpen=!isOpen" class="date cliclable">{{event._source.timestamp == undefined && 'N/A' || event._source.timestamp | dateFormat: 'yyyy-MM-dd HH:mm:ss'}}</td>
+                                <td data-ng-click="isOpen=!isOpen" class="date cliclable">{{event._source.timestamp == undefined && 'N/A' || event._source.timestamp}}</td>
                                 <td data-ng-click="isOpen=!isOpen" class="type cliclable">{{getEventText(event._source.event_type) == undefined && 'N/A' || getEventText(event._source.event_type)}}</td>
                                 <td data-ng-click="isOpen=!isOpen" class="node cliclable">{{event._source.context.node_name == undefined && 'N/A' || event._source.context.node_name}}</td>
                                 <td data-ng-click="isOpen=!isOpen" class="task cliclable">{{event._source.message.text == undefined && 'N/A' || event._source.message.text}}</td>
@@ -309,15 +364,16 @@
                                                 Type <br>
                                                 <select data-ng-model="newgraph.type">
                                                     <option value="line">Line Chart</option>
-                                                    <option value="area">Area Chart</option>
+                                                    <option value="bar">Bar Chart</option>
+                                                </select>
+                                                <select data-ng-model="newgraph.isArea" data-ng-show="newgraph.type == 'line'">
+                                                    <option value="false">Regular</option>
+                                                    <option value="true">Area</option>
                                                 </select>
                                             </label>
                                             <label>
-                                                Metric <br>
-                                                <select data-ng-model="newgraph.metric">
-                                                    <option value="CPU">CPU</option>
-                                                    <option value="Memory">Memory</option>
-                                                </select>
+                                                Query <br><small>(Example: select value from cpu limit 100)</small><br>
+                                                <textarea cols="60" rows="4" data-ng-model="newgraph.query"></textarea>
                                             </label>
                                             <br>
                                             <button class="gs-btn" data-ng-click="addMonitorChart()">Add Monitor Chart</button>

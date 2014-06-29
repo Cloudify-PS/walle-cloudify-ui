@@ -1,7 +1,7 @@
 #plans {
 
     #main-content-panel {
-      padding-right: 40px;
+        padding-right: 40px;
     }
 
     $install: #2f3334;
@@ -9,142 +9,151 @@
     $alerts: #feb300;
     $failed: #d54931;
 
-    #right-side-menu{
-        position:absolute;
-        z-index:120;
+    #right-side-menu {
+        position: absolute;
+        z-index: 120;
 
-        top:0;
-        right:0;
-        width:600px;
-        border-left:4px solid $COSMOUI_BLUEPRINT_DETAILS_LEFT_BORDER_COLOR;
+        top: 0;
+        right: 0;
+        width: 600px;
+        border-left: 4px solid $COSMOUI_BLUEPRINT_DETAILS_LEFT_BORDER_COLOR;
         background-color: $COSMOUI_BLUEPRINT_DETAILS_BACKGROUND;
-        padding-left:19px;
-        padding-right:13px;
-        padding-top:20px;
+        padding-left: 19px;
+        padding-right: 13px;
+        padding-top: 20px;
         z-index: 9999;
 
         .close-properties-button {
-          cursor: pointer;
+            cursor: pointer;
         }
 
-        .title{
-            padding-bottom:$COSMOUI_BLUEPRINT_DETAILS_TITLE_PADDING_BOTTOM;
+        .title {
+            padding-bottom: $COSMOUI_BLUEPRINT_DETAILS_TITLE_PADDING_BOTTOM;
             line-height: $COSMOUI_BLUEPRINT_DETAILS_TITLE_LINE_HEIGHT;
-            color:$COSMOUI_BLUEPRINT_DETAILS_TITLE_COLOR;
+            color: $COSMOUI_BLUEPRINT_DETAILS_TITLE_COLOR;
             font-size: $COSMOUI_BLUEPRINT_DETAILS_TITLE_FONT_SIZE;
-            border-bottom:1px solid $COSMOUI_BLUEPRINT_DETAILS_TITLE_BOTTOM_BORDER_COLOR;
-            i { float:right; cursor: pointer; }
+            border-bottom: 1px solid $COSMOUI_BLUEPRINT_DETAILS_TITLE_BOTTOM_BORDER_COLOR;
+            i {
+                float: right;
+                cursor: pointer;
+            }
         }
 
-        .content{
+        .content {
             margin-top: $COSMOUI_BLUEPRINT_DETAILS_CONTENT_MARGIN_TOP;
 
             .buttons-group {
-              float: left;
-              margin-left: 0px;
+                float: left;
+                margin-top: 0px;
+                margin-left: 0px;
             }
 
-            .content-section{
-              table {
-                padding: 9.5px;
-                font-size: 13px;
-                color: #333333;
-                width: 100%;
+            .content-section {
+                table {
+                    padding: 9.5px;
+                    font-size: 13px;
+                    color: #333333;
+                    width: 100%;
 
-                tr {
-                  height: 30px;
-                  border-bottom: 1px solid #cadbec;
+                    tr {
+                        height: 30px;
+                        border-bottom: 1px solid #cadbec;
 
-                  &:first-child {
-                    background-color: $clr-base-12;
-                  }
-
-                  td {
-                    min-width: 120px;
-                    vertical-align: middle;
-                    padding-left: 5px;
-
-                    table {
-                      tr:first-child td {
-                        background: #E5EFF7;
-                        color: $COSMOUI_LIST_COLUMN_HEADER_TEXT_COLOR;
-                        border-bottom: 2px solid #fff;
-                      }
-
-                      tr {
-                        &:hover:not(:first-child) td{
-                          background-color: $COSMOUI_LIST_HOVER_BACKGROUND;
-
-                          &,i {color: $COSMOUI_LIST_HOVER_ACTION_TEXT_COLOR; }
-                          i {font-weight: $COSMOUI_LIST_HOVER_ACTION_FONT_WEIGHT;}
+                        &:first-child {
+                            background-color: $clr-base-12;
                         }
 
                         td {
-                          vertical-align: middle;
-                          height: 60px;
-                          color: #333;
-                        }
-                        &:not(:first-child) td.actions{
-                          width: $COSMOUI_LIST_HOVER_ACTION_WIDTH;
-                          font-size:$COSMOUI_LIST_HOVER_ACTION_FONT_SIZE;
+                            min-width: 120px;
+                            vertical-align: middle;
+                            padding-left: 5px;
 
-                          select {
-                            background: #cce4f6;
-                            height: 35px;
-                            width: 160px;
-                            float: left;
-                            font-size: 14px;
-                            box-shadow: none;
-                            border: none;
-                            border-radius: 0px;
-                            -webkit-appearance: none;
-                            -moz-appearance: none;
-                            appearance: none;
-                            padding: 7px;
-                            cursor: pointer;
+                            table {
+                                tr:first-child td {
+                                    background: #E5EFF7;
+                                    color: $COSMOUI_LIST_COLUMN_HEADER_TEXT_COLOR;
+                                    border-bottom: 2px solid #fff;
+                                }
 
-                            &.disable {
-                              background: transparent;
-                              color: #000;
+                                tr {
+                                    &:hover:not(:first-child) td {
+                                        background-color: $COSMOUI_LIST_HOVER_BACKGROUND;
+
+                                        &, i {
+                                            color: $COSMOUI_LIST_HOVER_ACTION_TEXT_COLOR;
+                                        }
+                                        i {
+                                            font-weight: $COSMOUI_LIST_HOVER_ACTION_FONT_WEIGHT;
+                                        }
+                                    }
+
+                                    td {
+                                        vertical-align: middle;
+                                        height: 60px;
+                                        color: #333;
+                                    }
+                                    &:not(:first-child) td.actions {
+                                        width: $COSMOUI_LIST_HOVER_ACTION_WIDTH;
+                                        font-size: $COSMOUI_LIST_HOVER_ACTION_FONT_SIZE;
+
+                                        select {
+                                            background: #cce4f6;
+                                            height: 35px;
+                                            width: 160px;
+                                            float: left;
+                                            font-size: 14px;
+                                            box-shadow: none;
+                                            border: none;
+                                            border-radius: 0px;
+                                            -webkit-appearance: none;
+                                            -moz-appearance: none;
+                                            appearance: none;
+                                            padding: 7px;
+                                            cursor: pointer;
+
+                                            &.disable {
+                                                background: transparent;
+                                                color: #000;
+                                            }
+                                        }
+                                    }
+                                }
                             }
-                          }
                         }
-                      }
                     }
-                  }
                 }
-              }
             }
         }
     }
 
     #settings-button {
-      display: inline-block;
-      position: relative;
-      left: 10px;
+        display: inline-block;
+        position: relative;
+        left: 10px;
+        vertical-align: middle;
     }
 
     .deploy-button {
-      color: white;
-      font-weight: bold;
-      padding: 5px 10px 5px 10px;
-      background-color: #29aaee;
-      border-radius: 3px;
-      border-bottom: 1px solid #198ed9;
-      border-right: 1px solid #198ed9;
-      border-top: none;
-      border-left: none;
-      display: inline-block;
-      margin-right: -20px;
-      float: right;
+        color: white;
+        font-weight: bold;
+        padding: 5px 10px 5px 10px;
+        background-color: #29aaee;
+        border-radius: 3px;
+        border-bottom: 1px solid #198ed9;
+        border-right: 1px solid #198ed9;
+        border-top: none;
+        border-left: none;
+        display: inline-block;
+        margin-right: -20px;
+        float: right;
 
-      &.disabled {
-        background: $COSMOUI_BUTTON_DISABLED_BACKGROUND;
-      }
+        &.disabled {
+            background: $COSMOUI_BUTTON_DISABLED_BACKGROUND;
+        }
 
-      &.enabled {
-        background: $COSMOUI_BUTTON_BACKGROUND;
-      }
+        &.enabled {
+            background: $COSMOUI_BUTTON_BACKGROUND;
+        }
     }
 
     .toggles-bar {
@@ -152,27 +161,29 @@
     }
 
     .content-header {
-      border-bottom: 3px solid #d3dfe2;
-      height: 62px;
-      overflow: hidden;
+        border-bottom: 3px solid #d3dfe2;
+        margin-bottom: 10px;
+        overflow: hidden;
     }
 
     .content-section {
         padding: 50px 0;
 
         pre {
-          width: 100%;
-          margin-left: 20px;
-          padding-top: 0px;
-          padding-bottom: 0px;
-          -webkit-user-select: none;  /* Chrome all / Safari all */
-          -moz-user-select: none;     /* Firefox all */
-          -ms-user-select: none;      /* IE 10+ */
-          user-select: none;
+            width: 100%;
+            margin-left: 20px;
+            padding: 0px 10px 0;
+            -webkit-user-select: none; /* Chrome all / Safari all */
+            -moz-user-select: none; /* Firefox all */
+            -ms-user-select: none; /* IE 10+ */
+            user-select: none;
+            background-color: whitesmoke;
+            border: 1px solid #cccccc;
+            border-radius: 4px;
 
-          div {
-            background-color: whitesmoke !important;
-          }
+            div {
+                background-color: whitesmoke !important;
+            }
         }
     }
 
@@ -199,9 +210,10 @@
             height: 36px;
             border-radius: 19px;
             color: white;
+            line-height: 0px;
             &:after {
                 position: absolute;
-                top: -10px;
+                top: 19px;
                 left: 8px;
             }
             &.fa {
@@ -239,9 +251,9 @@
                     background-color: #3aaeda;
                 }
                 .piProgress {
-                  .circle {
-                    background-color: #3aaeda;
-                  }
+                    .circle {
+                        background-color: #3aaeda;
+                    }
                 }
                 .holder {
                     text-align: center;
@@ -259,7 +271,7 @@
                     z-index: 101;
 
                     &.appHoverup {
-                      left: 37px;
+                        left: 37px;
                     }
                 }
             }
@@ -379,6 +391,7 @@
                 top: -10px;
                 right: 0px;
                 z-index: 100;
+                line-height: 0px;
                 > ul {
                     display: inline-block;
                     list-style-type: none;
@@ -397,7 +410,7 @@
                         position: relative;
                         &:after {
                             position: absolute;
-                            top: -8px;
+                            top: 13px;
                             left: 9px;
                             font-size: 30px;
                             color: $clr-base-27;
@@ -441,7 +454,7 @@
                 display: inline-block;
                 &:after {
                     position: absolute;
-                    top: -10px;
+                    top: 17px;
                     left: 8px;
                 }
             }
@@ -673,10 +686,10 @@
 
     .table {
         tr {
-          cursor: default;
+            cursor: default;
         }
         .node-details {
-          cursor: pointer;
+            cursor: pointer;
         }
         .topology-glyph {
             display: inline-block;

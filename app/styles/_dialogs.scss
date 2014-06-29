@@ -3,8 +3,8 @@
     height: 100%;
     background: $COSMOUI_DIALOG_BACKGROUND;
     overflow: hidden;
-    position: absolute;
-    top: 0px;
+    position: fixed;
+    top: 80px;
     left: 0px;
     opacity: 0;
     z-index: 9995;
@@ -16,6 +16,7 @@
     border-radius: 4px;
     box-shadow: 0px 0px 5px $COSMOUI_DIALOG_SHADOW_COLOR;
     background: $COSMOUI_DIALOG_BACKGROUND;
+    overflow-x: hidden;
 
     .dialogButton {
         color: white;
@@ -40,6 +41,13 @@
         &.enabled {
             background: $COSMOUI_BUTTON_BACKGROUND;
             cursor: pointer;
+        }
+
+        &.loader {
+            color: transparent;
+            background-image: url($img-loading-button);
+            background-repeat: no-repeat;
+            background-position: center center;
         }
 
         &.dialogClose {
@@ -119,8 +127,8 @@
 
 #uploadDialogContainer {
     width: 430px;
-    position: absolute;
-    top: 0;
+    position: fixed;
+    top: 80px;
     left: 0;
     right: 0;
     margin: auto;
@@ -148,7 +156,6 @@
                 position: absolute;
                 top: 0px;
                 right: 12px;
-                width: 32px;
                 height: 32px;
                 font-size: 30px;
                 padding: 0px 8px 0px 7px;
@@ -234,8 +241,8 @@
 
 #deployDialogContainer {
     width: 350px;
-    position: absolute;
-    top: 0;
+    position: fixed;
+    top: 80px;
     left: 0;
     right: 0;
     margin: auto;
@@ -257,8 +264,8 @@
 }
 
 #confirmationDialogContainer {
-    position: absolute;
-    top: 0;
+    position: fixed;
+    top: 80px;
     left: 0;
     right: 0;
     width: 320px;
@@ -289,8 +296,8 @@
 
 #deleteDeploymentDialog {
     width: 450px;
-    position: absolute;
-    top: 0;
+    position: fixed;
+    top: 80px;
     left: 0;
     right: 0;
     margin: auto;

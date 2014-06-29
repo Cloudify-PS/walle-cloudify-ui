@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('cosmoUi')
+angular.module('cosmoUiApp')
     .filter('eventTimeFilter', function () {
         return function (input) {
             var dateObj = new Date(input);

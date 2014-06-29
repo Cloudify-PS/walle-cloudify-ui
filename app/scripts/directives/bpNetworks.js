@@ -1,14 +1,10 @@
 'use strict';
 
-angular.module('cosmoUi')
-    .directive('bpNetworks', function (bpNetworkService, $timeout) {
+angular.module('cosmoUiApp')
+    .directive('bpNetworks', function (bpNetworkService) {
         return {
             restrict: 'A',
-            require: '?ngModel',
-            link: function postLink($scope, $element, $attrs, ngModel) {
-                if (!ngModel) {
-                    return;
-                }
+            link: function postLink($scope, $element) {
 
                 var width = '100%',
                     height = '100%';
@@ -64,25 +60,11 @@ angular.module('cosmoUi')
                     }
                 }
 
-                ngModel.$render = function () {
-                    var grabLoops = 0;
-                    (function grabData() {
-                        if(grabLoops === 60) {
-                            grabLoops = 0;
-                            return;
-                        }
-                        var data = ngModel.$viewValue || false;
-                        if(!data || !data.length) {
-                            $timeout(function(){
-                                grabData();
-                            }, 1000);
-                        }
-                        else {
-                            draw(data);
-                        }
-                        grabLoops++;
-                    })();
-                };
+                $scope.$on('coordinatesUpdated', function(e, data) {
+                    if (data.length > 0) {
+                        draw(data);
+                    }
+                });
 
                 $scope.$watch(function() {
                     return $element.is(':visible');
@@ -94,7 +76,7 @@ angular.module('cosmoUi')
         };
     });
 
-angular.module('cosmoUi')
+angular.module('cosmoUiApp')
     .directive('bpNetworkCoordinate', function (bpNetworkService) {
         return {
             restrict: 'A',
@@ -103,6 +85,7 @@ angular.module('cosmoUi')
                 if (!ngModel) {
                     return;
                 }
+
                 ngModel.$render = function () {
                     var data = ngModel.$viewValue || false;
                     switch (data.type) {
@@ -111,29 +94,50 @@ angular.module('cosmoUi')
                         bpNetworkService.addSubnet(data.id, $element, data.color);
                         break;
 
+                    case 'network':
+                        $element.css('backgroundColor', data.color);
+                        bpNetworkService.addNetwork(data.id, $element, data.color);
+                        break;
+
+                    case 'router':
+                        $element.css('backgroundColor', data.color);
+                        bpNetworkService.addRouter(data.id, $element);
+                        break;
+
                     default:
                         bpNetworkService.addDevice(data.id, $element);
                         break;
                     }
+
+                    $scope.$root.$broadcast('elementsUpdated');
                 };
             }
         };
     });
 
-angular.module('cosmoUi')
-    .service('bpNetworkService', function($timeout){
+angular.module('cosmoUiApp')
+    .service('bpNetworkService', ['$rootScope', function($rootScope){
 
         var elements = {},
             coordinates = [],
             map = {};
 
         this.render = function () {
-            $timeout(function(){
-                render();
-            }, 2000);
+            _render();
         };
 
-        function render() {
+        $rootScope.$on('elementsUpdated', function() {
+            _render();
+        });
+
+        $rootScope.$watch(function() {
+            return coordinates;
+        }, function () {
+            $rootScope.$broadcast('coordinatesUpdated', coordinates);
+            coordinates = [];
+        }, true);
+
+        function _render() {
             var Coords = [];
             angular.forEach(map, function (relation) {
                 if(!elements.hasOwnProperty(relation.source) || !elements.hasOwnProperty(relation.target)) {
@@ -153,7 +157,7 @@ angular.module('cosmoUi')
                         x: getAttachPoint(to.x, from.x, to.element),
                         y: to.y + (height / 2)
                     },
-                    color: from.color
+                    color: from.color !== undefined ? from.color : to.color
                 });
             });
             angular.extend(coordinates, Coords);
@@ -177,6 +181,12 @@ angular.module('cosmoUi')
             });
         };
 
+        this.addRouter = function (id, element) {
+            elements[id] = angular.extend(elementCoords(element), {
+                'type': 'router'
+            });
+        };
+
         this.addSubnet = function (id, element, color) {
             elements[id] = angular.extend(elementCoords(element), {
                 'color': color || 'silver',
@@ -184,8 +194,9 @@ angular.module('cosmoUi')
             });
         };
 
-        this.addNetwork = function (id, element) {
+        this.addNetwork = function (id, element, color) {
             elements[id] = angular.extend(elementCoords(element), {
+                'color': color || 'silver',
                 'type': 'network'
             });
         };
@@ -200,10 +211,12 @@ angular.module('cosmoUi')
 
         this.setMap = function (data) {
             map = data;
+            elements = {};
+            coordinates = [];
         };
 
         this.getCoordinates = function () {
             return coordinates;
         };
 
-    });
+    }]);

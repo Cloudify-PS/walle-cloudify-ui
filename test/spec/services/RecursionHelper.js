@@ -3,7 +3,7 @@
 describe('Service: Recursionhelper', function () {
 
 //  // load the service's module
-//  beforeEach(module('cosmoUi'));
+//  beforeEach(module('cosmoUiApp'));
 //
 //  // instantiate service
 //  var Recursionhelper;

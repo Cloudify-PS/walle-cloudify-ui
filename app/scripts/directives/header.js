@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('cosmoUi')
+angular.module('cosmoUiApp')
     .directive('header', function ($log) {
         return {
             templateUrl: 'views/headerTemplate.html',

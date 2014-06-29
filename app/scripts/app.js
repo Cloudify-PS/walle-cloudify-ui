@@ -1,8 +1,20 @@
 'use strict';
 
-angular.module('cosmoUi', ['gsUiInfraApp', 'angularFileUpload', 'ngCookies', 'ngRoute', 'ngSanitize', 'ngResource', 'ngBreadcrumbs', 'elasticjs.service', 'ngAnimate', 'nvd3ChartDirectives'])
+angular.module('cosmoUiApp', [
+    'gsUiInfraApp',
+    'angularFileUpload',
+    'ngCookies',
+    'ngRoute',
+    'ngSanitize',
+    'ngResource',
+    'ngBreadcrumbs',
+    'elasticjs.service',
+    'ngAnimate',
+    'nvd3ChartDirectives',
+    'ngStorage',
+    'datePicker'
 
-    .config(['$routeProvider', function ($routeProvider) {
+]).config(['$routeProvider', function ($routeProvider) {
 
         //var isSettingsExists = window.isSettingsExists();
 
@@ -35,7 +47,8 @@ angular.module('cosmoUi', ['gsUiInfraApp', 'angularFileUpload', 'ngCookies', 'ng
                 controller: 'LogsCtrl'
             })
             .when('/hosts',{
-                templateUrl: 'views/blueprintsIndex.html'
+                templateUrl: 'views/hosts.html',
+                controller: 'HostsCtrl'
             })
             .when('/networks',{
                 templateUrl: 'views/blueprintsIndex.html'
@@ -45,6 +58,10 @@ angular.module('cosmoUi', ['gsUiInfraApp', 'angularFileUpload', 'ngCookies', 'ng
             })
             .when('/storage',{
                 templateUrl: 'views/blueprintsIndex.html'
+            })
+            .when('/interface', {
+                templateUrl: 'views/interface.html',
+                controller: 'InterfaceCtrl'
             })
             .when('/config', {
                 templateUrl: 'views/config.html',

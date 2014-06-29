@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('cosmoUi')
+angular.module('cosmoUiApp')
     .controller('ConfigCtrl', function ($scope, $window, RestService) {
         $scope.cosmoServer = '';
         $scope.cosmoPort = '';
