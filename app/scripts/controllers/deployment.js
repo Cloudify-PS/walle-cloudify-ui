@@ -398,7 +398,14 @@ angular.module('cosmoUiApp')
 
                     _loadExecutions();
 
-                    $scope.allNodesArr = deploymentData.plan.nodes;
+                    RestService.getNodeInstances()
+                        .then(function(instances) {
+                            instances.forEach(function(instance) {
+                                if (instance.deployment_id === deploymentData.id) {
+                                    $scope.allNodesArr.push(instance);
+                                }
+                            });
+                        });
 
                     RestService.getNodes()
                         .then(function(data) {
@@ -769,12 +776,11 @@ angular.module('cosmoUiApp')
                             if (node.node_instances === undefined) {
                                 node.node_instances = [];
                             }
-                            if (node.id === item.node_id) {
+                            if (node.id === item.id) {
                                 node.node_instances.push(item);
                             }
                         });
                     });
-//                    $scope.allNodesArr = data;
                     $scope.viewNode(eventData);
                 });
         });
@@ -789,13 +795,13 @@ angular.module('cosmoUiApp')
                 }
             };
 
-            _filterSelectionBoxData(node.name);
+            _filterSelectionBoxData(node.id);
         };
 
         function _filterSelectionBoxData(nodeId) {
             $scope.selectNodesArr = [];
             $scope.allNodesArr.forEach(function(node) {
-                if (node.id === nodeId) {
+                if (node.node_id === nodeId) {
                     var _node = {};
 
                     for (var attr in node) { _node[attr] = node[attr]; }
