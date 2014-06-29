@@ -394,7 +394,7 @@ angular.module('cosmoUiApp')
                     }
 
                     // Set Deployment Model
-                    _setDeploymentModel(deploymentData);
+                    ;
 
                     _loadExecutions();
 
@@ -404,6 +404,7 @@ angular.module('cosmoUiApp')
                                 if (instance.deployment_id === deploymentData.id) {
                                     $scope.allNodesArr.push(instance);
                                 }
+                                _setDeploymentModel();
                             });
                         });
 
@@ -620,17 +621,17 @@ angular.module('cosmoUiApp')
         }
 
         // Define Deployment Model in the first time
-        function _setDeploymentModel( data ) {
+        function _setDeploymentModel( nodes ) {
             deploymentModel['*'] = angular.copy(deploymentDataModel);
-            for (var nodeId in data.plan.nodes) {
-                var node = data.plan.nodes[nodeId];
-                if(!deploymentModel.hasOwnProperty(node.name)) {
-                    deploymentModel[node.name] = angular.copy(deploymentDataModel);
+            for (var i = 0; i < $scope.allNodesArr.length; i++) {
+                var node = $scope.allNodesArr[i];
+                if(!deploymentModel.hasOwnProperty(node.id)) {
+                    deploymentModel[node.node_id] = angular.copy(deploymentDataModel);
                 }
                 deploymentModel['*'].instancesIds.push(node.id);
                 deploymentModel['*'].total++;
-                deploymentModel[node.name].instancesIds.push(node.id);
-                deploymentModel[node.name].total++;
+                deploymentModel[node.node_id].instancesIds.push(node.id);
+                deploymentModel[node.node_id].total++;
             }
         }
 
