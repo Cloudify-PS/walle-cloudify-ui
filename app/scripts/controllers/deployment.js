@@ -855,12 +855,8 @@ angular.module('cosmoUiApp')
             $scope.eventHits = [];
             var troubleShoot = 0,
                 executeRetry = 10,
-                eventsCollect = [];
-
-            function _reverse(array) {
-                var copy = [].concat(array);
-                return copy.reverse();
-            }
+                eventsCollect = [],
+                lastData = [];
 
             function _convertDates(data) {
                 for(var i in data) {
@@ -869,24 +865,37 @@ angular.module('cosmoUiApp')
                 return data;
             }
 
+            function _compareArrays(a1, a2) {
+                var i = 0;
+                return a1.every(function (e) {
+                    return e === a2[i++];
+                });
+            }
+
+            function pushLogs(data) {
+                if(_compareArrays(lastData, data)) {
+                    $scope.newLogs = 0;
+                    $scope.eventHits = data;
+                    lastData = data;
+                }
+            }
+
             events
                 .execute(function(data){
                     if(data && data.hasOwnProperty('hits')) {
                         var dataHits = _convertDates(data.hits.hits);
                         if(data.hits.hits.length !== lastAmount) {
                             if(document.body.scrollTop === 0) {
-                                $scope.newEvents = 0;
-                                $scope.eventHits = _reverse(dataHits);
+                                pushLogs(dataHits);
                             }
                             else {
-                                eventsCollect = _reverse(dataHits);
+                                eventsCollect = dataHits;
                                 $scope.newEvents = eventsCollect.length - $scope.eventHits.length;
                             }
                             lastAmount = dataHits.length;
                         }
-                        else if(JSON.stringify($scope.eventHits) === JSON.stringify(_reverse(dataHits))) {
-                            $scope.newEvents = 0;
-                            $scope.eventHits = _reverse(dataHits);
+                        else {
+                            pushLogs(dataHits);
                         }
                     }
                     else {
@@ -899,8 +908,10 @@ angular.module('cosmoUiApp')
                     if(troubleShoot === executeRetry) {
                         events.stopAutoPull();
                     }
-                }, autoPull);
+                }, autoPull, true);
         }
+
+
 
         function filterEvents(field, newValue, oldValue, execute) {
             if(newValue === null) {

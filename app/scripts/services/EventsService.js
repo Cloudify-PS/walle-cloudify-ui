@@ -27,6 +27,8 @@ angular.module('cosmoUiApp')
                 'node': 'context.node_name',
                 'task': 'message.text'
             };
+            var lastData = [];
+            var mergeData = false;
 
             $rootScope.$on('$locationChangeStart', function() {
                 if(isAutoPull) {
@@ -57,6 +59,7 @@ angular.module('cosmoUiApp')
                 var deferred = $q.defer();
                 isAutoPull = true;
                 $timeout(function _internalPull() {
+                    _autoPullByLastDate();
                     if(!isAutoPull) {
                         deferred.resolve('Events Auto Pull Stop!');
                         return;
@@ -118,6 +121,39 @@ angular.module('cosmoUiApp')
                 isAutoPull = false;
             }
 
+            function _getLastResultDate() {
+                if(lastData.hasOwnProperty('hits') && lastData.hits.hits.length > 0) {
+                    return lastData.hits.hits[0]._source['@timestamp'];
+                }
+                return null;
+            }
+
+            function _autoPullByLastDate() {
+                if(sortField) {
+                    filterRemove('@timestamp', rangePrefix);
+                    mergeData = false;
+                }
+                else {
+                    var lastTime = _getLastResultDate();
+                    if(lastTime !== null) {
+                        filterRange('@timestamp', {
+                            gt: lastTime
+                        });
+                        mergeData = true;
+                    }
+                }
+            }
+
+            function mergeLastDataWith(data) {
+                if(data.hasOwnProperty('hits') && data.hits.hits.length > 0) {
+                    for(var i in data.hits.hits) {
+                        lastData.hits.hits.push(data.hits.hits[i]);
+                    }
+                    return lastData;
+                }
+                return data;
+            }
+
             function execute(callbackFn, autoPull) {
                 var results;
                 if(sortField) {
@@ -131,7 +167,7 @@ angular.module('cosmoUiApp')
                     //$log.info(['Query 2: ', _applyFilters(oQuery.query('*')).toString()])
                     results = client
                         .query(_applyFilters(oQuery.query('*')))
-                        .sort([ejs.Sort('@timestamp').order('asc')])
+                        .sort([ejs.Sort('@timestamp').order('desc')])
                         .doSearch();
                 }
                 results.then(function(data){
@@ -139,7 +175,11 @@ angular.module('cosmoUiApp')
                         $log.error(data.error);
                     }
                     else if(angular.isFunction(callbackFn)) {
+                        if(mergeData === true) {
+                            mergeLastDataWith(data);
+                        }
                         callbackFn(data);
+                        lastData = data;
                         if(autoPull === true) {
                             _autoPull(callbackFn);
                         }
