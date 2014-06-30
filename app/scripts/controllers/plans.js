@@ -30,7 +30,7 @@ angular.module('cosmoUiApp')
             });
 
         RestService.getBlueprintById({id: $routeParams.id})
-            .then(function(data) {
+            .then(function() {
                 RestService.getNodes()
                     .then(function(data) {
                         var nodes = [];

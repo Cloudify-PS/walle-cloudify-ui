@@ -46,6 +46,7 @@ angular.module('cosmoUiApp')
         $scope.executedData = null;
         $scope.isConfirmationDialogVisible = false;
         $scope.showProgressPanel = false;
+        $scope.workflowsList = [];
 
         var id = $routeParams.id;
         var blueprint_id = $routeParams.blueprint_id;
@@ -189,7 +190,6 @@ angular.module('cosmoUiApp')
                             }
                         }
                     }
-
                 });
 
             if ($location.path() === '/deployment') {
@@ -388,9 +388,24 @@ angular.module('cosmoUiApp')
             RestService.getDeploymentById({deployment_id : id})
                 .then(function(deploymentData) {
 
+                    console.log(['deploymentData', deploymentData]);
+
                     if(deploymentData.hasOwnProperty('error_code')) {
                         $log.error(deploymentData.message);
                         return;
+                    }
+
+                    if(deploymentData.hasOwnProperty('workflows')) {
+                        var workflows = [];
+                        for (var wi in deploymentData.workflows) {
+                            var workflow = deploymentData.workflows[wi];
+                            workflows.push({
+                                value: workflow.name,
+                                label: workflow.name,
+                                deployment: deploymentData.id
+                            });
+                        }
+                        $scope.workflowsList = workflows;
                     }
 
                     // Set Deployment Model
@@ -821,7 +836,6 @@ angular.module('cosmoUiApp')
         /**
          * Events
          */
-        $scope.workflowsList = [];
         $scope.eventTypeList = [];
         $scope.filterLoading = false;
         $scope.eventsFilter = {
@@ -829,18 +843,6 @@ angular.module('cosmoUiApp')
             'workflow': null,
             'nodes': null
         };
-
-        RestService.getWorkflows({deployment_id: id})
-            .then(function (data) {
-                var workflows = [];
-                if (data.hasOwnProperty('workflows')) {
-                    for (var wfid in data.workflows) {
-                        var wfItem = data.workflows[wfid];
-                        workflows.push({'value': wfItem.name, 'label': wfItem.name});
-                    }
-                }
-                $scope.workflowsList = workflows;
-            });
 
         (function eventListForMenu() {
             var eventTypeList = [{'value': null, 'label': 'All'}];
