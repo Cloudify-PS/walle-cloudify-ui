@@ -388,8 +388,6 @@ angular.module('cosmoUiApp')
             RestService.getDeploymentById({deployment_id : id})
                 .then(function(deploymentData) {
 
-                    console.log(['deploymentData', deploymentData]);
-
                     if(deploymentData.hasOwnProperty('error_code')) {
                         $log.error(deploymentData.message);
                         return;
@@ -472,8 +470,6 @@ angular.module('cosmoUiApp')
                                     _extNetworks.push(subNetwork);
 
                                     $scope.networks = _createNetworkTree(nodes, _extNetworks);
-
-                                    console.log(['$scope.networks', $scope.networks]);
 
                                     bpNetworkService.setMap($scope.networks.relations);
                                     $timeout(function(){
@@ -924,8 +920,6 @@ angular.module('cosmoUiApp')
                 }, autoPull, true);
         }
 
-
-
         function filterEvents(field, newValue, oldValue, execute) {
             if(newValue === null) {
                 return;
@@ -1003,6 +997,29 @@ angular.module('cosmoUiApp')
             events.sort(field, $scope.eventSortList[field]);
             executeEvents();
         };
+
+        $scope.isSortActive = function() {
+            if($scope.eventSortList.hasOwnProperty('current')) {
+                if($scope.eventSortList.hasOwnProperty($scope.eventSortList.current)) {
+                    if($scope.eventSortList[$scope.eventSortList.current] !== false) {
+                        return false;
+                    }
+                }
+            }
+            return true;
+        };
+
+        $scope.$watch('eventSortList', function(data){
+            if(!data.hasOwnProperty('current')) {
+                return;
+            }
+            if($scope.isSortActive()) {
+                executeEvents(true);
+            }
+            else {
+                events.stopAutoPull();
+            }
+        }, true);
 
         $scope.isSorted = function (field) {
             if ($scope.eventSortList.current === field) {

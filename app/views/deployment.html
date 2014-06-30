@@ -296,6 +296,9 @@
                         <span>
                             <button class="gs-btn" data-ng-click="viewAllLogs()">All logs</button>
                         </span>
+                        <span class="autopull">
+                            <label>Autopull</label><span ng-class="{'false': 'off', 'true':'on'}[isSortActive()]">{{ {'false': 'off', 'true':'on'}[isSortActive()] }}</span>
+                        </span>
                         <div class="loading" data-ng-show="filterLoading"></div>
                     </div>
 
@@ -308,7 +311,7 @@
                             <tr>
                                 <th class="icon"><!-- icon --></th>
                                 <th class="date sorting" data-ng-click="sortEvents('timestamp')" data-ng-class="isSorted('timestamp')">Timestamp</th>
-                                <th class="type sorting" data-ng-click="sortEvents('eventType')" data-ng-class="isSorted('eventType')">{{ 'deployment.table.heading.eventType' | i18n }}</th>
+                                <th class="type sorting" data-ng-click="sortEvents('event_type')" data-ng-class="isSorted('event_type')">{{ 'deployment.table.heading.eventType' | i18n }}</th>
                                 <th class="node sorting" data-ng-click="sortEvents('node')" data-ng-class="isSorted('node')">{{ 'deployment.table.heading.node' | i18n }}</th>
                                 <th class="task sorting" data-ng-click="sortEvents('message.text')" data-ng-class="isSorted('message.text')">{{ 'deployment.table.heading.task' | i18n }}</th>
                                 <th class="action"><!-- Actions --></th>

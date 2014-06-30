@@ -462,6 +462,29 @@
                 margin: 0 0 10px 0;
                 display: inline-block;
             }
+            > span.autopull {
+                border: 1px solid #ccc;
+                border-radius: 3px;
+                vertical-align: bottom;
+                float: right;
+                label {
+                    padding: 5px 10px;
+                    border-right: 1px dotted #ccc;
+                    margin: 0px;
+                    font-weight: normal;
+                    background-color: #f5f5f5;
+                }
+                > span {
+                    padding: 5px 10px;
+                    &.off {
+                        color: #ccc;
+                    }
+                    &.on {
+                        color: #29aaee;
+                        font-weight: bold;
+                    }
+                }
+            }
         }
 
         [ng-switch-when='events'] {
