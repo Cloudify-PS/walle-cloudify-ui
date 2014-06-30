@@ -31,49 +31,60 @@ angular.module('cosmoUiApp')
 
         RestService.getBlueprintById({id: $routeParams.id})
             .then(function(data) {
-                $scope.blueprint = data || null;
-                $scope.nodesTree = _createNodesTree(data.plan.nodes);
-                $scope.dataTable = data.plan.nodes;
-
-                blueprintCoordinateService.resetCoordinates();
-                blueprintCoordinateService.setMap(_getNodesConnections(data.plan.nodes));
-                $scope.coordinates = blueprintCoordinateService.getCoordinates();
-
-                RestService.getProviderContext()
-                    .then(function(providerData) {
-                        var _extNetworks = [];
-                        var externalNetwork = {
-                            'id': providerData.context.resources.ext_network.id,
-                            'name': providerData.context.resources.ext_network.name,
-                            'color': getNetworkColor(),
-                            'type': providerData.context.resources.ext_network.type
-                        };
-                        externalNetwork.color = getNetworkColor();
-                        externalNetwork.devices = [
-                            {
-                                'id': providerData.context.resources.router.id,
-                                'name': providerData.context.resources.router.name,
-                                'type': providerData.context.resources.router.type,
-                                'icon': 'router'
+                RestService.getNodes()
+                    .then(function(data) {
+                        var nodes = [];
+                        data.forEach(function(node) {
+                            if (node.blueprint_id === $routeParams.id) {
+                                nodes.push(node);
                             }
-                        ];
-                        relations.push({
-                            source: externalNetwork.id,
-                            target: externalNetwork.devices[0].id
                         });
-                        _extNetworks.push(externalNetwork);
+                        $scope.nodesTree = nodes;
 
-                        var subNetwork = providerData.context.resources.subnet;
-                        subNetwork.color = getNetworkColor();
-                        relations.push({
-                            source: subNetwork.id,
-                            target: externalNetwork.devices[0].id
-                        });
-                        _extNetworks.push(subNetwork);
+                        $scope.blueprint = data || null;
+                        $scope.nodesTree = _createNodesTree(nodes);
+                        $scope.dataTable = nodes;
 
-                        $scope.networks = _createNetworkTree(data.plan.nodes, _extNetworks);
-                        bpNetworkService.setMap($scope.networks.relations);
-                        $scope.networkcoords = bpNetworkService.getCoordinates();
+                        blueprintCoordinateService.resetCoordinates();
+                        blueprintCoordinateService.setMap(_getNodesConnections(nodes));
+                        $scope.coordinates = blueprintCoordinateService.getCoordinates();
+
+                        RestService.getProviderContext()
+                            .then(function(providerData) {
+                                var _extNetworks = [];
+                                var externalNetwork = {
+                                    'id': providerData.context.resources.ext_network.id,
+                                    'name': providerData.context.resources.ext_network.name,
+                                    'color': getNetworkColor(),
+                                    'type': providerData.context.resources.ext_network.type
+                                };
+                                externalNetwork.color = getNetworkColor();
+                                externalNetwork.devices = [
+                                    {
+                                        'id': providerData.context.resources.router.id,
+                                        'name': providerData.context.resources.router.name,
+                                        'type': providerData.context.resources.router.type,
+                                        'icon': 'router'
+                                    }
+                                ];
+                                relations.push({
+                                    source: externalNetwork.id,
+                                    target: externalNetwork.devices[0].id
+                                });
+                                _extNetworks.push(externalNetwork);
+
+                                var subNetwork = providerData.context.resources.subnet;
+                                subNetwork.color = getNetworkColor();
+                                relations.push({
+                                    source: subNetwork.id,
+                                    target: externalNetwork.devices[0].id
+                                });
+                                _extNetworks.push(subNetwork);
+
+                                $scope.networks = _createNetworkTree(nodes, _extNetworks);
+                                bpNetworkService.setMap($scope.networks.relations);
+                                $scope.networkcoords = bpNetworkService.getCoordinates();
+                            });
                     });
             });
 
@@ -185,7 +196,7 @@ angular.module('cosmoUiApp')
                 if (node.type.indexOf('network') > -1) {
                     networks.push({
                         'id': node.id,
-                        'name': node.name,
+                        'name': node.id,
                         'subnets': [],
                         'devices': []
                     });
