@@ -32,13 +32,6 @@ function createRequest(requestData, callback) {
             var jsonStr = JSON.stringify(result);
             data = JSON.parse(jsonStr);
 
-            /* CFY-824 CHECK ONLY - TO BE REMOVED!!!! */
-            if (requestData.options.path.indexOf('/blueprints/') > -1) {
-                data = JSON.parse(data);
-                delete data.plan;
-            }
-            /* END OF CHECK */
-
             logger.info(['Request done, data: ',data]);
 
             callback(null, data);
