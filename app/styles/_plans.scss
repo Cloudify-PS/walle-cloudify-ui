@@ -742,12 +742,19 @@
             }
         }
         .sourcecode {
+            position: relative;
             display: table-cell;
             width: auto;
             p.empty {
                 display: block;
                 text-align: center;
                 margin-top: 70px;
+            }
+            .note {
+                position: absolute;
+                top: -20px;
+                right: -19px;
+                font-size: 12px;
             }
         }
     }
