@@ -45,8 +45,8 @@
 
     .expand-button {
       background: url("#{$img-panel-expand}") no-repeat center center;
-      width: 20px;
-      height: 20px;
+      width: 28px;
+      height: 22px;
       display: inline-block;
       cursor: pointer;
       position: absolute;
@@ -63,13 +63,13 @@
 
     .collapse-button {
       background: url("#{$img-panel-collapse}") no-repeat center center;
-      width: 20px;
-      height: 20px;
+      width: 28px;
+      height: 22px;
       display: inline-block;
       cursor: pointer;
       position: absolute;
       right: 10px;
-      top: 2px;
+      top: 4px;
     }
 
     table {
