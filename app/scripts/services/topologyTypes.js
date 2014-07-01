@@ -50,13 +50,13 @@ angular.module('cosmoUiApp')
                 icon: 'cloudify-types-base cloudify-openstack-security-group'
             },
             'cloudify.types.tier': {
-                icon: 'cloudify-types-base cloudify.types.tier'
+                icon: 'cloudify-types-base cloudify-types-tier'
             },
             'cloudify.types.object_container': {
-                icon: 'cloudify-types-base cloudify.types.object-container'
+                icon: 'cloudify-types-base cloudify-types-object-container'
             },
             'cloudify.types.message_bus_server': {
-                icon: 'cloudify-types-base cloudify.types.message-bus-server'
+                icon: 'cloudify-types-base cloudify-types-message-bus-server'
             }
         };
 
