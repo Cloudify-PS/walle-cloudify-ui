@@ -762,9 +762,14 @@
     .syntaxhighlighter {
         margin: -2em 0 -2em 0 !important;
         .container {
-            &::before {
+            &::before, &::after {
                 content: normal !important;
                 display: inline !important;
+            }
+        }
+        .gutter {
+            .line {
+                border-right: 3px solid #29aaee !important;
             }
         }
     }
