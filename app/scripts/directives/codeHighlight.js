@@ -17,12 +17,13 @@ angular.module('cosmoUiApp')
                     'class-name': '',
                     'collapse': false,
                     'first-line': 1,
-                    'gutter': false,
+                    'gutter': true,
                     'highlight': false,
-                    'html-script': false,
-                    'smart-tabs': true,
+                    'html-script': true,
+                    'smart-tabs': false,
                     'tab-size': 4,
-                    'toolbar': false
+                    'toolbar': true,
+                    'quick-code': true
                 };
                 ngModel.$render = function () {
                     var config = ngModel.$viewValue || {};

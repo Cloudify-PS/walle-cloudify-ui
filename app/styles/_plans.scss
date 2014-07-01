@@ -172,7 +172,7 @@
         pre {
             width: 100%;
             margin-left: 20px;
-            padding: 0px 10px 0;
+            padding: 0px;
             -webkit-user-select: none; /* Chrome all / Safari all */
             -moz-user-select: none; /* Firefox all */
             -ms-user-select: none; /* IE 10+ */
@@ -761,5 +761,11 @@
 
     .syntaxhighlighter {
         margin: -2em 0 -2em 0 !important;
+        .container {
+            &::before {
+                content: normal !important;
+                display: inline !important;
+            }
+        }
     }
 }
