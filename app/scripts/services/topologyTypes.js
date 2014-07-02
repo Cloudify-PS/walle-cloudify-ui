@@ -7,6 +7,9 @@ angular.module('cosmoUiApp')
             'cloudify.types.base': {
                 icon: 'cloudify-types-base'
             },
+            'cloudify-types-host': {
+                icon: 'cloudify-types-base cloudify-types-host'
+            },
             'cloudify.types.middleware-server': {
                 icon: 'cloudify-types-base cloudify-types-middleware-server'
             },
@@ -22,32 +25,32 @@ angular.module('cosmoUiApp')
             'cloudify.types.app-module': {
                 icon: 'cloudify-types-base cloudify-types-app-module'
             },
-            'cloudify.openstack.floatingip': {
-                icon: 'cloudify-types-base cloudify-openstack-floatingip'
+            'cloudify.types.floatingip': {
+                icon: 'cloudify-types-base cloudify-types-floatingip'
             },
-            'cloudify.openstack.port': {
-                icon: 'cloudify-types-base cloudify-openstack-port'
+            'cloudify.types.port': {
+                icon: 'cloudify-types-base cloudify-types-port'
             },
-            'cloudify.openstack.network': {
-                icon: 'cloudify-types-base cloudify-openstack-network'
+            'cloudify.types.network': {
+                icon: 'cloudify-types-base cloudify-types-network'
             },
-            'cloudify.openstack.subnet': {
-                icon: 'cloudify-types-base cloudify-openstack-subnet'
+            'cloudify.types.subnet': {
+                icon: 'cloudify-types-base cloudify-types-subnet'
             },
-            'cloudify.openstack.server': {
-                icon: 'cloudify-types-base cloudify-openstack-server'
+            'cloudify.types.server': {
+                icon: 'cloudify-types-base cloudify-types-server'
             },
-            'cloudify.openstack.router': {
-                icon: 'cloudify-types-base cloudify-openstack-router'
+            'cloudify.types.router': {
+                icon: 'cloudify-types-base cloudify-types-router'
             },
-            'cloudify.openstack.load_balancer': {
-                icon: 'cloudify-types-base cloudify-openstack-load-balancer'
+            'cloudify.types.load_balancer': {
+                icon: 'cloudify-types-base cloudify-types-load-balancer'
             },
-            'cloudify.openstack.virtual_ip': {
-                icon: 'cloudify-types-base cloudify-openstack-virtual-ip'
+            'cloudify.types.virtual_ip': {
+                icon: 'cloudify-types-base cloudify-types-virtual-ip'
             },
-            'cloudify.openstack.security_group': {
-                icon: 'cloudify-types-base cloudify-openstack-security-group'
+            'cloudify.types.security_group': {
+                icon: 'cloudify-types-base cloudify-types-security-group'
             },
             'cloudify.types.tier': {
                 icon: 'cloudify-types-base cloudify-types-tier'
