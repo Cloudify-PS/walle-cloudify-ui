@@ -14,7 +14,6 @@ angular.module('cosmoUiApp')
                 var options = {
                     'brush': $attrs.codeHighlight,
                     'auto-links': true,
-                    'class-name': '',
                     'collapse': false,
                     'first-line': 1,
                     'gutter': true,
@@ -23,7 +22,7 @@ angular.module('cosmoUiApp')
                     'smart-tabs': false,
                     'tab-size': 4,
                     'toolbar': true,
-                    'quick-code': true
+                    'quick-code': false
                 };
                 ngModel.$render = function () {
                     var config = ngModel.$viewValue || {};
