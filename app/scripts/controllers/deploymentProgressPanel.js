@@ -1,9 +1,28 @@
 'use strict';
 
 angular.module('cosmoUiApp')
-    .controller('DeploymentProgressPanelCtrl', function ($scope) {
+    .controller('DeploymentProgressPanelCtrl', function ($scope, EventsService) {
         $scope.panelOpen = false;
         $scope.panelData = [];
+
+        var events = EventsService.newInstance('/backend/events'),
+            eventHits = {};
+
+        events.filter('event_type', 'task_started');
+
+
+        function getEventsStarted() {
+            events.execute(function(data){
+                if(data.hasOwnProperty('hits')) {
+                    eventHits = data.hits.hits;
+                }
+            }, true);
+        }
+
+        function stopEventsStarted() {
+            events.stopAutoPull();
+        }
+
 
         $scope.getWorkflow = function() {
             if ($scope.selectedWorkflow.data === null) {
@@ -52,11 +71,21 @@ angular.module('cosmoUiApp')
                         totalCount: 0,
                         inProgress: {count: 0, nodes: []},
                         started: {count: 0, nodes: []},
-                        failed: {count: 0, nodes: []}
+                        failed: {count: 0, nodes: []},
+                        start_time: getElapsedTime($scope.nodes[i])
                     });
                     updateNodeData($scope.nodes[i], panelDataIdx);
                     panelDataIdx++;
                 }
+            }
+        });
+
+        $scope.$watch('panelOpen', function(isOpen){
+            if(isOpen) {
+                getEventsStarted();
+            }
+            else {
+                stopEventsStarted();
             }
         });
 
@@ -78,5 +107,25 @@ angular.module('cosmoUiApp')
                     }
                 }
             }
+        }
+
+        function getEventByNodeId(id) {
+            for(var i in eventHits) {
+                var event = eventHits[i];
+                if(event._source.context.hasOwnProperty('node_id') && event._source.context.node_id === id) {
+                    return event;
+                }
+            }
+            return null;
+        }
+
+        function getElapsedTime(node) {
+            if(!node.hasOwnProperty('start_time')) {
+                var event = getEventByNodeId(node.id);
+                if(event !== null) {
+                    return event._source.timestamp;
+                }
+            }
+            return false;
         }
     });

@@ -1,9 +1,9 @@
 <div id="deployment-progress-panel" ng-controller="DeploymentProgressPanelCtrl" ng-class="{'opened': panelOpen == true, 'closed': panelOpen == false}">
     <div id="closedPanel" ng-show="!panelOpen">
-        <div class="data name">Workflow name: {{ getWorkflow() }}</div>
-        <div class="data in-progress">In progress: {{ getNodesCount(null, 'inProgress') }}</div>
-        <div class="data ready">Ready: {{ getNodesCount(null, 'started') }}</div>
-        <div class="data failed">Failed: {{ getNodesCount(null, 'failed') }}</div>
+        <div class="data head name">Workflow name: {{ getWorkflow() }}</div>
+        <div class="data head in-progress">In progress: {{ getNodesCount(null, 'inProgress') }}</div>
+        <div class="data head ready">Ready: {{ getNodesCount(null, 'started') }}</div>
+        <div class="data head failed">Failed: {{ getNodesCount(null, 'failed') }}</div>
 
         <!--<div class="panel-progress-bar">-->
             <!--<div dots-loader></div>-->
@@ -21,6 +21,7 @@
                     <th class="data ready">Ready</th>
                     <th class="data failed">Failed</th>
                     <th class="data status">Status</th>
+                    <th class="data elapsedtime">Elapsed time</th>
                 </tr>
             </thead>
             <tbody ng-repeat="node in panelData">
@@ -31,6 +32,10 @@
                     <td class="data failed">{{ getNodesCount(node, 'failed') }} / {{ node.totalCount }}</td>
                     <td class="data status">
                         <div>{{ node.status }}</div>
+                    </td>
+                    <td class="data elapsedtime">
+                        <div data-ng-show="node.start_time" timer start-time="node.start_time">{{hours}} hours, {{minutes}} minutes, {{seconds}} seconds.</div>
+                        <div data-ng-hide="node.start_time">Not Available</div>
                     </td>
                 </tr>
             </tbody>

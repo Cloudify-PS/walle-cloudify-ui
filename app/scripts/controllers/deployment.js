@@ -851,6 +851,8 @@ angular.module('cosmoUiApp')
         var events = EventsService.newInstance('/backend/events'),
             lastNodeSearch = $scope.eventsFilter.nodes;
 
+        events.setAutoPullByDate(true);
+
         $scope.eventsFilter = {
             'type': null,
             'workflow': null,
