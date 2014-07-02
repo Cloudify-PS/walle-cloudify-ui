@@ -176,6 +176,7 @@
             user-select: none;
             border: 1px solid #cccccc;
             border-radius: 4px;
+            font-size: 13px;
         }
     }
 
@@ -764,7 +765,7 @@
             }
         }
         table {
-            overflow: hidden !important;
+            overflow-x: hidden !important;
         }
     }
 }

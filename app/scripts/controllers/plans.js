@@ -32,8 +32,6 @@ angular.module('cosmoUiApp')
         RestService.getBlueprintById({id: $routeParams.id})
             .then(function(data) {
 
-                console.log(['data', data]);
-
                 $scope.blueprint = data || null;
                 $scope.nodesTree = _createNodesTree(data.plan.nodes);
                 $scope.dataTable = data.plan.nodes;
@@ -340,7 +338,43 @@ angular.module('cosmoUiApp')
         RestService.browseBlueprint({id: $routeParams.id})
             .then(function(browseData) {
                 $scope.browseData = [browseData];
+                locateFilesInBrowseTree(browseData.children);
+                autoOpenSourceFile();
             });
+
+        var autoFilesList = ['blueprint.yaml', 'README.md'];
+        var selectedAutoFile = null;
+        var firstDefaultFile = null;
+        var autoKeepLooking = true;
+        function locateFilesInBrowseTree(data) {
+            for(var i in data) {
+                if(!autoKeepLooking) {
+                    break;
+                }
+                var pos = autoFilesList.indexOf(data[i].name);
+                if(pos > -1) {
+                    selectedAutoFile = data[i];
+                }
+                if(pos !== 0) {
+                    locateFilesInBrowseTree(data[i].children);
+                }
+                else {
+                    autoKeepLooking = false;
+                }
+                if(!data[i].hasOwnProperty('children') && firstDefaultFile === null) {
+                    firstDefaultFile = data[i];
+                }
+            }
+        }
+
+        function autoOpenSourceFile() {
+            if(selectedAutoFile !== null) {
+                $scope.openSourceFile(selectedAutoFile);
+            }
+            else if(firstDefaultFile !== null) {
+                $scope.openSourceFile(firstDefaultFile);
+            }
+        }
 
         $scope.setBrowseType = function(data) {
             if(data.hasOwnProperty('children')) {
