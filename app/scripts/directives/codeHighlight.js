@@ -21,7 +21,7 @@ angular.module('cosmoUiApp')
                     'html-script': true,
                     'smart-tabs': false,
                     'tab-size': 4,
-                    'toolbar': true,
+                    'toolbar': false,
                     'quick-code': false
                 };
                 ngModel.$render = function () {
