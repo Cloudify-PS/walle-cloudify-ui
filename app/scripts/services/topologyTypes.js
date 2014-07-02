@@ -7,7 +7,7 @@ angular.module('cosmoUiApp')
             'cloudify.types.base': {
                 icon: 'cloudify-types-base'
             },
-            'cloudify-types-host': {
+            'cloudify.types.host': {
                 icon: 'cloudify-types-base cloudify-types-host'
             },
             'cloudify.types.middleware-server': {

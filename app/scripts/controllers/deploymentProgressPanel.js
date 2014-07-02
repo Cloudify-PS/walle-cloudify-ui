@@ -2,7 +2,7 @@
 
 angular.module('cosmoUiApp')
     .controller('DeploymentProgressPanelCtrl', function ($scope, EventsService) {
-        $scope.panelOpen = false;
+        $scope.panelOpen = true;
         $scope.panelData = [];
 
         var events = EventsService.newInstance('/backend/events'),

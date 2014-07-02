@@ -5,6 +5,10 @@
     $alerts: #feb300;
     $failed: #d54931;
 
+    #main-content-panel {
+        position: relative;
+    }
+
     #plans-index-events-widget {
         position: absolute;
         right: $COSMOUI_DEPLOYMENT_EVENT_WIDGET_RIGHT;
@@ -21,7 +25,7 @@
         border-left: $COSMOUI_DEPLOYMENT_APP_STATUS_BORDER;
         border-bottom: $COSMOUI_DEPLOYMENT_APP_STATUS_BORDER;
         position: absolute;
-        right: 20px;
+        right: 0px;
     }
 
     #right-side-menu {
@@ -402,7 +406,6 @@
     .content-section {
         width: 100%;
         height: 100%;
-        min-height: 650px;
 
         .filters {
             position: relative;

@@ -31,7 +31,8 @@
         border-top: 1px solid $clr-base-28;
         padding-left: 10px;
         padding-top: 10px;
-        position: relative;
+        position: absolute;
+        bottom: 0px;
 
         //    .panel-progress-bar {
         //      width: 60px;
