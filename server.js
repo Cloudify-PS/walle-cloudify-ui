@@ -231,6 +231,11 @@ app.post('/backend/influx', function(request, response) {
 
 });
 
+app.get('/backend/apidocs', function(request, response) {
+    response.writeHead(301, {Location: 'http://' + conf.cosmoServer + '/api/spec.html'});
+    response.end();
+});
+
 app.get('/backend/monitor/graphs', function(request, response) {
     cloudify4node.getMonitorGraphs(function(err, data) {
         response.send(err !== null ? err : data);
