@@ -559,7 +559,7 @@ angular.module('cosmoUiApp')
                     completed: 0
                 };
 
-                if (node.relationships !== undefined && !_isNetworkNode(node)) {
+                if (node.relationships !== undefined && !_isIgnoreNode(node)) {
                     for (var i = 0; i < node.relationships.length; i++) {
                         if (node.relationships[i].type_hierarchy.join(',').indexOf('contained_in') > -1) {
                             node.isContained = true;
@@ -576,7 +576,7 @@ angular.module('cosmoUiApp')
                     if (!node.isContained) {
                         roots.push(node);
                     }
-                } else if(!_isNetworkNode(node) && !node.isContained){
+                } else if(!_isIgnoreNode(node) && !node.isContained){
                     roots.push(node);
                 }
             }
@@ -592,12 +592,13 @@ angular.module('cosmoUiApp')
             return networkNodes.indexOf(node.type) > -1;
         }
 
-        function _isNetworkNode(node) {
+        function _isIgnoreNode(node) {
             var networkNodes = [
                 'cloudify.openstack.floatingip',
                 'cloudify.openstack.network',
                 'cloudify.openstack.port',
-                'cloudify.openstack.subnet'
+                'cloudify.openstack.subnet',
+                'cloudify.openstack.security_group'
             ];
 
             return networkNodes.indexOf(node.type) > -1;
