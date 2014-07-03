@@ -710,6 +710,7 @@
             padding: 0 0 0 20px;
             font-size: 13px;
             vertical-align: top;
+            overflow-x: scroll;
             ul {
                 list-style-type: none;
                 padding: 0px;
@@ -748,6 +749,9 @@
                 top: -20px;
                 right: -19px;
                 font-size: 12px;
+            }
+            h4 {
+                margin-left: 18px;
             }
         }
     }

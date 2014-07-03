@@ -391,6 +391,7 @@ angular.module('cosmoUiApp')
                         data: fileContent,
                         brush: getBrashByFile(data.name)
                     };
+                    $scope.filename = data.name;
                 });
         };
 
