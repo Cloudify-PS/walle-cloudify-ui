@@ -2,8 +2,9 @@
 
 angular.module('cosmoUiApp')
     .controller('DeploymentProgressPanelCtrl', function ($scope, EventsService) {
+        var panelData = {};
+        $scope.panelData = panelData;
         $scope.panelOpen = true;
-        $scope.panelData = [];
 
         var events = EventsService.newInstance('/backend/events'),
             eventHits = {};
@@ -23,7 +24,6 @@ angular.module('cosmoUiApp')
             events.stopAutoPull();
         }
 
-
         $scope.getWorkflow = function() {
             if ($scope.selectedWorkflow.data === null) {
                 return 'All workflows';
@@ -36,19 +36,6 @@ angular.module('cosmoUiApp')
             $scope.panelOpen = $scope.panelOpen === false;
         };
 
-        $scope.getNodesCount = function(node, state) {
-            var count = 0;
-            for (var i = 0; i < $scope.panelData.length; i++) {
-                if (node === null) {
-                    count += $scope.panelData[i][state].count;
-                }
-                else if ($scope.panelData[i].id === node.id) {
-                    count = $scope.panelData[i][state].count;
-                }
-            }
-            return count;
-        };
-
         $scope.getClass = function(node) {
             var _class = 'inProgress';
             if (node.failed.count > 0) {
@@ -59,27 +46,6 @@ angular.module('cosmoUiApp')
             return _class;
         };
 
-        $scope.$watch('nodes', function() {
-            $scope.panelData = [];
-            var panelDataIdx = 0;
-
-            for (var i = 0; i < $scope.nodes.length; i++) {
-                if ($scope.nodes[i].node_instances !== undefined && $scope.nodes[i].node_instances.length > 0) {
-                    $scope.panelData.push({
-                        id: $scope.nodes[i].node_id,
-                        status: $scope.nodes[i].state,
-                        totalCount: 0,
-                        inProgress: {count: 0, nodes: []},
-                        started: {count: 0, nodes: []},
-                        failed: {count: 0, nodes: []},
-                        start_time: getElapsedTime($scope.nodes[i])
-                    });
-                    updateNodeData($scope.nodes[i], panelDataIdx);
-                    panelDataIdx++;
-                }
-            }
-        });
-
         $scope.$watch('panelOpen', function(isOpen){
             if(isOpen) {
                 getEventsStarted();
@@ -89,22 +55,39 @@ angular.module('cosmoUiApp')
             }
         });
 
-        function updateNodeData(data, idx) {
-            var node = $scope.panelData[idx];
-            node.totalCount = data.node_instances.length;
+        $scope.$watch('nodes', function(data) {
+            for(var n in data) {
+                var node = data[n];
+                if(!panelData.hasOwnProperty(node.node_id)) {
+                    panelData[node.node_id] = {
+                        id: node.node_id,
+                        status: node.state,
+                        totalCount: node.node_instances.length,
+                        count: 0,
+                        inProgress: {count: 0, nodes: []},
+                        started: {count: 0, nodes: []},
+                        failed: {count: 0, nodes: []},
+                        start_time: getElapsedTime(node)
+                    };
+                    updateNodeProgress(node);
+                }
+            }
+        });
 
-            for (var j = 0; j < data.node_instances.length; j++) {
-                for (var i = 0; i < $scope.nodes.length; i++) {
-                    if ($scope.nodes[i].id === data.node_instances[j].id) {
-                        if ($scope.nodes[i].state === 'started' || $scope.nodes[i].state === 'failed') {
-                            node[$scope.nodes[i].state].count++;
-                            node[$scope.nodes[i].state].nodes[$scope.nodes[i].id] = $scope.nodes[i];
-                        }
-                        else {
-                            node.inProgress.count++;
-                            node.inProgress.nodes[$scope.nodes[i].id] = $scope.nodes[i];
-                        }
-                    }
+        function updateNodeProgress(instanceNode) {
+            var states = ['started', 'failed'],
+                node = panelData[instanceNode.node_id];
+
+            for(var i in instanceNode.node_instances) {
+                var instance = instanceNode.node_instances[i];
+
+                if(states.indexOf(instance.state) !== -1) {
+                    node[instance.state].count++;
+                    node[instance.state].nodes[instanceNode.node_id] = node;
+                }
+                else {
+                    node.inProgress.count++;
+                    node.inProgress.nodes[instanceNode.node_id] = node;
                 }
             }
         }
