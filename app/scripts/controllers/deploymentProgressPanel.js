@@ -1,7 +1,8 @@
 'use strict';
 
 angular.module('cosmoUiApp')
-    .controller('DeploymentProgressPanelCtrl', function ($scope, EventsService) {
+    .controller('DeploymentProgressPanelCtrl', function ($scope, $routeParams, EventsService) {
+        var deployment_id = $routeParams.id;
         var panelData = {};
         $scope.panelData = panelData;
         $scope.panelOpen = true;
@@ -10,10 +11,12 @@ angular.module('cosmoUiApp')
             eventHits = {};
 
         events.filter('event_type', 'task_started');
+        events.filter('context.deployment_id', deployment_id);
 
 
         function getEventsStarted() {
             events.execute(function(data){
+                console.log(['data', data]);
                 if(data.hasOwnProperty('hits')) {
                     eventHits = data.hits.hits;
                 }
@@ -96,19 +99,25 @@ angular.module('cosmoUiApp')
             node.totalCount = totalCount;
         }
 
-        function getEventByNodeId(id) {
+        function getOldestEventByNodeId(id) {
+            var oldest = null;
             for(var i in eventHits) {
                 var event = eventHits[i];
                 if(event._source.context.hasOwnProperty('node_id') && event._source.context.node_id === id) {
-                    return event;
+                    if(oldest === null) {
+                        oldest = event;
+                    }
+                    else if(event._source.timestemp < oldest._source.timestemp) {
+                        oldest = event;
+                    }
                 }
             }
-            return null;
+            return oldest;
         }
 
         function getElapsedTime(node) {
             if(!node.hasOwnProperty('start_time')) {
-                var event = getEventByNodeId(node.id);
+                var event = getOldestEventByNodeId(node.id);
                 if(event !== null) {
                     return event._source.timestamp;
                 }
