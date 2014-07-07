@@ -16,7 +16,6 @@ angular.module('cosmoUiApp')
 
         function getEventsStarted() {
             events.execute(function(data){
-                console.log(['data', data]);
                 if(data.hasOwnProperty('hits')) {
                     eventHits = data.hits.hits;
                 }
@@ -107,7 +106,7 @@ angular.module('cosmoUiApp')
                     if(oldest === null) {
                         oldest = event;
                     }
-                    else if(event._source.timestemp < oldest._source.timestemp) {
+                    else if(convertTimeToTimestemp(event._source['@timestamp']) < convertTimeToTimestemp(oldest._source['@timestamp'])) {
                         oldest = event;
                     }
                 }
@@ -119,9 +118,13 @@ angular.module('cosmoUiApp')
             if(!node.hasOwnProperty('start_time')) {
                 var event = getOldestEventByNodeId(node.id);
                 if(event !== null) {
-                    return event._source.timestamp;
+                    return event._source['@timestamp'];
                 }
             }
             return false;
+        }
+
+        function convertTimeToTimestemp(date) {
+            return Math.round(new Date(date).getTime()/1000);
         }
     });
