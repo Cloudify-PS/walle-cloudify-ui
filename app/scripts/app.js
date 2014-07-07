@@ -72,7 +72,14 @@ angular.module('cosmoUiApp', [
 //                redirectTo: isSettingsExists ? '/blueprints' : '/config'
                 redirectTo: '/blueprints'
             });
-    }]).run(['I18next', 'RestService', function(I18next, RestService, $log) {
+    }])
+    .value('appConfig', {
+        versions: {
+            ui: '0.0',
+            manager: '0.1'
+        }
+    })
+    .run(['I18next', 'RestService', '$log', 'appConfig', function(I18next, RestService, $log, appConfig) {
 
         RestService.getConfiguration().then(function (data) {
             var i18nConf = data.i18n;
@@ -84,5 +91,12 @@ angular.module('cosmoUiApp', [
         }, function () {
             $log.info('problem loading configuration for i18n init');
         });
+
+        RestService.getVersionsUi()
+            .then(function(data){
+                if(data.hasOwnProperty('version')) {
+                    appConfig.versions.ui = data.version;
+                }
+            });
 
     }]);

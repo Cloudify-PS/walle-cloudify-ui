@@ -236,6 +236,12 @@ app.get('/backend/apidocs', function(request, response) {
     response.end();
 });
 
+app.get('/backend/versions/ui', function(request, response) {
+    cloudify4node.getPackageJson(function(err, data) {
+        response.send(err !== null ? err : data);
+    });
+});
+
 app.get('/backend/monitor/graphs', function(request, response) {
     cloudify4node.getMonitorGraphs(function(err, data) {
         response.send(err !== null ? err : data);
