@@ -164,7 +164,7 @@ angular.module('cosmoUiApp').service('PlanDataConvert', function (Cosmotypesserv
 
     this.nodesToTopology = function(data){
 
-        var noneTopologyTypes = ['network', 'subnet', 'port', 'router', 'floating-ip', 'security-group'];
+        var noneTopologyTypes = ['network', 'subnet', 'port', 'router', 'floating-ip'/*, 'security-group'*/];
         var topologyModel = {
             'edges': [],
             'nodes': []

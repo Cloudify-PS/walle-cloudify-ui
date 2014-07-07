@@ -196,11 +196,11 @@
                 </ul>
             </div>
             <div class="sourcecode">
-                <div class="note" data-ng-show="dataCode.data">Double click on the code to copy.</div>
-                <pre unselectable="on">
+                <h4 data-ng-show="filename">{{ filename }}</h4>
+                <div class="pre">
                     <p class="empty" data-ng-hide="dataCode.data">Please choose file to preview.</p>
                     <div code:highlight="yml" ng-model="dataCode"></div>
-                </pre>
+                </div>
             </div>
         </div>
         <!-- Code - END -->

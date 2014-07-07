@@ -407,7 +407,7 @@ angular.module('cosmoUiApp')
                     }
 
                     // Set Deployment Model
-                    _setDeploymentModel(deploymentData);
+                    //_setDeploymentModel(deploymentData);
 
                     _loadExecutions();
 
@@ -429,6 +429,10 @@ angular.module('cosmoUiApp')
                                 }
                             });
                             nodesList = nodes;
+
+                            // Set Deployment Model
+                            _setDeploymentModel(nodesList);
+
                             $scope.nodesTree = _createNodesTree(nodesList);
                             $scope.dataTable = nodes;
 
@@ -559,7 +563,7 @@ angular.module('cosmoUiApp')
                     completed: 0
                 };
 
-                if (node.relationships !== undefined && !_isNetworkNode(node)) {
+                if (node.relationships !== undefined && !_isIgnoreNode(node)) {
                     for (var i = 0; i < node.relationships.length; i++) {
                         if (node.relationships[i].type_hierarchy.join(',').indexOf('contained_in') > -1) {
                             node.isContained = true;
@@ -576,7 +580,7 @@ angular.module('cosmoUiApp')
                     if (!node.isContained) {
                         roots.push(node);
                     }
-                } else if(!_isNetworkNode(node) && !node.isContained){
+                } else if(!_isIgnoreNode(node) && !node.isContained){
                     roots.push(node);
                 }
             }
@@ -592,12 +596,13 @@ angular.module('cosmoUiApp')
             return networkNodes.indexOf(node.type) > -1;
         }
 
-        function _isNetworkNode(node) {
+        function _isIgnoreNode(node) {
             var networkNodes = [
                 'cloudify.openstack.floatingip',
                 'cloudify.openstack.network',
                 'cloudify.openstack.port',
-                'cloudify.openstack.subnet'
+                'cloudify.openstack.subnet',
+                'cloudify.openstack.security_group'
             ];
 
             return networkNodes.indexOf(node.type) > -1;
@@ -633,15 +638,15 @@ angular.module('cosmoUiApp')
         // Define Deployment Model in the first time
         function _setDeploymentModel( data ) {
             deploymentModel['*'] = angular.copy(deploymentDataModel);
-            for (var nodeId in data.plan.nodes) {
-                var node = data.plan.nodes[nodeId];
-                if(!deploymentModel.hasOwnProperty(node.name)) {
-                    deploymentModel[node.name] = angular.copy(deploymentDataModel);
+            for (var nodeId in data) {
+                var node = data[nodeId];
+                if(!deploymentModel.hasOwnProperty(node.id)) {
+                    deploymentModel[node.id] = angular.copy(deploymentDataModel);
                 }
                 deploymentModel['*'].instancesIds.push(node.id);
-                deploymentModel['*'].total++;
-                deploymentModel[node.name].instancesIds.push(node.id);
-                deploymentModel[node.name].total++;
+                deploymentModel['*'].total += parseInt(node.number_of_instances, 10);
+                deploymentModel[node.id].instancesIds.push(node.id);
+                deploymentModel[node.id].total += parseInt(node.number_of_instances, 10);
             }
         }
 
@@ -850,6 +855,8 @@ angular.module('cosmoUiApp')
 
         var events = EventsService.newInstance('/backend/events'),
             lastNodeSearch = $scope.eventsFilter.nodes;
+
+        events.setAutoPullByDate(true);
 
         $scope.eventsFilter = {
             'type': null,

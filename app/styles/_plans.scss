@@ -169,21 +169,14 @@
     .content-section {
         padding: 50px 0;
 
-        pre {
+        pre, .pre {
             width: 100%;
             margin-left: 20px;
-            padding: 0px 10px 0;
-            -webkit-user-select: none; /* Chrome all / Safari all */
-            -moz-user-select: none; /* Firefox all */
-            -ms-user-select: none; /* IE 10+ */
+            padding: 0px;
             user-select: none;
-            background-color: whitesmoke;
             border: 1px solid #cccccc;
             border-radius: 4px;
-
-            div {
-                background-color: whitesmoke !important;
-            }
+            font-size: 13px;
         }
     }
 
@@ -608,7 +601,7 @@
                     i.topology-glyph {
                         display: inline-block;
                         color: inherit;
-                        width: 30px;
+                        width: 21px;
                         height: 30px;
                         font-size: 60px;
                         line-height: 5px;
@@ -620,16 +613,20 @@
                         left: 0px;
                     }
                     .portarea {
+                        position: relative;
                         display: inline-block;
                         width: auto;
                         height: auto;
-                        padding: 5px;
                         border-radius: 5px;
-                        background-color: #f5f5f5;
-                        border: 1px solid #ccc;
                     }
                     .ports {
-                        position: relative;
+                        position: absolute;
+                        top: 5px;
+                        left: -75px;
+                        background: #fff;
+                        i.port {
+                            line-height: 0px;
+                        }
                     }
                 }
                 > .device:last-child {
@@ -711,12 +708,13 @@
     .source {
         display: table;
         width: 100%;
-        margin: 10px 0 0 0;
         .browseTree {
             display: table-cell;
             width: 320px;
             padding: 0 0 0 20px;
             font-size: 13px;
+            vertical-align: top;
+            overflow-x: scroll;
             ul {
                 list-style-type: none;
                 padding: 0px;
@@ -748,7 +746,7 @@
             p.empty {
                 display: block;
                 text-align: center;
-                margin-top: 70px;
+                margin: 70px 0;
             }
             .note {
                 position: absolute;
@@ -756,10 +754,26 @@
                 right: -19px;
                 font-size: 12px;
             }
+            h4 {
+                margin-left: 18px;
+            }
         }
     }
 
     .syntaxhighlighter {
-        margin: -2em 0 -2em 0 !important;
+        .container {
+            &::before, &::after {
+                content: normal !important;
+                display: inline !important;
+            }
+        }
+        .gutter {
+            .line {
+                border-right: 3px solid #29aaee !important;
+            }
+        }
+        table {
+            overflow-x: hidden !important;
+        }
     }
 }

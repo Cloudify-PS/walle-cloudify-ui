@@ -1,9 +1,30 @@
 'use strict';
 
 angular.module('cosmoUiApp')
-    .controller('DeploymentProgressPanelCtrl', function ($scope) {
-        $scope.panelOpen = false;
-        $scope.panelData = [];
+    .controller('DeploymentProgressPanelCtrl', function ($scope, $routeParams, EventsService) {
+        var deployment_id = $routeParams.id;
+        var panelData = {};
+        $scope.panelData = panelData;
+        $scope.panelOpen = true;
+
+        var events = EventsService.newInstance('/backend/events'),
+            eventHits = {};
+
+        events.filter('event_type', 'task_started');
+        events.filter('context.deployment_id', deployment_id);
+
+
+        function getEventsStarted() {
+            events.execute(function(data){
+                if(data.hasOwnProperty('hits')) {
+                    eventHits = data.hits.hits;
+                }
+            }, true);
+        }
+
+        function stopEventsStarted() {
+            events.stopAutoPull();
+        }
 
         $scope.getWorkflow = function() {
             if ($scope.selectedWorkflow.data === null) {
@@ -17,19 +38,6 @@ angular.module('cosmoUiApp')
             $scope.panelOpen = $scope.panelOpen === false;
         };
 
-        $scope.getNodesCount = function(node, state) {
-            var count = 0;
-            for (var i = 0; i < $scope.panelData.length; i++) {
-                if (node === null) {
-                    count += $scope.panelData[i][state].count;
-                }
-                else if ($scope.panelData[i].id === node.id) {
-                    count = $scope.panelData[i][state].count;
-                }
-            }
-            return count;
-        };
-
         $scope.getClass = function(node) {
             var _class = 'inProgress';
             if (node.failed.count > 0) {
@@ -40,43 +48,83 @@ angular.module('cosmoUiApp')
             return _class;
         };
 
-        $scope.$watch('nodes', function() {
-            $scope.panelData = [];
-            var panelDataIdx = 0;
+        $scope.$watch('panelOpen', function(isOpen){
+            if(isOpen) {
+                getEventsStarted();
+            }
+            else {
+                stopEventsStarted();
+            }
+        });
 
-            for (var i = 0; i < $scope.nodes.length; i++) {
-                if ($scope.nodes[i].node_instances !== undefined && $scope.nodes[i].node_instances.length > 0) {
-                    $scope.panelData.push({
-                        id: $scope.nodes[i].node_id,
-                        status: $scope.nodes[i].state,
+        $scope.$watch('nodes', function(data) {
+            for(var n in data) {
+                var node = data[n];
+                if(!panelData.hasOwnProperty(node.node_id)) {
+                    panelData[node.node_id] = {
+                        id: node.node_id,
+                        status: node.state,
                         totalCount: 0,
+                        count: 0,
                         inProgress: {count: 0, nodes: []},
                         started: {count: 0, nodes: []},
-                        failed: {count: 0, nodes: []}
-                    });
-                    updateNodeData($scope.nodes[i], panelDataIdx);
-                    panelDataIdx++;
+                        failed: {count: 0, nodes: []},
+                        start_time: getElapsedTime(node)
+                    };
+                    updateNodeProgress(node);
                 }
             }
         });
 
-        function updateNodeData(data, idx) {
-            var node = $scope.panelData[idx];
-            node.totalCount = data.node_instances.length;
+        function updateNodeProgress(instanceNode) {
+            var states = ['started', 'failed'],
+                node = panelData[instanceNode.node_id],
+                totalCount = 0;
 
-            for (var j = 0; j < data.node_instances.length; j++) {
-                for (var i = 0; i < $scope.nodes.length; i++) {
-                    if ($scope.nodes[i].id === data.node_instances[j].id) {
-                        if ($scope.nodes[i].state === 'started' || $scope.nodes[i].state === 'failed') {
-                            node[$scope.nodes[i].state].count++;
-                            node[$scope.nodes[i].state].nodes[$scope.nodes[i].id] = $scope.nodes[i];
-                        }
-                        else {
-                            node.inProgress.count++;
-                            node.inProgress.nodes[$scope.nodes[i].id] = $scope.nodes[i];
-                        }
+            for(var i in instanceNode.node_instances) {
+                var instance = instanceNode.node_instances[i];
+                if(instance.deployment_id === instanceNode.deployment_id) {
+                    if (states.indexOf(instance.state) !== -1) {
+                        node[instance.state].count++;
+                        node[instance.state].nodes[instanceNode.node_id] = node;
+                    }
+                    else {
+                        node.inProgress.count++;
+                        node.inProgress.nodes[instanceNode.node_id] = node;
+                    }
+                    totalCount++;
+                }
+            }
+            node.totalCount = totalCount;
+        }
+
+        function getOldestEventByNodeId(id) {
+            var oldest = null;
+            for(var i in eventHits) {
+                var event = eventHits[i];
+                if(event._source.context.hasOwnProperty('node_id') && event._source.context.node_id === id) {
+                    if(oldest === null) {
+                        oldest = event;
+                    }
+                    else if(convertTimeToTimestemp(event._source['@timestamp']) < convertTimeToTimestemp(oldest._source['@timestamp'])) {
+                        oldest = event;
                     }
                 }
             }
+            return oldest;
+        }
+
+        function getElapsedTime(node) {
+            if(!node.hasOwnProperty('start_time')) {
+                var event = getOldestEventByNodeId(node.id);
+                if(event !== null) {
+                    return event._source['@timestamp'];
+                }
+            }
+            return false;
+        }
+
+        function convertTimeToTimestemp(date) {
+            return Math.round(new Date(date).getTime()/1000);
         }
     });

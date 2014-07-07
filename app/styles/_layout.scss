@@ -48,6 +48,13 @@ html, body, .layout {
         float: right;
         list-style-type: none;
         li {
+            display: inline-block;
+            border-right: 1px dotted #838383;
+            padding: 0 10px;
+            &:last-child {
+                border: 0px;
+                padding-right: 0px;
+            }
             a {
                 color: #fff;
             }

@@ -76,6 +76,12 @@
                             height: $COSMOUI_EVENTS_WIDGET_OPENED_EVENT_ICON_HEIGHT;
                         }
 
+                        .gs-icon-logs {
+                            top: 6px;
+                            left: -6px;
+                        }
+
+
                         .event-type {
                             position: relative;
                             left: 30px;

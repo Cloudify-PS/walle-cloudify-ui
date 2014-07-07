@@ -29,6 +29,7 @@ angular.module('cosmoUiApp')
             };
             var lastData = [];
             var mergeData = false;
+            var isAutoPullByDate = false;
 
             $rootScope.$on('$locationChangeStart', function() {
                 if(isAutoPull) {
@@ -36,6 +37,10 @@ angular.module('cosmoUiApp')
                     $log.info('Stop pulling events.');
                 }
             });
+
+            function setAutoPullByDate(condition) {
+                isAutoPullByDate = condition;
+            }
 
             function _isActiveFilter(field, term) {
                 return activeFilters.hasOwnProperty(field + term);
@@ -59,7 +64,9 @@ angular.module('cosmoUiApp')
                 var deferred = $q.defer();
                 isAutoPull = true;
                 $timeout(function _internalPull() {
-                    _autoPullByLastDate();
+                    if(isAutoPullByDate) {
+                        _autoPullByLastDate();
+                    }
                     if(!isAutoPull) {
                         deferred.resolve('Events Auto Pull Stop!');
                         return;
@@ -187,6 +194,7 @@ angular.module('cosmoUiApp')
                 });
             }
 
+            _this.setAutoPullByDate = setAutoPullByDate;
             _this.filter = filter;
             _this.filterRemove = filterRemove;
             _this.filterRange = filterRange;

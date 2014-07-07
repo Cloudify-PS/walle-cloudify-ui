@@ -431,6 +431,10 @@ Cloudify4node.getNodes = function(queryParams, callback) {
     createRequest(requestData, callback);
 }
 
+Cloudify4node.getPackageJson = function(callback) {
+    return callback(null, require('../package.json'));
+};
+
 
 // Monitor Mock's
 Cloudify4node.getMonitorGraphs = function(callback) {

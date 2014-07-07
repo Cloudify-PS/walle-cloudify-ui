@@ -5,6 +5,10 @@
     $alerts: #feb300;
     $failed: #d54931;
 
+    #main-content-panel {
+        position: relative;
+    }
+
     #plans-index-events-widget {
         position: absolute;
         right: $COSMOUI_DEPLOYMENT_EVENT_WIDGET_RIGHT;
@@ -21,7 +25,7 @@
         border-left: $COSMOUI_DEPLOYMENT_APP_STATUS_BORDER;
         border-bottom: $COSMOUI_DEPLOYMENT_APP_STATUS_BORDER;
         position: absolute;
-        right: 20px;
+        right: 0px;
     }
 
     #right-side-menu {
@@ -402,7 +406,6 @@
     .content-section {
         width: 100%;
         height: 100%;
-        min-height: 650px;
 
         .filters {
             position: relative;
@@ -636,6 +639,7 @@
         width: 100%;
         height: 100%;
         padding: 20px 40px;
+        margin: 15px 0 0 0;
         .coordinates {
             position: absolute;
             top: 0;
@@ -1030,6 +1034,7 @@
                 height: 500px;
                 vertical-align: top;
                 > .device {
+                    position: relative;
                     display: block;
                     color: #797B86;
                     border-radius: 20px;
@@ -1074,6 +1079,11 @@
                     }
                     .ports {
                         position: relative;
+                    }
+                    .badge {
+                        position: absolute;
+                        top: -8px;
+                        left: 20px;
                     }
                 }
                 > .device:last-child {
