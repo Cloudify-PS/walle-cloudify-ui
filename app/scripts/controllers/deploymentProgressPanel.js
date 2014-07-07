@@ -62,7 +62,7 @@ angular.module('cosmoUiApp')
                     panelData[node.node_id] = {
                         id: node.node_id,
                         status: node.state,
-                        totalCount: node.node_instances.length,
+                        totalCount: 0,
                         count: 0,
                         inProgress: {count: 0, nodes: []},
                         started: {count: 0, nodes: []},
@@ -76,20 +76,24 @@ angular.module('cosmoUiApp')
 
         function updateNodeProgress(instanceNode) {
             var states = ['started', 'failed'],
-                node = panelData[instanceNode.node_id];
+                node = panelData[instanceNode.node_id],
+                totalCount = 0;
 
             for(var i in instanceNode.node_instances) {
                 var instance = instanceNode.node_instances[i];
-
-                if(states.indexOf(instance.state) !== -1) {
-                    node[instance.state].count++;
-                    node[instance.state].nodes[instanceNode.node_id] = node;
-                }
-                else {
-                    node.inProgress.count++;
-                    node.inProgress.nodes[instanceNode.node_id] = node;
+                if(instance.deployment_id === instanceNode.deployment_id) {
+                    if (states.indexOf(instance.state) !== -1) {
+                        node[instance.state].count++;
+                        node[instance.state].nodes[instanceNode.node_id] = node;
+                    }
+                    else {
+                        node.inProgress.count++;
+                        node.inProgress.nodes[instanceNode.node_id] = node;
+                    }
+                    totalCount++;
                 }
             }
+            node.totalCount = totalCount;
         }
 
         function getEventByNodeId(id) {
