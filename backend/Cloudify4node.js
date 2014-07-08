@@ -435,6 +435,16 @@ Cloudify4node.getPackageJson = function(callback) {
     return callback(null, require('../package.json'));
 };
 
+Cloudify4node.getManagerVersion = function(callback) {
+    var requestData = createRequestData({
+        path: '/version',
+        method: 'GET'
+    });
+
+    createRequest(requestData, callback);
+    //return callback(null, require('./mock/managerVersion.json'));
+};
+
 
 // Monitor Mock's
 Cloudify4node.getMonitorGraphs = function(callback) {
