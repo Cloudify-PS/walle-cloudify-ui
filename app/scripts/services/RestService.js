@@ -101,16 +101,6 @@ angular.module('cosmoUiApp')
             return _load('blueprints/get', callParams);
         }
 
-        function _getBlueprintSource(params) {
-            var callParams = {
-                url: '/backend/blueprints/source',
-                method: 'POST',
-                data: {'blueprint_id': params}
-            };
-
-            return _load('blueprints/source', callParams);
-        }
-
         function _browseBlueprint(params) {
             var callParams = {
                 url: '/backend/blueprints/browse',
@@ -286,6 +276,14 @@ angular.module('cosmoUiApp')
             return _load('influx', callParams);
         }
 
+        function _getVersionsUi() {
+            var callParams = {
+                url: '/backend/versions/ui',
+                method: 'GET'
+            };
+            return _load('versions/ui', callParams);
+        }
+
         function _getMonitorGrpahs() {
             var callParams = {
                 url: '/backend/monitor/graphs',
@@ -313,7 +311,6 @@ angular.module('cosmoUiApp')
         this.loadBlueprints = _loadBlueprints;
         this.addBlueprint = _addBlueprint;
         this.getBlueprintById = _getBlueprintById;
-        this.getBlueprintSource = _getBlueprintSource;
         this.browseBlueprint = _browseBlueprint;
         this.browseBlueprintFile = _browseBlueprintFile;
         this.deployBlueprint = _deployBlueprint;
@@ -336,6 +333,7 @@ angular.module('cosmoUiApp')
         this.autoPull = _autoPull;
         this.autoPullStop = _autoPullStop;
         this.influxQuery = _influxQuery;
+        this.getVersionsUi = _getVersionsUi;
         this.getMonitorGrpahs = _getMonitorGrpahs;
         this.getMonitorCpu = _getMonitorCpu;
         this.getMonitorMemory = _getMonitorMemory;

@@ -90,12 +90,6 @@ app.get('/backend/blueprints/get', function(request, response) {
     });
 });
 
-app.post('/backend/blueprints/source', function(request, response) {
-    cloudify4node.getBlueprintSource(request.body.blueprint_id, function(err, data) {
-        response.send(err !== null ? err : data);
-    });
-});
-
 app.get('/backend/blueprints/validate', function(request, response) {
     cloudify4node.validateBlueprint(request.body.id ,function(err, data) {
         response.send(err !== null ? err : data);
@@ -235,6 +229,17 @@ app.post('/backend/influx', function(request, response) {
         response.send(err !== null ? err : data);
     });
 
+});
+
+app.get('/backend/apidocs', function(request, response) {
+    response.writeHead(301, {Location: 'http://' + conf.cosmoServer + '/api/spec.html'});
+    response.end();
+});
+
+app.get('/backend/versions/ui', function(request, response) {
+    cloudify4node.getPackageJson(function(err, data) {
+        response.send(err !== null ? err : data);
+    });
 });
 
 app.get('/backend/monitor/graphs', function(request, response) {

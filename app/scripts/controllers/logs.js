@@ -59,11 +59,6 @@ angular.module('cosmoUiApp')
                 eventsCollect = [],
                 lastData = [];
 
-            function _reverse(array) {
-                var copy = [].concat(array);
-                return copy.reverse();
-            }
-
             function _convertDates(data) {
                 for(var i in data) {
                     data[i]._source.timestamp = $filter('dateFormat')(data[i]._source.timestamp, 'yyyy-MM-dd HH:mm:ss');
@@ -73,7 +68,7 @@ angular.module('cosmoUiApp')
 
             function pushLogs() {
                 $scope.newLogs = 0;
-                $scope.logsHits = _reverse(lastData);
+                $scope.logsHits = lastData;
             }
 
             angular.element($window).bind('scroll', function(){
@@ -91,7 +86,7 @@ angular.module('cosmoUiApp')
                                 pushLogs();
                             }
                             else {
-                                eventsCollect = _reverse(lastData);
+                                eventsCollect = lastData;
                                 $scope.newLogs = eventsCollect.length - $scope.logsHits.length;
                             }
                             lastAmount = lastData.length;

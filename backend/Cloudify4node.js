@@ -32,13 +32,6 @@ function createRequest(requestData, callback) {
             var jsonStr = JSON.stringify(result);
             data = JSON.parse(jsonStr);
 
-            /* CFY-824 CHECK ONLY - TO BE REMOVED!!!! */
-//            if (requestData.options.path.indexOf('/deployments/') > -1 && data[0] === '{') {
-//                data = JSON.parse(data);
-//                delete data.plan;
-//            }
-            /* END OF CHECK */
-
             logger.info(['Request done, data: ',data]);
 
             callback(null, data);
@@ -152,15 +145,6 @@ Cloudify4node.addBlueprint = function(application_archive, blueprint_id, callbac
 Cloudify4node.getBlueprintById = function(blueprint_id, callback) {
     var requestData = createRequestData({
         path: '/blueprints/' + blueprint_id,
-        method: 'GET'
-    });
-
-    createRequest(requestData, callback );
-}
-
-Cloudify4node.getBlueprintSource = function(blueprint_id, callback) {
-    var requestData = createRequestData({
-        path: '/blueprints/' + blueprint_id + '/source',
         method: 'GET'
     });
 
@@ -446,6 +430,10 @@ Cloudify4node.getNodes = function(queryParams, callback) {
 
     createRequest(requestData, callback);
 }
+
+Cloudify4node.getPackageJson = function(callback) {
+    return callback(null, require('../package.json'));
+};
 
 
 // Monitor Mock's

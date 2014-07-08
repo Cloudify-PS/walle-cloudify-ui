@@ -46,6 +46,7 @@ angular.module('cosmoUiApp')
         $scope.executedData = null;
         $scope.isConfirmationDialogVisible = false;
         $scope.showProgressPanel = false;
+        $scope.workflowsList = [];
 
         var id = $routeParams.id;
         var blueprint_id = $routeParams.blueprint_id;
@@ -189,7 +190,6 @@ angular.module('cosmoUiApp')
                             }
                         }
                     }
-
                 });
 
             if ($location.path() === '/deployment') {
@@ -393,8 +393,21 @@ angular.module('cosmoUiApp')
                         return;
                     }
 
+                    if(deploymentData.hasOwnProperty('workflows')) {
+                        var workflows = [];
+                        for (var wi in deploymentData.workflows) {
+                            var workflow = deploymentData.workflows[wi];
+                            workflows.push({
+                                value: workflow.name,
+                                label: workflow.name,
+                                deployment: deploymentData.id
+                            });
+                        }
+                        $scope.workflowsList = workflows;
+                    }
+
                     // Set Deployment Model
-                    ;
+                    //_setDeploymentModel(deploymentData);
 
                     _loadExecutions();
 
@@ -418,6 +431,10 @@ angular.module('cosmoUiApp')
                                 }
                             });
                             nodesList = nodes;
+
+                            // Set Deployment Model
+                            _setDeploymentModel(nodesList);
+
                             $scope.nodesTree = _createNodesTree(nodesList);
                             $scope.dataTable = nodes;
 
@@ -459,8 +476,6 @@ angular.module('cosmoUiApp')
                                     _extNetworks.push(subNetwork);
 
                                     $scope.networks = _createNetworkTree(nodes, _extNetworks);
-
-                                    console.log(['$scope.networks', $scope.networks]);
 
                                     bpNetworkService.setMap($scope.networks.relations);
                                     $timeout(function(){
@@ -550,7 +565,7 @@ angular.module('cosmoUiApp')
                     completed: 0
                 };
 
-                if (node.relationships !== undefined && !_isNetworkNode(node)) {
+                if (node.relationships !== undefined && !_isIgnoreNode(node)) {
                     for (var i = 0; i < node.relationships.length; i++) {
                         if (node.relationships[i].type_hierarchy.join(',').indexOf('contained_in') > -1) {
                             node.isContained = true;
@@ -567,7 +582,7 @@ angular.module('cosmoUiApp')
                     if (!node.isContained) {
                         roots.push(node);
                     }
-                } else if(!_isNetworkNode(node) && !node.isContained){
+                } else if(!_isIgnoreNode(node) && !node.isContained){
                     roots.push(node);
                 }
             }
@@ -583,12 +598,13 @@ angular.module('cosmoUiApp')
             return networkNodes.indexOf(node.type) > -1;
         }
 
-        function _isNetworkNode(node) {
+        function _isIgnoreNode(node) {
             var networkNodes = [
                 'cloudify.openstack.floatingip',
                 'cloudify.openstack.network',
                 'cloudify.openstack.port',
-                'cloudify.openstack.subnet'
+                'cloudify.openstack.subnet',
+                'cloudify.openstack.security_group'
             ];
 
             return networkNodes.indexOf(node.type) > -1;
@@ -633,6 +649,15 @@ angular.module('cosmoUiApp')
                 deploymentModel['*'].total++;
                 deploymentModel[node.node_id].instancesIds.push(node.id);
                 deploymentModel[node.node_id].total++;
+//            for (var nodeId in data) {
+//                var node = data[nodeId];
+//                if(!deploymentModel.hasOwnProperty(node.id)) {
+//                    deploymentModel[node.id] = angular.copy(deploymentDataModel);
+//                }
+//                deploymentModel['*'].instancesIds.push(node.id);
+//                deploymentModel['*'].total += parseInt(node.number_of_instances, 10);
+//                deploymentModel[node.id].instancesIds.push(node.id);
+//                deploymentModel[node.id].total += parseInt(node.number_of_instances, 10);
             }
         }
 
@@ -823,7 +848,6 @@ angular.module('cosmoUiApp')
         /**
          * Events
          */
-        $scope.workflowsList = [];
         $scope.eventTypeList = [];
         $scope.filterLoading = false;
         $scope.eventsFilter = {
@@ -831,18 +855,6 @@ angular.module('cosmoUiApp')
             'workflow': null,
             'nodes': null
         };
-
-        RestService.getWorkflows({deployment_id: id})
-            .then(function (data) {
-                var workflows = [];
-                if (data.hasOwnProperty('workflows')) {
-                    for (var wfid in data.workflows) {
-                        var wfItem = data.workflows[wfid];
-                        workflows.push({'value': wfItem.name, 'label': wfItem.name});
-                    }
-                }
-                $scope.workflowsList = workflows;
-            });
 
         (function eventListForMenu() {
             var eventTypeList = [{'value': null, 'label': 'All'}];
@@ -854,6 +866,8 @@ angular.module('cosmoUiApp')
 
         var events = EventsService.newInstance('/backend/events'),
             lastNodeSearch = $scope.eventsFilter.nodes;
+
+        events.setAutoPullByDate(true);
 
         $scope.eventsFilter = {
             'type': null,
@@ -868,12 +882,8 @@ angular.module('cosmoUiApp')
             $scope.eventHits = [];
             var troubleShoot = 0,
                 executeRetry = 10,
-                eventsCollect = [];
-
-            function _reverse(array) {
-                var copy = [].concat(array);
-                return copy.reverse();
-            }
+                eventsCollect = [],
+                lastData = [];
 
             function _convertDates(data) {
                 for(var i in data) {
@@ -882,24 +892,37 @@ angular.module('cosmoUiApp')
                 return data;
             }
 
+            function _compareArrays(a1, a2) {
+                var i = 0;
+                return a1.every(function (e) {
+                    return e === a2[i++];
+                });
+            }
+
+            function pushLogs(data) {
+                if(_compareArrays(lastData, data)) {
+                    $scope.newLogs = 0;
+                    $scope.eventHits = data;
+                    lastData = data;
+                }
+            }
+
             events
                 .execute(function(data){
                     if(data && data.hasOwnProperty('hits')) {
                         var dataHits = _convertDates(data.hits.hits);
                         if(data.hits.hits.length !== lastAmount) {
                             if(document.body.scrollTop === 0) {
-                                $scope.newEvents = 0;
-                                $scope.eventHits = _reverse(dataHits);
+                                pushLogs(dataHits);
                             }
                             else {
-                                eventsCollect = _reverse(dataHits);
+                                eventsCollect = dataHits;
                                 $scope.newEvents = eventsCollect.length - $scope.eventHits.length;
                             }
                             lastAmount = dataHits.length;
                         }
-                        else if(JSON.stringify($scope.eventHits) === JSON.stringify(_reverse(dataHits))) {
-                            $scope.newEvents = 0;
-                            $scope.eventHits = _reverse(dataHits);
+                        else {
+                            pushLogs(dataHits);
                         }
                     }
                     else {
@@ -912,7 +935,7 @@ angular.module('cosmoUiApp')
                     if(troubleShoot === executeRetry) {
                         events.stopAutoPull();
                     }
-                }, autoPull);
+                }, autoPull, true);
         }
 
         function filterEvents(field, newValue, oldValue, execute) {
@@ -992,6 +1015,29 @@ angular.module('cosmoUiApp')
             events.sort(field, $scope.eventSortList[field]);
             executeEvents();
         };
+
+        $scope.isSortActive = function() {
+            if($scope.eventSortList.hasOwnProperty('current')) {
+                if($scope.eventSortList.hasOwnProperty($scope.eventSortList.current)) {
+                    if($scope.eventSortList[$scope.eventSortList.current] !== false) {
+                        return false;
+                    }
+                }
+            }
+            return true;
+        };
+
+        $scope.$watch('eventSortList', function(data){
+            if(!data.hasOwnProperty('current')) {
+                return;
+            }
+            if($scope.isSortActive()) {
+                executeEvents(true);
+            }
+            else {
+                events.stopAutoPull();
+            }
+        }, true);
 
         $scope.isSorted = function (field) {
             if ($scope.eventSortList.current === field) {

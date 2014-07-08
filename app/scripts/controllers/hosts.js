@@ -39,13 +39,17 @@ angular.module('cosmoUiApp')
                         }
                         RestService[_loadMethod](_filter)
                             .then(function (instances) {
-                                instances.forEach(function(instance) {
-                                    nodes.forEach(function(node) {
-                                        if (instance.node_id === node.id && node.type_hierarchy.join(',').indexOf('host') > -1) {
-                                            $scope.hostsList.push(instance);
+                                if(instances instanceof Array) {
+                                    instances.forEach(function(instance) {
+                                        if(nodes instanceof Array) {
+                                            nodes.forEach(function (node) {
+                                                if (instance.node_id === node.id && node.type_hierarchy.join(',').indexOf('host') > -1) {
+                                                    $scope.hostsList.push(instance);
+                                                }
+                                            });
                                         }
                                     });
-                                });
+                                }
                             });
                         $scope.filterLoading = false;
                     });
