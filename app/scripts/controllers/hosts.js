@@ -18,6 +18,7 @@ angular.module('cosmoUiApp')
          */
         var _deploymentsList = [];
         var _filter = {};
+        var blueprintsByDeployments = {};
         $scope.hostsList = [];
         $scope.blueprintsList = [];
         $scope.deploymentsList = [];
@@ -39,6 +40,7 @@ angular.module('cosmoUiApp')
                         }
                         RestService[_loadMethod](_filter)
                             .then(function (instances) {
+                                console.log(['instances', instances]);
                                 if(instances instanceof Array) {
                                     instances.forEach(function(instance) {
                                         if(nodes instanceof Array) {
@@ -58,15 +60,25 @@ angular.module('cosmoUiApp')
 
         RestService.loadBlueprints()
             .then(function (data) {
+                console.log(['loadBlueprints', data]);
                 for (var j in data) {
                     var blueprint = data[j];
                     $scope.blueprintsList.push({'value': blueprint.id, 'label': blueprint.id});
                     for (var i in blueprint.deployments) {
                         var deployemnt = blueprint.deployments[i];
                         _deploymentsList.push({'value': deployemnt.id, 'label': deployemnt.id, 'parent': blueprint.id});
+                        blueprintsByDeployments[deployemnt.id] = blueprint.id;
                     }
                 }
+                console.log(['_deploymentsList', _deploymentsList, blueprintsByDeployments]);
             });
+
+        $scope.getBlueprintByDeployment = function(deployment_id) {
+            if(blueprintsByDeployments.hasOwnProperty(deployment_id)) {
+                return blueprintsByDeployments[deployment_id];
+            }
+            return null;
+        };
 
         $scope.$watch('eventsFilter.blueprints', function(newValue){
             $scope.deploymentsList = $filter('filterListByList')(_deploymentsList, [newValue]);
