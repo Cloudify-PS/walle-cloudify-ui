@@ -30,7 +30,7 @@
             "title": "Deploy",
             "description": "Please enter deployment name",
             "cancelBtn": "Cancel",
-            "deployBtn": "Deploy",
+            "deployBtn": "Create",
             "deployName": "Deployment name"
         }
     },
