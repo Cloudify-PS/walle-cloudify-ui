@@ -384,6 +384,12 @@ angular.module('cosmoUiApp')
             return 'file-' + data.encoding;
         };
 
+        $scope.isSelected = function(fileName) {
+            if($scope.filename === fileName) {
+                return 'current';
+            }
+        };
+
         $scope.openSourceFile = function(data) {
             RestService.browseBlueprintFile({id: $routeParams.id, path: data.relativePath})
                 .then(function(fileContent) {
