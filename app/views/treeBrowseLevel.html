@@ -8,5 +8,5 @@
 
 
 <ul>
-    <li ng-repeat="data in data.children" ng-include="'../views/treeBrowseLevel.html'"></li>
+    <li data-ng-class="isSelected(data.name)" ng-repeat="data in data.children" ng-include="'../views/treeBrowseLevel.html'"></li>
 </ul>
