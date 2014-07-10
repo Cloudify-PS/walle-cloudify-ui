@@ -159,11 +159,12 @@ angular.module('cosmoUiApp')
                         for (var i = 0; i < deployments.length; i++) {
                             _loadExecutions(deployments[i].blueprint_id, deployments[i].id);
                             workflows[deployments[i].id] = [];
-                            for (var workflow in deployments[i].plan.workflows) {
+                            for (var w in deployments[i].workflows) {
+                                var workflow = deployments[i].workflows[w];
                                 workflows[deployments[i].id].push({
-                                    value: workflow,
-                                    label: workflow,
-                                    deployment: deployments[i]
+                                    value: workflow.name,
+                                    label: workflow.name,
+                                    deployment: deployments[i].id
                                 });
                             }
                         }

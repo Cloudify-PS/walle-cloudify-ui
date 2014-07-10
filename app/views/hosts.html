@@ -50,6 +50,7 @@
             <tr>
                 <th class="id">ID</th>
                 <th class="state">State</th>
+                <th class="deploymentId">Blueprint ID</th>
                 <th class="deploymentId">Deployment ID</th>
                 <th class="">Host ID</th>
                 <th class="">Private IPs</th>
@@ -62,6 +63,7 @@
                 <tr>
                     <td class="id">{{row.id == null && '-' || row.id }}</td>
                     <td class="state">{{row.state == null && '-' || row.state }}</td>
+                    <td class="deploymentId">{{getBlueprintByDeployment(row.deployment_id) == null && '-' || getBlueprintByDeployment(row.deployment_id) }}</td>
                     <td class="deploymentId">{{row.deployment_id == null && '-' || row.deployment_id }}</td>
                     <td class="">{{row.host_id == null && '-' || row.host_id }}</td>
                     <td class="">{{row.runtime_properties.ips == null && '-' || row.runtime_properties.ips }}</td>
