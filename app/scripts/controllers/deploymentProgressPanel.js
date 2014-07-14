@@ -102,7 +102,7 @@ angular.module('cosmoUiApp')
             var oldest = null;
             for(var i in eventHits) {
                 var event = eventHits[i];
-                if(event._source.context.hasOwnProperty('node_id') && event._source.context.node_id === id) {
+                if(event._source.context.hasOwnProperty('node_id') && event._source.context.node_id === id && event._source.context.execution_id === $scope.currentExecution.id) {
                     if(oldest === null) {
                         oldest = event;
                     }

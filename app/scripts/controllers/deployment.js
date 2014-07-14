@@ -4,7 +4,6 @@ angular.module('cosmoUiApp')
     .controller('DeploymentCtrl', function ($scope, $rootScope, $cookieStore, $routeParams, RestService, EventsService, BreadcrumbsService, blueprintCoordinateService, bpNetworkService, $route, $anchorScroll, $timeout, $location, $log, EventsMap, monitoringGraphs, $localStorage, $filter) {
 
         var statesIndex = ['uninitialized', 'initializing', 'creating', 'created', 'configuring', 'configured', 'starting', 'started'],
-            currentExecution = null,
             isGotExecuteNodes = false;
 
         var deploymentDataModel = {
@@ -47,6 +46,7 @@ angular.module('cosmoUiApp')
         $scope.isConfirmationDialogVisible = false;
         $scope.showProgressPanel = false;
         $scope.workflowsList = [];
+        $scope.currentExecution = null;
 
         var id = $routeParams.id;
         var blueprint_id = $routeParams.blueprint_id;
@@ -124,7 +124,7 @@ angular.module('cosmoUiApp')
                     deployment_id: id,
                     workflow_id: $scope.selectedWorkflow.data.value
                 }).then(function(execution) {
-                    currentExecution = execution;
+                    $scope.currentExecution = execution;
                     $cookieStore.put('executionId', execution.id);
                 });
 
@@ -496,9 +496,9 @@ angular.module('cosmoUiApp')
                         .then(null, null, function (dataExec) {
                             $log.info('data exec', dataExec);
                             if (dataExec.length > 0) {
-                                currentExecution = _getCurrentExecution(dataExec);
-                                $log.info('current execution is', currentExecution, $scope.deploymentInProgress  );
-                                if ( !currentExecution && $scope.deploymentInProgress) { // get info for the first time
+                                $scope.currentExecution = _getCurrentExecution(dataExec);
+                                $log.info('current execution is', $scope.currentExecution, $scope.deploymentInProgress  );
+                                if ( !$scope.currentExecution && $scope.deploymentInProgress) { // get info for the first time
                                     $log.info('getting deployment info', isGotExecuteNodes );
                                     if(!isGotExecuteNodes) {
                                         RestService.autoPull('getDeploymentNodes', {deployment_id: id}, RestService.getDeploymentNodes)
@@ -509,7 +509,7 @@ angular.module('cosmoUiApp')
                                     RestService.autoPullStop('getDeploymentNodes');
                                     $scope.deploymentInProgress = false;
                                 }
-                                else if ($scope.deploymentInProgress === null || currentExecution !== false) {
+                                else if ($scope.deploymentInProgress === null || $scope.currentExecution !== false) {
                                     $scope.deploymentInProgress = true;
                                     RestService.autoPull('getDeploymentNodes', {deployment_id: id}, RestService.getDeploymentNodes)
                                         .then(null, null, function (dataNodes) {
@@ -895,17 +895,18 @@ angular.module('cosmoUiApp')
             }
 
             function pushLogs(data) {
-                if(_compareArrays(lastData, data)) {
-                    $scope.newLogs = 0;
-                    $scope.eventHits = data;
-                    lastData = data;
-                }
+                $scope.newLogs = 0;
+                $scope.eventHits = data.concat($scope.eventHits);
+                lastData = data;
             }
 
             events
                 .execute(function(data){
                     if(data && data.hasOwnProperty('hits')) {
                         var dataHits = _convertDates(data.hits.hits);
+                        if (dataHits.length > 0) {
+                            $log.info('got event hits', dataHits.length);
+                        }
                         if(data.hits.hits.length !== lastAmount) {
                             if(document.body.scrollTop === 0) {
                                 pushLogs(dataHits);
