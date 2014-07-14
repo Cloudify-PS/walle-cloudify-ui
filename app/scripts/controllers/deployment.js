@@ -4,7 +4,7 @@ angular.module('cosmoUiApp')
     .controller('DeploymentCtrl', function ($scope, $rootScope, $cookieStore, $routeParams, RestService, EventsService, BreadcrumbsService, blueprintCoordinateService, bpNetworkService, $route, $anchorScroll, $timeout, $location, $log, EventsMap, monitoringGraphs, $localStorage, $filter) {
 
         var statesIndex = ['uninitialized', 'initializing', 'creating', 'created', 'configuring', 'configured', 'starting', 'started'],
-            currentExeution = null,
+            currentExecution = null,
             isGotExecuteNodes = false;
 
         var deploymentDataModel = {
@@ -124,6 +124,7 @@ angular.module('cosmoUiApp')
                     deployment_id: id,
                     workflow_id: $scope.selectedWorkflow.data.value
                 }).then(function(execution) {
+                    currentExecution = execution;
                     $cookieStore.put('executionId', execution.id);
                 });
 
@@ -413,6 +414,9 @@ angular.module('cosmoUiApp')
 
                     RestService.getNodeInstances()
                         .then(function(instances) {
+                            if (instances[0] === '<') {
+                                return;
+                            }
                             instances.forEach(function(instance) {
                                 if (instance.deployment_id === deploymentData.id) {
                                     $scope.allNodesArr.push(instance);
@@ -421,7 +425,7 @@ angular.module('cosmoUiApp')
                             });
                         });
 
-                    RestService.getNodes()
+                    RestService.getNodes({deployment_id: id})
                         .then(function(data) {
                             var nodes = [];
                             data.forEach(function(node) {
@@ -492,9 +496,9 @@ angular.module('cosmoUiApp')
                         .then(null, null, function (dataExec) {
                             $log.info('data exec', dataExec);
                             if (dataExec.length > 0) {
-                                currentExeution = _getCurrentExecution(dataExec);
-                                $log.info('current execution is', currentExeution, $scope.deploymentInProgress  );
-                                if ( !currentExeution && $scope.deploymentInProgress) { // get info for the first time
+                                currentExecution = _getCurrentExecution(dataExec);
+                                $log.info('current execution is', currentExecution, $scope.deploymentInProgress  );
+                                if ( !currentExecution && $scope.deploymentInProgress) { // get info for the first time
                                     $log.info('getting deployment info', isGotExecuteNodes );
                                     if(!isGotExecuteNodes) {
                                         RestService.autoPull('getDeploymentNodes', {deployment_id: id}, RestService.getDeploymentNodes)
@@ -505,7 +509,7 @@ angular.module('cosmoUiApp')
                                     RestService.autoPullStop('getDeploymentNodes');
                                     $scope.deploymentInProgress = false;
                                 }
-                                else if ($scope.deploymentInProgress === null || currentExeution !== false) {
+                                else if ($scope.deploymentInProgress === null || currentExecution !== false) {
                                     $scope.deploymentInProgress = true;
                                     RestService.autoPull('getDeploymentNodes', {deployment_id: id}, RestService.getDeploymentNodes)
                                         .then(null, null, function (dataNodes) {

@@ -156,9 +156,8 @@ app.get('/backend/node-instances', function(request, response) {
     });
 });
 
-app.post('/backend/deployments/executions/get', function(request, response) {
-    cloudify4node.getDeploymentExecutions(request.body.deployment_id, function(err, data) {
-
+app.get('/backend/deployments/executions/get', function(request, response) {
+    cloudify4node.getDeploymentExecutions(request.param('deployment_id'), function(err, data) {
         response.send(err !== null ? err : data);
     });
 });
@@ -210,6 +209,8 @@ app.post('/backend/nodes', function(request, response) {
     var queryParams = {};
     if (request.body.deployment_id !== undefined) {
         queryParams.deployment_id = request.body.deployment_id;
+    } else {
+        response.send(500, 'deployment id is undefined');
     }
     cloudify4node.getNodes(queryParams, function(err, data) {
         response.send(err !== null ? err : data);
