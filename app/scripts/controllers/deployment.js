@@ -887,13 +887,6 @@ angular.module('cosmoUiApp')
                 return data;
             }
 
-            function _compareArrays(a1, a2) {
-                var i = 0;
-                return a1.every(function (e) {
-                    return e === a2[i++];
-                });
-            }
-
             function pushLogs(data) {
                 $scope.newLogs = 0;
                 $scope.eventHits = data.concat($scope.eventHits);
