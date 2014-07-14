@@ -154,8 +154,8 @@ angular.module('cosmoUiApp')
         function _getDeploymentExecutions(params) {
             var callParams = {
                 url: '/backend/deployments/executions/get',
-                method: 'POST',
-                data: {'deployment_id': params}
+                method: 'GET',
+                params: {'deployment_id': params}
             };
             return _load('deployments/executions/get', callParams);
         }

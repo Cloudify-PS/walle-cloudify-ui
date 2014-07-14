@@ -315,6 +315,7 @@ Cloudify4node.getDeploymentNodes = function(deployment_id, state, callback) {
 }
 
 Cloudify4node.getNodeInstances = function(callback) {
+
     var requestData = createRequestData({
         path: '/node-instances',
         method: 'GET'
