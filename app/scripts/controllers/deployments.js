@@ -39,9 +39,7 @@ angular.module('cosmoUiApp')
 
         $scope.$watch('selectedWorkflow', function() {
             if ($scope.selectedWorkflow.data !== null) {
-                $scope.selectedDeployment = $scope.selectedWorkflow.data.deployment || null;
-
-                selectedWorkflows[$scope.selectedDeployment.id] = $scope.selectedWorkflow.data.value;
+                selectedWorkflows[$scope.selectedWorkflow.data.deployment] = $scope.selectedWorkflow.data.value;
             }
         }, true);
 
@@ -50,8 +48,8 @@ angular.module('cosmoUiApp')
         };
 
         $scope.getSelectedWorkflow = function() {
-            if ($scope.selectedDeployment !== undefined && selectedWorkflows[$scope.selectedDeployment.id] !== null) {
-                return selectedWorkflows[$scope.selectedDeployment.id];
+            if ($scope.selectedDeployment !== undefined && selectedWorkflows[$scope.selectedDeployment] !== null) {
+                return selectedWorkflows[$scope.selectedDeployment];
             }
         };
 
