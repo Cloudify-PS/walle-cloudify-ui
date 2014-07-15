@@ -34,8 +34,8 @@
                         <div>{{ node.status }}</div>
                     </td>
                     <td class="data elapsedtime">
-                        <div data-ng-show="node.start_time" timer start-time="node.start_time">{{hours}} hours, {{minutes}} minutes, {{seconds}} seconds.</div>
-                        <div data-ng-hide="node.start_time">Not Available</div>
+                        <div data-ng-show="!!node.start_time">{{node.start_time.hours}} hours, {{node.start_time.minutes}} minutes, {{node.start_time.seconds}} seconds.</div>
+                        <div data-ng-show="!node.start_time">Not Available</div>
                     </td>
                 </tr>
             </tbody>

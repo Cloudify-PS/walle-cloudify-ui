@@ -295,10 +295,7 @@ Cloudify4node.getDeploymentById = function(deployment_id, callback) {
 
 Cloudify4node.deleteDeploymentById = function(deployment_id, ignore_live_nodes, callback) {
     var requestData = createRequestData({
-        path: '/deployments/' + deployment_id,
-        data: {
-            ignore_live_nodes: ignore_live_nodes
-        },
+        path: '/deployments/' + deployment_id + '?ignore_live_nodes=' + !!ignore_live_nodes,
         method: 'DELETE'
     });
 

@@ -60,19 +60,17 @@ angular.module('cosmoUiApp')
         $scope.$watch('nodes', function(data) {
             for(var n in data) {
                 var node = data[n];
-                if(!panelData.hasOwnProperty(node.node_id)) {
-                    panelData[node.node_id] = {
-                        id: node.node_id,
-                        status: node.state,
-                        totalCount: 0,
-                        count: 0,
-                        inProgress: {count: 0, nodes: []},
-                        started: {count: 0, nodes: []},
-                        failed: {count: 0, nodes: []},
-                        start_time: getElapsedTime(node)
-                    };
-                    updateNodeProgress(node);
-                }
+                panelData[node.node_id] = {
+                    id: node.node_id,
+                    status: node.state,
+                    totalCount: 0,
+                    count: 0,
+                    inProgress: {count: 0, nodes: []},
+                    started: {count: 0, nodes: []},
+                    failed: {count: 0, nodes: []},
+                    start_time: convertToTimeObject(getElapsedTime(node))
+                };
+                updateNodeProgress(node);
             }
         });
 
@@ -102,7 +100,7 @@ angular.module('cosmoUiApp')
             var oldest = null;
             for(var i in eventHits) {
                 var event = eventHits[i];
-                if(event._source.context.hasOwnProperty('node_id') && event._source.context.node_id === id && event._source.context.execution_id === $scope.currentExecution.id) {
+                if(event._source.context.hasOwnProperty('node_name') && event._source.context.node_name === id && event._source.context.execution_id === $scope.currentExecution.id) {
                     if(oldest === null) {
                         oldest = event;
                     }
@@ -116,7 +114,7 @@ angular.module('cosmoUiApp')
 
         function getElapsedTime(node) {
             if(!node.hasOwnProperty('start_time')) {
-                var event = getOldestEventByNodeId(node.id);
+                var event = getOldestEventByNodeId(node.node_id);
                 if(event !== null) {
                     return event._source['@timestamp'];
                 }
@@ -126,5 +124,15 @@ angular.module('cosmoUiApp')
 
         function convertTimeToTimestemp(date) {
             return Math.round(new Date(date).getTime()/1000);
+        }
+
+        function convertToTimeObject(date) {
+            var timestamp = new Date().getTime() - new Date(date).getTime();
+            return {
+                seconds: Math.floor((timestamp / 1000) % 60),
+                minutes: Math.floor(((timestamp / (60000)) % 60)),
+                hours : Math.floor(((timestamp / (3600000)) % 24)),
+                days: Math.floor(((timestamp / (3600000)) / 24))
+            };
         }
     });
