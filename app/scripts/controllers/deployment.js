@@ -181,6 +181,14 @@ angular.module('cosmoUiApp')
             $route.reload();
         };
 
+        $scope.getPropertyKeyName = function(key) {
+            var name = key;
+            if (key === 'ip') {
+                name = 'private ip';
+            }
+            return name;
+        };
+
         function _loadExecutions() {
             RestService.getDeploymentExecutions(id)
                 .then(function(data) {
