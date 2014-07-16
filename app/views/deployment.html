@@ -28,7 +28,7 @@
                                 <td>{{ 'plans.details.value' | i18n }}</td>
                             </tr>
                             <tr ng-repeat="(key, value) in showProperties.general">
-                                <td>{{key}}</td><td>{{value}}</td>
+                                <td>{{getPropertyKeyName(key)}}</td><td>{{value}}</td>
                             </tr>
                         </table>
                     </div>

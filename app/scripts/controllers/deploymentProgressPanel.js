@@ -128,11 +128,15 @@ angular.module('cosmoUiApp')
 
         function convertToTimeObject(date) {
             var timestamp = new Date().getTime() - new Date(date).getTime();
-            return {
-                seconds: Math.floor((timestamp / 1000) % 60),
-                minutes: Math.floor(((timestamp / (60000)) % 60)),
-                hours : Math.floor(((timestamp / (3600000)) % 24)),
-                days: Math.floor(((timestamp / (3600000)) / 24))
-            };
+            if (date === false) {
+                return null;
+            } else {
+                return {
+                    seconds: Math.floor((timestamp / 1000) % 60),
+                    minutes: Math.floor(((timestamp / (60000)) % 60)),
+                    hours : Math.floor(((timestamp / (3600000)) % 24)),
+                    days: Math.floor(((timestamp / (3600000)) / 24))
+                };
+            }
         }
     });
