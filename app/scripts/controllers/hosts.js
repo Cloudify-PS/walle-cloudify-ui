@@ -19,6 +19,7 @@ angular.module('cosmoUiApp')
         var _deploymentsList = [];
         var _filter = {};
         var blueprintsByDeployments = {};
+        var _filterBlueprint = null;
         $scope.hostsList = [];
         $scope.blueprintsList = [];
         $scope.deploymentsList = [];
@@ -40,13 +41,17 @@ angular.module('cosmoUiApp')
                         }
                         RestService[_loadMethod](_filter)
                             .then(function (instances) {
-                                console.log(['instances', instances]);
                                 if(instances instanceof Array) {
                                     instances.forEach(function(instance) {
                                         if(nodes instanceof Array) {
                                             nodes.forEach(function (node) {
                                                 if (instance.node_id === node.id && node.type_hierarchy.join(',').indexOf('host') > -1) {
-                                                    $scope.hostsList.push(instance);
+                                                    if(_filterBlueprint !== null && _filterBlueprint === node.blueprint_id) {
+                                                        $scope.hostsList.push(instance);
+                                                    }
+                                                    else if(_filterBlueprint === null) {
+                                                        $scope.hostsList.push(instance);
+                                                    }
                                                 }
                                             });
                                         }
@@ -60,7 +65,6 @@ angular.module('cosmoUiApp')
 
         RestService.loadBlueprints()
             .then(function (data) {
-                console.log(['loadBlueprints', data]);
                 for (var j in data) {
                     var blueprint = data[j];
                     $scope.blueprintsList.push({'value': blueprint.id, 'label': blueprint.id});
@@ -70,7 +74,6 @@ angular.module('cosmoUiApp')
                         blueprintsByDeployments[deployemnt.id] = blueprint.id;
                     }
                 }
-                console.log(['_deploymentsList', _deploymentsList, blueprintsByDeployments]);
             });
 
         $scope.getBlueprintByDeployment = function(deployment_id) {
@@ -81,7 +84,14 @@ angular.module('cosmoUiApp')
         };
 
         $scope.$watch('eventsFilter.blueprints', function(newValue){
-            $scope.deploymentsList = $filter('filterListByList')(_deploymentsList, [newValue]);
+            if(newValue !== null) {
+                $scope.deploymentsList = $filter('filterListByList')(_deploymentsList, [newValue]);
+                _filterBlueprint = newValue.value;
+            }
+            else {
+                $scope.deploymentsList = [];
+                _filterBlueprint = null;
+            }
         }, true);
 
         $scope.$watch('eventsFilter.deployments', function(newValue){
