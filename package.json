@@ -68,7 +68,10 @@
         "jade",
         "log4js",
         "restler",
-        "lodash"
+        "lodash",
+        "tar.gz",
+        "fs.extra",
+        "influx"
     ],
     "engines": {
         "node": ">=0.8.0"
