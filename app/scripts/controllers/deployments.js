@@ -184,7 +184,9 @@ angular.module('cosmoUiApp')
                         }
                         else {
                             closeDeleteDialog();
-                            _loadDeployments();
+                            $timeout(function(){
+                                _loadDeployments();
+                            }, 500);
                         }
                     });
                 //currentDeplyToDelete = null;
