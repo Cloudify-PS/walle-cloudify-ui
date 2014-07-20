@@ -19,16 +19,16 @@ angular.module('cosmoUiApp')
             controller: function($scope) {
                 $scope.getBadgeStatus = function(status) {
                     switch(status) {
-                        case 0:
-                            return 'install';
-                        case 1:
-                            return 'done';
-                        case 2:
-                            return 'alerts';
-                        case 3:
-                            return 'failed';
-                        default:
-                            return 'install';
+                    case 0:
+                        return 'install';
+                    case 1:
+                        return 'done';
+                    case 2:
+                        return 'alerts';
+                    case 3:
+                        return 'failed';
+                    default:
+                        return 'install';
                     }
                 };
             }

@@ -878,18 +878,20 @@
         }
         .app {
             position: relative;
+            display: inline-block;
             width: 47px;
             height: 47px;
             text-align: center;
             border-radius: 3px;
-            margin: 10px;
+            margin: 10px 0;
             .piProgress {
-                top: 1.5px;
-                left: 37px;
+                top: 0px;
+                left: 0px;
             }
             p {
                 position: relative;
                 top: 50px;
+                left: -50%;
                 margin: 0px;
                 color: #555869;
                 font-size: 15px;
