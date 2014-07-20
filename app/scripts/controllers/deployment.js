@@ -201,7 +201,7 @@ angular.module('cosmoUiApp')
                 .then(function(data) {
                     if (data.length > 0) {
                         for (var i = 0; i < data.length; i++) {
-                            if (data[i].status !== null && data[i].status !== 'failed' && data[i].status !== 'terminated' && data[i].status !== 'canceled') {
+                            if (data[i].status !== null && data[i].status !== 'failed' && data[i].status !== 'terminated' && data[i].status !== 'cancelled') {
                                 $scope.executedData = data[i];
                             }
                         }
@@ -649,7 +649,7 @@ angular.module('cosmoUiApp')
         function _getCurrentExecution(executions) {
             for(var i in executions) {
                 var execution = executions[i];
-                if(execution.status !== 'failed' && execution.status !== 'terminated' && execution.status !== 'canceled') {
+                if(execution.status !== 'failed' && execution.status !== 'terminated' && execution.status !== 'cancelled') {
                     return execution;
                 }
             }

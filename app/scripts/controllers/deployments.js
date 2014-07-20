@@ -60,7 +60,7 @@ angular.module('cosmoUiApp')
                 _executedDeployments[blueprint_id][deployment_id] !== undefined &&
                 _executedDeployments[blueprint_id][deployment_id].status !== 'failed' &&
                 _executedDeployments[blueprint_id][deployment_id].status !== 'terminated' &&
-                _executedDeployments[blueprint_id][deployment_id].status !== 'canceled' &&
+                _executedDeployments[blueprint_id][deployment_id].status !== 'cancelled' &&
                 _executedDeployments[blueprint_id][deployment_id].status !== null;
         };
 
@@ -119,10 +119,10 @@ angular.module('cosmoUiApp')
                         }
 
                         for (var i = 0; i < data.length; i++) {
-                            if (data[i].status !== null && data[i].status !== 'failed' && data[i].status !== 'terminated' && data[i].status !== 'canceled') {
+                            if (data[i].status !== null && data[i].status !== 'failed' && data[i].status !== 'terminated' && data[i].status !== 'cancelled') {
                                 selectedWorkflows[deployment_id] = data[i].workflow_id;
                                 _executedDeployments[blueprint_id][deployment_id] = data[i];
-                            } else if (data[i].status === 'failed' || data[i].status === 'terminated' || data[i].status === 'canceled') {
+                            } else if (data[i].status === 'failed' || data[i].status === 'terminated' || data[i].status === 'cancelled') {
                                 _executedDeployments[blueprint_id][deployment_id] = null;
                             }
                         }
