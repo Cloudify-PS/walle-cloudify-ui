@@ -125,13 +125,17 @@ angular.module('cosmoUiApp')
                     deployment_id: id,
                     workflow_id: $scope.selectedWorkflow.data.value
                 }).then(function(execution) {
-                    $scope.currentExecution = execution;
-                    $cookieStore.put('executionId', execution.id);
+                    if(execution.hasOwnProperty('error_code')) {
+                        $scope.executedErr = execution.message;
+                    }
+                    else {
+                        $scope.currentExecution = execution;
+                        $cookieStore.put('executionId', execution.id);
+                        $cookieStore.remove('deployment_id');
+                        $cookieStore.put('deployment_id', id);
+                        $scope.refreshPage();
+                    }
                 });
-
-                $cookieStore.remove('deployment_id');
-                $cookieStore.put('deployment_id', id);
-                $scope.refreshPage();
             }
         };
 

@@ -33,8 +33,15 @@ angular.module('cosmoUiApp')
                 RestService.executeDeployment({
                     deployment_id: $scope.selectedDeployment.id,
                     workflow_id: selectedWorkflows[$scope.selectedDeployment.id]
+                }).then(function(execution) {
+                    if(execution.hasOwnProperty('error_code')) {
+                        $scope.executedErr = execution.message;
+                    }
+                    else {
+                        $scope.redirectTo($scope.selectedDeployment);
+                    }
                 });
-                $scope.redirectTo($scope.selectedDeployment);
+
             }
         };
 
