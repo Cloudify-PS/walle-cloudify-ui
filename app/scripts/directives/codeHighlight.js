@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('cosmoUi')
+angular.module('cosmoUiApp')
     .directive('codeHighlight', function () {
         return {
             restrict: 'A',
@@ -14,15 +14,15 @@ angular.module('cosmoUi')
                 var options = {
                     'brush': $attrs.codeHighlight,
                     'auto-links': true,
-                    'class-name': '',
                     'collapse': false,
                     'first-line': 1,
-                    'gutter': false,
+                    'gutter': true,
                     'highlight': false,
-                    'html-script': false,
-                    'smart-tabs': true,
+                    'html-script': true,
+                    'smart-tabs': false,
                     'tab-size': 4,
-                    'toolbar': false
+                    'toolbar': false,
+                    'quick-code': false
                 };
                 ngModel.$render = function () {
                     var config = ngModel.$viewValue || {};
@@ -32,8 +32,11 @@ angular.module('cosmoUi')
                         }
                     });
                     if (config.hasOwnProperty('data') && config.data !== '') {
-                        $element[0].innerHTML = config.data;
-                        window.SyntaxHighlighter.highlight(options, $element[0], false);
+                        $element.empty();
+                        var tmpSpan = angular.element('<span>');
+                        $element.append(tmpSpan);
+                        tmpSpan.text(config.data);
+                        window.SyntaxHighlighter.highlight(options, tmpSpan[0], false);
                     }
                 };
             }

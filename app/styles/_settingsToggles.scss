@@ -1,48 +1,49 @@
 .settings-toggles {
+    position: relative;
 
-  #settings-toggles-button {
-    width: 150px;
-    height: 35px;
-    cursor: pointer;
-    position: absolute;
-    z-index: 9999;
-  }
-
-  #settings-toggles-container {
-    position: absolute;
-    top: 103px;
-    width: 150px;
-    height: 125px;
-    background: $clr-base-01;
-    border: 1px solid $clr-base-04;
-    border-radius: 5px;
-    border-top-left-radius: 0px;
-    border-top-right-radius: 0px;
-    padding-top: 5px;
-    z-index: 9999;  // TO BE REMOVED!!
-
-    #settings-toggles-title {
-      color: #000;
-      font-size: 14px;
-      height: 30px;
-      margin: 5px;
-      border-bottom: 1px solid $clr-base-04;
+    #settings-toggles-button {
+        width: 100%;
+        height: 32px;
+        cursor: pointer;
+        position: absolute;
+        z-index: 9999;
     }
 
-    ul li{
-      list-style: none;
-      height: 20px;
+    #settings-toggles-container {
+        position: absolute;
+        top: 28px;
+        width: 160px;
+        height: 125px;
+        background: $clr-base-01;
+        border: 1px solid $clr-base-04;
+        border-radius: 5px;
+        border-top-left-radius: 0px;
+        border-top-right-radius: 0px;
+        padding-top: 5px;
+        z-index: 9999; // TO BE REMOVED!!
 
-      .toggle-switch {
-        float: none;
-        margin-left: 5px;
-        width: 145px;
-
-        #toggle-switch-button {
-          float: right;
-          margin-right: 5px;
+        #settings-toggles-title {
+            color: #000;
+            font-size: 14px;
+            height: 30px;
+            margin: 5px;
+            border-bottom: 1px solid $clr-base-04;
         }
-      }
+
+        ul li {
+            list-style: none;
+            height: 20px;
+
+            .toggle-switch {
+                float: none;
+                margin-left: 5px;
+                width: 145px;
+
+                #toggle-switch-button {
+                    float: right;
+                    margin-right: -3px;
+                }
+            }
+        }
     }
-  }
 }

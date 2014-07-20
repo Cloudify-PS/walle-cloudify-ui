@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('cosmoUi')
+angular.module('cosmoUiApp')
     .controller('FileSelectionDialogCtrl', function ($scope, $log) {
         var selectedFile = null;
         $scope.uploadEnabled = false;
@@ -25,7 +25,7 @@ angular.module('cosmoUi')
             var planForm = new FormData();
             planForm.append('application_archive', $scope.selectedFile);
             if ($scope.blueprintName !== '') {
-                planForm.append('blueprintId', $scope.blueprintName);
+                planForm.append('blueprint_id', $scope.blueprintName);
             }
             $scope.uploadInProcess = true;
             $scope.uploadError = false;
@@ -60,6 +60,7 @@ angular.module('cosmoUi')
 
         $scope.closeDialog = function() {
             $scope.toggleAddDialog();
+            $scope.uploadError = false;
         };
 
         $scope.isUploadEnabled = function() {

@@ -17,3 +17,4 @@ conf/dev
 logs/
 settings.json
 *.tgz
+backend/tmp

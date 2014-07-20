@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('cosmoUi')
+angular.module('cosmoUiApp')
     .controller('LogsCtrl', function ($scope, BreadcrumbsService, RestService, EventsService, $location, $anchorScroll, $filter, $routeParams, LogsModel, $window, EventsMap, $log) {
 
         /**
@@ -32,10 +32,10 @@ angular.module('cosmoUi')
 
         $scope.defaultTimeframe = 1000 * 60 * 5;
         $scope.timeframeList = [
-            {'value': 1000 * 60 * 5, 'label': '5 Minute'},
-            {'value': 1000 * 60 * 10, 'label': '10 Minute'},
-            {'value': 1000 * 60 * 15, 'label': '15 Minute'},
-            {'value': 1000 * 60 * 30, 'label': '30 Minute'},
+            {'value': 1000 * 60 * 5, 'label': '5 Minutes'},
+            {'value': 1000 * 60 * 10, 'label': '10 Minutes'},
+            {'value': 1000 * 60 * 15, 'label': '15 Minutes'},
+            {'value': 1000 * 60 * 30, 'label': '30 Minutes'},
             {'value': 1000 * 60 * 60, 'label': '1 Hour'},
             {'value': 1000 * 60 * 60 * 3, 'label': '3 Hours'},
             {'value': 1000 * 60 * 60 * 6, 'label': '6 Hours'},
@@ -59,14 +59,16 @@ angular.module('cosmoUi')
                 eventsCollect = [],
                 lastData = [];
 
-            function _reverse(array) {
-                var copy = [].concat(array);
-                return copy.reverse();
+            function _convertDates(data) {
+                for(var i in data) {
+                    data[i]._source.timestamp = $filter('dateFormat')(data[i]._source.timestamp, 'yyyy-MM-dd HH:mm:ss');
+                }
+                return data;
             }
 
             function pushLogs() {
                 $scope.newLogs = 0;
-                $scope.logsHits = _reverse(lastData);
+                $scope.logsHits = lastData;
             }
 
             angular.element($window).bind('scroll', function(){
@@ -78,13 +80,13 @@ angular.module('cosmoUi')
             events
                 .execute(function(data){
                     if(data && data.hasOwnProperty('hits')) {
-                        lastData = data.hits.hits;
+                        lastData = _convertDates(data.hits.hits);
                         if(lastData.length !== lastAmount) {
                             if(document.body.scrollTop === 0) {
                                 pushLogs();
                             }
                             else {
-                                eventsCollect = _reverse(lastData);
+                                eventsCollect = lastData;
                                 $scope.newLogs = eventsCollect.length - $scope.logsHits.length;
                             }
                             lastAmount = lastData.length;
@@ -135,13 +137,13 @@ angular.module('cosmoUi')
                 executeLogs();
             });
 
-        function _loadExecutions(deploymentId) {
-            RestService.getDeploymentExecutions(deploymentId)
+        function _loadExecutions(deployment_id) {
+            RestService.getDeploymentExecutions(deployment_id)
                 .then(function(data) {
                     if(data.hasOwnProperty('length') && data.length > 0) {
                         for(var eid in data) {
                             var execute = data[eid];
-                            _executionList.push({'value': execute.id, 'label': execute.workflowId + ' ('+ $filter('dateFormat')(execute.createdAt, 'yyyy-MM-dd HH:mm:ss') +')', 'parent': deploymentId});
+                            _executionList.push({'value': execute.id, 'label': execute.workflow_id + ' ('+ $filter('dateFormat')(execute.created_at, 'yyyy-MM-dd HH:mm:ss') +')', 'parent': deployment_id});
                         }
                     }
                 });
@@ -274,7 +276,7 @@ angular.module('cosmoUi')
 
     });
 
-angular.module('cosmoUi')
+angular.module('cosmoUiApp')
     .filter('filterListByList', function filterListByList() {
         return function (list, filterList) {
             var results = [];

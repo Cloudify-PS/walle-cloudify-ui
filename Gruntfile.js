@@ -1,5 +1,6 @@
 // Generated on 2013-10-15 using generator-angular 0.3.0
 'use strict';
+var logger = require('log4js').getLogger('Gruntfile');
 var LIVERELOAD_PORT = 35729;
 var lrSnippet = require('connect-livereload')({ port: LIVERELOAD_PORT });
 var proxySnippet = require('grunt-connect-proxy/lib/utils').proxyRequest;
@@ -15,6 +16,18 @@ var mountFolder = function (connect, dir) {
 // 'test/spec/**/*.js'
 
 module.exports = function (grunt) {
+
+    var versionFilename = 'VERSION';
+    if (grunt.file.exists(versionFilename)) {
+        var buildVersion = grunt.file.readJSON(versionFilename).version;
+        logger.info('build version', buildVersion);
+        logger.info('setting version on package', buildVersion);
+        var packageFile = grunt.file.readJSON('package.json');
+        packageFile.version = buildVersion;
+        grunt.file.write('package.json', JSON.stringify(packageFile, {}, 4));
+    } else {
+        logger.info('no ', versionFilename, 'file');
+    }
 
     // load all grunt tasks
     require('matchdep').filterDev('grunt-*').forEach(grunt.loadNpmTasks);
@@ -132,6 +145,9 @@ module.exports = function (grunt) {
             all: [
                 'Gruntfile.js',
                 '<%= yeoman.app %>/scripts/{,*/}*.js'
+            ],
+            backend: [
+                'server.js'
             ]
         },
         coffee: {
@@ -389,9 +405,15 @@ module.exports = function (grunt) {
         grunt.task.run(tasks);
     });
 
+    grunt.registerTask('backend', function() {
+        grunt.config.set('jshint.options.jshintrc', '.backendhintrc');
+        grunt.task.run('jshint:backend');
+    });
+
     grunt.registerTask('default', [
         'jshint',
         'test',
-        'build'
+        'build',
+        'backend'
     ]);
 };

@@ -3,7 +3,7 @@
 describe('Directive: appStatusWidget', function () {
 
 //  // load the directive's module
-//  beforeEach(module('cosmoUi'));
+//  beforeEach(module('cosmoUiApp'));
 //
 //  var element,
 //    scope;

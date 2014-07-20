@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('cosmoUi')
+angular.module('cosmoUiApp')
     .directive('eventsWidget', function (EventsMap) {
         return {
             templateUrl: 'views/eventsWidgetTemplate.html',

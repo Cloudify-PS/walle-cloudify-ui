@@ -50,7 +50,7 @@ var publicConfiguration = {
 
 var privateConfiguration = {
     cosmoServer: undefined,
-    cosmoPort: 8100,
+    cosmoPort: 80,
     cloudifyLicense:"tempLicense",
     log4js:{
         appenders: [
@@ -63,6 +63,15 @@ var privateConfiguration = {
             }
         ],
         replaceConsole: true
+    },
+    browseBlueprint: {
+        path: 'backend/tmp/blueprints'
+    },
+    influx: {
+        host: 'influx.gsdev.info',
+        user: 'root',
+        pass: 'root',
+        dbname: 'influxdb'
     }
 }
 

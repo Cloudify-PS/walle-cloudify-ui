@@ -1,0 +1,45 @@
+<div id="deployment-progress-panel" ng-controller="DeploymentProgressPanelCtrl" ng-class="{'opened': panelOpen == true, 'closed': panelOpen == false}">
+    <div id="closedPanel" ng-show="!panelOpen">
+        <div class="data head name">Workflow name: {{ getWorkflow() }}</div>
+        <div class="data head in-progress">In progress: {{ getNodesCount(null, 'inProgress') }}</div>
+        <div class="data head ready">Ready: {{ getNodesCount(null, 'started') }}</div>
+        <div class="data head failed">Failed: {{ getNodesCount(null, 'failed') }}</div>
+
+        <!--<div class="panel-progress-bar">-->
+            <!--<div dots-loader></div>-->
+        <!--</div>-->
+
+        <div class="expand-button" ng-click="togglePanel()"></div>
+    </div>
+
+    <div id="openedPanel" ng-show="panelOpen">
+        <table>
+            <thead>
+                <tr>
+                    <th class="data name">Node name</th>
+                    <th class="data in-progress">In progress</th>
+                    <th class="data ready">Ready</th>
+                    <th class="data failed">Failed</th>
+                    <th class="data status">Status</th>
+                    <th class="data elapsedtime">Elapsed time</th>
+                </tr>
+            </thead>
+            <tbody ng-repeat="node in panelData">
+                <tr ng-class="getClass(node)">
+                    <td class="data name">{{ node.id }}</td>
+                    <td class="data in-progress">{{ node['inProgress'].count }} / {{ node.totalCount }}</td>
+                    <td class="data ready">{{ node['started'].count }} / {{ node.totalCount }}</td>
+                    <td class="data failed">{{ node['failed'].count }} / {{ node.totalCount }}</td>
+                    <td class="data status">
+                        <div>{{ node.status }}</div>
+                    </td>
+                    <td class="data elapsedtime">
+                        <div data-ng-show="!!node.start_time">{{node.start_time.hours}} hours, {{node.start_time.minutes}} minutes, {{node.start_time.seconds}} seconds.</div>
+                        <div data-ng-show="!node.start_time">Not Available</div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="collapse-button" ng-click="togglePanel()"></div>
+    </div>
+</div>

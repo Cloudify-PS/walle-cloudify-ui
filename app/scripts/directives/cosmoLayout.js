@@ -8,8 +8,8 @@
 
  Use it wisely
  **/
-angular.module('cosmoUi')
-    .directive('cosmoLayout', function ($routeParams) {
+angular.module('cosmoUiApp')
+    .directive('cosmoLayout', function ($routeParams, appConfig) {
         return {
             templateUrl: 'views/cosmoLayoutTemplate.html',
             restrict: 'C',
@@ -25,6 +25,8 @@ angular.module('cosmoUi')
                 setTimeout(doIt, 0);
 
                 scope.embeded = ($routeParams.hasOwnProperty('embed') && $routeParams.embed === 'true') ? true : false;
+
+                scope.versions = appConfig.versions;
             }
         };
     });

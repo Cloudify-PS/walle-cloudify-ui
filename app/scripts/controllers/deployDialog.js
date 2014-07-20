@@ -1,30 +1,38 @@
 'use strict';
 
-angular.module('cosmoUi')
+angular.module('cosmoUiApp')
     .controller('DeployDialogCtrl', function ($scope, RestService) {
-        $scope.deploymentId = null;
+        $scope.deployment_id = null;
         $scope.deployError = false;
         $scope.deployErrorMessage = 'Error deploying blueprint';
 
         $scope.isDeployEnabled = function() {
-            return $scope.deploymentId !== null && $scope.deploymentId.length > 0;
+            return $scope.deployment_id !== null && $scope.deployment_id.length > 0;
         };
 
         $scope.deployBlueprint = function(blueprint) {
-            if (!_validateDeploymentName($scope.deploymentId)) {
+            if (!_validateDeploymentName($scope.deployment_id)) {
                 return;
             }
             $scope.deployError = false;
 
             var params = {
-                blueprintId: blueprint.id,
-                deploymentId: $scope.deploymentId
+                blueprint_id: blueprint.id,
+                deployment_id: $scope.deployment_id
             };
 
             if ($scope.isDeployEnabled()) {
+                $scope.inProcess = true;
                 RestService.deployBlueprint(params)
-                    .then(function() {
-                        $scope.redirectToDeployment($scope.deploymentId, blueprint.id);
+                    .then(function(data) {
+                        $scope.inProcess = false;
+                        if(data.hasOwnProperty('message')) {
+                            $scope.deployErrorMessage = data.message;
+                            $scope.deployError = true;
+                        }
+                        else {
+                            $scope.redirectToDeployment($scope.deployment_id, blueprint.id);
+                        }
                     });
             }
         };

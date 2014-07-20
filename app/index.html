@@ -17,10 +17,12 @@
     <link rel="stylesheet" href="styles/main.css">
     <link rel="stylesheet" href="bower_components/SyntaxHighlighter/styles/shCore.css">
     <link rel="stylesheet" href="bower_components/SyntaxHighlighter/styles/shThemeDefault.css">
+    <link rel="stylesheet" href="bower_components/nvd3/nv.d3.min.css" />
+    <link rel="stylesheet" href="bower_components/angular-datepicker/dist/index.min.css" />
     <!-- endbuild -->
 
 </head>
-<body ng-app="cosmoUi">
+<body ng-app="cosmoUiApp">
 
 
     <script src="/backend/homepage/"></script>
@@ -48,6 +50,8 @@
     <script src="bower_components/yamljs/bin/yaml.js"></script>
     <script src="bower_components/bootstrap-sass/dist/js/bootstrap.js"></script>
     <script src="bower_components/d3/d3.js"></script>
+    <script src="bower_components/nvd3/nv.d3.min.js"></script>
+    <script src="bower_components/angularjs-nvd3-directives/dist/angularjs-nvd3-directives.min.js"></script>
     <script src="bower_components/elastic.js/dist/elastic.min.js"></script>
     <script src="bower_components/elastic.js/dist/elastic-angular-client.min.js"></script>
     <script src="bower_components/i18next/i18next.min.js"></script>
@@ -69,11 +73,19 @@
     <script src="bower_components/angular-route/angular-route.js"></script>
     <script src="bower_components/angular-animate/angular-animate.js"></script>
     <script src="bower_components/ng-file-upload/angular-file-upload.js"></script>
+    <script src="bower_components/ngstorage/ngStorage.min.js"></script>
+    <script src="bower_components/angular-datepicker/dist/index.min.js"></script>
+    <script src="bower_components/angular-timer/dist/angular-timer.min.js"></script>
 
     <script src="bower_components/SyntaxHighlighter/scripts/XRegExp.js"></script>
     <script src="bower_components/SyntaxHighlighter/scripts/shCore.js"></script>
     <script src="bower_components/SyntaxHighlighter/scripts/shLegacy.js"></script>
     <script src="bower_components/SyntaxHighlighter/scripts/shAutoloader.js"></script>
+    <script src="bower_components/SyntaxHighlighter/scripts/shBrushPython.js"></script>
+    <script src="bower_components/SyntaxHighlighter/scripts/shBrushBash.js"></script>
+    <script src="bower_components/SyntaxHighlighter/scripts/shBrushPlain.js"></script>
+    <script src="brushes/shBrushBat.js"></script>
+    <script src="brushes/shBrushPowerShell.js"></script>
     <!-- endbuild -->
 
     <!-- build:js scripts/modules.js -->
@@ -87,6 +99,7 @@
     <script src="scripts/controllers/deployment.js"></script>
     <script src="scripts/controllers/deployDialog.js"></script>
     <script src="scripts/controllers/logs.js"></script>
+    <script src="scripts/controllers/deploymentProgressPanel.js"></script>
     <script src="scripts/directives/sideMenu.js"></script>
     <script src="scripts/directives/toolBar.js"></script>
     <script src="scripts/directives/cosmoLayout.js"></script>
@@ -102,14 +115,13 @@
     <script src="scripts/directives/codeHighlight.js"></script>
     <script src="scripts/directives/dotsLoader.js"></script>
     <script src="scripts/directives/ngEnter.js"></script>
-    <script src="scripts/services/yamlService.js"></script>
-    <script src="scripts/services/YamlTreeParser.js"></script>
-    <script src="scripts/services/YamlGraphParser.js"></script>
+    <!--<script src="scripts/services/yamlService.js"></script>-->
+    <!--<script src="scripts/services/YamlTreeParser.js"></script>-->
+    <!--<script src="scripts/services/YamlGraphParser.js"></script>-->
     <script src="scripts/services/PlanData.js"></script>
     <script src="scripts/services/RestService.js"></script>
     <script src="scripts/services/BreadcrumbsService.js"></script>
     <script src="scripts/services/EventsService.js"></script>
-    <script src="scripts/services/CosmoTypesService.js"></script>
     <script src="scripts/services/d3Networks.js"></script>
     <script src="scripts/services/EventsMap.js"></script>
     <script src="scripts/services/LogsModel.js"></script>
@@ -117,6 +129,16 @@
     <script src="scripts/filters/eventTimeFilter.js"></script>
     <script src="scripts/filters/dateFormat.js"></script>
     <script src="styles/SyntaxHighlighter/shBrushYaml.js"></script>
+    <script src="scripts/directives/bpTopologyNodes.js"></script>
+    <script src="scripts/services/RecursionHelper.js"></script>
+    <script src="scripts/directives/graphsPager.js"></script>
+    <script src="scripts/services/monitoringGraphs.js"></script>
+    <script src="scripts/directives/bindGraph.js"></script>
+    <script src="scripts/directives/onFinishRender.js"></script>
+    <script src="scripts/filters/limitRange.js"></script>
+    <script src="scripts/controllers/hosts.js"></script>
+    <script src="scripts/controllers/interface.js"></script>
+    <script src="scripts/services/topologyTypes.js"></script>
     <!-- endbuild -->
 
 </body>

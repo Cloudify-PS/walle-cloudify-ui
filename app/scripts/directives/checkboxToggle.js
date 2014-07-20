@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('cosmoUi')
+angular.module('cosmoUiApp')
     .directive('checkboxToggle', function ($routeParams, $log/*, $location*/) {
         return {
             template: '<div ng-transclude></div>',

@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('cosmoUi')
+angular.module('cosmoUiApp')
     .service('d3Networks', function d3Networks() {
 
         var topology = {};
@@ -43,9 +43,4 @@ angular.module('cosmoUi')
                 target: data.target
             });
         }
-
-        this.getTopology = function () {
-            return topology;
-        };
-
     });

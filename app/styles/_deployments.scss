@@ -32,6 +32,10 @@
             font-weight: $COSMOUI_LIST_HOVER_ACTION_FONT_WEIGHT;
           }
         }
+        &.delete {
+            width: $COSMOUI_LIST_HOVER_DELETE_WIDTH;
+            text-align: center;
+        }
       }
     }
 
@@ -41,7 +45,6 @@
 
     .executingWorkflow {
       min-width: 0px;
-      height: 32px;
       width: 150px;
       color: $clr-base-11;
       background-color: $clr-base-05;
@@ -58,6 +61,8 @@
       -moz-appearance: none;
       appearance: none;
       cursor: default;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
   }
 

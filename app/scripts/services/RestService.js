@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('cosmoUi')
+angular.module('cosmoUiApp')
     .service('RestService', function RestService($http, $timeout, $q, $rootScope, $log) {
 
         var autoPull = [],
@@ -46,7 +46,7 @@ angular.module('cosmoUi')
                             if (blueprints[j].deployments === undefined) {
                                 blueprints[j].deployments = [];
                             }
-                            if (deployments[i] !== undefined && deployments[i].blueprintId === blueprints[j].id) {
+                            if (deployments[i] !== undefined && deployments[i].blueprint_id === blueprints[j].id) {
                                 blueprints[j].deployments.push(deployments[i]);
                             }
                         }
@@ -101,21 +101,31 @@ angular.module('cosmoUi')
             return _load('blueprints/get', callParams);
         }
 
-        function _getBlueprintSource(params) {
+        function _browseBlueprint(params) {
             var callParams = {
-                url: '/backend/blueprints/source',
-                method: 'POST',
-                data: {'blueprintId': params}
+                url: '/backend/blueprints/browse',
+                method: 'GET',
+                params: params
             };
 
-            return _load('blueprints/source', callParams);
+            return _load('blueprints/browse', callParams);
+        }
+
+        function _browseBlueprintFile(params) {
+            var callParams = {
+                url: '/backend/blueprints/browse/file',
+                method: 'GET',
+                params: params
+            };
+
+            return _load('blueprints/browse/file', callParams);
         }
 
         function _deployBlueprint(params) {
             var callParams = {
                 url: '/backend/deployments/create',
                 method: 'POST',
-                data: {'blueprintId': params.blueprintId, 'deploymentId': params.deploymentId}
+                data: {'blueprint_id': params.blueprint_id, 'deployment_id': params.deployment_id}
             };
 
             return _load('deployments/create', callParams);
@@ -125,7 +135,7 @@ angular.module('cosmoUi')
             var callParams = {
                 url: '/backend/deployments/execute',
                 method: 'POST',
-                data: {'deploymentId': params.deploymentId, 'workflowId': params.workflowId}
+                data: {'deployment_id': params.deployment_id, 'workflow_id': params.workflow_id}
             };
 
             return _load('deployments/execute', callParams);
@@ -144,8 +154,8 @@ angular.module('cosmoUi')
         function _getDeploymentExecutions(params) {
             var callParams = {
                 url: '/backend/deployments/executions/get',
-                method: 'POST',
-                data: {'deploymentId': params}
+                method: 'GET',
+                params: {'deployment_id': params}
             };
             return _load('deployments/executions/get', callParams);
         }
@@ -156,7 +166,16 @@ angular.module('cosmoUi')
                 method: 'POST',
                 data: params
             };
-            return _load('nodes/get', callParams);
+            return _load('node/get', callParams);
+        }
+
+        function _getNodes(params) {
+            var callParams = {
+                url: '/backend/nodes',
+                method: 'POST',
+                data: params
+            };
+            return _load('/backend/nodes', callParams);
         }
 
         function _loadEvents(query) {
@@ -181,6 +200,15 @@ angular.module('cosmoUi')
             return _load('deployments/get', callParams);
         }
 
+        function _deleteDeploymentById(params){
+            var callParams = {
+                url: '/backend/deployments/delete',
+                method: 'POST',
+                data: params
+            };
+            return _load('deployments/delete', callParams);
+        }
+
         function _getDeploymentNodes(params) {
             var callParams = {
                 url: '/backend/deployments/nodes',
@@ -190,14 +218,27 @@ angular.module('cosmoUi')
             return _load('nodes', callParams);
         }
 
+        function _getNodeInstances(params) {
+            var callParams = {
+                url: '/backend/node-instances',
+                method: 'GET',
+                data: params
+            };
+            return _load('node-instances', callParams);
+        }
+
         function _getWorkflows(params) {
             var callParams = {
                 url: '/backend/deployments/workflows/get',
                 method: 'POST',
-                data: {'deploymentId': params.deploymentId}
+                data: {'deployment_id': params.deployment_id}
             };
 
             return _load('deployments/workflows/get', callParams);
+        }
+
+        function _getProviderContext() {
+            return _load('provider/context');
         }
 
         function _setSettings(data) {
@@ -225,23 +266,84 @@ angular.module('cosmoUi')
             return _load('configuration', callParams);
         }
 
+        function _influxQuery(data) {
+            var callParams = {
+                url: '/backend/influx',
+                method: 'POST',
+                data: data
+            };
+
+            return _load('influx', callParams);
+        }
+
+        function _getVersionsUi() {
+            var callParams = {
+                url: '/backend/versions/ui',
+                method: 'GET'
+            };
+            return _load('versions/ui', callParams);
+        }
+
+        function _getVersionsManager() {
+            var callParams = {
+                url: '/backend/versions/manager',
+                method: 'GET'
+            };
+            return _load('versions/manager', callParams);
+        }
+
+        function _getMonitorGrpahs() {
+            var callParams = {
+                url: '/backend/monitor/graphs',
+                method: 'GET'
+            };
+            return _load('monitor/graphs', callParams);
+        }
+
+        function _getMonitorCpu() {
+            var callParams = {
+                url: '/backend/monitor/cpu',
+                method: 'GET'
+            };
+            return _load('monitor/cpu', callParams);
+        }
+
+        function _getMonitorMemory() {
+            var callParams = {
+                url: '/backend/monitor/memory',
+                method: 'GET'
+            };
+            return _load('monitor/memory', callParams);
+        }
+
         this.loadBlueprints = _loadBlueprints;
         this.addBlueprint = _addBlueprint;
         this.getBlueprintById = _getBlueprintById;
-        this.getBlueprintSource = _getBlueprintSource;
+        this.browseBlueprint = _browseBlueprint;
+        this.browseBlueprintFile = _browseBlueprintFile;
         this.deployBlueprint = _deployBlueprint;
         this.getDeploymentExecutions = _getDeploymentExecutions;
         this.executeDeployment = _executeDeployment;
         this.updateExecutionState = _updateExecutionState;
         this.getDeploymentById = _getDeploymentById;
+        this.deleteDeploymentById = _deleteDeploymentById;
         this.getDeploymentNodes = _getDeploymentNodes;
+        this.getNodeInstances = _getNodeInstances;
         this.loadEvents = _loadEvents;
         this.loadDeployments = _loadDeployments;
         this.getWorkflows = _getWorkflows;
+        this.getProviderContext = _getProviderContext;
         this.getNode = _getNode;
+        this.getNodes = _getNodes;
         this.getSettings = _getSettings;
         this.setSettings = _setSettings;
         this.getConfiguration = _getConfiguration;
         this.autoPull = _autoPull;
         this.autoPullStop = _autoPullStop;
+        this.influxQuery = _influxQuery;
+        this.getVersionsUi = _getVersionsUi;
+        this.getVersionsManager = _getVersionsManager;
+        this.getMonitorGrpahs = _getMonitorGrpahs;
+        this.getMonitorCpu = _getMonitorCpu;
+        this.getMonitorMemory = _getMonitorMemory;
     });

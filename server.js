@@ -5,24 +5,29 @@
  */
 
 function isLocalhost(){
-    return process.env.GS_UI_NODE_ENV == "localhost";
+    return process.env.GS_UI_NODE_ENV === 'localhost';
+}
+
+if ( isLocalhost() ){
+    console.log('running in localhost');
 }
 
 var express = require('express');
 var _ = require('lodash');
 var app = express();
 var port = 9001;
-var gsSettings = require("./backend/gsSettings");
-var conf = require("./backend/appConf");
+var gsSettings = require('./backend/gsSettings');
+var conf = require('./backend/appConf');
 var cloudify4node;
 var log4js = require('log4js');
 var logger = log4js.getLogger('server');
+var influx = require('influx');
 
 
 if (conf.useMock) {
-    cloudify4node = require("./backend/Cloudify4node-mock");
+    cloudify4node = require('./backend/Cloudify4node-mock');
 } else {
-    cloudify4node = require("./backend/Cloudify4node");
+    cloudify4node = require('./backend/Cloudify4node');
 }
 
 logger.debug(JSON.stringify(conf));
@@ -31,7 +36,7 @@ if (conf.cloudifyLicense !== 'tempLicense') {
     throw new Error('invalid license');
 }
 
-app.enable("jsonp callback");
+app.enable('jsonp callback');
 
 // app.use(express.favicon());
 app.use(express.cookieParser(/* 'some secret key to sign cookies' */ 'keyboardcat' ));
@@ -67,14 +72,14 @@ if (app.get('env') === 'development') {
 
 // cosmo REST APIs
 
-app.get('/backend/blueprints', function(request, response, next) {
+app.get('/backend/blueprints', function(request, response/*, next*/) {
     cloudify4node.getBlueprints(function(err, data) {
         response.send(err !== null ? err : data);
     });
 });
 
 app.post('/backend/blueprints/add', function(request, response){
-    cloudify4node.addBlueprint(request.files.application_archive, request.body.blueprintId, function(err, data) {
+    cloudify4node.addBlueprint(request.files.application_archive, request.body.blueprint_id, function(err, data) {
         response.send(err !== null ? err : data, err !== null ? data : 200);
     });
 });
@@ -85,14 +90,20 @@ app.get('/backend/blueprints/get', function(request, response) {
     });
 });
 
-app.post('/backend/blueprints/source', function(request, response) {
-    cloudify4node.getBlueprintSource(request.body.blueprintId, function(err, data) {
+app.get('/backend/blueprints/validate', function(request, response) {
+    cloudify4node.validateBlueprint(request.body.id ,function(err, data) {
         response.send(err !== null ? err : data);
     });
 });
 
-app.get('/backend/blueprints/validate', function(request, response) {
-    cloudify4node.validateBlueprint(request.body.id ,function(err, data) {
+app.get('/backend/blueprints/browse', function(request, response) {
+    cloudify4node.browseBlueprint(request.query.id ,function(err, data) {
+        response.send(err !== null ? err : data);
+    });
+});
+
+app.get('/backend/blueprints/browse/file', function(request, response) {
+    cloudify4node.browseBlueprintFile(request.query.id, request.query.path ,function(err, data) {
         response.send(err !== null ? err : data);
     });
 });
@@ -122,26 +133,43 @@ app.post('/backend/deployments/create', function(request, response) {
 });
 
 app.post('/backend/deployments/get', function(request, response) {
-    cloudify4node.getDeploymentById(request.body.deploymentId, function(err, data) {
+    cloudify4node.getDeploymentById(request.body.deployment_id, function(err, data) {
+        response.send(err !== null ? err : data);
+    });
+});
+
+app.post('/backend/deployments/delete', function(request, response) {
+    cloudify4node.deleteDeploymentById(request.body.deployment_id, request.body.ignoreLiveNodes, function(err, data) {
         response.send(err !== null ? err : data);
     });
 });
 
 app.post('/backend/deployments/nodes', function(request, response) {
-    cloudify4node.getDeploymentNodes(request.body.deploymentId, request.body.state, function(err, data) {
+    cloudify4node.getDeploymentNodes(request.body.deployment_id, request.body.state, function(err, data) {
         response.send(err !== null ? err : data);
     });
 });
 
-app.post('/backend/deployments/executions/get', function(request, response) {
-    cloudify4node.getDeploymentExecutions(request.body.deploymentId, function(err, data) {
+app.get('/backend/node-instances', function(request, response) {
+    cloudify4node.getNodeInstances(function(err, data) {
+        response.send(err !== null ? err : data);
+    });
+});
 
+app.get('/backend/deployments/executions/get', function(request, response) {
+    cloudify4node.getDeploymentExecutions(request.param('deployment_id'), function(err, data) {
         response.send(err !== null ? err : data);
     });
 });
 
 app.post('/backend/deployments/execute', function(request, response) {
     cloudify4node.executeDeployment(request.body, function(err, data) {
+        response.send(err !== null ? err : data);
+    });
+});
+
+app.get('/backend/provider/context', function(request, response) {
+    cloudify4node.getProviderContext(function(err, data) {
         response.send(err !== null ? err : data);
     });
 });
@@ -153,7 +181,13 @@ app.post('/backend/events/_search', function(request, response) {
 });
 
 app.post('/backend/deployments/workflows/get', function(request, response) {
-    cloudify4node.getWorkflows(request.body.deploymentId, function(err, data) {
+    cloudify4node.getWorkflows(request.body.deployment_id, function(err, data) {
+        response.send(err !== null ? err : data);
+    });
+});
+
+app.get('/backend/node-instances', function(request, response) {
+    cloudify4node.getNodeInstances(request.query.deployment_id, function(err, data) {
         response.send(err !== null ? err : data);
     });
 });
@@ -171,10 +205,73 @@ app.post('/backend/node/get', function(request, response) {
     });
 });
 
+app.post('/backend/nodes', function(request, response) {
+    var queryParams = {};
+    if (request.body.deployment_id !== undefined) {
+        queryParams.deployment_id = request.body.deployment_id;
+    } else {
+        response.send(500, 'deployment id is undefined');
+    }
+    cloudify4node.getNodes(queryParams, function(err, data) {
+        response.send(err !== null ? err : data);
+    });
+});
+
+app.post('/backend/influx', function(request, response) {
+
+    var influxClient = influx({
+        host: conf.influx.host,
+        username : conf.influx.user,
+        password : conf.influx.pass,
+        database : conf.influx.dbname
+    });
+
+    influxClient.query(request.body.query, function(err, data){
+        response.send(err !== null ? err : data);
+    });
+
+});
+
+app.get('/backend/apidocs', function(request, response) {
+    response.writeHead(301, {Location: 'http://' + conf.cosmoServer + '/api/spec.html'});
+    response.end();
+});
+
+app.get('/backend/versions/ui', function(request, response) {
+    cloudify4node.getPackageJson(function(err, data) {
+        response.send(err !== null ? err : data);
+    });
+});
+
+app.get('/backend/versions/manager', function(request, response) {
+    cloudify4node.getManagerVersion(function(err, data) {
+        response.send(err !== null ? err : data);
+    });
+});
+
+app.get('/backend/monitor/graphs', function(request, response) {
+    cloudify4node.getMonitorGraphs(function(err, data) {
+        response.send(err !== null ? err : data);
+    });
+});
+
+app.get('/backend/monitor/cpu', function(request, response) {
+    cloudify4node.getMonitorCpu(function(err, data) {
+        response.send(err !== null ? err : data);
+    });
+});
+
+app.get('/backend/monitor/memory', function(request, response) {
+    cloudify4node.getMonitorMemory(function(err, data) {
+        response.send(err !== null ? err : data);
+    });
+});
+
 // ui settings REST APIs
 
 app.post('/backend/settings', function(request, response) {
     conf.applyConfiguration(request.body.settings);
+    response.send(200);
 });
 
 app.get('/backend/settings', function(request, response) {
@@ -197,10 +294,10 @@ app.get('/backend/configuration', function (request, response) {
         _.extend(dto, conf.getPrivateConfiguration(), conf.getPublicConfiguration());
     }
     response.json(dto);
-})
+});
 
 
-// our custom "verbose errors" setting
+// our custom 'verbose errors' setting
 // which we can use in the templates
 // via settings['verbose errors']
 app.enable('verbose errors');
@@ -212,7 +309,7 @@ if (app.get('env') === 'production') {
 }
 
 
-// "app.router" positions our routes
+// 'app.router' positions our routes
 // above the middleware defined below,
 // this means that Express will attempt
 // to match & call routes _before_ continuing
@@ -233,7 +330,7 @@ if (app.get('env') === 'development') {
 // middleware use()d, we assume 404, as nothing else
 // responded.
 
-app.use(function(req, res, next) {
+app.use(function(req, res) {
     res.status(404);
 
     // respond with html page
@@ -264,7 +361,7 @@ app.use(function(req, res, next) {
 // would remain being executed, however here
 // we simply respond with an error page.
 
-app.use(function(err, req, res, next) {
+app.use(function(err, req, res) {
     // we may use properties of the error object
     // here and next(err) appropriately, or if
     // we possibly recovered from the error, simply next().
@@ -318,13 +415,14 @@ app.get('/403', function(req, res, next){
     err.status = 403;
     next(err);
 });
-
+// todo: do we need this?
 app.get('/500', function(req, res, next){
     // trigger a generic (500) error
     next(new Error('keyboard cat!'));
 });
 
-app.get('/', function(req, res, next){
+// todo: do we need this?
+app.get('/', function(/*req, res, next*/){
 
 });
 

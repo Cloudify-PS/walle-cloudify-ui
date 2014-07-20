@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('cosmoUi')
+angular.module('cosmoUiApp')
     .directive('ngEnter', function () {
         return function (scope, element, attrs) {
             element.bind('keydown keypress', function (event) {

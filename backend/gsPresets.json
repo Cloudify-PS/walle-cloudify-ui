@@ -1,7 +1,7 @@
 {
     "localhost": {
         "cosmoServer": "localhost",
-        "cosmoPort": 8100,
+        "cosmoPort": 80,
         "log4js": {
             "appenders": [
                 { "type":"console" },
@@ -15,8 +15,8 @@
         }
     },
     "staging": {
-        "cosmoServer": "cosmo.gsdev.info",
-        "cosmoPort": 8100,
+        "cosmoServer": "192.168.15.13",
+        "cosmoPort": 80,
         "log4js": {
             "appenders": [
                 { "type":"console" },

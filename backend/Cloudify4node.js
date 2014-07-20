@@ -4,6 +4,9 @@ var conf = require("../backend/appConf");
 var log4js = require('log4js');
 log4js.configure(conf.log4js);
 var logger = log4js.getLogger('server');
+var path = require('path');
+var targz = require('tar.gz');
+var browseBlueprint = require('./services/BrowseBluerprintService');
 
 module.exports = Cloudify4node;
 
@@ -148,15 +151,6 @@ Cloudify4node.getBlueprintById = function(blueprint_id, callback) {
     createRequest(requestData, callback );
 }
 
-Cloudify4node.getBlueprintSource = function(blueprint_id, callback) {
-    var requestData = createRequestData({
-        path: '/blueprints/' + blueprint_id + '/source',
-        method: 'GET'
-    });
-
-    createRequest(requestData, callback );
-}
-
 Cloudify4node.validateBlueprint = function(blueprint_id, callback) {
     var requestData = createRequestData({
         hostname: conf.cosmoServer,
@@ -166,6 +160,76 @@ Cloudify4node.validateBlueprint = function(blueprint_id, callback) {
     });
 
     createRequest(requestData, callback );
+}
+
+Cloudify4node.archiveBlueprint = function(blueprint_id, callback) {
+    var requestData = {
+        hostname: conf.cosmoServer,
+        port: conf.cosmoPort,
+        path: '/blueprints/' + blueprint_id + '/archive',
+        method: 'GET'
+    };
+
+    fs.exists(conf.browseBlueprint.path, function (exists) {
+        if (!exists) {
+            var pathParts = conf.browseBlueprint.path.split('/');
+            var pathToCreate = '';
+            for (var i = 0; i < pathParts.length; i++) {
+                pathToCreate += pathParts[i] + '/';
+                fs.mkdir(pathToCreate, function(e) {
+                    console.log('folder' + pathParts[i] + ' already exist :: ' + e);
+                });
+            }
+        }
+        var filepath = path.join(conf.browseBlueprint.path, blueprint_id + '.tar.gz');
+        var file = fs.createWriteStream(filepath);
+
+        var req = ajax.get(requestData, function(response) {
+            response
+                .on('data', function (data) {
+                    file.write(data);
+                })
+                .on('end', function () {
+                    file.on('close', function(){
+                        var compress = new targz().extract(filepath, path.join(conf.browseBlueprint.path, blueprint_id), function(err){
+                            if(err) {
+                                console.log('problem with extract: ' + err);
+                            }
+                            else {
+                                console.log('The extraction has ended!');
+                                callback(null, null);
+                            }
+                        });
+                    });
+                    file.end();
+                });
+        });
+
+        req.on('error', function(e) {
+            console.log('problem with request: ' + e.message);
+            callback(e.message, null);
+        });
+    });
+}
+
+Cloudify4node.browseBlueprint = function(blueprint_id, callback) {
+    browseBlueprint.isBlueprintExist(blueprint_id, function(err, isExist){
+        if(!isExist) {
+            Cloudify4node.archiveBlueprint(blueprint_id, function(err){
+                if(err) {
+                    console.log('Error!', err);
+                }
+                browseBlueprint.browseBlueprint(blueprint_id, callback);
+            });
+        }
+        else {
+            browseBlueprint.browseBlueprint(blueprint_id, callback);
+        }
+    })
+}
+
+Cloudify4node.browseBlueprintFile = function(blueprint_id, relativePath, callback) {
+    browseBlueprint.fileGetContent(blueprint_id, relativePath, callback);
 }
 
 Cloudify4node.getExecutionById = function(execution_id, callback) {
@@ -205,10 +269,10 @@ Cloudify4node.getDeployments = function(callback) {
 
 Cloudify4node.addDeployment = function(requestBody, callback) {
     var data = {
-        'blueprintId': requestBody.blueprintId
+        'blueprint_id': requestBody.blueprint_id
     };
     var requestData = createRequestData({
-        path: '/deployments/' + requestBody.deploymentId,
+        path: '/deployments/' + requestBody.deployment_id,
         data: data,
         method: 'PUT',
         headers: {
@@ -229,9 +293,44 @@ Cloudify4node.getDeploymentById = function(deployment_id, callback) {
     createRequest(requestData, callback);
 }
 
+Cloudify4node.deleteDeploymentById = function(deployment_id, ignore_live_nodes, callback) {
+    var requestData = createRequestData({
+        path: '/deployments/' + deployment_id + '?ignore_live_nodes=' + !!ignore_live_nodes,
+        method: 'DELETE'
+    });
+
+    createRequest(requestData, callback);
+}
+
 Cloudify4node.getDeploymentNodes = function(deployment_id, state, callback) {
     var requestData = createRequestData({
-        path: '/deployments/' + deployment_id + '/nodes?state=' + state,
+        path: '/node-instances?deployment_id=' + deployment_id,
+        method: 'GET'
+    });
+
+    createRequest(requestData, callback);
+}
+
+Cloudify4node.getNodeInstances = function(callback) {
+
+    var requestData = createRequestData({
+        path: '/node-instances',
+        method: 'GET'
+    });
+
+    createRequest(requestData, callback);
+}
+
+Cloudify4node.getNodeInstancesByDeploymentId = function(queryParams, callback) {
+    var queryStr = '';
+    if (queryParams !== null) {
+        queryStr = '?'
+        for (var param in queryParams) {
+            queryStr += param + '=' + queryParams[param];
+        }
+    }
+    var requestData = createRequestData({
+        path: '/node-instances' + queryStr,
         method: 'GET'
     });
 
@@ -249,16 +348,25 @@ Cloudify4node.getDeploymentExecutions = function(deployment_id, callback) {
 
 Cloudify4node.executeDeployment = function(requestBody, callback) {
     var data = {
-        'workflowId': requestBody.workflowId
+        'workflow_id': requestBody.workflow_id
     };
     var requestData = createRequestData({
-        path: '/deployments/' + requestBody.deploymentId + '/executions',
+        path: '/deployments/' + requestBody.deployment_id + '/executions',
         data: data,
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
             'Content-Length': JSON.stringify(data).length
         }
+    });
+
+    createRequest(requestData, callback);
+}
+
+Cloudify4node.getProviderContext = function(callback) {
+    var requestData = createRequestData({
+        path: '/provider/context',
+        method: 'GET'
     });
 
     createRequest(requestData, callback);
@@ -304,3 +412,47 @@ Cloudify4node.getNode = function(node_id, queryParams, callback) {
 
     createRequest(requestData, callback);
 }
+
+Cloudify4node.getNodes = function(queryParams, callback) {
+    var queryStr = '';
+    if (queryParams !== null) {
+        queryStr = '?'
+        for (var param in queryParams) {
+            queryStr += param + '=' + queryParams[param] + '&';
+        }
+    }
+    var requestData = createRequestData({
+        path: '/nodes' + queryStr,
+        method: 'GET'
+    });
+
+    createRequest(requestData, callback);
+}
+
+Cloudify4node.getPackageJson = function(callback) {
+    return callback(null, require('../package.json'));
+};
+
+Cloudify4node.getManagerVersion = function(callback) {
+    var requestData = createRequestData({
+        path: '/version',
+        method: 'GET'
+    });
+
+    createRequest(requestData, callback);
+    //return callback(null, require('./mock/managerVersion.json'));
+};
+
+
+// Monitor Mock's
+Cloudify4node.getMonitorGraphs = function(callback) {
+    return callback(null, require('./mock/monitorGraphs.json'));
+};
+
+Cloudify4node.getMonitorCpu = function(callback) {
+    return callback(null, require('./mock/monitorCPU.json'));
+};
+
+Cloudify4node.getMonitorMemory = function(callback) {
+    return callback(null, require('./mock/monitorMemory.json'));
+};

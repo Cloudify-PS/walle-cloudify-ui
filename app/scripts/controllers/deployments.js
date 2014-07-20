@@ -1,20 +1,24 @@
 'use strict';
 
-angular.module('cosmoUi')
+angular.module('cosmoUiApp')
     .controller('DeploymentsCtrl', function ($scope, RestService, $cookieStore, $location, $routeParams, BreadcrumbsService, $timeout, $log) {
 
         $scope.blueprints = null;
         $scope.deployments = [];
         $scope.selectedBlueprint = '';
         $scope.isConfirmationDialogVisible = false;
+        $scope.isDeleteDeploymentVisible = false;
+        $scope.delDeployError = false;
+        $scope.ignoreLiveNodes = false;
         $scope.confirmationType = '';
-        $scope.executedDeployments = [];
+        var _executedDeployments = [];
         $scope.selectedWorkflow = {
             data: null
         };
         var selectedWorkflows = [];
         var workflows = [];
         var cosmoError = false;
+        var currentDeplyToDelete = null;
 
         BreadcrumbsService.push('deployments',
             {
@@ -26,8 +30,8 @@ angular.module('cosmoUi')
         $scope.executeDeployment = function(deployment) {
             if ($scope.isExecuteEnabled(deployment.id)) {
                 RestService.executeDeployment({
-                    deploymentId: $scope.selectedDeployment.id,
-                    workflowId: selectedWorkflows[$scope.selectedDeployment.id]
+                    deployment_id: $scope.selectedDeployment.id,
+                    workflow_id: selectedWorkflows[$scope.selectedDeployment.id]
                 });
                 $scope.redirectTo($scope.selectedDeployment);
             }
@@ -35,9 +39,7 @@ angular.module('cosmoUi')
 
         $scope.$watch('selectedWorkflow', function() {
             if ($scope.selectedWorkflow.data !== null) {
-                $scope.selectedDeployment = $scope.selectedWorkflow.data.deployment || null;
-
-                selectedWorkflows[$scope.selectedDeployment.id] = $scope.selectedWorkflow.data.value;
+                selectedWorkflows[$scope.selectedWorkflow.data.deployment] = $scope.selectedWorkflow.data.value;
             }
         }, true);
 
@@ -46,28 +48,28 @@ angular.module('cosmoUi')
         };
 
         $scope.getSelectedWorkflow = function() {
-            if ($scope.selectedDeployment !== undefined && selectedWorkflows[$scope.selectedDeployment.id] !== null) {
-                return selectedWorkflows[$scope.selectedDeployment.id];
+            if ($scope.selectedDeployment !== undefined && selectedWorkflows[$scope.selectedDeployment] !== null) {
+                return selectedWorkflows[$scope.selectedDeployment];
             }
         };
 
-        $scope.isExecuting = function(blueprintId, deploymentId) {
-            return $scope.executedDeployments[blueprintId] !== undefined &&
-                $scope.executedDeployments[blueprintId][deploymentId] !== null &&
-                $scope.executedDeployments[blueprintId][deploymentId] !== undefined &&
-                $scope.executedDeployments[blueprintId][deploymentId].status !== 'failed' &&
-                $scope.executedDeployments[blueprintId][deploymentId].status !== 'terminated' &&
-                $scope.executedDeployments[blueprintId][deploymentId].status !== 'canceled' &&
-                $scope.executedDeployments[blueprintId][deploymentId].status !== null;
+        $scope.isExecuting = function(blueprint_id, deployment_id) {
+            return _executedDeployments[blueprint_id] !== undefined &&
+                _executedDeployments[blueprint_id][deployment_id] !== null &&
+                _executedDeployments[blueprint_id][deployment_id] !== undefined &&
+                _executedDeployments[blueprint_id][deployment_id].status !== 'failed' &&
+                _executedDeployments[blueprint_id][deployment_id].status !== 'terminated' &&
+                _executedDeployments[blueprint_id][deployment_id].status !== 'canceled' &&
+                _executedDeployments[blueprint_id][deployment_id].status !== null;
         };
 
         $scope.cancelExecution = function(deployment) {
             var callParams = {
-                'executionId': $scope.getExecutionAttr(deployment, 'id'),
+                'execution_id': $scope.getExecutionAttr(deployment, 'id'),
                 'state': 'cancel'
             };
             RestService.updateExecutionState(callParams).then(function() {
-                $scope.executedDeployments[deployment.blueprintId][deployment.id] = null;
+                _executedDeployments[deployment.blueprint_id][deployment.id] = null;
             });
         };
 
@@ -95,43 +97,45 @@ angular.module('cosmoUi')
 
         $scope.redirectTo = function (deployment) {
             $log.info(['redirecting to', deployment]);
-            $location.path('/deployment').search({id: deployment.id, blueprintId: deployment.blueprintId});
+            $location.path('/deployment').search({id: deployment.id, blueprint_id: deployment.blueprint_id});
         };
 
         $scope.cosmoConnectionError = function() {
             return cosmoError;
         };
 
-        function _loadExecutions(blueprintId, deploymentId) {
-            RestService.getDeploymentExecutions(deploymentId)
+        function _loadExecutions(blueprint_id, deployment_id) {
+            RestService.getDeploymentExecutions(deployment_id)
                 .then(function(data) {
                     if (data.length > 0) {
-                        if ($scope.executedDeployments[blueprintId] === undefined) {
-                            $scope.executedDeployments[blueprintId] = [];
+                        if (_executedDeployments[blueprint_id] === undefined) {
+                            _executedDeployments[blueprint_id] = [];
                         }
 
                         for (var i = 0; i < data.length; i++) {
                             if (data[i].status !== null && data[i].status !== 'failed' && data[i].status !== 'terminated' && data[i].status !== 'canceled') {
-                                selectedWorkflows[deploymentId] = data[i].workflowId;
-                                $scope.executedDeployments[blueprintId][deploymentId] = data[i];
+                                selectedWorkflows[deployment_id] = data[i].workflow_id;
+                                _executedDeployments[blueprint_id][deployment_id] = data[i];
+                            } else if (data[i].status === 'failed' || data[i].status === 'terminated' || data[i].status === 'canceled') {
+                                _executedDeployments[blueprint_id][deployment_id] = null;
                             }
                         }
                     }
                 });
 
             if ($location.path() === '/deployments') {
-//                $timeout(function(){
-//                    _loadExecutions(blueprintId, deploymentId);
-//                }, 60000);
+                $timeout(function(){
+                    _loadExecutions(blueprint_id, deployment_id);
+                }, 60000);
             }
         }
 
         $scope.getExecutionAttr = function(deployment, attr) {
-            for (var blueprint in $scope.executedDeployments) {
-                for (var dep in $scope.executedDeployments[blueprint]) {
-                    if ($scope.executedDeployments[blueprint][dep] !== null) {
-                        if (deployment.id === $scope.executedDeployments[blueprint][dep].deploymentId) {
-                            return $scope.executedDeployments[blueprint][dep][attr];
+            for (var blueprint in _executedDeployments) {
+                for (var dep in _executedDeployments[blueprint]) {
+                    if (_executedDeployments[blueprint][dep] !== null) {
+                        if (deployment.id === _executedDeployments[blueprint][dep].deployment_id) {
+                            return _executedDeployments[blueprint][dep][attr];
                         }
                     }
                 }
@@ -139,6 +143,8 @@ angular.module('cosmoUi')
         };
 
         function _loadDeployments() {
+            $scope.blueprints = null;
+            $scope.deployments = [];
             RestService.loadBlueprints()
                 .then(function(data) {
                     cosmoError = false;
@@ -149,13 +155,14 @@ angular.module('cosmoUi')
                         var deployments = data[j].deployments;
                         $scope.deployments = $scope.deployments.concat(data[j].deployments);
                         for (var i = 0; i < deployments.length; i++) {
-                            _loadExecutions(deployments[i].blueprintId, deployments[i].id);
+                            _loadExecutions(deployments[i].blueprint_id, deployments[i].id);
                             workflows[deployments[i].id] = [];
-                            for (var workflow in deployments[i].plan.workflows) {
+                            for (var w in deployments[i].workflows) {
+                                var workflow = deployments[i].workflows[w];
                                 workflows[deployments[i].id].push({
-                                    value: workflow,
-                                    label: workflow,
-                                    deployment: deployments[i]
+                                    value: workflow.name,
+                                    label: workflow.name,
+                                    deployment: deployments[i].id
                                 });
                             }
                         }
@@ -167,4 +174,43 @@ angular.module('cosmoUi')
         }
 
         _loadDeployments();
+
+        function deleteDeployment() {
+            if(currentDeplyToDelete !== null) {
+                RestService.deleteDeploymentById({deployment_id: currentDeplyToDelete.id, ignoreLiveNodes: $scope.ignoreLiveNodes})
+                    .then(function(data){
+                        if(data.hasOwnProperty('message')) {
+                            $scope.delDeployError = data.message;
+                        }
+                        else {
+                            closeDeleteDialog();
+                            _loadDeployments();
+                        }
+                    });
+                //currentDeplyToDelete = null;
+            }
+        }
+
+        $scope.deleteDeployment = function(deployment) {
+            currentDeplyToDelete = deployment;
+            $scope.delDeployError = false;
+            $scope.ignoreLiveNodes = false;
+            $scope.delDeployName = deployment.id;
+            $scope.isDeleteDeploymentVisible = true;
+        };
+
+        function closeDeleteDialog() {
+            $scope.isDeleteDeploymentVisible = false;
+            currentDeplyToDelete = null;
+        }
+        $scope.closeDeleteDialog = closeDeleteDialog;
+
+        $scope.confirmDeleteDeployment = function() {
+            deleteDeployment();
+        };
+
+        $scope.toggleIgnoreLiveNodes = function() {
+            $scope.ignoreLiveNodes = !$scope.ignoreLiveNodes;
+        };
+
     });

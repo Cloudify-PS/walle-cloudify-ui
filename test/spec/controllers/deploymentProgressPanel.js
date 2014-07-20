@@ -3,7 +3,7 @@
 describe('Controller: DeploymentProgressPanelCtrl', function () {
 
   // load the controller's module
-//  beforeEach(module('cosmoUi'));
+//  beforeEach(module('cosmoUiApp'));
 //
 //  var DeploymentProgressPanelCtrl,
 //    scope;

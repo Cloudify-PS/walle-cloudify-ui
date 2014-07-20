@@ -1,0 +1,79 @@
+<div class="cosmo-layout" id="hosts">
+
+    <div class="content-header">
+        <div class="breadcrumbs"><ul id="hosts" breadcrumbs></ul></div>
+    </div>
+
+    <div class="content-section">
+        <div class="filters">
+
+            <div class="filter">
+                Blueprints:<br>
+                <div multi:select:menu
+                     data-multiple="false"
+                     data-options="blueprintsList"
+                     data-ng-model="eventsFilter.blueprints"
+                     data-init="{{ filterModel.blueprints }}"
+                     data-text="Choose Blueprints"
+                     data-listner="true"
+                     name="blueprints"></div>
+            </div>
+
+            <div class="filter" data-ng-show="deploymentsList.length">
+                Deployments:<br>
+                <div multi:select:menu
+                     data-multiple="false"
+                     data-options="deploymentsList"
+                     data-ng-model="eventsFilter.deployments"
+                     data-filter="eventsFilter.blueprints"
+                     data-init="{{ filterModel.deployments }}"
+                     data-text="Choose Deployments"
+                     data-listner="true"
+                     name="deployments"></div>
+            </div>
+
+            <button class="gs-btn" data-ng-click="execute()">Show</button>
+
+            <div class="search">
+                <input type="text" placeholder="Search" data-ng-model="searchFilter" />
+            </div>
+
+            <div class="loading" data-ng-show="filterLoading"></div>
+        </div>
+
+        <div class="newHosts" data-ng-show="newHosts>0">
+            <p data-ng-click="scrollToTop()">{{ newHosts }} new hosts</p>
+        </div>
+
+        <table class="table">
+            <thead>
+            <tr>
+                <th class="id">ID</th>
+                <th class="state">State</th>
+                <th class="deploymentId">Blueprint ID</th>
+                <th class="deploymentId">Deployment ID</th>
+                <th class="">Host ID</th>
+                <th class="">Private IPs</th>
+                <!--<th class="">Security Groups</th>-->
+                <!--<th class="">Image ID</th>-->
+                <!--<th class="">Flavor ID</th>-->
+            </tr>
+            </thead>
+            <tbody class="animate-repeat" ng-repeat="row in hostsList | filter: searchFilter" ng-init="isOpen=false">
+                <tr>
+                    <td class="id">{{row.id == null && '-' || row.id }}</td>
+                    <td class="state">{{row.state == null && '-' || row.state }}</td>
+                    <td class="deploymentId">{{getBlueprintByDeployment(row.deployment_id) == null && '-' || getBlueprintByDeployment(row.deployment_id) }}</td>
+                    <td class="deploymentId">{{row.deployment_id == null && '-' || row.deployment_id }}</td>
+                    <td class="">{{row.host_id == null && '-' || row.host_id }}</td>
+                    <td class="">{{row.runtime_properties.ips == null && '-' || row.runtime_properties.ips }}</td>
+                    <!--<td class="">{{row.runtime_properties.security_groups == null && '-' || row.runtime_properties.security_groups }}</td>-->
+                    <!--<td class="">{{row.runtime_properties.image_id == null && '-' || row.runtime_properties.image_id }}</td>-->
+                    <!--<td class="">{{row.runtime_properties.flavor_id == null && '-' || row.runtime_properties.flavor_id }}</td>-->
+                </tr>
+            </tbody>
+        </table>
+        <div class="emptyTable" data-ng-hide="hostsList.length">There are no hosts at this moment...</div>
+    </div>
+
+</div>

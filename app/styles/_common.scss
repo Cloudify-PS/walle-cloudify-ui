@@ -4,37 +4,37 @@ table.table {
     margin-left: 20px;
 
     thead {
-      tr {
-        th {
-          border: 0px !important;
-          background: $COSMOUI_LIST_COLUMN_HEADER_BACKGROUND;
-          color: $COSMOUI_LIST_COLUMN_HEADER_TEXT_COLOR;
-          vertical-align: middle !important;
-          height: 32px;
-          border: none;
-          font-weight: normal;
-          padding: 5px 0px 5px 10px;
-          text-align: left;
+        tr {
+            th {
+                border: 0px !important;
+                background: $COSMOUI_LIST_COLUMN_HEADER_BACKGROUND;
+                color: $COSMOUI_LIST_COLUMN_HEADER_TEXT_COLOR;
+                vertical-align: middle !important;
+                height: 32px;
+                border: none;
+                font-weight: normal;
+                padding: 5px 0px 5px 10px;
+                text-align: left;
 
-          &.sorting {
-            padding-left: 20px;
-            cursor: pointer;
-            &.asc {
-              background-image: url('../images/sort-asc.gif');
-              background-repeat: no-repeat;
-              background-position: left 5px center;
+                &.sorting {
+                    padding-left: 20px;
+                    cursor: pointer;
+                    &.asc {
+                        background-image: url('../images/sort-asc.gif');
+                        background-repeat: no-repeat;
+                        background-position: left 5px center;
+                    }
+                    &.desc {
+                        background-image: url('../images/sort-desc.gif');
+                        background-repeat: no-repeat;
+                        background-position: left 5px center;
+                    }
+                    &:hover {
+                        background-color: #D9EDFC;
+                    }
+                }
             }
-            &.desc {
-              background-image: url('../images/sort-desc.gif');
-              background-repeat: no-repeat;
-              background-position: left 5px center;
-            }
-            &:hover {
-              background-color: #D9EDFC;
-            }
-          }
         }
-      }
     }
     tbody {
         border: 0px !important;
@@ -45,42 +45,41 @@ table.table {
                 border: none;
                 background-color: transparent;
                 padding: 5px 0px 5px 10px;
+                i {
+                    color: $clr-base-11;
+                    width: 32px;
+                    height: 32px;
+                    display: inline-block;
+                    line-height: 1;
+                    -webkit-font-smoothing: antialiased;
+                    -moz-osx-font-smoothing: grayscale;
 
-              i {
-                color: $clr-base-11;
-                width: 32px;
-                height: 32px;
-                display: inline-block;
-                line-height: 1;
-                -webkit-font-smoothing: antialiased;
-                -moz-osx-font-smoothing: grayscale;
+                    &.deployment-play {
+                        &.play {
+                            background-image: url($img-deployment-play);
+                        }
 
-                &.deployment-play {
-                  &.play {
-                    background-image: url($img-deployment-play);
-                  }
+                        &.playDisabled {
+                            background-image: url($img-deployment-play-disabled);
+                        }
 
-                  &.playDisabled {
-                    background-image: url($img-deployment-play-disabled);
-                  }
+                        &:hover {
+                            background-image: url($img-deployment-play-selected);
+                        }
+                    }
 
-                  &:hover {
-                    background-image: url($img-deployment-play-selected);
-                  }
+                    &.deployment-pause {
+                        margin-top: 2px;
+
+                        &.pause {
+                            background-image: url($img-deployment-pause);
+                        }
+
+                        &:hover {
+                            background-image: url($img-deployment-pause-selected);
+                        }
+                    }
                 }
-
-                &.deployment-pause {
-                  margin-top: 2px;
-
-                  &.pause {
-                    background-image: url($img-deployment-pause);
-                  }
-
-                  &:hover {
-                    background-image: url($img-deployment-pause-selected);
-                  }
-                }
-              }
             }
 
             &:hover {
@@ -90,13 +89,13 @@ table.table {
         }
     }
     tbody:nth-child(odd) {
-      tr {
-        background-color: $COSMOUI_LIST_LINE_ODD_BACKGROUND;
-        &:hover {
-          background-color: $COSMOUI_LIST_HOVER_BACKGROUND;
-          cursor: $COSMOUI_DIALOG_CURSOR;
+        tr {
+            background-color: $COSMOUI_LIST_LINE_ODD_BACKGROUND;
+            &:hover {
+                background-color: $COSMOUI_LIST_HOVER_BACKGROUND;
+                cursor: $COSMOUI_DIALOG_CURSOR;
+            }
         }
-      }
     }
     i {
         color: $COSMOUI_EVENTS_LIST_ITEM_COLOR;
@@ -117,64 +116,84 @@ table.table {
 }
 
 .gs-selection-button {
-  width: 150px;
-  //height: 35px;
-  float: left;
-  margin-right: 5px;
+    margin-right: 5px;
 
-  .gs-select {
-    min-width: 0px;
-    height: 32px;
-    width: 150px;
-    color: $clr-base-11;
-    background-color: $clr-base-01;
-    font-weight: bold;
-    padding: 5px 10px 5px 10px;
-    border-radius: 5px;
-    border: 1px solid $clr-base-04;
-    float: left;
-    font-size: 14px;
-    box-shadow: none;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
-    cursor: pointer;
+    .gs-select {
+        min-width: 0px;
+        width: 150px;
+        color: $clr-base-11;
+        background-color: $clr-base-01;
+        font-weight: normal;
+        padding: 5px 10px 5px 10px;
+        border-radius: 5px;
+        border: 1px solid $clr-base-04;
+        float: left;
+        font-size: 14px;
+        box-shadow: none;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+        cursor: pointer;
 
-    &.disable {
-      background: transparent;
-      color: $clr-base-27;
+        &.disable {
+            background: transparent;
+            color: $clr-base-27;
+        }
+
+        div.button {
+            background-color: $clr-base-01;
+            border: none;
+
+            label {
+                padding: 0px;
+            }
+        }
+        &.open {
+            height: 35px;
+        }
     }
 
-    div.button {
-      background-color: $clr-base-01;
-      border: none;
+    .select-list-arrow {
+        background-color: $clr-base-01;
+        width: 24px;
+        height: 29px;
+        position: relative;
+        left: 122px;
+        top: 2px;
+        border-left: 2px solid $clr-base-09;
 
-      label {
-        padding: 0px;
-      }
+        &:after {
+            content: "";
+            position: relative;
+            left: 7px;
+            bottom: 15px;
+            border-left: 5px solid transparent;
+            border-right: 5px solid transparent;
+            border-top: 5px solid $clr-base-20;
+        }
     }
-    &.open {
-      height: 35px;
-    }
-  }
+}
 
-  .select-list-arrow {
-    background-color: $clr-base-01;
-    width: 24px;
-    height: 29px;
-    position: relative;
-    left: 122px;
-    top: 2px;
-    border-left: 2px solid $clr-base-09;
+.icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 0px;
 
-    &:after {
-      content: "";
-      position: relative;
-      left: 7px;
-      bottom: 15px;
-      border-left: 5px solid transparent;
-      border-right: 5px solid transparent;
-      border-top: 5px solid $clr-base-20;
+    &.event-icon-workflow-started {background: url("#{$img-workflow-started}") no-repeat center center;}
+    &.event-icon-workflow-stage {background: url("#{$img-workflow-stage}") no-repeat center center;}
+    &.event-icon-workflow-end-successfully {background: url("#{$img-workflow-end-successfully}") no-repeat center center;}
+    &.event-icon-workflow-failed {background: url("#{$img-workflow-failed}") no-repeat center center;}
+    &.event-icon-task-started {background: url("#{$img-task-started}") no-repeat center center;}
+    &.event-icon-task-failed {background: url("#{$img-task-failed}") no-repeat center center;}
+    &.event-icon-task-sent {background: url("#{$img-task-sent}") no-repeat center center;}
+    &.event-icon-task-success {background: url("#{$img-task-success}") no-repeat center center;}
+    &.event-icon-policy-success {background: url("#{$img-policy-success}") no-repeat center center;}
+    &.event-icon-policy-failed {background: url("#{$img-policy-failed}") no-repeat center center;}
+    &.event-icon-workflow-cancelled {background: url("#{$img-policy-failed}") no-repeat center center;}
+    &.gs-icon-logs {
+        padding-left: 16px;
+        color: #049cdb;
+        line-height: 46px;
+        font-size: 55px;
     }
-  }
 }

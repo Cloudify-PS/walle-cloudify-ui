@@ -1,8 +1,21 @@
 'use strict';
 
-angular.module('cosmoUi', ['gsUiInfraApp', 'angularFileUpload', 'ngCookies', 'ngRoute', 'ngSanitize', 'ngResource', 'ngBreadcrumbs', 'elasticjs.service', 'ngAnimate'])
+angular.module('cosmoUiApp', [
+    'gsUiInfraApp',
+    'angularFileUpload',
+    'ngCookies',
+    'ngRoute',
+    'ngSanitize',
+    'ngResource',
+    'ngBreadcrumbs',
+    'elasticjs.service',
+    'ngAnimate',
+    'nvd3ChartDirectives',
+    'ngStorage',
+    'datePicker',
+    'timer'
 
-    .config(['$routeProvider', function ($routeProvider) {
+]).config(['$routeProvider', function ($routeProvider) {
 
         //var isSettingsExists = window.isSettingsExists();
 
@@ -35,7 +48,8 @@ angular.module('cosmoUi', ['gsUiInfraApp', 'angularFileUpload', 'ngCookies', 'ng
                 controller: 'LogsCtrl'
             })
             .when('/hosts',{
-                templateUrl: 'views/blueprintsIndex.html'
+                templateUrl: 'views/hosts.html',
+                controller: 'HostsCtrl'
             })
             .when('/networks',{
                 templateUrl: 'views/blueprintsIndex.html'
@@ -46,6 +60,10 @@ angular.module('cosmoUi', ['gsUiInfraApp', 'angularFileUpload', 'ngCookies', 'ng
             .when('/storage',{
                 templateUrl: 'views/blueprintsIndex.html'
             })
+            .when('/interface', {
+                templateUrl: 'views/interface.html',
+                controller: 'InterfaceCtrl'
+            })
             .when('/config', {
                 templateUrl: 'views/config.html',
                 controller: 'ConfigCtrl'
@@ -54,7 +72,14 @@ angular.module('cosmoUi', ['gsUiInfraApp', 'angularFileUpload', 'ngCookies', 'ng
 //                redirectTo: isSettingsExists ? '/blueprints' : '/config'
                 redirectTo: '/blueprints'
             });
-    }]).run(['I18next', 'RestService', function(I18next, RestService, $log) {
+    }])
+    .value('appConfig', {
+        versions: {
+            ui: '0.0',
+            manager: '0.0'
+        }
+    })
+    .run(['I18next', 'RestService', '$log', 'appConfig', function(I18next, RestService, $log, appConfig) {
 
         RestService.getConfiguration().then(function (data) {
             var i18nConf = data.i18n;
@@ -66,5 +91,19 @@ angular.module('cosmoUi', ['gsUiInfraApp', 'angularFileUpload', 'ngCookies', 'ng
         }, function () {
             $log.info('problem loading configuration for i18n init');
         });
+
+        RestService.getVersionsUi()
+            .then(function(data){
+                if(data.hasOwnProperty('version')) {
+                    appConfig.versions.ui = data.version;
+                }
+            });
+
+        RestService.getVersionsManager()
+            .then(function(data){
+                if(data.hasOwnProperty('version')) {
+                    appConfig.versions.manager = data.version;
+                }
+            });
 
     }]);

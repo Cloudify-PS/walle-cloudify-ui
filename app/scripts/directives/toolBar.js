@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('cosmoUi')
+angular.module('cosmoUiApp')
     .directive('toolBar', function ($log) {
         return {
             templateUrl: 'views/toolBarTemplate.html',
