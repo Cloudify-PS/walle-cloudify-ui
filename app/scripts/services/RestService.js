@@ -145,7 +145,7 @@ angular.module('cosmoUiApp')
             var callParams = {
                 url: '/backend/executions/update',
                 method: 'POST',
-                data: {'executionId': params.executionId, 'state': params.state}
+                data: {'executionId': params.execution_id, 'state': params.state}
             };
 
             return _load('executions/update', callParams);
