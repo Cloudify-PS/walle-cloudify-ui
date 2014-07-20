@@ -9,6 +9,7 @@ angular.module('cosmoUiApp')
         $scope.isConfirmationDialogVisible = false;
         $scope.isDeleteDeploymentVisible = false;
         $scope.delDeployError = false;
+        $scope.executedErr = false;
         $scope.ignoreLiveNodes = false;
         $scope.confirmationType = '';
         var _executedDeployments = [];
@@ -68,8 +69,14 @@ angular.module('cosmoUiApp')
                 'execution_id': $scope.getExecutionAttr(deployment, 'id'),
                 'state': 'cancel'
             };
-            RestService.updateExecutionState(callParams).then(function() {
-                _executedDeployments[deployment.blueprint_id][deployment.id] = null;
+            RestService.updateExecutionState(callParams).then(function(data) {
+                if(data.hasOwnProperty('error_code')) {
+                    $scope.executedErr = data.message;
+                }
+                else {
+                    _executedDeployments[deployment.blueprint_id][deployment.id] = null;
+                    $scope.toggleConfirmationDialog();
+                }
             });
         };
 
@@ -91,7 +98,6 @@ angular.module('cosmoUiApp')
                 $scope.executeDeployment(deployment);
             } else if ($scope.confirmationType === 'cancel') {
                 $scope.cancelExecution(deployment);
-                $scope.toggleConfirmationDialog();
             }
         };
 

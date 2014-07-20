@@ -147,7 +147,6 @@ angular.module('cosmoUiApp')
             RestService.updateExecutionState(callParams).then(function(data) {
                 if(data.hasOwnProperty('error_code')) {
                     $scope.executedErr = data.message;
-                    console.log(['executedErr', data.message]);
                 }
                 else {
                     $scope.executedData = null;

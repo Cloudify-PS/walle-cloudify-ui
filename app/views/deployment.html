@@ -396,9 +396,6 @@
     <div ng-show="isConfirmationDialogVisible">
         <div class="dialogBoxBg"></div>
         <div id="confirmationDialogContainer" class="dialogBox">
-            <div class="dialogTitle">
-                <label>{{ 'deployments.confirmationPopup.title' | i18n }}</label>
-            </div>
             <div class="dialogDescription" ng-show="confirmationType == 'execute'">{{ 'deployments.confirmationPopup.descriptionExecute' | i18n }} {{selectedWorkflow.data.value}}?</div>
             <div class="dialogDescription" ng-show="confirmationType == 'cancel'">{{ 'deployments.confirmationPopup.descriptionCancel' | i18n }} {{executedData.workflow_id}}?</div>
             <div class="error-message" data-ng-show="executedErr">{{ executedErr }}</div>
