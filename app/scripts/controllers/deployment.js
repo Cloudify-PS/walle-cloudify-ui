@@ -782,21 +782,6 @@ angular.module('cosmoUiApp')
             _updateDeploymentModel($scope.nodes);
         });
 
-        $scope.getBadgeStatus = function(status) {
-            switch(status) {
-            case 0:
-                return 'install';
-            case 1:
-                return 'done';
-            case 2:
-                return 'alerts';
-            case 3:
-                return 'failed';
-            default:
-                return 'install';
-            }
-        };
-
         $scope.piePercents = function( process ) {
             var value = 0;
             for(var p in process) {
