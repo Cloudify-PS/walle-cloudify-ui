@@ -47,6 +47,7 @@ angular.module('cosmoUiApp')
         $scope.showProgressPanel = false;
         $scope.workflowsList = [];
         $scope.currentExecution = null;
+        $scope.executedErr = false;
 
         var id = $routeParams.id;
         var blueprint_id = $routeParams.blueprint_id;
@@ -143,8 +144,15 @@ angular.module('cosmoUiApp')
                 'execution_id': $scope.executedData.id,
                 'state': 'cancel'
             };
-            RestService.updateExecutionState(callParams).then(function() {
-                $scope.executedData = null;
+            RestService.updateExecutionState(callParams).then(function(data) {
+                if(data.hasOwnProperty('error_code')) {
+                    $scope.executedErr = data.message;
+                    console.log(['executedErr', data.message]);
+                }
+                else {
+                    $scope.executedData = null;
+                    $scope.toggleConfirmationDialog();
+                }
             });
         };
 
@@ -165,6 +173,7 @@ angular.module('cosmoUiApp')
             $scope.confirmationType = confirmationType;
             $scope.selectedDeployment = deployment || null;
             $scope.isConfirmationDialogVisible = $scope.isConfirmationDialogVisible === false;
+            $scope.executedErr = false;
         };
 
         $scope.confirmConfirmationDialog = function(deployment) {
@@ -172,7 +181,6 @@ angular.module('cosmoUiApp')
                 $scope.executeDeployment();
             } else if ($scope.confirmationType === 'cancel') {
                 $scope.cancelExecution(deployment);
-                $scope.toggleConfirmationDialog();
             }
         };
 
