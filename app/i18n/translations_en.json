@@ -120,6 +120,13 @@
         }
 
     },
+    "logs": {
+        "errorPopup": {
+            "title": "Error",
+            "description": "Sorry, error occurred",
+            "close": "close"
+        }
+    },
     "toggleSwitch": {
         "on": "ON",
         "off": "OFF",
