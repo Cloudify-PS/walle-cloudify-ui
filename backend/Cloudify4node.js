@@ -3,7 +3,7 @@ var fs = require('fs');
 var conf = require("../backend/appConf");
 var log4js = require('log4js');
 log4js.configure(conf.log4js);
-var logger = log4js.getLogger('server');
+var logger = log4js.getLogger('cloudify4node');
 var path = require('path');
 var targz = require('tar.gz');
 var browseBlueprint = require('./services/BrowseBluerprintService');
