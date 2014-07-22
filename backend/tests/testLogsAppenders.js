@@ -6,9 +6,11 @@ log4js.addAppender(log4js.appenders.file('logs/apilogs.log'), 'apilogs');
 
 var logger = log4js.getLogger('apilogs');
 
+logger.setLevel('OFF');
+
 
 logger.info('TestLog');
 
-console.log('Appender:', log4js);
+console.log('Appender:', log4js.appenders.logLevelFilter);
 
 
