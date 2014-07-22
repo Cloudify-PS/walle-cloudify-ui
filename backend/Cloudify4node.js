@@ -443,6 +443,26 @@ Cloudify4node.getManagerVersion = function(callback) {
     //return callback(null, require('./mock/managerVersion.json'));
 };
 
+Cloudify4node.getLogsExportFile = function(response, callback) {
+    var filePath = path.join(conf.logs.folder, conf.logs.file);
+    new targz().compress(conf.logs.folder, filePath, function(err){
+        fs.exists(filePath, function (exists) {
+            if (exists) {
+                var stat = fs.statSync(filePath);
+                response.writeHead(200, {
+                    'Content-Type': 'application/x-gzip',
+                    'Content-Length': stat.size
+                });
+                var readStream = fs.createReadStream(filePath);
+                readStream.pipe(response);
+            }
+            else {
+                callback(err, null);
+            }
+        });
+    });
+}
+
 
 // Monitor Mock's
 Cloudify4node.getMonitorGraphs = function(callback) {
