@@ -11,6 +11,6 @@ logger.setLevel('OFF');
 
 logger.info('TestLog');
 
-console.log('Appender:', log4js.appenders.logLevelFilter);
+console.log('Appender:', log4js.levels);
 
 

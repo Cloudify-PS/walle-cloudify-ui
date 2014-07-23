@@ -4,17 +4,20 @@ angular.module('cosmoUiApp')
     .controller('ConfigCtrl', function ($scope, $window, RestService) {
         $scope.cosmoServer = '';
         $scope.cosmoPort = '';
+        $scope.cosmoLogs = false;
         $scope.onlyNumbers = /^\d+$/;
         $scope.errList = [];
 
         $scope.saveConfiguration = function() {
+
             var validation = _validateConfiguration();
             if (validation.valid) {
                 $scope.errList = [];
 
                 RestService.setSettings({
                     cosmoServer: $scope.cosmoServer,
-                    cosmoPort: $scope.cosmoPort
+                    cosmoPort: $scope.cosmoPort,
+                    cosmoLogs: $scope.cosmoLogs
                 });
 
                 $window.location = '/';
@@ -43,4 +46,7 @@ angular.module('cosmoUiApp')
 
             return result;
         }
+
+
+
     });

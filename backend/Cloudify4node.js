@@ -10,6 +10,13 @@ var browseBlueprint = require('./services/BrowseBluerprintService');
 
 module.exports = Cloudify4node;
 
+// Enable/Disable logs
+if(conf.cosmoLogs === true) {
+    logger.setLevel('ALL');
+} else {
+    logger.setLevel('OFF');
+}
+
 function Cloudify4node(options) {}
 
 function createRequest(requestData, callback) {
