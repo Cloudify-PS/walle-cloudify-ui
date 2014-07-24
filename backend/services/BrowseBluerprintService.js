@@ -27,9 +27,14 @@ function Walker() {
     var origRoot;
     var counter = 0;
 
+    function isUnixHiddenPath(path) {
+        return (/(^|.\/)\.+[^\/\.]/g).test(path);
+    }
+
     function addChild(rootFolder, children, file) {
         fs.stat(path.join(rootFolder, file), function (err, result) {
-            if (result.isDirectory()) {
+            if (result.isSymbolicLink() || isUnixHiddenPath(file)) { counter--; doFinalCallback(); }
+            else if (result.isDirectory()) {
                 var newItem = {
                     'name': file,
                     'children': []
