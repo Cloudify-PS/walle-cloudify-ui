@@ -376,6 +376,22 @@ angular.module('cosmoUiApp')
             }
         }
 
+        $scope.openTreeFolder = function(data) {
+            if(!data.hasOwnProperty('show')) {
+                data.show = true;
+            }
+            else {
+                data.show = !data.show;
+            }
+        };
+
+        $scope.isFolderOpen = function(data) {
+            if(data.hasOwnProperty('show') && data.show === true) {
+                return 'fa-minus-square-o';
+            }
+            return 'fa-plus-square-o';
+        };
+
         $scope.setBrowseType = function(data) {
             if(data.hasOwnProperty('children')) {
                 return 'folder';
