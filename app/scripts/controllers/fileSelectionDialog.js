@@ -49,7 +49,16 @@ angular.module('cosmoUiApp')
                     $scope.uploadDone($scope.blueprintName);
                 },
                 error: function(e) {
-                    $scope.errorMessage = JSON.parse(e.responseText).message;
+                    var responseText = null;
+                    try {
+                        responseText = JSON.parse(e.responseText);
+                    } catch (e) {}
+
+                    if(responseText && responseText.hasOwnProperty('message')) {
+                        $scope.errorMessage = responseText.message;
+                    } else if(e.hasOwnProperty('statusText')) {
+                        $scope.errorMessage = e.statusText;
+                    }
                     $scope.$apply(function() {
                         $scope.uploadError = true;
                         $scope.uploadInProcess = false;
