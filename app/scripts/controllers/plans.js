@@ -338,6 +338,8 @@ angular.module('cosmoUiApp')
         RestService.browseBlueprint({id: $routeParams.id})
             .then(function(browseData) {
                 $scope.browseData = [browseData];
+                $scope.browseData[0].show = true;
+                $scope.browseData[0].children[0].show = true;
                 locateFilesInBrowseTree(browseData.children);
                 autoOpenSourceFile();
             });
