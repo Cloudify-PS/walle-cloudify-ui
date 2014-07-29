@@ -249,6 +249,12 @@ app.get('/backend/versions/manager', function(request, response) {
     });
 });
 
+app.get('/backend/logsfile', function(request, response) {
+    cloudify4node.getLogsExportFile(response, function(err, data) {
+        response.send(err !== null ? err : data);
+    });
+});
+
 app.get('/backend/monitor/graphs', function(request, response) {
     cloudify4node.getMonitorGraphs(function(err, data) {
         response.send(err !== null ? err : data);

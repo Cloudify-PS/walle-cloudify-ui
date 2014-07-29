@@ -3,12 +3,19 @@ var fs = require('fs');
 var conf = require("../backend/appConf");
 var log4js = require('log4js');
 log4js.configure(conf.log4js);
-var logger = log4js.getLogger('server');
+var logger = log4js.getLogger('cloudify4node');
 var path = require('path');
 var targz = require('tar.gz');
 var browseBlueprint = require('./services/BrowseBluerprintService');
 
 module.exports = Cloudify4node;
+
+// Enable/Disable logs
+if(conf.cosmoLogs === true) {
+    logger.setLevel('ALL');
+} else {
+    logger.setLevel('OFF');
+}
 
 function Cloudify4node(options) {}
 
@@ -442,6 +449,26 @@ Cloudify4node.getManagerVersion = function(callback) {
     createRequest(requestData, callback);
     //return callback(null, require('./mock/managerVersion.json'));
 };
+
+Cloudify4node.getLogsExportFile = function(response, callback) {
+    var filePath = path.join(conf.logs.folder, conf.logs.file);
+    new targz().compress(conf.logs.folder, filePath, function(err){
+        fs.exists(filePath, function (exists) {
+            if (exists) {
+                var stat = fs.statSync(filePath);
+                response.writeHead(200, {
+                    'Content-Type': 'application/x-gzip',
+                    'Content-Length': stat.size
+                });
+                var readStream = fs.createReadStream(filePath);
+                readStream.pipe(response);
+            }
+            else {
+                callback(err, null);
+            }
+        });
+    });
+}
 
 
 // Monitor Mock's
