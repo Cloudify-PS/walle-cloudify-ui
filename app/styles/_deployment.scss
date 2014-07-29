@@ -59,6 +59,7 @@
             .buttons-group {
                 float: left;
                 margin-left: 0px;
+                vertical-align: top;
             }
 
             .content-section {
@@ -154,19 +155,19 @@
                 display: inline-block;
                 margin-left: 10px;
                 cursor: pointer;
-                vertical-align: middle;
+                vertical-align: top;
             }
 
             .actions {
                 display: inline-block;
                 margin-left: 30px;
-                width: 230px;
-                vertical-align: middle;
+                width: 250px;
+                vertical-align: top;
 
                 i {
                     position: relative;
-                    top: 2px;
-                    left: 3px;
+                    top: 0px;
+                    left: 5px;
                     cursor: pointer;
                     width: 32px;
                     height: 32px;
@@ -197,35 +198,35 @@
                     }
                 }
 
-              .deploymentExecute {
-                cursor: default;
-                position: relative;
-                left: 50px;
-                display: inline-block;
-              }
+                .deploymentExecute {
+                    cursor: default;
+                    position: relative;
+                    left: 0px;
+                    display: inline-block;
+                }
 
-              .executingWorkflow {
-                min-width: 0px;
-                height: 32px;
-                width: 150px;
-                color: $clr-base-11;
-                background-color: $clr-base-05;
-                font-weight: bold;
-                padding: 5px 10px 5px 10px;
-                margin-right: 5px;
-                margin-top: 2px;
-                border-radius: 5px;
-                border: 2px solid #cadbec;
-                float: left;
-                font-size: 14px;
-                box-shadow: none;
-                -webkit-appearance: none;
-                -moz-appearance: none;
-                appearance: none;
-                cursor: default;
-                overflow: hidden;
-                text-overflow: ellipsis;
-              }
+                .executingWorkflow {
+                    min-width: 0px;
+                    max-width: 250;
+                    height: 31px;
+                    color: $clr-base-11;
+                    background-color: $clr-base-05;
+                    font-weight: bold;
+                    padding: 4px 10px 5px 10px;
+                    margin-right: 5px;
+                    margin-top: 0px;
+                    border-radius: 5px;
+                    border: 2px solid #cadbec;
+                    float: left;
+                    font-size: 14px;
+                    box-shadow: none;
+                    -webkit-appearance: none;
+                    -moz-appearance: none;
+                    appearance: none;
+                    cursor: default;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                }
             }
         }
     }
