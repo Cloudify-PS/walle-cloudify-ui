@@ -6,7 +6,7 @@ angular.module('cosmoUiApp')
             var dateObj = new Date(input);
             var todayTimeStamp = new Date().getTime();
             var daysArr = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-            var seconds = dateObj.getMilliseconds();
+            var seconds = dateObj.getSeconds();
             var minutes = dateObj.getMinutes();
             var hour = dateObj.getHours();
             var weekday = dateObj.getDay();
