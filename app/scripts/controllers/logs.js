@@ -48,6 +48,8 @@ angular.module('cosmoUiApp')
         ];
         $scope.eventTypeList = [];
         $scope.filterLoading = false;
+        $scope.isDialogVisible = false;
+        $scope.errorMsg = null;
 
         var lastAmount = 0;
         function executeLogs(autoPull) {
@@ -96,6 +98,10 @@ angular.module('cosmoUiApp')
                         }
                     }
                     else {
+                        if(data.hasOwnProperty('error_code')) {
+                            $scope.isDialogVisible = true;
+                            $scope.errorMsg = data.message;
+                        }
                         $log.warn('Cant load events, undefined data.');
                         troubleShoot++;
                     }
@@ -123,6 +129,11 @@ angular.module('cosmoUiApp')
         $scope.filterModel = LogsModel.get();
         $scope.timeframeFrom = LogsModel.getFromTimeText();
 
+        $scope.closeErrorDialog = function() {
+            $scope.isDialogVisible = false;
+            $scope.errorMsg = null;
+        };
+
         RestService.loadBlueprints()
             .then(function (data) {
                 for (var j in data) {
@@ -134,7 +145,7 @@ angular.module('cosmoUiApp')
                         _loadExecutions(deployemnt.id);
                     }
                 }
-                executeLogs();
+                //executeLogs();
             });
 
         function _loadExecutions(deployment_id) {
