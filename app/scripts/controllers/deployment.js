@@ -47,6 +47,7 @@ angular.module('cosmoUiApp')
         $scope.showProgressPanel = false;
         $scope.workflowsList = [];
         $scope.currentExecution = null;
+        $scope.executedErr = false;
 
         var id = $routeParams.id;
         var blueprint_id = $routeParams.blueprint_id;
@@ -124,13 +125,17 @@ angular.module('cosmoUiApp')
                     deployment_id: id,
                     workflow_id: $scope.selectedWorkflow.data.value
                 }).then(function(execution) {
-                    $scope.currentExecution = execution;
-                    $cookieStore.put('executionId', execution.id);
+                    if(execution.hasOwnProperty('error_code')) {
+                        $scope.executedErr = execution.message;
+                    }
+                    else {
+                        $scope.currentExecution = execution;
+                        $cookieStore.put('executionId', execution.id);
+                        $cookieStore.remove('deployment_id');
+                        $cookieStore.put('deployment_id', id);
+                        $scope.refreshPage();
+                    }
                 });
-
-                $cookieStore.remove('deployment_id');
-                $cookieStore.put('deployment_id', id);
-                $scope.refreshPage();
             }
         };
 
@@ -143,8 +148,14 @@ angular.module('cosmoUiApp')
                 'execution_id': $scope.executedData.id,
                 'state': 'cancel'
             };
-            RestService.updateExecutionState(callParams).then(function() {
-                $scope.executedData = null;
+            RestService.updateExecutionState(callParams).then(function(data) {
+                if(data.hasOwnProperty('error_code')) {
+                    $scope.executedErr = data.message;
+                }
+                else {
+                    $scope.executedData = null;
+                    $scope.toggleConfirmationDialog();
+                }
             });
         };
 
@@ -165,6 +176,7 @@ angular.module('cosmoUiApp')
             $scope.confirmationType = confirmationType;
             $scope.selectedDeployment = deployment || null;
             $scope.isConfirmationDialogVisible = $scope.isConfirmationDialogVisible === false;
+            $scope.executedErr = false;
         };
 
         $scope.confirmConfirmationDialog = function(deployment) {
@@ -172,7 +184,6 @@ angular.module('cosmoUiApp')
                 $scope.executeDeployment();
             } else if ($scope.confirmationType === 'cancel') {
                 $scope.cancelExecution(deployment);
-                $scope.toggleConfirmationDialog();
             }
         };
 
@@ -194,7 +205,7 @@ angular.module('cosmoUiApp')
                 .then(function(data) {
                     if (data.length > 0) {
                         for (var i = 0; i < data.length; i++) {
-                            if (data[i].status !== null && data[i].status !== 'failed' && data[i].status !== 'terminated' && data[i].status !== 'canceled') {
+                            if (data[i].status !== null && data[i].status !== 'failed' && data[i].status !== 'terminated' && data[i].status !== 'cancelled') {
                                 $scope.executedData = data[i];
                             }
                         }
@@ -642,7 +653,7 @@ angular.module('cosmoUiApp')
         function _getCurrentExecution(executions) {
             for(var i in executions) {
                 var execution = executions[i];
-                if(execution.status !== 'failed' && execution.status !== 'terminated' && execution.status !== 'canceled') {
+                if(execution.status !== 'failed' && execution.status !== 'terminated' && execution.status !== 'cancelled') {
                     return execution;
                 }
             }
@@ -770,21 +781,6 @@ angular.module('cosmoUiApp')
         $scope.$watch('deploymentInProgress', function(){
             _updateDeploymentModel($scope.nodes);
         });
-
-        $scope.getBadgeStatus = function(status) {
-            switch(status) {
-            case 0:
-                return 'install';
-            case 1:
-                return 'done';
-            case 2:
-                return 'alerts';
-            case 3:
-                return 'failed';
-            default:
-                return 'install';
-            }
-        };
 
         $scope.piePercents = function( process ) {
             var value = 0;

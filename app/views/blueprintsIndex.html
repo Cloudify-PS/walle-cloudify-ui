@@ -46,7 +46,7 @@
                 <div id="browse">
                     <div id="browseBtn" class="dialogButton">{{ 'blueprints.uploadPopup.browseBtn' | i18n }}</div>
                     <input type="text" id="browseTxt" ng-model="selectedFile.name" placeholder="{{ 'blueprints.uploadPopup.browseText' | i18n }}">
-                    <input type="file" name="fileInput" id="fileInput" accept=".tar,.gz,.yaml" ng-file-select="onFileSelect($files)">
+                    <input type="file" name="fileInput" id="fileInput" accept=".tar,.gz" ng-file-select="onFileSelect($files)">
                 </div>
                 <div id="name">
                     <input type="text" ng-model="blueprintName" placeholder="{{ 'blueprints.uploadPopup.blueprintName' | i18n }}">

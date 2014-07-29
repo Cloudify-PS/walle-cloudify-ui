@@ -54,6 +54,7 @@
         <div id="confirmationDialogContainer" class="dialogBox">
             <div class="dialogDescription" ng-show="confirmationType == 'execute'">{{ 'deployments.confirmationPopup.descriptionExecute' | i18n }} {{getSelectedWorkflow()}}?</div>
             <div class="dialogDescription" ng-show="confirmationType == 'cancel'">{{ 'deployments.confirmationPopup.descriptionCancel' | i18n }} {{getSelectedWorkflow()}}?</div>
+            <div class="error-message" data-ng-show="executedErr">{{ executedErr }}</div>
             <div class="buttonsContainer confirmationButtons">
                 <button id="cancelBtn" class="dialogButton" ng-click="toggleConfirmationDialog()">{{ 'deployments.confirmationPopup.cancelBtn' | i18n }}</button>
                 <button id="confirmBtn" class="dialogButton" ng-click="confirmConfirmationDialog(selectedDeployment)">{{ 'deployments.confirmationPopup.confirmBtn' | i18n }}</button>
