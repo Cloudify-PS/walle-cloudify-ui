@@ -1,14 +1,14 @@
 'use strict';
 
 angular.module('cosmoUiApp')
-    .directive('settingsToggles', function () {
+    .directive('settingsToggles', function ($document) {
         return {
             templateUrl: 'views/settingsTogglesTemplate.html',
             restrict: 'EA',
             scope: {
                 'toggles': '='
             },
-            link: function (scope) {
+            link: function (scope, element) {
                 var isOpen = false;
                 scope.togglesArr = [];
 
@@ -38,6 +38,17 @@ angular.module('cosmoUiApp')
                         }
                     }
                 };
+
+                /**
+                 * Close on Click Out
+                 */
+                $document.click(function (e) {
+                    if (element.has(e.target).length === 0) {
+                        scope.$apply(function(){
+                            isOpen = false;
+                        });
+                    }
+                });
             }
         };
     });
