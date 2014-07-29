@@ -64,6 +64,10 @@ var privateConfiguration = {
         ],
         replaceConsole: true
     },
+    logs: {
+        folder: 'logs/',
+        file: 'logs.tar.gz'
+    },
     browseBlueprint: {
         path: 'backend/tmp/blueprints'
     },

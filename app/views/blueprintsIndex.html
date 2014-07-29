@@ -46,7 +46,7 @@
                 <div id="browse">
                     <div id="browseBtn" class="dialogButton">{{ 'blueprints.uploadPopup.browseBtn' | i18n }}</div>
                     <input type="text" id="browseTxt" ng-model="selectedFile.name" placeholder="{{ 'blueprints.uploadPopup.browseText' | i18n }}">
-                    <input type="file" name="fileInput" id="fileInput" accept=".tar,.gz,.yaml" ng-file-select="onFileSelect($files)">
+                    <input type="file" name="fileInput" id="fileInput" accept=".tar,.gz" ng-file-select="onFileSelect($files)">
                 </div>
                 <div id="name">
                     <input type="text" ng-model="blueprintName" placeholder="{{ 'blueprints.uploadPopup.blueprintName' | i18n }}">
@@ -68,7 +68,7 @@
             <div class="dialogDescription">{{ 'blueprints.deployDialog.description' | i18n }}</div>
             <div class="dialogClose dialogButton" ng-click="closeDialog()"></div>
             <div class="dialogDeploymentName">
-                <input type="text" ng-model="deployment_id" placeholder="{{ 'blueprints.deployDialog.deployName' | i18n }}">
+                <input type="text" ng-model="deployment_id" ng-enter="deployBlueprint(selectedBlueprint)" placeholder="{{ 'blueprints.deployDialog.deployName' | i18n }}">
             </div>
             <div id="deploy-error-message" ng-show="isDeployError()">{{deployErrorMessage}}</div>
             <div class="buttonsContainer deployButtons">

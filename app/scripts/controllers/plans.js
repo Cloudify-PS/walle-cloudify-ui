@@ -338,6 +338,8 @@ angular.module('cosmoUiApp')
         RestService.browseBlueprint({id: $routeParams.id})
             .then(function(browseData) {
                 $scope.browseData = [browseData];
+                $scope.browseData[0].show = true;
+                $scope.browseData[0].children[0].show = true;
                 locateFilesInBrowseTree(browseData.children);
                 autoOpenSourceFile();
             });
@@ -375,6 +377,22 @@ angular.module('cosmoUiApp')
                 $scope.openSourceFile(firstDefaultFile);
             }
         }
+
+        $scope.openTreeFolder = function(data) {
+            if(!data.hasOwnProperty('show')) {
+                data.show = true;
+            }
+            else {
+                data.show = !data.show;
+            }
+        };
+
+        $scope.isFolderOpen = function(data) {
+            if(data.hasOwnProperty('show') && data.show === true) {
+                return 'fa-minus-square-o';
+            }
+            return 'fa-plus-square-o';
+        };
 
         $scope.setBrowseType = function(data) {
             if(data.hasOwnProperty('children')) {

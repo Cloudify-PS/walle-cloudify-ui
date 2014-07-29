@@ -9,6 +9,7 @@ angular.module('cosmoUiApp')
         $scope.isConfirmationDialogVisible = false;
         $scope.isDeleteDeploymentVisible = false;
         $scope.delDeployError = false;
+        $scope.executedErr = false;
         $scope.ignoreLiveNodes = false;
         $scope.confirmationType = '';
         var _executedDeployments = [];
@@ -32,8 +33,15 @@ angular.module('cosmoUiApp')
                 RestService.executeDeployment({
                     deployment_id: $scope.selectedDeployment.id,
                     workflow_id: selectedWorkflows[$scope.selectedDeployment.id]
+                }).then(function(execution) {
+                    if(execution.hasOwnProperty('error_code')) {
+                        $scope.executedErr = execution.message;
+                    }
+                    else {
+                        $scope.redirectTo($scope.selectedDeployment);
+                    }
                 });
-                $scope.redirectTo($scope.selectedDeployment);
+
             }
         };
 
@@ -59,7 +67,7 @@ angular.module('cosmoUiApp')
                 _executedDeployments[blueprint_id][deployment_id] !== undefined &&
                 _executedDeployments[blueprint_id][deployment_id].status !== 'failed' &&
                 _executedDeployments[blueprint_id][deployment_id].status !== 'terminated' &&
-                _executedDeployments[blueprint_id][deployment_id].status !== 'canceled' &&
+                _executedDeployments[blueprint_id][deployment_id].status !== 'cancelled' &&
                 _executedDeployments[blueprint_id][deployment_id].status !== null;
         };
 
@@ -68,8 +76,14 @@ angular.module('cosmoUiApp')
                 'execution_id': $scope.getExecutionAttr(deployment, 'id'),
                 'state': 'cancel'
             };
-            RestService.updateExecutionState(callParams).then(function() {
-                _executedDeployments[deployment.blueprint_id][deployment.id] = null;
+            RestService.updateExecutionState(callParams).then(function(data) {
+                if(data.hasOwnProperty('error_code')) {
+                    $scope.executedErr = data.message;
+                }
+                else {
+                    _executedDeployments[deployment.blueprint_id][deployment.id] = null;
+                    $scope.toggleConfirmationDialog();
+                }
             });
         };
 
@@ -91,7 +105,6 @@ angular.module('cosmoUiApp')
                 $scope.executeDeployment(deployment);
             } else if ($scope.confirmationType === 'cancel') {
                 $scope.cancelExecution(deployment);
-                $scope.toggleConfirmationDialog();
             }
         };
 
@@ -113,10 +126,10 @@ angular.module('cosmoUiApp')
                         }
 
                         for (var i = 0; i < data.length; i++) {
-                            if (data[i].status !== null && data[i].status !== 'failed' && data[i].status !== 'terminated' && data[i].status !== 'canceled') {
+                            if (data[i].status !== null && data[i].status !== 'failed' && data[i].status !== 'terminated' && data[i].status !== 'cancelled') {
                                 selectedWorkflows[deployment_id] = data[i].workflow_id;
                                 _executedDeployments[blueprint_id][deployment_id] = data[i];
-                            } else if (data[i].status === 'failed' || data[i].status === 'terminated' || data[i].status === 'canceled') {
+                            } else if (data[i].status === 'failed' || data[i].status === 'terminated' || data[i].status === 'cancelled') {
                                 _executedDeployments[blueprint_id][deployment_id] = null;
                             }
                         }
@@ -184,7 +197,9 @@ angular.module('cosmoUiApp')
                         }
                         else {
                             closeDeleteDialog();
-                            _loadDeployments();
+                            $timeout(function(){
+                                _loadDeployments();
+                            }, 500);
                         }
                     });
                 //currentDeplyToDelete = null;

@@ -190,7 +190,7 @@
         <!-- Nodes - END -->
         <!-- Code - START -->
         <div ng-switch-when="code" class="source">
-            <div class="browseTree">
+            <div class="tree">
                 <ul>
                     <li data-ng-class="isSelected(data.name)" ng-repeat="data in browseData" ng-include="'../views/treeBrowseLevel.html'"></li>
                 </ul>
@@ -215,7 +215,7 @@
             <div class="dialogDescription">{{ 'blueprints.deployDialog.description' | i18n }}</div>
             <div class="dialogClose dialogButton" ng-click="closeDialog()"></div>
             <div class="dialogDeploymentName">
-                <input type="text" ng-model="deployment_id" placeholder="{{ 'blueprints.deployDialog.deployName' | i18n }}">
+                <input type="text" ng-model="deployment_id" ng-enter="deployBlueprint(blueprint)" placeholder="{{ 'blueprints.deployDialog.deployName' | i18n }}">
             </div>
             <div id="deploy-error-message" ng-show="isDeployError()">{{deployErrorMessage}}</div>
             <div class="buttonsContainer deployButtons">
