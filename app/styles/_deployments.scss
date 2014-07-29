@@ -1,90 +1,90 @@
-#deployments{
+#deployments {
 
-  #main-content-panel {
-    padding-right: 40px;
-  }
+    #main-content-panel {
+        padding-right: 40px;
+    }
 
-  .deploymentExecute {
-    cursor: default;
-    position: relative;
-    left: 50px;
-    display: inline-block;
-  }
+    .deploymentExecute {
+        cursor: default;
+        vertical-align: middle;
+        display: inline-block;
+    }
 
-  .disable {
-    color: $COSMOUI_BUTTON_DISABLED_BACKGROUND;
-  }
+    .disable {
+        color: $COSMOUI_BUTTON_DISABLED_BACKGROUND;
+    }
 
-  table {
-    width: $COSMOUI_LIST_WIDTH;
-    margin: $COSMOUI_LIST_MARGIN;
+    table {
+        width: $COSMOUI_LIST_WIDTH;
+        margin: $COSMOUI_LIST_MARGIN;
 
-    tr {
-      td {
-        cursor: $COSMOUI_DIALOG_CURSOR;
+        tr {
+            td {
+                cursor: $COSMOUI_DIALOG_CURSOR;
 
-        &.actions {
-          width: $COSMOUI_LIST_HOVER_ACTION_WIDTH;
-          font-size:$COSMOUI_LIST_HOVER_ACTION_FONT_SIZE;
+                &.actions {
+                    min-width: $COSMOUI_LIST_HOVER_ACTION_WIDTH;
+                    font-size: $COSMOUI_LIST_HOVER_ACTION_FONT_SIZE;
 
-          i {
-            color: $COSMOUI_LIST_HOVER_ACTION_TEXT_COLOR;
-            font-weight: $COSMOUI_LIST_HOVER_ACTION_FONT_WEIGHT;
-          }
+                    i {
+                        color: $COSMOUI_LIST_HOVER_ACTION_TEXT_COLOR;
+                        font-weight: $COSMOUI_LIST_HOVER_ACTION_FONT_WEIGHT;
+                    }
+                }
+                &.delete {
+                    width: $COSMOUI_LIST_HOVER_DELETE_WIDTH;
+                    text-align: center;
+                }
+            }
         }
-        &.delete {
-            width: $COSMOUI_LIST_HOVER_DELETE_WIDTH;
-            text-align: center;
+
+        i {
+            float: left;
         }
-      }
+
+        .executingWorkflow {
+            position: relative;
+            min-width: 0px;
+            min-width: 150px;
+            color: $clr-base-11;
+            background-color: $clr-base-05;
+            font-weight: bold;
+            padding: 5px 10px 5px 10px;
+            margin-right: 5px;
+            margin-top: 2px;
+            border-radius: 5px;
+            border: 1px solid #cadbec;
+            float: left;
+            font-size: 14px;
+            box-shadow: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            cursor: default;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
     }
 
-    i {
-      float: left;
+    .connect-error-message {
+        color: #f00;
+        margin-left: 20px;
+        margin-top: 20px;
     }
 
-    .executingWorkflow {
-      min-width: 0px;
-      width: 150px;
-      color: $clr-base-11;
-      background-color: $clr-base-05;
-      font-weight: bold;
-      padding: 5px 10px 5px 10px;
-      margin-right: 5px;
-      margin-top: 2px;
-      border-radius: 5px;
-      border: 1px solid #cadbec;
-      float: left;
-      font-size: 14px;
-      box-shadow: none;
-      -webkit-appearance: none;
-      -moz-appearance: none;
-      appearance: none;
-      cursor: default;
-      overflow: hidden;
-      text-overflow: ellipsis;
+    .no-blueprints-message {
+        color: #000;
+        margin-left: 20px;
+        margin-top: 20px;
     }
-  }
 
-  .connect-error-message {
-    color: #f00;
-    margin-left: 20px;
-    margin-top: 20px;
-  }
-
-  .no-blueprints-message {
-    color: #000;
-    margin-left: 20px;
-    margin-top: 20px;
-  }
-
-  .loading {
-    position: relative;
-    margin-left: auto;
-    margin-right: auto;
-    top: 50px;
-    width: 100px;
-    height: 100px;
-    background: url("/images/loading-anim.gif") no-repeat center center;
-  }
+    .loading {
+        position: relative;
+        margin-left: auto;
+        margin-right: auto;
+        top: 50px;
+        width: 100px;
+        height: 100px;
+        background: url("/images/loading-anim.gif") no-repeat center center;
+    }
 }
