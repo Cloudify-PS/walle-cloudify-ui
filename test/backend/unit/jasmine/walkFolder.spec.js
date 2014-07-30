@@ -14,7 +14,7 @@ describe('Backend: walkFolder', function () {
 
     it('should return folder content without hidden files & symbolic links', function() {
         var folderFiles = {};
-        walker.walk('./test/backend/unit/resources/blueprintContent', function(err, data) {
+        walker.walk('./test/backend/resources/blueprintContent', function(err, data) {
             folderFiles = data;
         });
 

@@ -13,7 +13,7 @@ module.exports.browseBlueprint = function (id, callbackFn){
         var err = new Error('Blueprint ID can\'t contain spacial characters.');
         return callbackFn(err);
     }
-    var walker = new Walker();
+    var walker = new browseBlueprint.Walker();
     walker.walk(path.join(conf.browseBlueprint.path, id), callbackFn);
 };
 
