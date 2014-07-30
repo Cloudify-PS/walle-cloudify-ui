@@ -21,7 +21,7 @@ module.exports.fileGetContent = function(id, relativePath, callbackFn) {
     fs.readFile(path.join(conf.browseBlueprint.path, id, relativePath), 'utf-8', callbackFn);
 };
 
-function Walker() {
+module.exports.Walker = function() {
     var _finalCallback = null;
     var root = { 'name': 'root', 'children': []};
     var origRoot;
@@ -33,8 +33,10 @@ function Walker() {
 
     function addChild(rootFolder, children, file) {
         fs.stat(path.join(rootFolder, file), function (err, result) {
-            if (result.isSymbolicLink() || isUnixHiddenPath(file)) { counter--; doFinalCallback(); }
-            else if (result.isDirectory()) {
+            if (result === undefined || result.isSymbolicLink() || isUnixHiddenPath(file)) {
+                counter--;
+                doFinalCallback();
+            } else if (result.isDirectory()) {
                 var newItem = {
                     'name': file,
                     'children': []
@@ -50,11 +52,12 @@ function Walker() {
                         'relativePath': path.relative(origRoot, path.join(rootFolder, file)),
                         'encoding': isAscii ? 'ASCII' : 'BINARY'
                     });
+
                     counter--;
                     doFinalCallback();
                 });
             }
-        })
+        });
     }
 
     function doFinalCallback() {
