@@ -129,9 +129,6 @@ Cloudify4node.addBlueprint = function(application_archive, blueprint_id, callbac
         });
 
         res.on('end', function() {
-            console.log('***************************************************');
-            console.log(res);
-            console.log('***************************************************');
             if (res.statusCode === 200){
                 callback(null, res.statusCode);
             } else {
