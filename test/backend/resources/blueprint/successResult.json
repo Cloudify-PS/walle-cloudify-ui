@@ -1,469 +1,1017 @@
 {
-    _readableState: {
-        highWaterMark: 16384,
-        buffer: [],
-        length: 0,
-        pipes: null,
-        pipesCount: 0,
-        flowing: false,
-        ended: true,
-        endEmitted: true,
-        reading: false,
-        calledRead: true,
-        sync: false,
-        needReadable: true,
-        emittedReadable: false,
-        readableListening: false,
-        objectMode: false,
-        defaultEncoding: 'utf8',
-        ranOut: false,
-        awaitDrain: 0,
-        readingMore: false,
-        decoder: null,
-        encoding: null
-    },
-    readable: false,
-    domain: null,
-    _events: {
-        end: [
-            [Function: responseOnEnd],
-            [Function]
-        ],
-        data: [Function],
-        readable: [Function]
-    },
-    _maxListeners: 10,
-    socket: {
-        _connecting: false,
-        _handle: {
-            fd: 15,
-            writeQueueSize: 0,
-            owner: [Circular],
-            onread: [Function: onread],
-            reading: true
+    "updated_at": "2014-07-31 02:37:01.510183",
+    "created_at": "2014-07-31 02:37:01.510183",
+    "id": "blueprint1",
+    "plan": {
+        "relationships": {
+            "cloudify.openstack.server_connected_to_port": {
+            "source_interfaces": {
+            "cloudify.interfaces.relationship_lifecycle": ["preconfigure", "postconfigure", "establish", "unlink"]
+            },
+            "target_interfaces": {
+            "cloudify.interfaces.relationship_lifecycle": ["preconfigure", "postconfigure", "establish", "unlink"]
+            },
+            "name": "cloudify.openstack.server_connected_to_port",
+            "derived_from": "cloudify.relationships.connected_to",
+            "properties": [{
+            "connection_type": "all_to_all"
+            }]
+            }, "cloudify.openstack.port_connected_to_security_group": {
+            "source_interfaces": {
+            "cloudify.interfaces.relationship_lifecycle": ["preconfigure", "postconfigure", {
+            "establish": "neutron_plugin.port.connect_security_group"
+            }, "unlink"]
+            },
+            "target_interfaces": {
+            "cloudify.interfaces.relationship_lifecycle": ["preconfigure", "postconfigure", "establish", "unlink"]
+            },
+            "name": "cloudify.openstack.port_connected_to_security_group",
+            "derived_from": "cloudify.relationships.connected_to",
+            "properties": [{
+            "connection_type": "all_to_all"
+            }]
+            }, "cloudify.relationships.depends_on": {
+            "source_interfaces": {
+            "cloudify.interfaces.relationship_lifecycle": ["preconfigure", "postconfigure", "establish", "unlink"]
+            },
+            "target_interfaces": {
+            "cloudify.interfaces.relationship_lifecycle": ["preconfigure", "postconfigure", "establish", "unlink"]
+            },
+            "properties": [{
+            "connection_type": "all_to_all"
+            }],
+            "name": "cloudify.relationships.depends_on"
+            }, "cloudify.openstack.subnet_connected_to_router": {
+            "source_interfaces": {
+            "cloudify.interfaces.relationship_lifecycle": ["preconfigure", "postconfigure", "establish", "unlink"]
+            },
+            "target_interfaces": {
+            "cloudify.interfaces.relationship_lifecycle": ["preconfigure", "postconfigure", {
+            "establish": "neutron_plugin.router.connect_subnet"
+            }, {
+            "unlink": "neutron_plugin.router.disconnect_subnet"
+            }]
+            },
+            "name": "cloudify.openstack.subnet_connected_to_router",
+            "derived_from": "cloudify.relationships.connected_to",
+            "properties": [{
+            "connection_type": "all_to_all"
+            }]
+            }, "cloudify.relationships.contained_in": {
+            "source_interfaces": {
+            "cloudify.interfaces.relationship_lifecycle": ["preconfigure", "postconfigure", "establish", "unlink"]
+            },
+            "target_interfaces": {
+            "cloudify.interfaces.relationship_lifecycle": ["preconfigure", "postconfigure", "establish", "unlink"]
+            },
+            "name": "cloudify.relationships.contained_in",
+            "derived_from": "cloudify.relationships.depends_on",
+            "properties": [{
+            "connection_type": "all_to_all"
+            }]
+            }, "cloudify.openstack.server_connected_to_floating_ip": {
+            "source_interfaces": {
+            "cloudify.interfaces.relationship_lifecycle": ["preconfigure", "postconfigure", {
+            "establish": "nova_plugin.server.connect_floatingip"
+            }, {
+            "unlink": "nova_plugin.server.disconnect_floatingip"
+            }]
+            },
+            "target_interfaces": {
+            "cloudify.interfaces.relationship_lifecycle": ["preconfigure", "postconfigure", "establish", "unlink"]
+            },
+            "name": "cloudify.openstack.server_connected_to_floating_ip",
+            "derived_from": "cloudify.relationships.connected_to",
+            "properties": [{
+            "connection_type": "all_to_all"
+            }]
+            }, "cloudify.relationships.connected_to": {
+            "source_interfaces": {
+            "cloudify.interfaces.relationship_lifecycle": ["preconfigure", "postconfigure", "establish", "unlink"]
+            },
+            "target_interfaces": {
+            "cloudify.interfaces.relationship_lifecycle": ["preconfigure", "postconfigure", "establish", "unlink"]
+            },
+            "name": "cloudify.relationships.connected_to",
+            "derived_from": "cloudify.relationships.depends_on",
+            "properties": [{
+            "connection_type": "all_to_all"
+            }]
+            }, "cloudify.openstack.floating_ip_connected_to_port": {
+            "source_interfaces": {
+            "cloudify.interfaces.relationship_lifecycle": ["preconfigure", "postconfigure", "establish", "unlink"]
+            },
+            "target_interfaces": {
+            "cloudify.interfaces.relationship_lifecycle": ["preconfigure", "postconfigure", "establish", "unlink"]
+            },
+            "name": "cloudify.openstack.floating_ip_connected_to_port",
+            "derived_from": "cloudify.relationships.connected_to",
+            "properties": [{
+            "connection_type": "all_to_all"
+            }]
+            }, "nodecellar_connected_to_mongo": {
+            "source_interfaces": {
+            "cloudify.interfaces.relationship_lifecycle": ["preconfigure", {
+            "postconfigure": "nodecellar_config_plugin.tasks.get_mongo_host_and_port"
+            }, "establish", "unlink"]
+            },
+            "target_interfaces": {
+            "cloudify.interfaces.relationship_lifecycle": ["preconfigure", "postconfigure", "establish", "unlink"]
+            },
+            "name": "nodecellar_connected_to_mongo",
+            "derived_from": "cloudify.relationships.connected_to",
+            "properties": [{
+            "connection_type": "all_to_all"
+            }]
+            }
         },
-        _readableState: {
-            highWaterMark: 16384,
-            buffer: [],
-            length: 0,
-            pipes: null,
-            pipesCount: 0,
-            flowing: false,
-            ended: false,
-            endEmitted: false,
-            reading: true,
-            calledRead: true,
-            sync: false,
-            needReadable: true,
-            emittedReadable: false,
-            readableListening: false,
-            objectMode: false,
-            defaultEncoding: 'utf8',
-            ranOut: false,
-            awaitDrain: 0,
-            readingMore: false,
-            decoder: null,
-            encoding: null
+        "name": "nodecellar",
+        "management_plugins_to_install": [{
+        "url": "https://github.com/cloudify-cosmo/cloudify-openstack-plugin/archive/develop.zip",
+        "agent_plugin": "false",
+        "name": "nova_plugin",
+        "manager_plugin": "true"
+        }],
+        "workflows": {
+        "install": {
+        "operation": "default.install",
+        "plugin": "workflows"
         },
-        readable: true,
-        domain: null,
-        _events: {
-            end: [Object],
-            finish: [Function: onSocketFinish],
-            _socketEnd: [Function: onSocketEnd],
-            free: [Function],
-            close: [Object],
-            agentRemove: [Function],
-            drain: [Function: ondrain],
-            error: undefined,
-            connect: undefined
+        "uninstall": {
+        "operation": "default.uninstall",
+        "plugin": "workflows"
+        }
         },
-        _maxListeners: 10,
-        _writableState: {
-            highWaterMark: 16384,
-            objectMode: false,
-            needDrain: false,
-            ending: false,
-            ended: false,
-            finished: false,
-            decodeStrings: false,
-            defaultEncoding: 'utf8',
-            length: 0,
-            writing: false,
-            sync: false,
-            bufferProcessing: false,
-            onwrite: [Function],
-            writecb: null,
-            writelen: 0,
-            buffer: []
+        "nodes": [{
+        "operations": {
+        "create": {
+        "operation": "floatingip.create",
+        "plugin": "neutron_plugin"
         },
-        writable: true,
-        allowHalfOpen: false,
-        onend: null,
-        destroyed: false,
-        errorEmitted: false,
-        bytesRead: 27519,
-        _bytesDispatched: 9312,
-        _pendingData: null,
-        _pendingEncoding: '',
-        parser: null,
-        _httpMessage: {
-            domain: null,
-            _events: [Object],
-            _maxListeners: 10,
-            output: [],
-            outputEncodings: [],
-            writable: true,
-            _last: false,
-            chunkedEncoding: true,
-            shouldKeepAlive: true,
-            useChunkedEncodingByDefault: true,
-            sendDate: false,
-            _hasBody: true,
-            _trailer: '',
-            finished: true,
-            _hangupClose: false,
-            socket: [Circular],
-            connection: [Circular],
-            agent: [Object],
-            socketPath: undefined,
-            method: 'PUT',
-            path: '/blueprints/blueprint1',
-            _headers: [Object],
-            _headerNames: [Object],
-            parser: null,
-            _header: 'PUT /blueprints/blueprint1 HTTP/1.1\r\nContent-Type: application/octet-stream\r\nTransfer-Encoding: chunked\r\nHost: cosmo.gsdev.info\r\nConnection: keep-alive\r\n\r\n',
-            _headerSent: true,
-            res: [Circular]
+        "cloudify.interfaces.lifecycle.delete": {
+        "operation": "floatingip.delete",
+        "plugin": "neutron_plugin"
         },
-        ondata: null
-    },
-    connection: {
-        _connecting: false,
-        _handle: {
-            fd: 15,
-            writeQueueSize: 0,
-            owner: [Circular],
-            onread: [Function: onread],
-            reading: true
+        "cloudify.interfaces.lifecycle.create": {
+        "operation": "floatingip.create",
+        "plugin": "neutron_plugin"
         },
-        _readableState: {
-            highWaterMark: 16384,
-            buffer: [],
-            length: 0,
-            pipes: null,
-            pipesCount: 0,
-            flowing: false,
-            ended: false,
-            endEmitted: false,
-            reading: true,
-            calledRead: true,
-            sync: false,
-            needReadable: true,
-            emittedReadable: false,
-            readableListening: false,
-            objectMode: false,
-            defaultEncoding: 'utf8',
-            ranOut: false,
-            awaitDrain: 0,
-            readingMore: false,
-            decoder: null,
-            encoding: null
+        "delete": {
+        "operation": "floatingip.delete",
+        "plugin": "neutron_plugin"
+        }
         },
-        readable: true,
-        domain: null,
-        _events: {
-            end: [Object],
-            finish: [Function: onSocketFinish],
-            _socketEnd: [Function: onSocketEnd],
-            free: [Function],
-            close: [Object],
-            agentRemove: [Function],
-            drain: [Function: ondrain],
-            error: undefined,
-            connect: undefined
+        "declared_type": "cloudify.openstack.floatingip",
+        "name": "floatingip",
+        "type_hierarchy": ["cloudify.types.base", "cloudify.openstack.floatingip"],
+        "properties": {
+        "neutron_config": {},
+        "cloudify_runtime": {},
+        "floatingip": {
+        "floating_network_name": "public"
+        }
         },
-        _maxListeners: 10,
-        _writableState: {
-            highWaterMark: 16384,
-            objectMode: false,
-            needDrain: false,
-            ending: false,
-            ended: false,
-            finished: false,
-            decodeStrings: false,
-            defaultEncoding: 'utf8',
-            length: 0,
-            writing: false,
-            sync: false,
-            bufferProcessing: false,
-            onwrite: [Function],
-            writecb: null,
-            writelen: 0,
-            buffer: []
+        "instances": {
+        "deploy": 1
         },
-        writable: true,
-        allowHalfOpen: false,
-        onend: null,
-        destroyed: false,
-        errorEmitted: false,
-        bytesRead: 27519,
-        _bytesDispatched: 9312,
-        _pendingData: null,
-        _pendingEncoding: '',
-        parser: null,
-        _httpMessage: {
-            domain: null,
-            _events: [Object],
-            _maxListeners: 10,
-            output: [],
-            outputEncodings: [],
-            writable: true,
-            _last: false,
-            chunkedEncoding: true,
-            shouldKeepAlive: true,
-            useChunkedEncodingByDefault: true,
-            sendDate: false,
-            _hasBody: true,
-            _trailer: '',
-            finished: true,
-            _hangupClose: false,
-            socket: [Circular],
-            connection: [Circular],
-            agent: [Object],
-            socketPath: undefined,
-            method: 'PUT',
-            path: '/blueprints/blueprint1',
-            _headers: [Object],
-            _headerNames: [Object],
-            parser: null,
-            _header: 'PUT /blueprints/blueprint1 HTTP/1.1\r\nContent-Type: application/octet-stream\r\nTransfer-Encoding: chunked\r\nHost: cosmo.gsdev.info\r\nConnection: keep-alive\r\n\r\n',
-            _headerSent: true,
-            res: [Circular]
+        "plugins": {
+        "neutron_plugin": {
+        "url": "https://github.com/cloudify-cosmo/cloudify-openstack-plugin/archive/develop.zip",
+        "agent_plugin": "false",
+        "name": "neutron_plugin",
+        "manager_plugin": "true"
+        }
         },
-        ondata: null
-    },
-    httpVersion: '1.1',
-    complete: true,
-    headers: {
-        server: 'nginx/1.5.13',
-        date: 'Wed, 30 Jul 2014 06:32:04 GMT',
-        'content-type': 'application/json',
-        'content-length': '27357',
-        connection: 'keep-alive'
-    },
-    trailers: {},
-    _pendings: [],
-    _pendingIndex: 0,
-    url: '',
-    method: null,
-    statusCode: 201,
-    client: {
-        _connecting: false,
-        _handle: {
-            fd: 15,
-            writeQueueSize: 0,
-            owner: [Circular],
-            onread: [Function: onread],
-            reading: true
+        "type": "cloudify.openstack.floatingip",
+        "id": "floatingip"
+        }, {
+        "operations": {
+        "cloudify.interfaces.lifecycle.start": {
+        "operation": "tasks.run",
+        "plugin": "bash_runner"
+        }, "cloudify.interfaces.lifecycle.delete": {
+        "operation": "tasks.run",
+        "plugin": "bash_runner"
+        }, "cloudify.interfaces.lifecycle.create": {
+        "operation": "tasks.run",
+        "plugin": "bash_runner"
+        }, "create": {
+        "operation": "tasks.run",
+        "plugin": "bash_runner"
+        }, "cloudify.interfaces.lifecycle.stop": {
+        "operation": "tasks.run",
+        "plugin": "bash_runner"
+        }, "stop": {
+        "operation": "tasks.run",
+        "plugin": "bash_runner"
+        }, "start": {
+        "operation": "tasks.run",
+        "plugin": "bash_runner"
+        }, "cloudify.interfaces.lifecycle.configure": {
+        "operation": "tasks.run",
+        "plugin": "bash_runner"
+        }, "delete": {
+        "operation": "tasks.run",
+        "plugin": "bash_runner"
+        }, "configure": {
+        "operation": "tasks.run",
+        "plugin": "bash_runner"
+        }
         },
-        _readableState: {
-            highWaterMark: 16384,
-            buffer: [],
-            length: 0,
-            pipes: null,
-            pipesCount: 0,
-            flowing: false,
-            ended: false,
-            endEmitted: false,
-            reading: true,
-            calledRead: true,
-            sync: false,
-            needReadable: true,
-            emittedReadable: false,
-            readableListening: false,
-            objectMode: false,
-            defaultEncoding: 'utf8',
-            ranOut: false,
-            awaitDrain: 0,
-            readingMore: false,
-            decoder: null,
-            encoding: null
+        "relationships": [{
+        "source_operations": {},
+        "target_operations": {},
+        "type_hierarchy": ["cloudify.relationships.depends_on", "cloudify.relationships.contained_in"],
+        "target_interfaces": {
+        "cloudify.interfaces.relationship_lifecycle": ["preconfigure", "postconfigure", "establish", "unlink"]
         },
-        readable: true,
-        domain: null,
-        _events: {
-            end: [Object],
-            finish: [Function: onSocketFinish],
-            _socketEnd: [Function: onSocketEnd],
-            free: [Function],
-            close: [Object],
-            agentRemove: [Function],
-            drain: [Function: ondrain],
-            error: undefined,
-            connect: undefined
+        "target_id": "mongod_vm",
+        "state": "reachable",
+        "base": "contained",
+        "source_interfaces": {
+        "cloudify.interfaces.relationship_lifecycle": ["preconfigure", "postconfigure", "establish", "unlink"]
         },
-        _maxListeners: 10,
-        _writableState: {
-            highWaterMark: 16384,
-            objectMode: false,
-            needDrain: false,
-            ending: false,
-            ended: false,
-            finished: false,
-            decodeStrings: false,
-            defaultEncoding: 'utf8',
-            length: 0,
-            writing: false,
-            sync: false,
-            bufferProcessing: false,
-            onwrite: [Function],
-            writecb: null,
-            writelen: 0,
-            buffer: []
+        "type": "cloudify.relationships.contained_in",
+        "properties": {
+        "connection_type": "all_to_all"
+        }
+        }],
+        "declared_type": "mongo_database",
+        "name": "mongod",
+        "type_hierarchy": ["cloudify.types.base", "cloudify.types.middleware_server", "cloudify.types.db_server", "cloudify.types.bash.db_server", "mongo_database"],
+        "properties": {
+        "role": "mongod",
+        "port": 27017,
+        "cloudify_runtime": {},
+        "scripts": {
+        "start": "mongo-scripts/start-mongo.sh",
+        "create": "mongo-scripts/install-mongo.sh",
+        "stop": "mongo-scripts/stop-mongo.sh"
+        }
         },
-        writable: true,
-        allowHalfOpen: false,
-        onend: null,
-        destroyed: false,
-        errorEmitted: false,
-        bytesRead: 27519,
-        _bytesDispatched: 9312,
-        _pendingData: null,
-        _pendingEncoding: '',
-        parser: null,
-        _httpMessage: {
-            domain: null,
-            _events: [Object],
-            _maxListeners: 10,
-            output: [],
-            outputEncodings: [],
-            writable: true,
-            _last: false,
-            chunkedEncoding: true,
-            shouldKeepAlive: true,
-            useChunkedEncodingByDefault: true,
-            sendDate: false,
-            _hasBody: true,
-            _trailer: '',
-            finished: true,
-            _hangupClose: false,
-            socket: [Circular],
-            connection: [Circular],
-            agent: [Object],
-            socketPath: undefined,
-            method: 'PUT',
-            path: '/blueprints/blueprint1',
-            _headers: [Object],
-            _headerNames: [Object],
-            parser: null,
-            _header: 'PUT /blueprints/blueprint1 HTTP/1.1\r\nContent-Type: application/octet-stream\r\nTransfer-Encoding: chunked\r\nHost: cosmo.gsdev.info\r\nConnection: keep-alive\r\n\r\n',
-            _headerSent: true,
-            res: [Circular]
+        "instances": {
+        "deploy": 1
         },
-        ondata: null
-    },
-    _consuming: true,
-    _dumped: false,
-    httpVersionMajor: 1,
-    httpVersionMinor: 1,
-    upgrade: false,
-    req: {
-        domain: null,
-        _events: {
-            response: undefined,
-            socket: undefined,
-            error: [Function]
+        "plugins": {
+        "bash_runner": {
+        "url": "https://github.com/cloudify-cosmo/cloudify-bash-plugin/archive/develop.zip",
+        "agent_plugin": "true",
+        "name": "bash_runner",
+        "manager_plugin": "false"
+        }
         },
-        _maxListeners: 10,
-        output: [],
-        outputEncodings: [],
-        writable: true,
-        _last: false,
-        chunkedEncoding: true,
-        shouldKeepAlive: true,
-        useChunkedEncodingByDefault: true,
-        sendDate: false,
-        _hasBody: true,
-        _trailer: '',
-        finished: true,
-        _hangupClose: false,
-        socket: {
-            _connecting: false,
-            _handle: [Object],
-            _readableState: [Object],
-            readable: true,
-            domain: null,
-            _events: [Object],
-            _maxListeners: 10,
-            _writableState: [Object],
-            writable: true,
-            allowHalfOpen: false,
-            onend: null,
-            destroyed: false,
-            errorEmitted: false,
-            bytesRead: 27519,
-            _bytesDispatched: 9312,
-            _pendingData: null,
-            _pendingEncoding: '',
-            parser: null,
-            _httpMessage: [Circular],
-            ondata: null
+        "host_id": "mongod_vm",
+        "type": "mongo_database",
+        "id": "mongod"
+        }, {
+        "operations": {
+        "uninstall": {
+        "operation": "tasks.uninstall",
+        "plugin": "worker_installer"
         },
-        connection: {
-            _connecting: false,
-            _handle: [Object],
-            _readableState: [Object],
-            readable: true,
-            domain: null,
-            _events: [Object],
-            _maxListeners: 10,
-            _writableState: [Object],
-            writable: true,
-            allowHalfOpen: false,
-            onend: null,
-            destroyed: false,
-            errorEmitted: false,
-            bytesRead: 27519,
-            _bytesDispatched: 9312,
-            _pendingData: null,
-            _pendingEncoding: '',
-            parser: null,
-            _httpMessage: [Circular],
-            ondata: null
+        "cloudify.interfaces.worker_installer.uninstall": {
+        "operation": "tasks.uninstall",
+        "plugin": "worker_installer"
         },
-        agent: {
-            domain: null,
-            _events: [Object],
-            _maxListeners: 10,
-            options: {},
-            requests: {},
-            sockets: [Object],
-            maxSockets: 5,
-            createConnection: [Function]
+        "cloudify.interfaces.lifecycle.stop": {
+        "operation": "server.stop",
+        "plugin": "nova_plugin"
         },
-        socketPath: undefined,
-        method: 'PUT',
-        path: '/blueprints/blueprint1',
-        _headers: {
-            'content-type': 'application/octet-stream',
-            'transfer-encoding': 'chunked',
-            host: 'cosmo.gsdev.info'
+        "cloudify.interfaces.lifecycle.delete": {
+        "operation": "server.delete",
+        "plugin": "nova_plugin"
         },
-        _headerNames: {
-            'content-type': 'Content-Type',
-            'transfer-encoding': 'Transfer-Encoding',
-            host: 'Host'
+        "cloudify.interfaces.worker_installer.stop": {
+        "operation": "tasks.stop",
+        "plugin": "worker_installer"
         },
-        parser: null,
-        _header: 'PUT /blueprints/blueprint1 HTTP/1.1\r\nContent-Type: application/octet-stream\r\nTransfer-Encoding: chunked\r\nHost: cosmo.gsdev.info\r\nConnection: keep-alive\r\n\r\n',
-        _headerSent: true,
-        res: [Circular]
-    },
-    pipe: [Function],
-    addListener: [Function],
-    on: [Function],
-    pause: [Function],
-    resume: [Function],
-    read: [Function]
+        "cloudify.interfaces.worker_installer.restart": {
+        "operation": "tasks.restart",
+        "plugin": "worker_installer"
+        },
+        "cloudify.interfaces.host.get_state": {
+        "operation": "server.get_state",
+        "plugin": "nova_plugin"
+        },
+        "get_state": {
+        "operation": "server.get_state",
+        "plugin": "nova_plugin"
+        },
+        "cloudify.interfaces.lifecycle.start": {
+        "operation": "server.start",
+        "plugin": "nova_plugin"
+        },
+        "cloudify.interfaces.plugin_installer.install": {
+        "operation": "tasks.install",
+        "plugin": "plugin_installer"
+        },
+        "cloudify.interfaces.worker_installer.install": {
+        "operation": "tasks.install",
+        "plugin": "worker_installer"
+        },
+        "cloudify.interfaces.worker_installer.start": {
+        "operation": "tasks.start",
+        "plugin": "worker_installer"
+        },
+        "restart": {
+        "operation": "tasks.restart",
+        "plugin": "worker_installer"
+        },
+        "delete": {
+        "operation": "server.delete",
+        "plugin": "nova_plugin"
+        }
+        },
+        "relationships": [{
+        "source_operations": {},
+        "target_operations": {},
+        "type_hierarchy": ["cloudify.relationships.depends_on", "cloudify.relationships.connected_to"],
+        "target_interfaces": {
+        "cloudify.interfaces.relationship_lifecycle": ["preconfigure", "postconfigure", "establish", "unlink"]
+        },
+        "target_id": "neutron_port1",
+        "state": "reachable",
+        "base": "connected",
+        "source_interfaces": {
+        "cloudify.interfaces.relationship_lifecycle": ["preconfigure", "postconfigure", "establish", "unlink"]
+        },
+        "type": "cloudify.relationships.connected_to",
+        "properties": {
+        "connection_type": "all_to_all"
+        }
+        }],
+        "declared_type": "vm_host",
+        "name": "mongod_vm",
+        "type_hierarchy": ["cloudify.types.base", "cloudify.types.host", "cloudify.openstack.server", "vm_host"],
+        "properties": {
+        "nova_config": {},
+        "neutron_config": {},
+        "cloudify_agent": {},
+        "worker_config": {
+        "user": "ubuntu",
+        "key": "~/.ssh/cloudify-agents-kp.pem",
+        "port": 22
+        },
+        "ip": "",
+        "management_network_name": "cloudify-admin-network",
+        "server": {
+        "key_name": "cloudify-agents-kp",
+        "image": "8672f4c6-e33d-46f5-b6d8-ebbeba12fa02",
+        "flavor": 101
+        },
+        "install_agent": true,
+        "cloudify_runtime": {}
+        },
+        "instances": {
+        "deploy": 1
+        },
+        "management_plugins_to_install": [{
+        "url": "https://github.com/cloudify-cosmo/cloudify-openstack-plugin/archive/develop.zip",
+        "agent_plugin": "false",
+        "name": "nova_plugin",
+        "manager_plugin": "true"
+        }],
+        "plugins": {
+        "nova_plugin": {
+        "url": "https://github.com/cloudify-cosmo/cloudify-openstack-plugin/archive/develop.zip",
+        "agent_plugin": "false",
+        "name": "nova_plugin",
+        "manager_plugin": "true"
+        },
+        "plugin_installer": {
+        "url": "plugin_installer.zip",
+        "agent_plugin": "true",
+        "name": "plugin_installer",
+        "manager_plugin": "false"
+        },
+        "worker_installer": {
+        "url": "worker_installer.zip",
+        "agent_plugin": "false",
+        "name": "worker_installer",
+        "manager_plugin": "true"
+        }
+        },
+        "host_id": "mongod_vm",
+        "type": "vm_host",
+        "id": "mongod_vm",
+        "plugins_to_install": [{
+        "url": "https://github.com/cloudify-cosmo/cloudify-bash-plugin/archive/develop.zip",
+        "agent_plugin": "true",
+        "name": "bash_runner",
+        "manager_plugin": "false"
+        }]
+        }, {
+        "operations": {
+        "create": {
+        "operation": "network.create",
+        "plugin": "neutron_plugin"
+        },
+        "cloudify.interfaces.lifecycle.delete": {
+        "operation": "network.delete",
+        "plugin": "neutron_plugin"
+        },
+        "cloudify.interfaces.lifecycle.create": {
+        "operation": "network.create",
+        "plugin": "neutron_plugin"
+        },
+        "delete": {
+        "operation": "network.delete",
+        "plugin": "neutron_plugin"
+        }
+        },
+        "declared_type": "cloudify.openstack.network",
+        "name": "neutron_network",
+        "type_hierarchy": ["cloudify.types.base", "cloudify.types.network", "cloudify.openstack.network"],
+        "properties": {
+        "neutron_config": {},
+        "network": {
+        "name": "app_network"
+        },
+        "cloudify_runtime": {}
+        },
+        "instances": {
+        "deploy": 1
+        },
+        "plugins": {
+        "neutron_plugin": {
+        "url": "https://github.com/cloudify-cosmo/cloudify-openstack-plugin/archive/develop.zip",
+        "agent_plugin": "false",
+        "name": "neutron_plugin",
+        "manager_plugin": "true"
+        }
+        },
+        "type": "cloudify.openstack.network",
+        "id": "neutron_network"
+        }, {
+        "operations": {
+        "create": {
+        "operation": "port.create",
+        "plugin": "neutron_plugin"
+        },
+        "cloudify.interfaces.lifecycle.create": {
+        "operation": "port.create",
+        "plugin": "neutron_plugin"
+        }
+        },
+        "relationships": [{
+        "source_operations": {},
+        "target_operations": {},
+        "type_hierarchy": ["cloudify.relationships.depends_on", "cloudify.relationships.contained_in"],
+        "target_interfaces": {
+        "cloudify.interfaces.relationship_lifecycle": ["preconfigure", "postconfigure", "establish", "unlink"]
+        },
+        "target_id": "neutron_network",
+        "state": "reachable",
+        "base": "contained",
+        "source_interfaces": {
+        "cloudify.interfaces.relationship_lifecycle": ["preconfigure", "postconfigure", "establish", "unlink"]
+        },
+        "type": "cloudify.relationships.contained_in",
+        "properties": {
+        "connection_type": "all_to_all"
+        }
+        }, {
+        "source_operations": {},
+        "target_operations": {},
+        "type_hierarchy": ["cloudify.relationships.depends_on"],
+        "target_interfaces": {
+        "cloudify.interfaces.relationship_lifecycle": ["preconfigure", "postconfigure", "establish", "unlink"]
+        },
+        "target_id": "neutron_subnet",
+        "state": "reachable",
+        "base": "depends",
+        "source_interfaces": {
+        "cloudify.interfaces.relationship_lifecycle": ["preconfigure", "postconfigure", "establish", "unlink"]
+        },
+        "type": "cloudify.relationships.depends_on",
+        "properties": {
+        "connection_type": "all_to_all"
+        }
+        }],
+        "declared_type": "cloudify.openstack.port",
+        "name": "neutron_port1",
+        "type_hierarchy": ["cloudify.types.base", "cloudify.openstack.port"],
+        "properties": {
+        "neutron_config": {},
+        "port": {
+        "name": "neutron_app_port1"
+        },
+        "cloudify_runtime": {}
+        },
+        "instances": {
+        "deploy": 1
+        },
+        "plugins": {
+        "neutron_plugin": {
+        "url": "https://github.com/cloudify-cosmo/cloudify-openstack-plugin/archive/develop.zip",
+        "agent_plugin": "false",
+        "name": "neutron_plugin",
+        "manager_plugin": "true"
+        }
+        },
+        "type": "cloudify.openstack.port",
+        "id": "neutron_port1"
+        }, {
+        "operations": {
+        "create": {
+        "operation": "port.create",
+        "plugin": "neutron_plugin"
+        },
+        "cloudify.interfaces.lifecycle.create": {
+        "operation": "port.create",
+        "plugin": "neutron_plugin"
+        }
+        },
+        "relationships": [{
+        "source_operations": {},
+        "target_operations": {},
+        "type_hierarchy": ["cloudify.relationships.depends_on", "cloudify.relationships.contained_in"],
+        "target_interfaces": {
+        "cloudify.interfaces.relationship_lifecycle": ["preconfigure", "postconfigure", "establish", "unlink"]
+        },
+        "target_id": "neutron_network",
+        "state": "reachable",
+        "base": "contained",
+        "source_interfaces": {
+        "cloudify.interfaces.relationship_lifecycle": ["preconfigure", "postconfigure", "establish", "unlink"]
+        },
+        "type": "cloudify.relationships.contained_in",
+        "properties": {
+        "connection_type": "all_to_all"
+        }
+        }, {
+        "source_operations": {},
+        "target_operations": {},
+        "type_hierarchy": ["cloudify.relationships.depends_on"],
+        "target_interfaces": {
+        "cloudify.interfaces.relationship_lifecycle": ["preconfigure", "postconfigure", "establish", "unlink"]
+        },
+        "target_id": "neutron_subnet",
+        "state": "reachable",
+        "base": "depends",
+        "source_interfaces": {
+        "cloudify.interfaces.relationship_lifecycle": ["preconfigure", "postconfigure", "establish", "unlink"]
+        },
+        "type": "cloudify.relationships.depends_on",
+        "properties": {
+        "connection_type": "all_to_all"
+        }
+        }],
+        "declared_type": "cloudify.openstack.port",
+        "name": "neutron_port2",
+        "type_hierarchy": ["cloudify.types.base", "cloudify.openstack.port"],
+        "properties": {
+        "neutron_config": {},
+        "port": {
+        "name": "neutron_app_port2"
+        },
+        "cloudify_runtime": {}
+        },
+        "instances": {
+        "deploy": 1
+        },
+        "plugins": {
+        "neutron_plugin": {
+        "url": "https://github.com/cloudify-cosmo/cloudify-openstack-plugin/archive/develop.zip",
+        "agent_plugin": "false",
+        "name": "neutron_plugin",
+        "manager_plugin": "true"
+        }
+        },
+        "type": "cloudify.openstack.port",
+        "id": "neutron_port2"
+        }, {
+        "operations": {
+        "create": {
+        "operation": "subnet.create",
+        "plugin": "neutron_plugin"
+        },
+        "cloudify.interfaces.lifecycle.create": {
+        "operation": "subnet.create",
+        "plugin": "neutron_plugin"
+        }
+        },
+        "relationships": [{
+        "source_operations": {},
+        "target_operations": {},
+        "type_hierarchy": ["cloudify.relationships.depends_on", "cloudify.relationships.contained_in"],
+        "target_interfaces": {
+        "cloudify.interfaces.relationship_lifecycle": ["preconfigure", "postconfigure", "establish", "unlink"]
+        },
+        "target_id": "neutron_network",
+        "state": "reachable",
+        "base": "contained",
+        "source_interfaces": {
+        "cloudify.interfaces.relationship_lifecycle": ["preconfigure", "postconfigure", "establish", "unlink"]
+        },
+        "type": "cloudify.relationships.contained_in",
+        "properties": {
+        "connection_type": "all_to_all"
+        }
+        }],
+        "declared_type": "cloudify.openstack.subnet",
+        "name": "neutron_subnet",
+        "type_hierarchy": ["cloudify.types.base", "cloudify.types.subnet", "cloudify.openstack.subnet"],
+        "properties": {
+        "neutron_config": {},
+        "subnet": {
+        "ip_version": 4,
+        "cidr": "10.10.10.0/24",
+        "name": "app_subnet"
+        },
+        "cloudify_runtime": {}
+        },
+        "instances": {
+        "deploy": 1
+        },
+        "plugins": {
+        "neutron_plugin": {
+        "url": "https://github.com/cloudify-cosmo/cloudify-openstack-plugin/archive/develop.zip",
+        "agent_plugin": "false",
+        "name": "neutron_plugin",
+        "manager_plugin": "true"
+        }
+        },
+        "type": "cloudify.openstack.subnet",
+        "id": "neutron_subnet"
+        }, {
+        "operations": {
+        "cloudify.interfaces.lifecycle.start": {
+        "operation": "tasks.run",
+        "plugin": "bash_runner"
+        }, "cloudify.interfaces.lifecycle.delete": {
+        "operation": "tasks.run",
+        "plugin": "bash_runner"
+        }, "cloudify.interfaces.lifecycle.create": {
+        "operation": "tasks.run",
+        "plugin": "bash_runner"
+        }, "create": {
+        "operation": "tasks.run",
+        "plugin": "bash_runner"
+        }, "cloudify.interfaces.lifecycle.stop": {
+        "operation": "tasks.run",
+        "plugin": "bash_runner"
+        }, "stop": {
+        "operation": "tasks.run",
+        "plugin": "bash_runner"
+        }, "start": {
+        "operation": "tasks.run",
+        "plugin": "bash_runner"
+        }, "cloudify.interfaces.lifecycle.configure": {
+        "operation": "tasks.run",
+        "plugin": "bash_runner"
+        }, "delete": {
+        "operation": "tasks.run",
+        "plugin": "bash_runner"
+        }, "configure": {
+        "operation": "tasks.run",
+        "plugin": "bash_runner"
+        }
+        },
+        "relationships": [{
+        "source_operations": {},
+        "target_operations": {},
+        "type_hierarchy": ["cloudify.relationships.depends_on", "cloudify.relationships.contained_in"],
+        "target_interfaces": {
+        "cloudify.interfaces.relationship_lifecycle": ["preconfigure", "postconfigure", "establish", "unlink"]
+        },
+        "target_id": "nodejs",
+        "state": "reachable",
+        "base": "contained",
+        "source_interfaces": {
+        "cloudify.interfaces.relationship_lifecycle": ["preconfigure", "postconfigure", "establish", "unlink"]
+        },
+        "type": "cloudify.relationships.contained_in",
+        "properties": {
+        "connection_type": "all_to_all"
+        }
+        }, {
+        "source_operations": {
+        "cloudify.interfaces.relationship_lifecycle.postconfigure": {
+        "operation": "tasks.get_mongo_host_and_port",
+        "plugin": "nodecellar_config_plugin"
+        }, "postconfigure": {
+        "operation": "tasks.get_mongo_host_and_port",
+        "plugin": "nodecellar_config_plugin"
+        }
+        },
+        "target_operations": {},
+        "type_hierarchy": ["cloudify.relationships.depends_on", "cloudify.relationships.connected_to", "nodecellar_connected_to_mongo"],
+        "target_interfaces": {
+        "cloudify.interfaces.relationship_lifecycle": ["preconfigure", "postconfigure", "establish", "unlink"]
+        },
+        "target_id": "mongod",
+        "state": "reachable",
+        "base": "connected",
+        "source_interfaces": {
+        "cloudify.interfaces.relationship_lifecycle": ["preconfigure", {
+        "postconfigure": "nodecellar_config_plugin.tasks.get_mongo_host_and_port"
+        }, "establish", "unlink"]
+        },
+        "type": "nodecellar_connected_to_mongo",
+        "properties": {
+        "connection_type": "all_to_all"
+        }
+        }],
+        "declared_type": "nodejs_app",
+        "name": "nodecellar_app",
+        "type_hierarchy": ["cloudify.types.base", "cloudify.types.app_module", "cloudify.types.bash.app_module", "nodejs_app"],
+        "properties": {
+        "num_instances": 1,
+        "app_name": "nodecellar",
+        "startup_script": "server.js",
+        "git_url": "https://github.com/uric/nodecellar.git",
+        "scripts": {
+        "start": "nodejs-scripts/start-app.sh",
+        "create": "nodejs-scripts/install-app.sh",
+        "stop": "nodejs-scripts/stop-app.sh"
+        },
+        "env_file_path": "/tmp/mongo_host_and_port.sh",
+        "base_port": 8080,
+        "cloudify_runtime": {},
+        "git_branch": "master"
+        },
+        "instances": {
+        "deploy": 1
+        },
+        "plugins": {
+        "bash_runner": {
+        "url": "https://github.com/cloudify-cosmo/cloudify-bash-plugin/archive/develop.zip",
+        "agent_plugin": "true",
+        "name": "bash_runner",
+        "manager_plugin": "false"
+        },
+        "nodecellar_config_plugin": {
+        "folder": "nodecellar-config-plugin",
+        "agent_plugin": "true",
+        "name": "nodecellar_config_plugin",
+        "manager_plugin": "false"
+        }
+        },
+        "host_id": "nodejs_vm",
+        "type": "nodejs_app",
+        "id": "nodecellar_app"
+        }, {
+        "operations": {
+        "cloudify.interfaces.lifecycle.start": {
+        "operation": "tasks.run",
+        "plugin": "bash_runner"
+        }, "cloudify.interfaces.lifecycle.delete": {
+        "operation": "tasks.run",
+        "plugin": "bash_runner"
+        }, "cloudify.interfaces.lifecycle.create": {
+        "operation": "tasks.run",
+        "plugin": "bash_runner"
+        }, "create": {
+        "operation": "tasks.run",
+        "plugin": "bash_runner"
+        }, "cloudify.interfaces.lifecycle.stop": {
+        "operation": "tasks.run",
+        "plugin": "bash_runner"
+        }, "stop": {
+        "operation": "tasks.run",
+        "plugin": "bash_runner"
+        }, "start": {
+        "operation": "tasks.run",
+        "plugin": "bash_runner"
+        }, "cloudify.interfaces.lifecycle.configure": {
+        "operation": "tasks.run",
+        "plugin": "bash_runner"
+        }, "delete": {
+        "operation": "tasks.run",
+        "plugin": "bash_runner"
+        }, "configure": {
+        "operation": "tasks.run",
+        "plugin": "bash_runner"
+        }
+        },
+        "relationships": [{
+        "source_operations": {},
+        "target_operations": {},
+        "type_hierarchy": ["cloudify.relationships.depends_on", "cloudify.relationships.contained_in"],
+        "target_interfaces": {
+        "cloudify.interfaces.relationship_lifecycle": ["preconfigure", "postconfigure", "establish", "unlink"]
+        },
+        "target_id": "nodejs_vm",
+        "state": "reachable",
+        "base": "contained",
+        "source_interfaces": {
+        "cloudify.interfaces.relationship_lifecycle": ["preconfigure", "postconfigure", "establish", "unlink"]
+        },
+        "type": "cloudify.relationships.contained_in",
+        "properties": {
+        "connection_type": "all_to_all"
+        }
+        }],
+        "declared_type": "nodejs_server",
+        "name": "nodejs",
+        "type_hierarchy": ["cloudify.types.base", "cloudify.types.middleware_server", "cloudify.types.app_server", "cloudify.types.bash.app_server", "nodejs_server"],
+        "properties": {
+        "cloudify_runtime": {},
+        "scripts": {
+        "create": "nodejs-scripts/install-nodejs.sh"
+        }
+        },
+        "instances": {
+        "deploy": 1
+        },
+        "plugins": {
+        "bash_runner": {
+        "url": "https://github.com/cloudify-cosmo/cloudify-bash-plugin/archive/develop.zip",
+        "agent_plugin": "true",
+        "name": "bash_runner",
+        "manager_plugin": "false"
+        }
+        },
+        "host_id": "nodejs_vm",
+        "type": "nodejs_server",
+        "id": "nodejs"
+        }, {
+        "operations": {
+        "uninstall": {
+        "operation": "tasks.uninstall",
+        "plugin": "worker_installer"
+        },
+        "cloudify.interfaces.worker_installer.uninstall": {
+        "operation": "tasks.uninstall",
+        "plugin": "worker_installer"
+        },
+        "cloudify.interfaces.lifecycle.stop": {
+        "operation": "server.stop",
+        "plugin": "nova_plugin"
+        },
+        "cloudify.interfaces.lifecycle.delete": {
+        "operation": "server.delete",
+        "plugin": "nova_plugin"
+        },
+        "cloudify.interfaces.worker_installer.stop": {
+        "operation": "tasks.stop",
+        "plugin": "worker_installer"
+        },
+        "cloudify.interfaces.worker_installer.restart": {
+        "operation": "tasks.restart",
+        "plugin": "worker_installer"
+        },
+        "cloudify.interfaces.host.get_state": {
+        "operation": "server.get_state",
+        "plugin": "nova_plugin"
+        },
+        "get_state": {
+        "operation": "server.get_state",
+        "plugin": "nova_plugin"
+        },
+        "cloudify.interfaces.lifecycle.start": {
+        "operation": "server.start",
+        "plugin": "nova_plugin"
+        },
+        "cloudify.interfaces.plugin_installer.install": {
+        "operation": "tasks.install",
+        "plugin": "plugin_installer"
+        },
+        "cloudify.interfaces.worker_installer.install": {
+        "operation": "tasks.install",
+        "plugin": "worker_installer"
+        },
+        "cloudify.interfaces.worker_installer.start": {
+        "operation": "tasks.start",
+        "plugin": "worker_installer"
+        },
+        "restart": {
+        "operation": "tasks.restart",
+        "plugin": "worker_installer"
+        },
+        "delete": {
+        "operation": "server.delete",
+        "plugin": "nova_plugin"
+        }
+        },
+        "relationships": [{
+        "source_operations": {},
+        "target_operations": {},
+        "type_hierarchy": ["cloudify.relationships.depends_on", "cloudify.relationships.connected_to"],
+        "target_interfaces": {
+        "cloudify.interfaces.relationship_lifecycle": ["preconfigure", "postconfigure", "establish", "unlink"]
+        },
+        "target_id": "neutron_port2",
+        "state": "reachable",
+        "base": "connected",
+        "source_interfaces": {
+        "cloudify.interfaces.relationship_lifecycle": ["preconfigure", "postconfigure", "establish", "unlink"]
+        },
+        "type": "cloudify.relationships.connected_to",
+        "properties": {
+        "connection_type": "all_to_all"
+        }
+        }, {
+        "source_operations": {
+        "unlink": {
+        "operation": "server.disconnect_floatingip",
+        "plugin": "nova_plugin"
+        },
+        "establish": {
+        "operation": "server.connect_floatingip",
+        "plugin": "nova_plugin"
+        },
+        "cloudify.interfaces.relationship_lifecycle.unlink": {
+        "operation": "server.disconnect_floatingip",
+        "plugin": "nova_plugin"
+        },
+        "cloudify.interfaces.relationship_lifecycle.establish": {
+        "operation": "server.connect_floatingip",
+        "plugin": "nova_plugin"
+        }
+        },
+        "target_operations": {},
+        "type_hierarchy": ["cloudify.relationships.depends_on", "cloudify.relationships.connected_to", "cloudify.openstack.server_connected_to_floating_ip"],
+        "target_interfaces": {
+        "cloudify.interfaces.relationship_lifecycle": ["preconfigure", "postconfigure", "establish", "unlink"]
+        },
+        "target_id": "floatingip",
+        "state": "reachable",
+        "base": "connected",
+        "source_interfaces": {
+        "cloudify.interfaces.relationship_lifecycle": ["preconfigure", "postconfigure", {
+        "establish": "nova_plugin.server.connect_floatingip"
+        }, {
+        "unlink": "nova_plugin.server.disconnect_floatingip"
+        }]
+        },
+        "type": "cloudify.openstack.server_connected_to_floating_ip",
+        "properties": {
+        "connection_type": "all_to_all"
+        }
+        }],
+        "declared_type": "vm_host",
+        "name": "nodejs_vm",
+        "type_hierarchy": ["cloudify.types.base", "cloudify.types.host", "cloudify.openstack.server", "vm_host"],
+        "properties": {
+        "nova_config": {},
+        "neutron_config": {},
+        "cloudify_agent": {},
+        "worker_config": {
+        "user": "ubuntu",
+        "key": "~/.ssh/cloudify-agents-kp.pem",
+        "port": 22
+        },
+        "ip": "",
+        "management_network_name": "cloudify-admin-network",
+        "server": {
+        "key_name": "cloudify-agents-kp",
+        "image": "8672f4c6-e33d-46f5-b6d8-ebbeba12fa02",
+        "flavor": 101
+        },
+        "install_agent": true,
+        "cloudify_runtime": {}
+        },
+        "instances": {
+        "deploy": 1
+        },
+        "management_plugins_to_install": [{
+        "url": "https://github.com/cloudify-cosmo/cloudify-openstack-plugin/archive/develop.zip",
+        "agent_plugin": "false",
+        "name": "nova_plugin",
+        "manager_plugin": "true"
+        }],
+        "plugins": {
+        "nova_plugin": {
+        "url": "https://github.com/cloudify-cosmo/cloudify-openstack-plugin/archive/develop.zip",
+        "agent_plugin": "false",
+        "name": "nova_plugin",
+        "manager_plugin": "true"
+        },
+        "plugin_installer": {
+        "url": "plugin_installer.zip",
+        "agent_plugin": "true",
+        "name": "plugin_installer",
+        "manager_plugin": "false"
+        },
+        "worker_installer": {
+        "url": "worker_installer.zip",
+        "agent_plugin": "false",
+        "name": "worker_installer",
+        "manager_plugin": "true"
+        }
+        },
+        "host_id": "nodejs_vm",
+        "type": "vm_host",
+        "id": "nodejs_vm",
+        "plugins_to_install": [{
+        "url": "https://github.com/cloudify-cosmo/cloudify-bash-plugin/archive/develop.zip",
+        "agent_plugin": "true",
+        "name": "bash_runner",
+        "manager_plugin": "false"
+        }, {
+        "folder": "nodecellar-config-plugin",
+        "agent_plugin": "true",
+        "name": "nodecellar_config_plugin",
+        "manager_plugin": "false"
+        }]
+        }],
+        "workflow_plugins_to_install": [{
+        "url": "workflows.zip",
+        "agent_plugin": "false",
+        "name": "workflows",
+        "manager_plugin": "true"
+        }]
+    }
 }
