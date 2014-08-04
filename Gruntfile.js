@@ -385,13 +385,20 @@ module.exports = function (grunt) {
         ]);
     });
 
-    grunt.registerTask('test', [
-        'clean:server',
-        'concurrent:test',
-        'connect:test',
-        'karma',
-        'jasmine_node'
-    ]);
+    grunt.registerTask('test', function(testBackend) {
+        var tasks = [
+            'clean:server',
+            'concurrent:test',
+            'connect:test',
+            'karma'
+        ];
+
+        if(testBackend === 'backend') {
+            tasks.push('jasmine_node');
+        }
+
+        grunt.task.run(tasks);
+    });
 
     grunt.registerTask('build', function () {
 
@@ -411,7 +418,7 @@ module.exports = function (grunt) {
         grunt.task.run(tasks);
     });
 
-    grunt.registerTask('backend', function() {
+    grunt.registerTask('backend-lint', function() {
         grunt.config.set('jshint.options.jshintrc', '.backendhintrc');
         grunt.task.run('jshint:backend');
     });
@@ -420,6 +427,6 @@ module.exports = function (grunt) {
         'jshint',
         'test',
         'build',
-        'backend'
+        'backend-lint'
     ]);
 };
