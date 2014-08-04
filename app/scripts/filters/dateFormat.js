@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('cosmoUiApp')
+angular.module('cosmoUiApp', [])
     .filter('dateFormat', function myDateFormat($filter) {
         return function (text, newformat) {
             Date.fromISO = (function () {

@@ -3,7 +3,7 @@
 describe('Filter: dateFormat', function () {
 
     // load the filter's module
-    beforeEach(module('cosmoUiApp'));
+    beforeEach(module('cosmoUiApp', 'ngMock'));
 
     // initialize a new instance of the filter before each test
     var dateFormat;
