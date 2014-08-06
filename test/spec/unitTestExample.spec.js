@@ -2,17 +2,21 @@
 
 describe('Tested component name', function () {
 
-    // load the component's module
-    beforeEach(module('cosmoUiApp', 'ngMock'));
+    describe('Test setup', function() {
+        it('Injecting required data & initializing a new instance', function() {
+            // load the filter's module
+            module('cosmoUiApp', 'ngMock');
 
-    // initialize a new instance of the component before each test
-    beforeEach(
-        inject(function (/* Inject the component */) {
+            // initialize a new instance of the filter
+            inject(function (/* Inject the component */) {
 
-        })
-    );
+            });
+        });
+    });
 
-    it('should do something', function() {
-        expect(/* Something that was tested */).toBe(/* Test result expectation */);
+    describe('Unit tests', function() {
+        it('should do something', function() {
+            expect(/* Something that was tested */).toBe(/* Test result expectation */);
+        });
     });
 });
