@@ -22,7 +22,15 @@ var cloudify4node;
 var log4js = require('log4js');
 var logger = log4js.getLogger('server');
 var influx = require('influx');
+var fs = require('fs');
 
+fs.mkdir('logs', function(e) {
+    if (!e) {
+        logger.debug('logs folder was created');
+    } else {
+        logger.debug('folder /logs already exist :: ' + e);
+    }
+});
 
 if (conf.useMock) {
     cloudify4node = require('./backend/Cloudify4node-mock');
