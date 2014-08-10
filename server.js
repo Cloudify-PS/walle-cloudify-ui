@@ -310,6 +310,15 @@ app.get('/backend/configuration', function (request, response) {
     response.json(dto);
 });
 
+app.get('/backend/version/check', function(request, response) {
+    var currentVersion = request.query.version;
+//    http.get('http://www.getcloudify.org/latestversion?version=' + currentVersion, function(res) {
+//        response.send(res);
+//    }).on('error', function(e) {
+//        response.send('Got error: ' + e.message);
+//    });
+});
+
 
 // our custom 'verbose errors' setting
 // which we can use in the templates

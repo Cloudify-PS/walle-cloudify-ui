@@ -96,6 +96,7 @@ angular.module('cosmoUiApp', [
             .then(function(data){
                 if(data.hasOwnProperty('version')) {
                     appConfig.versions.ui = data.version;
+                    RestService.checkVersion(data.version);
                 }
             });
 
