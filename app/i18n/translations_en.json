@@ -4,6 +4,11 @@
         "title": "App Status",
         "time": "Time left"
     },
+    "version": {
+        "updated": "Your version is up to date",
+        "updateAvailable": "New version is available:",
+        "download": "Download"
+    },
     "blueprints": {
         "uploadBtn": "Upload Blueprint",
         "table": {

@@ -97,6 +97,21 @@ html, body, .layout {
   background-size: contain;
 }
 
+.version-check {
+  color: #ccc;
+  font-size: 11px;
+  position: absolute;
+  top: 10px;
+  right: 20px;
+
+  a {
+    color: $clr-base-19;
+    &:hover {
+      color: #fff;
+    }
+  }
+}
+
 .search-box {
   width: 184px;
   height: 32px;

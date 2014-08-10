@@ -311,7 +311,7 @@ app.get('/backend/configuration', function (request, response) {
     response.json(dto);
 });
 
-app.get('/backend/version/check', function(request, response) {
+app.get('/backend/version/latest', function(request, response) {
     var currentVersion = request.query.version;
     http.get('http://www.gigaspaces.com/downloadgen/latest-cloudify-version?build=' + currentVersion, function(res) {
         res.on("data", function(chunk) {

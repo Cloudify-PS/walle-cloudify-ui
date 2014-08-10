@@ -316,15 +316,15 @@ angular.module('cosmoUiApp')
             return _load('monitor/memory', callParams);
         }
 
-        function _checkVersion(version) {
+        function _getLatestVersion(version) {
             var callParams = {
-                url: '/backend/version/check',
+                url: '/backend/version/latest',
                 method: 'GET',
                 params: {
                     version: version
                 }
             };
-            return _load('version/check', callParams);
+            return _load('version/latest', callParams);
         }
 
         this.loadBlueprints = _loadBlueprints;
@@ -357,5 +357,5 @@ angular.module('cosmoUiApp')
         this.getMonitorGrpahs = _getMonitorGrpahs;
         this.getMonitorCpu = _getMonitorCpu;
         this.getMonitorMemory = _getMonitorMemory;
-        this.checkVersion = _checkVersion;
+        this.getLatestVersion = _getLatestVersion;
     });

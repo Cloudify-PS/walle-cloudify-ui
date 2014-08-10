@@ -76,8 +76,7 @@ angular.module('cosmoUiApp', [
     .value('appConfig', {
         versions: {
             ui: '0.0',
-            manager: '0.0',
-            latest: ''
+            manager: '0.0'
         }
     })
     .run(['I18next', 'RestService', '$log', 'appConfig', function(I18next, RestService, $log, appConfig) {
@@ -97,9 +96,6 @@ angular.module('cosmoUiApp', [
             .then(function(data){
                 if(data.hasOwnProperty('version')) {
                     appConfig.versions.ui = data.version;
-                    RestService.checkVersion(data.version.split('.').join('')).then(function(ver) {
-                        appConfig.versions.latest = ver;
-                    });
                 }
             });
 
