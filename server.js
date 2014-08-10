@@ -318,7 +318,7 @@ app.get('/backend/version/latest', function(request, response) {
             response.send(chunk);
         });
     }).on('error', function(e) {
-//        response.send('Got error: ' + e.message);
+        response.send('Got error: ' + e.message);
     });
 });
 
