@@ -23,6 +23,7 @@ var log4js = require('log4js');
 var logger = log4js.getLogger('server');
 var influx = require('influx');
 var fs = require('fs');
+var http = require('http');
 
 fs.mkdir('logs', function(e) {
     if (!e) {
@@ -312,11 +313,13 @@ app.get('/backend/configuration', function (request, response) {
 
 app.get('/backend/version/check', function(request, response) {
     var currentVersion = request.query.version;
-//    http.get('http://www.getcloudify.org/latestversion?version=' + currentVersion, function(res) {
-//        response.send(res);
-//    }).on('error', function(e) {
+    http.get('http://www.gigaspaces.com/downloadgen/latest-cloudify-version?build=' + currentVersion, function(res) {
+        res.on("data", function(chunk) {
+            response.send(chunk);
+        });
+    }).on('error', function(e) {
 //        response.send('Got error: ' + e.message);
-//    });
+    });
 });
 
 
