@@ -17,10 +17,13 @@ function run_command
       	fi   
 }
 
-if [ -d dist ]
-then
-	sudo rm -rf dist/*
-fi
+
+[ -d dist ] && sudo rm -rf dist
+[ -d node_modules ] && sudo rm -rf node_modules
+
+sudo npm cache clean
+sudo bower cache clean
+
 retry "npm install"
 retry "bower install -force"
 retry "bower update -force"
