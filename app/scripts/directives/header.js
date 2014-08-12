@@ -4,8 +4,10 @@ angular.module('cosmoUiApp')
     .directive('header', function ($log, RestService, appConfig) {
         return {
             templateUrl: 'views/headerTemplate.html',
-            restrict: ' A',
+            restrict: 'A',
             link: function postLink(scope, element) {
+                scope.updateVersion = false;
+
                 scope.loggedUser = {
                     name: 'John Doe'
                 };
