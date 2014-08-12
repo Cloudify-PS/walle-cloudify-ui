@@ -64,6 +64,9 @@ angular.module('cosmoUiApp', [
                 templateUrl: 'views/interface.html',
                 controller: 'InterfaceCtrl'
             })
+            .when('/grafana', {
+                templateUrl: 'views/grafana.html'
+            })
             .when('/config', {
                 templateUrl: 'views/config.html',
                 controller: 'ConfigCtrl'
