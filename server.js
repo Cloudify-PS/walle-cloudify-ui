@@ -314,7 +314,7 @@ app.get('/backend/configuration', function (request, response) {
 app.get('/backend/version/latest', function(request, response) {
     var currentVersion = request.query.version;
     http.get('http://www.gigaspaces.com/downloadgen/latest-cloudify-version?build=' + currentVersion, function(res) {
-        res.on("data", function(chunk) {
+        res.on('data', function(chunk) {
             response.send(chunk);
         });
     }).on('error', function(e) {
