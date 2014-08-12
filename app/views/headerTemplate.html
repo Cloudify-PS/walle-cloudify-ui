@@ -1,5 +1,9 @@
 
 <div class="logo"></div>
+<div class="version-check">
+    <div id="updated" ng-show="!updateVersion">{{ 'version.updated' | i18n }}</div>
+    <div id="notUpdated" ng-show="!!updateVersion">{{ 'version.updateAvailable' | i18n }} <a href="http://getcloudify.org/downloads/get_cloudify_3x.html">{{ 'version.download' | i18n }}</a></div>
+</div>
 
 <!--
 <div class="current-user">

@@ -362,6 +362,15 @@ module.exports = function (grunt) {
                     ]
                 }
             }
+        },
+        html2js: {
+            options: {
+                base: 'app'
+            },
+            main: {
+                src: ['app/views/**/*.html'],
+                dest: '.tmp/viewTemplates/templates.js'
+            }
         }
     });
 
@@ -384,6 +393,7 @@ module.exports = function (grunt) {
         'clean:server',
         'concurrent:test',
         'connect:test',
+        'html2js',
         'karma'
     ]);
 
