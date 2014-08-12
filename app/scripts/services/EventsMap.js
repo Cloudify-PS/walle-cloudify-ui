@@ -69,6 +69,11 @@ angular.module('cosmoUiApp')
                 icon: 'event-icon-task-failed',
                 class: 'event-text-red'
             },
+            'task_retried': {
+                text: 'Task Retried',
+                icon: 'event-icon-task-retried',
+                class: 'event-text-red'
+            },
             'policy_success': {
                 text: 'Policy end successfully started',
                 icon: 'event-icon-policy-success',
