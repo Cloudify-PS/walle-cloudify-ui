@@ -31,7 +31,6 @@ module.exports = function (grunt) {
 
     // load all grunt tasks
     require('matchdep').filterDev('grunt-*').forEach(grunt.loadNpmTasks);
-//    grunt.loadNpmTasks('grunt-jasmine-node');
 
     // configurable paths
     var yeomanConfig = {
@@ -394,20 +393,13 @@ module.exports = function (grunt) {
         ]);
     });
 
-    grunt.registerTask('test', function(testBackend) {
-        var tasks = [
-            'clean:server',
-            'concurrent:test',
-            'connect:test',
-            'karma'
-        ];
-
-        if(testBackend === 'backend') {
-            tasks.push('jasmine_node');
-        }
-
-        grunt.task.run(tasks);
-    });
+    grunt.registerTask('test', [
+        'clean:server',
+        'concurrent:test',
+        'connect:test',
+        'html2js',
+        'karma'
+    ]);
 
     grunt.registerTask('build', function () {
 
