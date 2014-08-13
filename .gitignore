@@ -14,7 +14,6 @@ app/dev
 conf/dev
 *.log
 **/*.log*
-logs/
 settings.json
 *.tgz
 backend/tmp

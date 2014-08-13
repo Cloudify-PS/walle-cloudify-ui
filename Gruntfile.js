@@ -287,7 +287,7 @@ module.exports = function (grunt) {
                         src: [
                             '*.{ico,png,txt}',
                             '.htaccess',
-                            'bower_components/**/*.{ttf,svg,gif,png}',
+                            'bower_components/**/*.{ttf,woff,eot,svg,gif,png}',
                             'i18n/{,*/}*.json',
                             'images/{,*/}*.{gif,webp,svg}',
                             'styles/fonts/*'
@@ -367,6 +367,15 @@ module.exports = function (grunt) {
         jasmine_node: {
             unit: ['test/backend/unit/jasmine/'],
             integration: ['test/backend/integration/jasmine/']
+        },
+        html2js: {
+            options: {
+                base: 'app'
+            },
+            main: {
+                src: ['app/views/**/*.html'],
+                dest: '.tmp/viewTemplates/templates.js'
+            }
         }
     });
 
