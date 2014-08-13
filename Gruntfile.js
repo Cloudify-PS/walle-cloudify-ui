@@ -427,7 +427,7 @@ module.exports = function (grunt) {
         grunt.task.run(tasks);
     });
 
-    grunt.registerTask('backend-lint', function() {
+    grunt.registerTask('backend', function() {
         grunt.config.set('jshint.options.jshintrc', '.backendhintrc');
         grunt.task.run('jshint:backend');
     });
@@ -436,6 +436,6 @@ module.exports = function (grunt) {
         'jshint',
         'test',
         'build',
-        'backend-lint'
+        'backend'
     ]);
 };
