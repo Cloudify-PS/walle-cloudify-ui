@@ -107,6 +107,14 @@ Cloudify4node.getBlueprints = function(callback) {
 }
 
 Cloudify4node.addBlueprint = function(application_archive, blueprint_id, callback) {
+    if (blueprint_id === undefined) {
+        callback(400, {
+            "status": 400,
+            "message": "400: Invalid blueprint name",
+            "error_code": "Blueprint name required"
+        });
+        return;
+    }
     var myFile = application_archive;
     var path = '/blueprints' + (blueprint_id === undefined ? '' : '/' + blueprint_id);
     var options = {
