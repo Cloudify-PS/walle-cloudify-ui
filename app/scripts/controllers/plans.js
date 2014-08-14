@@ -88,7 +88,7 @@ angular.module('cosmoUiApp')
             for (var nodeId in nodesList) {
                 var node = nodesList[nodeId];
                 node.class = _getNodeClass(node.type_hierarchy);
-                node.isApp = _isAppNode(node);
+                node.isApp = _isAppNode(node.type_hierarchy);
 
                 if (node.relationships !== undefined && !_isIgnoreNode(node)) {
                     for (var i = 0; i < node.relationships.length; i++) {
@@ -118,8 +118,8 @@ angular.module('cosmoUiApp')
             return roots.reverse();
         }
 
-        function _isAppNode(node) {
-            return node.type_hierarchy.indexOf('cloudify-types-app-module') > 0;
+        function _isAppNode(typeHierarchy) {
+            return typeHierarchy.indexOf('cloudify-types-app-module') > 0;
         }
 
         function _isIgnoreNode(node) {
@@ -138,9 +138,9 @@ angular.module('cosmoUiApp')
         function _getNodeDataType(node) {
             if (!node.isContained && node.children !== undefined) {
                 return 'compute';
-            } else if (node.isContained && !_isAppNode(node)) {
+            } else if (node.isContained && !_isAppNode(node.type_hierarchy)) {
                 return 'middleware';
-            } else if (node.isContained && _isAppNode(node)) {
+            } else if (node.isContained && _isAppNode(node.type_hierarchy)) {
                 return 'modules';
             }
         }
