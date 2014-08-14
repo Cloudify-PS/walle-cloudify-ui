@@ -119,11 +119,7 @@ angular.module('cosmoUiApp')
         }
 
         function _isAppNode(node) {
-            var networkNodes = [
-                'nodejs_app'
-            ];
-
-            return networkNodes.indexOf(node.type) !== -1;
+            return node.type_hierarchy.indexOf('cloudify-types-app-module') > 0;
         }
 
         function _isIgnoreNode(node) {
