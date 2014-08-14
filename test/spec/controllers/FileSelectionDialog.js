@@ -2,23 +2,57 @@
 
 describe('Controller: FileSelectionDialogCtrl', function () {
 
-    var FileSelectionDialogCtrl, scope;
+    var FileSelectionDialogCtrl, scope, fileData;
 
     // load the controller's module
     beforeEach(module('cosmoUiApp', 'ngMock'));
 
     // Initialize the controller and a mock scope
     describe('Test setup', function() {
-        it ('', inject(function ($controller, $rootScope, $httpBackend) {
-            $httpBackend.whenGET("/backend/configuration?access=all").respond(200);
-            $httpBackend.whenGET("/backend/versions/ui").respond(200);
-            $httpBackend.whenGET("/backend/versions/manager").respond(200);
-            $httpBackend.whenGET("/backend/version/latest?version=00").respond('300');
+        it ('', inject(function ($controller, $rootScope, $httpBackend, RestService) {
+            $httpBackend.whenGET('/backend/configuration?access=all').respond(200);
+            $httpBackend.whenGET('/backend/versions/ui').respond(200);
+            $httpBackend.whenGET('/backend/versions/manager').respond(200);
+            $httpBackend.whenGET('/backend/version/latest?version=00').respond('300');
 
             scope = $rootScope.$new();
 
+            RestService.addBlueprint = function(data, successCallback, errorCallback) {
+                $.ajax({
+                    url: 'http://cosmo.gsdev.info/backend/blueprints/add',
+                    data: data,
+                    type: 'POST',
+                    contentType: false,
+                    processData: false,
+                    cache: false,
+                    success: function(data) {
+                        successCallback(data);
+                    },
+                    error: function(e) {
+                        errorCallback(e);
+                    }
+                });
+            }
+
+            fileData = {
+                "fieldName": "application_archive",
+                "originalFilename": "blueprint.tar.gz",
+                "path": "./test/backend/resources/blueprint/blueprint.tar.gz",
+                "headers": {
+                    "content-disposition": "form-data; name='application_archive'; filename='blueprint.tar.gz'",
+                    "content-type": "application/x-gzip"
+                },
+                "ws": {
+                    "path": "./test/backend/resources/blueprint/blueprint.tar.gz"
+                },
+                "size": 9141,
+                "name": "blueprint.tar.gz",
+                "type": "application/x-gzip"
+            };
+
             FileSelectionDialogCtrl = $controller('FileSelectionDialogCtrl', {
-                $scope: scope
+                $scope: scope,
+                RestService: RestService
             });
         }));
     });
@@ -29,7 +63,16 @@ describe('Controller: FileSelectionDialogCtrl', function () {
         });
 
         it('should require a blueprint name', function() {
+            scope.selectedFile = fileData;
+            scope.uploadFile();
 
+            waitsFor(function() {
+                return scope.uploadError === true;
+            });
+
+            runs(function() {
+                expect(scope.errorMessage).toBe('400: Invalid blueprint name');
+            });
         });
     });
 });

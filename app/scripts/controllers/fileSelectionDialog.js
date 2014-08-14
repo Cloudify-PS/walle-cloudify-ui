@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('cosmoUiApp')
-    .controller('FileSelectionDialogCtrl', function ($scope, $log) {
+    .controller('FileSelectionDialogCtrl', function ($scope, $log, RestService) {
         var selectedFile = null;
         $scope.uploadEnabled = false;
         $scope.uploadInProcess = false;
@@ -30,14 +30,8 @@ angular.module('cosmoUiApp')
             $scope.uploadInProcess = true;
             $scope.uploadError = false;
 
-            $.ajax({
-                url: '/backend/blueprints/add',
-                data: planForm,
-                type: 'POST',
-                contentType: false,
-                processData: false,
-                cache: false,
-                success: function(data) {
+            RestService.addBlueprint(planForm,
+                function(data) {
                     if ($scope.blueprintName === undefined || $scope.blueprintName === '') {
                         $scope.blueprintName = JSON.parse(data).id;
                     }
@@ -48,7 +42,7 @@ angular.module('cosmoUiApp')
 
                     $scope.uploadDone($scope.blueprintName);
                 },
-                error: function(e) {
+                function(e) {
                     var responseText = null;
                     try {
                         responseText = JSON.parse(e.responseText);
@@ -63,8 +57,7 @@ angular.module('cosmoUiApp')
                         $scope.uploadError = true;
                         $scope.uploadInProcess = false;
                     });
-                }
-            });
+                });
         };
 
         $scope.closeDialog = function() {
