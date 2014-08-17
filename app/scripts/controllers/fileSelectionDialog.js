@@ -50,7 +50,6 @@ angular.module('cosmoUiApp')
                     } catch (e) {}
 
                     if(responseText && responseText.hasOwnProperty('message')) {
-                        console.log('message', responseText.message);
                         $scope.errorMessage = responseText.message;
                     } else if(e.hasOwnProperty('statusText')) {
                         $scope.errorMessage = e.statusText;
