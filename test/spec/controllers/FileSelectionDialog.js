@@ -2,7 +2,7 @@
 
 describe('Controller: FileSelectionDialogCtrl', function () {
 
-    var FileSelectionDialogCtrl, scope, fileData;
+    var FileSelectionDialogCtrl, scope;
 
     // load the controller's module
     beforeEach(module('cosmoUiApp', 'ngMock'));
@@ -18,37 +18,10 @@ describe('Controller: FileSelectionDialogCtrl', function () {
             scope = $rootScope.$new();
 
             RestService.addBlueprint = function(data, successCallback, errorCallback) {
-                $.ajax({
-                    url: 'http://localhost:9001/backend/blueprints/add',    //'http://cosmo.gsdev.info/backend/blueprints/add'
-                    data: data,
-                    type: 'POST',
-                    contentType: false,
-                    processData: false,
-                    cache: false,
-                    success: function(data) {
-                        successCallback(data);
-                    },
-                    error: function(e) {
-                        e.responseText = '{"status": 400, "message": "400: Invalid blueprint name", "error_code": "Blueprint name required"}';
-                        errorCallback(e);
-                    }
-                });
-            };
-
-            fileData = {
-                "fieldName": "application_archive",
-                "originalFilename": "blueprint.tar.gz",
-                "path": "./test/backend/resources/blueprint/blueprint.tar.gz",
-                "headers": {
-                    "content-disposition": "form-data; name='application_archive'; filename='blueprint.tar.gz'",
-                    "content-type": "application/x-gzip"
-                },
-                "ws": {
-                    "path": "~/Projects/cosmo-ui/test/backend/resources/blueprint/blueprint.tar.gz"
-                },
-                "size": 9141,
-                "name": "blueprint.tar.gz",
-                "type": "application/x-gzip"
+                var e = {
+                    "responseText": '{"status": 400  , "message": "400: Invalid blueprint name", "error_code": "Blueprint name required"}'
+                };
+                errorCallback(e);
             };
 
             FileSelectionDialogCtrl = $controller('FileSelectionDialogCtrl', {
@@ -64,7 +37,7 @@ describe('Controller: FileSelectionDialogCtrl', function () {
         });
 
         it('should require a blueprint name', function() {
-            scope.selectedFile = fileData;
+            scope.selectedFile = {};
             scope.uploadFile();
 
             waitsFor(function() {

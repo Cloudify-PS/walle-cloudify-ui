@@ -43,12 +43,14 @@ angular.module('cosmoUiApp')
                     $scope.uploadDone($scope.blueprintName);
                 },
                 function(e) {
+
                     var responseText = null;
                     try {
                         responseText = JSON.parse(e.responseText);
                     } catch (e) {}
 
                     if(responseText && responseText.hasOwnProperty('message')) {
+                        console.log('message', responseText.message);
                         $scope.errorMessage = responseText.message;
                     } else if(e.hasOwnProperty('statusText')) {
                         $scope.errorMessage = e.statusText;
