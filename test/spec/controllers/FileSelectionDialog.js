@@ -9,7 +9,7 @@ describe('Controller: FileSelectionDialogCtrl', function () {
 
     // Initialize the controller and a mock scope
     describe('Test setup', function() {
-        it ('', inject(function ($controller, $rootScope, $httpBackend, RestService) {
+        it ('', inject(function ($controller, $rootScope, $httpBackend, $q, RestService) {
             $httpBackend.whenGET('/backend/configuration?access=all').respond(200);
             $httpBackend.whenGET('/backend/versions/ui').respond(200);
             $httpBackend.whenGET('/backend/versions/manager').respond(200);
@@ -19,7 +19,7 @@ describe('Controller: FileSelectionDialogCtrl', function () {
 
             RestService.addBlueprint = function(data, successCallback, errorCallback) {
                 $.ajax({
-                    url: 'http://cosmo.gsdev.info/backend/blueprints/add',
+                    url: 'http://localhost:9001/backend/blueprints/add',    //'http://cosmo.gsdev.info/backend/blueprints/add'
                     data: data,
                     type: 'POST',
                     contentType: false,
@@ -29,10 +29,11 @@ describe('Controller: FileSelectionDialogCtrl', function () {
                         successCallback(data);
                     },
                     error: function(e) {
+                        e.responseText = '{"status": 400, "message": "400: Invalid blueprint name", "error_code": "Blueprint name required"}';
                         errorCallback(e);
                     }
                 });
-            }
+            };
 
             fileData = {
                 "fieldName": "application_archive",
@@ -43,7 +44,7 @@ describe('Controller: FileSelectionDialogCtrl', function () {
                     "content-type": "application/x-gzip"
                 },
                 "ws": {
-                    "path": "./test/backend/resources/blueprint/blueprint.tar.gz"
+                    "path": "~/Projects/cosmo-ui/test/backend/resources/blueprint/blueprint.tar.gz"
                 },
                 "size": 9141,
                 "name": "blueprint.tar.gz",
