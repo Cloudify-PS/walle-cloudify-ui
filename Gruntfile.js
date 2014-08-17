@@ -363,6 +363,10 @@ module.exports = function (grunt) {
                 }
             }
         },
+        jasmine_node: {
+            unit: ['test/backend/unit/jasmine/'],
+            integration: ['test/backend/integration/jasmine/']
+        },
         html2js: {
             options: {
                 base: 'app'
@@ -389,13 +393,21 @@ module.exports = function (grunt) {
         ]);
     });
 
-    grunt.registerTask('test', [
-        'clean:server',
-        'concurrent:test',
-        'connect:test',
-        'html2js',
-        'karma'
-    ]);
+    grunt.registerTask('test', function(testBackend) {
+        var tasks = [
+            'clean:server',
+            'concurrent:test',
+            'connect:test',
+            'html2js',
+            'karma'
+        ];
+
+        if(testBackend === 'backend') {
+            tasks.push('jasmine_node');
+        }
+
+        grunt.task.run(tasks);
+    });
 
     grunt.registerTask('build', function () {
 
