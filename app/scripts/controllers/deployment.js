@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('cosmoUiApp')
-    .controller('DeploymentCtrl', function ($scope, $rootScope, $cookieStore, $routeParams, RestService, EventsService, BreadcrumbsService, blueprintCoordinateService, bpNetworkService, $route, $anchorScroll, $timeout, $location, $log, EventsMap, monitoringGraphs, $localStorage, $filter) {
+    .controller('DeploymentCtrl', function ($scope, $rootScope, $cookieStore, $routeParams, RestService, EventsService, BreadcrumbsService, blueprintCoordinateService, bpNetworkService, $route, $anchorScroll, $timeout, $location, $log, EventsMap, monitoringGraphs, $localStorage, $filter, NodeService) {
 
         var statesIndex = ['uninitialized', 'initializing', 'creating', 'created', 'configuring', 'configured', 'starting', 'started'],
             isGotExecuteNodes = false;
@@ -458,7 +458,7 @@ angular.module('cosmoUiApp')
                             // Set Deployment Model
                             _setDeploymentModel(nodesList);
 
-                            $scope.nodesTree = _createNodesTree(nodesList);
+                            $scope.nodesTree = NodeService.createNodesTree(nodesList);
                             $scope.dataTable = nodes;
 
                             blueprintCoordinateService.resetCoordinates();
@@ -568,86 +568,6 @@ angular.module('cosmoUiApp')
                         RestService.autoPullStop('getDeploymentNodes');
                     });
                 });
-        }
-
-        function _createNodesTree(nodes) {
-            var roots = [];
-            var nodesIndexedList = [];
-
-            nodes.forEach(function(node) {
-                nodesIndexedList[node.id] = node;
-            });
-
-            for (var nodeId in nodesIndexedList) {
-                var node = nodesIndexedList[nodeId];
-                node.class = _getNodeClass(node.type_hierarchy);
-                node.isApp = _isAppNode(node);
-                node.dataType = _getNodeDataType(node);
-                node.state = {
-                    total: node.number_of_instances,
-                    completed: 0
-                };
-
-                if (node.relationships !== undefined && !_isIgnoreNode(node)) {
-                    for (var i = 0; i < node.relationships.length; i++) {
-                        if (node.relationships[i].type_hierarchy.join(',').indexOf('contained_in') > -1) {
-                            node.isContained = true;
-                            var target_id = node.relationships[i].target_id;
-                            if (nodesIndexedList[target_id].children === undefined) {
-                                nodesIndexedList[target_id].children = [];
-                            }
-                            nodesIndexedList[target_id].children.push(node);
-                        }
-                        if (i === node.relationships.length - 1 && node.isContained === undefined) {
-                            node.isContained = false;
-                        }
-                    }
-                    if (!node.isContained) {
-                        roots.push(node);
-                    }
-                } else if(!_isIgnoreNode(node) && !node.isContained){
-                    roots.push(node);
-                }
-            }
-
-            return roots.reverse();
-        }
-
-        function _isAppNode(node) {
-            var networkNodes = [
-                'nodejs_app'
-            ];
-
-            return networkNodes.indexOf(node.type) > -1;
-        }
-
-        function _isIgnoreNode(node) {
-            var networkNodes = [
-                'cloudify.openstack.floatingip',
-                'cloudify.openstack.network',
-                'cloudify.openstack.port',
-                'cloudify.openstack.subnet',
-                'cloudify.openstack.security_group'
-            ];
-
-            return networkNodes.indexOf(node.type) > -1;
-        }
-
-        function _getNodeDataType(node) {
-            if (!node.isContained && node.children !== undefined) {
-                return 'compute';
-            } else if (node.isContained && !_isAppNode(node)) {
-                return 'middleware';
-            } else if (node.isContained && _isAppNode(node)) {
-                return 'modules';
-            }
-        }
-
-        function _getNodeClass(typeHierarchy) {
-            for (var i = 0; i < typeHierarchy.length; i++) {
-                typeHierarchy[i] = typeHierarchy[i].split('.').join('-').split('_').join('-');
-            }
-            return typeHierarchy.join(' ');
         }
 
         function _getCurrentExecution(executions) {
