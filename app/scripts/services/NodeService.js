@@ -3,7 +3,7 @@
 angular.module('cosmoUiApp')
     .service('NodeService', function NodeService() {
 
-        function _createNodesTree(nodes, externalNetworks) {
+        function _createNodesTree(nodes) {
             var roots = [];
             var nodesList = [];
 
