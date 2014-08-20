@@ -157,6 +157,11 @@
                 vertical-align: middle;
             }
 
+            .buttons-group.sections {
+                margin-left: 20px;
+                vertical-align: top;
+            }
+
             .actions {
                 display: inline-block;
                 margin-left: 30px;
@@ -165,7 +170,7 @@
 
                 i {
                     position: relative;
-                    top: 2px;
+                    top: 0px;
                     left: 3px;
                     cursor: pointer;
                     width: 32px;

@@ -40,6 +40,10 @@ angular.module('cosmoUiApp', [
                 templateUrl: 'views/deployment.html',
                 controller: 'DeploymentCtrl'
             })
+            .when('/deployment/:deploymentId/monitoring', {
+                templateUrl: 'views/deployment/monitoring.html',
+                controller: 'DeploymentMonitoringCtrl'
+            })
             .when('/monitoring',{
                 templateUrl: 'views/blueprintsIndex.html'
             })
