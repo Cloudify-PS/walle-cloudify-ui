@@ -57,15 +57,16 @@ angular.module('cosmoUiApp')
 
         function _isIgnoreNode(node) {
             var networkNodes = [
-                'cloudify.openstack.floatingip',
-                'cloudify.openstack.network',
-                'cloudify.openstack.port',
-                'cloudify.openstack.subnet',
-                'cloudify.openstack.security_group',
+                'floatingip',
+                'network',
+                'port',
+                'subnet',
+                'security_group',
                 'subnet'
             ];
 
-            return networkNodes.indexOf(node.type) !== -1;
+            var searchExp = new RegExp(networkNodes.join('|'), 'gi');
+            return searchExp.test(node.type);
         }
 
         function _getNodeDataType(node) {

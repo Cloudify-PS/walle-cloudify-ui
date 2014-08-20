@@ -11,6 +11,12 @@ describe('Service: NodeService', function () {
             "type": "cloudify.openstack.floatingip"
         },
         {
+            "name": "floatingip",
+            "type_hierarchy": ["cloudify.types.base", "cloudify.types.virtual_ip", "cloudify.libcloud.floatingip"],
+            "id": "floatingip",
+            "type": "cloudify.libcloud.floatingip"
+        },
+        {
             "name": "nodejs_vm",
             "type_hierarchy": ["cloudify-types-base", "cloudify-types-host", "cloudify-openstack-server", "vm-host"],
             "id": "nodejs_vm",
@@ -55,9 +61,11 @@ describe('Service: NodeService', function () {
 
             expect(nodesTree.length).toBe(1);
             expect(nodesTree[0].type).not.toBe('cloudify.openstack.floatingip');
+            expect(nodesTree[0].type).not.toBe('cloudify.libcloud.floatingip');
             expect(nodesTree[0].children.length).toBe(1);
             expect(nodesTree[0].children[0].children).toBeUndefined();
             expect(nodesTree[0].children[0].type).not.toBe('cloudify.openstack.floatingip');
+            expect(nodesTree[0].children[0].type).not.toBe('cloudify.libcloud.floatingip');
         });
     });
 
