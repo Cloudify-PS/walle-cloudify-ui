@@ -86,7 +86,7 @@
             <div class="error-message" data-ng-show="delBlueprintError">{{ delBlueprintError }}</div>
             <div class="buttonsContainer confirmationButtons">
                 <button id="cancelBtnDelDep" class="dialogButton" ng-click="toggleDeleteDialog()">{{ 'blueprints.deleteDialog.cancelBtn' | i18n }}</button>
-                <button class="dialogButton" ng-click="confirmDeleteBlueprint()">{{ 'blueprints.deleteDialog.confirmBtn' | i18n }}</button>
+                <button class="dialogButton" ng-class="{loader: deleteInProcess}" ng-click="confirmDeleteBlueprint()">{{ 'blueprints.deleteDialog.confirmBtn' | i18n }}</button>
             </div>
         </div>
     </div>

@@ -7,6 +7,7 @@ angular.module('cosmoUiApp')
         $scope.isDeleteBlueprintVisible = false;
         $scope.lastExecutedPlan = null;
         $scope.selectedBlueprint = null;
+        $scope.deleteInProcess = false;
         var _blueprintsArr = [];
         var cosmoError = false;
         var currentBlueprintToDelete = null;
@@ -115,12 +116,14 @@ angular.module('cosmoUiApp')
         }
 
         function _deleteBlueprint() {
-            if(currentBlueprintToDelete !== null) {
+            if(currentBlueprintToDelete !== null && !$scope.deleteInProcess) {
+                $scope.deleteInProcess = true;
                 RestService.deleteBlueprint({id: currentBlueprintToDelete.id})
                     .then(function(data) {
                         $timeout(function() {
                             $scope.toggleDeleteDialog();
                             $scope.loadBlueprints();;
+                            $scope.deleteInProcess = false;
                         }, 500);
                     });
             }
