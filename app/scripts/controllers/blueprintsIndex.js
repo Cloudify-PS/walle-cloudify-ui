@@ -116,15 +116,15 @@ angular.module('cosmoUiApp')
 
         function _deleteBlueprint() {
             if(currentBlueprintToDelete !== null) {
-                console.log('currentBlueprintToDelete', currentBlueprintToDelete.id);
                 RestService.deleteBlueprint({id: currentBlueprintToDelete.id})
                     .then(function(data) {
-                        console.log('delete', data);
-                        $scope.loadBlueprints();
+                        $timeout(function() {
+                            $scope.toggleDeleteDialog();
+                            $scope.loadBlueprints();;
+                        }, 500);
                     });
             }
         }
 
         $scope.loadBlueprints();
-
     });

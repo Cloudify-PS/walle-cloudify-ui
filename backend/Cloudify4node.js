@@ -174,7 +174,6 @@ Cloudify4node.deleteBlueprint = function(blueprint_id, callback) {
         path: '/blueprints/' + blueprint_id,
         method: 'DELETE'
     });
-    console.log('blueprint_id', blueprint_id);
 
     createRequest(requestData, callback );
 }
