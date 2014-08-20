@@ -23,7 +23,7 @@
                 <td class="deployments"><div class="deployments-number" ng-click="redirectToDeployments(blueprint)">{{ blueprint.deployments.length }}</div></td>
                 <td class="actions">
                     <button class="deploy-button" ng-click="toggleDeployDialog(blueprint)">{{ 'blueprints.table.deployBtn' | i18n }}</button>
-
+                    <i class="delete-button fa fa-times-circle right close-properties-button" ng-click="deleteBlueprint(blueprint)"></i>
                     <!--i id="blueprint-down" class="fa  fa-chevron-circle-down"></i><i class="fa  fa-play-circle-o" ng-click="deployBlueprint(blueprint)"></i-->
                 </td>
             </tr>
@@ -73,6 +73,20 @@
             <div id="deploy-error-message" ng-show="isDeployError()">{{deployErrorMessage}}</div>
             <div class="buttonsContainer deployButtons">
                 <button id="deployBtn" class="dialogButton" ng-class="{disabled: !isDeployEnabled(), enabled: isDeployEnabled(), loader: inProcess}" ng-click="deployBlueprint(selectedBlueprint)">{{ 'blueprints.deployDialog.deployBtn' | i18n }}</button>
+            </div>
+        </div>
+    </div>
+
+    <div data-ng-show="isDeleteBlueprintVisible">
+        <div class="dialogBoxBg"></div>
+        <div id="deleteBlueprintDialog" class="dialogBox">
+            <div class="dialogTitle">Delete Blueprint</div>
+            <div class="dialogClose dialogButton" ng-click="toggleDeleteDialog()"></div>
+            <div class="dialogDescription">Are you sure you want to delete '{{ delBlueprintName }}'?</div>
+            <div class="error-message" data-ng-show="delBlueprintError">{{ delBlueprintError }}</div>
+            <div class="buttonsContainer confirmationButtons">
+                <button id="cancelBtnDelDep" class="dialogButton" ng-click="toggleDeleteDialog()">{{ 'blueprints.deleteDialog.cancelBtn' | i18n }}</button>
+                <button class="dialogButton" ng-click="confirmDeleteBlueprint()">{{ 'blueprints.deleteDialog.confirmBtn' | i18n }}</button>
             </div>
         </div>
     </div>

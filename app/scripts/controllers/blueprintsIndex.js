@@ -3,11 +3,13 @@
 angular.module('cosmoUiApp')
     .controller('BlueprintsIndexCtrl', function ($scope, $location, $cookieStore, RestService, BreadcrumbsService, $timeout, $log) {
         $scope.isAddDialogVisible = false;
-        $scope.isDeployDialogVisible = false;
+        $scope.isDeployDialogVisible = false
+        $scope.isDeleteBlueprintVisible = false;
         $scope.lastExecutedPlan = null;
         $scope.selectedBlueprint = null;
         var _blueprintsArr = [];
         var cosmoError = false;
+        var currentBlueprintToDelete = null;
 
         BreadcrumbsService.push('blueprints',
             {
@@ -28,6 +30,21 @@ angular.module('cosmoUiApp')
         $scope.toggleDeployDialog = function(blueprint) {
             $scope.selectedBlueprint = blueprint || null;
             $scope.isDeployDialogVisible = $scope.isDeployDialogVisible === false;
+        };
+
+        $scope.toggleDeleteDialog = function() {
+            $scope.isDeleteBlueprintVisible = $scope.isDeleteBlueprintVisible === false;
+        }
+
+        $scope.deleteBlueprint = function(blueprint) {
+            currentBlueprintToDelete = blueprint;
+            $scope.delBlueprintName = blueprint.id;
+            $scope.delBlueprintError = false;
+            $scope.toggleDeleteDialog();
+        };
+
+        $scope.confirmDeleteBlueprint = function() {
+            _deleteBlueprint();
         };
 
         $scope.loadBlueprints = function() {
@@ -95,6 +112,12 @@ angular.module('cosmoUiApp')
             }
 
             return nextIndex;
+        }
+
+        function _deleteBlueprint() {
+            if(currentBlueprintToDelete !== null) {
+                console.log('currentBlueprintToDelete', currentBlueprintToDelete.id);
+            }
         }
 
         $scope.loadBlueprints();
