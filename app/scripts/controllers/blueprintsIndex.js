@@ -119,7 +119,7 @@ angular.module('cosmoUiApp')
             if(currentBlueprintToDelete !== null && !$scope.deleteInProcess) {
                 $scope.deleteInProcess = true;
                 RestService.deleteBlueprint({id: currentBlueprintToDelete.id})
-                    .then(function(data) {
+                    .then(function() {
                         $timeout(function() {
                             $scope.toggleDeleteDialog();
                             $scope.loadBlueprints();;
