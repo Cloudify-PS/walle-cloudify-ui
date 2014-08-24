@@ -3,8 +3,7 @@
 angular.module('cosmoUiApp')
     .controller('DeploymentProgressPanelCtrl', function ($scope, $routeParams, EventsService) {
         var deployment_id = $routeParams.id;
-        var panelData = {};
-        $scope.panelData = panelData;
+        $scope.panelData = {};
         $scope.panelOpen = true;
 
         var events = EventsService.newInstance('/backend/events'),
@@ -58,9 +57,10 @@ angular.module('cosmoUiApp')
         });
 
         $scope.$watch('nodes', function(data) {
+
             for(var n in data) {
                 var node = data[n];
-                panelData[node.node_id] = {
+                $scope.panelData[node.node_id] = {
                     id: node.node_id,
                     status: node.state,
                     totalCount: 0,
@@ -76,7 +76,7 @@ angular.module('cosmoUiApp')
 
         function updateNodeProgress(instanceNode) {
             var states = ['started', 'failed'],
-                node = panelData[instanceNode.node_id],
+                node = $scope.panelData[instanceNode.node_id],
                 totalCount = 0;
 
             for(var i in instanceNode.node_instances) {
