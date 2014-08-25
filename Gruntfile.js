@@ -92,6 +92,15 @@ module.exports = function (grunt) {
                         return [
                             lrSnippet,
                             proxySnippet,
+                            function(req, res, next) {
+                                if(req.url.indexOf('/grafana') === 0) {
+                                    req.url = req.url.substring('/grafana'.length) || '/';
+                                    return connect.static(require('path').resolve('../grafana-cosmo/src/'))(req, res, next);
+                                }
+                                else {
+                                    next();
+                                }
+                            },
                             mountFolder(connect, '.tmp'),
                             mountFolder(connect, yeomanConfig.app)
                         ];
@@ -286,7 +295,7 @@ module.exports = function (grunt) {
                         src: [
                             '*.{ico,png,txt}',
                             '.htaccess',
-                            'bower_components/**/*.{ttf,svg,gif,png}',
+                            'bower_components/**/*.{ttf,woff,eot,svg,gif,png}',
                             'i18n/{,*/}*.json',
                             'images/{,*/}*.{gif,webp,svg}',
                             'styles/fonts/*'
@@ -362,6 +371,19 @@ module.exports = function (grunt) {
                     ]
                 }
             }
+        },
+        jasmine_node: {
+            unit: ['test/backend/unit/jasmine/'],
+            integration: ['test/backend/integration/jasmine/']
+        },
+        html2js: {
+            options: {
+                base: 'app'
+            },
+            main: {
+                src: ['app/views/**/*.html'],
+                dest: '.tmp/viewTemplates/templates.js'
+            }
         }
     });
 
@@ -380,12 +402,21 @@ module.exports = function (grunt) {
         ]);
     });
 
-    grunt.registerTask('test', [
-        'clean:server',
-        'concurrent:test',
-        'connect:test',
-        'karma'
-    ]);
+    grunt.registerTask('test', function(testBackend) {
+        var tasks = [
+            'clean:server',
+            'concurrent:test',
+            'connect:test',
+            'html2js',
+            'karma'
+        ];
+
+        if(testBackend === 'backend') {
+            tasks.push('jasmine_node');
+        }
+
+        grunt.task.run(tasks);
+    });
 
     grunt.registerTask('build', function () {
 

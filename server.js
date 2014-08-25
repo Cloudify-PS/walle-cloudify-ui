@@ -23,6 +23,7 @@ var log4js = require('log4js');
 var logger = log4js.getLogger('server');
 var influx = require('influx');
 var fs = require('fs');
+var http = require('http');
 
 fs.mkdir('logs', function(e) {
     if (!e) {
@@ -240,6 +241,18 @@ app.post('/backend/influx', function(request, response) {
 
 });
 
+app.get('/backend/grafana/series', function(request, response){
+    cloudify4node.influxRequest(request.query, function(err, data){
+        response.send(err !== null ? err : data);
+    });
+});
+
+app.get('/backend/grafana/series/list', function(request, response){
+    cloudify4node.influxRequest({q: 'list series', time_precision: request.query.time_precision}, function(err, data){
+        response.send(err !== null ? err : data);
+    });
+});
+
 app.get('/backend/apidocs', function(request, response) {
     response.writeHead(301, {Location: 'http://' + conf.cosmoServer + '/api/spec.html'});
     response.end();
@@ -308,6 +321,17 @@ app.get('/backend/configuration', function (request, response) {
         _.extend(dto, conf.getPrivateConfiguration(), conf.getPublicConfiguration());
     }
     response.json(dto);
+});
+
+app.get('/backend/version/latest', function(request, response) {
+    var currentVersion = request.query.version;
+    http.get('http://www.gigaspaces.com/downloadgen/latest-cloudify-version?build=' + currentVersion, function(res) {
+        res.on('data', function(chunk) {
+            response.send(chunk);
+        });
+    }).on('error', function(e) {
+        response.send('Got error: ' + e.message);
+    });
 });
 
 

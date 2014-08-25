@@ -40,7 +40,7 @@ angular.module('ngBreadcrumbs', []).factory('BreadcrumbsService', function() {
 
         get: function(id) {
             _checkIdExists(id);
-            return angular.copy(data[id]);
+            return data[id];
         },
 
         setLastIndex: function(id, idx) {

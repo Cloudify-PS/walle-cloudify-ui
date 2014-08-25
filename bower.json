@@ -13,7 +13,7 @@
     "ng-file-upload": "1.1.10",
     "angular-route": "~1.2.14",
     "angular-sanitize": "~1.2.14",
-    "i18next": "1.7.2",
+    "i18next": "~1.7.2",
     "elastic.js": "~1.1.1",
     "angular": "~1.2.14",
     "angular-animate": "~1.2.14",
@@ -22,10 +22,11 @@
     "angularjs-nvd3-directives": "~0.0.7",
     "ngstorage": "~0.3.0",
     "angular-timer": "~1.1.5",
-    "angular-datepicker": "https://github.com/g00fy-/angular-datepicker.git#~1.0.3"
+    "angular-datepicker": "https://github.com/g00fy-/angular-datepicker.git#~1.0.3",
+    "grafana": "https://github.com/grafana/grafana.git#~1.6.1"
   },
   "devDependencies": {
-    "angular-mocks": "~1.2.14",
+    "angular-mocks": "~1.2.21",
     "angular-scenario": "~1.2.14"
   },
   "resolutions": {
