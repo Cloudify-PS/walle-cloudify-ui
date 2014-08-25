@@ -247,6 +247,18 @@ app.post('/backend/influx', function(request, response) {
 
 });
 
+app.get('/backend/grafana/series', function(request, response){
+    cloudify4node.influxRequest(request.query, function(err, data){
+        response.send(err !== null ? err : data);
+    });
+});
+
+app.get('/backend/grafana/series/list', function(request, response){
+    cloudify4node.influxRequest({q: 'list series', time_precision: request.query.time_precision}, function(err, data){
+        response.send(err !== null ? err : data);
+    });
+});
+
 app.get('/backend/apidocs', function(request, response) {
     response.writeHead(301, {Location: 'http://' + conf.cosmoServer + '/api/spec.html'});
     response.end();
