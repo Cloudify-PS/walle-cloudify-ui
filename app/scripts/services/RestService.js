@@ -131,6 +131,16 @@ angular.module('cosmoUiApp')
             return _load('deployments/create', callParams);
         }
 
+        function _deleteBlueprint(params) {
+            var callParams = {
+                url: '/backend/blueprints/delete',
+                method: 'GET',
+                params: params
+            };
+
+            return _load('blueprints/delete', callParams);
+        }
+
         function _executeDeployment(params) {
             var callParams = {
                 url: '/backend/deployments/execute',
@@ -333,6 +343,7 @@ angular.module('cosmoUiApp')
         this.browseBlueprint = _browseBlueprint;
         this.browseBlueprintFile = _browseBlueprintFile;
         this.deployBlueprint = _deployBlueprint;
+        this.deleteBlueprint = _deleteBlueprint;
         this.getDeploymentExecutions = _getDeploymentExecutions;
         this.executeDeployment = _executeDeployment;
         this.updateExecutionState = _updateExecutionState;

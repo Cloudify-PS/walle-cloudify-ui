@@ -170,6 +170,15 @@ Cloudify4node.validateBlueprint = function(blueprint_id, callback) {
     createRequest(requestData, callback );
 }
 
+Cloudify4node.deleteBlueprint = function(blueprint_id, callback) {
+    var requestData = createRequestData({
+        path: '/blueprints/' + blueprint_id,
+        method: 'DELETE'
+    });
+
+    createRequest(requestData, callback );
+}
+
 Cloudify4node.archiveBlueprint = function(blueprint_id, callback) {
     var requestData = {
         hostname: conf.cosmoServer,
