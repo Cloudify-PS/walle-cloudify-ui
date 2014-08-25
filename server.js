@@ -467,3 +467,7 @@ app.get('/', function(/*req, res, next*/){
 
 app.listen(port);
 logger.debug('Express started on port ' + port);
+
+process.on('uncaughtException', function (err) {
+    logger.error('catchall error happened',err);
+});
