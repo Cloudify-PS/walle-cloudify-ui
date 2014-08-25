@@ -155,19 +155,24 @@
                 display: inline-block;
                 margin-left: 10px;
                 cursor: pointer;
+                vertical-align: middle;
+            }
+
+            .buttons-group.sections {
+                margin-left: 20px;
                 vertical-align: top;
             }
 
             .actions {
                 display: inline-block;
                 margin-left: 30px;
-                width: 250px;
+                width: 245px;
                 vertical-align: top;
 
                 i {
                     position: relative;
                     top: 0px;
-                    left: 5px;
+                    left: 3px;
                     cursor: pointer;
                     width: 32px;
                     height: 32px;
