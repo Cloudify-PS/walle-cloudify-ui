@@ -92,6 +92,15 @@ module.exports = function (grunt) {
                         return [
                             lrSnippet,
                             proxySnippet,
+                            function(req, res, next) {
+                                if(req.url.indexOf('/grafana') === 0) {
+                                    req.url = req.url.substring('/grafana'.length) || '/';
+                                    return connect.static(require('path').resolve('../grafana-cosmo/src/'))(req, res, next);
+                                }
+                                else {
+                                    next();
+                                }
+                            },
                             mountFolder(connect, '.tmp'),
                             mountFolder(connect, yeomanConfig.app)
                         ];
