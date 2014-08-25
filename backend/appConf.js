@@ -41,6 +41,7 @@
 
 var log4js = require('log4js');
 var logger = log4js.getLogger('server');
+var os = require('os');
 
 var publicConfiguration = {
     i18n: {
@@ -69,7 +70,7 @@ var privateConfiguration = {
         file: 'logs.tar.gz'
     },
     browseBlueprint: {
-        path: 'backend/tmp/blueprints'
+        path: os.tmpdir() + '/blueprints'
     },
     influx: {
         host: 'influx.gsdev.info',
