@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('cosmoUiApp')
-    .controller('PlansCtrl', function ($scope, Layout, Render, $routeParams, BreadcrumbsService, blueprintCoordinateService, bpNetworkService, $http, $location, RestService) {
+    .controller('PlansCtrl', function ($scope, Layout, Render, $routeParams, BreadcrumbsService, blueprintCoordinateService, bpNetworkService, $http, $location, RestService, NodeService) {
 
         $scope.section = 'topology';
         $scope.propSection = 'general';
@@ -32,7 +32,7 @@ angular.module('cosmoUiApp')
         RestService.getBlueprintById({id: $routeParams.id})
             .then(function(data) {
                 $scope.blueprint = data || null;
-                $scope.nodesTree = _createNodesTree(data.plan.nodes);
+                $scope.nodesTree = NodeService.createNodesTree(data.plan.nodes);
                 $scope.dataTable = data.plan.nodes;
 
                 blueprintCoordinateService.resetCoordinates();
@@ -71,90 +71,11 @@ angular.module('cosmoUiApp')
                         });
                         _extNetworks.push(subNetwork);
 
-                        $scope.networks = _createNetworkTree(data.plan.nodes, _extNetworks);
+                        $scope.networks = _createNetworkTree(data.plan.nodes);
                         bpNetworkService.setMap($scope.networks.relations);
                         $scope.networkcoords = bpNetworkService.getCoordinates();
                     });
             });
-
-        function _createNodesTree(nodes) {
-            var roots = [];
-            var nodesList = [];
-
-            nodes.forEach(function(node) {
-                nodesList[node.id] = node;
-            });
-
-            for (var nodeId in nodesList) {
-                var node = nodesList[nodeId];
-                node.class = _getNodeClass(node.type_hierarchy);
-                node.isApp = _isAppNode(node);
-
-                if (node.relationships !== undefined && !_isIgnoreNode(node)) {
-                    for (var i = 0; i < node.relationships.length; i++) {
-                        if (node.relationships[i].type_hierarchy.join(',').indexOf('contained_in') > -1) {
-                            node.isContained = true;
-                            var target_id = node.relationships[i].target_id;
-                            if (nodesList[target_id].children === undefined) {
-                                nodesList[target_id].children = [];
-                            }
-                            nodesList[target_id].children.push(node);
-                        }
-                        if (i === node.relationships.length - 1 && node.isContained === undefined) {
-                            node.isContained = false;
-                        }
-                    }
-
-                    node.dataType = _getNodeDataType(node);
-
-                    if (!node.isContained) {
-                        roots.push(node);
-                    }
-                } else if(!_isIgnoreNode(node) && !node.isContained){
-                    roots.push(node);
-                }
-            }
-
-            return roots.reverse();
-        }
-
-        function _isAppNode(node) {
-            var networkNodes = [
-                'nodejs_app'
-            ];
-
-            return networkNodes.indexOf(node.type) !== -1;
-        }
-
-        function _isIgnoreNode(node) {
-            var networkNodes = [
-                'cloudify.openstack.floatingip',
-                'cloudify.openstack.network',
-                'cloudify.openstack.port',
-                'cloudify.openstack.subnet',
-                'cloudify.openstack.security_group',
-                'subnet'
-            ];
-
-            return networkNodes.indexOf(node.type) !== -1;
-        }
-
-        function _getNodeDataType(node) {
-            if (!node.isContained && node.children !== undefined) {
-                return 'compute';
-            } else if (node.isContained && !_isAppNode(node)) {
-                return 'middleware';
-            } else if (node.isContained && _isAppNode(node)) {
-                return 'modules';
-            }
-        }
-
-        function _getNodeClass(typeHierarchy) {
-            for (var i = 0; i < typeHierarchy.length; i++) {
-                typeHierarchy[i] = typeHierarchy[i].split('.').join('-').split('_').join('-');
-            }
-            return typeHierarchy.join(' ');
-        }
 
         function _createNetworkTree(nodes, externalNetworks) {
             var networkModel = {
