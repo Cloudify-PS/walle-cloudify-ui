@@ -1,6 +1,6 @@
 {
-    "version": "3.0.0",
-    "build": "",
-    "date": "",
-    "commit": ""
+  "date": "", 
+  "commit": "", 
+  "version": "3.1.0-m2", 
+  "build": "8"
 }

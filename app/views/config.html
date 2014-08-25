@@ -15,6 +15,8 @@
                         <label for="cosmoPort">{{ 'config.portLabel' | i18n }}</label>
                         <input type="text" id="cosmoPort" ng-model="cosmoPort" maxlength="5" required>
 
+                        <label><input type="checkbox" ng-model="cosmoLogs"> Enable Logs</label>
+
                         <ul id="errMsgList">
                             <li class="errMsg" ng-repeat="err in errList">
                                 {{err}}
