@@ -187,6 +187,7 @@ table.table {
     &.event-icon-task-failed {background: url("#{$img-task-failed}") no-repeat center center;}
     &.event-icon-task-sent {background: url("#{$img-task-sent}") no-repeat center center;}
     &.event-icon-task-success {background: url("#{$img-task-success}") no-repeat center center;}
+    &.event-icon-task-retried {background: url("#{$img-task-retried}") no-repeat center center;}
     &.event-icon-policy-success {background: url("#{$img-policy-success}") no-repeat center center;}
     &.event-icon-policy-failed {background: url("#{$img-policy-failed}") no-repeat center center;}
     &.event-icon-workflow-cancelled {background: url("#{$img-policy-failed}") no-repeat center center;}

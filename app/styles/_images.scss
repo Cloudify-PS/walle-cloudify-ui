@@ -12,6 +12,7 @@ $img-task-started:                '#{$images-path}/events/TaskStarted.png' !defa
 $img-task-failed:                 '#{$images-path}/events/TaskFailed.png' !default;
 $img-task-sent:                   '#{$images-path}/events/TaskSent.png' !default;
 $img-task-success:                '#{$images-path}/events/TaskSuccessfully.png' !default;
+$img-task-retried:                '#{$images-path}/events/task-retried.svg' !default;
 $img-policy-success:              '#{$images-path}/events/PolicySuccessfully.png' !default;
 $img-policy-failed:               '#{$images-path}/events/PolicyFailed.png' !default;
 $img-workflow-cancelled:          '#{$images-path}/events/TaskCanceled.png' !default;
