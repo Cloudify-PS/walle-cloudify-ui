@@ -10,7 +10,8 @@ angular.module('cosmoUiApp')
             scope: {
                 id: '=blueprintId',
                 section: '@',
-                selectview: '@'
+                selectview: '@',
+                blueprint: '='
             },
             link: function postLink($scope) {
 
@@ -22,6 +23,7 @@ angular.module('cosmoUiApp')
                     'modules': true,
                     'connections': true
                 };
+                $scope.isDeployDialogVisible = false;
 
                 // Set Breadcrumb
                 BreadcrumbsService.push('blueprints', {
@@ -66,6 +68,14 @@ angular.module('cosmoUiApp')
 
                 $scope.goToSection = function (section) {
                     $location.path('/blueprint/' + $scope.id + section.href);
+                };
+
+                $scope.toggleDeployDialog = function() {
+                    $scope.isDeployDialogVisible = $scope.isDeployDialogVisible === false;
+                };
+
+                $scope.redirectToDeployment = function(deployment_id, blueprint_id) {
+                    $location.path('/deployment').search({id: deployment_id, blueprint_id: blueprint_id});
                 };
             }
         };
