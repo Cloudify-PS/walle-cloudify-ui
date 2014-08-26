@@ -70,7 +70,7 @@ angular.module('cosmoUiApp')
         }
 
         function _getNodeDataType(node) {
-            if (!node.isContained && node.children !== undefined) {
+            if (!node.isContained) {
                 return 'compute';
             } else if (node.isContained && !_isAppNode(node.type_hierarchy)) {
                 return 'middleware';
