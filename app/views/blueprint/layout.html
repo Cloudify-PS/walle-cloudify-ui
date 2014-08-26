@@ -1,0 +1,35 @@
+<div id="blueprint-header">
+    <div class="header-left">
+
+        <div class="content-header">
+            <div class="breadcrumbs"><ul id="blueprints" breadcrumbs></ul></div>
+        </div>
+
+        <div class="buttons-group sections">
+            <button data-ng-repeat="section in navMenu"
+                    data-ng-click="goToSection(section)"
+                    data-ng-class="isSectionActive(section)"
+                    class="btn btn-default">{{ section.name }}</button>
+        </div>
+
+        <div settings-toggles id="settings-button" toggles="toggleBar" data-ng-show="selectview"></div>
+
+        <!--<div class="actions">-->
+            <!--<div class="gs-selection-button" ng-show="!deploymentInProgress">-->
+                <!--<div multi:select:menu-->
+                     <!--class="gs-select"-->
+                     <!--data-options="workflowsList"-->
+                     <!--data-ng-model="selectedWorkflow.data"-->
+                     <!--data-text="Select workflow"></div>-->
+            <!--</div>-->
+            <!--<div class="executingWorkflow" ng-show="deploymentInProgress">-->
+                <!--{{executedData.workflow_id}}-->
+                <!--<div class="deploymentExecute" dots-loader speed="50" ng-show="deploymentInProgress"></div>-->
+            <!--</div>-->
+            <!--<i class="deployment-play" ng-class="{play: isExecuteEnabled(), disabled: !isExecuteEnabled()}" ng-click="toggleConfirmationDialog('execute')" ng-show="!deploymentInProgress"></i>-->
+
+            <!--<i class="deployment-pause pause" ng-show="deploymentInProgress" ng-click="toggleConfirmationDialog('cancel')"></i>-->
+        <!--</div>-->
+
+    </div>
+</div>

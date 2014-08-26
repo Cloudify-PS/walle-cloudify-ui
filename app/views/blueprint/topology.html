@@ -1,0 +1,18 @@
+<div class="cosmo-layout" id="blueprint">
+
+    <div blueprint-layout
+         blueprintId="blueprintId"
+         section="Topology"
+         toggleBar="toggleBar"
+         selectview="true"></div>
+
+    <div class="bpContainer" blueprint:resize data-ng-class="{
+        disableCompute: !toggleBar.compute,
+        disableMiddleware: !toggleBar.middleware,
+        disableModules: !toggleBar.modules,
+        disableConnections: !toggleBar.connections
+        }">
+        <div bp-topology-nodes map="nodesTree" selected="viewNode(getNodeById(node_id))"></div>
+        <div class="coordinates" blueprint:arrows="coordinates" arrow="true" color="#7A7A7A"></div>
+    </div>
+</div>
