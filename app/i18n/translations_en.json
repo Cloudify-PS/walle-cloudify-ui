@@ -37,6 +37,10 @@
             "cancelBtn": "Cancel",
             "deployBtn": "Create",
             "deployName": "Deployment name"
+        },
+        "deleteDialog": {
+            "cancelBtn": "Cancel",
+            "confirmBtn": "Delete"
         }
     },
     "config": {
