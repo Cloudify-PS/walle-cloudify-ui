@@ -130,7 +130,7 @@ angular.module('cosmoUiApp')
                                 $scope.toggleDeleteDialog();
                                 $scope.loadBlueprints();;
                                 $scope.deleteInProcess = false;
-                            }, 500);
+                            }, 1000);
                         }
                     });
             }
