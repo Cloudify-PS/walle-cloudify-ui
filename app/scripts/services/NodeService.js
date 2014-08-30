@@ -37,6 +37,7 @@ angular.module('cosmoUiApp')
                         roots.push(node);
                     }
                 } else if(!_isIgnoreNode(node) && !node.isContained){
+                    node.dataType = _getNodeDataType(node);
                     roots.push(node);
                 }
             }
