@@ -8,7 +8,7 @@ angular.module('cosmoUiApp')
             transclude: true,
             replace: true,
             scope: {
-                id: '=blueprintId',
+                blueprintId: '=blueprintId',
                 section: '@',
                 selectview: '@'
             },
@@ -25,7 +25,7 @@ angular.module('cosmoUiApp')
                 $scope.breadcrumb = [
                     {
                         href: '',
-                        label: $scope.id,
+                        label: $scope.blueprintId,
                         id: 'blueprint'
                     }
                 ];
@@ -72,7 +72,7 @@ angular.module('cosmoUiApp')
                 };
 
                 $scope.goToSection = function (section) {
-                    $location.path('/blueprint/' + $scope.id + section.href);
+                    $location.path('/blueprint/' + $scope.blueprintId + section.href);
                 };
 
                 $scope.toggleDeployDialog = function() {
