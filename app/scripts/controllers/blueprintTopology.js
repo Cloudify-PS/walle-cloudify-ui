@@ -8,6 +8,10 @@ angular.module('cosmoUiApp')
             $scope.toggleBar = toggleBar;
         });
 
+        $scope.$on('topologyNodeSelected', function(e, data) {
+            $scope.viewNode(data);
+        });
+
         RestService.getBlueprintById({id: $scope.blueprintId})
             .then(function(data) {
                 $scope.blueprint = data || null;
@@ -47,5 +51,20 @@ angular.module('cosmoUiApp')
             }
 
             return relationshipData;
+        };
+
+        $scope.viewNode = function (node) {
+            $scope.showProperties = {
+                properties: node.properties,
+                relationships: node.relationships,
+                general: {
+                    'name': node.id,
+                    'type': node.type
+                }
+            };
+        };
+
+        $scope.hideProperties = function () {
+            $scope.showProperties = null;
         };
     });
