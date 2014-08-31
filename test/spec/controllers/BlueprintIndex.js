@@ -3,12 +3,19 @@
 describe('Controller: BlueprintsIndexCtrl', function () {
 
     var BlueprintsIndexCtrl, scope, restService;
+    var errorDeleteJSON = {
+        "message": "Can't delete blueprint nc1 - There exist deployments for this blueprint; Deployments ids: nc1_dep3,b2",
+        "error_code": "dependent_exists_error"
+    };
+    var successDeleteJSON = {
+        "id": "blueprint1"
+    };
 
     // load the controller's module
     beforeEach(module('cosmoUiApp', 'ngMock'));
 
-    describe('Test setup', function() {
-        it ('', inject(function ($controller, $rootScope, $httpBackend, $q, RestService) {
+    function _testSetup(deleteSuccess) {
+        inject(function ($controller, $rootScope, $httpBackend, $q, RestService) {
             $httpBackend.whenGET("/backend/configuration?access=all").respond(200);
             $httpBackend.whenGET("/backend/versions/ui").respond(200);
             $httpBackend.whenGET("/backend/versions/manager").respond(200);
@@ -44,8 +51,8 @@ describe('Controller: BlueprintsIndexCtrl', function () {
                             "id": "deployment1",
                             "updated_at": "2014-08-17 04:07:46.933729"
                         }
-                    ]
-                }];
+                        ]
+                    }];
 
                 deferred.resolve(blueprints);
 
@@ -54,11 +61,9 @@ describe('Controller: BlueprintsIndexCtrl', function () {
 
             restService.deleteBlueprint = function() {
                 var deferred = $q.defer();
-                var blueprint = {
-                        "id": "blueprint1"
-                    };
+                var result = !deleteSuccess ? errorDeleteJSON : successDeleteJSON;
 
-                deferred.resolve(blueprint);
+                deferred.resolve(result);
 
                 return deferred.promise;
             };
@@ -69,7 +74,13 @@ describe('Controller: BlueprintsIndexCtrl', function () {
             });
 
             scope.$digest();
-        }));
+        });
+    }
+
+    describe('Test setup', function() {
+        it ('', function() {
+            _testSetup(true);
+        });
     });
 
     describe('Controller tests', function() {
@@ -108,6 +119,22 @@ describe('Controller: BlueprintsIndexCtrl', function () {
 
             runs(function() {
                 expect(restService.deleteBlueprint).toHaveBeenCalled();
+            });
+        });
+
+        it('should show delete error message if blueprint has deployments', function() {
+            _testSetup(false);
+
+            var blueprintToDelete = scope.blueprints[0];
+            scope.deleteBlueprint(blueprintToDelete);
+            scope.confirmDeleteBlueprint();
+
+            waitsFor(function() {
+                return scope.delBlueprintError === true;
+            });
+
+            runs(function() {
+                expect(scope.delErrorMessage).toBe(errorDeleteJSON.message);
             });
         });
     });
