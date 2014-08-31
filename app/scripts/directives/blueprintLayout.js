@@ -37,11 +37,6 @@ angular.module('cosmoUiApp')
                     id: 'blueprints'
                 });
 
-                // WHY ID IS NOT BINDED FROM TOPOLOGY INTO DIRECTIVE???
-                $scope.$watch('id', function (id) {
-                    console.log('id', id);
-                });
-
                 $scope.$watch('breadcrumb', function (breadcrumbs) {
                     angular.forEach(breadcrumbs, function (breadcrumb) {
                         BreadcrumbsService.push('blueprints', breadcrumb);
