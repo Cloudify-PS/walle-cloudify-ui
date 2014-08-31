@@ -24,7 +24,7 @@ angular.module('cosmoUiApp')
                 };
                 $scope.breadcrumb = [
                     {
-                        href: '#/blueprint?id=' + $scope.id,
+                        href: '',
                         label: $scope.id,
                         id: 'blueprint'
                     }
