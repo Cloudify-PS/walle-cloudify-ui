@@ -305,7 +305,7 @@
     }
 }
 
-#deleteDeploymentDialog {
+#deleteDeploymentDialog, #deleteBlueprintDialog {
     width: 450px;
     position: fixed;
     top: 80px;
@@ -338,7 +338,7 @@
         }
     }
 
-    .error-message {
+    .errorMessage {
         display: block;
         color: $clr-base-26;
         margin: 10px 0;

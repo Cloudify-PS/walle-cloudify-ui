@@ -55,6 +55,12 @@
                       background: $COSMOUI_BUTTON_BACKGROUND;
                     }
                 }
+                .delete-button {
+                  color: #5a82a2;
+                  font-size: 30px;
+                  padding-left: 7px;
+                  padding-top: 2px;
+                }
                 .deployments-number {
                     margin: auto;
                     border: 2px solid #CADBEC;

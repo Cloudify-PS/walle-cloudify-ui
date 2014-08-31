@@ -30,20 +30,27 @@
             border-bottom: 1px solid $clr-base-04;
         }
 
-        ul li {
-            list-style: none;
-            height: 20px;
+      ul {
+        -moz-user-select: none;
+        -webkit-user-select: none;
+        -ms-user-select:none;
+        user-select:none;
 
-            .toggle-switch {
-                float: none;
-                margin-left: 5px;
-                width: 145px;
+        li {
+          list-style: none;
+          height: 20px;
 
-                #toggle-switch-button {
-                    float: right;
-                    margin-right: -3px;
-                }
+          .toggle-switch {
+            float: none;
+            margin-left: 5px;
+            width: 145px;
+
+            #toggle-switch-button {
+              float: right;
+              margin-right: -3px;
             }
+          }
         }
+      }
     }
 }

@@ -105,6 +105,12 @@ app.get('/backend/blueprints/validate', function(request, response) {
     });
 });
 
+app.get('/backend/blueprints/delete', function(request, response) {
+    cloudify4node.deleteBlueprint(request.query.id ,function(err, data) {
+        response.send(err !== null ? err : data);
+    });
+});
+
 app.get('/backend/blueprints/browse', function(request, response) {
     cloudify4node.browseBlueprint(request.query.id ,function(err, data) {
         response.send(err !== null ? err : data);

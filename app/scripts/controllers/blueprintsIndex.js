@@ -3,11 +3,15 @@
 angular.module('cosmoUiApp')
     .controller('BlueprintsIndexCtrl', function ($scope, $location, $cookieStore, RestService, BreadcrumbsService, $timeout, $log) {
         $scope.isAddDialogVisible = false;
-        $scope.isDeployDialogVisible = false;
+        $scope.isDeployDialogVisible = false
+        $scope.isDeleteBlueprintVisible = false;
         $scope.lastExecutedPlan = null;
         $scope.selectedBlueprint = null;
+        $scope.deleteInProcess = false;
+        $scope.delErrorMessage = '';
         var _blueprintsArr = [];
         var cosmoError = false;
+        var currentBlueprintToDelete = null;
 
         BreadcrumbsService.push('blueprints',
             {
@@ -28,6 +32,21 @@ angular.module('cosmoUiApp')
         $scope.toggleDeployDialog = function(blueprint) {
             $scope.selectedBlueprint = blueprint || null;
             $scope.isDeployDialogVisible = $scope.isDeployDialogVisible === false;
+        };
+
+        $scope.toggleDeleteDialog = function() {
+            $scope.isDeleteBlueprintVisible = $scope.isDeleteBlueprintVisible === false;
+        }
+
+        $scope.deleteBlueprint = function(blueprint) {
+            currentBlueprintToDelete = blueprint;
+            $scope.delBlueprintName = blueprint.id;
+            $scope.delBlueprintError = false;
+            $scope.toggleDeleteDialog();
+        };
+
+        $scope.confirmDeleteBlueprint = function() {
+            _deleteBlueprint();
         };
 
         $scope.loadBlueprints = function() {
@@ -97,6 +116,25 @@ angular.module('cosmoUiApp')
             return nextIndex;
         }
 
-        $scope.loadBlueprints();
+        function _deleteBlueprint() {
+            if(currentBlueprintToDelete !== null && !$scope.deleteInProcess) {
+                $scope.deleteInProcess = true;
+                RestService.deleteBlueprint({id: currentBlueprintToDelete.id})
+                    .then(function(data) {
+                        if (data.error_code !== undefined) {
+                            $scope.deleteInProcess = false;
+                            $scope.delBlueprintError = true;
+                            $scope.delErrorMessage = data.message;
+                        } else {
+                            $timeout(function() {
+                                $scope.toggleDeleteDialog();
+                                $scope.loadBlueprints();;
+                                $scope.deleteInProcess = false;
+                            }, 1000);
+                        }
+                    });
+            }
+        }
 
+        $scope.loadBlueprints();
     });
