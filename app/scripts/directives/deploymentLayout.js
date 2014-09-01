@@ -29,6 +29,12 @@ angular.module('cosmoUiApp')
                     'process': 0,
                     'instancesIds': []
                 };
+                $scope.toggleBar = {
+                    'compute': true,
+                    'middleware': true,
+                    'modules': true,
+                    'connections': true
+                };
                 var deploymentModel = {};
                 var nodesList = [];
 
@@ -262,6 +268,10 @@ angular.module('cosmoUiApp')
 
                     console.log(['deploymentModel', deploymentModel]);
                 }
+
+                $scope.$watch('toggleBar', function(toggleBar) {
+                    $scope.$emit('toggleChange', toggleBar);
+                });
 
             }
         };
