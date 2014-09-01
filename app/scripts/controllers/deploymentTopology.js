@@ -4,6 +4,7 @@ angular.module('cosmoUiApp')
     .controller('DeploymentTopologyCtrl', function ($scope, $routeParams, $log, $location, RestService, NodeService, blueprintCoordinateService) {
         var _deploymentModel = {};
         var _nodesList = [];
+        var statesIndex = ['uninitialized', 'initializing', 'creating', 'created', 'configuring', 'configured', 'starting', 'started'];
 
         $scope.deploymentId = $routeParams.deploymentId;
         $scope.workflowsList = [];
@@ -21,6 +22,12 @@ angular.module('cosmoUiApp')
             _nodesList = nodesList;
         });
 
+        $scope.$on('deploymentExecution', function(e, data) {
+            if (data.deploymentInProgress) {
+                _updateDeploymentModel(_nodesList);
+            }
+        });
+
         $scope.$on('deploymentProcess', function(e, data) {
             _deploymentModel = data;
 
@@ -34,16 +41,6 @@ angular.module('cosmoUiApp')
             blueprintCoordinateService.setMap(_getNodesConnections(_nodesList));
             $scope.coordinates = blueprintCoordinateService.getCoordinates();
         });
-
-        $scope.$watch('nodes', function(nodes){
-            if(nodes === undefined) {
-                return;
-            }
-            // Update nodes with new data
-            _updateDeploymentModel(nodes);
-        });
-
-        _loadExecutions();
 
         $scope.getRelationshipByType = function(node, type) {
             var relationshipData = [];
@@ -74,25 +71,6 @@ angular.module('cosmoUiApp')
             $scope.showProperties = null;
         };
 
-        function _loadExecutions() {
-            RestService.getDeploymentExecutions($scope.deploymentId)
-                .then(function(data) {
-                    if (data.length > 0) {
-                        for (var i = 0; i < data.length; i++) {
-                            if (data[i].status !== null && data[i].status !== 'failed' && data[i].status !== 'terminated' && data[i].status !== 'cancelled') {
-                                $scope.executedData = data[i];
-                            }
-                        }
-                    }
-                });
-
-            if ($location.path() === '/deployment') {
-                $timeout(function(){
-                    _loadExecutions();
-                }, 60000);
-            }
-        }
-
         function _getNodesConnections(nodes) {
             var connections = [];
             nodes.forEach(function (node) {
@@ -109,7 +87,7 @@ angular.module('cosmoUiApp')
             return connections;
         }
 
-        function _updateDeploymentModel( nodes ) {
+        function _updateDeploymentModel(nodes) {
             var IndexedNodes = {};
             for (var i in nodes) {
                 var node = nodes[i];
@@ -167,5 +145,28 @@ angular.module('cosmoUiApp')
                     setDeploymentStatus(deployment, processDone);
                 }
             }
+        }
+
+        function setDeploymentStatus(deployment, process) {
+            if(process === false) {
+                deployment.status = 0;
+            }
+            else if(process === 100) {
+                deployment.status = 1;
+            }
+            else if(process > 0 && process < 100) {
+                deployment.status = 2;
+            }
+            else if(process === 0) {
+                deployment.status = 3;
+            }
+        }
+
+        function calcProgress(partOf, instances) {
+            return Math.round(partOf > 0 ? 100 * partOf / instances : 0);
+        }
+
+        function calcState(state, instances) {
+            return Math.round(state > 0 ? (state / instances / 7 * 100) : 0);
         }
     });
