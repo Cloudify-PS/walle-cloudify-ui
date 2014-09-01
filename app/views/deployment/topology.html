@@ -1,0 +1,75 @@
+<div class="cosmo-layout" id="deployment">
+
+    <div deployment-layout
+         depid="deploymentId"
+         section="Topology"
+         selectview="true"></div>
+
+    <div class="bpContainer" blueprint:resize data-ng-class="{
+        disableCompute: !toggleBar.compute,
+        disableMiddleware: !toggleBar.middleware,
+        disableModules: !toggleBar.modules,
+        disableConnections: !toggleBar.connections
+        }">
+        <div bp-topology-nodes map="nodesTree" selected="viewNode(getNodeById(node_id))"></div>
+        <div class="coordinates" blueprint:arrows="coordinates" arrow="true" color="#7A7A7A"></div>
+    </div>
+
+    <!-- Side Panel - START -->
+    <div class="properties-panel right-panel" ng-hide="!showProperties">
+        <div class="title">
+            {{showProperties.general.name}} {{'plans.details.details' | i18n }}
+            <i ng-click="hideProperties()" class="fa fa-times-circle right close-properties-button"></i>
+        </div>
+        <div class="content">
+            <div class="buttons-group no-embed" checkbox-toggle value="propSection">
+                <button ng-repeat="(key, value) in showProperties" type="button" class="btn btn-default" ng-class="{active: key == propSection}" value="{{key}}">{{ 'plans.' + key | i18n }}</button>
+            </div>
+            <div ng-switch="propSection" class="content-section">
+                <div ng-switch-default="general">
+                    <table>
+                        <tr>
+                            <td>{{ 'plans.details.key' | i18n }}</td>
+                            <td>{{ 'plans.details.value' | i18n }}</td>
+                        </tr>
+                        <tr ng-repeat="(key, value) in showProperties.general">
+                            <td>{{key}}</td><td>{{value}}</td>
+                        </tr>
+                    </table>
+                </div>
+                <div ng-switch-when="properties">
+                    <table>
+                        <tr>
+                            <td>{{ 'plans.details.key' | i18n }}</td>
+                            <td>{{ 'plans.details.value' | i18n }}</td>
+                        </tr>
+                        <tr ng-repeat="(key, value) in showProperties.properties">
+                            <td>{{key}}</td><td>{{value}}</td>
+                        </tr>
+                    </table>
+                </div>
+                <div ng-switch-when="relationships">
+                    <div ng-show="showProperties.relationships.length == undefined">{{ 'plans.details.noRelationships' | i18n }}</div>
+                    <table ng-show="showProperties.relationships.length != undefined">
+                        <tr>
+                            <td>{{ 'plans.details.target' | i18n }}</td>
+                            <td>{{ 'plans.details.type' | i18n }}</td>
+                            <td>{{ 'plans.details.interface' | i18n }}</td>
+                        </tr>
+                        <tr ng-repeat="relationship in showProperties.relationships">
+                            <td ng-click="viewNode(getNodeById(relationship.target_id))">{{relationship.target_id}}</td>
+                            <td>{{relationship.type}}</td>
+                            <td>
+                                <!--<ul ng-repeat="(key, value) in relationship.source_interfaces">-->
+                                <!--<li>{{value}}</li>-->
+                                <!--</ul>-->
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <pre ng-switch-when="interfaces">{{showProperties.interfaces | yaml:'No interfaces to display' }} </pre>
+            </div>
+        </div>
+    </div>
+    <!-- Side Panel - END -->
+</div>

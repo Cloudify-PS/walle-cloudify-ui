@@ -42,7 +42,7 @@ angular.module('cosmoUiApp')
                 }
             }
 
-            return roots.reverse();
+            return roots;
         }
 
         function _getNodeClass(typeHierarchy) {
