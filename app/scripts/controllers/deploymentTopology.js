@@ -43,6 +43,8 @@ angular.module('cosmoUiApp')
                         blueprintCoordinateService.setMap(_getNodesConnections(data.plan.nodes));
                         $scope.coordinates = blueprintCoordinateService.getCoordinates();
                     });
+
+                _loadExecutions();
             });
 
         function _getNodesConnections(nodes) {
@@ -89,6 +91,25 @@ angular.module('cosmoUiApp')
         $scope.hideProperties = function () {
             $scope.showProperties = null;
         };
+
+        function _loadExecutions() {
+            RestService.getDeploymentExecutions($scope.deploymentId)
+                .then(function(data) {
+                    if (data.length > 0) {
+                        for (var i = 0; i < data.length; i++) {
+                            if (data[i].status !== null && data[i].status !== 'failed' && data[i].status !== 'terminated' && data[i].status !== 'cancelled') {
+                                $scope.executedData = data[i];
+                            }
+                        }
+                    }
+                });
+
+            if ($location.path() === '/deployment') {
+                $timeout(function(){
+                    _loadExecutions();
+                }, 60000);
+            }
+        }
 
 
 //        function _loadDeployment() {
