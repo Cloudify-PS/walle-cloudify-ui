@@ -7,6 +7,7 @@ var logger = log4js.getLogger('cloudify4node');
 var path = require('path');
 var targz = require('tar.gz');
 var browseBlueprint = require('./services/BrowseBluerprintService');
+var influx = require('influx');
 
 module.exports = Cloudify4node;
 
@@ -107,6 +108,14 @@ Cloudify4node.getBlueprints = function(callback) {
 }
 
 Cloudify4node.addBlueprint = function(application_archive, blueprint_id, callback) {
+    if (blueprint_id === undefined) {
+        callback(400, {
+            "status": 400,
+            "message": "400: Invalid blueprint name",
+            "error_code": "Blueprint name required"
+        });
+        return;
+    }
     var myFile = application_archive;
     var path = '/blueprints' + (blueprint_id === undefined ? '' : '/' + blueprint_id);
     var options = {
@@ -164,6 +173,15 @@ Cloudify4node.validateBlueprint = function(blueprint_id, callback) {
         port: conf.cosmoPort,
         path: '/blueprints/' + blueprint_id + '/validate',
         method: 'GET'
+    });
+
+    createRequest(requestData, callback );
+}
+
+Cloudify4node.deleteBlueprint = function(blueprint_id, callback) {
+    var requestData = createRequestData({
+        path: '/blueprints/' + blueprint_id,
+        method: 'DELETE'
     });
 
     createRequest(requestData, callback );
@@ -449,6 +467,20 @@ Cloudify4node.getManagerVersion = function(callback) {
     createRequest(requestData, callback);
     //return callback(null, require('./mock/managerVersion.json'));
 };
+
+Cloudify4node.influxRequest = function(query, callback) {
+    var influxClient = influx({
+        host: conf.influx.host,
+        username : conf.influx.user,
+        password : conf.influx.pass,
+        database : conf.influx.dbname
+    });
+
+    influxClient.request.get({
+        url: influxClient.url('db/' + influxClient.options.database + '/series', query),
+        json: true
+    }, influxClient._parseCallback(callback));
+}
 
 Cloudify4node.getLogsExportFile = function(response, callback) {
     var filePath = path.join(conf.logs.folder, conf.logs.file);

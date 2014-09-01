@@ -88,8 +88,21 @@ angular.module('cosmoUiApp')
             $log.info('Stop all pulling workers');
         });
 
-        function _addBlueprint(params) {
-            _load('blueprints/add', params);
+        function _addBlueprint(data, successCallback, errorCallback) {
+            $.ajax({
+                url: '/backend/blueprints/add',
+                data: data,
+                type: 'POST',
+                contentType: false,
+                processData: false,
+                cache: false,
+                success: function(data) {
+                    successCallback(data);
+                },
+                error: function(e) {
+                    errorCallback(e);
+                }
+            });
         }
 
         function _getBlueprintById(params) {
@@ -129,6 +142,16 @@ angular.module('cosmoUiApp')
             };
 
             return _load('deployments/create', callParams);
+        }
+
+        function _deleteBlueprint(params) {
+            var callParams = {
+                url: '/backend/blueprints/delete',
+                method: 'GET',
+                params: params
+            };
+
+            return _load('blueprints/delete', callParams);
         }
 
         function _executeDeployment(params) {
@@ -333,6 +356,7 @@ angular.module('cosmoUiApp')
         this.browseBlueprint = _browseBlueprint;
         this.browseBlueprintFile = _browseBlueprintFile;
         this.deployBlueprint = _deployBlueprint;
+        this.deleteBlueprint = _deleteBlueprint;
         this.getDeploymentExecutions = _getDeploymentExecutions;
         this.executeDeployment = _executeDeployment;
         this.updateExecutionState = _updateExecutionState;

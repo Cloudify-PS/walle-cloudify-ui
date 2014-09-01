@@ -105,6 +105,12 @@ app.get('/backend/blueprints/validate', function(request, response) {
     });
 });
 
+app.get('/backend/blueprints/delete', function(request, response) {
+    cloudify4node.deleteBlueprint(request.query.id ,function(err, data) {
+        response.send(err !== null ? err : data);
+    });
+});
+
 app.get('/backend/blueprints/browse', function(request, response) {
     cloudify4node.browseBlueprint(request.query.id ,function(err, data) {
         response.send(err !== null ? err : data);
@@ -239,6 +245,18 @@ app.post('/backend/influx', function(request, response) {
         response.send(err !== null ? err : data);
     });
 
+});
+
+app.get('/backend/grafana/series', function(request, response){
+    cloudify4node.influxRequest(request.query, function(err, data){
+        response.send(err !== null ? err : data);
+    });
+});
+
+app.get('/backend/grafana/series/list', function(request, response){
+    cloudify4node.influxRequest({q: 'list series', time_precision: request.query.time_precision}, function(err, data){
+        response.send(err !== null ? err : data);
+    });
 });
 
 app.get('/backend/apidocs', function(request, response) {
@@ -455,3 +473,7 @@ app.get('/', function(/*req, res, next*/){
 
 app.listen(port);
 logger.debug('Express started on port ' + port);
+
+process.on('uncaughtException', function (err) {
+    logger.error('catchall error happened',err);
+});
