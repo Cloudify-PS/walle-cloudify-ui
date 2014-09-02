@@ -75,6 +75,16 @@ describe('Controller: DeploymentCtrl', function () {
                 }
             };
 
+            RestService.getConfiguration = function() {
+                var deferred = $q.defer();
+
+                deferred.resolve({
+                    i18n: ''
+                });
+
+                return deferred.promise;
+            };
+
             RestService.getDeploymentById = function() {
                 var deferred = $q.defer();
                 var deployment = {
