@@ -125,6 +125,7 @@
                 <button type="button" class="btn btn-default" value="topology">Topology</button>
                 <button type="button" class="btn btn-default" value="network" data-ng-show="networks.networks.length">Network</button>
                 <button type="button" class="btn btn-default" value="nodes">Nodes</button>
+                <button type="button" class="btn btn-default" value="executions">Executions</button>
                 <button type="button" class="btn btn-default" value="events">Events</button>
                 <!--<button type="button" class="btn btn-default" value="monitoring">Monitoring</button>-->
             </div>
@@ -344,6 +345,30 @@
                     <div class="emptyTable" data-ng-hide="eventHits.length">There are no events at this moment...</div>
                 </div>
                 <!-- Events Tab - END -->
+                <!-- Executions Tab - START -->
+                <div ng-switch-when="executions">
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th>Workflow</th>
+                            <th>ID</th>
+                            <th>Created</th>
+                            <th>Status</th>
+                            <th>Error</th>
+                        </tr>
+                        </thead>
+                        <tbody data-ng-repeat="row in executionsList">
+                        <tr>
+                            <td>{{ row.workflow_id }}</td>
+                            <td>{{ row.id }}</td>
+                            <td>{{ row.created_at | dateFormat: 'yyyy-MM-dd HH:mm:ss' }}</td>
+                            <td>{{ row.status }}</td>
+                            <td>{{ row.error }}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <!-- Executions Tab - END -->
                 <div ng-switch-when="monitoring">
                     <div class="monitor" graphs:pager>
                         <div class="navigate">
