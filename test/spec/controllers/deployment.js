@@ -1,49 +1,59 @@
 'use strict';
 
 describe('Controller: DeploymentCtrl', function () {
+
     var DeploymentCtrl, scope;
-    var executions = [{
-        "status": "terminated",
-        "created_at": "2014-09-01 02:38:16.959561",
-        "workflow_id": "create_deployment_environment",
-        "parameters": {
-            "policy_configuration": {
-                "policy_types": {},
-                "policy_triggers": {},
-                "groups": {}
+    var executions = [
+        {
+            "status": "terminated",
+            "created_at": "2014-09-01 02:38:16.959561",
+            "workflow_id": "create_deployment_environment",
+            "parameters": {
+                "policy_configuration": {
+                    "policy_types": {},
+                    "policy_triggers": {},
+                    "groups": {}
+                },
+                "management_plugins_to_install": [
+                    {
+                        "url": "https://github.com/cloudify-cosmo/cloudify-openstack-plugin/archive/1.1m2.zip",
+                        "agent_plugin": "false",
+                        "name": "openstack",
+                        "manager_plugin": "true"
+                    }
+                ],
+                "workflow_plugins_to_install": [
+                    {
+                        "agent_plugin": "false",
+                        "name": "default_workflows",
+                        "manager_plugin": "true"
+                    }
+                ]
             },
-            "management_plugins_to_install": [{
-                "url": "https://github.com/cloudify-cosmo/cloudify-openstack-plugin/archive/1.1m2.zip",
-                "agent_plugin": "false",
-                "name": "openstack",
-                "manager_plugin": "true"
-            }],
-            "workflow_plugins_to_install": [{
-                "agent_plugin": "false",
-                "name": "default_workflows",
-                "manager_plugin": "true"
-            }]
+            "blueprint_id": "blueprint1",
+            "deployment_id": "deployment1",
+            "error": "",
+            "id": "f0e1fef2-fd1d-4e68-a125-9a1743e81cc0"
         },
-        "blueprint_id": "blueprint1",
-        "deployment_id": "deployment1",
-        "error": "",
-        "id": "f0e1fef2-fd1d-4e68-a125-9a1743e81cc0"
-    }, {
-        "status": "failed",
-        "created_at": "2014-09-01 02:46:09.516843",
-        "workflow_id": "install",
-        "parameters": {},
-        "blueprint_id": "blueprint1",
-        "deployment_id": "deployment1",
-        "error": "Traceback (most recent call last):\n  File \"/home/ubuntu/cloudify.nc1_dep1_workflows/env/local/lib/python2.7/site-packages/cloudify/decorators.py",
-        "id": "f9c17f31-cb11-4b0e-bde4-92ba67d89f9e"
-    }];
+        {
+            "status": "failed",
+            "created_at": "2014-09-01 02:46:09.516843",
+            "workflow_id": "install",
+            "parameters": {},
+            "blueprint_id": "blueprint1",
+            "deployment_id": "deployment1",
+            "error": "Traceback (most recent call last):\n  File \"/home/ubuntu/cloudify.nc1_dep1_workflows/env/local/lib/python2.7/site-packages/cloudify/decorators.py",
+            "id": "f9c17f31-cb11-4b0e-bde4-92ba67d89f9e"
+        }
+    ];
 
     // load the controller's module
     beforeEach(module('cosmoUiApp', 'ngMock', 'templates-main'));
 
+    // Initialize the controller and a mock scope
     describe('Test setup', function() {
         it ('', inject(function ($controller, $rootScope, $httpBackend, $q, RestService, EventsService) {
+
             $httpBackend.whenGET("/backend/configuration?access=all").respond(200);
             $httpBackend.whenGET("/backend/versions/ui").respond(200);
             $httpBackend.whenGET("/backend/versions/manager").respond(200);
