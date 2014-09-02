@@ -469,6 +469,9 @@ angular.module('cosmoUiApp')
 
                             RestService.getProviderContext()
                                 .then(function(providerData) {
+                                    if (providerData === undefined) {
+                                        return;
+                                    }
                                     var _extNetworks = [];
                                     var externalNetwork = {
                                         'id': providerData.context.resources.ext_network.id,
