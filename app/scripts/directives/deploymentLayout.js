@@ -57,6 +57,9 @@ angular.module('cosmoUiApp')
                     id: 'deployments'
                 });
 
+                // Emit Selected Workflow
+                $scope.$emit('selectedWorkflow', $scope.selectedWorkflow);
+
                 // Get Deployment Data
                 RestService.getDeploymentById({deployment_id: $scope.id})
                     .then(function (dataDeployment) {
