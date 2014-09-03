@@ -37,6 +37,7 @@ angular.module('cosmoUiApp')
                 };
                 var deploymentModel = {};
                 var nodesList = [];
+                var statesIndex = ['uninitialized', 'initializing', 'creating', 'created', 'configuring', 'configured', 'starting', 'started'];
 
                 $scope.breadcrumb = [];
                 $scope.workflowsList = [];
@@ -108,11 +109,11 @@ angular.module('cosmoUiApp')
                                 });
                                 nodesList = nodes;
 
-                                // Emit nodes data
-                                $scope.$emit('nodesData', dataNodes, nodesList);
-
                                 // Set Deployment Model
                                 _setDeploymentModel(nodesList);
+
+                                // Emit nodes data
+                                $scope.$emit('nodesData', dataNodes, nodesList);
 
                                 // Emit deployment process data
                                 $scope.$emit('deploymentProcess', deploymentModel);
@@ -159,14 +160,6 @@ angular.module('cosmoUiApp')
                     $location.path('/deployment/' + $scope.id + section.href);
                 };
 
-                // Topology Settings
-                $scope.toggleBar = {
-                    'compute': true,
-                    'middleware': true,
-                    'modules': true,
-                    'connections': true
-                };
-
                 // Workflows & Execution
                 RestService.autoPull('getDeploymentExecutions', $scope.id, RestService.getDeploymentExecutions)
                     .then(null, null, function (dataExec) {
@@ -177,11 +170,104 @@ angular.module('cosmoUiApp')
                         else if ($scope.deploymentInProgress === null || $scope.currentExecution !== false) {
                             $scope.deploymentInProgress = true;
                         }
+                        else {
+                            RestService.getDeploymentNodes({deployment_id : $scope.id, state: true}).then(function(dataNodes){
+                                _updateDeploymentModel(dataNodes);
+                            });
+                        }
                         $scope.$emit('deploymentExecution', {
                             currentExecution: $scope.currentExecution,
                             deploymentInProgress: $scope.deploymentInProgress
                         });
                     });
+
+                function _updateDeploymentModel( nodes ) {
+                    var IndexedNodes = {};
+                    for (var i in nodes) {
+                        var node = nodes[i];
+                        IndexedNodes[node.node_id] = {
+                            state: node.state
+                        };
+                    }
+                    for (var d in deploymentModel) {
+                        var deployment = deploymentModel[d];
+                        var _reachable = 0;
+                        var _states = 0;
+                        var _completed = 0;
+
+                        for (var n in deployment.instancesIds) {
+                            var nodeId = deployment.instancesIds[n];
+                            var nodeInstance = IndexedNodes[nodeId];
+                            if(IndexedNodes.hasOwnProperty(nodeId)) {
+                                if(nodeInstance.state === 'started') {
+                                    _reachable++;
+                                }
+                                if(statesIndex.indexOf(nodeInstance.state) > 0 || statesIndex.indexOf(nodeInstance.state) < 7) {
+                                    var stateNum = statesIndex.indexOf(nodeInstance.state);
+                                    if(stateNum === 7) {
+                                        _completed++;
+                                    }
+                                    _states += stateNum;
+                                }
+                            }
+                        }
+                        deployment.completed = _completed;
+                        deployment.reachables = _reachable;
+                        deployment.state = Math.round(_states / deployment.total);
+                        deployment.states = calcState(_states, deployment.total);
+
+                        // Calculate percents for progressbar
+                        var processDone = 0;
+                        if(deployment.states < 100) {
+                            processDone = deployment.states;
+                            deployment.process = {
+                                'done': deployment.states
+                            };
+                        }
+                        else {
+                            processDone = calcProgress(deployment.reachables, deployment.total);
+                            deployment.process = {
+                                'done': processDone
+                            };
+                        }
+
+                        // Set Status by Workflow Execution Progress
+                        if($scope.deploymentInProgress) {
+                            setDeploymentStatus(deployment, false);
+                        }
+                        else {
+                            setDeploymentStatus(deployment, processDone);
+                        }
+                    }
+
+                    nodesList.forEach(function(node) {
+                        node.state = deploymentModel[node.id];
+                    });
+
+                }
+
+                function setDeploymentStatus(deployment, process) {
+                    if(process === false) {
+                        deployment.status = 0;
+                    }
+                    else if(process === 100) {
+                        deployment.status = 1;
+                    }
+                    else if(process > 0 && process < 100) {
+                        deployment.status = 2;
+                    }
+                    else if(process === 0) {
+                        deployment.status = 3;
+                    }
+                }
+
+                function calcState(state, instances) {
+                    return Math.round(state > 0 ? (state / instances / 7 * 100) : 0);
+                }
+
+                function calcProgress(partOf, instances) {
+                    return Math.round(partOf > 0 ? 100 * partOf / instances : 0);
+                }
 
                 function _getCurrentExecution(executions) {
                     for (var i in executions) {
@@ -265,8 +351,6 @@ angular.module('cosmoUiApp')
                         deploymentModel[node.id].instancesIds.push(node.id);
                         deploymentModel[node.id].total += parseInt(node.number_of_instances, 10);
                     }
-
-                    console.log(['deploymentModel', deploymentModel]);
                 }
 
                 $scope.$watch('toggleBar', function(toggleBar) {
