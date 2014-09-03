@@ -1,4 +1,4 @@
-    'use strict';
+'use strict';
 
 angular.module('cosmoUiApp')
     .controller('BlueprintTopologyCtrl', function ($scope, $routeParams, RestService, NodeService, blueprintCoordinateService) {

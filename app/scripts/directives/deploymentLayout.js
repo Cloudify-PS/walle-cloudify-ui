@@ -96,6 +96,8 @@ angular.module('cosmoUiApp')
                             $scope.workflowsList = workflows;
                         }
 
+                        _loadExecutions();
+
                         // Get Nodes
                         RestService.getNodes({deployment_id: dataDeployment.id})
                             .then(function(dataNodes) {
@@ -111,9 +113,10 @@ angular.module('cosmoUiApp')
 
                                 // Set Deployment Model
                                 _setDeploymentModel(nodesList);
+                                _updateDeploymentModel(nodesList);
 
                                 // Emit nodes data
-                                $scope.$emit('nodesData', dataNodes, nodesList);
+                                $scope.$emit('nodesList', nodesList);
 
                                 // Emit deployment process data
                                 $scope.$emit('deploymentProcess', deploymentModel);
@@ -217,27 +220,13 @@ angular.module('cosmoUiApp')
                         deployment.states = calcState(_states, deployment.total);
 
                         // Calculate percents for progressbar
-                        var processDone = 0;
-                        if(deployment.states < 100) {
-                            processDone = deployment.states;
-                            deployment.process = {
-                                'done': deployment.states
-                            };
-                        }
-                        else {
-                            processDone = calcProgress(deployment.reachables, deployment.total);
-                            deployment.process = {
-                                'done': processDone
-                            };
-                        }
+                        var processDone = (deployment.states < 100 ? deployment.states : calcProgress(deployment.reachables, deployment.total));
+                        deployment.process = {
+                            'done': processDone
+                        };
 
                         // Set Status by Workflow Execution Progress
-                        if($scope.deploymentInProgress) {
-                            setDeploymentStatus(deployment, false);
-                        }
-                        else {
-                            setDeploymentStatus(deployment, processDone);
-                        }
+                        setDeploymentStatus(deployment, $scope.deploymentInProgress ? false : processDone);
                     }
 
                     nodesList.forEach(function(node) {
@@ -318,6 +307,19 @@ angular.module('cosmoUiApp')
                             }
                         });
                     }
+                }
+
+                function _loadExecutions() {
+                    RestService.getDeploymentExecutions($scope.id)
+                        .then(function(data) {
+                            if (data.length > 0) {
+                                for (var i = 0; i < data.length; i++) {
+                                    if (data[i].status !== null && data[i].status !== 'failed' && data[i].status !== 'terminated' && data[i].status !== 'cancelled') {
+                                        $scope.executedData = data[i];
+                                    }
+                                }
+                            }
+                        });
                 }
 
                 function _toggleConfirmationDialog(confirmationType) {

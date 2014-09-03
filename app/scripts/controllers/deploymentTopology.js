@@ -1,4 +1,4 @@
-    'use strict';
+'use strict';
 
 angular.module('cosmoUiApp')
     .controller('DeploymentTopologyCtrl', function ($scope, $routeParams, NodeService, blueprintCoordinateService) {
@@ -9,10 +9,10 @@ angular.module('cosmoUiApp')
             $scope.toggleBar = toggleBar;
         });
 
-        $scope.$on('nodesData', function(event, nodesData){
-            $scope.nodesTree = NodeService.createNodesTree(nodesData);
+        $scope.$on('nodesList', function(event, nodeList){
+            $scope.nodesTree = NodeService.createNodesTree(nodeList);
             blueprintCoordinateService.resetCoordinates();
-            blueprintCoordinateService.setMap(_getNodesConnections(nodesData));
+            blueprintCoordinateService.setMap(_getNodesConnections(nodeList));
             $scope.coordinates = blueprintCoordinateService.getCoordinates();
         });
 
@@ -46,6 +46,6 @@ angular.module('cosmoUiApp')
                 }
             }
             return relationshipData;
-        };
+        }
 
     });
