@@ -145,7 +145,7 @@
                 </div>
                 <i class="deployment-play" ng-class="{play: isExecuteEnabled(), disabled: !isExecuteEnabled()}" ng-click="toggleConfirmationDialog(deployment, 'execute')" ng-show="!deploymentInProgress"></i>
 
-                <i class="deployment-pause pause" ng-show="deploymentInProgress" ng-click="toggleConfirmationDialog(deployment, 'cancel')"></i>
+                <i class="deployment-pause fa fa-times-circle" ng-show="deploymentInProgress" ng-click="toggleConfirmationDialog(deployment, 'cancel')"></i>
             </div>
 
             <!-- Settings - END -->

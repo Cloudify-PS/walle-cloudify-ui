@@ -193,12 +193,13 @@
                     }
 
                     &.deployment-pause {
-                        &.pause {
-                            background-image: url($img-deployment-pause);
-                        }
+                      font-size: 30px;
+                      padding-left: 7px;
+                      padding-top: 2px;
+                      color: #3aaeda;
 
                         &:hover {
-                            background-image: url($img-deployment-pause-selected);
+                          color: #136e9d;
                         }
                     }
                 }
