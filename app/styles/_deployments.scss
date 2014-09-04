@@ -29,6 +29,17 @@
                     i {
                         color: $COSMOUI_LIST_HOVER_ACTION_TEXT_COLOR;
                         font-weight: $COSMOUI_LIST_HOVER_ACTION_FONT_WEIGHT;
+
+                      &.deployment-pause {
+                        font-size: 30px;
+                        padding-left: 7px;
+                        padding-top: 2px;
+                        color: #3aaeda;
+
+                        &:hover {
+                          color: #136e9d;
+                        }
+                      }
                     }
                 }
                 &.delete {
