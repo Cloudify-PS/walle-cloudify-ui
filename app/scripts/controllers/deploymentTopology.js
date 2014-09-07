@@ -1,20 +1,22 @@
 'use strict';
 
 angular.module('cosmoUiApp')
-    .controller('DeploymentTopologyCtrl', function ($scope, $routeParams, NodeService, RestService, blueprintCoordinateService) {
+    .controller('DeploymentTopologyCtrl', function ($scope, $rootScope, $routeParams, NodeService, RestService, blueprintCoordinateService) {
 
         var isGotExecuteNodes = false;
 
         $scope.deploymentId = $routeParams.deploymentId;
 
-
         $scope.$on('selectedWorkflow', function(event, selectedWorkflow) {
-            console.log(['selectedWorkflow', selectedWorkflow]);
             $scope.selectedWorkflow = selectedWorkflow;
         });
 
         $scope.$on('toggleChange', function(event, toggleBar){
             $scope.toggleBar = toggleBar;
+        });
+
+        $scope.$on('topologyNodeSelected', function(e, viewNode) {
+            $scope.viewNode = viewNode;
         });
 
         $scope.$on('nodesList', function(event, nodeList){

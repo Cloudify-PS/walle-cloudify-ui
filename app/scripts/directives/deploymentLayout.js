@@ -362,6 +362,8 @@ angular.module('cosmoUiApp')
                     $scope.$emit('toggleChange', toggleBar);
                 });
 
+
+
             }
         };
     });

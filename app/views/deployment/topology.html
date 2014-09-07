@@ -15,6 +15,10 @@
         <div class="coordinates" blueprint:arrows="coordinates" arrow="true" color="#7A7A7A"></div>
     </div>
 
+    <div floating-node-panel node="viewNode" depid="deploymentId"></div>
+
+    <!--<div deployment-events="deploymentId"></div>-->
+
     <div class="deployment-progress-panel" ng-include="'views/deploymentProgressPanel.html'" data-ng-show="deploymentInProgress"></div>
 
 </div>
