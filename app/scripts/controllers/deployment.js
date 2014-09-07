@@ -459,6 +459,7 @@ angular.module('cosmoUiApp')
                             _setDeploymentModel(nodesList);
 
                             $scope.nodesTree = NodeService.createNodesTree(nodesList);
+                            console.log(['nodes', nodes]);
                             $scope.dataTable = nodes;
 
                             blueprintCoordinateService.resetCoordinates();

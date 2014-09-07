@@ -1,0 +1,51 @@
+<div class="cosmo-layout" id="deployment">
+
+    <div deployment-layout
+         depid="deploymentId"
+         section="Nodes"
+         selectview="false"></div>
+
+    <div floating-node-panel node="viewNode" depid="deploymentId"></div>
+
+    <!--<div deployment-events="deploymentId"></div>-->
+
+    <div class="nodesTable">
+        <table class="table nodesTable">
+            <thead>
+            <tr>
+                <th></th>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Number of instances</th>
+                <th>Contained in</th>
+                <th>Connected to</th>
+                <th><!--Actions--></th>
+            </tr>
+            </thead>
+            <tbody data-ng-repeat="row in dataTable">
+            <tr>
+                <td><i class="topology-glyph {{ row.class }}"></i></td>
+                <td>{{ row.id }}</td>
+                <td>{{ row.type }}</td>
+                <td>{{ row.number_of_instances }}</td>
+                <td>
+                        <span data-ng-if="getRelationshipByType(row, 'contained').length > 0"
+                              data-ng-repeat="container in getRelationshipByType(row, 'contained')">{{ container.name }}</span>
+                    <span data-ng-if="getRelationshipByType(row, 'contained').length == 0">--</span>
+                </td>
+                <td>
+                        <span data-ng-if="getRelationshipByType(row, 'connected').length > 0"
+                              data-ng-repeat="connection in getRelationshipByType(row, 'connected')">{{ connection.name }}</span>
+                    <span data-ng-if="getRelationshipByType(row, 'connected').length == 0">--</span>
+                </td>
+                <td>
+                    <ul>
+                        <li data-ng-click="viewNodeDetails(getNodeById(row.id))" class="topology-glyph node-details"></li>
+                    </ul>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+</div>

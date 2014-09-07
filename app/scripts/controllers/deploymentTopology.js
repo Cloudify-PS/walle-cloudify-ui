@@ -27,6 +27,7 @@ angular.module('cosmoUiApp')
         });
 
         $scope.$on('deploymentExecution', function(event, deploymentExecution){
+            $scope.deploymentInProgress = deploymentExecution.deploymentInProgress;
             if (!deploymentExecution.currentExecution && deploymentExecution.deploymentInProgress) {
                 if(!isGotExecuteNodes) {
                     RestService.autoPull('getDeploymentNodes', {deployment_id: $scope.deploymentId}, RestService.getDeploymentNodes)
