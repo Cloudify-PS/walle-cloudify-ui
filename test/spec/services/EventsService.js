@@ -2,10 +2,11 @@
 
 describe('Service: EventsService', function () {
 
-    var eventsService, _q;
+    var eventsService, q;
 
     describe('Test setup', function() {
         it('Injecting required data & initializing a new instance', function() {
+
             // load the service's module, mocking ejsResource dependency
             module('cosmoUiApp', 'ngMock', function($provide) {
                 $provide.value('ejsResource', function() {
@@ -26,7 +27,7 @@ describe('Service: EventsService', function () {
                                                         sort: function() {
                                                             return {
                                                                 doSearch: function() {
-                                                                    var deferred = _q.defer();
+                                                                    var deferred = q.defer();
 
                                                                     deferred.resolve({});
 
@@ -58,7 +59,7 @@ describe('Service: EventsService', function () {
                 $httpBackend.whenGET("/backend/versions/manager").respond(200);
                 $httpBackend.whenGET("/backend/version/latest?version=00").respond('300');
 
-                _q = $q;
+                q = $q;
                 eventsService = EventsService;
             });
         });
@@ -72,9 +73,9 @@ describe('Service: EventsService', function () {
         it('should set predefined autopull timer if no time defined by controller', function() {
             var _callback = function() {};
             var events = eventsService.newInstance('/');
-            events.execute(_callback, true);
 
             spyOn(events, 'autoPull').andCallThrough();
+            events.execute(_callback, true);
 
             expect(events.autoPull).toHaveBeenCalledWith(_callback, 3000);
         });
@@ -82,9 +83,9 @@ describe('Service: EventsService', function () {
         it('should use defined autopull time provided by controller', function() {
             var _callback = function() {};
             var events = eventsService.newInstance('/');
-            events.execute(_callback, true, 1000);
 
             spyOn(events, 'autoPull').andCallThrough();
+            events.execute(_callback, true, 1000);
 
             expect(events.autoPull).toHaveBeenCalledWith(_callback, 1000);
         });
