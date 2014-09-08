@@ -2,7 +2,8 @@
 
 describe('Service: EventsService', function () {
 
-    var eventsService, events, _callback, q;
+    var eventsService, events, _callback, q,
+        isExcuted = false;
 
     describe('Test setup', function() {
         it('Injecting required data & initializing a new instance', function() {
@@ -63,14 +64,16 @@ describe('Service: EventsService', function () {
                 eventsService = EventsService;
 
                 events = eventsService.newInstance('/');
-                _callback = function() {};
+                _callback = function() {
+                    isExcuted = true;
+                };
             });
         });
     });
 
     describe('Unit tests', function() {
         it('should create a new EventsService instance', function() {
-                expect(!!eventsService).toBe(true);
+            expect(!!eventsService).toBe(true);
         });
 
         it('should set predefined autopull timer if no time defined by controller', function() {
@@ -78,7 +81,13 @@ describe('Service: EventsService', function () {
 
             events.execute(_callback, true);
 
-            expect(events.autoPull).toHaveBeenCalledWith(_callback, 3000);
+            waitsFor(function() {
+                return isExcuted;
+            });
+
+            runs(function() {
+                expect(events.autoPull).toHaveBeenCalledWith(_callback, undefined);
+            });
         });
 
         it('should use defined autopull time provided by controller', function() {
@@ -86,7 +95,13 @@ describe('Service: EventsService', function () {
 
             events.execute(_callback, true, 1000);
 
-            expect(events.autoPull).toHaveBeenCalledWith(_callback, 1000);
+            waitsFor(function() {
+                return isExcuted;
+            });
+
+            runs(function() {
+                expect(events.autoPull).toHaveBeenCalledWith(_callback, 1000);
+            });
         });
     });
 });

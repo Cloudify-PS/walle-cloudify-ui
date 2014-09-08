@@ -189,7 +189,7 @@ angular.module('cosmoUiApp')
                         callbackFn(data);
                         lastData = data;
                         if(autoPull === true) {
-                            _autoPull(callbackFn, customPullTime);
+                            _this.autoPull(callbackFn, customPullTime);
                         }
                     }
                 });
