@@ -201,6 +201,7 @@ angular.module('cosmoUiApp')
             _this.filterRange = filterRange;
             _this.sort = sort;
             _this.stopAutoPull = stopAutoPull;
+            _this.autoPull = _autoPull;
             _this.execute = execute;
         }
 
