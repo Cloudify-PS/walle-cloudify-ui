@@ -853,7 +853,7 @@ angular.module('cosmoUiApp')
                     if(troubleShoot === executeRetry) {
                         events.stopAutoPull();
                     }
-                }, autoPull, true);
+                }, autoPull);
         }
 
         function filterEvents(field, newValue, oldValue, execute) {

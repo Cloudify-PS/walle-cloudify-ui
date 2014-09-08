@@ -18,7 +18,7 @@ angular.module('cosmoUiApp')
                 if(data.hasOwnProperty('hits')) {
                     eventHits = data.hits.hits;
                 }
-            }, true);
+            }, true, 30000);
         }
 
         function stopEventsStarted() {

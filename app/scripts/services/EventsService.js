@@ -60,7 +60,8 @@ angular.module('cosmoUiApp')
                 return filter ? ejs.FilteredQuery(query, filter) : query;
             }
 
-            function _autoPull(callbackFn) {
+
+            function _autoPull(callbackFn, customPullTime) {
                 var deferred = $q.defer();
                 isAutoPull = true;
                 $timeout(function _internalPull() {
@@ -76,7 +77,7 @@ angular.module('cosmoUiApp')
                             callbackFn(data);
                         }
                         deferred.notify(data);
-                        $timeout(_internalPull, autoPullTimer);
+                        $timeout(_internalPull, customPullTime !== undefined ? customPullTime : autoPullTimer);
                     }, false);
                 }, autoPullTimer);
                 return deferred.promise;
@@ -161,7 +162,7 @@ angular.module('cosmoUiApp')
                 return data;
             }
 
-            function execute(callbackFn, autoPull) {
+            function execute(callbackFn, autoPull, customPullTime) {
                 var results;
                 if(sortField) {
                     //$log.info(['Query 1: ', _applyFilters(oQuery.query('*')).toString()])
@@ -188,7 +189,7 @@ angular.module('cosmoUiApp')
                         callbackFn(data);
                         lastData = data;
                         if(autoPull === true) {
-                            _autoPull(callbackFn);
+                            _autoPull(callbackFn, customPullTime);
                         }
                     }
                 });
