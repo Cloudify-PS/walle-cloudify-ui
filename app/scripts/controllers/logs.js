@@ -50,6 +50,7 @@ angular.module('cosmoUiApp')
         $scope.filterLoading = false;
         $scope.isDialogVisible = false;
         $scope.errorMsg = null;
+        $scope.isSearchDisabled = true;
 
         var lastAmount = 0;
         function executeLogs(autoPull) {
@@ -214,7 +215,7 @@ angular.module('cosmoUiApp')
         })();
 
         $scope.execute = function() {
-            if ($scope.eventsFilter.blueprints.length > 0) {
+            if (!$scope.isSearchDisabled) {
                 executeLogs();
             }
         };
@@ -224,6 +225,7 @@ angular.module('cosmoUiApp')
         };
 
         $scope.$watch('eventsFilter.blueprints', function(newValue, oldValue){
+            $scope.isSearchDisabled = (newValue === null || newValue.length === 0);
             $scope.deploymentsList = $filter('filterListByList')(_deploymentsList, newValue);
             filterLogsByList('context.blueprint_id', newValue, oldValue, false);
         }, true);
