@@ -140,7 +140,7 @@
                          data-text="Select workflow"></div>
                 </div>
                 <div class="executingWorkflow" ng-show="deploymentInProgress">
-                    {{executedData.workflow_id}}
+                    {{ 'deployment.process.' + executedData.workflow_id | i18n }}
                     <div class="deploymentExecute" dots-loader speed="100" ng-show="deploymentInProgress"></div>
                 </div>
                 <i class="deployment-play" ng-class="{play: isExecuteEnabled(), disabled: !isExecuteEnabled()}" ng-click="toggleConfirmationDialog(deployment, 'execute')" ng-show="!deploymentInProgress"></i>
