@@ -3,7 +3,7 @@
 describe('Service: EventsService', function () {
 
     var eventsService, events, _callback, q,
-        isExcuted = false;
+        isExecuted = false;
 
     describe('Test setup', function() {
         it('Injecting required data & initializing a new instance', function() {
@@ -65,38 +65,25 @@ describe('Service: EventsService', function () {
 
                 events = eventsService.newInstance('/');
                 _callback = function() {
-                    isExcuted = true;
+                    isExecuted = true;
                 };
             });
         });
     });
 
     describe('Unit tests', function() {
+
         it('should create a new EventsService instance', function() {
             expect(!!eventsService).toBe(true);
         });
 
-        it('should set predefined autopull timer if no time defined by controller', function() {
-            spyOn(events, 'autoPull').andCallThrough();
-
-            events.execute(_callback, true);
-
-            waitsFor(function() {
-                return isExcuted;
-            });
-
-            runs(function() {
-                expect(events.autoPull).toHaveBeenCalledWith(_callback, undefined);
-            });
-        });
-
         it('should use defined autopull time provided by controller', function() {
+            isExecuted = false;
             spyOn(events, 'autoPull').andCallThrough();
 
             events.execute(_callback, true, 1000);
-
             waitsFor(function() {
-                return isExcuted;
+                return isExecuted;
             });
 
             runs(function() {
