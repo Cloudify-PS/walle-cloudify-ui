@@ -40,7 +40,7 @@ table.table {
         border: 0px !important;
         tr {
             td {
-                vertical-align: middle;
+                vertical-align: top;
                 height: 53px;
                 border: none;
                 background-color: transparent;
@@ -179,18 +179,18 @@ table.table {
     height: 36px;
     border-radius: 0px;
 
-    &.event-icon-workflow-started {background: url("#{$img-workflow-started}") no-repeat center center;}
-    &.event-icon-workflow-stage {background: url("#{$img-workflow-stage}") no-repeat center center;}
-    &.event-icon-workflow-end-successfully {background: url("#{$img-workflow-end-successfully}") no-repeat center center;}
-    &.event-icon-workflow-failed {background: url("#{$img-workflow-failed}") no-repeat center center;}
-    &.event-icon-task-started {background: url("#{$img-task-started}") no-repeat center center;}
-    &.event-icon-task-failed {background: url("#{$img-task-failed}") no-repeat center center;}
-    &.event-icon-task-sent {background: url("#{$img-task-sent}") no-repeat center center;}
-    &.event-icon-task-success {background: url("#{$img-task-success}") no-repeat center center;}
-    &.event-icon-task-retried {background: url("#{$img-task-retried}") no-repeat center center;}
-    &.event-icon-policy-success {background: url("#{$img-policy-success}") no-repeat center center;}
-    &.event-icon-policy-failed {background: url("#{$img-policy-failed}") no-repeat center center;}
-    &.event-icon-workflow-cancelled {background: url("#{$img-policy-failed}") no-repeat center center;}
+    &.event-icon-workflow-started           {background: url("#{$img-workflow-started}")          no-repeat top center;}
+    &.event-icon-workflow-stage             {background: url("#{$img-workflow-stage}")            no-repeat top center;}
+    &.event-icon-workflow-end-successfully  {background: url("#{$img-workflow-end-successfully}") no-repeat top center;}
+    &.event-icon-workflow-failed            {background: url("#{$img-workflow-failed}")           no-repeat top center;}
+    &.event-icon-task-started               {background: url("#{$img-task-started}")              no-repeat top center;}
+    &.event-icon-task-failed                {background: url("#{$img-task-failed}")               no-repeat top center;}
+    &.event-icon-task-sent                  {background: url("#{$img-task-sent}")                 no-repeat top center;}
+    &.event-icon-task-success               {background: url("#{$img-task-success}")              no-repeat top center;}
+    &.event-icon-task-retried               {background: url("#{$img-task-retried}")              no-repeat top center;}
+    &.event-icon-policy-success             {background: url("#{$img-policy-success}")            no-repeat top center;}
+    &.event-icon-policy-failed              {background: url("#{$img-policy-failed}")             no-repeat top center;}
+    &.event-icon-workflow-cancelled         {background: url("#{$img-policy-failed}")             no-repeat top center;}
     &.gs-icon-logs {
         padding-left: 16px;
         color: #049cdb;
