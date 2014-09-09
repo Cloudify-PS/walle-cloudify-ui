@@ -113,6 +113,16 @@ table.table {
     border-top: none;
     border-left: none;
     vertical-align: middle;
+
+
+}
+
+.gsBtnDisabled {
+  background: #f4fbff;
+  border-bottom: 1px solid #bce0ef;
+  border-right: 1px solid #bce0ef;
+  color: #bce0ef;
+  cursor: default;
 }
 
 .gs-selection-button {

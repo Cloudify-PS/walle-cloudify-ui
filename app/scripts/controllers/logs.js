@@ -214,7 +214,9 @@ angular.module('cosmoUiApp')
         })();
 
         $scope.execute = function() {
-            executeLogs();
+            if ($scope.eventsFilter.blueprints.length > 0) {
+                executeLogs();
+            }
         };
 
         $scope.scrollToTop = function(){
