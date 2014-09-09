@@ -235,6 +235,14 @@
                 }
             }
         }
+
+        .eventsTable {
+          tr {
+            td {
+              vertical-align: top;
+            }
+          }
+        }
     }
 
     #right-side-menu {
