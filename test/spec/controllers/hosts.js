@@ -136,23 +136,21 @@ describe('Controller: HostsCtrl', function () {
         });
 
         it('should set isSearchDisabled flag to true if no blueprints were selected', function() {
-            scope.isSearchDisabled = false;
             scope.eventsFilter.blueprints = [];
 
             scope.$apply();
 
-            expect(scope.isSearchDisabled).toBe(true);
+            expect(scope.isSearchDisabled()).toBe(true);
         });
 
         it('should set isSearchDisabled flag to false if blueprints were selected', function() {
-            scope.isSearchDisabled = true;
             scope.eventsFilter.blueprints = [{
                 name: 'blueprint1'
             }];
 
             scope.$apply();
 
-            expect(scope.isSearchDisabled).toBe(false);
+            expect(scope.isSearchDisabled()).toBe(false);
         });
     });
 });
