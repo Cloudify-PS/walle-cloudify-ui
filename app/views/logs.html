@@ -57,7 +57,7 @@
 
             </div>
 
-            <button class="gs-btn" data-ng-click="execute()">Show</button>
+            <button class="gs-btn" data-ng-click="execute()" ng-class="{gsBtnDisabled: !!isSearchDisabled}">Show</button>
 
             <div class="loading" data-ng-show="filterLoading"></div>
         </div>
