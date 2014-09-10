@@ -363,6 +363,12 @@
             background-color: $clr-base-10;
             border-bottom: 1px solid $COSMOUI_BUTTON_BACKGROUND;
             border-right: 1px solid $COSMOUI_BUTTON_BACKGROUND;
+
+          .disabledBtn {
+            color: $clr-base-24;
+          }
         }
+
+
     }
 }
