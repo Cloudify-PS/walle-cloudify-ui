@@ -70,6 +70,10 @@
             &:active {
                 background: url("/images/x_pressed.png") no-repeat center center;
             }
+
+            &.disabled {
+                background: url("/images/x_idle.png") no-repeat center center;
+            }
         }
     }
 
@@ -354,7 +358,7 @@
         text-align: right;
         margin: 10px 0;
 
-        #cancelBtnDelDep {
+        .cancelBtnDelDep {
             display: inline-block;
             color: $COSMOUI_BUTTON_BACKGROUND;
             font-weight: bold;
@@ -364,11 +368,13 @@
             border-bottom: 1px solid $COSMOUI_BUTTON_BACKGROUND;
             border-right: 1px solid $COSMOUI_BUTTON_BACKGROUND;
 
-          .disabledBtn {
-            color: $clr-base-24;
-          }
+            &.disabled {
+              background: $COSMOUI_BUTTON_DISABLED_BACKGROUND;
+              border-bottom: 1px solid $COSMOUI_BUTTON_DISABLED_BORDER_COLOR;
+              border-right: 1px solid $COSMOUI_BUTTON_DISABLED_BORDER_COLOR;
+              color: $clr-base-24;
+              cursor: default;
+            }
         }
-
-
     }
 }
