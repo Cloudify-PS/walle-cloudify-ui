@@ -217,6 +217,9 @@ angular.module('cosmoUiApp')
         };
 
         function closeDeleteDialog() {
+            if ($scope.deleteInProcess) {
+                return;
+            }
             $scope.isDeleteDeploymentVisible = false;
             currentDeplyToDelete = null;
         }

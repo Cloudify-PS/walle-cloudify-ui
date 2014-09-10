@@ -70,6 +70,10 @@
             &:active {
                 background: url("/images/x_pressed.png") no-repeat center center;
             }
+
+            &.disabled {
+                background: url("/images/x_idle.png") no-repeat center center;
+            }
         }
     }
 
@@ -363,6 +367,14 @@
             background-color: $clr-base-10;
             border-bottom: 1px solid $COSMOUI_BUTTON_BACKGROUND;
             border-right: 1px solid $COSMOUI_BUTTON_BACKGROUND;
+
+            &.disabled {
+              background: $COSMOUI_BUTTON_DISABLED_BACKGROUND;
+              border-bottom: 1px solid $COSMOUI_BUTTON_DISABLED_BORDER_COLOR;
+              border-right: 1px solid $COSMOUI_BUTTON_DISABLED_BORDER_COLOR;
+              color: $clr-base-24;
+              cursor: default;
+            }
         }
     }
 }
