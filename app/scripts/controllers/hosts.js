@@ -24,6 +24,7 @@ angular.module('cosmoUiApp')
         $scope.blueprintsList = [];
         $scope.deploymentsList = [];
         $scope.filterLoading = false;
+        $scope.isSearchDisabled = true;
         $scope.eventsFilter = {
             'blueprints': null,
             'deployments': null
@@ -84,6 +85,7 @@ angular.module('cosmoUiApp')
         };
 
         $scope.$watch('eventsFilter.blueprints', function(newValue){
+            $scope.isSearchDisabled = (newValue === null || newValue.length === 0);
             if(newValue !== null) {
                 $scope.deploymentsList = $filter('filterListByList')(_deploymentsList, [newValue]);
                 _filterBlueprint = newValue.value;
@@ -105,7 +107,9 @@ angular.module('cosmoUiApp')
         }, true);
 
         $scope.execute = function() {
-            _execute();
+            if (!$scope.isSearchDisabled) {
+                _execute();
+            }
         };
 
     });

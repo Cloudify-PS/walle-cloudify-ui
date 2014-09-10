@@ -32,7 +32,7 @@
                      name="deployments"></div>
             </div>
 
-            <button class="gs-btn" data-ng-click="execute()">Show</button>
+            <button class="gs-btn" data-ng-click="execute()" ng-class="{gsBtnDisabled: !!isSearchDisabled}">Show</button>
 
             <div class="search">
                 <input type="text" placeholder="Search" data-ng-model="searchFilter" />
