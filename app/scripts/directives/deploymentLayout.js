@@ -97,6 +97,9 @@ angular.module('cosmoUiApp')
                                 });
                             }
                             $scope.workflowsList = workflows;
+
+                            // Emit workflows data
+                            $scope.$emit('workflowsData', workflows);
                         }
 
                         _loadExecutions();
