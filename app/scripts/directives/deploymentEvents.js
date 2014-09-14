@@ -38,9 +38,11 @@ angular.module('cosmoUiApp')
                     events.execute(function(data){
                         if(data && data.hasOwnProperty('hits')) {
                             var dataHits = _convertDates(data.hits.hits);
-                            if(data.hits.hits.length !== lastAmount) {
-                                pushLogs(dataHits);
-                                lastAmount = dataHits.length;
+                            if (dataHits.length > 0) {
+                                if (data.hits.hits.length !== lastAmount) {
+                                    pushLogs(dataHits);
+                                    lastAmount = dataHits.length;
+                                }
                             }
                         }
                         else {

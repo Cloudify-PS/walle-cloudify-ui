@@ -62,6 +62,7 @@ angular.module('cosmoUiApp')
             }
 
             function pushLogs(data) {
+                console.log(['pushLogs']);
                 $scope.newLogs = 0;
                 $scope.eventHits = data.concat($scope.eventHits);
                 lastData = data;
@@ -73,19 +74,19 @@ angular.module('cosmoUiApp')
                         var dataHits = _convertDates(data.hits.hits);
                         if (dataHits.length > 0) {
                             $log.info('got event hits', dataHits.length);
-                        }
-                        if(data.hits.hits.length !== lastAmount) {
-                            if(document.body.scrollTop === 0) {
-                                pushLogs(dataHits);
+                            if(dataHits.length !== lastAmount) {
+                                if(document.body.scrollTop === 0) {
+                                    pushLogs(dataHits);
+                                }
+                                else {
+                                    eventsCollect = dataHits;
+                                    $scope.newEvents = eventsCollect.length - $scope.eventHits.length;
+                                }
+                                lastAmount = dataHits.length;
                             }
                             else {
-                                eventsCollect = dataHits;
-                                $scope.newEvents = eventsCollect.length - $scope.eventHits.length;
+                                pushLogs(dataHits);
                             }
-                            lastAmount = dataHits.length;
-                        }
-                        else {
-                            pushLogs(dataHits);
                         }
                     }
                     else {
@@ -119,7 +120,6 @@ angular.module('cosmoUiApp')
         (function _LoadEvents() {
             filterEvents('type', {value: 'cloudify_event'}, null);
             filterEvents('context.deployment_id', {value: id}, null);
-//            filterEvents('context.execution_id', {value: executionIdexecutionId}, null);
             executeEvents(true);
         })();
 
