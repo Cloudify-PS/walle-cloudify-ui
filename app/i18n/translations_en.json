@@ -66,6 +66,11 @@
                 "message": "Message",
                 "workflow": "Workflow"
             }
+        },
+        "process": {
+            "create_deployment_environment": "Initializing",
+            "install": "Install",
+            "uninstall": "Uninstall"
         }
     },
     "deployments": {
@@ -87,6 +92,11 @@
             "descriptionCancel": "Cancel",
             "confirmBtn": "Confirm",
             "cancelBtn": "Cancel"
+        },
+        "process": {
+            "create_deployment_environment": "Initializing",
+            "install": "Install",
+            "uninstall": "Uninstall"
         }
     },
     "settingsToggles": {

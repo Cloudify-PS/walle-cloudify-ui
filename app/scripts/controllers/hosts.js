@@ -105,7 +105,13 @@ angular.module('cosmoUiApp')
         }, true);
 
         $scope.execute = function() {
-            _execute();
+            if (!$scope.isSearchDisabled()) {
+                _execute();
+            }
+        };
+
+        $scope.isSearchDisabled = function() {
+            return $scope.eventsFilter.blueprints === null || $scope.eventsFilter.blueprints.length === 0;
         };
 
     });
