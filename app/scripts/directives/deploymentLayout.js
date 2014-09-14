@@ -152,6 +152,10 @@ angular.module('cosmoUiApp')
                         'href': '/nodes'
                     },
                     {
+                        'name': 'Executions',
+                        'href': '/executions'
+                    },
+                    {
                         'name': 'Events',
                         'href': '/events'
                     },
@@ -186,7 +190,8 @@ angular.module('cosmoUiApp')
                         }
                         $scope.$emit('deploymentExecution', {
                             currentExecution: $scope.currentExecution,
-                            deploymentInProgress: $scope.deploymentInProgress
+                            deploymentInProgress: $scope.deploymentInProgress,
+                            executionsList: dataExec
                         });
                     });
 
