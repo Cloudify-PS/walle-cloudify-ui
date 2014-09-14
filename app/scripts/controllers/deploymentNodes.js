@@ -40,7 +40,6 @@ angular.module('cosmoUiApp')
         };
 
         $scope.viewNodeDetails = function (viewNode) {
-            console.log(['viewNode', viewNode]);
             $scope.viewNode = viewNode;
         };
 
