@@ -70,6 +70,10 @@
             &:active {
                 background: url("/images/x_pressed.png") no-repeat center center;
             }
+
+            &.disabled {
+                background: url("/images/x_idle.png") no-repeat center center;
+            }
         }
     }
 
@@ -78,8 +82,8 @@
         width: 100%;
         height: 51px;
         color: $COSMOUI_DIALOG_TITLE_COLOR;
-        line-height: 28px;
-        font-size: 32px;
+        line-height: 31px;
+        font-size: 26px;
         padding-left: 20px;
         padding-top: 10px;
         background-color: $clr-base-00;
@@ -363,6 +367,14 @@
             background-color: $clr-base-10;
             border-bottom: 1px solid $COSMOUI_BUTTON_BACKGROUND;
             border-right: 1px solid $COSMOUI_BUTTON_BACKGROUND;
+
+            &.disabled {
+              background: $COSMOUI_BUTTON_DISABLED_BACKGROUND;
+              border-bottom: 1px solid $COSMOUI_BUTTON_DISABLED_BORDER_COLOR;
+              border-right: 1px solid $COSMOUI_BUTTON_DISABLED_BORDER_COLOR;
+              color: $clr-base-24;
+              cursor: default;
+            }
         }
     }
 }

@@ -31,6 +31,7 @@ describe('Controller: HostsCtrl', function () {
 
                 return deferred.promise;
             };
+
             RestService.getNodes = function() {
                 var deferred = $q.defer();
                 var nodes = [
@@ -132,6 +133,24 @@ describe('Controller: HostsCtrl', function () {
                 expect(scope.hostsList.length).toBe(1);
                 expect(scope.hostsList[0].node_id).toBe('mongod_vm');
             });
+        });
+
+        it('should set isSearchDisabled flag to true if no blueprints were selected', function() {
+            scope.eventsFilter.blueprints = [];
+
+            scope.$apply();
+
+            expect(scope.isSearchDisabled()).toBe(true);
+        });
+
+        it('should set isSearchDisabled flag to false if blueprints were selected', function() {
+            scope.eventsFilter.blueprints = [{
+                name: 'blueprint1'
+            }];
+
+            scope.$apply();
+
+            expect(scope.isSearchDisabled()).toBe(false);
         });
     });
 });

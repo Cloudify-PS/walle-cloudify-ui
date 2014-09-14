@@ -48,6 +48,7 @@ angular.module('cosmoUiApp')
         $scope.workflowsList = [];
         $scope.currentExecution = null;
         $scope.executedErr = false;
+        $scope.executionsList = [];
 
         var id = $routeParams.id;
         var blueprint_id = $routeParams.blueprint_id;
@@ -469,6 +470,9 @@ angular.module('cosmoUiApp')
 
                             RestService.getProviderContext()
                                 .then(function(providerData) {
+                                    if (providerData === undefined) {
+                                        return;
+                                    }
                                     var _extNetworks = [];
                                     var externalNetwork = {
                                         'id': providerData.context.resources.ext_network.id,
@@ -514,8 +518,9 @@ angular.module('cosmoUiApp')
                     // Execution
                     RestService.autoPull('getDeploymentExecutions', id, RestService.getDeploymentExecutions)
                         .then(null, null, function (dataExec) {
-                            $log.info('data exec', dataExec);
+//                            $log.info('data exec', dataExec);
                             if (dataExec.length > 0) {
+                                $scope.executionsList = dataExec;
                                 $scope.currentExecution = _getCurrentExecution(dataExec);
                                 $log.info('current execution is', $scope.currentExecution, $scope.deploymentInProgress  );
                                 if ( !$scope.currentExecution && $scope.deploymentInProgress) { // get info for the first time
@@ -849,7 +854,7 @@ angular.module('cosmoUiApp')
                     if(troubleShoot === executeRetry) {
                         events.stopAutoPull();
                     }
-                }, autoPull, true);
+                }, autoPull);
         }
 
         function filterEvents(field, newValue, oldValue, execute) {

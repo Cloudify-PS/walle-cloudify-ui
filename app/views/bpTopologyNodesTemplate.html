@@ -9,8 +9,8 @@
     <div pie:progress="piProgress2" class="piProgress" size="47">
         <div class="circle">
             <i class="icon topology-glyph" ng-class="node.class"></i>
-            <div class="badge" ng-show="node.state == undefined">{{ node.instances.deploy }}</div>
-            <div class="badge" data-ng-class="getBadgeStatus(node.state.status)" ng-show="node.state != undefined">
+            <div class="badge" ng-show="node.state == undefined && node.instances.deploy != undefined">{{ node.instances.deploy }}</div>
+            <div class="badge" data-ng-class="getBadgeStatus(node.state.status)" ng-show="node.state != undefined && node.state.completed != undefined">
                 {{ node.state.completed }}/{{ node.state.total }}
             </div>
         </div>

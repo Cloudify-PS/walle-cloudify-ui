@@ -41,10 +41,15 @@ describe('Service: NodeService', function () {
     describe('Test setup', function() {
         it('Injecting required data & initializing a new instance', function() {
             // load the filter's module
-            module('cosmoUiApp');
+            module('cosmoUiApp', 'ngMock');
 
             // initialize a new instance of the filter
-            inject(function (NodeService) {
+            inject(function (NodeService, $httpBackend) {
+                $httpBackend.whenGET("/backend/configuration?access=all").respond(200);
+                $httpBackend.whenGET("/backend/versions/ui").respond(200);
+                $httpBackend.whenGET("/backend/versions/manager").respond(200);
+                $httpBackend.whenGET("/backend/version/latest?version=00").respond('300');
+
                 nodeService = NodeService;
             });
         });

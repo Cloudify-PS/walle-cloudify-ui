@@ -193,12 +193,13 @@
                     }
 
                     &.deployment-pause {
-                        &.pause {
-                            background-image: url($img-deployment-pause);
-                        }
+                      font-size: 30px;
+                      padding-left: 7px;
+                      padding-top: 2px;
+                      color: #3aaeda;
 
                         &:hover {
-                            background-image: url($img-deployment-pause-selected);
+                          color: #136e9d;
                         }
                     }
                 }
@@ -212,7 +213,7 @@
 
                 .executingWorkflow {
                     min-width: 0px;
-                    max-width: 250;
+                    max-width: 200px;
                     height: 31px;
                     color: $clr-base-11;
                     background-color: $clr-base-05;
@@ -233,6 +234,14 @@
                     text-overflow: ellipsis;
                 }
             }
+        }
+
+        .eventsTable {
+          tr {
+            td {
+              vertical-align: top;
+            }
+          }
         }
     }
 
@@ -1289,7 +1298,7 @@
         }
     }
 
-    div[ng-switch-when="nodes"], .nodesTable {
+    div[ng-switch-when="nodes"], div[ng-switch-when="executions"], .nodesTable {
         margin: 30px 0 20px;
         padding: 0 20px 20px;
 
