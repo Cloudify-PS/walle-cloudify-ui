@@ -14,6 +14,7 @@ angular.module('cosmoUiApp')
 
         RestService.getBlueprintById({id: $scope.blueprintId})
             .then(function(data) {
+                $scope.planNodes = data.plan.nodes;
                 $scope.blueprint = data || null;
                 $scope.nodesTree = NodeService.createNodesTree(data.plan.nodes);
                 $scope.dataTable = data.plan.nodes;
@@ -53,18 +54,8 @@ angular.module('cosmoUiApp')
             return relationshipData;
         };
 
-        $scope.viewNode = function (node) {
-            $scope.showProperties = {
-                properties: node.properties,
-                relationships: node.relationships,
-                general: {
-                    'name': node.id,
-                    'type': node.type
-                }
-            };
+        $scope.viewNode = function (viewNode) {
+            $scope.viewNodeDetails = viewNode;
         };
 
-        $scope.hideProperties = function () {
-            $scope.showProperties = null;
-        };
     });

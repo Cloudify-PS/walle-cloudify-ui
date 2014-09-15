@@ -7,9 +7,9 @@
  * # floatingNodePanel
  */
 angular.module('cosmoUiApp')
-    .directive('floatingNodePanel', function (RestService) {
+    .directive('floatingDeploymentNodePanel', function (RestService) {
         return {
-            templateUrl: 'views/floatingNodePanel.html',
+            templateUrl: 'views/deployment/floatingNodePanel.html',
             restrict: 'EA',
             scope: {
                 id: '=depid',
@@ -28,7 +28,9 @@ angular.module('cosmoUiApp')
                             'type': node.type
                         }
                     };
-                    _getInstances(node.id);
+                    if($scope.id) {
+                        _getInstances(node.id);
+                    }
                 }
 
                 function _getInstances(nodeId) {
