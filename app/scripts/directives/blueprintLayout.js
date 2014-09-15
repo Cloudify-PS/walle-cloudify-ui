@@ -1,14 +1,14 @@
 'use strict';
 
 angular.module('cosmoUiApp')
-    .directive('blueprintLayout', function ($location, BreadcrumbsService) {
+    .directive('blueprintLayout', function ($location, BreadcrumbsService, RestService) {
         return {
             templateUrl: 'views/blueprint/layout.html',
             restrict: 'EA',
             transclude: true,
             replace: true,
             scope: {
-                blueprintId: '=blueprintId',
+                id: '=blueprintId',
                 section: '@',
                 selectview: '@'
             },
@@ -22,13 +22,6 @@ angular.module('cosmoUiApp')
                     'modules': true,
                     'connections': true
                 };
-                $scope.breadcrumb = [
-                    {
-                        href: '',
-                        label: $scope.blueprintId,
-                        id: 'blueprint'
-                    }
-                ];
 
                 // Set Breadcrumb
                 BreadcrumbsService.push('blueprints', {
@@ -36,6 +29,32 @@ angular.module('cosmoUiApp')
                     i18nKey: 'breadcrumb.blueprints',
                     id: 'blueprints'
                 });
+
+                RestService.getBlueprintById({id: $scope.id})
+                    .then(function(blueprintData) {
+
+                        // Verify it's valid page, if not redirect to blueprints page
+                        if (blueprintData.hasOwnProperty('error_code')) {
+                            $location.path('/blueprints');
+                        }
+
+                        // Emit deployment data
+                        $scope.$emit('blueprintData', blueprintData);
+
+                        // Add breadcrumbs for the current deployment
+                        $scope.breadcrumb = [
+                            {
+                                href: '',
+                                label: blueprintData.id,
+                                id: 'blueprint'
+                            }
+                        ];
+
+                    });
+
+
+
+
 
                 $scope.$watch('breadcrumb', function (breadcrumbs) {
                     angular.forEach(breadcrumbs, function (breadcrumb) {
@@ -72,7 +91,7 @@ angular.module('cosmoUiApp')
                 };
 
                 $scope.goToSection = function (section) {
-                    $location.path('/blueprint/' + $scope.blueprintId + section.href);
+                    $location.path('/blueprint/' + $scope.id + section.href);
                 };
 
                 $scope.toggleDeployDialog = function() {

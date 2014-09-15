@@ -12,17 +12,13 @@ angular.module('cosmoUiApp')
             $scope.viewNode(data);
         });
 
-        RestService.getBlueprintById({id: $scope.blueprintId})
-            .then(function(data) {
-                $scope.planNodes = data.plan.nodes;
-                $scope.blueprint = data || null;
-                $scope.nodesTree = NodeService.createNodesTree(data.plan.nodes);
-                $scope.dataTable = data.plan.nodes;
-
-                blueprintCoordinateService.resetCoordinates();
-                blueprintCoordinateService.setMap(_getNodesConnections(data.plan.nodes));
-                $scope.coordinates = blueprintCoordinateService.getCoordinates();
-            });
+        $scope.$on('blueprintData', function(event, data){
+            $scope.planNodes = data.plan.nodes;
+            $scope.nodesTree = NodeService.createNodesTree(data.plan.nodes);
+            blueprintCoordinateService.resetCoordinates();
+            blueprintCoordinateService.setMap(_getNodesConnections(data.plan.nodes));
+            $scope.coordinates = blueprintCoordinateService.getCoordinates();
+        });
 
         function _getNodesConnections(nodes) {
             var connections = [];
@@ -42,7 +38,6 @@ angular.module('cosmoUiApp')
 
         $scope.getRelationshipByType = function(node, type) {
             var relationshipData = [];
-
             if (node.relationships !== undefined) {
                 for (var i = 0; i < node.relationships.length; i++) {
                     if (node.relationships[i].type_hierarchy.join(',').indexOf(type) > -1) {
@@ -50,7 +45,6 @@ angular.module('cosmoUiApp')
                     }
                 }
             }
-
             return relationshipData;
         };
 
