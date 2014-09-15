@@ -659,10 +659,10 @@
     .bpContainer {
         position: relative;
         display: block;
-        width: 100%;
+        width: calc(100% + 120px);
+        margin-right: -120px;
         height: 100%;
-        padding: 20px 40px;
-        margin: 15px 0 0 0;
+        padding: 40px;
         .coordinates {
             position: absolute;
             top: 0;
@@ -909,7 +909,7 @@
             margin: 10px 0;
             .piProgress {
                 top: 0px;
-                left: 0px;
+                left: -6px;
             }
             p {
                 position: relative;

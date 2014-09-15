@@ -40,6 +40,14 @@ angular.module('cosmoUiApp', [
                 templateUrl: 'views/blueprint/network.html',
                 controller: 'BlueprintNetworkCtrl'
             })
+            .when('/blueprint/:blueprintId/nodes', {
+                templateUrl: 'views/blueprint/nodes.html',
+                controller: 'BlueprintNodesCtrl'
+            })
+            .when('/blueprint/:blueprintId/source', {
+                templateUrl: 'views/blueprint/source.html',
+                controller: 'BlueprintSourceCtrl'
+            })
             .when('/deployments',{
                 templateUrl: 'views/deployments.html',
                 controller: 'DeploymentsCtrl'
