@@ -421,6 +421,9 @@
     .events {
         padding: 0px 20px;
         margin: 10px 0 0;
+        .icon {
+            background-position: center center;
+        }
     }
 
     .content-section, .events {
