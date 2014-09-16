@@ -70,6 +70,11 @@
             <div class="dialogDeploymentName">
                 <input type="text" ng-model="deployment_id" ng-enter="deployBlueprint(selectedBlueprint)" placeholder="{{ 'blueprints.deployDialog.deployName' | i18n }}">
             </div>
+            <div class="dialogInputs">
+                <ul>
+                    <li ng-repeat="input in selectedBlueprint.plans.inputs">{{ input }}: <input type="text"></li>
+                </ul>
+            </div>
             <div id="deploy-error-message" ng-show="isDeployError()">{{deployErrorMessage}}</div>
             <div class="buttonsContainer deployButtons">
                 <button id="deployBtn" class="dialogButton" ng-class="{disabled: !isDeployEnabled(), enabled: isDeployEnabled(), loader: inProcess}" ng-click="deployBlueprint(selectedBlueprint)">{{ 'blueprints.deployDialog.deployBtn' | i18n }}</button>
