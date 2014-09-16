@@ -32,17 +32,49 @@ angular.module('cosmoUiApp', [
                 templateUrl: 'views/plans.html',
                 controller: 'PlansCtrl'
             })
+            .when('/blueprint/:blueprintId/topology', {
+                templateUrl: 'views/blueprint/topology.html',
+                controller: 'BlueprintTopologyCtrl'
+            })
+            .when('/blueprint/:blueprintId/network', {
+                templateUrl: 'views/blueprint/network.html',
+                controller: 'BlueprintNetworkCtrl'
+            })
+            .when('/blueprint/:blueprintId/nodes', {
+                templateUrl: 'views/blueprint/nodes.html',
+                controller: 'BlueprintNodesCtrl'
+            })
+            .when('/blueprint/:blueprintId/source', {
+                templateUrl: 'views/blueprint/source.html',
+                controller: 'BlueprintSourceCtrl'
+            })
             .when('/deployments',{
                 templateUrl: 'views/deployments.html',
                 controller: 'DeploymentsCtrl'
             })
-            .when('/deployment',{
-                templateUrl: 'views/deployment.html',
-                controller: 'DeploymentCtrl'
-            })
             .when('/deployment/:deploymentId/monitoring', {
                 templateUrl: 'views/deployment/monitoring.html',
                 controller: 'DeploymentMonitoringCtrl'
+            })
+            .when('/deployment/:deploymentId/topology', {
+                templateUrl: 'views/deployment/topology.html',
+                controller: 'DeploymentTopologyCtrl'
+            })
+            .when('/deployment/:deploymentId/network', {
+                templateUrl: 'views/deployment/network.html',
+                controller: 'DeploymentNetworkCtrl'
+            })
+            .when('/deployment/:deploymentId/nodes', {
+                templateUrl: 'views/deployment/nodes.html',
+                controller: 'DeploymentNodesCtrl'
+            })
+            .when('/deployment/:deploymentId/executions', {
+                templateUrl: 'views/deployment/executions.html',
+                controller: 'DeploymentExecutionsCtrl'
+            })
+            .when('/deployment/:deploymentId/events', {
+                templateUrl: 'views/deployment/events.html',
+                controller: 'DeploymentEventsCtrl'
             })
             .when('/monitoring',{
                 templateUrl: 'views/blueprintsIndex.html'

@@ -25,7 +25,12 @@ angular.module('cosmoUiApp')
                 scope.selectedItem = null;
 
                 scope.isSelected = function(item) {
-                    return item.route.indexOf('#' + $location.path().substr(1)) >= 0;
+                    for(var i in item.route) {
+                        if($location.path().substr(1).search(item.route[i].substr(1)) === 0) {
+                            return true;
+                        }
+                    }
+                    return false;
                 };
 
                 scope.isDisabled = function(item) {

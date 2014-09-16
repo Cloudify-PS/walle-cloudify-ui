@@ -12,7 +12,7 @@ angular.module('cosmoUiApp')
             compile: function(element) {
                 return RecursionHelper.compile(element, function(scope) {
                     scope.onNodeSelected = function(node) {
-                        scope.$root.$emit('topologyNodeSelected', node);
+                        scope.$emit('topologyNodeSelected', node);
                     };
                 });
             },
