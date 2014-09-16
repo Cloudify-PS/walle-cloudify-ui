@@ -294,8 +294,10 @@ Cloudify4node.getDeployments = function(callback) {
 
 Cloudify4node.addDeployment = function(requestBody, callback) {
     var data = {
-        'blueprint_id': requestBody.blueprint_id
+        'blueprint_id': requestBody.blueprint_id,
+        'inputs': requestBody.inputs
     };
+    console.log('data', data);
     var requestData = createRequestData({
         path: '/deployments/' + requestBody.deployment_id,
         data: data,

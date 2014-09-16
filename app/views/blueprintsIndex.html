@@ -72,7 +72,7 @@
             </div>
             <div class="dialogInputs">
                 <ul>
-                    <li ng-repeat="(name, value) in selectedBlueprint.plan.inputs"><input type="text" placeholder="{{ name | i18n }}"></li>
+                    <li ng-repeat="(name, value) in selectedBlueprint.plan.inputs"><input type="text" ng-model="inputs[name]" placeholder="{{ name | i18n }}"></li>
                 </ul>
             </div>
             <div id="deploy-error-message" ng-show="isDeployError()">{{deployErrorMessage}}</div>

@@ -142,6 +142,7 @@ app.get('/backend/deployments', function(request, response) {
 });
 
 app.post('/backend/deployments/create', function(request, response) {
+    console.log('body', request.body);
     cloudify4node.addDeployment(request.body, function(err, data) {
         response.send(err !== null ? err : data);
     });

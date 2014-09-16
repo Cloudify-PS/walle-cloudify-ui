@@ -5,6 +5,7 @@ angular.module('cosmoUiApp')
         $scope.deployment_id = null;
         $scope.deployError = false;
         $scope.deployErrorMessage = 'Error deploying blueprint';
+        $scope.inputs = {};
 
         $scope.isDeployEnabled = function() {
             return $scope.deployment_id !== null && $scope.deployment_id.length > 0;
@@ -18,7 +19,8 @@ angular.module('cosmoUiApp')
 
             var params = {
                 blueprint_id: blueprintId,
-                deployment_id: $scope.deployment_id
+                deployment_id: $scope.deployment_id,
+                inputs: $scope.inputs
             };
 
             if ($scope.isDeployEnabled()) {
