@@ -1,4 +1,4 @@
-#plans {
+#plans, #blueprint {
 
     #main-content-panel {
         padding-right: 40px;
@@ -187,7 +187,7 @@
         width: calc(100% + 120px);
         margin-right: -120px;
         height: 100%;
-        padding: 20px 40px;
+        padding: 40px;
         .coordinates {
             position: absolute;
             top: 0;
@@ -428,19 +428,21 @@
         }
         .app {
             position: relative;
+            display: inline-block;
             width: 47px;
             height: 47px;
             text-align: center;
             border-radius: 3px;
-            margin: 10px;
+            margin: 10px 0;
 
             .piProgress {
-                top: 1.5px;
-                left: 37px;
+                top: 0px;
+                left: -6px;
             }
             p {
                 position: relative;
                 top: 50px;
+                left: -50%;
                 margin: 0px;
                 color: #555869;
                 font-size: 15px;
@@ -449,7 +451,7 @@
                 display: inline-block;
                 &:after {
                     position: absolute;
-                    top: 17px;
+                    top: 19px;
                     left: 8px;
                 }
             }

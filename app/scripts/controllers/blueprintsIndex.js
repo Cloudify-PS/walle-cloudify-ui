@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('cosmoUiApp')
-    .controller('BlueprintsIndexCtrl', function ($scope, $location, $cookieStore, RestService, BreadcrumbsService, $timeout, $log) {
+    .controller('BlueprintsIndexCtrl', function ($scope, $location, $cookieStore, RestService, BreadcrumbsService, $timeout) {
         $scope.isAddDialogVisible = false;
         $scope.isDeployDialogVisible = false;
         $scope.isDeleteBlueprintVisible = false;
@@ -21,8 +21,7 @@ angular.module('cosmoUiApp')
             });
 
         $scope.redirectTo = function (blueprint) {
-            $log.info(['redirecting to', blueprint]);
-            $location.path('/blueprint').search({id: blueprint.id, name: blueprint.id});
+            $location.path('/blueprint/' + blueprint.id + '/topology');
         };
 
         $scope.toggleAddDialog = function() {
