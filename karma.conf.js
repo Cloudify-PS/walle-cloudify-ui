@@ -21,7 +21,6 @@ module.exports = function(config) {
             'app/bower_components/angular-timer/dist/angular-timer.js',
             'app/bower_components/angularjs-nvd3-directives/dist/angularjs-nvd3-directives.js',
             'app/bower_components/elastic.js/dist/elastic-angular-client.js',
-            'app/bower_components/yamljs/bin/yaml.js',
             'app/bower_components/gs-ui-infra/app/scripts/**/*.js',
             'app/bower_components/i18next/i18next.js',
             'app/scripts/*.js',
@@ -78,7 +77,7 @@ module.exports = function(config) {
 
         // If browser does not capture in given timeout [ms], kill it
         // CLI --capture-timeout 5000
-        captureTimeout: 15000,
+        captureTimeout: 20000,
 
         // Auto run tests on start (when browsers are captured) and exit
         // CLI --single-run --no-single-run
