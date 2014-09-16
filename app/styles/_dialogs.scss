@@ -134,6 +134,32 @@
         overflow-y: auto;
     }
 
+    .dialogInputs {
+      position: relative;
+      width: 100%;
+      text-align: left;
+      margin-left: 20px;
+      margin-top: 20px;
+
+      ul {
+          list-style-type: none;
+
+          input {
+            position: relative;
+            width: 310px;
+            height: 32px;
+            border-radius: 3px;
+            padding-left: 10px;
+            margin-bottom: 5px;
+            background-clip: padding-box;
+            background-color: $clr-base-10;
+            border: 0;
+          }
+      }
+
+
+    }
+
     .buttonsContainer {
         display: block;
         text-align: center;
