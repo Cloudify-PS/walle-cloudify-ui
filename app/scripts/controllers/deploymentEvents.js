@@ -62,7 +62,6 @@ angular.module('cosmoUiApp')
             }
 
             function pushLogs(data) {
-                console.log(['pushLogs']);
                 $scope.newLogs = 0;
                 $scope.eventHits = data.concat($scope.eventHits);
                 lastData = data;
@@ -73,9 +72,8 @@ angular.module('cosmoUiApp')
                     if(data && data.hasOwnProperty('hits')) {
                         var dataHits = _convertDates(data.hits.hits);
                         if (dataHits.length > 0) {
-                            $log.info('got event hits', dataHits.length);
                             if(dataHits.length !== lastAmount) {
-                                if(document.body.scrollTop === 0) {
+                                if(document.body.scrollTop === 0 || $scope.eventHits.length === 0) {
                                     pushLogs(dataHits);
                                 }
                                 else {
