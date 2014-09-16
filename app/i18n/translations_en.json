@@ -29,7 +29,7 @@
             "browseBtn": "+",
             "fileLabel": "Application file: ",
             "uploadBtn": "Save",
-            "blueprintName": "*optional name"
+            "blueprintName": "Blueprint name"
         },
         "deployDialog": {
             "title": "Deploy",
