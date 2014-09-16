@@ -469,6 +469,9 @@ Cloudify4node.getManagerVersion = function(callback) {
 };
 
 Cloudify4node.influxRequest = function(query, callback) {
+
+    console.log('influxRequest', query);
+
     var influxClient = influx({
         host: conf.influx.host,
         username : conf.influx.user,
