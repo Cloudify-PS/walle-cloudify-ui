@@ -26,10 +26,16 @@ angular.module('cosmoUiApp')
             }
             $scope.deployError = false;
 
+            if ($scope.inputsState === 'raw') {
+                try {
+                    $scope.inputs = JSON.parse($scope.inputsJSON);
+                } catch (e) {}
+            }
+
             var params = {
                 blueprint_id: blueprintId,
                 deployment_id: $scope.deployment_id,
-                inputs: $scope.inputsState === 'params' ? $scope.inputs : JSON.parse($scope.inputsJSON)
+                inputs: $scope.inputs
             };
 
             if ($scope.isDeployEnabled()) {
