@@ -13,6 +13,10 @@ angular.module('cosmoUiApp')
             return $scope.deployment_id !== null && $scope.deployment_id.length > 0;
         };
 
+        $scope.isParamsVisible = function() {
+            return Object.getOwnPropertyNames($scope.selectedBlueprint.plan.inputs).length > 0;
+        };
+
         $scope.deployBlueprint = function(blueprintId) {
             if (!_validateDeploymentName($scope.deployment_id)) {
                 return;
