@@ -36,13 +36,7 @@
             "description": "Please enter deployment name",
             "cancelBtn": "Cancel",
             "deployBtn": "Create",
-            "deployName": "Deployment name",
-            "inputs": {
-                "agent_user": "Agent user",
-                "flavor_name": "Flavor name",
-                "image_name": "Image name",
-                "webserver_port": "Webserver Port"
-            }
+            "deployName": "Deployment name"
         },
         "deleteDialog": {
             "cancelBtn": "Cancel",

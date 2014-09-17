@@ -14,6 +14,9 @@ angular.module('cosmoUiApp')
         };
 
         $scope.isParamsVisible = function() {
+            if ($scope.selectedBlueprint === null) {
+                return;
+            }
             return Object.getOwnPropertyNames($scope.selectedBlueprint.plan.inputs).length > 0;
         };
 
