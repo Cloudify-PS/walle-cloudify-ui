@@ -6,6 +6,8 @@ angular.module('cosmoUiApp')
         $scope.deployError = false;
         $scope.deployErrorMessage = 'Error deploying blueprint';
         $scope.inputs = {};
+        $scope.inputsJSON = null;
+        $scope.inputsState = 'params';
 
         $scope.isDeployEnabled = function() {
             return $scope.deployment_id !== null && $scope.deployment_id.length > 0;
@@ -20,7 +22,7 @@ angular.module('cosmoUiApp')
             var params = {
                 blueprint_id: blueprintId,
                 deployment_id: $scope.deployment_id,
-                inputs: $scope.inputs
+                inputs: $scope.inputsState === 'params' ? $scope.inputs : JSON.parse($scope.inputsJSON)
             };
 
             if ($scope.isDeployEnabled()) {
@@ -44,7 +46,12 @@ angular.module('cosmoUiApp')
         };
 
         $scope.closeDialog = function() {
+            _resetDialog();
             $scope.toggleDeployDialog();
+        };
+
+        $scope.toggleInputsState = function(state) {
+            $scope.inputsState = state;
         };
 
         // Temporary solution - should be handled by Cosmo, not UI side
@@ -57,4 +64,14 @@ angular.module('cosmoUiApp')
             }
             return true;
         }
+
+        function _resetDialog() {
+            $scope.deployment_id = null;
+            $scope.deployError = false;
+            $scope.inputs = {};
+            $scope.inputsJSON = null;
+            $scope.inputsState = 'params';
+        }
+
+        _resetDialog();
     });
