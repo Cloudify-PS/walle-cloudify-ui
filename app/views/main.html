@@ -14,7 +14,7 @@
         <dl class="dl-horizontal" ng-repeat="item in ['getProperties','getPolicies']">
             <dt>{{item}}</dt>
             <dd>
-                <pre>{{dataContainer[item](node) | yaml}}</pre>
+                <pre>{{dataContainer[item](node)}}</pre>
             </dd>
         </dl>
     </dd>
