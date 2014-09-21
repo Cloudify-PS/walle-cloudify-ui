@@ -42,6 +42,7 @@ function createRequest(requestData, callback) {
 
             logger.info(['Request done, data: ',data]);
 
+            console.log('data', data);
             callback(null, data);
         });
     };
@@ -297,7 +298,6 @@ Cloudify4node.addDeployment = function(requestBody, callback) {
         'blueprint_id': requestBody.blueprint_id,
         'inputs': requestBody.inputs
     };
-    console.log('data', data);
     var requestData = createRequestData({
         path: '/deployments/' + requestBody.deployment_id,
         data: data,
