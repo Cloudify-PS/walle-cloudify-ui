@@ -4,6 +4,8 @@
          blueprint-id="blueprintId"
          section="Network"></div>
 
+    <div floating-blueprint-node-panel node="viewNode" node-lists="planNodes"></div>
+
     <div class="networksContainer">
         <div bp:networks class="relations"></div>
 
@@ -22,7 +24,7 @@
                         <div class="inner">
                             <div class="buttons no-embed">
                                 <ul>
-                                    <li data-ng-click="viewNode(device)" class="topology-glyph node-details"></li>
+                                    <li data-ng-click="viewNodeDetails(device)" class="topology-glyph node-details"></li>
                                 </ul>
                             </div>
                             <i class="topology-glyph {{ device.icon }}" bp:network:coordinate ng-model="device"></i>
@@ -49,7 +51,7 @@
                         <div class="inner">
                             <div class="buttons no-embed">
                                 <ul>
-                                    <li data-ng-click="viewNode(getNodeById(device.id))" class="topology-glyph node-details"></li>
+                                    <li data-ng-click="viewNodeDetails(device)" class="topology-glyph node-details"></li>
                                 </ul>
                             </div>
                             <i class="topology-glyph {{ device.icon }}" bp:network:coordinate ng-model="device"></i>
@@ -57,7 +59,7 @@
                         <div class="ports" data-ng-repeat="port in device.ports">
                             <div class="buttons no-embed">
                                 <ul>
-                                    <li data-ng-click="viewNode(getNodeById(device.id))" class="topology-glyph node-details"></li>
+                                    <li data-ng-click="viewNodeDetails(device)" class="topology-glyph node-details"></li>
                                 </ul>
                             </div>
                             <i class="topology-glyph {{ port.icon }}" bp:network:coordinate ng-model="port"></i>

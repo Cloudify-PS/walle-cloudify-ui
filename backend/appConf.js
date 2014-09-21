@@ -73,10 +73,10 @@ var privateConfiguration = {
         path: os.tmpdir() + '/blueprints'
     },
     influx: {
-        host: 'influx.gsdev.info',
+        host: 'localhost',
         user: 'root',
         pass: 'root',
-        dbname: 'influxdb'
+        dbname: 'cloudify'
     }
 }
 
