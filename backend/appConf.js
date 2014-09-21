@@ -73,9 +73,9 @@ var privateConfiguration = {
         path: os.tmpdir() + '/blueprints'
     },
     influx: {
-        host: 'ec2-54-75-140-69.eu-west-1.compute.amazonaws.com',
+        host: 'localhost',
         user: 'influxdb',
-        pass: 'KtZ1afHmFN',
+        pass: 'influxdb',
         dbname: 'influxdb'
     }
 }
