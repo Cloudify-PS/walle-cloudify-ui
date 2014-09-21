@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('cosmoUiApp')
-    .controller('DeploymentsCtrl', function ($scope, RestService, $cookieStore, $location, $routeParams, BreadcrumbsService, $timeout, $log) {
+    .controller('DeploymentsCtrl', function ($scope, RestService, $cookieStore, $location, $routeParams, BreadcrumbsService, $timeout, $log, CloudifyService) {
 
         $scope.blueprints = null;
         $scope.deployments = [];
@@ -158,7 +158,7 @@ angular.module('cosmoUiApp')
         function _loadDeployments() {
             $scope.blueprints = null;
             $scope.deployments = [];
-            RestService.loadBlueprints()
+            CloudifyService.blueprints.list()
                 .then(function(data) {
                     cosmoError = false;
                     $scope.blueprints = data;

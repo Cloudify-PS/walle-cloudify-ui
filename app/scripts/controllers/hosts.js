@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('cosmoUiApp')
-    .controller('HostsCtrl', function ($scope, BreadcrumbsService, RestService, $filter) {
+    .controller('HostsCtrl', function ($scope, BreadcrumbsService, RestService, $filter, CloudifyService) {
 
         /**
          * Breadcrumbs
@@ -63,7 +63,7 @@ angular.module('cosmoUiApp')
             });
         }
 
-        RestService.loadBlueprints()
+        CloudifyService.blueprints.list()
             .then(function (data) {
                 for (var j in data) {
                     var blueprint = data[j];

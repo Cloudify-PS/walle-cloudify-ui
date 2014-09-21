@@ -1,9 +1,9 @@
 'use strict';
 
 angular.module('cosmoUiApp')
-    .controller('BlueprintsIndexCtrl', function ($scope, $location, $cookieStore, RestService, BreadcrumbsService, $timeout, $log) {
+    .controller('BlueprintsIndexCtrl', function ($scope, $location, $cookieStore, RestService, BreadcrumbsService, $timeout, $log, CloudifyService) {
         $scope.isAddDialogVisible = false;
-        $scope.isDeployDialogVisible = false
+        $scope.isDeployDialogVisible = false;
         $scope.isDeleteBlueprintVisible = false;
         $scope.lastExecutedPlan = null;
         $scope.selectedBlueprint = null;
@@ -36,7 +36,7 @@ angular.module('cosmoUiApp')
 
         $scope.toggleDeleteDialog = function() {
             $scope.isDeleteBlueprintVisible = $scope.isDeleteBlueprintVisible === false;
-        }
+        };
 
         $scope.deleteBlueprint = function(blueprint) {
             currentBlueprintToDelete = blueprint;
@@ -51,7 +51,7 @@ angular.module('cosmoUiApp')
 
         $scope.loadBlueprints = function() {
             $scope.blueprints = null;
-            RestService.loadBlueprints()
+            CloudifyService.blueprints.list()
                 .then(function(data) {
                     cosmoError = false;
                     if (data.length < 1) {
@@ -128,7 +128,7 @@ angular.module('cosmoUiApp')
                         } else {
                             $timeout(function() {
                                 $scope.toggleDeleteDialog();
-                                $scope.loadBlueprints();;
+                                $scope.loadBlueprints();
                                 $scope.deleteInProcess = false;
                             }, 1000);
                         }

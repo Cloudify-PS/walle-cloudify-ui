@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('cosmoUiApp')
-    .controller('LogsCtrl', function ($scope, BreadcrumbsService, RestService, EventsService, $location, $anchorScroll, $filter, $routeParams, LogsModel, $window, EventsMap, $log) {
+    .controller('LogsCtrl', function ($scope, BreadcrumbsService, RestService, EventsService, $location, $anchorScroll, $filter, $routeParams, LogsModel, $window, EventsMap, $log, CloudifyService) {
 
         /**
          * Breadcrumbs
@@ -134,7 +134,7 @@ angular.module('cosmoUiApp')
             $scope.errorMsg = null;
         };
 
-        RestService.loadBlueprints()
+        CloudifyService.blueprints.list()
             .then(function (data) {
                 for (var j in data) {
                     var blueprint = data[j];
