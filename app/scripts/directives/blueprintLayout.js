@@ -52,10 +52,6 @@ angular.module('cosmoUiApp')
 
                     });
 
-
-
-
-
                 $scope.$watch('breadcrumb', function (breadcrumbs) {
                     angular.forEach(breadcrumbs, function (breadcrumb) {
                         BreadcrumbsService.push('blueprints', breadcrumb);
