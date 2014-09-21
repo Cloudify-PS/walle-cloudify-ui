@@ -9,6 +9,7 @@ angular.module('cosmoUiApp')
         $scope.isConfirmationDialogVisible = false;
         $scope.isDeleteDeploymentVisible = false;
         $scope.delDeployError = false;
+        $scope.deleteInProcess = false;
         $scope.executedErr = false;
         $scope.ignoreLiveNodes = false;
         $scope.confirmationType = '';
@@ -109,8 +110,7 @@ angular.module('cosmoUiApp')
         };
 
         $scope.redirectTo = function (deployment) {
-            $log.info(['redirecting to', deployment]);
-            $location.path('/deployment').search({id: deployment.id, blueprint_id: deployment.blueprint_id});
+            $location.path('/deployment/' + deployment.id + '/topology');
         };
 
         $scope.cosmoConnectionError = function() {
@@ -189,9 +189,11 @@ angular.module('cosmoUiApp')
         _loadDeployments();
 
         function deleteDeployment() {
-            if(currentDeplyToDelete !== null) {
+            if(currentDeplyToDelete !== null && !$scope.deleteInProcess) {
+                $scope.deleteInProcess = true;
                 RestService.deleteDeploymentById({deployment_id: currentDeplyToDelete.id, ignoreLiveNodes: $scope.ignoreLiveNodes})
                     .then(function(data){
+                        $scope.deleteInProcess = false;
                         if(data.hasOwnProperty('message')) {
                             $scope.delDeployError = data.message;
                         }
@@ -202,7 +204,6 @@ angular.module('cosmoUiApp')
                             }, 500);
                         }
                     });
-                //currentDeplyToDelete = null;
             }
         }
 
@@ -215,6 +216,9 @@ angular.module('cosmoUiApp')
         };
 
         function closeDeleteDialog() {
+            if ($scope.deleteInProcess) {
+                return;
+            }
             $scope.isDeleteDeploymentVisible = false;
             currentDeplyToDelete = null;
         }

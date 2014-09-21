@@ -10,14 +10,14 @@ angular.module('cosmoUiApp')
             return $scope.deployment_id !== null && $scope.deployment_id.length > 0;
         };
 
-        $scope.deployBlueprint = function(blueprint) {
+        $scope.deployBlueprint = function(blueprintId) {
             if (!_validateDeploymentName($scope.deployment_id)) {
                 return;
             }
             $scope.deployError = false;
 
             var params = {
-                blueprint_id: blueprint.id,
+                blueprint_id: blueprintId,
                 deployment_id: $scope.deployment_id
             };
 
@@ -31,7 +31,7 @@ angular.module('cosmoUiApp')
                             $scope.deployError = true;
                         }
                         else {
-                            $scope.redirectToDeployment($scope.deployment_id, blueprint.id);
+                            $scope.redirectToDeployment($scope.deployment_id, blueprintId);
                         }
                     });
             }

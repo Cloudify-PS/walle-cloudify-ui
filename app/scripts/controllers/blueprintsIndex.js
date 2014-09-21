@@ -21,8 +21,7 @@ angular.module('cosmoUiApp')
             });
 
         $scope.redirectTo = function (blueprint) {
-            $log.info(['redirecting to', blueprint]);
-            $location.path('/blueprint').search({id: blueprint.id, name: blueprint.id});
+            $location.path('/blueprint/' + blueprint.id + '/topology');
         };
 
         $scope.toggleAddDialog = function() {

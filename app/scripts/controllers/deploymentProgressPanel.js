@@ -2,7 +2,7 @@
 
 angular.module('cosmoUiApp')
     .controller('DeploymentProgressPanelCtrl', function ($scope, $routeParams, EventsService) {
-        var deployment_id = $routeParams.id;
+        var deployment_id = $routeParams.id || $routeParams.deploymentId;
         $scope.panelData = {};
         $scope.panelOpen = true;
 
@@ -18,7 +18,7 @@ angular.module('cosmoUiApp')
                 if(data.hasOwnProperty('hits')) {
                     eventHits = data.hits.hits;
                 }
-            }, true);
+            }, true, 30000);
         }
 
         function stopEventsStarted() {

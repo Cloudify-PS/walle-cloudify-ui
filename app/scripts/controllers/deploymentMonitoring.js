@@ -12,8 +12,8 @@ angular.module('cosmoUiApp')
 
         $scope.deploymentId = $routeParams.deploymentId;
 
-        $scope.$on('deploymentData', function(event, deploymentData){
-            console.log(['deploymentData', deploymentData]);
-        });
+//        $scope.$on('deploymentData', function(event, deploymentData){
+//            //console.log(['deploymentData', deploymentData]);
+//        });
 
     });

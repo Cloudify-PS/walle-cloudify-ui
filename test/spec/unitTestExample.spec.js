@@ -8,8 +8,11 @@ describe('Tested component name', function () {
             module('cosmoUiApp', 'ngMock');
 
             // initialize a new instance of the filter
-            inject(function (/* Inject the component */) {
-
+            inject(function ($httpBackend /* Inject the component */) {
+                $httpBackend.whenGET("/backend/configuration?access=all").respond(200);
+                $httpBackend.whenGET("/backend/versions/ui").respond(200);
+                $httpBackend.whenGET("/backend/versions/manager").respond(200);
+                $httpBackend.whenGET("/backend/version/latest?version=00").respond('300');
             });
         });
     });

@@ -1,0 +1,46 @@
+<div class="cosmo-layout" id="blueprint">
+
+    <div blueprint-layout
+         blueprint-id="blueprintId"
+         section="Nodes"></div>
+
+    <div floating-blueprint-node-panel node="viewNodeDetails" node-lists="planNodes"></div>
+
+    <div class="nodesTable">
+        <table class="table">
+            <thead>
+            <tr>
+                <th></th>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Number of instances</th>
+                <th>Contained in</th>
+                <th>Connected to</th>
+                <th><!--Actions--></th>
+            </tr>
+            </thead>
+            <tbody data-ng-repeat="row in dataTable">
+            <tr>
+                <td><i class="topology-glyph {{ row.class }}"></i></td>
+                <td>{{ row.name }}</td>
+                <td>{{ row.type }}</td>
+                <td>{{ row.instances.deploy }}</td>
+                <td>
+                    <span data-ng-if="getRelationshipByType(row, 'contained_in').length > 0" data-ng-repeat="container in getRelationshipByType(row, 'contained_in')">{{ container.name }}</span>
+                    <span data-ng-if="getRelationshipByType(row, 'contained_in').length == 0">--</span>
+                </td>
+                <td>
+                    <span data-ng-if="getRelationshipByType(row, 'connected_to').length > 0" data-ng-repeat="connection in getRelationshipByType(row, 'connected_to')">{{ connection.name }}</span>
+                    <span data-ng-if="getRelationshipByType(row, 'connected_to').length == 0">--</span>
+                </td>
+                <td>
+                    <ul>
+                        <li data-ng-click="viewNode(getNodeById(row.id))" class="topology-glyph node-details"></li>
+                    </ul>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+</div>

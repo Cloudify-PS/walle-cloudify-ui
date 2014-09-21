@@ -31,21 +31,14 @@ describe('Directive: header', function () {
         });
 
         it('should have a version div with 2 sub divs', function() {
-            expect(element.find('div.version-check div').length).toBe(2);
-        });
-
-        it('should show an updated message div when updateVersion variable is false', function() {
-            scope.updateVersion = false;
-            scope.$digest();
-
-            expect(element.find('div#notUpdated').hasClass('ng-hide')).toBe(true);
+            expect(element.find('div.version-check div').length).toBe(1);
         });
 
         it('should show an update available message div when updateVersion variable is true', function() {
             scope.updateVersion = true;
             scope.$digest();
 
-            expect(element.find('div#updated').hasClass('ng-hide')).toBe(true);
+            expect(element.find('div#notUpdated').hasClass('ng-hide')).toBe(false);
         });
     });
 });
