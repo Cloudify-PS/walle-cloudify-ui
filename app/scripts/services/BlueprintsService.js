@@ -8,34 +8,10 @@
  * Service in the cosmoUiApp.
  */
 angular.module('cosmoUiApp')
-    .service('BlueprintsService', function Blueprintsservice($q, $http) {
-
-        function RestLoader() {
-
-            this.load = function (rest, params) {
-                return _loadRestInternal(rest, params);
-            };
-
-            function _loadRestInternal(rest, params) {
-                var callParams = {
-                    url: '/backend/' + rest,
-                    method: 'GET'
-                };
-                if (params !== undefined) {
-                    callParams = params;
-                }
-                return $http(callParams).then(function(data) {
-                    return data.data;
-                }, function(e) {
-                    throw e;
-                });
-            }
-        }
-
-        var _restLoader = new RestLoader();
+    .service('BlueprintsService', function Blueprintsservice($q, RestLoader) {
 
         function _load(rest, params){
-            return _restLoader.load(rest, params);
+            return RestLoader.load(rest, params);
         }
 
         function _list() {
@@ -64,7 +40,55 @@ angular.module('cosmoUiApp')
             return deferred.promise;
         }
 
+        function _add(data, successCallback, errorCallback) {
+            $.ajax({
+                url: '/backend/blueprints/add',
+                data: data,
+                type: 'POST',
+                contentType: false,
+                processData: false,
+                cache: false,
+                success: function(data) {
+                    successCallback(data);
+                },
+                error: function(e) {
+                    errorCallback(e);
+                }
+            });
+        }
+
+        function _getBlueprintById(params) {
+            var callParams = {
+                url: '/backend/blueprints/get',
+                method: 'GET',
+                params: params
+            };
+            return _load('blueprints/get', callParams);
+        }
+
+        function _browse(params) {
+            var callParams = {
+                url: '/backend/blueprints/browse',
+                method: 'GET',
+                params: params
+            };
+            return _load('blueprints/browse', callParams);
+        }
+
+        function _browseFile(params) {
+            var callParams = {
+                url: '/backend/blueprints/browse/file',
+                method: 'GET',
+                params: params
+            };
+            return _load('blueprints/browse/file', callParams);
+        }
+
 
         this.list = _list;
+        this.add = _add;
+        this.getBlueprintById = _getBlueprintById;
+        this.browse = _browse;
+        this.browseFile = _browseFile;
 
     });

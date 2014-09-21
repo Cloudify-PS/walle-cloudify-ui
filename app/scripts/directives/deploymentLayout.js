@@ -7,7 +7,7 @@
  * # deploymentLayout
  */
 angular.module('cosmoUiApp')
-    .directive('deploymentLayout', function ($location, $route, BreadcrumbsService, RestService) {
+    .directive('deploymentLayout', function ($location, $route, BreadcrumbsService, RestService, CloudifyService) {
         return {
             templateUrl: 'views/deployment/layout.html',
             restrict: 'EA',
@@ -174,7 +174,7 @@ angular.module('cosmoUiApp')
                 };
 
                 // Workflows & Execution
-                RestService.autoPull('getDeploymentExecutions', $scope.id, RestService.getDeploymentExecutions)
+                CloudifyService.autoPull('getDeploymentExecutions', $scope.id, RestService.getDeploymentExecutions)
                     .then(null, null, function (dataExec) {
                         $scope.currentExecution = _getCurrentExecution(dataExec);
                         if (!$scope.currentExecution && $scope.deploymentInProgress) {

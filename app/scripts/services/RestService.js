@@ -1,10 +1,7 @@
 'use strict';
 
 angular.module('cosmoUiApp')
-    .service('RestService', function RestService($http, $timeout, $q, $rootScope, $log) {
-
-        var autoPull = [],
-            autoPullPromise = {};
+    .service('RestService', function RestService($http) {
 
         function RestLoader() {
 
@@ -32,106 +29,6 @@ angular.module('cosmoUiApp')
 
         function _load(rest, params){
             return _restLoader.load(rest, params);
-        }
-
-        function _loadBlueprints() {
-            var deferred = $q.defer();
-            var blueprints = [];
-            _load('blueprints').then(function(data) {
-                blueprints = data;
-                _load('deployments').then(function(data) {
-                    var deployments = data;
-                    for (var i = 0; i <= deployments.length; i++) {
-                        for (var j = 0; j < blueprints.length; j++) {
-                            if (blueprints[j].deployments === undefined) {
-                                blueprints[j].deployments = [];
-                            }
-                            if (deployments[i] !== undefined && deployments[i].blueprint_id === blueprints[j].id) {
-                                blueprints[j].deployments.push(deployments[i]);
-                            }
-                        }
-                    }
-                    deferred.resolve(blueprints);
-                });
-            }, function(e) {
-                deferred.reject(e);
-            });
-
-            return deferred.promise;
-        }
-
-        function _autoPull(name, params, fn) {
-            var deferred = $q.defer();
-            if(autoPull.indexOf(name) === -1) {
-                autoPull.push(name);
-                (function _internalLoad(){
-                    fn(params).then(function(data){
-                        deferred.notify(data);
-                        autoPullPromise[name] = $timeout(_internalLoad, 10000);
-                    });
-                })();
-            }
-            return deferred.promise;
-        }
-
-        function _autoPullStop(name) {
-            if(autoPull.indexOf(name) !== -1) {
-                autoPull.splice(autoPull.indexOf(name), 1);
-                $timeout.cancel(autoPullPromise[name]);
-            }
-        }
-
-        $rootScope.$on('$locationChangeStart', function() {
-            for(var name in autoPullPromise) {
-                _autoPullStop(name);
-            }
-            $log.info('Stop all pulling workers');
-        });
-
-        function _addBlueprint(data, successCallback, errorCallback) {
-            $.ajax({
-                url: '/backend/blueprints/add',
-                data: data,
-                type: 'POST',
-                contentType: false,
-                processData: false,
-                cache: false,
-                success: function(data) {
-                    successCallback(data);
-                },
-                error: function(e) {
-                    errorCallback(e);
-                }
-            });
-        }
-
-        function _getBlueprintById(params) {
-            var callParams = {
-                url: '/backend/blueprints/get',
-                method: 'GET',
-                params: params
-            };
-            return _load('blueprints/get', callParams);
-        }
-
-        function _browseBlueprint(params) {
-            var callParams = {
-                url: '/backend/blueprints/browse',
-                method: 'GET',
-                params: params
-            };
-
-            return _load('blueprints/browse', callParams);
-        }
-
-        function _browseBlueprintFile(params) {
-            var callParams = {
-                url: '/backend/blueprints/browse/file',
-                method: 'GET',
-                params: params
-            };
-
-            return _load('blueprints/browse/file', callParams);
         }
 
         function _deployBlueprint(params) {
@@ -350,11 +247,6 @@ angular.module('cosmoUiApp')
             return _load('version/latest', callParams);
         }
 
-        this.loadBlueprints = _loadBlueprints;
-        this.addBlueprint = _addBlueprint;
-        this.getBlueprintById = _getBlueprintById;
-        this.browseBlueprint = _browseBlueprint;
-        this.browseBlueprintFile = _browseBlueprintFile;
         this.deployBlueprint = _deployBlueprint;
         this.deleteBlueprint = _deleteBlueprint;
         this.getDeploymentExecutions = _getDeploymentExecutions;
@@ -373,8 +265,6 @@ angular.module('cosmoUiApp')
         this.getSettings = _getSettings;
         this.setSettings = _setSettings;
         this.getConfiguration = _getConfiguration;
-        this.autoPull = _autoPull;
-        this.autoPullStop = _autoPullStop;
         this.influxQuery = _influxQuery;
         this.getVersionsUi = _getVersionsUi;
         this.getVersionsManager = _getVersionsManager;

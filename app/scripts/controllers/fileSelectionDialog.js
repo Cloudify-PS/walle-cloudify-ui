@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('cosmoUiApp')
-    .controller('FileSelectionDialogCtrl', function ($scope, $log, RestService) {
+    .controller('FileSelectionDialogCtrl', function ($scope, $log, RestService, CloudifyService) {
         var selectedFile = null;
         $scope.uploadEnabled = false;
         $scope.uploadInProcess = false;
@@ -30,7 +30,7 @@ angular.module('cosmoUiApp')
             $scope.uploadInProcess = true;
             $scope.uploadError = false;
 
-            RestService.addBlueprint(planForm,
+            CloudifyService.blueprints.add(planForm,
                 function(data) {
                     if ($scope.blueprintName === undefined || $scope.blueprintName === '') {
                         $scope.blueprintName = JSON.parse(data).id;
