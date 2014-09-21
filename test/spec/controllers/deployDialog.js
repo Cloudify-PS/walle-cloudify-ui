@@ -33,7 +33,10 @@ describe('Controller: DeploydialogCtrl', function () {
         });
 
         it('should show error message if deployment name is not provided', function() {
+            scope.deployment_id = null;
+            scope.deployBlueprint();
 
+            expect().toBe();
         });
 
         it('should show error message if inputs parameters are not provided', function() {
