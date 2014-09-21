@@ -40,8 +40,6 @@ describe('Controller: DeploydialogCtrl', function () {
             RestService.deployBlueprint = function(params) {
                 var deferred = $q.defer();
 
-                var res = params.inputs.image_name === undefined ? _error : _deployment;
-                console.log('result', res);
                 deferred.resolve(params.inputs.image_name === undefined ? _error : _deployment);
 
                 return deferred.promise;
