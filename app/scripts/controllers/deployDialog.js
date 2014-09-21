@@ -42,6 +42,7 @@ angular.module('cosmoUiApp')
                 $scope.inProcess = true;
                 RestService.deployBlueprint(params)
                     .then(function(data) {
+                        console.log('data', data);
                         $scope.inProcess = false;
                         if(data.hasOwnProperty('message')) {
                             $scope.deployErrorMessage = data.message;
