@@ -81,7 +81,7 @@ angular.module('cosmoUiApp')
             $location.path('/deployments');
         };
 
-        $scope.redirectToDeployment = function(deployment_id, blueprint_id) {
+        $scope.redirectToDeployment = function(deployment_id) {
             $location.path('/deployment/' + deployment_id + '/topology');
         };
 

@@ -48,7 +48,7 @@ angular.module('cosmoUiApp')
                             $scope.deployError = true;
                         }
                         else {
-                            $scope.redirectToDeployment($scope.deployment_id, blueprintId);
+                            $scope.redirectToDeployment($scope.deployment_id);
                         }
                     });
             }
