@@ -20,4 +20,4 @@ backend/tmp
 
 # QuickBuild
 .qbcache/
-backend/appCong.js
+backend/appConf.js
