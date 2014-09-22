@@ -13,7 +13,6 @@ angular.module('cosmoUiApp')
         $scope.executedErr = false;
         $scope.ignoreLiveNodes = false;
         $scope.confirmationType = '';
-        $scope.inputsState = 'params';
         var _executedDeployments = [];
         $scope.selectedWorkflow = {
             data: null
@@ -34,7 +33,8 @@ angular.module('cosmoUiApp')
             if ($scope.isExecuteEnabled(deployment.id)) {
                 RestService.executeDeployment({
                     deployment_id: $scope.selectedDeployment.id,
-                    workflow_id: selectedWorkflows[$scope.selectedDeployment.id]
+                    workflow_id: selectedWorkflows[$scope.selectedDeployment.id],
+                    parameters: $scope.selectedWorkflow.data.parameters
                 }).then(function(execution) {
                     if(execution.hasOwnProperty('error_code')) {
                         $scope.executedErr = execution.message;
@@ -238,9 +238,5 @@ angular.module('cosmoUiApp')
 
         $scope.toggleIgnoreLiveNodes = function() {
             $scope.ignoreLiveNodes = !$scope.ignoreLiveNodes;
-        };
-
-        $scope.toggleInputsState = function(state) {
-            $scope.inputsState = state;
         };
     });
