@@ -7,7 +7,7 @@
  * # deploymentLayout
  */
 angular.module('cosmoUiApp')
-    .directive('deploymentLayout', function ($location, $route, BreadcrumbsService, RestService, CloudifyService) {
+    .directive('deploymentLayout', function ($location, $route, BreadcrumbsService, CloudifyService) {
         return {
             templateUrl: 'views/deployment/layout.html',
             restrict: 'EA',
@@ -61,7 +61,7 @@ angular.module('cosmoUiApp')
                 $scope.$emit('selectedWorkflow', $scope.selectedWorkflow);
 
                 // Get Deployment Data
-                RestService.getDeploymentById({deployment_id: $scope.id})
+                CloudifyService.deployments.getDeploymentById({deployment_id: $scope.id})
                     .then(function (dataDeployment) {
 
                         // Verify it's valid page, if not redirect to deployments page
@@ -105,7 +105,7 @@ angular.module('cosmoUiApp')
                         _loadExecutions();
 
                         // Get Nodes
-                        RestService.getNodes({deployment_id: dataDeployment.id})
+                        CloudifyService.getNodes({deployment_id: dataDeployment.id})
                             .then(function(dataNodes) {
 
                                 var nodes = [];
@@ -174,7 +174,7 @@ angular.module('cosmoUiApp')
                 };
 
                 // Workflows & Execution
-                CloudifyService.autoPull('getDeploymentExecutions', $scope.id, RestService.getDeploymentExecutions)
+                CloudifyService.autoPull('getDeploymentExecutions', $scope.id, CloudifyService.deployments.getDeploymentExecutions)
                     .then(null, null, function (dataExec) {
                         $scope.currentExecution = _getCurrentExecution(dataExec);
                         if (!$scope.currentExecution && $scope.deploymentInProgress) {
@@ -184,7 +184,7 @@ angular.module('cosmoUiApp')
                             $scope.deploymentInProgress = true;
                         }
                         else {
-                            RestService.getDeploymentNodes({deployment_id : $scope.id, state: true}).then(function(dataNodes){
+                            CloudifyService.deployments.getDeploymentNodes({deployment_id : $scope.id, state: true}).then(function(dataNodes){
                                 _updateDeploymentModel(dataNodes);
                             });
                         }
@@ -292,7 +292,7 @@ angular.module('cosmoUiApp')
                         'execution_id': $scope.executedData.id,
                         'state': 'cancel'
                     };
-                    RestService.updateExecutionState(callParams).then(function (data) {
+                    CloudifyService.deployments.updateExecutionState(callParams).then(function (data) {
                         if (data.hasOwnProperty('error_code')) {
                             $scope.executedErr = data.message;
                         }
@@ -305,7 +305,7 @@ angular.module('cosmoUiApp')
 
                 function _executeDeployment() {
                     if (_isExecuteEnabled()) {
-                        RestService.executeDeployment({
+                        CloudifyService.deployments.execute({
                             deployment_id: $scope.id,
                             workflow_id: $scope.selectedWorkflow.data.value
                         }).then(function (execution) {
@@ -321,7 +321,7 @@ angular.module('cosmoUiApp')
                 }
 
                 function _loadExecutions() {
-                    RestService.getDeploymentExecutions($scope.id)
+                    CloudifyService.deployments.getDeploymentExecutions($scope.id)
                         .then(function(data) {
                             if (data.length > 0) {
                                 for (var i = 0; i < data.length; i++) {

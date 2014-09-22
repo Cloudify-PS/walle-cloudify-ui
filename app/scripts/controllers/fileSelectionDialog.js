@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('cosmoUiApp')
-    .controller('FileSelectionDialogCtrl', function ($scope, $log, RestService, CloudifyService) {
+    .controller('FileSelectionDialogCtrl', function ($scope, $log, CloudifyService) {
         var selectedFile = null;
         $scope.uploadEnabled = false;
         $scope.uploadInProcess = false;

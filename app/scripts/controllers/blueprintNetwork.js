@@ -8,14 +8,14 @@
  * Controller of the cosmoUiAppApp
  */
 angular.module('cosmoUiApp')
-    .controller('BlueprintNetworkCtrl', function ($scope, $routeParams, RestService, bpNetworkService, NetworksService) {
+    .controller('BlueprintNetworkCtrl', function ($scope, $routeParams, CloudifyService, bpNetworkService, NetworksService) {
 
         $scope.blueprintId = $routeParams.blueprintId;
         $scope.networks = [];
 
         $scope.$on('blueprintData', function(event, data){
 
-            RestService.getProviderContext()
+            CloudifyService.getProviderContext()
                 .then(function(providerData) {
                     $scope.networks = NetworksService.createNetworkTree(providerData, data.plan.nodes);
                     bpNetworkService.setMap($scope.networks.relations);

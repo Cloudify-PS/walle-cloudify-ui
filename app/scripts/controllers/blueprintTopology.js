@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('cosmoUiApp')
-    .controller('BlueprintTopologyCtrl', function ($scope, $routeParams, RestService, NodeService, blueprintCoordinateService) {
+    .controller('BlueprintTopologyCtrl', function ($scope, $routeParams, NodeService, blueprintCoordinateService) {
         $scope.blueprintId = $routeParams.blueprintId;
 
         $scope.$on('toggleChange', function(event, toggleBar){

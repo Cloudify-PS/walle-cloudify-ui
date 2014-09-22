@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('cosmoUiApp')
-    .controller('DeploymentTopologyCtrl', function ($scope, $rootScope, $routeParams, NodeService, RestService, blueprintCoordinateService, CloudifyService) {
+    .controller('DeploymentTopologyCtrl', function ($scope, $rootScope, $routeParams, NodeService, blueprintCoordinateService, CloudifyService) {
 
         var isGotExecuteNodes = false;
 
@@ -30,7 +30,7 @@ angular.module('cosmoUiApp')
             $scope.deploymentInProgress = deploymentExecution.deploymentInProgress;
             if (!deploymentExecution.currentExecution && deploymentExecution.deploymentInProgress) {
                 if(!isGotExecuteNodes) {
-                    CloudifyService.autoPull('getDeploymentNodes', {deployment_id: $scope.deploymentId}, RestService.getDeploymentNodes)
+                    CloudifyService.autoPull('getDeploymentNodes', {deployment_id: $scope.deploymentId}, CloudifyService.deployments.getDeploymentNodes)
                         .then(null, null, function (dataNodes) {
                             $scope.nodes = dataNodes.nodes;
                         });
@@ -38,9 +38,9 @@ angular.module('cosmoUiApp')
                 CloudifyService.autoPullStop('getDeploymentNodes');
             }
             else if (deploymentExecution.deploymentInProgress === null || deploymentExecution.currentExecution !== false) {
-                CloudifyService.autoPull('getDeploymentNodes', {deployment_id: $scope.deploymentId}, RestService.getDeploymentNodes)
+                CloudifyService.autoPull('getDeploymentNodes', {deployment_id: $scope.deploymentId}, CloudifyService.deployments.getDeploymentNodes)
                     .then(null, null, function (dataNodes) {
-                        RestService.getNodeInstances()
+                        CloudifyService.getNodeInstances()
                             .then(function(data) {
                                 dataNodes.forEach(function(node) {
                                     data.forEach(function(item) {

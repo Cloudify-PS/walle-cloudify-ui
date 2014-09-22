@@ -504,17 +504,3 @@ Cloudify4node.getLogsExportFile = function(response, callback) {
         });
     });
 }
-
-
-// Monitor Mock's
-Cloudify4node.getMonitorGraphs = function(callback) {
-    return callback(null, require('./mock/monitorGraphs.json'));
-};
-
-Cloudify4node.getMonitorCpu = function(callback) {
-    return callback(null, require('./mock/monitorCPU.json'));
-};
-
-Cloudify4node.getMonitorMemory = function(callback) {
-    return callback(null, require('./mock/monitorMemory.json'));
-};

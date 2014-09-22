@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('cosmoUiApp')
-    .controller('HostsCtrl', function ($scope, BreadcrumbsService, RestService, $filter, CloudifyService) {
+    .controller('HostsCtrl', function ($scope, BreadcrumbsService, $filter, CloudifyService) {
 
         /**
          * Breadcrumbs
@@ -33,14 +33,16 @@ angular.module('cosmoUiApp')
             $scope.filterLoading = true;
             $scope.hostsList = [];
             _deploymentsList.forEach(function(deployment) {
-                RestService.getNodes({deployment_id: deployment.value})
+                CloudifyService.getNodes({deployment_id: deployment.value})
                     .then(function(nodes) {
-                        var _loadMethod = 'getNodeInstances';
+                        var _loadMethod;
                         if (_filter.deployment_id !== undefined) {
-                            _loadMethod = 'getDeploymentNodes';
+                            _loadMethod = CloudifyService.deployments.getDeploymentNodes(_filter);
                         }
-                        RestService[_loadMethod](_filter)
-                            .then(function (instances) {
+                        else {
+                            _loadMethod = CloudifyService.getNodeInstances(_filter);
+                        }
+                        _loadMethod.then(function (instances) {
                                 if(instances instanceof Array) {
                                     instances.forEach(function(instance) {
                                         if(nodes instanceof Array) {

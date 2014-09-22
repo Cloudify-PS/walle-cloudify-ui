@@ -84,11 +84,31 @@ angular.module('cosmoUiApp')
             return _load('blueprints/browse/file', callParams);
         }
 
+        function _deploy(params) {
+            var callParams = {
+                url: '/backend/deployments/create',
+                method: 'POST',
+                data: {'blueprint_id': params.blueprint_id, 'deployment_id': params.deployment_id}
+            };
+            return _load('deployments/create', callParams);
+        }
+
+        function _delete(params) {
+            var callParams = {
+                url: '/backend/blueprints/delete',
+                method: 'GET',
+                params: params
+            };
+            return _load('blueprints/delete', callParams);
+        }
+
 
         this.list = _list;
         this.add = _add;
         this.getBlueprintById = _getBlueprintById;
         this.browse = _browse;
         this.browseFile = _browseFile;
+        this.deploy = _deploy;
+        this.delete = _delete;
 
     });

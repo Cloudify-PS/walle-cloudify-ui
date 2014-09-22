@@ -8,7 +8,7 @@
  * Controller of the cosmoUiApp
  */
 angular.module('cosmoUiApp')
-    .controller('BlueprintSourceCtrl', function ($scope, $routeParams, RestService, CloudifyService) {
+    .controller('BlueprintSourceCtrl', function ($scope, $routeParams, CloudifyService) {
 
         $scope.blueprintId = $routeParams.blueprintId;
 
