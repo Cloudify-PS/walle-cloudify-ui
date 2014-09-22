@@ -8,11 +8,11 @@
  * Controller of the cosmoUiApp
  */
 angular.module('cosmoUiApp')
-    .controller('BlueprintSourceCtrl', function ($scope, $routeParams, RestService) {
+    .controller('BlueprintSourceCtrl', function ($scope, $routeParams, CloudifyService) {
 
         $scope.blueprintId = $routeParams.blueprintId;
 
-        RestService.browseBlueprint({id: $scope.blueprintId})
+        CloudifyService.blueprints.browse({id: $scope.blueprintId})
             .then(function(browseData) {
                 $scope.browseData = [browseData];
                 $scope.browseData[0].show = true;
@@ -108,7 +108,7 @@ angular.module('cosmoUiApp')
         };
 
         $scope.openSourceFile = function(data) {
-            RestService.browseBlueprintFile({id: $scope.blueprintId, path: data.relativePath})
+            CloudifyService.blueprints.browseFile({id: $scope.blueprintId, path: data.relativePath})
                 .then(function(fileContent) {
                     $scope.dataCode = {
                         data: fileContent,

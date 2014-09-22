@@ -118,9 +118,9 @@ angular.module('cosmoUiApp', [
             manager: '0.0'
         }
     })
-    .run(['I18next', 'RestService', '$log', 'appConfig', function(I18next, RestService, $log, appConfig) {
+    .run(['I18next', 'CloudifyService', '$log', 'appConfig', function(I18next, CloudifyService, $log, appConfig) {
 
-        RestService.getConfiguration().then(function (data) {
+        CloudifyService.getConfiguration().then(function (data) {
             var i18nConf = data.i18n;
             if (i18nConf) {
                 I18next.setOptions({
@@ -131,14 +131,14 @@ angular.module('cosmoUiApp', [
             $log.info('problem loading configuration for i18n init');
         });
 
-        RestService.getVersionsUi()
+        CloudifyService.getVersionsUi()
             .then(function(data){
                 if(data.hasOwnProperty('version')) {
                     appConfig.versions.ui = data.version;
                 }
             });
 
-        RestService.getVersionsManager()
+        CloudifyService.getVersionsManager()
             .then(function(data){
                 if(data.hasOwnProperty('version')) {
                     appConfig.versions.manager = data.version;

@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('cosmoUiApp')
-    .directive('blueprintLayout', function ($location, BreadcrumbsService, RestService) {
+    .directive('blueprintLayout', function ($location, BreadcrumbsService, CloudifyService) {
         return {
             templateUrl: 'views/blueprint/layout.html',
             restrict: 'EA',
@@ -30,7 +30,7 @@ angular.module('cosmoUiApp')
                     id: 'blueprints'
                 });
 
-                RestService.getBlueprintById({id: $scope.id})
+                CloudifyService.blueprints.getBlueprintById({id: $scope.id})
                     .then(function(blueprintData) {
 
                         // Verify it's valid page, if not redirect to blueprints page
