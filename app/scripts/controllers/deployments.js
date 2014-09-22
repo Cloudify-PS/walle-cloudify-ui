@@ -177,13 +177,7 @@ angular.module('cosmoUiApp')
                                     value: workflow.name,
                                     label: workflow.name,
                                     deployment: deployments[i].id,
-//                                    parameters: deployments[i].parameters
-                                    parameters: {
-                                        "agent_user": "agent_user",
-                                        "flavor_name": "flavor_name",
-                                        "image_name": "image_name",
-                                        "webserver_port":" webserver_port"
-                                    }
+                                    parameters: deployments[i].parameters
                                 });
                             }
                         }
