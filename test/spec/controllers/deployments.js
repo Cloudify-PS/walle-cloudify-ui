@@ -63,7 +63,7 @@ describe('Controller: DeploymentsCtrl', function () {
                 return true;
             };
 
-            scope.executeDeployment();
+            scope.executeDeployment({id:'deployment1'});
             scope.$apply();
 
             waitsFor(function() {
