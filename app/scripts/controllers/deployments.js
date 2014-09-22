@@ -29,8 +29,8 @@ angular.module('cosmoUiApp')
                 id: 'deployments'
             });
 
-        $scope.executeDeployment = function(deployment) {
-            if ($scope.isExecuteEnabled(deployment.id)) {
+        $scope.executeDeployment = function() {
+            if ($scope.isExecuteEnabled()) {
                 CloudifyService.deployments.execute({
                     deployment_id: $scope.selectedDeployment.id,
                     workflow_id: selectedWorkflows[$scope.selectedDeployment.id],

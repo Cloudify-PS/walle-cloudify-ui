@@ -17,7 +17,7 @@ describe('Controller: HostsCtrl', function () {
             $httpBackend.whenGET("/backend/version/latest?version=00").respond('300');
 
             scope = $rootScope.$new();
-            CloudifyService.loadBlueprints = function() {
+            CloudifyService.blueprints.list = function() {
                 var deferred = $q.defer();
                 var blueprints = [{
                     "id": "blueprint1",
@@ -60,7 +60,7 @@ describe('Controller: HostsCtrl', function () {
                 return deferred.promise;
             };
 
-            CloudifyService.getDeploymentNodes = function() {
+            CloudifyService.deployments.getDeploymentNodes = function() {
                 var deferred = $q.defer();
                 var instances = [
                     {

@@ -17,7 +17,7 @@ describe('Controller: FileSelectionDialogCtrl', function () {
 
             scope = $rootScope.$new();
 
-            CloudifyService.addBlueprint = function(data, successCallback, errorCallback) {
+            CloudifyService.blueprints.add = function(data, successCallback, errorCallback) {
                 var e = {
                     "responseText": '{"status": 400  , "message": "400: Invalid blueprint name", "error_code": "Blueprint name required"}'
                 };

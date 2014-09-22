@@ -22,7 +22,7 @@ describe('Controller: DeploymentsCtrl', function () {
 
             scope = $rootScope.$new();
 
-            CloudifyService.executeDeployment = function(executionData) {
+            CloudifyService.deployments.execute = function(executionData) {
                 var deferred = $q.defer();
 
                 deferred.resolve(executionData.parameters === undefined ? _executionError : _execution);

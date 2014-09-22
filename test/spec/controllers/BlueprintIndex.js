@@ -24,7 +24,7 @@ describe('Controller: BlueprintsIndexCtrl', function () {
             scope = $rootScope.$new();
             cloudifyService = CloudifyService;
 
-            cloudifyService.loadBlueprints = function() {
+            cloudifyService.blueprints.list = function() {
                 var deferred = $q.defer();
                 var blueprints = [
                     {
@@ -59,7 +59,7 @@ describe('Controller: BlueprintsIndexCtrl', function () {
                 return deferred.promise;
             };
 
-            cloudifyService.deleteBlueprint = function() {
+            cloudifyService.blueprints.delete = function() {
                 var deferred = $q.defer();
                 var result = !deleteSuccess ? errorDeleteJSON : successDeleteJSON;
 
@@ -109,7 +109,7 @@ describe('Controller: BlueprintsIndexCtrl', function () {
         });
 
         it('should delete a blueprint by calling method to refresh blueprints list', function() {
-            spyOn(cloudifyService, 'deleteBlueprint').andCallThrough();
+            spyOn(cloudifyService.blueprints, 'delete').andCallThrough();
 
             scope.confirmDeleteBlueprint();
 
@@ -118,7 +118,7 @@ describe('Controller: BlueprintsIndexCtrl', function () {
             });
 
             runs(function() {
-                expect(cloudifyService.deleteBlueprint).toHaveBeenCalled();
+                expect(cloudifyService.blueprints.delete).toHaveBeenCalled();
             });
         });
 
