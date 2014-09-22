@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('cosmoUiApp')
-    .controller('DeployDialogCtrl', function ($scope, RestService) {
+    .controller('DeployDialogCtrl', function ($scope, CloudifyService) {
         $scope.deployment_id = null;
         $scope.deployError = false;
         $scope.deployErrorMessage = 'Error deploying blueprint';
@@ -40,7 +40,7 @@ angular.module('cosmoUiApp')
 
             if ($scope.isDeployEnabled()) {
                 $scope.inProcess = true;
-                RestService.deployBlueprint(params)
+                CloudifyService.bleuprints.deploy(params)
                     .then(function(data) {
                         $scope.inProcess = false;
                         if(data.hasOwnProperty('message')) {

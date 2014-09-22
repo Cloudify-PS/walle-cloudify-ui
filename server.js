@@ -283,24 +283,6 @@ app.get('/backend/logsfile', function(request, response) {
     });
 });
 
-app.get('/backend/monitor/graphs', function(request, response) {
-    cloudify4node.getMonitorGraphs(function(err, data) {
-        response.send(err !== null ? err : data);
-    });
-});
-
-app.get('/backend/monitor/cpu', function(request, response) {
-    cloudify4node.getMonitorCpu(function(err, data) {
-        response.send(err !== null ? err : data);
-    });
-});
-
-app.get('/backend/monitor/memory', function(request, response) {
-    cloudify4node.getMonitorMemory(function(err, data) {
-        response.send(err !== null ? err : data);
-    });
-});
-
 // ui settings REST APIs
 
 app.post('/backend/settings', function(request, response) {

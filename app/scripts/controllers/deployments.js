@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('cosmoUiApp')
-    .controller('DeploymentsCtrl', function ($scope, RestService, $cookieStore, $location, $routeParams, BreadcrumbsService, $timeout) {
+    .controller('DeploymentsCtrl', function ($scope, $cookieStore, $location, $routeParams, BreadcrumbsService, $timeout, $log, CloudifyService) {
 
         $scope.blueprints = null;
         $scope.deployments = [];
@@ -31,7 +31,7 @@ angular.module('cosmoUiApp')
 
         $scope.executeDeployment = function(deployment) {
             if ($scope.isExecuteEnabled(deployment.id)) {
-                RestService.executeDeployment({
+                CloudifyService.deployments.execute({
                     deployment_id: $scope.selectedDeployment.id,
                     workflow_id: selectedWorkflows[$scope.selectedDeployment.id]
                 }).then(function(execution) {
@@ -77,7 +77,7 @@ angular.module('cosmoUiApp')
                 'execution_id': $scope.getExecutionAttr(deployment, 'id'),
                 'state': 'cancel'
             };
-            RestService.updateExecutionState(callParams).then(function(data) {
+            CloudifyService.deployments.updateExecutionState(callParams).then(function(data) {
                 if(data.hasOwnProperty('error_code')) {
                     $scope.executedErr = data.message;
                 }
@@ -118,7 +118,7 @@ angular.module('cosmoUiApp')
         };
 
         function _loadExecutions(blueprint_id, deployment_id) {
-            RestService.getDeploymentExecutions(deployment_id)
+            CloudifyService.deployments.getDeploymentExecutions(deployment_id)
                 .then(function(data) {
                     if (data.length > 0) {
                         if (_executedDeployments[blueprint_id] === undefined) {
@@ -158,7 +158,7 @@ angular.module('cosmoUiApp')
         function _loadDeployments() {
             $scope.blueprints = null;
             $scope.deployments = [];
-            RestService.loadBlueprints()
+            CloudifyService.blueprints.list()
                 .then(function(data) {
                     cosmoError = false;
                     $scope.blueprints = data;
@@ -191,7 +191,7 @@ angular.module('cosmoUiApp')
         function deleteDeployment() {
             if(currentDeplyToDelete !== null && !$scope.deleteInProcess) {
                 $scope.deleteInProcess = true;
-                RestService.deleteDeploymentById({deployment_id: currentDeplyToDelete.id, ignoreLiveNodes: $scope.ignoreLiveNodes})
+                CloudifyService.deployments.deleteDeploymentById({deployment_id: currentDeplyToDelete.id, ignoreLiveNodes: $scope.ignoreLiveNodes})
                     .then(function(data){
                         $scope.deleteInProcess = false;
                         if(data.hasOwnProperty('message')) {
