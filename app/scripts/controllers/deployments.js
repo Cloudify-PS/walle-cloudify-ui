@@ -20,7 +20,7 @@ angular.module('cosmoUiApp')
         var selectedWorkflows = [];
         var workflows = [];
         var cosmoError = false;
-        var currentDeplyToDelete = null;
+        var currentDeployToDelete = null;
 
         BreadcrumbsService.push('deployments',
             {
@@ -33,7 +33,8 @@ angular.module('cosmoUiApp')
             if ($scope.isExecuteEnabled(deployment.id)) {
                 CloudifyService.deployments.execute({
                     deployment_id: $scope.selectedDeployment.id,
-                    workflow_id: selectedWorkflows[$scope.selectedDeployment.id]
+                    workflow_id: selectedWorkflows[$scope.selectedDeployment.id],
+                    parameters: $scope.selectedWorkflow.data.parameters
                 }).then(function(execution) {
                     if(execution.hasOwnProperty('error_code')) {
                         $scope.executedErr = execution.message;
@@ -175,7 +176,8 @@ angular.module('cosmoUiApp')
                                 workflows[deployments[i].id].push({
                                     value: workflow.name,
                                     label: workflow.name,
-                                    deployment: deployments[i].id
+                                    deployment: deployments[i].id,
+                                    parameters: deployments[i].parameters
                                 });
                             }
                         }
@@ -189,7 +191,7 @@ angular.module('cosmoUiApp')
         _loadDeployments();
 
         function deleteDeployment() {
-            if(currentDeplyToDelete !== null && !$scope.deleteInProcess) {
+            if(currentDeployToDelete !== null && !$scope.deleteInProcess) {
                 $scope.deleteInProcess = true;
                 CloudifyService.deployments.deleteDeploymentById({deployment_id: currentDeplyToDelete.id, ignoreLiveNodes: $scope.ignoreLiveNodes})
                     .then(function(data){
@@ -208,7 +210,7 @@ angular.module('cosmoUiApp')
         }
 
         $scope.deleteDeployment = function(deployment) {
-            currentDeplyToDelete = deployment;
+            currentDeployToDelete = deployment;
             $scope.delDeployError = false;
             $scope.ignoreLiveNodes = false;
             $scope.delDeployName = deployment.id;
@@ -220,7 +222,7 @@ angular.module('cosmoUiApp')
                 return;
             }
             $scope.isDeleteDeploymentVisible = false;
-            currentDeplyToDelete = null;
+            currentDeployToDelete = null;
         }
         $scope.closeDeleteDialog = closeDeleteDialog;
 
@@ -231,5 +233,4 @@ angular.module('cosmoUiApp')
         $scope.toggleIgnoreLiveNodes = function() {
             $scope.ignoreLiveNodes = !$scope.ignoreLiveNodes;
         };
-
     });
