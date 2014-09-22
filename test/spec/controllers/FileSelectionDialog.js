@@ -9,7 +9,7 @@ describe('Controller: FileSelectionDialogCtrl', function () {
 
     // Initialize the controller and a mock scope
     describe('Test setup', function() {
-        it ('', inject(function ($controller, $rootScope, $httpBackend, $q, RestService) {
+        it ('', inject(function ($controller, $rootScope, $httpBackend, $q, CloudifyService) {
             $httpBackend.whenGET('/backend/configuration?access=all').respond(200);
             $httpBackend.whenGET('/backend/versions/ui').respond(200);
             $httpBackend.whenGET('/backend/versions/manager').respond(200);
@@ -17,7 +17,7 @@ describe('Controller: FileSelectionDialogCtrl', function () {
 
             scope = $rootScope.$new();
 
-            RestService.addBlueprint = function(data, successCallback, errorCallback) {
+            CloudifyService.addBlueprint = function(data, successCallback, errorCallback) {
                 var e = {
                     "responseText": '{"status": 400  , "message": "400: Invalid blueprint name", "error_code": "Blueprint name required"}'
                 };
@@ -26,7 +26,7 @@ describe('Controller: FileSelectionDialogCtrl', function () {
 
             FileSelectionDialogCtrl = $controller('FileSelectionDialogCtrl', {
                 $scope: scope,
-                RestService: RestService
+                CloudifyService: CloudifyService
             });
         }));
     });

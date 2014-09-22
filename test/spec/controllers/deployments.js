@@ -13,7 +13,7 @@ describe('Controller: DeploymentsCtrl', function () {
     beforeEach(module('cosmoUiApp', 'ngMock'));
 
     function _testSetup() {
-        inject(function ($controller, $rootScope, $httpBackend, $q, RestService) {
+        inject(function ($controller, $rootScope, $httpBackend, $q, CloudifyService) {
             $httpBackend.whenGET("/backend/configuration?access=all").respond(200);
             $httpBackend.whenGET("/backend/versions/ui").respond(200);
             $httpBackend.whenGET("/backend/versions/manager").respond(200);
@@ -22,7 +22,7 @@ describe('Controller: DeploymentsCtrl', function () {
 
             scope = $rootScope.$new();
 
-            RestService.executeDeployment = function(executionData) {
+            CloudifyService.executeDeployment = function(executionData) {
                 var deferred = $q.defer();
 
                 deferred.resolve(executionData.parameters === undefined ? _executionError : _execution);
@@ -32,7 +32,7 @@ describe('Controller: DeploymentsCtrl', function () {
 
             DeploymentsCtrl = $controller('DeploymentsCtrl', {
                 $scope: scope,
-                RestService: RestService
+                CloudifyService: CloudifyService
             });
 
             scope.$digest();

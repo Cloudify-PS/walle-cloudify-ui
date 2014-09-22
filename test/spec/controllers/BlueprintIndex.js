@@ -2,7 +2,7 @@
 
 describe('Controller: BlueprintsIndexCtrl', function () {
 
-    var BlueprintsIndexCtrl, scope, restService;
+    var BlueprintsIndexCtrl, scope, cloudifyService;
     var errorDeleteJSON = {
         "message": "Can't delete blueprint nc1 - There exist deployments for this blueprint; Deployments ids: nc1_dep3,b2",
         "error_code": "dependent_exists_error"
@@ -15,16 +15,16 @@ describe('Controller: BlueprintsIndexCtrl', function () {
     beforeEach(module('cosmoUiApp', 'ngMock'));
 
     function _testSetup(deleteSuccess) {
-        inject(function ($controller, $rootScope, $httpBackend, $q, RestService) {
+        inject(function ($controller, $rootScope, $httpBackend, $q, CloudifyService) {
             $httpBackend.whenGET("/backend/configuration?access=all").respond(200);
             $httpBackend.whenGET("/backend/versions/ui").respond(200);
             $httpBackend.whenGET("/backend/versions/manager").respond(200);
             $httpBackend.whenGET("/backend/version/latest?version=00").respond('300');
 
             scope = $rootScope.$new();
-            restService = RestService;
+            cloudifyService = CloudifyService;
 
-            restService.loadBlueprints = function() {
+            cloudifyService.loadBlueprints = function() {
                 var deferred = $q.defer();
                 var blueprints = [
                     {
@@ -59,7 +59,7 @@ describe('Controller: BlueprintsIndexCtrl', function () {
                 return deferred.promise;
             };
 
-            restService.deleteBlueprint = function() {
+            cloudifyService.deleteBlueprint = function() {
                 var deferred = $q.defer();
                 var result = !deleteSuccess ? errorDeleteJSON : successDeleteJSON;
 
@@ -70,7 +70,7 @@ describe('Controller: BlueprintsIndexCtrl', function () {
 
             BlueprintsIndexCtrl = $controller('BlueprintsIndexCtrl', {
                 $scope: scope,
-                RestService: restService
+                CloudifyService: cloudifyService
             });
 
             scope.$digest();
@@ -109,7 +109,7 @@ describe('Controller: BlueprintsIndexCtrl', function () {
         });
 
         it('should delete a blueprint by calling method to refresh blueprints list', function() {
-            spyOn(restService, 'deleteBlueprint').andCallThrough();
+            spyOn(cloudifyService, 'deleteBlueprint').andCallThrough();
 
             scope.confirmDeleteBlueprint();
 
@@ -118,7 +118,7 @@ describe('Controller: BlueprintsIndexCtrl', function () {
             });
 
             runs(function() {
-                expect(restService.deleteBlueprint).toHaveBeenCalled();
+                expect(cloudifyService.deleteBlueprint).toHaveBeenCalled();
             });
         });
 

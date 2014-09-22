@@ -9,7 +9,7 @@ describe('Controller: HostsCtrl', function () {
 
     // Initialize the controller and a mock scope
     describe('Test setup', function() {
-        it ('', inject(function ($controller, $rootScope, $httpBackend, $q, RestService) {
+        it ('', inject(function ($controller, $rootScope, $httpBackend, $q, CloudifyService) {
 
             $httpBackend.whenGET("/backend/configuration?access=all").respond(200);
             $httpBackend.whenGET("/backend/versions/ui").respond(200);
@@ -17,7 +17,7 @@ describe('Controller: HostsCtrl', function () {
             $httpBackend.whenGET("/backend/version/latest?version=00").respond('300');
 
             scope = $rootScope.$new();
-            RestService.loadBlueprints = function() {
+            CloudifyService.loadBlueprints = function() {
                 var deferred = $q.defer();
                 var blueprints = [{
                     "id": "blueprint1",
@@ -32,7 +32,7 @@ describe('Controller: HostsCtrl', function () {
                 return deferred.promise;
             };
 
-            RestService.getNodes = function() {
+            CloudifyService.getNodes = function() {
                 var deferred = $q.defer();
                 var nodes = [
                     {
@@ -60,7 +60,7 @@ describe('Controller: HostsCtrl', function () {
                 return deferred.promise;
             };
 
-            RestService.getDeploymentNodes = function() {
+            CloudifyService.getDeploymentNodes = function() {
                 var deferred = $q.defer();
                 var instances = [
                     {
@@ -88,7 +88,7 @@ describe('Controller: HostsCtrl', function () {
 
             HostsCtrl = $controller('HostsCtrl', {
                 $scope: scope,
-                RestService: RestService
+                CloudifyService: CloudifyService
             });
 
             scope.eventsFilter = {
