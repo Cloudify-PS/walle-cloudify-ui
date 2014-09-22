@@ -94,13 +94,7 @@ angular.module('cosmoUiApp')
                                     value: workflow.name,
                                     label: workflow.name,
                                     deployment: dataDeployment.id,
-//                                    parameters: workflow.parameters
-                                    parameters: {
-                                        "agent_user": "agent_user",
-                                        "flavor_name": "flavor_name",
-                                        "image_name": "image_name",
-                                        "webserver_port":" webserver_port"
-                                    }
+                                    parameters: workflow.parameters
                                 });
                             }
                             $scope.workflowsList = workflows;
