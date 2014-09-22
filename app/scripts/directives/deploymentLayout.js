@@ -93,7 +93,8 @@ angular.module('cosmoUiApp')
                                 workflows.push({
                                     value: workflow.name,
                                     label: workflow.name,
-                                    deployment: dataDeployment.id
+                                    deployment: dataDeployment.id,
+                                    parameters: workflow.parameters
                                 });
                             }
                             $scope.workflowsList = workflows;
@@ -307,7 +308,8 @@ angular.module('cosmoUiApp')
                     if (_isExecuteEnabled()) {
                         CloudifyService.deployments.execute({
                             deployment_id: $scope.id,
-                            workflow_id: $scope.selectedWorkflow.data.value
+                            workflow_id: $scope.selectedWorkflow.data.value,
+                            parameters: $scope.selectedWorkflow.data.parameters
                         }).then(function (execution) {
                             if (execution.hasOwnProperty('error_code')) {
                                 $scope.executedErr = execution.message;

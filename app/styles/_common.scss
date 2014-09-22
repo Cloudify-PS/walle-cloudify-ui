@@ -55,6 +55,8 @@ table.table {
                     -moz-osx-font-smoothing: grayscale;
 
                     &.deployment-play {
+                        margin-left: 7px;
+
                         &.play {
                             background-image: url($img-deployment-play);
                         }
@@ -130,7 +132,7 @@ table.table {
 
     .gs-select {
         min-width: 0px;
-        width: 160px;
+        width: 150px;
         color: $clr-base-11;
         background-color: $clr-base-01;
         font-weight: normal;
