@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('cosmoUiApp')
-    .controller('ConfigCtrl', function ($scope, $window, RestService) {
+    .controller('ConfigCtrl', function ($scope, $window, CloudifyService) {
         $scope.cosmoServer = '';
         $scope.cosmoPort = '';
         $scope.cosmoLogs = false;
@@ -14,7 +14,7 @@ angular.module('cosmoUiApp')
             if (validation.valid) {
                 $scope.errList = [];
 
-                RestService.setSettings({
+                CloudifyService.setSettings({
                     cosmoServer: $scope.cosmoServer,
                     cosmoPort: $scope.cosmoPort,
                     cosmoLogs: $scope.cosmoLogs
