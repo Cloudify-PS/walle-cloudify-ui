@@ -193,7 +193,7 @@ angular.module('cosmoUiApp')
         function deleteDeployment() {
             if(currentDeployToDelete !== null && !$scope.deleteInProcess) {
                 $scope.deleteInProcess = true;
-                CloudifyService.deployments.deleteDeploymentById({deployment_id: currentDeplyToDelete.id, ignoreLiveNodes: $scope.ignoreLiveNodes})
+                CloudifyService.deployments.deleteDeploymentById({deployment_id: currentDeployToDelete.id, ignoreLiveNodes: $scope.ignoreLiveNodes})
                     .then(function(data){
                         $scope.deleteInProcess = false;
                         if(data.hasOwnProperty('message')) {
