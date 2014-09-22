@@ -29,7 +29,7 @@ describe('Controller: DeploydialogCtrl', function () {
     beforeEach(module('cosmoUiApp', 'ngMock', 'templates-main'));
 
     describe('Test setup', function() {
-        it ('', inject(function ($controller, $rootScope, $httpBackend, $q, RestService) {
+        it ('', inject(function ($controller, $rootScope, $httpBackend, $q, CloudifyService) {
             $httpBackend.whenGET("/backend/configuration?access=all").respond(200);
             $httpBackend.whenGET("/backend/versions/ui").respond(200);
             $httpBackend.whenGET("/backend/versions/manager").respond(200);
@@ -37,7 +37,7 @@ describe('Controller: DeploydialogCtrl', function () {
 
             scope = $rootScope.$new();
 
-            RestService.deployBlueprint = function(params) {
+            CloudifyService.blueprints.deploy = function(params) {
                 var deferred = $q.defer();
 
                 deferred.resolve(params.inputs.image_name === undefined ? _error : _deployment);
@@ -49,7 +49,7 @@ describe('Controller: DeploydialogCtrl', function () {
 
             DeployDialogCtrl = $controller('DeployDialogCtrl', {
                 $scope: scope,
-                RestService: RestService
+                CloudifyService: CloudifyService
             });
 
             scope.$digest();
@@ -88,7 +88,7 @@ describe('Controller: DeploydialogCtrl', function () {
             });
         });
 
-        it('should pass all params provided to RestService on deployment creation', function() {
+        it('should pass all params provided to CloudifyService on deployment creation', function() {
             scope.inputs = {
                 "agent_user": "agent_user",
                 "flavor_name": "flavor_name",
@@ -104,7 +104,7 @@ describe('Controller: DeploydialogCtrl', function () {
                 return scope.inProcess === false;
             });
             runs(function() {
-                expect(scope.redirectToDeployment).toHaveBeenCalledWith('deployment1', 'blueprint1');
+                expect(scope.redirectToDeployment).toHaveBeenCalledWith('deployment1');
             });
         });
     });

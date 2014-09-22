@@ -40,7 +40,7 @@ angular.module('cosmoUiApp')
 
             if ($scope.isDeployEnabled()) {
                 $scope.inProcess = true;
-                CloudifyService.bleuprints.deploy(params)
+                CloudifyService.blueprints.deploy(params)
                     .then(function(data) {
                         $scope.inProcess = false;
                         if(data.hasOwnProperty('message')) {
