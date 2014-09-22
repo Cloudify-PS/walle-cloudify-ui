@@ -5,9 +5,19 @@ angular.module('cosmoUiApp')
         $scope.deployment_id = null;
         $scope.deployError = false;
         $scope.deployErrorMessage = 'Error deploying blueprint';
+        $scope.inputs = {};
+        $scope.inputsJSON = null;
+        $scope.inputsState = 'params';
 
         $scope.isDeployEnabled = function() {
             return $scope.deployment_id !== null && $scope.deployment_id.length > 0;
+        };
+
+        $scope.isParamsVisible = function() {
+            if ($scope.selectedBlueprint === null) {
+                return;
+            }
+            return Object.getOwnPropertyNames($scope.selectedBlueprint.plan.inputs).length > 0;
         };
 
         $scope.deployBlueprint = function(blueprintId) {
@@ -16,14 +26,21 @@ angular.module('cosmoUiApp')
             }
             $scope.deployError = false;
 
+            if ($scope.inputsState === 'raw') {
+                try {
+                    $scope.inputs = JSON.parse($scope.inputsJSON);
+                } catch (e) {}
+            }
+
             var params = {
                 blueprint_id: blueprintId,
-                deployment_id: $scope.deployment_id
+                deployment_id: $scope.deployment_id,
+                inputs: $scope.inputs
             };
 
             if ($scope.isDeployEnabled()) {
                 $scope.inProcess = true;
-                CloudifyService.bleuprints.deploy(params)
+                CloudifyService.blueprints.deploy(params)
                     .then(function(data) {
                         $scope.inProcess = false;
                         if(data.hasOwnProperty('message')) {
@@ -31,7 +48,7 @@ angular.module('cosmoUiApp')
                             $scope.deployError = true;
                         }
                         else {
-                            $scope.redirectToDeployment($scope.deployment_id, blueprintId);
+                            $scope.redirectToDeployment($scope.deployment_id);
                         }
                     });
             }
@@ -42,7 +59,12 @@ angular.module('cosmoUiApp')
         };
 
         $scope.closeDialog = function() {
+            _resetDialog();
             $scope.toggleDeployDialog();
+        };
+
+        $scope.toggleInputsState = function(state) {
+            $scope.inputsState = state;
         };
 
         // Temporary solution - should be handled by Cosmo, not UI side
@@ -55,4 +77,14 @@ angular.module('cosmoUiApp')
             }
             return true;
         }
+
+        function _resetDialog() {
+            $scope.deployment_id = null;
+            $scope.deployError = false;
+            $scope.inputs = {};
+            $scope.inputsJSON = null;
+            $scope.inputsState = 'params';
+        }
+
+        _resetDialog();
     });
