@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('cosmoUiApp')
-    .controller('HostsCtrl', function ($scope, BreadcrumbsService, $filter, CloudifyService) {
+    .controller('HostsCtrl', function ($scope, BreadcrumbsService, $filter, CloudifyService, NodeSearchService) {
 
         /**
          * Breadcrumbs
@@ -12,17 +12,16 @@ angular.module('cosmoUiApp')
             id: 'hosts'
         });
 
-
         /**
          * Hosts
          */
-        var _deploymentsList = [];
+        var _type = 'host';
         var _filter = {};
-        var blueprintsByDeployments = {};
         var _filterBlueprint = null;
-        $scope.hostsList = [];
-        $scope.blueprintsList = [];
-        $scope.deploymentsList = [];
+        var _deploymentsList = NodeSearchService.getDeployments();
+
+        $scope.deploymentsList = _deploymentsList;
+        $scope.blueprintsList = NodeSearchService.getBlueprints();
         $scope.filterLoading = false;
         $scope.eventsFilter = {
             'blueprints': null,
@@ -31,58 +30,15 @@ angular.module('cosmoUiApp')
 
         function _execute() {
             $scope.filterLoading = true;
-            $scope.hostsList = [];
-            _deploymentsList.forEach(function(deployment) {
-                CloudifyService.getNodes({deployment_id: deployment.value})
-                    .then(function(nodes) {
-                        var _loadMethod;
-                        if (_filter.deployment_id !== undefined) {
-                            _loadMethod = CloudifyService.deployments.getDeploymentNodes(_filter);
-                        }
-                        else {
-                            _loadMethod = CloudifyService.getNodeInstances(_filter);
-                        }
-                        _loadMethod.then(function (instances) {
-                                if(instances instanceof Array) {
-                                    instances.forEach(function(instance) {
-                                        if(nodes instanceof Array) {
-                                            nodes.forEach(function (node) {
-                                                if (instance.node_id === node.id && node.type_hierarchy.join(',').indexOf('host') > -1) {
-                                                    if(_filterBlueprint !== null && _filterBlueprint === node.blueprint_id) {
-                                                        $scope.hostsList.push(instance);
-                                                    }
-                                                    else if(_filterBlueprint === null) {
-                                                        $scope.hostsList.push(instance);
-                                                    }
-                                                }
-                                            });
-                                        }
-                                    });
-                                }
-                            });
-                        $scope.filterLoading = false;
-                    });
-            });
+            NodeSearchService.execute(_type, _filter, _filterBlueprint)
+                .then(function(data){
+                    $scope.nodesList = data;
+                    $scope.filterLoading = false;
+                });
         }
 
-        CloudifyService.blueprints.list()
-            .then(function (data) {
-                for (var j in data) {
-                    var blueprint = data[j];
-                    $scope.blueprintsList.push({'value': blueprint.id, 'label': blueprint.id});
-                    for (var i in blueprint.deployments) {
-                        var deployemnt = blueprint.deployments[i];
-                        _deploymentsList.push({'value': deployemnt.id, 'label': deployemnt.id, 'parent': blueprint.id});
-                        blueprintsByDeployments[deployemnt.id] = blueprint.id;
-                    }
-                }
-            });
-
-        $scope.getBlueprintByDeployment = function(deployment_id) {
-            if(blueprintsByDeployments.hasOwnProperty(deployment_id)) {
-                return blueprintsByDeployments[deployment_id];
-            }
-            return null;
+        $scope.getBlueprintId = function() {
+            return _filterBlueprint;
         };
 
         $scope.$watch('eventsFilter.blueprints', function(newValue){
