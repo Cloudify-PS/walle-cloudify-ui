@@ -116,20 +116,6 @@ describe('Controller: HostsCtrl', function () {
             });
         });
 
-        it('should load nodes only for the requested deployment', function() {
-            scope.execute();
-            scope.$apply();
-
-            waitsFor(function() {
-                return scope.nodesList.length > 0;
-            });
-            runs(function() {
-                console.log(scope.nodesList);
-                expect(scope.nodesList.length).toBe(1);
-                expect(scope.nodesList[0].node_id).toBe('mongod_vm');
-            });
-        });
-
         it('should set isSearchDisabled flag to true if no blueprints were selected', function() {
             scope.eventsFilter.blueprints = [];
 
