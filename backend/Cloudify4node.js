@@ -42,6 +42,7 @@ function createRequest(requestData, callback) {
 
             logger.info(['Request done, data: ',data]);
 
+            console.log('data', data);
             callback(null, data);
         });
     };
@@ -294,7 +295,8 @@ Cloudify4node.getDeployments = function(callback) {
 
 Cloudify4node.addDeployment = function(requestBody, callback) {
     var data = {
-        'blueprint_id': requestBody.blueprint_id
+        'blueprint_id': requestBody.blueprint_id,
+        'inputs': requestBody.inputs
     };
     var requestData = createRequestData({
         path: '/deployments/' + requestBody.deployment_id,
@@ -375,6 +377,9 @@ Cloudify4node.executeDeployment = function(requestBody, callback) {
     var data = {
         'workflow_id': requestBody.workflow_id
     };
+    if (requestBody.parameters !== undefined) {
+        data.parameters = requestBody.parameters;
+    }
     var requestData = createRequestData({
         path: '/deployments/' + requestBody.deployment_id + '/executions',
         data: data,
@@ -469,6 +474,9 @@ Cloudify4node.getManagerVersion = function(callback) {
 };
 
 Cloudify4node.influxRequest = function(query, callback) {
+
+    console.log('influxRequest', query);
+
     var influxClient = influx({
         host: conf.influx.host,
         username : conf.influx.user,
@@ -501,17 +509,3 @@ Cloudify4node.getLogsExportFile = function(response, callback) {
         });
     });
 }
-
-
-// Monitor Mock's
-Cloudify4node.getMonitorGraphs = function(callback) {
-    return callback(null, require('./mock/monitorGraphs.json'));
-};
-
-Cloudify4node.getMonitorCpu = function(callback) {
-    return callback(null, require('./mock/monitorCPU.json'));
-};
-
-Cloudify4node.getMonitorMemory = function(callback) {
-    return callback(null, require('./mock/monitorMemory.json'));
-};

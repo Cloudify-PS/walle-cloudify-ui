@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('cosmoUiApp')
-    .controller('LogsCtrl', function ($scope, BreadcrumbsService, RestService, EventsService, $location, $anchorScroll, $filter, $routeParams, LogsModel, $window, EventsMap, $log) {
+    .controller('LogsCtrl', function ($scope, BreadcrumbsService, EventsService, $location, $anchorScroll, $filter, $routeParams, LogsModel, $window, EventsMap, $log, CloudifyService) {
 
         /**
          * Breadcrumbs
@@ -50,6 +50,7 @@ angular.module('cosmoUiApp')
         $scope.filterLoading = false;
         $scope.isDialogVisible = false;
         $scope.errorMsg = null;
+        $scope.isSearchDisabled = true;
 
         var lastAmount = 0;
         function executeLogs(autoPull) {
@@ -134,7 +135,7 @@ angular.module('cosmoUiApp')
             $scope.errorMsg = null;
         };
 
-        RestService.loadBlueprints()
+        CloudifyService.blueprints.list()
             .then(function (data) {
                 for (var j in data) {
                     var blueprint = data[j];
@@ -149,7 +150,7 @@ angular.module('cosmoUiApp')
             });
 
         function _loadExecutions(deployment_id) {
-            RestService.getDeploymentExecutions(deployment_id)
+            CloudifyService.deployments.getDeploymentExecutions(deployment_id)
                 .then(function(data) {
                     if(data.hasOwnProperty('length') && data.length > 0) {
                         for(var eid in data) {
@@ -214,7 +215,9 @@ angular.module('cosmoUiApp')
         })();
 
         $scope.execute = function() {
-            executeLogs();
+            if (!$scope.isSearchDisabled) {
+                executeLogs();
+            }
         };
 
         $scope.scrollToTop = function(){
@@ -222,6 +225,7 @@ angular.module('cosmoUiApp')
         };
 
         $scope.$watch('eventsFilter.blueprints', function(newValue, oldValue){
+            $scope.isSearchDisabled = (newValue === null || newValue.length === 0);
             $scope.deploymentsList = $filter('filterListByList')(_deploymentsList, newValue);
             filterLogsByList('context.blueprint_id', newValue, oldValue, false);
         }, true);
