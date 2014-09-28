@@ -159,11 +159,11 @@ angular.module('cosmoUiApp')
                     {
                         'name': 'Events',
                         'href': '/events'
-                    }/*,
+                    },
                     {
                         'name': 'Monitoring',
                         'href': '/monitoring'
-                    }*/
+                    }
                 ];
 
                 $scope.isSectionActive = function (section) {
