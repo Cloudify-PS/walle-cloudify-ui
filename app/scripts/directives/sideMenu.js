@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('cosmoUiApp')
-    .directive('sideMenu', function ($location) {
+    .directive('sideMenu', function ($location, $route) {
         return {
             templateUrl: 'views/sideMenuTemplate.html',
             restrict: 'A',
@@ -12,14 +12,14 @@ angular.module('cosmoUiApp')
             transclude:true,
             link:function( scope ){
                 scope.items = [
-                    { 'route' : ['#blueprints', '#blueprint'] ,                       'icon' : 'plans' ,                'label':'Blueprints'},
-                    { 'route' : ['#deployments', '#deployment'] ,                     'icon' : 'deployments' ,          'label':'Deployments'},
-                    { 'route' : ['#monitoring'] ,                                     'icon' : 'monitoring' ,           'label':'Monitoring',       isDisabled: true},
-                    { 'route' : ['#logs'] ,                                           'icon' : 'logs' ,                 'label':'Logs & Events'},
-                    { 'route' : ['#hosts'] ,                                          'icon' : 'hosts' ,                'label':'Hosts'},
-                    { 'route' : ['#networks'] ,                                       'icon' : 'networks' ,             'label':'Networks',         isDisabled: true},
-                    { 'route' : ['#floating-ips'] ,                                   'icon' : 'floating-ips' ,         'label':'Floating IPs',     isDisabled: true},
-                    { 'route' : ['#storage'] ,                                        'icon' : 'storage' ,              'label':'Storage',          isDisabled: true}
+                    { 'route' : ['#blueprints', '#blueprint'] ,         reload: true,  'icon': 'plans',        'label':'Blueprints'                         },
+                    { 'route' : ['#deployments', '#deployment'] ,       reload: true,  'icon': 'deployments',  'label':'Deployments'                        },
+                    { 'route' : ['#monitoring'] ,                       reload: false, 'icon': 'monitoring',   'label':'Monitoring',       isDisabled: true },
+                    { 'route' : ['#logs'] ,                             reload: false, 'icon': 'logs',         'label':'Logs & Events'                      },
+                    { 'route' : ['#hosts'] ,                            reload: false, 'icon': 'hosts',        'label':'Hosts'                              },
+                    { 'route' : ['#networks'] ,                         reload: false, 'icon': 'networks',     'label':'Networks',         isDisabled: true },
+                    { 'route' : ['#floating-ips'] ,                     reload: false, 'icon': 'floating-ips', 'label':'Floating IPs',     isDisabled: true },
+                    { 'route' : ['#storage'] ,                          reload: false, 'icon': 'storage',      'label':'Storage',          isDisabled: true }
                 ];
 
                 scope.selectedItem = null;
@@ -36,6 +36,13 @@ angular.module('cosmoUiApp')
                     if (!scope.isDisabled(item)) {
                         scope.selectedItem = item;
                     }
+                };
+
+                scope.goTo = function(item) {
+                    if($location.path() === '/' + item.route[0].substr(1) && item.reload === true) {
+                        $route.reload();
+                    }
+                    $location.url(item.route[0].substr(1));
                 };
             }
 
