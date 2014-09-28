@@ -1,0 +1,22 @@
+<div class="cosmo-layout" id="blueprint">
+
+    <div blueprint-layout
+         blueprint-id="blueprintId"
+         section="Source"></div>
+
+    <div class="source">
+        <div class="tree">
+            <ul>
+                <li data-ng-class="isSelected(data.name)" ng-repeat="data in browseData" ng-include="'../views/treeBrowseLevel.html'"></li>
+            </ul>
+        </div>
+        <div class="sourcecode">
+            <h4 data-ng-show="filename">{{ filename }}</h4>
+            <div class="pre">
+                <p class="empty" data-ng-hide="dataCode.data">Please choose file to preview.</p>
+                <div code:highlight="yml" ng-model="dataCode"></div>
+            </div>
+        </div>
+    </div>
+
+</div>

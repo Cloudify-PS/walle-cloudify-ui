@@ -7,12 +7,13 @@ html, body, .layout {
   height: 100%;
   width: 100%;
   position: relative;
+  background-color: #2c4a67 !important;
 }
 
 .layout {
   margin: 0 auto;
   min-width: 600px;
-  min-height: 100%;
+  /*min-height: 100%;*/
   height: 100%;
   background: $COSMOUI_BACKGROUND;
   font-family: "OpenSansLight";
@@ -40,7 +41,7 @@ html, body, .layout {
 }
 
 #smallFooter {
-    margin: 10px 0 0;
+    margin: 10px 20px 0 183px;
     color: #ccc;
     font-size: 11px;
 
@@ -183,7 +184,8 @@ html, body, .layout {
 
 #main-content {
   overflow: hidden;
-  padding: 0px 20px 20px 10px;
+  padding: 0px 20px 0px 10px;
+  margin: 0 0 -10px;
   height: 100%;
   background-color: $COSMOUI_BACKGROUND;
   position: relative;
@@ -273,7 +275,7 @@ html, body, .layout {
 .buttons-group {
     $RADIUS: 30px;
     display: inline-block;
-    margin: 0px 4px 0px 10px;
+    margin: 0px 4px 0px 20px;
     vertical-align: middle;
 
     button {
@@ -281,7 +283,7 @@ html, body, .layout {
         height: $COSMOUI_BLUEPRINT_DETAILS_BUTTON_HEIGHT;
         font-size: $COSMOUI_BLUEPRINT_DETAILS_BUTTON_FONT_SIZE;
         padding: $COSMOUI_BLUEPRINT_DETAILS_BUTTON_PADDING;
-        color: $COSMOUI_BLUEPRINT_BUTTON_GROUP_BACKGROUND;
+//        color: $COSMOUI_BLUEPRINT_BUTTON_GROUP_BACKGROUND;
         border: $COSMOUI_BLUEPRINT_BUTTON_GROUP_BORDER_COLOR;
         border-radius: 0px;
         margin: 0 -6px 0 0;
