@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('cosmoUiApp')
-    .controller('HostsCtrl', function ($scope, BreadcrumbsService, $filter, CloudifyService, NodeSearchService) {
+    .controller('HostsCtrl', function ($scope, BreadcrumbsService, $filter, NodeSearchService) {
 
         /**
          * Breadcrumbs

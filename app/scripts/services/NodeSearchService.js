@@ -48,6 +48,7 @@ angular.module('cosmoUiApp')
                 CloudifyService.getNodes({deployment_id: deployment.value})
                     .then(function(nodes) {
                         var _loadMethod;
+                        console.log(filter.deployment_id);
                         if (filter.deployment_id !== undefined) {
                             _loadMethod = CloudifyService.deployments.getDeploymentNodes(filter);
                         }
