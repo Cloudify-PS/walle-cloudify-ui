@@ -21,13 +21,13 @@ describe('Integration: addBlueprint', function () {
 
         logger.info('reading the expected result for further comparison');
         fs.readFile('./test/backend/resources/blueprint/successResult.json', 'utf-8', function (err, data) {
-            data = data.replace(/blueprint1/g, blueprintName);
             successResult = JSON.parse(data);
+            successResult.id = blueprintName;
         });
 
         waitsFor(function () {
             return fileData !== undefined;
-        }, "waiting for upload result", 10000);
+        }, "waiting for success result file to be loaded", 3000);
 
         runs(function () {
             logger.info('fileData loaded, uploading blueprint to manager');
@@ -38,7 +38,7 @@ describe('Integration: addBlueprint', function () {
 
         waitsFor(function () {
             return result !== undefined && successResult !== undefined;
-        }, "waiting for upload result", 5000);
+        }, "waiting for upload result", 10000);
 
         runs(function () {
             logger.info('blueprint upload result returned, checking if result is as expected');
