@@ -42,7 +42,6 @@ function createRequest(requestData, callback) {
 
             logger.info(['Request done, data: ',data]);
 
-            console.log('data', data);
             callback(null, data);
         });
     };
@@ -366,7 +365,7 @@ Cloudify4node.getNodeInstancesByDeploymentId = function(queryParams, callback) {
 
 Cloudify4node.getDeploymentExecutions = function(deployment_id, callback) {
     var requestData = createRequestData({
-        path: '/deployments/' + deployment_id + '/executions?statuses=true',
+        path: '/executions?deployment_id=' + deployment_id + '&statuses=true',
         method: 'GET'
     });
 
@@ -375,13 +374,14 @@ Cloudify4node.getDeploymentExecutions = function(deployment_id, callback) {
 
 Cloudify4node.executeDeployment = function(requestBody, callback) {
     var data = {
-        'workflow_id': requestBody.workflow_id
+        'workflow_id': requestBody.workflow_id,
+        'deployment_id': requestBody.deployment_id
     };
     if (requestBody.parameters !== undefined) {
         data.parameters = requestBody.parameters;
     }
     var requestData = createRequestData({
-        path: '/deployments/' + requestBody.deployment_id + '/executions',
+        path: '/executions',
         data: data,
         method: 'POST',
         headers: {
