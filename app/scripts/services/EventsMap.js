@@ -6,7 +6,7 @@ angular.module('cosmoUiApp')
         var eventsMap = {
             'workflow_received': {
                 text: 'Workflow received',
-                icon: 'event-icon-workflow-started',
+                icon: 'event-icon-workflow-stage',
                 class: 'event-text-green'
             },
             'workflow_started': {
@@ -16,12 +16,12 @@ angular.module('cosmoUiApp')
             },
             'workflow_initializing_policies': {
                 text: 'Workflow initializing policies',
-                icon: 'event-icon-workflow-started',
+                icon: 'event-icon-workflow-stage',
                 class: 'event-text-green'
             },
             'workflow_initializing_node': {
                 text: 'Workflow initializing node',
-                icon: 'event-icon-workflow-started',
+                icon: 'event-icon-workflow-stage',
                 class: 'event-text-green'
             },
             'workflow_succeeded': {
