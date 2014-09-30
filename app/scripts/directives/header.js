@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('cosmoUiApp')
-    .directive('header', function ($log, RestService, appConfig) {
+    .directive('header', function ($log, CloudifyService, appConfig) {
         return {
             templateUrl: 'views/headerTemplate.html',
             restrict: 'A',
@@ -17,7 +17,7 @@ angular.module('cosmoUiApp')
                     currentVersion = currentVersion.substring(0, currentVersion.indexOf('-'));
                 }
 
-                RestService.getLatestVersion(currentVersion)
+                CloudifyService.getLatestVersion(currentVersion)
                     .then(function(ver) {
                         scope.updateVersion = ver > currentVersion;
                     });

@@ -47,7 +47,6 @@
     <!-- build:js scripts/plugins.js -->
     <script src="bower_components/jquery/dist/jquery.js"></script>
     <script src="bower_components/angular/angular.js"></script>
-    <script src="bower_components/yamljs/bin/yaml.js"></script>
     <script src="bower_components/bootstrap-sass/dist/js/bootstrap.js"></script>
     <script src="bower_components/d3/d3.js"></script>
     <script src="bower_components/nvd3/nv.d3.min.js"></script>
@@ -91,12 +90,10 @@
     <!-- build:js scripts/modules.js -->
     <script src="scripts/app.js"></script>
     <script src="scripts/controllers/main.js"></script>
-    <script src="scripts/controllers/plans.js"></script>
     <script src="scripts/controllers/blueprintsIndex.js"></script>
     <script src="scripts/controllers/fileSelectionDialog.js"></script>
     <script src="scripts/controllers/deployments.js"></script>
     <script src="scripts/controllers/config.js"></script>
-    <script src="scripts/controllers/deployment.js"></script>
     <script src="scripts/controllers/deployDialog.js"></script>
     <script src="scripts/controllers/logs.js"></script>
     <script src="scripts/controllers/deploymentProgressPanel.js"></script>
@@ -115,24 +112,16 @@
     <script src="scripts/directives/codeHighlight.js"></script>
     <script src="scripts/directives/dotsLoader.js"></script>
     <script src="scripts/directives/ngEnter.js"></script>
-    <!--<script src="scripts/services/yamlService.js"></script>-->
-    <!--<script src="scripts/services/YamlTreeParser.js"></script>-->
-    <!--<script src="scripts/services/YamlGraphParser.js"></script>-->
-    <script src="scripts/services/PlanData.js"></script>
-    <script src="scripts/services/RestService.js"></script>
     <script src="scripts/services/BreadcrumbsService.js"></script>
     <script src="scripts/services/EventsService.js"></script>
-    <script src="scripts/services/d3Networks.js"></script>
     <script src="scripts/services/EventsMap.js"></script>
     <script src="scripts/services/LogsModel.js"></script>
-    <script src="scripts/filters/yaml.js"></script>
     <script src="scripts/filters/eventTimeFilter.js"></script>
     <script src="scripts/filters/dateFormat.js"></script>
     <script src="styles/SyntaxHighlighter/shBrushYaml.js"></script>
     <script src="scripts/directives/bpTopologyNodes.js"></script>
     <script src="scripts/services/RecursionHelper.js"></script>
     <script src="scripts/directives/graphsPager.js"></script>
-    <script src="scripts/services/monitoringGraphs.js"></script>
     <script src="scripts/directives/bindGraph.js"></script>
     <script src="scripts/directives/onFinishRender.js"></script>
     <script src="scripts/filters/limitRange.js"></script>
@@ -140,8 +129,27 @@
     <script src="scripts/controllers/interface.js"></script>
     <script src="scripts/services/topologyTypes.js"></script>
     <script src="scripts/services/NodeService.js"></script>
-    <script src="scripts/controllers/deploymentmonitoring.js"></script>
+    <script src="scripts/controllers/deploymentMonitoring.js"></script>
+    <script src="scripts/controllers/deploymentTopology.js"></script>
     <script src="scripts/directives/deploymentLayout.js"></script>
+    <script src="scripts/directives/blueprintLayout.js"></script>
+    <script src="scripts/controllers/blueprintTopology.js"></script>
+    <script src="scripts/directives/deploymentEvents.js"></script>
+    <script src="scripts/directives/floatingDeploymentNodePanel.js"></script>
+    <script src="scripts/controllers/deploymentNodes.js"></script>
+    <script src="scripts/controllers/deploymentNetwork.js"></script>
+    <script src="scripts/controllers/deploymentEvents.js"></script>
+    <script src="scripts/controllers/deploymentExecutions.js"></script>
+    <script src="scripts/directives/floatingBlueprintNodePanel.js"></script>
+    <script src="scripts/controllers/blueprintNetwork.js"></script>
+    <script src="scripts/controllers/blueprintNodes.js"></script>
+    <script src="scripts/controllers/blueprintSource.js"></script>
+    <script src="scripts/services/NetworksService.js"></script>
+    <script src="scripts/services/CloudifyService.js"></script>
+    <script src="scripts/services/BlueprintsService.js"></script>
+    <script src="scripts/services/RestLoader.js"></script>
+    <script src="scripts/services/DeploymentsService.js"></script>
+    <script src="scripts/services/NodeSearchService.js"></script>
     <!-- endbuild -->
 
 </body>

@@ -142,6 +142,7 @@ app.get('/backend/deployments', function(request, response) {
 });
 
 app.post('/backend/deployments/create', function(request, response) {
+    console.log('body', request.body);
     cloudify4node.addDeployment(request.body, function(err, data) {
         response.send(err !== null ? err : data);
     });
@@ -278,24 +279,6 @@ app.get('/backend/versions/manager', function(request, response) {
 
 app.get('/backend/logsfile', function(request, response) {
     cloudify4node.getLogsExportFile(response, function(err, data) {
-        response.send(err !== null ? err : data);
-    });
-});
-
-app.get('/backend/monitor/graphs', function(request, response) {
-    cloudify4node.getMonitorGraphs(function(err, data) {
-        response.send(err !== null ? err : data);
-    });
-});
-
-app.get('/backend/monitor/cpu', function(request, response) {
-    cloudify4node.getMonitorCpu(function(err, data) {
-        response.send(err !== null ? err : data);
-    });
-});
-
-app.get('/backend/monitor/memory', function(request, response) {
-    cloudify4node.getMonitorMemory(function(err, data) {
         response.send(err !== null ? err : data);
     });
 });

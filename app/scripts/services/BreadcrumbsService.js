@@ -14,6 +14,9 @@ angular.module('ngBreadcrumbs', []).factory('BreadcrumbsService', function() {
         var exists = false;
         for (var i = 0; i < data[id].length; i++) {
             if (item.id === data[id][i].id) {
+                if (item.label !== data[id][i].label) {
+                    data[id][i].label = item.label;
+                }
                 exists = true;
                 if (i === 0) {
                     _setLastIndex(id, i);

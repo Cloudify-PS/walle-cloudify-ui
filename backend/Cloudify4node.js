@@ -294,7 +294,8 @@ Cloudify4node.getDeployments = function(callback) {
 
 Cloudify4node.addDeployment = function(requestBody, callback) {
     var data = {
-        'blueprint_id': requestBody.blueprint_id
+        'blueprint_id': requestBody.blueprint_id,
+        'inputs': requestBody.inputs
     };
     var requestData = createRequestData({
         path: '/deployments/' + requestBody.deployment_id,
@@ -364,7 +365,7 @@ Cloudify4node.getNodeInstancesByDeploymentId = function(queryParams, callback) {
 
 Cloudify4node.getDeploymentExecutions = function(deployment_id, callback) {
     var requestData = createRequestData({
-        path: '/deployments/' + deployment_id + '/executions?statuses=true',
+        path: '/executions?deployment_id=' + deployment_id + '&statuses=true',
         method: 'GET'
     });
 
@@ -373,10 +374,14 @@ Cloudify4node.getDeploymentExecutions = function(deployment_id, callback) {
 
 Cloudify4node.executeDeployment = function(requestBody, callback) {
     var data = {
-        'workflow_id': requestBody.workflow_id
+        'workflow_id': requestBody.workflow_id,
+        'deployment_id': requestBody.deployment_id
     };
+    if (requestBody.parameters !== undefined) {
+        data.parameters = requestBody.parameters;
+    }
     var requestData = createRequestData({
-        path: '/deployments/' + requestBody.deployment_id + '/executions',
+        path: '/executions',
         data: data,
         method: 'POST',
         headers: {
@@ -469,6 +474,9 @@ Cloudify4node.getManagerVersion = function(callback) {
 };
 
 Cloudify4node.influxRequest = function(query, callback) {
+
+    console.log('influxRequest', query);
+
     var influxClient = influx({
         host: conf.influx.host,
         username : conf.influx.user,
@@ -501,17 +509,3 @@ Cloudify4node.getLogsExportFile = function(response, callback) {
         });
     });
 }
-
-
-// Monitor Mock's
-Cloudify4node.getMonitorGraphs = function(callback) {
-    return callback(null, require('./mock/monitorGraphs.json'));
-};
-
-Cloudify4node.getMonitorCpu = function(callback) {
-    return callback(null, require('./mock/monitorCPU.json'));
-};
-
-Cloudify4node.getMonitorMemory = function(callback) {
-    return callback(null, require('./mock/monitorMemory.json'));
-};

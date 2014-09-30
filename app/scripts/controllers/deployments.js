@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('cosmoUiApp')
-    .controller('DeploymentsCtrl', function ($scope, RestService, $cookieStore, $location, $routeParams, BreadcrumbsService, $timeout, $log) {
+    .controller('DeploymentsCtrl', function ($scope, $cookieStore, $location, $routeParams, BreadcrumbsService, $timeout, $log, CloudifyService) {
 
         $scope.blueprints = null;
         $scope.deployments = [];
@@ -9,6 +9,7 @@ angular.module('cosmoUiApp')
         $scope.isConfirmationDialogVisible = false;
         $scope.isDeleteDeploymentVisible = false;
         $scope.delDeployError = false;
+        $scope.deleteInProcess = false;
         $scope.executedErr = false;
         $scope.ignoreLiveNodes = false;
         $scope.confirmationType = '';
@@ -19,7 +20,7 @@ angular.module('cosmoUiApp')
         var selectedWorkflows = [];
         var workflows = [];
         var cosmoError = false;
-        var currentDeplyToDelete = null;
+        var currentDeployToDelete = null;
 
         BreadcrumbsService.push('deployments',
             {
@@ -30,9 +31,10 @@ angular.module('cosmoUiApp')
 
         $scope.executeDeployment = function(deployment) {
             if ($scope.isExecuteEnabled(deployment.id)) {
-                RestService.executeDeployment({
+                CloudifyService.deployments.execute({
                     deployment_id: $scope.selectedDeployment.id,
-                    workflow_id: selectedWorkflows[$scope.selectedDeployment.id]
+                    workflow_id: selectedWorkflows[$scope.selectedDeployment.id],
+                    parameters: $scope.selectedWorkflow.data.parameters
                 }).then(function(execution) {
                     if(execution.hasOwnProperty('error_code')) {
                         $scope.executedErr = execution.message;
@@ -76,7 +78,7 @@ angular.module('cosmoUiApp')
                 'execution_id': $scope.getExecutionAttr(deployment, 'id'),
                 'state': 'cancel'
             };
-            RestService.updateExecutionState(callParams).then(function(data) {
+            CloudifyService.deployments.updateExecutionState(callParams).then(function(data) {
                 if(data.hasOwnProperty('error_code')) {
                     $scope.executedErr = data.message;
                 }
@@ -109,8 +111,7 @@ angular.module('cosmoUiApp')
         };
 
         $scope.redirectTo = function (deployment) {
-            $log.info(['redirecting to', deployment]);
-            $location.path('/deployment').search({id: deployment.id, blueprint_id: deployment.blueprint_id});
+            $location.path('/deployment/' + deployment.id + '/topology');
         };
 
         $scope.cosmoConnectionError = function() {
@@ -118,7 +119,7 @@ angular.module('cosmoUiApp')
         };
 
         function _loadExecutions(blueprint_id, deployment_id) {
-            RestService.getDeploymentExecutions(deployment_id)
+            CloudifyService.deployments.getDeploymentExecutions(deployment_id)
                 .then(function(data) {
                     if (data.length > 0) {
                         if (_executedDeployments[blueprint_id] === undefined) {
@@ -158,7 +159,7 @@ angular.module('cosmoUiApp')
         function _loadDeployments() {
             $scope.blueprints = null;
             $scope.deployments = [];
-            RestService.loadBlueprints()
+            CloudifyService.blueprints.list()
                 .then(function(data) {
                     cosmoError = false;
                     $scope.blueprints = data;
@@ -175,7 +176,8 @@ angular.module('cosmoUiApp')
                                 workflows[deployments[i].id].push({
                                     value: workflow.name,
                                     label: workflow.name,
-                                    deployment: deployments[i].id
+                                    deployment: deployments[i].id,
+                                    parameters: deployments[i].parameters
                                 });
                             }
                         }
@@ -189,9 +191,11 @@ angular.module('cosmoUiApp')
         _loadDeployments();
 
         function deleteDeployment() {
-            if(currentDeplyToDelete !== null) {
-                RestService.deleteDeploymentById({deployment_id: currentDeplyToDelete.id, ignoreLiveNodes: $scope.ignoreLiveNodes})
+            if(currentDeployToDelete !== null && !$scope.deleteInProcess) {
+                $scope.deleteInProcess = true;
+                CloudifyService.deployments.deleteDeploymentById({deployment_id: currentDeployToDelete.id, ignoreLiveNodes: $scope.ignoreLiveNodes})
                     .then(function(data){
+                        $scope.deleteInProcess = false;
                         if(data.hasOwnProperty('message')) {
                             $scope.delDeployError = data.message;
                         }
@@ -202,12 +206,11 @@ angular.module('cosmoUiApp')
                             }, 500);
                         }
                     });
-                //currentDeplyToDelete = null;
             }
         }
 
         $scope.deleteDeployment = function(deployment) {
-            currentDeplyToDelete = deployment;
+            currentDeployToDelete = deployment;
             $scope.delDeployError = false;
             $scope.ignoreLiveNodes = false;
             $scope.delDeployName = deployment.id;
@@ -215,8 +218,11 @@ angular.module('cosmoUiApp')
         };
 
         function closeDeleteDialog() {
+            if ($scope.deleteInProcess) {
+                return;
+            }
             $scope.isDeleteDeploymentVisible = false;
-            currentDeplyToDelete = null;
+            currentDeployToDelete = null;
         }
         $scope.closeDeleteDialog = closeDeleteDialog;
 
@@ -227,5 +233,4 @@ angular.module('cosmoUiApp')
         $scope.toggleIgnoreLiveNodes = function() {
             $scope.ignoreLiveNodes = !$scope.ignoreLiveNodes;
         };
-
     });
