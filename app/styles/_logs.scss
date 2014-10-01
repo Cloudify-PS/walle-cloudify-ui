@@ -121,6 +121,14 @@
                     }
                 }
             }
+
+            &.eventsTable {
+                tr {
+                    td {
+                        vertical-align: top;
+                    }
+                }
+            }
         }
     }
 
