@@ -7,7 +7,7 @@
  * # deploymentLayout
  */
 angular.module('cosmoUiApp')
-    .directive('deploymentLayout', function ($location, $route, BreadcrumbsService, RestService) {
+    .directive('deploymentLayout', function ($location, $route, BreadcrumbsService, CloudifyService) {
         return {
             templateUrl: 'views/deployment/layout.html',
             restrict: 'EA',
@@ -29,8 +29,15 @@ angular.module('cosmoUiApp')
                     'process': 0,
                     'instancesIds': []
                 };
+                $scope.toggleBar = {
+                    'compute': true,
+                    'middleware': true,
+                    'modules': true,
+                    'connections': true
+                };
                 var deploymentModel = {};
                 var nodesList = [];
+                var statesIndex = ['uninitialized', 'initializing', 'creating', 'created', 'configuring', 'configured', 'starting', 'started'];
 
                 $scope.breadcrumb = [];
                 $scope.workflowsList = [];
@@ -50,8 +57,11 @@ angular.module('cosmoUiApp')
                     id: 'deployments'
                 });
 
+                // Emit Selected Workflow
+                $scope.$emit('selectedWorkflow', $scope.selectedWorkflow);
+
                 // Get Deployment Data
-                RestService.getDeploymentById({deployment_id: $scope.id})
+                CloudifyService.deployments.getDeploymentById({deployment_id: $scope.id})
                     .then(function (dataDeployment) {
 
                         // Verify it's valid page, if not redirect to deployments page
@@ -83,14 +93,20 @@ angular.module('cosmoUiApp')
                                 workflows.push({
                                     value: workflow.name,
                                     label: workflow.name,
-                                    deployment: dataDeployment.id
+                                    deployment: dataDeployment.id,
+                                    parameters: workflow.parameters
                                 });
                             }
                             $scope.workflowsList = workflows;
+
+                            // Emit workflows data
+                            $scope.$emit('workflowsData', workflows);
                         }
 
+                        _loadExecutions();
+
                         // Get Nodes
-                        RestService.getNodes({deployment_id: dataDeployment.id})
+                        CloudifyService.getNodes({deployment_id: dataDeployment.id})
                             .then(function(dataNodes) {
 
                                 var nodes = [];
@@ -102,11 +118,12 @@ angular.module('cosmoUiApp')
                                 });
                                 nodesList = nodes;
 
-                                // Emit nodes data
-                                $scope.$emit('nodesData', dataNodes, nodesList);
-
                                 // Set Deployment Model
                                 _setDeploymentModel(nodesList);
+                                _updateDeploymentModel(nodesList);
+
+                                // Emit nodes data
+                                $scope.$emit('nodesList', nodesList);
 
                                 // Emit deployment process data
                                 $scope.$emit('deploymentProcess', deploymentModel);
@@ -136,6 +153,10 @@ angular.module('cosmoUiApp')
                         'href': '/nodes'
                     },
                     {
+                        'name': 'Executions',
+                        'href': '/executions'
+                    },
+                    {
                         'name': 'Events',
                         'href': '/events'
                     },
@@ -153,16 +174,8 @@ angular.module('cosmoUiApp')
                     $location.path('/deployment/' + $scope.id + section.href);
                 };
 
-                // Topology Settings
-                $scope.toggleBar = {
-                    'compute': true,
-                    'middleware': true,
-                    'modules': true,
-                    'connections': true
-                };
-
                 // Workflows & Execution
-                RestService.autoPull('getDeploymentExecutions', $scope.id, RestService.getDeploymentExecutions)
+                CloudifyService.autoPull('getDeploymentExecutions', $scope.id, CloudifyService.deployments.getDeploymentExecutions)
                     .then(null, null, function (dataExec) {
                         $scope.currentExecution = _getCurrentExecution(dataExec);
                         if (!$scope.currentExecution && $scope.deploymentInProgress) {
@@ -171,11 +184,91 @@ angular.module('cosmoUiApp')
                         else if ($scope.deploymentInProgress === null || $scope.currentExecution !== false) {
                             $scope.deploymentInProgress = true;
                         }
+                        else {
+                            CloudifyService.deployments.getDeploymentNodes({deployment_id : $scope.id, state: true}).then(function(dataNodes){
+                                _updateDeploymentModel(dataNodes);
+                            });
+                        }
                         $scope.$emit('deploymentExecution', {
                             currentExecution: $scope.currentExecution,
-                            deploymentInProgress: $scope.deploymentInProgress
+                            deploymentInProgress: $scope.deploymentInProgress,
+                            executionsList: dataExec
                         });
                     });
+
+                function _updateDeploymentModel( nodes ) {
+                    var IndexedNodes = {};
+                    for (var i in nodes) {
+                        var node = nodes[i];
+                        IndexedNodes[node.node_id] = {
+                            state: node.state
+                        };
+                    }
+                    for (var d in deploymentModel) {
+                        var deployment = deploymentModel[d];
+                        var _reachable = 0;
+                        var _states = 0;
+                        var _completed = 0;
+
+                        for (var n in deployment.instancesIds) {
+                            var nodeId = deployment.instancesIds[n];
+                            var nodeInstance = IndexedNodes[nodeId];
+                            if(IndexedNodes.hasOwnProperty(nodeId)) {
+                                if(nodeInstance.state === 'started') {
+                                    _reachable++;
+                                }
+                                if(statesIndex.indexOf(nodeInstance.state) > 0 || statesIndex.indexOf(nodeInstance.state) < 7) {
+                                    var stateNum = statesIndex.indexOf(nodeInstance.state);
+                                    if(stateNum === 7) {
+                                        _completed++;
+                                    }
+                                    _states += stateNum;
+                                }
+                            }
+                        }
+                        deployment.completed = _completed;
+                        deployment.reachables = _reachable;
+                        deployment.state = Math.round(_states / deployment.total);
+                        deployment.states = calcState(_states, deployment.total);
+
+                        // Calculate percents for progressbar
+                        var processDone = (deployment.states < 100 ? deployment.states : calcProgress(deployment.reachables, deployment.total));
+                        deployment.process = {
+                            'done': processDone
+                        };
+
+                        // Set Status by Workflow Execution Progress
+                        setDeploymentStatus(deployment, $scope.deploymentInProgress ? false : processDone);
+                    }
+
+                    nodesList.forEach(function(node) {
+                        node.state = deploymentModel[node.id];
+                    });
+
+                }
+
+                function setDeploymentStatus(deployment, process) {
+                    if(process === false) {
+                        deployment.status = 0;
+                    }
+                    else if(process === 100) {
+                        deployment.status = 1;
+                    }
+                    else if(process > 0 && process < 100) {
+                        deployment.status = 2;
+                    }
+                    else if(process === 0) {
+                        deployment.status = 3;
+                    }
+                }
+
+                function calcState(state, instances) {
+                    return Math.round(state > 0 ? (state / instances / 7 * 100) : 0);
+                }
+
+                function calcProgress(partOf, instances) {
+                    return Math.round(partOf > 0 ? 100 * partOf / instances : 0);
+                }
 
                 function _getCurrentExecution(executions) {
                     for (var i in executions) {
@@ -200,7 +293,7 @@ angular.module('cosmoUiApp')
                         'execution_id': $scope.executedData.id,
                         'state': 'cancel'
                     };
-                    RestService.updateExecutionState(callParams).then(function (data) {
+                    CloudifyService.deployments.updateExecutionState(callParams).then(function (data) {
                         if (data.hasOwnProperty('error_code')) {
                             $scope.executedErr = data.message;
                         }
@@ -213,9 +306,10 @@ angular.module('cosmoUiApp')
 
                 function _executeDeployment() {
                     if (_isExecuteEnabled()) {
-                        RestService.executeDeployment({
+                        CloudifyService.deployments.execute({
                             deployment_id: $scope.id,
-                            workflow_id: $scope.selectedWorkflow.data.value
+                            workflow_id: $scope.selectedWorkflow.data.value,
+                            parameters: $scope.selectedWorkflow.data.parameters
                         }).then(function (execution) {
                             if (execution.hasOwnProperty('error_code')) {
                                 $scope.executedErr = execution.message;
@@ -226,6 +320,19 @@ angular.module('cosmoUiApp')
                             }
                         });
                     }
+                }
+
+                function _loadExecutions() {
+                    CloudifyService.deployments.getDeploymentExecutions($scope.id)
+                        .then(function(data) {
+                            if (data.length > 0) {
+                                for (var i = 0; i < data.length; i++) {
+                                    if (data[i].status !== null && data[i].status !== 'failed' && data[i].status !== 'terminated' && data[i].status !== 'cancelled') {
+                                        $scope.executedData = data[i];
+                                    }
+                                }
+                            }
+                        });
                 }
 
                 function _toggleConfirmationDialog(confirmationType) {
@@ -259,9 +366,13 @@ angular.module('cosmoUiApp')
                         deploymentModel[node.id].instancesIds.push(node.id);
                         deploymentModel[node.id].total += parseInt(node.number_of_instances, 10);
                     }
-
-                    console.log(['deploymentModel', deploymentModel]);
                 }
+
+                $scope.$watch('toggleBar', function(toggleBar) {
+                    $scope.$emit('toggleChange', toggleBar);
+                });
+
+
 
             }
         };

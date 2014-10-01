@@ -46,6 +46,7 @@
           display: block;
           text-decoration: none;
           height: $COSMOUI_MENU_ITEM_HEIGHT;
+          cursor: pointer;
 
           //&:hover:not(.disabled){
           //  color: $COSMOUI_MENU_ITEM_COLOR_HOVER;

@@ -1,9 +1,9 @@
 'use strict';
 
 angular.module('cosmoUiApp')
-    .controller('BlueprintsIndexCtrl', function ($scope, $location, $cookieStore, RestService, BreadcrumbsService, $timeout, $log) {
+    .controller('BlueprintsIndexCtrl', function ($scope, $location, $cookieStore, BreadcrumbsService, $timeout, $log, CloudifyService) {
         $scope.isAddDialogVisible = false;
-        $scope.isDeployDialogVisible = false
+        $scope.isDeployDialogVisible = false;
         $scope.isDeleteBlueprintVisible = false;
         $scope.lastExecutedPlan = null;
         $scope.selectedBlueprint = null;
@@ -21,8 +21,7 @@ angular.module('cosmoUiApp')
             });
 
         $scope.redirectTo = function (blueprint) {
-            $log.info(['redirecting to', blueprint]);
-            $location.path('/blueprint').search({id: blueprint.id, name: blueprint.id});
+            $location.path('/blueprint/' + blueprint.id + '/topology');
         };
 
         $scope.toggleAddDialog = function() {
@@ -36,7 +35,7 @@ angular.module('cosmoUiApp')
 
         $scope.toggleDeleteDialog = function() {
             $scope.isDeleteBlueprintVisible = $scope.isDeleteBlueprintVisible === false;
-        }
+        };
 
         $scope.deleteBlueprint = function(blueprint) {
             currentBlueprintToDelete = blueprint;
@@ -51,7 +50,7 @@ angular.module('cosmoUiApp')
 
         $scope.loadBlueprints = function() {
             $scope.blueprints = null;
-            RestService.loadBlueprints()
+            CloudifyService.blueprints.list()
                 .then(function(data) {
                     cosmoError = false;
                     if (data.length < 1) {
@@ -82,8 +81,8 @@ angular.module('cosmoUiApp')
             $location.path('/deployments');
         };
 
-        $scope.redirectToDeployment = function(deployment_id, blueprint_id) {
-            $location.path('/deployment').search({id: deployment_id, blueprint_id: blueprint_id});
+        $scope.redirectToDeployment = function(deployment_id) {
+            $location.path('/deployment/' + deployment_id + '/topology');
         };
 
         $scope.cosmoConnectionError = function() {
@@ -119,7 +118,7 @@ angular.module('cosmoUiApp')
         function _deleteBlueprint() {
             if(currentBlueprintToDelete !== null && !$scope.deleteInProcess) {
                 $scope.deleteInProcess = true;
-                RestService.deleteBlueprint({id: currentBlueprintToDelete.id})
+                CloudifyService.blueprints.delete({id: currentBlueprintToDelete.id})
                     .then(function(data) {
                         if (data.error_code !== undefined) {
                             $scope.deleteInProcess = false;
@@ -128,7 +127,7 @@ angular.module('cosmoUiApp')
                         } else {
                             $timeout(function() {
                                 $scope.toggleDeleteDialog();
-                                $scope.loadBlueprints();;
+                                $scope.loadBlueprints();
                                 $scope.deleteInProcess = false;
                             }, 1000);
                         }

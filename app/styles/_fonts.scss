@@ -106,6 +106,10 @@ $gs-icon-prefix: 'gs-icon';
 
     &.cloudify-types-middleware-server {
 
+        &:after {
+            content: 'h';
+        }
+
         &.cloudify-types-web-server {
             &:after {
                 content: 'l';

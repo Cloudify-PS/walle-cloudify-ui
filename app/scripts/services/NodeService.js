@@ -3,7 +3,7 @@
 angular.module('cosmoUiApp')
     .service('NodeService', function NodeService() {
 
-        function _createNodesTree(nodes) {
+        function _createNodesTree(nodes, reverse) {
             var roots = [];
             var nodesList = [];
 
@@ -42,7 +42,10 @@ angular.module('cosmoUiApp')
                 }
             }
 
-            return roots.reverse();
+            if(reverse === true) {
+                return roots.reverse();
+            }
+            return roots;
         }
 
         function _getNodeClass(typeHierarchy) {

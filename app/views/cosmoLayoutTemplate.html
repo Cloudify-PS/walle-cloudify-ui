@@ -7,20 +7,23 @@
         <div id="right-side-menu"></div>
         <div id="main-content">
             <div id="main-content-panel" ng-transclude></div>
-            <div id="smallFooter">
-                <ul class="links">
-                    <li>Manager version: {{ versions.manager }}</li>
-                    <li>UI version: {{ versions.ui }}</li>
-                    <li><a href="/api/spec.html" target="_blank">API Spec</a></li>
-                    <li><a href="https://cloudifysource.atlassian.net" target="_blank">Report an Issue</a></li>
-                    <li><a href="https://groups.google.com/forum/#!forum/cloudify-users" target="_blank">Support Forum</a></li>
-                </ul>
-                Copyright © GigaSpaces 2014, All rights reserved.
-            </div>
+
         </div>
         <div id="fix"></div>
         <!--  a fix for footer position. -->
     </div>
     <!--  layout end -->
-    <div id="footer"></div>
+    <div id="footer">
+        <div id="smallFooter">
+            <ul class="links">
+                <li>Manager version: {{ versions.manager }}</li>
+                <li>UI version: {{ versions.ui }}</li>
+                <li><a href="/api/spec.html" target="_blank">API Spec</a></li>
+                <li><a href="https://cloudifysource.atlassian.net" target="_blank">Report an Issue</a></li>
+                <li><a href="https://groups.google.com/forum/#!forum/cloudify-users" target="_blank">Support
+                    Forum</a></li>
+            </ul>
+            Copyright © GigaSpaces 2014, All rights reserved.
+        </div>
+    </div>
 </div>

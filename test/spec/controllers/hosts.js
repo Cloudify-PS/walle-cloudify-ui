@@ -9,57 +9,42 @@ describe('Controller: HostsCtrl', function () {
 
     // Initialize the controller and a mock scope
     describe('Test setup', function() {
-        it ('', inject(function ($controller, $rootScope, $httpBackend, $q, RestService) {
+        it ('', inject(function ($controller, $rootScope, $httpBackend, $q, CloudifyService, NodeSearchService) {
 
             $httpBackend.whenGET("/backend/configuration?access=all").respond(200);
             $httpBackend.whenGET("/backend/versions/ui").respond(200);
             $httpBackend.whenGET("/backend/versions/manager").respond(200);
             $httpBackend.whenGET("/backend/version/latest?version=00").respond('300');
+            $httpBackend.whenGET("/backend/blueprints").respond(200);
 
             scope = $rootScope.$new();
-            RestService.loadBlueprints = function() {
+
+            NodeSearchService.execute = function() {
                 var deferred = $q.defer();
-                var blueprints = [{
-                    "id": "blueprint1",
-                    "deployments": [{
-                        "blueprint_id": "blueprint1",
-                        "id": "deployment1"
-                    }]
+                var result = [{
+                    "type_hierarchy": ["cloudify.types.base", "cloudify.types.host", "cloudify.openstack.server", "vm_host"],
+                    "node_id": "nodejs_vm",
+                    "state": "uninitialized",
+                    "host_id": "nodejs_vm_6d2f0",
+                    "deployment_id": "deployment1",
+                    "id": "nodejs_vm_6d2f0",
+                    "type": "vm_host"
+                }, {
+                    "type_hierarchy": ["cloudify.types.base", "cloudify.openstack.server"],
+                    "node_id": "mongod_vm",
+                    "state": "uninitialized",
+                    "host_id": "mongod_vm_b9f82",
+                    "deployment_id": "deployment1",
+                    "id": "mongod_vm_b9f82",
+                    "type": "server"
                 }];
 
-                deferred.resolve(blueprints);
-
-                return deferred.promise;
-            };
-            RestService.getNodes = function() {
-                var deferred = $q.defer();
-                var nodes = [
-                    {
-                        "type_hierarchy": ["cloudify.types.base", "cloudify.types.host", "cloudify.openstack.server", "vm_host"],
-                        "blueprint_id": "blueprint1",
-                        "host_id": "mongod_vm",
-                        "id": "mongod_vm",
-                        "number_of_instances": "1",
-                        "deployment_id": "deployment1",
-                        "type": "vm_host"
-                    },
-                    {
-                        "type_hierarchy": ["cloudify.types.base", "cloudify.openstack.server"],
-                        "blueprint_id": "blueprint1",
-                        "host_id": "server",
-                        "id": "server",
-                        "number_of_instances": "1",
-                        "deployment_id": "deployment1",
-                        "type": "server"
-                    }
-                ];
-
-                deferred.resolve(nodes);
+                deferred.resolve(result);
 
                 return deferred.promise;
             };
 
-            RestService.getDeploymentNodes = function() {
+            CloudifyService.deployments.getDeploymentNodes = function() {
                 var deferred = $q.defer();
                 var instances = [
                     {
@@ -85,9 +70,19 @@ describe('Controller: HostsCtrl', function () {
                 return deferred.promise;
             };
 
+            NodeSearchService.getBlueprints = function() {
+                return [{
+                    "id": "blueprint1",
+                    "deployments": [{
+                        "blueprint_id": "blueprint1",
+                        "id": "deployment1"
+                    }]
+                }];
+            };
+
             HostsCtrl = $controller('HostsCtrl', {
                 $scope: scope,
-                RestService: RestService
+                NodeSearchService: NodeSearchService
             });
 
             scope.eventsFilter = {
@@ -121,17 +116,22 @@ describe('Controller: HostsCtrl', function () {
             });
         });
 
-        it('should load nodes only for the requested deployment', function() {
-            scope.execute();
+        it('should set isSearchDisabled flag to true if no blueprints were selected', function() {
+            scope.eventsFilter.blueprints = [];
+
             scope.$apply();
 
-            waitsFor(function() {
-                return scope.hostsList.length > 0;
-            });
-            runs(function() {
-                expect(scope.hostsList.length).toBe(1);
-                expect(scope.hostsList[0].node_id).toBe('mongod_vm');
-            });
+            expect(scope.isSearchDisabled()).toBe(true);
+        });
+
+        it('should set isSearchDisabled flag to false if blueprints were selected', function() {
+            scope.eventsFilter.blueprints = [{
+                name: 'blueprint1'
+            }];
+
+            scope.$apply();
+
+            expect(scope.isSearchDisabled()).toBe(false);
         });
     });
 });

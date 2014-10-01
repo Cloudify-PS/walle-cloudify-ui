@@ -2,17 +2,93 @@
 
 describe('Service: EventsService', function () {
 
-//  // load the service's module
-//  beforeEach(module('cosmoUiApp'));
-//
-//  // instantiate service
-//  var EventsService;
-//  beforeEach(inject(function (_EventsService_) {
-//    EventsService = _EventsService_;
-//  }));
-//
-//  it('should do something', function () {
-//    expect(!!EventsService).toBe(true);
-//  });
+    var eventsService, events, _callback, q,
+        isExecuted = false;
 
+    describe('Test setup', function() {
+        it('Injecting required data & initializing a new instance', function() {
+
+            // load the service's module, mocking ejsResource dependency
+            module('cosmoUiApp', 'ngMock', function($provide) {
+                $provide.value('ejsResource', function() {
+                    return {
+                        QueryStringQuery: function() {
+                            return {
+                                query: function() {}
+                            }
+                        },
+                        Request: function() {
+                            return {
+                                from: function() {
+                                    return {
+                                        size: function() {
+                                            return {
+                                                query: function() {
+                                                    return {
+                                                        sort: function() {
+                                                            return {
+                                                                doSearch: function() {
+                                                                    var deferred = q.defer();
+
+                                                                    deferred.resolve({});
+
+                                                                    return deferred.promise;
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        Sort: function() {
+                            return {
+                                order: function() {}
+                            }
+                        }
+                    }
+                });
+            });
+
+            // initialize a new instance of the filter
+            inject(function (EventsService, $httpBackend, $q) {
+                $httpBackend.whenGET("/backend/configuration?access=all").respond(200);
+                $httpBackend.whenGET("/backend/versions/ui").respond(200);
+                $httpBackend.whenGET("/backend/versions/manager").respond(200);
+                $httpBackend.whenGET("/backend/version/latest?version=00").respond('300');
+
+                q = $q;
+                eventsService = EventsService;
+
+                events = eventsService.newInstance('/');
+                _callback = function() {
+                    isExecuted = true;
+                };
+            });
+        });
+    });
+
+    describe('Unit tests', function() {
+
+        it('should create a new EventsService instance', function() {
+            expect(!!eventsService).toBe(true);
+        });
+
+        it('should use defined autopull time provided by controller', function() {
+            isExecuted = false;
+            spyOn(events, 'autoPull').andCallThrough();
+
+            events.execute(_callback, true, 1000);
+            waitsFor(function() {
+                return isExecuted;
+            });
+
+            runs(function() {
+                expect(events.autoPull).toHaveBeenCalledWith(_callback, 1000);
+            });
+        });
+    });
 });

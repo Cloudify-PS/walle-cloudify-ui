@@ -30,11 +30,11 @@
                              data-text="Select workflow"></div>
                     </div>
                     <div class="executingWorkflow" ng-show="isExecuting(deployment.blueprint_id, deployment.id)">
-                        {{getExecutionAttr(deployment, 'workflow_id')}}
+                        {{ 'deployments.process.' + getExecutionAttr(deployment, 'workflow_id') | i18n }}
                         <div class="deploymentExecute" dots-loader speed="50" ng-show="isExecuting(deployment.blueprint_id, deployment.id)"></div>
                     </div>
                     <i class="deployment-play" ng-class="{play: isExecuteEnabled(deployment.id), playDisabled: !isExecuteEnabled(deployment.id)}" ng-click="toggleConfirmationDialog(deployment, 'execute')" ng-show="!isExecuting(deployment.blueprint_id, deployment.id)"></i>
-                    <i class="deployment-pause pause" ng-show="isExecuting(deployment.blueprint_id, deployment.id)" ng-click="toggleConfirmationDialog(deployment, 'cancel')"></i>
+                    <i class="deployment-pause fa fa-times-circle" ng-show="isExecuting(deployment.blueprint_id, deployment.id)" ng-click="toggleConfirmationDialog(deployment, 'cancel')"></i>
                 </td>
                 <td class="delete">
                     <button class="gs-btn btn-sm" data-ng-click="deleteDeployment(deployment)">Delete</button>
@@ -54,6 +54,13 @@
         <div id="confirmationDialogContainer" class="dialogBox">
             <div class="dialogDescription" ng-show="confirmationType == 'execute'">{{ 'deployments.confirmationPopup.descriptionExecute' | i18n }} {{getSelectedWorkflow()}}?</div>
             <div class="dialogDescription" ng-show="confirmationType == 'cancel'">{{ 'deployments.confirmationPopup.descriptionCancel' | i18n }} {{getSelectedWorkflow()}}?</div>
+            <div class="dialogInputs" ng-show="selectedWorkflow.data.parameters !== undefined">
+                <div class="inputsParameters">
+                    <ul>
+                        <li ng-repeat="(name, value) in selectedWorkflow.data.parameters">{{name}}: <input type="text" ng-model="selectedWorkflow.data.parameters[name]" placeholder="{{ name }}"></li>
+                    </ul>
+                </div>
+            </div>
             <div class="error-message" data-ng-show="executedErr">{{ executedErr }}</div>
             <div class="buttonsContainer confirmationButtons">
                 <button id="cancelBtn" class="dialogButton" ng-click="toggleConfirmationDialog()">{{ 'deployments.confirmationPopup.cancelBtn' | i18n }}</button>
@@ -66,13 +73,13 @@
         <div class="dialogBoxBg"></div>
         <div id="deleteDeploymentDialog" class="dialogBox">
             <div class="dialogTitle">Delete Deployment</div>
-            <div class="dialogClose dialogButton" ng-click="closeDeleteDialog()"></div>
+            <div class="dialogClose dialogButton" ng-class="{disabled: deleteInProcess}" ng-click="closeDeleteDialog()"></div>
             <div class="dialogDescription">Are you sure you want to delete '{{ delDeployName }}'?</div>
             <div class="error-message" data-ng-show="delDeployError">{{ delDeployError }}</div>
             <div class="buttonsContainer confirmationButtons">
-                <div class="dialogCheckbox"><label><input type="checkbox" data-ng-model="ignoreLiveNodes" ng-click="toggleIgnoreLiveNodes()"> Force Delete</label></div>
-                <button id="cancelBtnDelDep" class="dialogButton" ng-click="closeDeleteDialog()">{{ 'deployments.confirmationPopup.cancelBtn' | i18n }}</button>
-                <button class="dialogButton" ng-click="confirmDeleteDeployment()">{{ 'deployments.confirmationPopup.confirmBtn' | i18n }}</button>
+                <div class="dialogCheckbox"><label><input type="checkbox" ng-disabled="deleteInProcess" data-ng-model="ignoreLiveNodes" ng-click="toggleIgnoreLiveNodes()"> Force Delete</label></div>
+                <button id="cancelBtnDelDep" class="dialogButton" ng-class="{disabled: deleteInProcess}" ng-click="closeDeleteDialog()">{{ 'deployments.confirmationPopup.cancelBtn' | i18n }}</button>
+                <button class="dialogButton" ng-class="{loader: deleteInProcess}" ng-click="confirmDeleteDeployment()">{{ 'deployments.confirmationPopup.confirmBtn' | i18n }}</button>
             </div>
         </div>
     </div>

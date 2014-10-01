@@ -25,7 +25,7 @@
                      data-text="Select workflow"></div>
             </div>
             <div class="executingWorkflow" ng-show="deploymentInProgress">
-                {{executedData.workflow_id}}
+                {{ 'deployment.process.' + executedData.workflow_id | i18n }}
                 <div class="deploymentExecute" dots-loader speed="50" ng-show="deploymentInProgress"></div>
             </div>
             <i class="deployment-play" ng-class="{play: isExecuteEnabled(), disabled: !isExecuteEnabled()}" ng-click="toggleConfirmationDialog('execute')" ng-show="!deploymentInProgress"></i>
@@ -38,6 +38,13 @@
             <div id="confirmationDialogContainer" class="dialogBox">
                 <div class="dialogDescription" ng-show="confirmationType == 'execute'">{{ 'deployments.confirmationPopup.descriptionExecute' | i18n }} {{selectedWorkflow.data.value}}?</div>
                 <div class="dialogDescription" ng-show="confirmationType == 'cancel'">{{ 'deployments.confirmationPopup.descriptionCancel' | i18n }} {{executedData.workflow_id}}?</div>
+                <div class="dialogInputs" ng-show="selectedWorkflow.data.parameters !== undefined">
+                    <div class="inputsParameters">
+                        <ul>
+                            <li ng-repeat="(name, value) in selectedWorkflow.data.parameters">{{name}}: <input type="text" ng-model="selectedWorkflow.data.parameters[name]" placeholder="{{ name }}"></li>
+                        </ul>
+                    </div>
+                </div>
                 <div class="error-message" data-ng-show="executedErr">{{ executedErr }}</div>
                 <div class="buttonsContainer confirmationButtons">
                     <button id="cancelBtn" class="dialogButton" ng-click="toggleConfirmationDialog()">{{ 'deployments.confirmationPopup.cancelBtn' | i18n }}</button>
