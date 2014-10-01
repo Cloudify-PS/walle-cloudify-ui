@@ -1320,6 +1320,26 @@
             margin: 0px;
             tr {
                 cursor: default;
+
+                .workflow {
+                  width: 100px;
+                }
+                .id {
+                  width: 100px;
+                }
+                .created {
+                  width: 100px;
+                }
+                .status {
+                  width: 100px;
+                }
+                .error {
+                  width: 100px;
+                }
+
+              td {
+                vertical-align: top;
+              }
             }
         }
     }
