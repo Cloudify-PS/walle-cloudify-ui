@@ -146,8 +146,16 @@ angular.module('cosmoUiApp')
                         _loadExecutions(deployemnt.id);
                     }
                 }
+                _autoFirstPull();
                 //executeLogs();
             });
+
+        function _autoFirstPull() {
+            angular.forEach($scope.blueprintsList, function(blueprint){
+                $scope.eventsFilter.blueprints.push(blueprint);
+            });
+            executeLogs();
+        }
 
         function _loadExecutions(deployment_id) {
             CloudifyService.deployments.getDeploymentExecutions(deployment_id)
