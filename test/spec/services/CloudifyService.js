@@ -2,7 +2,7 @@
 
 describe('Service: CloudifyService', function () {
 
-    var CloudifyService;
+    var CloudifyService, HttpBackend;
 
     describe('Test setup', function() {
         it('Injecting required data & initializing a new instance', function() {
@@ -11,8 +11,9 @@ describe('Service: CloudifyService', function () {
             module('cosmoUiApp');
 
             // Initialize a new instance of CloudifyService
-            inject(function (_CloudifyService_) {
+            inject(function (_CloudifyService_, $httpBackend) {
                 CloudifyService = _CloudifyService_;
+                $httpBackend.whenPOST('/backend/node-instances').respond({});
             });
 
         });
@@ -21,8 +22,20 @@ describe('Service: CloudifyService', function () {
     describe('Unit tests', function() {
 
         it('should create a new CloudifyService instance', function() {
-            expect(_CloudifyService).not.toBeUndefined();
+            expect(CloudifyService).not.toBeUndefined();
         });
+
+        var result;
+        beforeEach(function(){
+            CloudifyService.getNodeInstances().then(function(data){ result = data; })
+        });
+
+        it('should get node-instances from cloudify backend', function() {
+            expect(result).toBe({});
+        });
+
+
+
 
     });
 
