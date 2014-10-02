@@ -2,6 +2,7 @@
 
 describe('Service: CloudifyService', function () {
 
+    var helper = new Helper();
     var CloudifyService;
 
     describe('Test setup', function() {
@@ -9,6 +10,9 @@ describe('Service: CloudifyService', function () {
 
             // Load the app module
             module('cosmoUiApp');
+
+            // inject UI
+            helper.injectUi();
 
             // Initialize a new instance of CloudifyService
             inject(function (_CloudifyService_) {

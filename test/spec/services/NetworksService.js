@@ -2,6 +2,7 @@
 
 describe('Service: NetworksService', function () {
 
+    var helper = new Helper();
     var NetworksService;
 
     describe('Test setup', function() {
@@ -9,6 +10,9 @@ describe('Service: NetworksService', function () {
 
             // Load the app module
             module('cosmoUiApp');
+
+            // inject UI
+            helper.injectUi();
 
             // Initialize a new instance of NetworksService
             inject(function (_NetworksService_) {

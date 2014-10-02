@@ -2,6 +2,7 @@
 
 describe('Service: BreadcrumbsService', function () {
 
+    var helper = new Helper();
     var BreadcrumbsService;
 
     describe('Test setup', function() {
@@ -9,6 +10,9 @@ describe('Service: BreadcrumbsService', function () {
 
             // Load the app module
             module('cosmoUiApp');
+
+            // inject UI
+            helper.injectUi();
 
             // Initialize a new instance of BreadcrumbsService
             inject(function (_BreadcrumbsService_) {

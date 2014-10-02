@@ -2,6 +2,7 @@
 
 describe('Service: RestLoader', function () {
 
+    var helper = new Helper();
     var RestLoader;
 
     describe('Test setup', function() {
@@ -9,6 +10,9 @@ describe('Service: RestLoader', function () {
 
             // Load the app module
             module('cosmoUiApp');
+
+            // inject UI
+            helper.injectUi();
 
             // Initialize a new instance of RestLoader
             inject(function (_RestLoader_) {

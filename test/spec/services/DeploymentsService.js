@@ -2,6 +2,7 @@
 
 describe('Service: DeploymentsService', function () {
 
+    var helper = new Helper();
     var DeploymentsService;
 
     describe('Test setup', function() {
@@ -9,6 +10,9 @@ describe('Service: DeploymentsService', function () {
 
             // Load the app module
             module('cosmoUiApp');
+
+            // inject UI
+            helper.injectUi();
 
             // Initialize a new instance of DeploymentsService
             inject(function (_DeploymentsService_) {
