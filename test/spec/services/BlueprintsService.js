@@ -2,17 +2,28 @@
 
 describe('Service: BlueprintsService', function () {
 
-//    // load the service's module
-//    beforeEach(module('cosmoUiApp'));
-//
-//    // instantiate service
-//    var BlueprintsService;
-//    beforeEach(inject(function (_BlueprintsService_) {
-//        BlueprintsService = _BlueprintsService_;
-//    }));
-//
-//    it('should do something', function () {
-//        expect(!!BlueprintsService).toBe(true);
-//    });
+    var BlueprintsService;
+
+    describe('Test setup', function() {
+        it('Injecting required data & initializing a new instance', function() {
+
+            // Load the app module
+            module('cosmoUiApp');
+
+            // Initialize a new instance of BlueprintsService
+            inject(function (_BlueprintsService_) {
+                BlueprintsService = _BlueprintsService_;
+            });
+
+        });
+    });
+
+    describe('Unit tests', function() {
+
+        it('should create a new BlueprintsService instance', function() {
+            expect(BlueprintsService).not.toBeUndefined();
+        });
+
+    });
 
 });

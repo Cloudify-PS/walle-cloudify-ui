@@ -2,17 +2,28 @@
 
 describe('Service: DeploymentsService', function () {
 
-//    // load the service's module
-//    beforeEach(module('cosmoUiApp'));
-//
-//    // instantiate service
-//    var DeploymentsService;
-//    beforeEach(inject(function (_DeploymentsService_) {
-//        DeploymentsService = _DeploymentsService_;
-//    }));
-//
-//    it('should do something', function () {
-//        expect(!!DeploymentsService).toBe(true);
-//    });
+    var DeploymentsService;
+
+    describe('Test setup', function() {
+        it('Injecting required data & initializing a new instance', function() {
+
+            // Load the app module
+            module('cosmoUiApp');
+
+            // Initialize a new instance of DeploymentsService
+            inject(function (_DeploymentsService_) {
+                DeploymentsService = _DeploymentsService_;
+            });
+
+        });
+    });
+
+    describe('Unit tests', function() {
+
+        it('should create a new DeploymentsService instance', function() {
+            expect(DeploymentsService).not.toBeUndefined();
+        });
+
+    });
 
 });
