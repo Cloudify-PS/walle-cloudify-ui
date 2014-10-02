@@ -1,8 +1,8 @@
 'use strict';
 
-describe('Service: Breadcrumbsservice', function () {
+describe('Service: BreadcrumbsService', function () {
 
-    var Breadcrumbsservice;
+    var BreadcrumbsService;
 
     describe('Test setup', function() {
         it('Injecting required data & initializing a new instance', function() {
@@ -10,9 +10,9 @@ describe('Service: Breadcrumbsservice', function () {
             // Load the app module
             module('cosmoUiApp');
 
-            // Initialize a new instance of Breadcrumbsservice
-            inject(function (_Breadcrumbsservice_) {
-                Breadcrumbsservice = _Breadcrumbsservice_;
+            // Initialize a new instance of BreadcrumbsService
+            inject(function (_BreadcrumbsService_) {
+                BreadcrumbsService = _BreadcrumbsService_;
             });
 
         });
@@ -20,8 +20,8 @@ describe('Service: Breadcrumbsservice', function () {
 
     describe('Unit tests', function() {
 
-        it('should create a new Breadcrumbsservice instance', function() {
-            expect(Breadcrumbsservice).not.toBeUndefined();
+        it('should create a new BreadcrumbsService instance', function() {
+            expect(BreadcrumbsService).not.toBeUndefined();
         });
 
     });
