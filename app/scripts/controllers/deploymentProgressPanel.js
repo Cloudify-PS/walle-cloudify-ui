@@ -57,7 +57,9 @@ angular.module('cosmoUiApp')
         });
 
         $scope.$watch('nodes', function(data) {
-
+            if ($scope.currentExecution === undefined) {
+                return;
+            }
             for(var n in data) {
                 var node = data[n];
                 $scope.panelData[node.node_id] = {

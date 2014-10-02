@@ -28,6 +28,7 @@ angular.module('cosmoUiApp')
 
         $scope.$on('deploymentExecution', function(event, deploymentExecution){
             $scope.deploymentInProgress = deploymentExecution.deploymentInProgress;
+            $scope.currentExecution = deploymentExecution.currentExecution;
             if (!deploymentExecution.currentExecution && deploymentExecution.deploymentInProgress) {
                 if(!isGotExecuteNodes) {
                     CloudifyService.autoPull('getDeploymentNodes', {deployment_id: $scope.deploymentId}, CloudifyService.deployments.getDeploymentNodes)
