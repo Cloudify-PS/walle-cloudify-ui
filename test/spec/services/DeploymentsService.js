@@ -28,6 +28,23 @@ describe('Service: DeploymentsService', function () {
             expect(DeploymentsService).not.toBeUndefined();
         });
 
+        it('should have execute method', function(){
+            expect(DeploymentsService.execute).not.toBeUndefined();
+        });
+
+        beforeEach(function(){
+            spyOn(DeploymentsService, 'execute');
+            DeploymentsService.execute();
+        });
+
+        it("tracks that the spy was called execute", function() {
+            expect(DeploymentsService.execute).toHaveBeenCalled();
+        });
+
+        it("tracks its number of execute calls", function() {
+            expect(DeploymentsService.execute.calls.length).toEqual(1);
+        });
+
     });
 
 });

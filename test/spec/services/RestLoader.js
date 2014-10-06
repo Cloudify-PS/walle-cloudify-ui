@@ -28,6 +28,23 @@ describe('Service: RestLoader', function () {
             expect(RestLoader).not.toBeUndefined();
         });
 
+        it('should have load method', function(){
+            expect(RestLoader.load).not.toBeUndefined();
+        });
+
+        beforeEach(function(){
+            spyOn(RestLoader, 'load');
+            RestLoader.load();
+        });
+
+        it("tracks that the spy was called load", function() {
+            expect(RestLoader.load).toHaveBeenCalled();
+        });
+
+        it("tracks its number of load calls", function() {
+            expect(RestLoader.load.calls.length).toEqual(1);
+        });
+
     });
 
 });

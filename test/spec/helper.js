@@ -15,7 +15,14 @@ function Helper() {
         return inject(function($httpBackend) {
             for(var i in injects) {
                 var inject = injects[i];
-                $httpBackend.whenGET(inject.url).respond(inject.respond);
+                switch(inject.method ? inject.method.toUpperCase() : 'GET') {
+                case 'POST':
+                    $httpBackend.whenPOST(inject.url).respond(inject.respond);
+                    break;
+                case 'GET':
+                    $httpBackend.whenGET(inject.url).respond(inject.respond);
+                    break;
+                }
             }
         });
     }

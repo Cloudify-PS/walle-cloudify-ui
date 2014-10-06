@@ -49,7 +49,7 @@ describe('Service: NodeService', function () {
             helper.injectUi();
 
             // initialize a new instance of the filter
-            inject(function (NodeService, $httpBackend) {
+            inject(function (NodeService) {
                 nodeService = NodeService;
             });
         });

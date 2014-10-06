@@ -28,6 +28,23 @@ describe('Service: BlueprintsService', function () {
             expect(BlueprintsService).not.toBeUndefined();
         });
 
+        it('should have list method', function(){
+            expect(BlueprintsService.list).not.toBeUndefined();
+        });
+
+        beforeEach(function(){
+            spyOn(BlueprintsService, 'list');
+            BlueprintsService.list();
+        });
+
+        it("tracks that the spy was called list", function() {
+            expect(BlueprintsService.list).toHaveBeenCalled();
+        });
+
+        it("tracks its number of list calls", function() {
+            expect(BlueprintsService.list.calls.length).toEqual(1);
+        });
+
     });
 
 });
