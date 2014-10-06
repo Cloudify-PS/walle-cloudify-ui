@@ -1313,28 +1313,29 @@
 
     .executions, .nodesTable {
         display: block;
-        width: 100%;
+        max-width: 100%;
         padding: 0 20px;
         margin: 10px 0 0;
+        overflow: hidden;
         table {
             margin: 0px;
             tr {
                 cursor: default;
 
-                .workflow {
-                  width: 100px;
-                }
+                .workflow {}
                 .id {
-                  width: 100px;
+                  min-width: 290px !important;
                 }
                 .created {
-                  width: 100px;
+                  min-width: 150px !important;
                 }
                 .status {
-                  width: 100px;
+                  min-width: 80px !important;
                 }
                 .error {
-                  width: 100px;
+                  min-width: 250px !important;
+                  max-width: 250px !important;
+                  overflow: hidden;
                 }
 
               td {
