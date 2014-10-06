@@ -30,7 +30,7 @@
             </div>
             <i class="deployment-play" ng-class="{play: isExecuteEnabled(), disabled: !isExecuteEnabled()}" ng-click="toggleConfirmationDialog('execute')" ng-show="!deploymentInProgress"></i>
 
-            <i class="deployment-pause pause" ng-show="deploymentInProgress" ng-click="toggleConfirmationDialog('cancel')"></i>
+            <i class="deployment-pause fa fa-times-circle" ng-show="deploymentInProgress" ng-click="toggleConfirmationDialog('cancel')"></i>
         </div>
 
         <div ng-show="isConfirmationDialogVisible">

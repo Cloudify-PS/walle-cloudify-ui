@@ -3,9 +3,9 @@
 describe('Controller: DeploymentProgressPanelCtrl', function () {
 
     var DeploymentProgressPanelCtrl, scope;
-    var nodes = [{
+    var _nodes = [{
         "node_id": "node1",
-        "state": "uninitialized",
+        "state": "started",
         "deployment_id": "deployment1",
         "id": "node1_de274",
         "node_instances": [{
@@ -41,6 +41,77 @@ describe('Controller: DeploymentProgressPanelCtrl', function () {
         }]
     }];
 
+    var _currentExecution = {
+        "status":"started",
+        "created_at":"2014-10-02 01:01:28.049253",
+        "workflow_id":"install",
+        "parameters":{},
+        "blueprint_id":"blueprint1",
+        "deployment_id":"deployment1",
+        "error":"",
+        "id":"a271b39d-8f34-474e-acae-34eb63f227b1"
+    };
+
+    var _hits = {
+        hits: {
+            hits: [{
+                "_type": "cloudify_event",
+                "_source": {
+                    "event_type": "task_started",
+                    "timestamp": "2014-10-05 00:45:00.000",
+                    "@timestamp": "2014-10-05T00:45:00.000+00:00",
+                    "message_code": null,
+                    "context": {
+                        "task_id": "375e9fcf-353c-45cd-a652-831915c422e4",
+                        "blueprint_id": "blueprint1",
+                        "task_target": "deployment1",
+                        "node_name": "node1",
+                        "workflow_id": "install",
+                        "node_id": "node1_de274",
+                        "task_name": "worker_installer.tasks.install",
+                        "operation": "cloudify.interfaces.worker_installer.install",
+                        "deployment_id": "deployment1",
+                        "execution_id": "a271b39d-8f34-474e-acae-34eb63f227b1"
+                    },
+                    "message": {
+                        "text": "Task started 'worker_installer.tasks.install' [attempt 2]",
+                        "arguments": null
+                    },
+                    "type": "cloudify_event"
+                },
+                "_index": "cloudify_events",
+                "_id": "_7V8T5ETS-eH2gLHGkSiQQ"
+            }, {
+                "_type": "cloudify_event",
+                "_source": {
+                    "event_type": "task_started",
+                    "timestamp": "2014-10-05 00:44:00.000",
+                    "@timestamp": "2014-10-05T00:44:00.000+00:00",
+                    "message_code": null,
+                    "context": {
+                        "task_id": "e42326c7-c878-40c1-bca6-910153c1e73d",
+                        "blueprint_id": "blueprint1",
+                        "task_target": "deployment1",
+                        "node_name": "node1",
+                        "workflow_id": "install",
+                        "node_id": "node1_de274",
+                        "task_name": "worker_installer.tasks.install",
+                        "operation": "cloudify.interfaces.worker_installer.install",
+                        "deployment_id": "deployment1",
+                        "execution_id": "a271b39d-8f34-474e-acae-34eb63f227b1"
+                    },
+                    "message": {
+                        "text": "Task started 'worker_installer.tasks.install'",
+                        "arguments": null
+                    },
+                    "type": "cloudify_event"
+                },
+                "_index": "cloudify_events",
+                "_id": "Qc0PLZyCTxuPw2LXiHT8vg"
+            }]
+        }
+    };
+
     // load the controller's module
     beforeEach(module('cosmoUiApp', 'ngMock'));
 
@@ -57,8 +128,8 @@ describe('Controller: DeploymentProgressPanelCtrl', function () {
                     filter: function() {
                         return null;
                     },
-                    execute: function() {
-                        return null;
+                    execute: function(callbackFn) {
+                        callbackFn(_hits);
                     },
                     stopAutoPull: function() {
                         return null;
@@ -67,6 +138,7 @@ describe('Controller: DeploymentProgressPanelCtrl', function () {
             };
 
             scope = $rootScope.$new();
+            scope.currentExecution = _currentExecution;
 
             DeploymentProgressPanelCtrl = $controller('DeploymentProgressPanelCtrl', {
                 $scope: scope,
@@ -105,13 +177,12 @@ describe('Controller: DeploymentProgressPanelCtrl', function () {
         });
 
         it('should update panel data when nodes are updated', function() {
-            scope.nodes = nodes;
-
+            scope.nodes = _nodes;
             scope.$apply();
 
             expect(scope.panelData['node1']).toBeDefined();
             expect(scope.panelData['node1'].totalCount).toBe(1);
-            expect(scope.panelData['node1'].status).toBe('uninitialized');
+            expect(scope.panelData['node1'].status).toBe('started');
             expect(scope.panelData['node1'].inProgress.count).toBe(1);
 
             expect(scope.panelData['node2']).toBeDefined();
@@ -124,6 +195,26 @@ describe('Controller: DeploymentProgressPanelCtrl', function () {
             expect(scope.panelData['node3'].inProgress.count).toBe(1);
             expect(scope.panelData['node3'].started.count).toBe(1);
             expect(scope.panelData['node3'].failed.count).toBe(1);
+        });
+
+        it('should set the earliest execution time as start_time', function() {
+            scope.nodes = _nodes;
+            scope.currentExecution = _currentExecution;
+            var expectedTimestamp = new Date().getTime() - new Date('2014-10-05T00:44:00.000+00:00').getTime();
+            var expectedTime = {
+                seconds: Math.floor((expectedTimestamp / 1000) % 60),
+                minutes: Math.floor(((expectedTimestamp / (60000)) % 60)),
+                hours : Math.floor(((expectedTimestamp / (3600000)) % 24)),
+                days: Math.floor(((expectedTimestamp / (3600000)) / 24))
+            };
+            scope.$apply();
+
+            waitsFor(function() {
+                return scope.panelData['node1'] !== undefined;
+            });
+            runs(function() {
+                expect(JSON.stringify(scope.panelData['node1'].start_time)).toBe(JSON.stringify(expectedTime));
+            });
         });
     });
 });

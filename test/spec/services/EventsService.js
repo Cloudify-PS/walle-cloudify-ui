@@ -2,6 +2,7 @@
 
 describe('Service: EventsService', function () {
 
+    var helper = new Helper();
     var eventsService, events, _callback, q,
         isExecuted = false;
 
@@ -53,13 +54,11 @@ describe('Service: EventsService', function () {
                 });
             });
 
-            // initialize a new instance of the filter
-            inject(function (EventsService, $httpBackend, $q) {
-                $httpBackend.whenGET("/backend/configuration?access=all").respond(200);
-                $httpBackend.whenGET("/backend/versions/ui").respond(200);
-                $httpBackend.whenGET("/backend/versions/manager").respond(200);
-                $httpBackend.whenGET("/backend/version/latest?version=00").respond('300');
+            // inject UI
+            helper.injectUi();
 
+            // initialize a new instance of the filter
+            inject(function (EventsService, $q) {
                 q = $q;
                 eventsService = EventsService;
 

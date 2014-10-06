@@ -31,7 +31,7 @@ angular.module('cosmoUiApp')
                     'icon': 'router'
                 }
             ];
-            relations.push({
+            _addRelation({
                 source: externalNetwork.id,
                 target: externalNetwork.devices[0].id
             });
@@ -39,7 +39,7 @@ angular.module('cosmoUiApp')
 
             var subNetwork = providerData.context.resources.subnet;
             subNetwork.color = _getNetworkColor();
-            relations.push({
+            _addRelation({
                 source: subNetwork.id,
                 target: externalNetwork.devices[0].id
             });
@@ -104,7 +104,8 @@ angular.module('cosmoUiApp')
                                     'completed': 0
                                 }
                             });
-                            relations.push({
+
+                            _addRelation({
                                 source: node.id,
                                 target: network.id,
                                 type: relationship.type,
@@ -149,8 +150,7 @@ angular.module('cosmoUiApp')
                                 });
                                 if (!_alreadyExists) {
                                     device.ports.push(port);
-
-                                    relations.push({
+                                    _addRelation({
                                         source: port.subnet,
                                         target: port.id
                                     });
@@ -161,7 +161,7 @@ angular.module('cosmoUiApp')
 
                     externalNetworks.forEach(function (extNetwork) {
                         if (extNetwork.type === 'subnet') {
-                            relations.push({
+                            _addRelation({
                                 source: extNetwork.id,
                                 target: node.id
                             });
@@ -213,6 +213,15 @@ angular.module('cosmoUiApp')
                 }
             }
             return relationshipData;
+        }
+
+        function _addRelation(relation) {
+            for(var i in relations) {
+                if((relation.source + relation.target) === (relations[i].source + relations[i].target)) {
+                    return;
+                }
+            }
+            relations.push(relation);
         }
 
 
