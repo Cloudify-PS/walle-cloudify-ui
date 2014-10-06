@@ -31,6 +31,14 @@ angular.module('cosmoUiApp')
                         return 'install';
                     }
                 };
+
+                $scope.isConnectedTo = function(relationship) {
+                    return relationship.type_hierarchy.join(',').indexOf('connected_to') > -1;
+                }
+
+                $scope.getTypeClass = function(type) {
+                    return 'cloudify-types-' + type.replace('_', '-');
+                }
             }
         };
     }]);
