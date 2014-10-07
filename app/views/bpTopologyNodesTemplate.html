@@ -1,4 +1,4 @@
-<div data-ng-repeat="node in map track by node.name" data-type="{{node.dataType}}" ng-class="{box: !node.isApp, app: node.isApp}" blueprint:coordinate="{{node.id}}">
+<div data-ng-repeat="node in map track by node.name" data-type="{{node.dataType}}" ng-class="{box: !node.isApp, app: node.isApp, boxHover: headerHover == node.name}" blueprint:coordinate="{{node.id}}">
     <!--<div class="hoverup" ng-class="{appHoverup: node.isApp}">-->
         <!--<div class="buttons no-embed">-->
             <!--<ul>-->
@@ -16,7 +16,7 @@
         </div>
     </div>
 
-    <div class="head" ng-show="node.isApp == false">
+    <div class="head" ng-show="node.isApp == false" ng-mouseover="setHeaderHover(node.name)" ng-mouseleave="setHeaderHover(null)">
         {{ node.name }}
         <div class="connections">
             <div class="connection" ng-class="relationship.target_id" data-ng-show="isConnectedTo(relationship)" data-ng-repeat="relationship in node.relationships">
@@ -24,7 +24,7 @@
             </div>
         </div>
     </div>
-    <div class="holder" ng-show="node.isApp == false" data-ng-if="node.isApp == false">
+    <div class="holder" ng-show="node.isApp == false" data-ng-if="node.isApp == false" ng-class="{boxHover: headerHover == node.name}">
         <div bp-topology-nodes map="node.children"></div>
     </div>
 

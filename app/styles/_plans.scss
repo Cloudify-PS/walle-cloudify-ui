@@ -226,7 +226,11 @@
                 }
             }
         }
+        .boxHover {
+          background-color: $clr-base-30 !important;
+        }
         .box {
+
             position: relative;
             display: inline-block;
             min-width: 260px;
@@ -365,6 +369,9 @@
                 border-radius: 3px;
                 font-size: 20px;
                 height: 35px;
+                &:hover {
+                    cursor: pointer;
+                }
 
                 .connections {
                     width: 100px;

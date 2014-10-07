@@ -17,6 +17,8 @@ angular.module('cosmoUiApp')
                 });
             },
             controller: function($scope) {
+                $scope.headerHover = null;
+
                 $scope.getBadgeStatus = function(status) {
                     switch(status) {
                     case 0:
@@ -34,11 +36,15 @@ angular.module('cosmoUiApp')
 
                 $scope.isConnectedTo = function(relationship) {
                     return relationship.type_hierarchy.join(',').indexOf('connected_to') > -1;
-                }
+                };
 
                 $scope.getTypeClass = function(type) {
                     return 'cloudify-types-' + type.replace('_', '-');
-                }
+                };
+
+                $scope.setHeaderHover = function(nodeName) {
+                    $scope.headerHover = nodeName;
+                };
             }
         };
     }]);
