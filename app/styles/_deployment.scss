@@ -693,8 +693,9 @@
             line-height: 0px;
             &:after {
                 position: absolute;
-                top: 19px;
+                top: 21px;
                 left: 8px;
+                font-size: 48px;
             }
             &.fa {
                 display: inline-block;
@@ -713,8 +714,8 @@
         .box {
             position: relative;
             display: inline-block;
-            min-width: 200px;
-            min-height: 140px;
+            min-width: 260px;
+            min-height: 170px;
             border-width: 2px;
             border-color: #136e9d;
             border-style: solid;
@@ -766,15 +767,13 @@
             }
             .piProgress {
                 position: absolute;
-                top: -11px;
+                top: -12px;
                 left: -27px;
                 z-index: 1;
 
                 .circle {
                     background: #136e9d;
-                    border-width: 1px;
-                    border-style: solid;
-                    border-color: white;
+                    border: 2px solid $clr-base-12;
                     box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.4);
                     > .badge {
                         position: absolute;
@@ -849,7 +848,40 @@
                 color: white;
                 padding: 2px 10px 3px 25px;
                 border-radius: 3px;
-                font-size: 15px;
+                font-size: 20px;
+                height: 35px;
+
+                .connections {
+                    width: 100px;
+                    position: absolute;
+                    top: 7px;
+                    right: 5px;
+
+                    .connection {
+                        width: 24px;
+                        height: 24px;
+                        border-radius: 12px;
+                        background-color: #fff;
+                        box-shadow: 0 4px 3px 2px rgba(0, 0, 1, .06);
+                        float: right;
+                        margin-left: 3px;
+                        background-clip: padding-box;
+
+                        i {
+                            color: #496585;
+                            width: 10px;
+                            height: 10px;
+                            &.icon {
+                                &:after {
+                                    position: relative;
+                                    top: -1px;
+                                    left: 5px;
+                                    font-size: 28px;
+                                }
+                            }
+                        }
+                    }
+                }
             }
             .holder {
                 display: block;
@@ -933,7 +965,7 @@
                 display: inline-block;
                 &:after {
                     position: absolute;
-                    top: 19px;
+                    top: 21px;
                     left: 8px;
                 }
             }
