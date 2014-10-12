@@ -56,7 +56,7 @@
             </thead>
             <tbody class="animate-repeat" ng-repeat="event in eventHits" ng-init="isOpen=false">
             <tr>
-                <td data-ng-click="isOpen=!isOpen" class="icon cliclable" ng-class="getEventIcon(event._source.event_type)"></td>
+                <td data-ng-click="isOpen=!isOpen" class="icon-events cliclable" ng-class="getEventIcon(event._source.event_type)"></td>
                 <td data-ng-click="isOpen=!isOpen" class="date cliclable">{{event._source.timestamp == undefined && 'N/A' || event._source.timestamp}}</td>
                 <td data-ng-click="isOpen=!isOpen" class="type cliclable">{{getEventText(event._source.event_type) == undefined && 'N/A' || getEventText(event._source.event_type)}}</td>
                 <td data-ng-click="isOpen=!isOpen" class="node cliclable">{{event._source.context.node_name == undefined && 'N/A' || event._source.context.node_name}}</td>
