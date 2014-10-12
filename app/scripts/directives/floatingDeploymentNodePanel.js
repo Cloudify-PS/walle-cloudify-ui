@@ -61,14 +61,14 @@ angular.module('cosmoUiApp')
                 $scope.$watch('node', function(node){
                     if(node) {
                         switch(node.nodeType) {
-                            case 'node':
-                                _viewNode(node);
-                                break;
-                            case 'relationship':
-                                _viewRelationship(node);
-                                break;
-                            default:
-                                _viewNode(node);
+                        case 'node':
+                            _viewNode(node);
+                            break;
+                        case 'relationship':
+                            _viewRelationship(node);
+                            break;
+                        default:
+                            _viewNode(node);
                         }
                     }
                 }, true);
