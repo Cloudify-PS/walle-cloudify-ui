@@ -33,6 +33,17 @@ angular.module('cosmoUiApp')
                     }
                 }
 
+                function _viewRelationship(relationship) {
+                    $scope.propSection = 'general';
+                    $scope.showProperties = {
+                        properties: relationship.properties,
+                        general: {
+                            'name': relationship.target_id,
+                            'type': relationship.type
+                        }
+                    };
+                }
+
                 function _getInstances(nodeId) {
                     $scope.selectNodesArr = [];
                     CloudifyService.getNodeInstances()
@@ -49,7 +60,16 @@ angular.module('cosmoUiApp')
 
                 $scope.$watch('node', function(node){
                     if(node) {
-                        _viewNode(node);
+                        switch(node.nodeType) {
+                            case 'node':
+                                _viewNode(node);
+                                break;
+                            case 'relationship':
+                                _viewRelationship(node);
+                                break;
+                            default:
+                                _viewNode(node);
+                        }
                     }
                 }, true);
 

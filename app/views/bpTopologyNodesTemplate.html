@@ -16,13 +16,14 @@
         </div>
     </div>
 
+    <div class="connections">
+        <div class="connection" ng-class="relationship.target_id" data-ng-show="isConnectedTo(relationship)" data-ng-repeat="relationship in node.relationships">
+            <i class="icon topology-glyph cloudify-types-base" ng-class="getTypeClass(relationship.target_id)" ng-click="onRelationshipSelected(relationship)"></i>
+        </div>
+    </div>
+
     <div class="head" ng-show="node.isApp == false" ng-mouseover="setHeaderHover(node.name)" ng-mouseleave="setHeaderHover(null)" ng-click="onNodeSelected(node)">
         {{ node.name }}
-        <div class="connections">
-            <div class="connection" ng-class="relationship.target_id" data-ng-show="isConnectedTo(relationship)" data-ng-repeat="relationship in node.relationships">
-                <i class="icon topology-glyph cloudify-types-base" ng-class="getTypeClass(relationship.target_id)"></i>
-            </div>
-        </div>
     </div>
     <div class="holder" ng-show="node.isApp == false" data-ng-if="node.isApp == false" ng-class="{boxHover: headerHover == node.name}">
         <div bp-topology-nodes map="node.children"></div>

@@ -16,6 +16,12 @@ angular.module('cosmoUiApp')
         });
 
         $scope.$on('topologyNodeSelected', function(e, viewNode) {
+            viewNode.nodeType = 'node';
+            $scope.viewNode = viewNode;
+        });
+
+        $scope.$on('topologyRelationshipSelected', function(e, viewNode) {
+            viewNode.nodeType = 'relationship';
             $scope.viewNode = viewNode;
         });
 

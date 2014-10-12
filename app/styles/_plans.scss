@@ -374,40 +374,41 @@
                 &:hover {
                     cursor: pointer;
                 }
+            }
 
-                .connections {
-                    width: 100px;
-                    position: absolute;
-                    top: 7px;
-                    right: 5px;
+            .connections {
+                position: absolute;
+                top: 6px;
+                right: 5px;
+                z-index: 100;
 
-                    .connection {
-                        width: 24px;
-                        height: 24px;
-                        border-radius: 12px;
-//                        border: 1px solid #c9dbeb;
-                        background-color: #fff;
-                        box-shadow: 0 4px 3px 2px rgba(0, 0, 1, .06);
-                        float: right;
-                        margin-left: 3px;
-                        background-clip: padding-box;
+                .connection {
+                    width: 24px;
+                    height: 24px;
+                    border-radius: 12px;
+                    background-color: #fff;
+                    box-shadow: 0 4px 3px 2px rgba(0, 0, 1, .06);
+                    float: right;
+                    margin-left: 3px;
+                    background-clip: padding-box;
 
-                        i {
-                            color: #496585;
-                            width: 10px;
-                            height: 10px;
-                            &.icon {
-                              &:after {
+                    i {
+                        color: #496585;
+                        width: 10px;
+                        height: 10px;
+                        cursor: pointer;
+                        &.icon {
+                            &:after {
                                 position: relative;
-                                top: -1px;
+                                top: 4px;
                                 left: 5px;
                                 font-size: 28px;
-                              }
                             }
                         }
                     }
                 }
             }
+
             .holder {
                 display: block;
                 background-color: white;

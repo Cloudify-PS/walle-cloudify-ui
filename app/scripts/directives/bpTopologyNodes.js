@@ -14,6 +14,10 @@ angular.module('cosmoUiApp')
                     scope.onNodeSelected = function(node) {
                         scope.$emit('topologyNodeSelected', node);
                     };
+
+                    scope.onRelationshipSelected = function(relationship) {
+                        scope.$emit('topologyRelationshipSelected', relationship);
+                    };
                 });
             },
             controller: function($scope) {
