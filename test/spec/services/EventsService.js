@@ -2,7 +2,6 @@
 
 describe('Service: EventsService', function () {
 
-    var helper = new Helper();
     var eventsService, events, _callback, q,
         isExecuted = false;
 
@@ -10,7 +9,7 @@ describe('Service: EventsService', function () {
         it('Injecting required data & initializing a new instance', function() {
 
             // load the service's module, mocking ejsResource dependency
-            module('cosmoUiApp', 'ngMock', function($provide) {
+            module('cosmoUiApp', 'ngMock', 'gsUiHelper', function($provide) {
                 $provide.value('ejsResource', function() {
                     return {
                         QueryStringQuery: function() {
@@ -53,9 +52,6 @@ describe('Service: EventsService', function () {
                     }
                 });
             });
-
-            // inject UI
-            helper.injectUi();
 
             // initialize a new instance of the filter
             inject(function (EventsService, $q) {

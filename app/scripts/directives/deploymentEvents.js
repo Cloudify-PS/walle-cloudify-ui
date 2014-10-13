@@ -20,7 +20,7 @@ angular.module('cosmoUiApp')
                 $scope.minimizeMode = true;
 
                 var height = 0,
-                    minHiehgt = 70;
+                    minHeight = 70;
                 var events = EventsService.newInstance('/backend/events'),
                     troubleShoot = 0,
                     executeRetry = 10,
@@ -107,7 +107,7 @@ angular.module('cosmoUiApp')
                 };
 
                 function toggleIt() {
-                    if (height <= minHiehgt) {
+                    if (height <= minHeight) {
                         $scope.minimizeMode = true;
                         height = 0;
                     }
@@ -119,12 +119,12 @@ angular.module('cosmoUiApp')
                 function mousemove(event) {
                     var y = window.innerHeight - event.pageY;
                     var c = $element.find('.containList');
-                    var maxHiehgt = angular.element(document.querySelector('#main-content')).height() - angular.element(document.querySelector('.bpContainer')).position().top - 50;
+                    var maxHeight = angular.element(document.querySelector('#main-content')).height() - angular.element(document.querySelector('.bpContainer')).position().top - 50;
 
                     height = y - 70;
 
-                    if (height >= maxHiehgt) {
-                        height = maxHiehgt;
+                    if (height >= maxHeight) {
+                        height = maxHeight;
                     }
 
                     c.css({

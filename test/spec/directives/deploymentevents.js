@@ -2,19 +2,24 @@
 
 describe('Directive: deploymentEvents', function () {
 
-//  // load the directive's module
-//  beforeEach(module('cosmoUiAppApp'));
+    var element, scope;
+
+    describe('Test setup', function() {
+        it('Injecting required data', function(/*$compile, $rootScope*/) {
+
+            // Load the app module
+            module('cosmoUiApp', 'gsUiHelper');
+
+//            scope = $rootScope.$new();
+//            element = $compile(angular.element('<div deployment-events></div>'))(scope);
 //
-//  var element,
-//    scope;
 //
-//  beforeEach(inject(function ($rootScope) {
-//    scope = $rootScope.$new();
-//  }));
+//            // injects
+//            inject(function () {
 //
-//  it('should make hidden element visible', inject(function ($compile) {
-//    element = angular.element('<deployment-events></deployment-events>');
-//    element = $compile(element)(scope);
-//    expect(element.text()).toBe('this is the deploymentEvents directive');
-//  }));
+//            });
+
+        });
+    });
+
 });
