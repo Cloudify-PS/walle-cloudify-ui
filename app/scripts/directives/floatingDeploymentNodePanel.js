@@ -18,6 +18,7 @@ angular.module('cosmoUiApp')
             link: function postLink($scope) {
 
                 $scope.propSection = 'general';
+                $scope.selectedRelationship = '';
 
                 function _viewNode(node) {
                     $scope.showProperties = {
@@ -77,7 +78,7 @@ angular.module('cosmoUiApp')
                     $scope.selectedNode = node;
                     if (node !== null) {
                         $scope.showProperties = {
-                            properties: node.properties,
+                            properties: node.runtime_properties,
                             relationships: node.relationships,
                             general: {
                                 'name': node.id,
@@ -92,8 +93,17 @@ angular.module('cosmoUiApp')
                     }
                 };
 
+                $scope.showRelationship = function(relationship) {
+                    if (relationship === $scope.selectedRelationship) {
+                        $scope.selectedRelationship = '';
+                    } else {
+                        $scope.selectedRelationship = relationship;
+                    }
+                };
+
                 $scope.hideProperties = function () {
                     $scope.showProperties = null;
+                    $scope.node = null;
                 };
 
                 $scope.getPropertyKeyName = function(key) {

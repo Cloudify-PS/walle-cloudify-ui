@@ -45,21 +45,20 @@
 
                     <table class="relationships-table" ng-show="showProperties.relationships.length != undefined">
                         <tr>
-                            <td>{{ 'plans.details.target' | i18n }}</td>
-                            <td>{{ 'plans.details.type' | i18n }}</td>
-                            <td>{{ 'plans.details.source' | i18n }}</td>
+                            <td class="relationships-target">{{ 'plans.details.target' | i18n }}</td>
+                            <td class="relationships-type">{{ 'plans.details.type' | i18n }}</td>
+                            <td class="relationships-source">{{ 'plans.details.source' | i18n }}</td>
                         </tr>
                         <tr ng-repeat="relationship in showProperties.relationships">
                             <td colspan="3">
                                 <table class="interfaces-table">
                                     <tr ng-click="showRelationship(relationship)">
-                                        <td><div class="relationship-arrow right" ng-class="{'down': selectedRelationship == relationship, 'right': selectedRelationship != relationship}"></div>{{relationship.target_id}}</td>
-                                        <td>{{relationship.type}}</td>
-                                        <td>{{showProperties.general.name}}</td>
+                                        <td class="relationships-target"><div class="relationship-arrow right" ng-class="{'down': selectedRelationship == relationship, 'right': selectedRelationship != relationship}"></div>{{relationship.target_id}}</td>
+                                        <td class="relationships-type">{{relationship.type}}</td>
+                                        <td class="relationships-source">{{showProperties.general.name}}</td>
                                     </tr>
                                     <tr ng-show="selectedRelationship.target_id == relationship.target_id && selectedRelationship.type == relationship.type">
                                         <td colspan="3">
-
                                             <table>
                                                 <tr>
                                                     <td>{{ 'plans.details.interface' | i18n }}</td>

@@ -334,6 +334,17 @@
                             vertical-align: middle;
                             padding-left: 0px;
 
+                            &.relationships-target {
+                              width: 160px;
+                            }
+                            &.relationships-type {
+                              width: 300px;
+                              float: left;
+                            }
+                            &.relationships-source {
+                              width: 100px;
+                            }
+
                             table {
                                 width: 100%;
                                 //margin-left: 10px;

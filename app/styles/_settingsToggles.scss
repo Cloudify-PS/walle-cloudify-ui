@@ -6,7 +6,7 @@
         height: 32px;
         cursor: pointer;
         position: absolute;
-        z-index: 9999;
+        z-index: 9998;
     }
 
     #settings-toggles-container {
@@ -20,7 +20,7 @@
         border-top-left-radius: 0px;
         border-top-right-radius: 0px;
         padding-top: 5px;
-        z-index: 9999; // TO BE REMOVED!!
+        z-index: 9998; // TO BE REMOVED!!
 
         #settings-toggles-title {
             color: #000;
