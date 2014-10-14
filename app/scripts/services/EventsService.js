@@ -85,7 +85,7 @@ angular.module('cosmoUiApp')
 
             function filter(field, term) {
                 if(!filterRemove(field, term)) {
-                    activeFilters[field + term] = ejs.TermFilter(field, term.toLowerCase());
+                    activeFilters[field + term] = ejs.TermFilter(field, term ? term.toLowerCase() : term);
                 }
             }
 
