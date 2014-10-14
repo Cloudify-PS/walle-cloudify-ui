@@ -5,11 +5,7 @@ angular.module('cosmoUiApp')
 
         function _createNodesTree(nodes, reverse) {
             var roots = [];
-            var nodesList = [];
-
-            nodes.forEach(function(node) {
-                nodesList[node.id] = node;
-            });
+            var nodesList = _orderTheNodes(nodes);
 
             for (var nodeId in nodesList) {
                 var node = nodesList[nodeId];
@@ -46,6 +42,31 @@ angular.module('cosmoUiApp')
                 return roots.reverse();
             }
             return roots;
+        }
+
+        function _orderTheNodes(nodes) {
+            function _sortBy(key, reverse) {
+                var moveSmaller = reverse ? 1 : -1;
+                var moveLarger = reverse ? -1 : 1;
+
+                return function (a, b) {
+                    if (a[key] < b[key]) {
+                        return moveSmaller;
+                    }
+                    if (a[key] > b[key]) {
+                        return moveLarger;
+                    }
+                    return 0;
+                };
+            }
+
+            nodes.sort(_sortBy('name'));
+
+            var orderedNodes = [];
+            nodes.forEach(function(node) {
+                orderedNodes[node.id] = node;
+            });
+            return orderedNodes;
         }
 
         function _getNodeClass(typeHierarchy) {
