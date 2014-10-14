@@ -10,20 +10,20 @@
         <table class="table">
             <thead>
             <tr>
-                <th>Workflow</th>
-                <th>ID</th>
-                <th>Created</th>
-                <th>Status</th>
-                <th>Error</th>
+                <th class="workflow">Workflow</th>
+                <th class="id">ID</th>
+                <th class="created">Created</th>
+                <th class="status">Status</th>
+                <th class="error">Error</th>
             </tr>
             </thead>
             <tbody data-ng-repeat="row in executionsList">
             <tr>
-                <td>{{ row.workflow_id }}</td>
-                <td>{{ row.id }}</td>
-                <td>{{ row.created_at | dateFormat: 'yyyy-MM-dd HH:mm:ss' }}</td>
-                <td>{{ row.status }}</td>
-                <td>{{ row.error }}</td>
+                <td class="workflow">{{ row.workflow_id }}</td>
+                <td class="id">{{ row.id }}</td>
+                <td class="created">{{ row.created_at | dateFormat: 'yyyy-MM-dd HH:mm:ss' }}</td>
+                <td class="status">{{ row.status }}</td>
+                <td class="error">{{ row.error }}</td>
             </tr>
             </tbody>
         </table>

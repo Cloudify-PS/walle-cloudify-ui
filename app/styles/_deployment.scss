@@ -1353,13 +1353,34 @@
 
     .executions, .nodesTable {
         display: block;
-        width: 100%;
+        max-width: 100%;
         padding: 0 20px;
         margin: 10px 0 0;
+        overflow: hidden;
         table {
             margin: 0px;
             tr {
                 cursor: default;
+
+                .workflow {}
+                .id {
+                  min-width: 290px !important;
+                }
+                .created {
+                  min-width: 150px !important;
+                }
+                .status {
+                  min-width: 80px !important;
+                }
+                .error {
+                  min-width: 250px !important;
+                  max-width: 250px !important;
+                  overflow: hidden;
+                }
+
+              td {
+                vertical-align: top;
+              }
             }
         }
     }
