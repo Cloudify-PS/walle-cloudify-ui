@@ -287,7 +287,7 @@ html, body, .layout {
         border: $COSMOUI_BLUEPRINT_BUTTON_GROUP_BORDER_COLOR;
         border-radius: 0px;
         margin: 0 -6px 0 0;
-        background-color: #fff;
+        background-color: $clr-base-01;
         &:first-child {
             border-radius: $RADIUS 0 0 $RADIUS;
         }
@@ -296,7 +296,12 @@ html, body, .layout {
         }
         &.active {
             background: $COSMOUI_BLUEPRINT_BUTTON_ACTIVE_COLOR;
+            border: $COSMOUI_BLUEPRINT_BUTTON_GROUP_BORDER_COLOR;
             color: white;
+        }
+        &:hover:not(.active) {
+            background-color: $clr-base-01;
+            border: $COSMOUI_BLUEPRINT_BUTTON_GROUP_BORDER_COLOR;
         }
     }
 }
