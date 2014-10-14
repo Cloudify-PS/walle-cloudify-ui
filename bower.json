@@ -22,7 +22,8 @@
     "ngstorage": "~0.3.0",
     "angular-timer": "~1.1.5",
     "angular-datepicker": "https://github.com/g00fy-/angular-datepicker.git#~1.0.3",
-    "grafana": "https://github.com/grafana/grafana.git#~1.6.1"
+    "grafana": "https://github.com/grafana/grafana.git#~1.6.1",
+    "angular-perfect-scrollbar": "*"
   },
   "devDependencies": {
     "angular-mocks": "~1.2.21",

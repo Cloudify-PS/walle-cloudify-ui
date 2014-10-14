@@ -2,21 +2,17 @@
 
 describe('Service: CloudifyService', function () {
 
-    var helper = new Helper();
     var CloudifyService;
 
     describe('Test setup', function() {
         it('Injecting required data & initializing a new instance', function() {
 
             // Load the app module
-            module('cosmoUiApp');
-
-            // inject UI
-            helper.injectUi();
+            module('cosmoUiApp', 'gsUiHelper');
 
             // Initialize a new instance of CloudifyService
-            inject(function (_CloudifyService_) {
-                helper.addInjects([
+            inject(function (_CloudifyService_, $helper) {
+                $helper.addInjects([
                     {
                         method: 'POST',
                         url: '/backend/node/get',

@@ -2,17 +2,13 @@
 
 describe('Service: RestLoader', function () {
 
-    var helper = new Helper();
     var RestLoader;
 
     describe('Test setup', function() {
         it('Injecting required data & initializing a new instance', function() {
 
             // Load the app module
-            module('cosmoUiApp');
-
-            // inject UI
-            helper.injectUi();
+            module('cosmoUiApp', 'gsUiHelper');
 
             // Initialize a new instance of RestLoader
             inject(function (_RestLoader_) {

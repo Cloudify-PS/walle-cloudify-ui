@@ -23,6 +23,8 @@ module.exports = function(config) {
             'app/bower_components/elastic.js/dist/elastic-angular-client.js',
             'app/bower_components/gs-ui-infra/app/scripts/**/*.js',
             'app/bower_components/i18next/i18next.js',
+            'app/bower_components/perfect-scrollbar/min/perfect-scrollbar.with-mousewheel.min.js',
+            'app/bower_components/angular-perfect-scrollbar/src/angular-perfect-scrollbar.js',
             'app/scripts/*.js',
             'app/scripts/**/*.js',
             'test/mock/**/*.js',
