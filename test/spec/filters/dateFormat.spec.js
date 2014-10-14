@@ -26,7 +26,7 @@ describe('Filter: dateFormat', function () {
         });
 
         it('should return the input by requested yyyy-MM-dd HH:mm:ss format', function() {
-            var text = '2011-11-24T09:00:27+0200';
+            var text = '2011-11-24T09:00:27+0000';
             var format = 'yyyy-MM-dd HH:mm:ss';
 
             expect(dateFormat(text, format)).toBe('2011-11-24 09:00:27');
