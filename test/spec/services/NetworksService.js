@@ -2,7 +2,6 @@
 
 describe('Service: NetworksService', function () {
 
-    var helper = new Helper();
     var NetworksService;
     var providerData = {
         "name": "cloudify_openstack",
@@ -583,10 +582,7 @@ describe('Service: NetworksService', function () {
         it('Injecting required data & initializing a new instance', function() {
 
             // Load the app module
-            module('cosmoUiApp');
-
-            // inject UI
-            helper.injectUi();
+            module('cosmoUiApp', 'gsUiHelper');
 
             // Initialize a new instance of NetworksService
             inject(function (_NetworksService_) {

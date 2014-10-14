@@ -15,7 +15,7 @@ angular.module('cosmoUiApp')
             var oQuery = ejs.QueryStringQuery();
             var client = ejs.Request()
                 .from(0)
-                .size(100);
+                .size(1000);
             var activeFilters = {};
             var rangePrefix = 'range';
             var isAutoPull = false;
@@ -85,7 +85,7 @@ angular.module('cosmoUiApp')
 
             function filter(field, term) {
                 if(!filterRemove(field, term)) {
-                    activeFilters[field + term] = ejs.TermFilter(field, term.toLowerCase());
+                    activeFilters[field + term] = ejs.TermFilter(field, term ? term.toLowerCase() : term);
                 }
             }
 

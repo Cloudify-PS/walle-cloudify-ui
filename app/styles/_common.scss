@@ -132,13 +132,13 @@ table.table {
 
     .gs-select {
         min-width: 0px;
-        width: 150px;
+        width: 160px;
         color: $clr-base-11;
         background-color: $clr-base-01;
         font-weight: normal;
         padding: 5px 10px 5px 10px;
         border-radius: 5px;
-        border: 1px solid $clr-base-04;
+        border: 2px solid $clr-base-04;
         float: left;
         font-size: 14px;
         box-shadow: none;
@@ -191,19 +191,80 @@ table.table {
     height: 36px;
     border-radius: 0px;
 
-    &.event-icon-workflow-started           {background: url("#{$img-workflow-started}")          no-repeat top center;}
-    &.event-icon-workflow-stage             {background: url("#{$img-workflow-stage}")            no-repeat top center;}
-    &.event-icon-workflow-end-successfully  {background: url("#{$img-workflow-end-successfully}") no-repeat top center;}
-    &.event-icon-workflow-failed            {background: url("#{$img-workflow-failed}")           no-repeat top center;}
-    &.event-icon-task-started               {background: url("#{$img-task-started}")              no-repeat top center;}
-    &.event-icon-task-failed                {background: url("#{$img-task-failed}")               no-repeat top center;}
-    &.event-icon-task-sent                  {background: url("#{$img-task-sent}")                 no-repeat top center;}
-    &.event-icon-task-success               {background: url("#{$img-task-success}")              no-repeat top center;}
-    &.event-icon-task-retried               {background: url("#{$img-task-retried}")              no-repeat top center;}
-    &.event-icon-policy-success             {background: url("#{$img-policy-success}")            no-repeat top center;}
-    &.event-icon-policy-failed              {background: url("#{$img-policy-failed}")             no-repeat top center;}
-    &.event-icon-workflow-cancelled         {background: url("#{$img-policy-failed}")             no-repeat top center;}
     &.gs-icon-logs {
+        padding-left: 16px;
+        color: #049cdb;
+        line-height: 46px;
+        font-size: 55px;
+    }
+}
+
+.icon-events {
+    font-family: 'cloudify-events';
+    speak: none;
+    font-style: normal;
+    font-weight: normal;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    width: 36px;
+    height: 36px;
+    font-size: 32px;
+    color: #2C4B68;
+
+    &.policy-failed:before {
+        content: "\21";
+        color: #d64b34;
+    }
+    &.policy-success:before {
+        content: "\22";
+        color: #9ABC2E;
+    }
+    &.task-canceled:before {
+        content: "\23";
+        color: #d64b34;
+    }
+    &.task-failed:before {
+        content: "\24";
+        color: #d64b34;
+    }
+    &.task-retried:before {
+        content: "\25";
+        color: #F9B71B;
+    }
+    &.task-sent:before {
+        content: "\26";
+    }
+    &.task-started:before {
+        content: "\27";
+    }
+    &.task-success:before {
+        content: "\28";
+        color: #9ABC2E;
+    }
+    &.workflow-stage:before {
+        content: "\29";
+    }
+    &.workflow-cancelled:before {
+        content: "\2a";
+        color: #d64b34;
+    }
+    &.workflow-failed:before {
+        content: "\2b";
+        color: #d64b34;
+    }
+    &.workflow-started:before {
+        content: "\2c";
+    }
+    &.workflow-end-successfully:before {
+        content: "\2d";
+        color: #9ABC2E;
+    }
+
+    &.gs-icon-logs {
+        font-family: Cosmo;
         padding-left: 16px;
         color: #049cdb;
         line-height: 46px;
