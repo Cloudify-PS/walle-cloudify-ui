@@ -121,7 +121,7 @@ angular.module('cosmoUiApp')
                     var c = $element.find('.containList');
                     var maxHeight = angular.element(document.querySelector('#main-content')).height() - angular.element(document.querySelector('.bpContainer')).position().top - 50;
 
-                    height = y - 70;
+                    height = y - 60;
 
                     if (height >= maxHeight) {
                         height = maxHeight;
