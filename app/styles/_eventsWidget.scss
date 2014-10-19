@@ -1,6 +1,6 @@
 .events-widget {
     position: absolute;
-    bottom: 10px;
+    bottom: 0px;
     width: 100%;
     height: auto;
     border-top: 2px solid #4b6b8b;
@@ -99,7 +99,7 @@
 
     &.closed {
         overflow: hidden;
-        min-height: 52px;
+        min-height: 42px;
         bottom: 0px;
 
         .containList {

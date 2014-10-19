@@ -674,8 +674,6 @@
     .bpContainer {
         position: relative;
         display: block;
-        width: calc(100% + 120px);
-        margin-right: -120px;
         height: 100%;
         padding: 40px;
         .coordinates {
@@ -1395,7 +1393,7 @@
     }
 
     div[ng-switch-when="nodes"], div[ng-switch-when="executions"], .executions, .nodesTable {
-        margin: 30px 0 20px;
+        margin: 30px 0 0;
         padding: 0 20px 20px;
 
         .table {
