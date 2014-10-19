@@ -18,7 +18,7 @@ angular.module('cosmoUiApp')
 
         $scope.$on('blueprintData', function(event, data){
             $scope.planNodes = data.plan.nodes;
-            $scope.nodesTree = NodeService.createNodesTree(data.plan.nodes, true);
+            $scope.nodesTree = NodeService.createNodesTree(data.plan.nodes);
             blueprintCoordinateService.resetCoordinates();
             blueprintCoordinateService.setMap(_getNodesConnections(data.plan.nodes));
             $scope.coordinates = blueprintCoordinateService.getCoordinates();

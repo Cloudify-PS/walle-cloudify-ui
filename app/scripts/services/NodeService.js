@@ -3,7 +3,7 @@
 angular.module('cosmoUiApp')
     .service('NodeService', function NodeService() {
 
-        function _createNodesTree(nodes, reverse) {
+        function _createNodesTree(nodes) {
             var roots = [];
             var nodesList = _orderTheNodes(nodes);
 
@@ -30,37 +30,40 @@ angular.module('cosmoUiApp')
                     node.dataType = _getNodeDataType(node);
 
                     if (!node.isContained) {
+                        if(node.hasOwnProperty('childern')) {
+                            node.childern.sort(_sortBy('id'));
+                        }
                         roots.push(node);
                     }
                 } else if(!_isIgnoreNode(node) && !node.isContained){
                     node.dataType = _getNodeDataType(node);
+                    if(node.hasOwnProperty('childern')) {
+                        node.childern.sort(_sortBy('id'));
+                    }
                     roots.push(node);
                 }
             }
 
-            if(reverse === true) {
-                return roots.reverse();
-            }
             return roots;
         }
 
+        function _sortBy(key, reverse) {
+            var moveSmaller = reverse ? 1 : -1;
+            var moveLarger = reverse ? -1 : 1;
+
+            return function (a, b) {
+                if (a[key] < b[key]) {
+                    return moveSmaller;
+                }
+                if (a[key] > b[key]) {
+                    return moveLarger;
+                }
+                return 0;
+            };
+        }
+
         function _orderTheNodes(nodes) {
-            function _sortBy(key, reverse) {
-                var moveSmaller = reverse ? 1 : -1;
-                var moveLarger = reverse ? -1 : 1;
-
-                return function (a, b) {
-                    if (a[key] < b[key]) {
-                        return moveSmaller;
-                    }
-                    if (a[key] > b[key]) {
-                        return moveLarger;
-                    }
-                    return 0;
-                };
-            }
-
-            nodes.sort(_sortBy('name'));
+            nodes.sort(_sortBy('id'));
 
             var orderedNodes = [];
             nodes.forEach(function(node) {
