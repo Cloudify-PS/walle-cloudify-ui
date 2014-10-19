@@ -134,9 +134,11 @@
                 }
 
                 &.type {
-                    width: 200px;
-                    white-space: nowrap;
+                    min-width: 200px;
                     padding-top: 16px;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    white-space: nowrap;
                 }
 
                 &.time {
@@ -162,6 +164,9 @@
                 .gs-icon-logs {
                     top: 6px;
                     left: -6px;
+                    padding: 0px;
+                    font-size: 46px;
+                    line-height: 30px;
                 }
 
             }
