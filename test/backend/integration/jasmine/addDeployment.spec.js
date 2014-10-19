@@ -15,13 +15,14 @@ describe('Integration: addDeployment', function () {
 
     it('should add deployment successfully', function() {
         // add deployment with inputs
-        var result;
-        var successResult;
+        var blueprints = null;
+        var result = null;
+        var successResult = null;
         var blueprintName = 'blueprint' + new Date().getTime();
         var deploymentName = 'deployment' + new Date().getTime();
         var requestBody = {
-            "blueprint_id": "blueprint1",
-            "deployment_id": "deployment1",
+            "blueprint_id": blueprintName,
+            "deployment_id": deploymentName,
             "inputs": {
                 "webserver_port": 8080,
                 "image_name": "image_name",
@@ -30,23 +31,36 @@ describe('Integration: addDeployment', function () {
             }
         };
         fs.readFile('./test/backend/resources/deployment/createSuccessResult.json', 'utf-8', function (err, data) {
-            data = data.replace(/blueprint1/g, blueprintName);
-            data = data.replace(/deployment1/g, deploymentName);
             successResult = JSON.parse(data);
+            successResult.id = deploymentName;
+            successResult.blueprint_id = blueprintName;
         });
 
-        cloudify4node.addDeployment(requestBody, function (data) {
-            result = JSON.parse(data);
+        cloudify4node.getBlueprints(function(err, data) {
+            blueprints = JSON.parse(data);
         });
 
         waitsFor(function () {
-            return result !== undefined && successResult !== undefined;
+            return blueprints !== null;
+        }, "waiting for blueprints list to be loaded", 5000);
+
+        runs(function() {
+            logger.info('blueprints loaded, creating deployment');
+            requestBody.blueprint_id = blueprints[0].id;
+            cloudify4node.addDeployment(requestBody, function (err, data) {
+                result = JSON.parse(data);
+            });
+        });
+
+        waitsFor(function () {
+            return result !== null && successResult !== null;
         }, "waiting for deployment creation result", 5000);
 
         runs(function () {
             logger.info('deployment creation result returned, checking if result is as expected');
             successResult.updated_at = result.updated_at;
             successResult.created_at = result.created_at;
+            successResult.blueprint_id = blueprints[0].id;
 
             expect(JSON.stringify(result)).toBe(JSON.stringify(successResult));
         });

@@ -98,7 +98,7 @@
                     &.type {
                         width: 150px;
                     }
-                    &.icon {
+                    &.icon-events {
                         width: 60px;
                         min-width: 45px;
                     }
@@ -118,6 +118,14 @@
                     }
                     &.event-text-red {
                         color: $COSMOUI_EVENTS_LIST_TEXT_FAILED;
+                    }
+                }
+            }
+
+            &.eventsTable {
+                tr {
+                    td {
+                        vertical-align: top;
                     }
                 }
             }

@@ -2,65 +2,17 @@
 
 describe('Service: EventsService', function () {
 
-    var eventsService, events, _callback, q,
+    var eventsService, events, _callback,
         isExecuted = false;
 
     describe('Test setup', function() {
         it('Injecting required data & initializing a new instance', function() {
 
             // load the service's module, mocking ejsResource dependency
-            module('cosmoUiApp', 'ngMock', function($provide) {
-                $provide.value('ejsResource', function() {
-                    return {
-                        QueryStringQuery: function() {
-                            return {
-                                query: function() {}
-                            }
-                        },
-                        Request: function() {
-                            return {
-                                from: function() {
-                                    return {
-                                        size: function() {
-                                            return {
-                                                query: function() {
-                                                    return {
-                                                        sort: function() {
-                                                            return {
-                                                                doSearch: function() {
-                                                                    var deferred = q.defer();
-
-                                                                    deferred.resolve({});
-
-                                                                    return deferred.promise;
-                                                                }
-                                                            }
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        },
-                        Sort: function() {
-                            return {
-                                order: function() {}
-                            }
-                        }
-                    }
-                });
-            });
+            module('cosmoUiApp', 'ngMock', 'gsUiHelper', 'gsMocks');
 
             // initialize a new instance of the filter
-            inject(function (EventsService, $httpBackend, $q) {
-                $httpBackend.whenGET("/backend/configuration?access=all").respond(200);
-                $httpBackend.whenGET("/backend/versions/ui").respond(200);
-                $httpBackend.whenGET("/backend/versions/manager").respond(200);
-                $httpBackend.whenGET("/backend/version/latest?version=00").respond('300');
-
-                q = $q;
+            inject(function (EventsService) {
                 eventsService = EventsService;
 
                 events = eventsService.newInstance('/');

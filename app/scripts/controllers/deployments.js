@@ -130,8 +130,12 @@ angular.module('cosmoUiApp')
                             if (data[i].status !== null && data[i].status !== 'failed' && data[i].status !== 'terminated' && data[i].status !== 'cancelled') {
                                 selectedWorkflows[deployment_id] = data[i].workflow_id;
                                 _executedDeployments[blueprint_id][deployment_id] = data[i];
-                            } else if (data[i].status === 'failed' || data[i].status === 'terminated' || data[i].status === 'cancelled') {
-                                _executedDeployments[blueprint_id][deployment_id] = null;
+                            } else if (_executedDeployments[blueprint_id][deployment_id] !== undefined && (data[i].status === 'failed' || data[i].status === 'terminated' || data[i].status === 'cancelled') ){
+                                var currentCreatedDate = new Date(_executedDeployments[blueprint_id][deployment_id].created_at).getTime();
+                                var dataCreatedDate = new Date(data[i].created_at).getTime();
+                                if (currentCreatedDate < dataCreatedDate) {
+                                    _executedDeployments[blueprint_id][deployment_id] = null;
+                                }
                             }
                         }
                     }

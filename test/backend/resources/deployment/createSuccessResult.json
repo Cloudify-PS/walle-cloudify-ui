@@ -1,9 +1,9 @@
-[{
+{
     "inputs": {
-        "flavor_name": "flavor1",
-        "webserver_port": "webserver1",
-        "image_name": "image1",
-        "agent_user": "agent1"
+        "flavor_name": "flavor_name",
+        "webserver_port": 8080,
+        "image_name": "image_name",
+        "agent_user": "agent_user"
     },
     "policy_triggers": {
         "cloudify.policies.triggers.execute_workflow": {
@@ -62,7 +62,7 @@
             }
         }
     },
-    "created_at": "2014-09-18 12:36:01.279434",
+    "created_at": "2014-09-29 01:46:52.476788",
     "workflows": [{
         "created_at": null,
         "name": "install",
@@ -73,5 +73,5 @@
         "parameters": {}
     }],
     "id": "deployment1",
-    "updated_at": "2014-09-18 12:36:01.279434"
-}]
+    "updated_at": "2014-09-29 01:46:52.476788"
+}

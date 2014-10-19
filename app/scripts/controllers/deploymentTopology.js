@@ -16,6 +16,12 @@ angular.module('cosmoUiApp')
         });
 
         $scope.$on('topologyNodeSelected', function(e, viewNode) {
+            viewNode.nodeType = 'node';
+            $scope.viewNode = viewNode;
+        });
+
+        $scope.$on('topologyRelationshipSelected', function(e, viewNode) {
+            viewNode.nodeType = 'relationship';
             $scope.viewNode = viewNode;
         });
 
@@ -28,6 +34,7 @@ angular.module('cosmoUiApp')
 
         $scope.$on('deploymentExecution', function(event, deploymentExecution){
             $scope.deploymentInProgress = deploymentExecution.deploymentInProgress;
+            $scope.currentExecution = deploymentExecution.currentExecution;
             if (!deploymentExecution.currentExecution && deploymentExecution.deploymentInProgress) {
                 if(!isGotExecuteNodes) {
                     CloudifyService.autoPull('getDeploymentNodes', {deployment_id: $scope.deploymentId}, CloudifyService.deployments.getDeploymentNodes)

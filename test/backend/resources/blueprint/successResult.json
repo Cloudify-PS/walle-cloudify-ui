@@ -1,7 +1,7 @@
 {
-    "updated_at": "2014-09-21 11:37:09.934057",
-    "created_at": "2014-09-21 11:37:09.934057",
-    "id": "blueprint1411299451770",
+    "updated_at": "2014-09-29 00:56:22.614852",
+    "created_at": "2014-09-29 00:56:22.614852",
+    "id": "blueprint1411981345030",
     "plan": {
         "relationships": {
             "cloudify.openstack.server_connected_to_port": {
@@ -246,12 +246,12 @@
             "name": "security_group",
             "type_hierarchy": ["cloudify.types.base", "cloudify.openstack.security_group"],
             "properties": {
-                "neutron_config": {},
+                "openstack_config": {},
                 "resource_id": "",
                 "rules": [{
                     "remote_ip_prefix": "0.0.0.0/0",
                     "port": {
-                        "get_input": "webserver_port"
+                        "get_property": ["http_web_server", "port"]
                     }
                 }],
                 "security_group": {
@@ -352,9 +352,9 @@
             },
             "plugins": {
                 "script": {
-                    "source": "https://github.com/cloudify-cosmo/cloudify-script-plugin/archive/1.1m4.zip",
+                    "source": null,
                     "name": "script",
-                    "install": true,
+                    "install": false,
                     "executor": "host_agent"
                 }
             },
@@ -390,8 +390,8 @@
             "name": "virtual_ip",
             "type_hierarchy": ["cloudify.types.base", "cloudify.openstack.floatingip"],
             "properties": {
-                "neutron_config": {},
                 "resource_id": "",
+                "openstack_config": {},
                 "use_external_resource": false,
                 "cloudify_runtime": {},
                 "floatingip": {}
@@ -547,13 +547,12 @@
                 "executor": "central_deployment_agent"
             }],
             "properties": {
-                "nova_config": {},
-                "neutron_config": {},
                 "cloudify_agent": {
                     "user": {
                         "get_input": "agent_user"
                     }
                 },
+                "openstack_config": {},
                 "resource_id": "",
                 "ip": "",
                 "management_network_name": "",
@@ -602,9 +601,9 @@
                 "install": false,
                 "executor": "host_agent"
             }, {
-                "source": "https://github.com/cloudify-cosmo/cloudify-script-plugin/archive/1.1m4.zip",
+                "source": null,
                 "name": "script",
-                "install": true,
+                "install": false,
                 "executor": "host_agent"
             }]
         }],

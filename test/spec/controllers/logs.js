@@ -6,7 +6,7 @@ describe('Controller: LogsCtrl', function () {
     beforeEach(module('cosmoUiApp', 'ngMock'));
 
     describe('Test setup', function() {
-        it ('', inject(function ($controller, $rootScope, $httpBackend) {
+        it ('', inject(function ($controller, $rootScope, $httpBackend, $q, CloudifyService) {
 
             $httpBackend.whenGET("/backend/configuration?access=all").respond(200);
             $httpBackend.whenGET("/backend/versions/ui").respond(200);
@@ -20,14 +20,33 @@ describe('Controller: LogsCtrl', function () {
                 newInstance: function() {
                     return {
                         filterRange: function() {},
-                        filter: function() {}
+                        filterRemove: function() {},
+                        filter: function() {},
+                        execute: function() {}
                     };
                 }
             };
 
+            CloudifyService.blueprints.list = function() {
+                var deferred = $q.defer();
+                var blueprints = [
+                    {
+                        "updated_at": "2014-08- 21 00:54:04.878540",
+                        "created_at": "2014-08-21 00:54:04.878540",
+                        "id": "blueprint1",
+                        "deployments": []
+                    }
+                ];
+
+                deferred.resolve(blueprints);
+
+                return deferred.promise;
+            };
+
             LogsCtrl = $controller('LogsCtrl', {
                 $scope: scope,
-                EventsService: EventsService
+                EventsService: EventsService,
+                CloudifyService: CloudifyService
             });
 
             scope.$digest();
@@ -39,6 +58,17 @@ describe('Controller: LogsCtrl', function () {
         it('should create a controller', function () {
             expect(LogsCtrl).not.toBeUndefined();
         });
+
+//        it('should select all blueprints and show their events from the last 5 minutes on first page entry', function() {
+//            scope.$apply();
+//
+//            waitsFor(function() {
+//                return scope.eventsFilter.blueprints.length > 0;
+//            });
+//            runs(function() {
+//                expect(JSON.stringify(scope.eventsFilter.blueprints)).toBe(JSON.stringify(scope.blueprintsList));
+//            });
+//        });
 
         it('should set isSearchDisabled flag to true if no blueprints were selected', function() {
             scope.isSearchDisabled = false;
