@@ -14,7 +14,7 @@ angular.module('cosmoUiApp')
                 scope.items = [
                     { 'route' : ['#blueprints', '#blueprint'] ,         reload: true,  'icon': 'plans',        'label':'Blueprints'                         },
                     { 'route' : ['#deployments', '#deployment'] ,       reload: true,  'icon': 'deployments',  'label':'Deployments'                        },
-                    { 'route' : ['#monitoring'] ,                       reload: false, 'icon': 'monitoring',   'label':'Monitoring',       isDisabled: true },
+//                    { 'route' : ['#monitoring'] ,                       reload: false, 'icon': 'monitoring',   'label':'Monitoring',       isDisabled: true },
                     { 'route' : ['#logs'] ,                             reload: false, 'icon': 'logs',         'label':'Logs & Events'                      },
                     { 'route' : ['#hosts'] ,                            reload: false, 'icon': 'hosts',        'label':'Hosts'                              },
                     { 'route' : ['#networks'] ,                         reload: false, 'icon': 'networks',     'label':'Networks',         isDisabled: true },
