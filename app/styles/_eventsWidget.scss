@@ -1,118 +1,190 @@
 .events-widget {
+    position: absolute;
+    bottom: 0px;
+    width: 100%;
+    height: auto;
+    border-top: 2px solid #4b6b8b;
+    z-index: 10000;
+    -webkit-box-shadow: 0 -1px 24px 0px rgba(0, 0, 0, 0.2);
+    -moz-box-shadow: 0 -1px 24px 0px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 -1px 24px 0px rgba(0, 0, 0, 0.2);
 
-    #events-widget-closed-tab {
-        width: $COSMOUI_EVENTS_WIDGET_CLOSED_WIDTH;
-        height: $COSMOUI_EVENTS_WIDGET_CLOSED_HEIGHT;
-        background: $COSMOUI_EVENTS_WIDGET_CLOSED_BACKGROUND;
-        border-radius: $COSMOUI_EVENTS_WIDGET_CLOSED_BORDER_RADIUS;
-        float: right;
-        cursor: pointer;
+    .bg {
+        position: absolute;
+        top: 0;
+        left: 0;
+        background-color: #fff;
+        opacity: 0.9;
+        width: 100%;
+        height: 100%;
+        z-index: 1;
+    }
 
-        #events-widget-tab-text {
-            width: $COSMOUI_EVENTS_WIDGET_CLOSED_TEXT_WIDTH;
-            height: $COSMOUI_EVENTS_WIDGET_CLOSED_HEIGHT;
-            padding: $COSMOUI_EVENTS_WIDGET_CLOSED_TEXT_PADDING;
-            color: $COSMOUI_EVENTS_WIDGET_CLOSED_TEXT_COLOR;
-            font-size: $COSMOUI_EVENTS_WIDGET_CLOSED_TEXT_SIZE;
-            font-weight: bold;
+    .head {
+        position: relative;
+        z-index: 10;
+        background-color: #e8edf2;
+        height: 40px;
+        padding: 5px 20px;
+
+        .title {
+            display: inline-block;
+            font-size: 24px;
+            color: #29AAEE;
+            line-height: 28px;
+        }
+
+        .lastEvent {
+            display: inline-block;
+            border-left: 1px dotted #4b6b8b;
+            margin: 2px 0 0 10px;
+            padding: 2px 0 2px 10px;
+            vertical-align: top;
+
+            .icon {
+                display: inline-block;
+                vertical-align: middle;
+                width: 24px;
+                height: 24px;
+            }
+
+            .type {
+                display: inline-block;
+                vertical-align: middle;
+                margin-left: 4px;
+            }
+        }
+
+        .dragBtn {
+            position: absolute;
+            top: 15px;
+            right: 12px;
+            width: 24px;
+            height: 13px;
+            background: url("#{$img-events-widget-drag}") center center no-repeat;
+            cursor: row-resize;
         }
     }
 
-    #events-widget-opened-widget {
-        width: $COSMOUI_EVENTS_WIDGET_OPENED_WIDTH;
-        height: $COSMOUI_EVENTS_WIDGET_OPENED_HEIGHT;
-        background: $COSMOUI_EVENTS_WIDGET_OPENED_BACKGROUND;
-        border-radius: $COSMOUI_EVENTS_WIDGET_OPENED_BORDER_RADIUS;
-        box-shadow: $COSMOUI_EVENTS_WIDGET_OPENED_SHADOW;
+    .containList {
+        position: relative;
+        z-index: 10;
+        overflow-y: hidden;
+        height: 500px;
 
+        .ps-scrollbar-y-rail {
+            width: 10px;
+            height: calc(100% - 20px) !important;
+            margin-top: 10px;
+            margin-right: 5px;
+            background: #E2E2E2;
+            border-left: 2px solid #bbb;
+            border-radius: 5px;
 
-        #events-widget-header {
-            position: relative;
-            padding: $COSMOUI_EVENTS_WIDGET_OPENED_HEADER_PADDING;
-            color: $COSMOUI_EVENTS_WIDGET_OPENED_HEADER_COLOR;
-            font-size: $COSMOUI_EVENTS_WIDGET_OPENED_HEADER_FONT_SIZE;
-            font-weight: bold;
-            border-bottom: $COSMOUI_EVENTS_WIDGET_OPENED_HEADER_BORDER_BOTTOM;
-
-            #event-widget-header-text {
-                margin-top: $COSMOUI_EVENTS_WIDGET_OPENED_HEADER_TEXT_MARGIN_TOP;
-                margin-left: $COSMOUI_EVENTS_WIDGET_OPENED_HEADER_TEXT_MARGIN_LEFT;
-            }
-
-            #events-widget-header-close-button {
-                position: absolute;
-                top: 7px;
-                right: 8px;
-                display: inline-block;
-                width: $COSMOUI_EVENTS_WIDGET_OPENED_HEADER_CLOSE_WIDTH;
-                height: $COSMOUI_EVENTS_WIDGET_OPENED_HEADER_CLOSE_HEIGHT;
-                background: $COSMOUI_EVENTS_WIDGET_OPENED_HEADER_CLOSE_BACKGROUND;
+            .ps-scrollbar-y {
+                width: 8px !important;
+                min-height: 20px !important;
+                background-color: #3aaeda !important;
+                box-shadow: inset -1px -1px 1px #1E6D8B;
                 cursor: pointer;
             }
         }
+    }
 
-        #events-widget-list-container {
-            overflow-x: $COSMOUI_EVENTS_WIDGET_OPENED_LIST_CONTAINER_OVERFLOW_X;
-            height: $COSMOUI_EVENTS_WIDGET_OPENED_LIST_CONTAINER_HEIGHT;
+    .icon-events {
+        width: 24px;
+        height: 24px;
+        font-size: 24px;
+    }
 
-            #events-widget-events-list {
-                width: $COSMOUI_EVENTS_WIDGET_OPENED_LIST_WIDTH;
-                margin: $COSMOUI_EVENTS_WIDGET_OPENED_LIST_MARGIN;
+    &.closed {
+        overflow: hidden;
+        min-height: 42px;
+        bottom: 0px;
 
-                tr {
-                    height: $COSMOUI_EVENTS_WIDGET_OPENED_LIST_TABLE_TR_HEIGHT;
-                    border-bottom: $COSMOUI_EVENTS_WIDGET_OPENED_LIST_TABLE_TR_BORDER_BOTTOM;
+        .containList {
+            display: none;
+        }
+    }
 
-                    td {
-                        position: relative;
-                        padding: $COSMOUI_EVENTS_WIDGET_OPENED_LIST_TABLE_TD_PADDING;
-                        min-height: 55px;
-                        padding-top: 10px;
+    table.eventsList {
+        width: 100%;
+        margin: 0 auto;
+        table-layout: fixed;
 
-                        .event-icon {
-                            position: absolute;
-                            left: 10px;
-                            width: $COSMOUI_EVENTS_WIDGET_OPENED_EVENT_ICON_WIDTH;
-                            height: $COSMOUI_EVENTS_WIDGET_OPENED_EVENT_ICON_HEIGHT;
+        tr {
+            height: 50px;
+            border-bottom: 1px solid #ffffff;
+            cursor: pointer;
+
+            td {
+                height: 52px;
+                border-bottom: 2px solid #e8edf2;
+                vertical-align: middle;
+                font-size: 14px;
+                padding-right: 10px;
+                vertical-align: top;
+
+                &.icon {
+                    width: 55px;
+                    text-align: center;
+                    padding-left: 20px;
+                    white-space: nowrap;
+                    padding-top: 13px;
+                }
+
+                &.type {
+                    min-width: 200px;
+                    padding-top: 16px;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    white-space: nowrap;
+                }
+
+                &.time {
+                    width: 160px;
+                    white-space: nowrap;
+                    padding-top: 16px;
+                }
+
+                &.message {
+                    width: auto;
+                    padding: 16px 0;
+
+                    .brief {
+                        display: block;
+                        height: 19px;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                        white-space: nowrap;
+                        margin-right: 20px;
+                    }
+                }
+
+                .gs-icon-logs {
+                    top: 6px;
+                    left: -6px;
+                    padding: 0px;
+                    font-size: 46px;
+                    line-height: 30px;
+                }
+
+            }
+
+            &.openRow {
+                td {
+                    height: auto;
+                    &.message {
+                        overflow: visible;
+                        .brief {
+                            height: auto;
+                            overflow: visible;
+                            white-space: normal;
                         }
-
-                        .gs-icon-logs {
-                            top: 6px;
-                            left: -6px;
-                        }
-
-
-                        .event-type {
-                            position: relative;
-                            left: 30px;
-                            margin-left: $COSMOUI_EVENTS_WIDGET_OPENED_EVENT_TYPE_MARGIN_LEFT;
-                            width: $COSMOUI_EVENTS_WIDGET_OPENED_EVENT_TYPE_WIDTH;
-                            font-size: 13px;
-                            line-height: 17px;
-                            color: #4B6C8B;
-                        }
-
-                        .event-time {
-                            position: relative;
-                            left: 30px;
-                            margin-left: $COSMOUI_EVENTS_WIDGET_OPENED_EVENT_TIME_MARGIN_LEFT;
-                            font-size: 11px;
-                            line-height: 18px;
-                            color: #555;
-                        }
-
-                        .event-message {
-                            width: 235px;
-                            line-height: 18px;
-                            font-size: 12px;
-                            word-wrap: break-word;
-                            margin: 5px 0 0 0;
-                        }
-
                     }
                 }
             }
         }
-
     }
+
 }

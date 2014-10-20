@@ -1,47 +1,51 @@
 * {
-  padding: 0;
-  margin: 0;
+    padding: 0;
+    margin: 0;
 }
 
 html, body, .layout {
-  height: 100%;
-  width: 100%;
-  position: relative;
-  background-color: #2c4a67 !important;
+    height: 100%;
+    width: 100%;
+    position: relative;
+    background-color: #2c4a67 !important;
 }
 
 .layout {
-  margin: 0 auto;
-  min-width: 600px;
-  /*min-height: 100%;*/
-  height: 100%;
-  background: $COSMOUI_BACKGROUND;
-  font-family: "OpenSansLight";
+    margin: 0 auto;
+    min-width: 600px;
+    /*min-height: 100%;*/
+    height: 100%;
+    background: $COSMOUI_BACKGROUND;
+    font-family: "OpenSansLight";
+
+    display: table;
 }
 
 .layout[class] {
-  height: auto;
-  overflow: hidden;
+    height: auto;
+    /*overflow: hidden;*/
 }
 
 #header {
-  height: $HEADER_HEIGHT;
-  background: $COSMOUI_BACKGROUND
+    height: $HEADER_HEIGHT;
+    background: $COSMOUI_BACKGROUND;
+
+    display: table-cell;
 }
 
 #footer {
-  height: $FOOTER_HEIGHT;
-  margin-top: -$FOOTER_HEIGHT;
-  background: $FOOTER_BACKGROUND
+    height: $FOOTER_HEIGHT;
+    margin-top: -$FOOTER_HEIGHT;
+    background: $FOOTER_BACKGROUND
 }
 
 #footer[id] {
-  z-index: 100;
-  position: relative;
+    z-index: 100;
+    position: relative;
 }
 
 #smallFooter {
-    margin: 10px 20px 0 183px;
+    margin: 10px 23px 0 186px;
     color: #ccc;
     font-size: 11px;
 
@@ -64,212 +68,220 @@ html, body, .layout {
 }
 
 #fix {
-  height: $FOOTER_HEIGHT;
-  clear: both;
-  background-color: yellow;
+    height: $FOOTER_HEIGHT;
+    clear: both;
+    background-color: yellow;
 }
 
 #left-side-menu {
-  width: $LEFT_MENU_WIDTH;
-  float: left;
-  background: white;
-  padding-bottom: 32000px;
-  margin-bottom: -32000px;
-  margin-right: 10px;
+    width: $LEFT_MENU_WIDTH;
+    background: white;
+    display: table-cell;
 }
 
 #right-side-menu {
-  width: $RIGHT_MENU_WIDTH;
-  background: $RIGHT_MENU_BACKGROUND;
-  padding-bottom: 32000px;
-  margin-bottom: -32000px;
-  float: right;
+    width: $RIGHT_MENU_WIDTH;
+    background: $RIGHT_MENU_BACKGROUND;
+    padding-bottom: 32000px;
+    margin-bottom: -32000px;
+    float: right;
 }
 
 .logo {
-  position: relative;
-  top: 5px;
-  left: 20px;
-  width: 122px;
-  height: 75px;
-  background-position: 50% 50%;
-  background-repeat: no-repeat;
-  background-image: url("#{$img-cloudify-logo}");
-  background-size: contain;
+    position: relative;
+    top: 5px;
+    left: 20px;
+    width: 122px;
+    height: 75px;
+    background-position: 50% 50%;
+    background-repeat: no-repeat;
+    background-image: url("#{$img-cloudify-logo}");
+    background-size: contain;
 }
 
 .version-check {
-  color: #ccc;
-  font-size: 11px;
-  position: absolute;
-  top: 10px;
-  right: 20px;
+    color: #ccc;
+    font-size: 11px;
+    position: absolute;
+    top: 10px;
+    right: 20px;
 
-  a {
-    color: $clr-base-19;
-    &:hover {
-      color: #fff;
+    a {
+        color: $clr-base-19;
+        &:hover {
+            color: #fff;
+        }
     }
-  }
 }
 
 .search-box {
-  width: 184px;
-  height: 32px;
-  position: relative;
-  top: 27px;
-  right: 30px;
-  float: right;
+    width: 184px;
+    height: 32px;
+    position: relative;
+    top: 27px;
+    right: 30px;
+    float: right;
 
-  #search-field {
-    width: 100%;
-    height: 100%;
-    float: left;
-    position: absolute;
-    top: 0px;
-    border-radius: 5px;
-    padding-left: 30px;
-    border: none;
-  }
+    #search-field {
+        width: 100%;
+        height: 100%;
+        float: left;
+        position: absolute;
+        top: 0px;
+        border-radius: 5px;
+        padding-left: 30px;
+        border: none;
+    }
 
-  #search-submit {
-    width: 20px;
-    height: 20px;
-    background: url("#{$img-search}") no-repeat center center;
-    position: absolute;
-    top: 5px;
-    left: 5px;
-    border: none;
-  }
+    #search-submit {
+        width: 20px;
+        height: 20px;
+        background: url("#{$img-search}") no-repeat center center;
+        position: absolute;
+        top: 5px;
+        left: 5px;
+        border: none;
+    }
 }
 
 .current-user {
-  width: 142px;
-  height: 32px;
-  position: relative;
-  top: 35px;
-  float: right;
-  right: 20px;
-
-  #user-icon {
-    width: 18px;
-    height: 18px;
-    background: url("#{$img-user}") no-repeat center center;
+    width: 142px;
+    height: 32px;
     position: relative;
-    top: 0px;
-    left: 0px;
-    float: left;
-  }
-
-  #user-name {
-    height: 18px;
-    position: relative;
-    top: 0px;
-    left: 10px;
-    color: $COSMOUI_USERNAME_TEXT_COLOR;
-    float: left;
-  }
-
-  #logout-button {
-    width: 18px;
-    height: 18px;
-    position: relative;
-    top: 0px;
-    right: 5px;
-    background: url("#{$img-logout}") no-repeat center center;
+    top: 35px;
     float: right;
-    cursor: pointer;
-  }
+    right: 20px;
+
+    #user-icon {
+        width: 18px;
+        height: 18px;
+        background: url("#{$img-user}") no-repeat center center;
+        position: relative;
+        top: 0px;
+        left: 0px;
+        float: left;
+    }
+
+    #user-name {
+        height: 18px;
+        position: relative;
+        top: 0px;
+        left: 10px;
+        color: $COSMOUI_USERNAME_TEXT_COLOR;
+        float: left;
+    }
+
+    #logout-button {
+        width: 18px;
+        height: 18px;
+        position: relative;
+        top: 0px;
+        right: 5px;
+        background: url("#{$img-logout}") no-repeat center center;
+        float: right;
+        cursor: pointer;
+    }
 }
 
 #main-content {
-  overflow: hidden;
-  padding: 0px 20px 0px 10px;
-  margin: 0 0 -10px;
-  height: 100%;
-  background-color: $COSMOUI_BACKGROUND;
-  position: relative;
+    height: 100%;
+    background-color: $COSMOUI_BACKGROUND;
+    position: relative;
+
+    display: table-cell;
+    vertical-align: top;
 }
 
 #main-content-panel {
-  background: $COSMOUI_MAIN_CONTENT_BACKGROUND;
-  max-width: 100%;
-  min-height: 800px;
+    background: $COSMOUI_MAIN_CONTENT_BACKGROUND;
+    max-width: 100%;
+    min-height: 800px;
+    margin: 0 23px;
+}
+
+.line-row {
+    display: table-row;
+    vertical-align: top;
 }
 
 .content-header {
-  width: 100%;
-  padding: 10px 0px 10px 0px;
-  vertical-align: middle;
-  margin-left: 20px;
+    width: 100%;
+    padding: 10px 0px 10px 0px;
+    vertical-align: middle;
+    margin-left: 20px;
 
-  .breadcrumbs{
-    color:$COSMOUI_BREADCRUMB_ITEM_COLOR;
-    font-size:32px;
-    display: inline-block;
-
-    ul,li{ list-style:none; margin:0; padding:0; white-space: nowrap;}
-    li {
-      display:inline-block;
-      padding-right:5px;
-
-      a, a:link, a:visited, a:hover, a:active {
-        text-decoration: none;
+    .breadcrumbs {
         color: $COSMOUI_BREADCRUMB_ITEM_COLOR;
-      }
-      a:hover {
-        color: $COSMOUI_BREADCRUMB_ITEM_COLOR_HOVER;
-      }
+        font-size: 32px;
+        display: inline-block;
 
-      &.active {
-        color: #333;
-      }
-    }
-    li:not(:last-child):after{
-      display:inline-block;
-      content:">";
-      padding-left:5px;
-      color: $COSMOUI_BREADCRUMB_LAST_ITEM_COLOR;
-    }
-    li:last-child a {
-      color: $COSMOUI_BREADCRUMB_LAST_ITEM_COLOR;
-      cursor: default;
-    }
-    //li:last-child:not(:first-child):after{
-    //  content: "\f057";
-    //  display: inline-block;
-    //  font-family: FontAwesome;
-    //  font-style: normal;
-    //  font-weight: normal;
-    //  line-height: 1;
-    //  -webkit-font-smoothing: antialiased;
-    //  -moz-osx-font-smoothing: grayscale;
-    //  cursor: pointer;
-    //  color: $COSMOUI_BREADCRUMB_LAST_ITEM_COLOR;
-    //  top: 2px;
-    //  position: relative;
-    //}
-  }
-  .right {
-    float: right;
+        ul, li {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            white-space: nowrap;
+        }
+        li {
+            display: inline-block;
+            padding-right: 5px;
 
-    .gs-btn {
-      color: white;
-      font-weight: bold;
-      padding: 5px 10px 5px 10px;
-      background-color: $COSMOUI_BUTTON_BACKGROUND;
-      border-radius: 3px;
-      border-bottom: 1px solid $COSMOUI_BUTTON_BOTTOM_BORDER_COLOR;
-      border-right: 1px solid $COSMOUI_BUTTON_RIGHT_BORDER_COLOR;
-      border-top: none;
-      border-left: none;
-      margin-top: 9px;
+            a, a:link, a:visited, a:hover, a:active {
+                text-decoration: none;
+                color: $COSMOUI_BREADCRUMB_ITEM_COLOR;
+            }
+            a:hover {
+                color: $COSMOUI_BREADCRUMB_ITEM_COLOR_HOVER;
+            }
+
+            &.active {
+                color: #333;
+            }
+        }
+        li:not(:last-child):after {
+            display: inline-block;
+            content: ">";
+            padding-left: 5px;
+            color: $COSMOUI_BREADCRUMB_LAST_ITEM_COLOR;
+        }
+        li:last-child a {
+            color: $COSMOUI_BREADCRUMB_LAST_ITEM_COLOR;
+            cursor: default;
+        }
+        //li:last-child:not(:first-child):after{
+        //  content: "\f057";
+        //  display: inline-block;
+        //  font-family: FontAwesome;
+        //  font-style: normal;
+        //  font-weight: normal;
+        //  line-height: 1;
+        //  -webkit-font-smoothing: antialiased;
+        //  -moz-osx-font-smoothing: grayscale;
+        //  cursor: pointer;
+        //  color: $COSMOUI_BREADCRUMB_LAST_ITEM_COLOR;
+        //  top: 2px;
+        //  position: relative;
+        //}
     }
-  }
+    .right {
+        float: right;
+
+        .gs-btn {
+            color: white;
+            font-weight: bold;
+            padding: 5px 10px 5px 10px;
+            background-color: $COSMOUI_BUTTON_BACKGROUND;
+            border-radius: 3px;
+            border-bottom: 1px solid $COSMOUI_BUTTON_BOTTOM_BORDER_COLOR;
+            border-right: 1px solid $COSMOUI_BUTTON_RIGHT_BORDER_COLOR;
+            border-top: none;
+            border-left: none;
+            margin-top: 9px;
+        }
+    }
 }
 
-.right-panel{
-  width:400px;
+.right-panel {
+    width: 400px;
 }
 
 .buttons-group {
@@ -283,11 +295,11 @@ html, body, .layout {
         height: $COSMOUI_BLUEPRINT_DETAILS_BUTTON_HEIGHT;
         font-size: $COSMOUI_BLUEPRINT_DETAILS_BUTTON_FONT_SIZE;
         padding: $COSMOUI_BLUEPRINT_DETAILS_BUTTON_PADDING;
-//        color: $COSMOUI_BLUEPRINT_BUTTON_GROUP_BACKGROUND;
+        //        color: $COSMOUI_BLUEPRINT_BUTTON_GROUP_BACKGROUND;
         border: $COSMOUI_BLUEPRINT_BUTTON_GROUP_BORDER_COLOR;
         border-radius: 0px;
         margin: 0 -6px 0 0;
-        background-color: #fff;
+        background-color: $clr-base-01;
         &:first-child {
             border-radius: $RADIUS 0 0 $RADIUS;
         }
@@ -296,7 +308,12 @@ html, body, .layout {
         }
         &.active {
             background: $COSMOUI_BLUEPRINT_BUTTON_ACTIVE_COLOR;
+            border: $COSMOUI_BLUEPRINT_BUTTON_GROUP_BORDER_COLOR;
             color: white;
+        }
+        &:hover:not(.active) {
+            background-color: $clr-base-01;
+            border: $COSMOUI_BLUEPRINT_BUTTON_GROUP_BORDER_COLOR;
         }
     }
 }
