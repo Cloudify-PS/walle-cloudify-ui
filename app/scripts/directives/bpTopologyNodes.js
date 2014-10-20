@@ -14,9 +14,15 @@ angular.module('cosmoUiApp')
                     scope.onNodeSelected = function(node) {
                         scope.$emit('topologyNodeSelected', node);
                     };
+
+                    scope.onRelationshipSelected = function(relationship) {
+                        scope.$emit('topologyRelationshipSelected', relationship);
+                    };
                 });
             },
             controller: function($scope) {
+                $scope.headerHover = null;
+
                 $scope.getBadgeStatus = function(status) {
                     switch(status) {
                     case 0:
@@ -30,6 +36,18 @@ angular.module('cosmoUiApp')
                     default:
                         return 'install';
                     }
+                };
+
+                $scope.isConnectedTo = function(relationship) {
+                    return relationship.type_hierarchy.join(',').indexOf('connected_to') > -1;
+                };
+
+                $scope.getTypeClass = function(type) {
+                    return 'cloudify-types-' + type.replace('_', '-');
+                };
+
+                $scope.setHeaderHover = function(nodeName) {
+                    $scope.headerHover = nodeName;
                 };
             }
         };

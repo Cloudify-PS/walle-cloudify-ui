@@ -9,12 +9,16 @@ angular.module('cosmoUiApp')
         });
 
         $scope.$on('topologyNodeSelected', function(e, data) {
-            $scope.viewNode(data);
+            $scope.viewNode(data, 'node');
+        });
+
+        $scope.$on('topologyRelationshipSelected', function(e, data) {
+            $scope.viewNode(data, 'relationship');
         });
 
         $scope.$on('blueprintData', function(event, data){
             $scope.planNodes = data.plan.nodes;
-            $scope.nodesTree = NodeService.createNodesTree(data.plan.nodes, true);
+            $scope.nodesTree = NodeService.createNodesTree(data.plan.nodes);
             blueprintCoordinateService.resetCoordinates();
             blueprintCoordinateService.setMap(_getNodesConnections(data.plan.nodes));
             $scope.coordinates = blueprintCoordinateService.getCoordinates();
@@ -48,7 +52,8 @@ angular.module('cosmoUiApp')
             return relationshipData;
         };
 
-        $scope.viewNode = function (viewNode) {
+        $scope.viewNode = function (viewNode, nodeType) {
+            viewNode.nodeType = nodeType;
             $scope.viewNodeDetails = viewNode;
         };
 

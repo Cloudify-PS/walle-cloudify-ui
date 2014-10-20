@@ -2,17 +2,13 @@
 
 describe('Service: BlueprintsService', function () {
 
-    var helper = new Helper();
     var BlueprintsService;
 
     describe('Test setup', function() {
         it('Injecting required data & initializing a new instance', function() {
 
             // Load the app module
-            module('cosmoUiApp');
-
-            // inject UI
-            helper.injectUi();
+            module('cosmoUiApp', 'gsUiHelper');
 
             // Initialize a new instance of BlueprintsService
             inject(function (_BlueprintsService_) {

@@ -1,1 +1,27 @@
-<div events-widget id="plans-index-events-widget" data-ng-model="events"></div>
+<div class="events-widget" data-ng-class="{true: 'closed'}[minimizeMode]">
+    <div class="bg"></div>
+    <div class="head">
+        <div class="title">Events</div>
+        <div class="lastEvent" data-ng-show="hasLastEvent()">
+            <div class="icon">
+                <div class="icon-events" ng-class="getEventIcon(lastEvent()._source.event_type)"></div>
+            </div>
+            <div class="type">{{ getEventText(lastEvent()._source.event_type) }} {{ lastEvent()._source.context.node_name ? ' - ' + lastEvent()._source.context.node_name : '' }}</div>
+        </div>
+        <div class="dragBtn" data-ng-mousedown="dragIt($event)"></div>
+    </div>
+    <div class="containList" perfect-scrollbar wheel-propagation="true">
+        <table class="eventsList">
+            <tr class="animate-repeat" data-ng-class="{true: 'openRow'}[isOpen]" ng-repeat="event in events" data-ng-click="isOpen=!isOpen" ng-init="isOpen=false">
+                <td class="icon">
+                    <div class="icon-events" ng-class="getEventIcon(event._source.event_type)"></div>
+                </td>
+                <td class="type">{{ getEventText(event._source.event_type) }} {{ event._source.context.node_name ? ' - ' + event._source.context.node_name : '' }}</td>
+                <td class="time">{{ event._source.timestamp }}</td>
+                <td class="message">
+                    <div class="brief">{{ event._source.message.text }}</div>
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>

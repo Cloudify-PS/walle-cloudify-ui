@@ -2,21 +2,17 @@
 
 describe('Service: NodeSearchService', function () {
 
-    var helper = new Helper();
     var NodeSearchService;
 
     describe('Test setup', function() {
         it('Injecting required data & initializing a new instance', function() {
 
             // Load the app module
-            module('cosmoUiApp');
-
-            // inject UI
-            helper.injectUi();
+            module('cosmoUiApp', 'gsUiHelper');
 
             // Initialize a new instance of NodeSearchService
-            inject(function (_NodeSearchService_) {
-                helper.addInjects([
+            inject(function (_NodeSearchService_, $helper) {
+                $helper.addInjects([
                     {
                         url: '/backend/blueprints',
                         respond: 200
