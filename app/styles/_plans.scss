@@ -792,7 +792,6 @@
         }
         .tree li span.current {
             color: #4b6c8b;
-            font-weight: bold;
         }
         .tree li span.cliclable {
             cursor: pointer;
@@ -814,7 +813,7 @@
         .sourcecode {
             position: relative;
             display: table-cell;
-            width: auto;
+            width: 100%;
             p.empty {
                 display: block;
                 text-align: center;

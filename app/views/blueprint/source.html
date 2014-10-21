@@ -12,9 +12,12 @@
         </div>
         <div class="sourcecode">
             <h4 data-ng-show="filename">{{ filename }}</h4>
-            <div class="pre">
+            <div class="pre" ng-show="isSourceText(filename)">
                 <p class="empty" data-ng-hide="dataCode.data">Please choose file to preview.</p>
                 <div code-highlight="yml" ng-model="dataCode"></div>
+            </div>
+            <div class="noPreview" ng-show="!isSourceText(filename)">
+                <p class="empty">No preview available.</p>
             </div>
         </div>
     </div>

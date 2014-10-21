@@ -105,7 +105,7 @@ Cloudify4node.getBlueprints = function(callback) {
     });
 
     createRequest(requestData, callback);
-}
+};
 
 Cloudify4node.addBlueprint = function(application_archive, blueprint_id, callback) {
     if (blueprint_id === undefined) {
@@ -156,7 +156,7 @@ Cloudify4node.addBlueprint = function(application_archive, blueprint_id, callbac
         req.write(data);
         req.end();
     });
-}
+};
 
 Cloudify4node.getBlueprintById = function(blueprint_id, callback) {
     var requestData = createRequestData({
@@ -165,7 +165,7 @@ Cloudify4node.getBlueprintById = function(blueprint_id, callback) {
     });
 
     createRequest(requestData, callback );
-}
+};
 
 Cloudify4node.validateBlueprint = function(blueprint_id, callback) {
     var requestData = createRequestData({
@@ -176,7 +176,7 @@ Cloudify4node.validateBlueprint = function(blueprint_id, callback) {
     });
 
     createRequest(requestData, callback );
-}
+};
 
 Cloudify4node.deleteBlueprint = function(blueprint_id, callback) {
     var requestData = createRequestData({
@@ -185,7 +185,7 @@ Cloudify4node.deleteBlueprint = function(blueprint_id, callback) {
     });
 
     createRequest(requestData, callback );
-}
+};
 
 Cloudify4node.archiveBlueprint = function(blueprint_id, callback) {
     var requestData = {
@@ -235,7 +235,7 @@ Cloudify4node.archiveBlueprint = function(blueprint_id, callback) {
             callback(e.message, null);
         });
     });
-}
+};
 
 Cloudify4node.browseBlueprint = function(blueprint_id, callback) {
     browseBlueprint.isBlueprintExist(blueprint_id, function(err, isExist){
@@ -251,11 +251,11 @@ Cloudify4node.browseBlueprint = function(blueprint_id, callback) {
             browseBlueprint.browseBlueprint(blueprint_id, callback);
         }
     })
-}
+};
 
 Cloudify4node.browseBlueprintFile = function(blueprint_id, relativePath, callback) {
     browseBlueprint.fileGetContent(blueprint_id, relativePath, callback);
-}
+};
 
 Cloudify4node.getExecutionById = function(execution_id, callback) {
     var requestData = createRequestData({
@@ -264,7 +264,7 @@ Cloudify4node.getExecutionById = function(execution_id, callback) {
     });
 
     createRequest(requestData, callback);
-}
+};
 
 Cloudify4node.updateExecutionState = function(execution_id, new_state, callback) {
     var data = {
@@ -281,7 +281,7 @@ Cloudify4node.updateExecutionState = function(execution_id, new_state, callback)
     });
 
     createRequest(requestData, callback);
-}
+};
 
 Cloudify4node.getDeployments = function(callback) {
     var requestData = createRequestData({
@@ -290,7 +290,7 @@ Cloudify4node.getDeployments = function(callback) {
     });
 
     createRequest(requestData, callback);
-}
+};
 
 Cloudify4node.addDeployment = function(requestBody, callback) {
     var data = {
@@ -308,7 +308,7 @@ Cloudify4node.addDeployment = function(requestBody, callback) {
     });
 
     createRequest(requestData, callback);
-}
+};
 
 Cloudify4node.getDeploymentById = function(deployment_id, callback) {
     var requestData = createRequestData({
@@ -317,7 +317,7 @@ Cloudify4node.getDeploymentById = function(deployment_id, callback) {
     });
 
     createRequest(requestData, callback);
-}
+};
 
 Cloudify4node.deleteDeploymentById = function(deployment_id, ignore_live_nodes, callback) {
     var requestData = createRequestData({
@@ -326,7 +326,7 @@ Cloudify4node.deleteDeploymentById = function(deployment_id, ignore_live_nodes, 
     });
 
     createRequest(requestData, callback);
-}
+};
 
 Cloudify4node.getDeploymentNodes = function(deployment_id, state, callback) {
     var requestData = createRequestData({
@@ -335,7 +335,7 @@ Cloudify4node.getDeploymentNodes = function(deployment_id, state, callback) {
     });
 
     createRequest(requestData, callback);
-}
+};
 
 Cloudify4node.getNodeInstances = function(callback) {
 
@@ -345,7 +345,7 @@ Cloudify4node.getNodeInstances = function(callback) {
     });
 
     createRequest(requestData, callback);
-}
+};
 
 Cloudify4node.getNodeInstancesByDeploymentId = function(queryParams, callback) {
     var queryStr = '';
@@ -361,7 +361,7 @@ Cloudify4node.getNodeInstancesByDeploymentId = function(queryParams, callback) {
     });
 
     createRequest(requestData, callback);
-}
+};
 
 Cloudify4node.getDeploymentExecutions = function(deployment_id, callback) {
     var requestData = createRequestData({
@@ -370,7 +370,7 @@ Cloudify4node.getDeploymentExecutions = function(deployment_id, callback) {
     });
 
     createRequest(requestData, callback);
-}
+};
 
 Cloudify4node.executeDeployment = function(requestBody, callback) {
     var data = {
@@ -391,7 +391,7 @@ Cloudify4node.executeDeployment = function(requestBody, callback) {
     });
 
     createRequest(requestData, callback);
-}
+};
 
 Cloudify4node.getProviderContext = function(callback) {
     var requestData = createRequestData({
@@ -400,7 +400,7 @@ Cloudify4node.getProviderContext = function(callback) {
     });
 
     createRequest(requestData, callback);
-}
+};
 
 Cloudify4node.getEvents = function(query, callback) {
     var data = query;
@@ -416,7 +416,7 @@ Cloudify4node.getEvents = function(query, callback) {
     });
 
     createRequest(requestData, callback);
-}
+};
 
 Cloudify4node.getWorkflows = function(deployment_id, callback) {
     var requestData = createRequestData({
@@ -425,7 +425,7 @@ Cloudify4node.getWorkflows = function(deployment_id, callback) {
     });
 
     createRequest(requestData, callback);
-}
+};
 
 Cloudify4node.getNode = function(node_id, queryParams, callback) {
     var queryStr = '';
@@ -441,7 +441,7 @@ Cloudify4node.getNode = function(node_id, queryParams, callback) {
     });
 
     createRequest(requestData, callback);
-}
+};
 
 Cloudify4node.getNodes = function(queryParams, callback) {
     var queryStr = '';
@@ -457,7 +457,7 @@ Cloudify4node.getNodes = function(queryParams, callback) {
     });
 
     createRequest(requestData, callback);
-}
+};
 
 Cloudify4node.getPackageJson = function(callback) {
     return callback(null, require('../package.json'));
@@ -488,7 +488,7 @@ Cloudify4node.influxRequest = function(query, callback) {
         url: influxClient.url('db/' + influxClient.options.database + '/series', query),
         json: true
     }, influxClient._parseCallback(callback));
-}
+};
 
 Cloudify4node.getLogsExportFile = function(response, callback) {
     var filePath = path.join(conf.logs.folder, conf.logs.file);
@@ -508,4 +508,4 @@ Cloudify4node.getLogsExportFile = function(response, callback) {
             }
         });
     });
-}
+};

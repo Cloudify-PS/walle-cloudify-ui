@@ -73,6 +73,8 @@ angular.module('cosmoUiApp')
                 return 'py';
             case 'md':
                 return 'text';
+            case 'html':
+                return 'text';
             default:
                 return 'text';
             }
@@ -112,10 +114,21 @@ angular.module('cosmoUiApp')
                 .then(function(fileContent) {
                     $scope.dataCode = {
                         data: fileContent,
-                        brush: getBrashByFile(data.name)
+                        brush: getBrashByFile(data.name),
+                        path: data.path
                     };
                     $scope.filename = data.name;
                 });
+        };
+
+        $scope.isSourceText = function(fileName) {
+            if (fileName === undefined) {
+                return;
+            }
+            var textExt = ['yaml', 'js', 'css', 'sh', 'txt', 'bat', 'cmd', 'ps1', 'py', 'md', 'html'];
+            var fileExt = fileName.substr(fileName.lastIndexOf('.') + 1);
+            return textExt.indexOf(fileExt) > -1;
+
         };
 
     });

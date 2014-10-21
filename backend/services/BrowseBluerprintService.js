@@ -50,6 +50,7 @@ module.exports.Walker = function() {
                     children.push({
                         'name': file,
                         'relativePath': path.relative(origRoot, path.join(rootFolder, file)),
+                        'path': path.join(rootFolder, file),
                         'encoding': isAscii ? 'ASCII' : 'BINARY'
                     });
 
