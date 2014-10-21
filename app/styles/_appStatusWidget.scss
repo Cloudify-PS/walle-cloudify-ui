@@ -12,9 +12,10 @@
             display: block;
             text-align: center;
             margin-top: 5px;
+            overflow: hidden;
             svg {
-                left: 23px;
-                top: 1px;
+                left: 24px;
+                top: 0px;
             }
             .gauge {
                 position: absolute;
