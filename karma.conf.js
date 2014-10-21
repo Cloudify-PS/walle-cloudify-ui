@@ -1,5 +1,5 @@
 module.exports = function(config) {
-    config.set({
+    var configuration = {
         // base path, that will be used to resolve files and exclude
         basePath: '',
 
@@ -77,6 +77,13 @@ module.exports = function(config) {
         // CLI --browsers Chrome,Firefox,Safari
         browsers: ['Chrome'],
 
+        customLaunchers: {
+            Chrome_travis_ci: {
+                base: 'Chrome',
+                flags: ['--no-sandbox']
+            }
+        },
+
         // If browser does not capture in given timeout [ms], kill it
         // CLI --capture-timeout 5000
         captureTimeout: 20000,
@@ -92,7 +99,14 @@ module.exports = function(config) {
         plugins: [
             'karma-jasmine',
             'karma-chrome-launcher',
+            'karma-firefox-launcher',
             'karma-spec-reporter'
         ]
-    });
+    };
+
+    if (process.env.TRAVIS) {
+        configuration.browsers = ['Chrome_travis_ci'];
+    }
+
+    config.set(configuration);
 };
