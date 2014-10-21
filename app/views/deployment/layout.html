@@ -26,11 +26,11 @@
             </div>
             <div class="executingWorkflow" ng-show="deploymentInProgress">
                 <div class="deploymentExecute" ng-show="deploymentInProgress"></div>
-                {{ 'deployment.process.' + executedData.workflow_id | i18n }}
+                {{ currentExecution.workflow_id != null ? 'deployment.process.' + currentExecution.workflow_id : 'deployment.process.wait' | i18n }}
             </div>
             <i class="deployment-play" ng-class="{play: isExecuteEnabled(), disabled: !isExecuteEnabled()}" ng-click="toggleConfirmationDialog('execute')" ng-show="!deploymentInProgress"></i>
 
-            <i class="deployment-pause fa fa-times-circle" ng-show="deploymentInProgress" ng-click="toggleConfirmationDialog('cancel')"></i>
+            <i class="deployment-pause fa fa-times-circle" ng-show="deploymentInProgress && currentExecution.workflow_id != null" ng-click="toggleConfirmationDialog('cancel')"></i>
         </div>
 
         <div ng-show="isConfirmationDialogVisible">
