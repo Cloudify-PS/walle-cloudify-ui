@@ -7,7 +7,7 @@
  * # deploymentLayout
  */
 angular.module('cosmoUiApp')
-    .directive('deploymentLayout', function ($location, $route, BreadcrumbsService, CloudifyService) {
+    .directive('deploymentLayout', function ($location, BreadcrumbsService, CloudifyService) {
         return {
             templateUrl: 'views/deployment/layout.html',
             restrict: 'EA',
@@ -37,12 +37,12 @@ angular.module('cosmoUiApp')
                 };
                 var deploymentModel = {};
                 var nodesList = [];
-                var statesIndex = ['uninitialized', 'initializing', 'creating', 'created', 'configuring', 'configured', 'starting', 'started'];
+                var statesIndex = ['uninitialized', 'initializing', 'creating', 'created', 'configuring', 'configured', 'starting', 'started', 'deleted'];
 
                 $scope.breadcrumb = [];
                 $scope.workflowsList = [];
                 $scope.isConfirmationDialogVisible = false;
-                $scope.deploymentInProgress = false;
+                $scope.deploymentInProgress = null;
                 $scope.currentExecution = null;
                 $scope.executedData = null;
                 $scope.selectedWorkflow = {
@@ -184,11 +184,9 @@ angular.module('cosmoUiApp')
                         else if ($scope.deploymentInProgress === null || $scope.currentExecution !== false) {
                             $scope.deploymentInProgress = true;
                         }
-                        else {
-                            CloudifyService.deployments.getDeploymentNodes({deployment_id : $scope.id, state: true}).then(function(dataNodes){
-                                _updateDeploymentModel(dataNodes);
-                            });
-                        }
+                        CloudifyService.deployments.getDeploymentNodes({deployment_id : $scope.id, state: true}).then(function(dataNodes){
+                            _updateDeploymentModel(dataNodes);
+                        });
                         $scope.$emit('deploymentExecution', {
                             currentExecution: $scope.currentExecution,
                             deploymentInProgress: $scope.deploymentInProgress,
@@ -196,55 +194,89 @@ angular.module('cosmoUiApp')
                         });
                     });
 
-                function _updateDeploymentModel( nodes ) {
+                function _orderNodesById( nodes ) {
                     var IndexedNodes = {};
                     for (var i in nodes) {
                         var node = nodes[i];
-                        IndexedNodes[node.node_id] = {
-                            state: node.state
-                        };
+                        if(node.hasOwnProperty('node_id')) {
+                            IndexedNodes[node.node_id] = {
+                                state: node.state
+                            };
+                        }
                     }
-                    for (var d in deploymentModel) {
-                        var deployment = deploymentModel[d];
+                    return IndexedNodes;
+                }
+
+                function _updateDeploymentModel( nodes ) {
+                    var IndexedNodes = _orderNodesById(nodes);
+
+                    for (var i in deploymentModel) {
+                        var deployment = deploymentModel[i];
                         var _reachable = 0;
                         var _states = 0;
                         var _completed = 0;
+                        var _uninitialized = 0;
 
+                        // go over all the instances
                         for (var n in deployment.instancesIds) {
                             var nodeId = deployment.instancesIds[n];
-                            var nodeInstance = IndexedNodes[nodeId];
+
                             if(IndexedNodes.hasOwnProperty(nodeId)) {
+                                var nodeInstance = IndexedNodes[nodeId];
+                                var stateNum = statesIndex.indexOf(nodeInstance.state);
+
+                                // Count how many instances are reachable
                                 if(nodeInstance.state === 'started') {
                                     _reachable++;
                                 }
-                                if(statesIndex.indexOf(nodeInstance.state) > 0 || statesIndex.indexOf(nodeInstance.state) < 7) {
-                                    var stateNum = statesIndex.indexOf(nodeInstance.state);
+
+                                // instance state between 'initializing' to 'starting'
+                                if(stateNum > 0 && stateNum <= 7) {
+                                    _states += stateNum;
+
+                                    // instance 'started'
                                     if(stateNum === 7) {
                                         _completed++;
                                     }
-                                    _states += stateNum;
+                                }
+
+                                // instance 'uninitialized' or 'deleted'
+                                if(stateNum === 0 || stateNum > 7) {
+                                    _uninitialized++;
                                 }
                             }
                         }
+
+                        // * results of all the instances of the node * //
+                        // completed instances
                         deployment.completed = _completed;
+
+                        // reachable instances
                         deployment.reachables = _reachable;
+
+                        // average process
                         deployment.state = Math.round(_states / deployment.total);
+
+                        // average process in percents
                         deployment.states = calcState(_states, deployment.total);
 
-                        // Calculate percents for progressbar
+                        // Set Status by Workflow Execution Progress
                         var processDone = (deployment.states < 100 ? deployment.states : calcProgress(deployment.reachables, deployment.total));
                         deployment.process = {
                             'done': processDone
                         };
 
-                        // Set Status by Workflow Execution Progress
-                        setDeploymentStatus(deployment, $scope.deploymentInProgress ? false : processDone);
+                        if(_uninitialized === deployment.total) {
+                            setDeploymentStatus(deployment, false);
+                        }
+                        else {
+                            setDeploymentStatus(deployment, processDone);
+                        }
                     }
 
                     nodesList.forEach(function(node) {
                         node.state = deploymentModel[node.id];
                     });
-
                 }
 
                 function setDeploymentStatus(deployment, process) {
@@ -284,10 +316,6 @@ angular.module('cosmoUiApp')
                     return $scope.selectedWorkflow.data !== null;
                 }
 
-                function _refreshPage() {
-                    $route.reload();
-                }
-
                 function _cancelExecution() {
                     var callParams = {
                         'execution_id': $scope.executedData.id,
@@ -316,7 +344,7 @@ angular.module('cosmoUiApp')
                             }
                             else {
                                 $scope.currentExecution = execution;
-                                _refreshPage();
+                                $scope.isConfirmationDialogVisible = false;
                             }
                         });
                     }
@@ -371,8 +399,6 @@ angular.module('cosmoUiApp')
                 $scope.$watch('toggleBar', function(toggleBar) {
                     $scope.$emit('toggleChange', toggleBar);
                 });
-
-
 
             }
         };
