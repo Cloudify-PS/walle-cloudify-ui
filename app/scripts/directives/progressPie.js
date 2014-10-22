@@ -1,11 +1,11 @@
 'use strict';
 
 angular.module('cosmoUiApp')
-    .directive('pieProgress', function () {
+    .directive('progressPie', function () {
         return {
             restrict: 'A',
             scope: {
-                'data': '=pieProgress'
+                'data': '=progressPie'
             },
             link: function postLink($scope, $element, $attrs) {
 

@@ -63,6 +63,7 @@ angular.module('cosmoUiApp')
             })();
             if(text !== undefined) {
                 var tempdate = new Date(Date.fromISO(text));
+                tempdate.setUTCHours(tempdate.getUTCHours() + tempdate.getTimezoneOffset() / 60);
                 return $filter('date')(tempdate, newformat ? newformat : 'MMM-dd-yyyy');
             }
         };

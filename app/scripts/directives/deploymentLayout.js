@@ -181,7 +181,7 @@ angular.module('cosmoUiApp')
                         if (!$scope.currentExecution && $scope.deploymentInProgress) {
                             $scope.deploymentInProgress = false;
                         }
-                        else if ($scope.deploymentInProgress === null || $scope.currentExecution !== false) {
+                        else if ($scope.deploymentInProgress === null && $scope.currentExecution !== false) {
                             $scope.deploymentInProgress = true;
                         }
                         CloudifyService.deployments.getDeploymentNodes({deployment_id : $scope.id, state: true}).then(function(dataNodes){
@@ -334,6 +334,7 @@ angular.module('cosmoUiApp')
 
                 function _executeDeployment() {
                     if (_isExecuteEnabled()) {
+                        $scope.deploymentInProgress = true;
                         CloudifyService.deployments.execute({
                             deployment_id: $scope.id,
                             workflow_id: $scope.selectedWorkflow.data.value,
