@@ -13,6 +13,7 @@ if ( isLocalhost() ){
 }
 
 var express = require('express');
+require('express-params');
 var _ = require('lodash');
 var app = express();
 var port = 9001;
@@ -254,7 +255,16 @@ app.get('/backend/grafana/series', function(request, response){
 });
 
 app.get('/backend/grafana/series/list', function(request, response){
-    cloudify4node.influxRequest({q: 'list series', time_precision: request.query.time_precision}, function(err, data){
+    cloudify4node.getDashboardSeriesList(request.query, function(err, data){
+        response.send(err !== null ? err : data);
+    });
+//    cloudify4node.influxRequest({q: 'list series', time_precision: request.query.time_precision, dashboardId: request.query.dashboardId}, function(err, data){
+//        response.send(err !== null ? err : data);
+//    });
+});
+
+app.get('/backend/grafana/dashboards/:dashboardId', function(request, response){
+    cloudify4node.getDeploymentDashboards(request.params.dashboardId, function(err, data) {
         response.send(err !== null ? err : data);
     });
 });
