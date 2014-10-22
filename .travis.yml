@@ -11,10 +11,10 @@ before_script:
   - 'npm install -g bower grunt-cli'
   - 'bower install'
   - 'bower update'
-  - 'grunt test --force'
+  - 'grunt test'
 notifications:
   email:
-#    - guym@gigaspaces.com
+    - guym@gigaspaces.com
     - erez@gigaspaces.com
-#    - itsik@gigaspaces.com
-#    - barakme@gigaspaces.com
+    - itsik@gigaspaces.com
+    - barakme@gigaspaces.com
