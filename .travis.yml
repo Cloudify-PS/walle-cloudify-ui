@@ -3,7 +3,7 @@ node_js:
   - '0.10'
 before_install:
   - gem install compass
-  - gem uninstall sass
+  - gem uninstall sass --force
   - gem install sass -v 3.4.5
 before_script:
 #  - export CHROME_BIN=chromium-browser
@@ -15,7 +15,7 @@ before_script:
   - 'grunt test --force'
 notifications:
   email:
-    - guym@gigaspaces.com
+#    - guym@gigaspaces.com
     - erez@gigaspaces.com
-    - itsik@gigaspaces.com
-    - barakme@gigaspaces.com
+#    - itsik@gigaspaces.com
+#    - barakme@gigaspaces.com
