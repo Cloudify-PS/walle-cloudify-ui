@@ -1,7 +1,9 @@
 language: node_js
 node_js:
   - '0.10'
-before_install: gem install compass --version 3.4.5
+before_install:
+  - gem install compass
+  - gem install sass -v 3.4.5
 before_script:
 #  - export CHROME_BIN=chromium-browser
   - export DISPLAY=:99.0
