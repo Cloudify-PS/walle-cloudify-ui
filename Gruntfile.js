@@ -403,15 +403,18 @@ module.exports = function (grunt) {
     });
 
     grunt.registerTask('test', function(testBackend) {
-        var tasks = [
-            'clean:server',
-            'concurrent:test',
-            'connect:test',
-            'html2js',
-            'karma'
-        ];
+        var tasks  = [];
+        if ( testBackend === '' || testBackend === 'all' || testBackend === 'frontend') { // default
+            tasks = [
+                'clean:server',
+                'concurrent:test',
+                'connect:test',
+                'html2js',
+                'karma'
+            ];
+        }
 
-        if(testBackend === 'backend') {
+        if( testBackend === 'all' || testBackend === 'backend') {
             tasks.push('jasmine_node');
         }
 
