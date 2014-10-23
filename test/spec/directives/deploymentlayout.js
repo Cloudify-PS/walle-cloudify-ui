@@ -61,7 +61,6 @@ describe('Directive: deploymentLayout', function () {
                 return element.children().scope().breadcrumb.length > 0;
             });
             runs(function() {
-                console.log('test href', element.children().scope().breadcrumb);
                 expect(element.children().scope().breadcrumb[0].href).toBe('#/blueprint/blueprint1/topology');
             });
 
