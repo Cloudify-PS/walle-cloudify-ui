@@ -2,7 +2,7 @@
 
 describe('Controller: HostsCtrl', function () {
 
-    var HostsCtrl, scope, nodes;
+    var HostsCtrl, scope;
 
     // load the controller's module
     beforeEach(module('cosmoUiApp', 'ngMock'));
