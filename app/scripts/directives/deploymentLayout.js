@@ -157,10 +157,6 @@ angular.module('cosmoUiApp')
                         'href': '/executions'
                     },
                     {
-                        'name': 'Events',
-                        'href': '/events'
-                    },
-                    {
                         'name': 'Monitoring',
                         'href': '/monitoring'
                     }
