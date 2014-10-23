@@ -29,10 +29,6 @@ angular.module('cosmoUiApp', [
                 templateUrl: 'views/blueprintsIndex.html',
                 controller: 'BlueprintsIndexCtrl'
             })
-            .when('/blueprint',{
-                templateUrl: 'views/plans.html',
-                controller: 'PlansCtrl'
-            })
             .when('/blueprint/:blueprintId/topology', {
                 templateUrl: 'views/blueprint/topology.html',
                 controller: 'BlueprintTopologyCtrl'
