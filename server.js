@@ -249,7 +249,7 @@ app.post('/backend/influx', function(request, response) {
 });
 
 app.get('/backend/grafana/series', function(request, response){
-    cloudify4node.influxRequest(request.query, function(err, data){
+    cloudify4node.getDashboardSeries(request.query, function(err, data){
         response.send(err !== null ? err : data);
     });
 });
@@ -258,13 +258,10 @@ app.get('/backend/grafana/series/list', function(request, response){
     cloudify4node.getDashboardSeriesList(request.query, function(err, data){
         response.send(err !== null ? err : data);
     });
-//    cloudify4node.influxRequest({q: 'list series', time_precision: request.query.time_precision, dashboardId: request.query.dashboardId}, function(err, data){
-//        response.send(err !== null ? err : data);
-//    });
 });
 
 app.get('/backend/grafana/dashboards/:dashboardId', function(request, response){
-    cloudify4node.getDeploymentDashboards(request.params.dashboardId, function(err, data) {
+    cloudify4node.getDeploymentDashboards(request.params, function(err, data) {
         response.send(err !== null ? err : data);
     });
 });
