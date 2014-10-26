@@ -19,7 +19,14 @@ angular.module('cosmoUiApp')
 
                 CloudifyService.getLatestVersion(currentVersion)
                     .then(function(ver) {
-                        scope.updateVersion = ver > currentVersion;
+                        var _currentVer = parseInt(currentVersion);
+                        var _ver = parseInt(ver);
+                        if (!isNaN(_ver)) {
+                            scope.updateVersion = _ver > _currentVer;
+                        } else {
+                            scope.updateVersion = false;
+                        }
+                        console.log('updateVersion', scope.updateVersion);
                     });
 
                 scope.searchCloudify = function() {
