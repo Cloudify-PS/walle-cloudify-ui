@@ -32,7 +32,7 @@
                 cursor: $COSMOUI_DIALOG_CURSOR;
 
                 &.actions {
-                    min-width: $COSMOUI_LIST_HOVER_ACTION_WIDTH;
+                    width: $COSMOUI_LIST_HOVER_ACTION_WIDTH;
                     font-size: $COSMOUI_LIST_HOVER_ACTION_FONT_SIZE;
 
                     i {
