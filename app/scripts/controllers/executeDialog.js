@@ -5,7 +5,8 @@ angular.module('cosmoUiApp')
         $scope.executeError = false;
         $scope.executeErrorMessage = 'Error executing workflow';
         $scope.inputs = {};
-        $scope.inputsJSON = null;
+        $scope.inputsJSON = {};
+        $scope.rawString = '';
         $scope.inputsState = 'params';
 
         $scope.isExecuteEnabled = function() {
@@ -14,9 +15,14 @@ angular.module('cosmoUiApp')
             }
 
             var _enabled = true;
-            for (var param in $scope.selectedWorkflow.data.parameters) {
-                if ($scope.inputs[param] === undefined || $scope.inputs[param] === '') {
-                    _enabled = false;
+            if ($scope.inputsState === 'raw') {
+                $scope.rawString = JSON.stringify($scope.inputs);
+            } else {
+                for (var param in $scope.selectedWorkflow.data.parameters) {
+                    if ($scope.inputs[param] === undefined || $scope.inputs[param] === '') {
+                        $scope.inputs[param] = '';
+                        _enabled = false;
+                    }
                 }
             }
             return _enabled;
@@ -38,7 +44,7 @@ angular.module('cosmoUiApp')
 
             if ($scope.inputsState === 'raw') {
                 try {
-                    $scope.inputs = JSON.parse($scope.inputsJSON);
+                    $scope.inputs = JSON.parse($scope.rawString);
                 } catch (e) {}
             }
 
@@ -81,7 +87,6 @@ angular.module('cosmoUiApp')
             $scope.workflow_id = null;
             $scope.executeError = false;
             $scope.inputs = {};
-            $scope.inputsJSON = null;
             $scope.inputsState = 'params';
         }
 

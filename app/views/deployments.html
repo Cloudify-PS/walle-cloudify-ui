@@ -65,10 +65,10 @@
                     </ul>
                 </div>
                 <div class="inputsRaw" ng-show="inputsState == 'raw'">
-                    <textarea ng-model="inputs"></textarea>
+                    <textarea ng-model="rawString"></textarea>
                 </div>
             </div>
-            <div class="error-message" data-ng-show="executedErr">{{ executedErr }}</div>
+            <div class="error-message" data-ng-show="isExecuteError()">{{ executeErrorMessage }}</div>
             <div class="buttonsContainer confirmationButtons">
                 <button id="cancelBtn" class="dialogButton" ng-click="toggleConfirmationDialog()">{{ 'deployments.confirmationPopup.cancelBtn' | i18n }}</button>
                 <button id="confirmBtn" class="dialogButton" ng-class="{disabled: !isExecuteEnabled(), enabled: isExecuteEnabled(), loader: inProcess}" ng-click="executeWorkflow(selectedDeployment)">{{ 'deployments.confirmationPopup.confirmBtn' | i18n }}</button>
