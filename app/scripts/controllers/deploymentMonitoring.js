@@ -2,18 +2,23 @@
 
 /**
  * @ngdoc function
- * @name cosmoUiAppApp.controller:DeploymentmonitoringCtrl
+ * @name cosmoUiApp.controller:DeploymentmonitoringCtrl
  * @description
  * # DeploymentmonitoringCtrl
- * Controller of the cosmoUiAppApp
+ * Controller of the cosmoUiApp
  */
 angular.module('cosmoUiApp')
     .controller('DeploymentMonitoringCtrl', function ($scope, $routeParams) {
 
         $scope.deploymentId = $routeParams.deploymentId;
 
-//        $scope.$on('deploymentData', function(event, deploymentData){
-//            //console.log(['deploymentData', deploymentData]);
-//        });
+        $scope.grafanaDashboard = '/grafana/#/dashboard/cloudify/' + $scope.deploymentId;
+
+        $scope.showGrafanaLoader = true;
+
+        $scope.grafanaLoad = function () {
+            $scope.showGrafanaLoader = false;
+        };
 
     });
+
