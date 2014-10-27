@@ -41,6 +41,7 @@ angular.module('cosmoUiApp')
         };
 
         $scope.executeWorkflow = function() {
+            $scope.executeError = false;
 
             if ($scope.inputsState === 'raw') {
                 try {
@@ -62,9 +63,27 @@ angular.module('cosmoUiApp')
                         if(data.hasOwnProperty('message')) {
                             $scope.executeErrorMessage = data.message;
                             $scope.executeError = true;
+                        } else {
+                            $scope.closeDialog();
                         }
                     });
             }
+        };
+
+        $scope.cancelWorkflow = function(executedData) {
+            var callParams = {
+                'execution_id': executedData.id,
+                'state': 'cancel'
+            };
+            CloudifyService.deployments.updateExecutionState(callParams).then(function (data) {
+                if (data.hasOwnProperty('error_code')) {
+                    $scope.executeError = true;
+                    $scope.executeErrorMessage = data.message;
+                }
+                else {
+                    $scope.closeDialog();
+                }
+            });
         };
 
         $scope.isExecuteError = function() {

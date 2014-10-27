@@ -69,9 +69,13 @@
                 </div>
             </div>
             <div class="error-message" data-ng-show="isExecuteError()">{{ executeErrorMessage }}</div>
-            <div class="buttonsContainer confirmationButtons">
+            <div class="buttonsContainer confirmationButtons" ng-show="confirmationType == 'execute'">
                 <button id="cancelBtn" class="dialogButton" ng-click="toggleConfirmationDialog()">{{ 'deployments.confirmationPopup.cancelBtn' | i18n }}</button>
                 <button id="confirmBtn" class="dialogButton" ng-class="{disabled: !isExecuteEnabled(), enabled: isExecuteEnabled(), loader: inProcess}" ng-click="executeWorkflow(selectedDeployment)">{{ 'deployments.confirmationPopup.confirmBtn' | i18n }}</button>
+            </div>
+            <div class="buttonsContainer confirmationButtons" ng-show="confirmationType == 'cancel'">
+                <button id="cancelBtn" class="dialogButton" ng-click="toggleConfirmationDialog()">{{ 'deployments.confirmationPopup.cancelBtn' | i18n }}</button>
+                <button id="confirmBtn" class="dialogButton" ng-click="cancelWorkflow(executedData)">{{ 'deployments.confirmationPopup.confirmBtn' | i18n }}</button>
             </div>
         </div>
     </div>
