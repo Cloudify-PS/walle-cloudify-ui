@@ -68,6 +68,7 @@
         },
         "process": {
             "create_deployment_environment": "Initializing",
+            "delete_deployment_environment": "Deletes",
             "install": "Install",
             "uninstall": "Uninstall",
             "wait": "Please wait"
