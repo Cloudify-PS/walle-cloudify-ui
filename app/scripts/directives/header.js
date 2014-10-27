@@ -6,8 +6,6 @@ angular.module('cosmoUiApp')
             templateUrl: 'views/headerTemplate.html',
             restrict: 'A',
             link: function postLink(scope, element) {
-                scope.updateVersion = false;
-
                 scope.loggedUser = {
                     name: 'John Doe'
                 };
@@ -26,7 +24,6 @@ angular.module('cosmoUiApp')
                         } else {
                             scope.updateVersion = false;
                         }
-                        console.log('updateVersion', scope.updateVersion);
                     });
 
                 scope.searchCloudify = function() {
