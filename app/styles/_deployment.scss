@@ -1430,4 +1430,11 @@
             }
         }
     }
+
+    .deploymentLoader {
+        position: absolute;
+        width: 100%;
+        height: calc(100% - 114px);
+        background-color: red;
+    }
 }
