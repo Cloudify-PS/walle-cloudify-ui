@@ -125,14 +125,28 @@
 
     .dialogInputs {
       position: relative;
-      width: 100%;
+      padding-left: 20px;
       text-align: left;
-      margin-left: 20px;
-      margin-top: 20px;
+
+      &.deployInputs {
+          width: 330px;
+      }
+
+      &.executeInputs {
+          width: 405px;
+      }
 
       .buttons-group {
-        margin-left: 55px;
+        margin-left: 92px;
         margin-bottom: 10px;
+
+        &.deployBtns {
+          margin-left: 52px;
+        }
+
+        &.executeBtns {
+          margin-left: 92px;
+        }
 
         button {
           min-width: 100px;
@@ -144,19 +158,20 @@
 
         input {
           position: relative;
-          width: 210px;
           height: 32px;
           border-radius: 3px;
-          padding-left: 10px;
           margin-bottom: 5px;
           background-clip: padding-box;
           background-color: $clr-base-10;
           border: 0;
+          right: 5px;
+          float: right;
+          width: 50%;
         }
       }
 
       textarea {
-        width: 310px;
+        width: 100%;
         height: 150px;
       }
 
@@ -171,45 +186,6 @@
         background-color: #f5f5f5;
         max-height: 300px;
         overflow-y: auto;
-    }
-
-    .dialogInputs {
-      position: relative;
-      width: 100%;
-      text-align: left;
-      margin-left: 20px;
-      margin-top: 20px;
-
-      .buttons-group {
-        margin-left: 55px;
-        margin-bottom: 10px;
-
-        button {
-          min-width: 100px;
-        }
-      }
-
-      ul {
-          list-style-type: none;
-
-          input {
-            position: relative;
-            width: 210px;
-            height: 32px;
-            border-radius: 3px;
-            padding-left: 10px;
-            margin-bottom: 5px;
-            background-clip: padding-box;
-            background-color: $clr-base-10;
-            border: 0;
-          }
-      }
-
-      textarea {
-        width: 310px;
-        height: 150px;
-      }
-
     }
 
     .buttonsContainer {
@@ -340,6 +316,7 @@
     right: 0;
     margin: auto;
     margin-top: 100px;
+    line-height: 40px;
 
     #deploy-error-message {
         display: block;
@@ -353,6 +330,7 @@
 
     .deployButtons {
         margin: 10px 0;
+        line-height: 20px;
     }
 }
 
@@ -361,9 +339,10 @@
     top: 80px;
     left: 0;
     right: 0;
-    width: 350px;
+    width: 430px;
     margin: auto;
     margin-top: 100px;
+    line-height: 40px;
 
     .dialogDescription {
         font-size: 20px;
@@ -375,6 +354,8 @@
 
     .confirmationButtons {
         margin: 15px 0;
+        line-height: 20px;
+
         #cancelBtn {
             color: $COSMOUI_BUTTON_BACKGROUND;
             font-weight: bold;

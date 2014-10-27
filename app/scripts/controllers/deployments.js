@@ -181,7 +181,7 @@ angular.module('cosmoUiApp')
                                     value: workflow.name,
                                     label: workflow.name,
                                     deployment: deployments[i].id,
-                                    parameters: deployments[i].parameters
+                                    parameters: workflows.parameters
                                 });
                             }
                         }
