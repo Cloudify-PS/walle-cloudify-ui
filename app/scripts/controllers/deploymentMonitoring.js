@@ -12,6 +12,8 @@ angular.module('cosmoUiApp')
 
         $scope.deploymentId = $routeParams.deploymentId;
 
+        $scope.grafanaDashboard = '/grafana/#/dashboard/cloudify/' + $scope.deploymentId;
+
 //        $scope.$on('deploymentData', function(event, deploymentData){
 //            //console.log(['deploymentData', deploymentData]);
 //        });

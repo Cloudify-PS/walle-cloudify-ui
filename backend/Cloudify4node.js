@@ -7,7 +7,7 @@ var logger = log4js.getLogger('cloudify4node');
 var path = require('path');
 var targz = require('tar.gz');
 var browseBlueprint = require('./services/BrowseBluerprintService');
-var influx = require('influx');
+var monitoring = require('./services/MonitoringService');
 
 module.exports = Cloudify4node;
 
@@ -470,23 +470,6 @@ Cloudify4node.getManagerVersion = function(callback) {
     //return callback(null, require('./mock/managerVersion.json'));
 };
 
-Cloudify4node.influxRequest = function(query, callback) {
-
-    console.log('influxRequest', query);
-
-    var influxClient = influx({
-        host: conf.influx.host,
-        username : conf.influx.user,
-        password : conf.influx.pass,
-        database : conf.influx.dbname
-    });
-
-    influxClient.request.get({
-        url: influxClient.url('db/' + influxClient.options.database + '/series', query),
-        json: true
-    }, influxClient._parseCallback(callback));
-};
-
 Cloudify4node.getLogsExportFile = function(response, callback) {
     var filePath = path.join(conf.logs.folder, conf.logs.file);
     new targz().compress(conf.logs.folder, filePath, function(err){
@@ -505,4 +488,16 @@ Cloudify4node.getLogsExportFile = function(response, callback) {
             }
         });
     });
+};
+
+Cloudify4node.getDashboardSeries = function(query, callback) {
+    monitoring.getDashboardSeries(query, callback);
+};
+
+Cloudify4node.getDeploymentDashboards = function(query, callback) {
+    monitoring.getDeploymentDashboard(query, callback);
+};
+
+Cloudify4node.getDashboardSeriesList = function(query, callback) {
+    monitoring.getDashboardSeriesList(query, callback);
 };
