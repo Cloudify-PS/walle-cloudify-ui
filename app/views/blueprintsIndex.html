@@ -70,8 +70,8 @@
             <div class="dialogDeploymentName">
                 <input type="text" ng-model="deployment_id" ng-enter="deployBlueprint(selectedBlueprint.id)" placeholder="{{ 'blueprints.deployDialog.deployName' | i18n }}">
             </div>
-            <div class="dialogInputs" ng-show="isParamsVisible()">
-                <div class="buttons-group">
+            <div class="dialogInputs deployInputs" ng-show="isParamsVisible()">
+                <div class="buttons-group deployBtns">
                     <button data-ng-class="{'active': inputsState == 'params'}" class="btn btn-default" data-ng-click="toggleInputsState('params')">Parameters</button>
                     <button data-ng-class="{'active': inputsState == 'raw'}" class="btn btn-default" data-ng-click="toggleInputsState('raw')">Raw</button>
                 </div>

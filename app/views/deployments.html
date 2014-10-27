@@ -49,22 +49,33 @@
 
     <div class="connect-error-message" ng-show="cosmoConnectionError()">{{ 'connectError' | i18n }}</div>
 
-    <div ng-show="isConfirmationDialogVisible">
+    <div ng-show="isConfirmationDialogVisible" ng-controller="ExecuteDialogCtrl">
         <div class="dialogBoxBg"></div>
         <div id="confirmationDialogContainer" class="dialogBox">
             <div class="dialogDescription" ng-show="confirmationType == 'execute'">{{ 'deployments.confirmationPopup.descriptionExecute' | i18n }} {{getSelectedWorkflow()}}?</div>
             <div class="dialogDescription" ng-show="confirmationType == 'cancel'">{{ 'deployments.confirmationPopup.descriptionCancel' | i18n }} {{getSelectedWorkflow()}}?</div>
-            <div class="dialogInputs" ng-show="selectedWorkflow.data.parameters !== undefined">
-                <div class="inputsParameters">
+            <div class="dialogInputs executeInputs" ng-show="isParamsVisible()">
+                <div class="buttons-group executeBtns">
+                    <button data-ng-class="{'active': inputsState == 'params'}" class="btn btn-default" data-ng-click="toggleInputsState('params')">Parameters</button>
+                    <button data-ng-class="{'active': inputsState == 'raw'}" class="btn btn-default" data-ng-click="toggleInputsState('raw')">Raw</button>
+                </div>
+                <div class="inputsParameters" ng-show="inputsState == 'params'">
                     <ul>
-                        <li ng-repeat="(name, value) in selectedWorkflow.data.parameters">{{name}}: <input type="text" ng-model="selectedWorkflow.data.parameters[name]" placeholder="{{ name }}"></li>
+                        <li ng-repeat="(name, value) in selectedWorkflow.data.parameters">{{name}}: <input type="text" ng-model="inputs[name]" placeholder="{{ name }}"></li>
                     </ul>
                 </div>
+                <div class="inputsRaw" ng-show="inputsState == 'raw'">
+                    <textarea ng-model="rawString"></textarea>
+                </div>
             </div>
-            <div class="error-message" data-ng-show="executedErr">{{ executedErr }}</div>
-            <div class="buttonsContainer confirmationButtons">
+            <div class="error-message" data-ng-show="isExecuteError()">{{ executeErrorMessage }}</div>
+            <div class="buttonsContainer confirmationButtons" ng-show="confirmationType == 'execute'">
                 <button id="cancelBtn" class="dialogButton" ng-click="toggleConfirmationDialog()">{{ 'deployments.confirmationPopup.cancelBtn' | i18n }}</button>
-                <button id="confirmBtn" class="dialogButton" ng-click="confirmConfirmationDialog(selectedDeployment)">{{ 'deployments.confirmationPopup.confirmBtn' | i18n }}</button>
+                <button id="confirmBtn" class="dialogButton" ng-class="{disabled: !isExecuteEnabled(), enabled: isExecuteEnabled(), loader: inProcess}" ng-click="executeWorkflow(selectedDeployment)">{{ 'deployments.confirmationPopup.confirmBtn' | i18n }}</button>
+            </div>
+            <div class="buttonsContainer confirmationButtons" ng-show="confirmationType == 'cancel'">
+                <button id="cancelBtn" class="dialogButton" ng-click="toggleConfirmationDialog()">{{ 'deployments.confirmationPopup.cancelBtn' | i18n }}</button>
+                <button id="confirmBtn" class="dialogButton" ng-click="cancelWorkflow(executedData)">{{ 'deployments.confirmationPopup.confirmBtn' | i18n }}</button>
             </div>
         </div>
     </div>

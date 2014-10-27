@@ -404,7 +404,7 @@ module.exports = function (grunt) {
 
     grunt.registerTask('test', function(testBackend) {
         var tasks  = [];
-        if ( testBackend === undefined | testBackend === '' || testBackend === 'all' || testBackend === 'frontend') { // default
+        if ( testBackend === undefined || testBackend === '' || testBackend === 'all' || testBackend === 'frontend') { // default
             tasks = [
                 'clean:server',
                 'concurrent:test',
