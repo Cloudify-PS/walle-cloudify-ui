@@ -63,9 +63,6 @@ angular.module('cosmoUiApp')
                             $scope.executeErrorMessage = data.message;
                             $scope.executeError = true;
                         }
-                        else {
-                            $scope.redirectToDeployment($scope.deployment_id);
-                        }
                     });
             }
         };
