@@ -64,7 +64,6 @@ function _getDeploymentDashboard(query, callbackFn) {
     callbackFn(null, dashboard);
 }
 
-
 module.exports.getDashboardSeries = _getDashboardSeries;
 module.exports.getDashboardSeriesList = _getDashboardSeriesList;
 module.exports.getDeploymentDashboard = _getDeploymentDashboard;
