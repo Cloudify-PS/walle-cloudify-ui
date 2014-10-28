@@ -115,6 +115,12 @@ angular.module('cosmoUiApp')
             $location.path('/deployment/' + deployment.id + '/topology');
         };
 
+        $scope.layerRedirectTo = function(deployment, event, matchElement) {
+            if(event.target.tagName.toLowerCase() + '.' + event.target.className === matchElement) {
+                $scope.redirectTo(deployment);
+            }
+        };
+
         $scope.cosmoConnectionError = function() {
             return cosmoError;
         };
