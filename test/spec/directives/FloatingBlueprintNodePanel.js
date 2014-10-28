@@ -26,7 +26,7 @@ describe('Directive: floatingBlueprintNodePanel', function () {
         }],
         "declared_type": "vm_host",
         "name": "nodejs_vm",
-        "type_hierarchy": ["cloudify-types-base", "cloudify-types-host", "cloudify-openstack-server", "vm-host"],
+        "type_hierarchy": ["cloudify.nodes.Root", "cloudify.nodes.Compute", "cloudify.openstack.nodes.Server", "vm-host"],
         "id": "nodejs_vm",
         "instances": {
             "deploy": 1

@@ -114,11 +114,11 @@ describe('Service: NetworksService', function () {
                     "executor": "central_deployment_agent"
                 }
             ],
-            "declared_type": "cloudify.openstack.security_group",
+            "declared_type": "cloudify.openstack.nodes.SecurityGroup",
             "name": "security_group",
             "type_hierarchy": [
-                "cloudify.types.base",
-                "cloudify.openstack.security_group"
+                "cloudify.nodes.Root",
+                "cloudify.openstack.nodes.SecurityGroup"
             ],
             "id": "security_group",
             "instances": {
@@ -132,7 +132,7 @@ describe('Service: NetworksService', function () {
                     "executor": "central_deployment_agent"
                 }
             },
-            "type": "cloudify.openstack.security_group",
+            "type": "cloudify.openstack.nodes.SecurityGroup",
             "properties": {
                 "openstack_config": {},
                 "resource_id": "",
@@ -233,12 +233,12 @@ describe('Service: NetworksService', function () {
                     }
                 }
             ],
-            "declared_type": "cloudify.types.web_server",
+            "declared_type": "cloudify.nodes.WebServer",
             "name": "http_web_server",
             "type_hierarchy": [
-                "cloudify.types.base",
-                "cloudify.types.middleware_server",
-                "cloudify.types.web_server"
+                "cloudify.nodes.Root",
+                "cloudify.nodes.SoftwareComponent",
+                "cloudify.nodes.WebServer"
             ],
             "deployment_plugins_to_install": [],
             "id": "http_web_server",
@@ -254,7 +254,7 @@ describe('Service: NetworksService', function () {
                 }
             },
             "host_id": "vm",
-            "type": "cloudify.types.web_server",
+            "type": "cloudify.nodes.WebServer",
             "properties": {
                 "port": {
                     "get_input": "webserver_port"
@@ -289,11 +289,11 @@ describe('Service: NetworksService', function () {
                     "executor": "central_deployment_agent"
                 }
             ],
-            "declared_type": "cloudify.openstack.floatingip",
+            "declared_type": "cloudify.openstack.nodes.FloatingIP",
             "name": "virtual_ip",
             "type_hierarchy": [
-                "cloudify.types.base",
-                "cloudify.openstack.floatingip"
+                "cloudify.nodes.Root",
+                "cloudify.openstack.nodes.FloatingIP"
             ],
             "id": "virtual_ip",
             "instances": {
@@ -307,7 +307,7 @@ describe('Service: NetworksService', function () {
                     "executor": "central_deployment_agent"
                 }
             },
-            "type": "cloudify.openstack.floatingip",
+            "type": "cloudify.openstack.nodes.FloatingIP",
             "properties": {
                 "use_external_resource": false,
                 "floatingip": {},
@@ -491,12 +491,12 @@ describe('Service: NetworksService', function () {
                     }
                 }
             ],
-            "declared_type": "cloudify.openstack.server",
+            "declared_type": "cloudify.openstack.nodes.Server",
             "name": "vm",
             "type_hierarchy": [
-                "cloudify.types.base",
-                "cloudify.types.host",
-                "cloudify.openstack.server"
+                "cloudify.nodes.Root",
+                "cloudify.nodes.Compute",
+                "cloudify.openstack.nodes.Server"
             ],
             "deployment_plugins_to_install": [
                 {
@@ -537,7 +537,7 @@ describe('Service: NetworksService', function () {
                 }
             },
             "host_id": "vm",
-            "type": "cloudify.openstack.server",
+            "type": "cloudify.openstack.nodes.Server",
             "properties": {
                 "cloudify_agent": {
                     "user": {

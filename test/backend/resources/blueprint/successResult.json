@@ -244,7 +244,7 @@
             }],
             "declared_type": "cloudify.openstack.security_group",
             "name": "security_group",
-            "type_hierarchy": ["cloudify.types.base", "cloudify.openstack.security_group"],
+            "type_hierarchy": ["cloudify.nodes.Root", "cloudify.openstack.nodes.SecurityGroup"],
             "properties": {
                 "openstack_config": {},
                 "resource_id": "",
@@ -337,9 +337,9 @@
                     "connection_type": "all_to_all"
                 }
             }],
-            "declared_type": "cloudify.types.web_server",
+            "declared_type": "cloudify.nodes.WebServer",
             "name": "http_web_server",
-            "type_hierarchy": ["cloudify.types.base", "cloudify.types.middleware_server", "cloudify.types.web_server"],
+            "type_hierarchy": ["cloudify.nodes.Root", "cloudify.nodes.SoftwareComponent", "cloudify.nodes.WebServer"],
             "deployment_plugins_to_install": [],
             "properties": {
                 "port": {
@@ -359,7 +359,7 @@
                 }
             },
             "host_id": "vm",
-            "type": "cloudify.types.web_server",
+            "type": "cloudify.nodes.WebServer",
             "id": "http_web_server"
         }, {
             "operations": {
@@ -388,7 +388,7 @@
             }],
             "declared_type": "cloudify.openstack.floatingip",
             "name": "virtual_ip",
-            "type_hierarchy": ["cloudify.types.base", "cloudify.openstack.floatingip"],
+            "type_hierarchy": ["cloudify.nodes.Root", "cloudify.openstack.nodes.FloatingIP"],
             "properties": {
                 "resource_id": "",
                 "openstack_config": {},
@@ -534,7 +534,7 @@
             }],
             "declared_type": "cloudify.openstack.server",
             "name": "vm",
-            "type_hierarchy": ["cloudify.types.base", "cloudify.types.host", "cloudify.openstack.server"],
+            "type_hierarchy": ["cloudify.nodes.Root", "cloudify.nodes.Compute", "cloudify.openstack.nodes.Server"],
             "deployment_plugins_to_install": [{
                 "source": "https://github.com/cloudify-cosmo/cloudify-openstack-plugin/archive/1.1m4.zip",
                 "name": "openstack",

@@ -4,61 +4,55 @@ angular.module('cosmoUiApp')
     .service('topologyTypes', function topologyTypes() {
 
         var types = {
-            'cloudify.types.base': {
+            'cloudify.nodes.Root': {
                 icon: 'cloudify-types-base'
             },
-            'cloudify.types.host': {
+            'cloudify.nodes.Compute': {
                 icon: 'cloudify-types-base cloudify-types-host'
             },
-            'cloudify.types.middleware-server': {
+            'cloudify.nodes.SoftwareComponent': {
                 icon: 'cloudify-types-base cloudify-types-middleware-server'
             },
-            'cloudify.types.web-server': {
+            'cloudify.nodes.WebServer': {
                 icon: 'cloudify-types-base cloudify-types-middleware-server cloudify-types-web-server'
             },
-            'cloudify.types.app-server': {
+            'cloudify.nodes.ApplicationServer': {
                 icon: 'cloudify-types-base cloudify-types-middleware-server cloudify-types-app-server'
             },
-            'cloudify.types.db-server': {
+            'cloudify.nodes.DBMS': {
                 icon: 'cloudify-types-base cloudify-types-middleware-server cloudify-types-db-server'
             },
-            'cloudify.types.app-module': {
+            'cloudify.nodes.ApplicationModule': {
                 icon: 'cloudify-types-base cloudify-types-app-module'
             },
-            'cloudify.types.floatingip': {
-                icon: 'cloudify-types-base cloudify-types-floatingip'
-            },
-            'cloudify.types.port': {
+            'cloudify.nodes.Port': {
                 icon: 'cloudify-types-base cloudify-types-port'
             },
-            'cloudify.types.network': {
+            'cloudify.nodes.Network': {
                 icon: 'cloudify-types-base cloudify-types-network'
             },
-            'cloudify.types.subnet': {
+            'cloudify.nodes.Subnet': {
                 icon: 'cloudify-types-base cloudify-types-subnet'
             },
-            'cloudify.types.server': {
-                icon: 'cloudify-types-base cloudify-types-server'
-            },
-            'cloudify.types.router': {
+            'cloudify.nodes.Router': {
                 icon: 'cloudify-types-base cloudify-types-router'
             },
-            'cloudify.types.load_balancer': {
+            'cloudify.nodes.LoadBalancer': {
                 icon: 'cloudify-types-base cloudify-types-load-balancer'
             },
-            'cloudify.types.virtual_ip': {
+            'cloudify.nodes.VirtualIP': {
                 icon: 'cloudify-types-base cloudify-types-virtual-ip'
             },
-            'cloudify.types.security_group': {
+            'cloudify.nodes.SecurityGroup': {
                 icon: 'cloudify-types-base cloudify-types-security-group'
             },
-            'cloudify.types.tier': {
+            'cloudify.nodes.Tier': {
                 icon: 'cloudify-types-base cloudify-types-tier'
             },
-            'cloudify.types.object_container': {
+            'cloudify.nodes.ObjectStorage': {
                 icon: 'cloudify-types-base cloudify-types-object-container'
             },
-            'cloudify.types.message_bus_server': {
+            'cloudify.nodes.MessageBusServer': {
                 icon: 'cloudify-types-base cloudify-types-message-bus-server'
             }
         };
