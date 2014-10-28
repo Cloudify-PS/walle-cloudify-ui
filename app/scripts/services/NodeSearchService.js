@@ -13,6 +13,7 @@ angular.module('cosmoUiApp')
         var blueprintsList = [];
         var deploymentList = [];
         var nodesList = [];
+        var existingNodes = [];
 
         (function _initData() {
             CloudifyService.blueprints.list()
@@ -61,11 +62,14 @@ angular.module('cosmoUiApp')
                                     if(nodes instanceof Array) {
                                         nodes.forEach(function (node) {
                                             if (instance.node_id === node.id && node.type_hierarchy.join(',').indexOf(type) > -1) {
-                                                if(!blueprint_id) {
-                                                    nodesList.push(instance);
-                                                }
-                                                else if(blueprint_id === node.blueprint_id) {
-                                                    nodesList.push(instance);
+                                                if(existingNodes.indexOf(instance.id) === -1) {
+                                                    if(!blueprint_id) {
+                                                        nodesList.push(instance);
+                                                    }
+                                                    else if(blueprint_id === node.blueprint_id) {
+                                                        nodesList.push(instance);
+                                                    }
+                                                    existingNodes.push(instance.id);
                                                 }
                                             }
                                         });
