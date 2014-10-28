@@ -8,17 +8,15 @@
     <div floating-deployment-node-panel node="viewNode" depid="deploymentId"></div>
 
     <div class="bpContainer" blueprint:resize data-ng-class="{
-                disableCompute: !toggleBar.compute,
-                disableMiddleware: !toggleBar.middleware,
-                disableModules: !toggleBar.modules,
-                disableConnections: !toggleBar.connections
-                }">
+        disableCompute: !toggleBar.compute,
+        disableMiddleware: !toggleBar.middleware,
+        disableModules: !toggleBar.modules,
+        disableConnections: !toggleBar.connections
+        }">
         <div bp-topology-nodes map="nodesTree" selected="viewNode(getNodeById(node_id))"></div>
         <div class="coordinates" blueprint:arrows="coordinates" arrow="true" color="#7A7A7A"></div>
     </div>
 
     <div deployment-events="deploymentId"></div>
-
-    <!--<div class="deployment-progress-panel" ng-include="'views/deploymentProgressPanel.html'" data-ng-show="deploymentInProgress"></div>-->
 
 </div>
