@@ -63,14 +63,15 @@ angular.module('cosmoUiApp')
             }
         };
 
-        $scope.isExecuting = function(blueprint_id, deployment_id) {
+        $scope.isExecuting = function(blueprint_id, deployment_id, workflow) {
             return _executedDeployments[blueprint_id] !== undefined &&
                 _executedDeployments[blueprint_id][deployment_id] !== null &&
                 _executedDeployments[blueprint_id][deployment_id] !== undefined &&
                 _executedDeployments[blueprint_id][deployment_id].status !== 'failed' &&
                 _executedDeployments[blueprint_id][deployment_id].status !== 'terminated' &&
                 _executedDeployments[blueprint_id][deployment_id].status !== 'cancelled' &&
-                _executedDeployments[blueprint_id][deployment_id].status !== null;
+                _executedDeployments[blueprint_id][deployment_id].status !== null &&
+                workflow !== 'create_deployment_environment';
         };
 
         $scope.cancelExecution = function(deployment) {
