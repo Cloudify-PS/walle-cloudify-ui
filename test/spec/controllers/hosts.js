@@ -22,7 +22,7 @@ describe('Controller: HostsCtrl', function () {
             NodeSearchService.execute = function() {
                 var deferred = $q.defer();
                 var result = [{
-                    "type_hierarchy": ["cloudify.types.base", "cloudify.types.host", "cloudify.openstack.server", "vm_host"],
+                    "type_hierarchy": ["cloudify.nodes.Root", "cloudify.nodes.Compute", "cloudify.openstack.nodes.Server", "vm_host"],
                     "node_id": "nodejs_vm",
                     "state": "uninitialized",
                     "host_id": "nodejs_vm_6d2f0",
@@ -30,7 +30,7 @@ describe('Controller: HostsCtrl', function () {
                     "id": "nodejs_vm_6d2f0",
                     "type": "vm_host"
                 }, {
-                    "type_hierarchy": ["cloudify.types.base", "cloudify.openstack.server"],
+                    "type_hierarchy": ["cloudify.nodes.Root", "cloudify.openstack.nodes.Server"],
                     "node_id": "mongod_vm",
                     "state": "uninitialized",
                     "host_id": "mongod_vm_b9f82",

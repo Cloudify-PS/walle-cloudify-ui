@@ -6,19 +6,19 @@ describe('Service: NodeService', function () {
     var nodesList = [
         {
             "name": "floatingip",
-            "type_hierarchy": ["cloudify.types.base", "cloudify.openstack.floatingip"],
+            "type_hierarchy": ["cloudify.nodes.Root", "cloudify.openstack.nodes.FloatingIP"],
             "id": "floatingip",
-            "type": "cloudify.openstack.floatingip"
+            "type": "cloudify.openstack.nodes.FloatingIP"
         },
         {
             "name": "floatingip",
-            "type_hierarchy": ["cloudify.types.base", "cloudify.types.virtual_ip", "cloudify.libcloud.floatingip"],
+            "type_hierarchy": ["cloudify.nodes.Root", "cloudify.nodes.VirtualIP", "cloudify.libcloud.nodes.FloatingIP"],
             "id": "floatingip",
-            "type": "cloudify.libcloud.floatingip"
+            "type": "cloudify.libcloud.nodes.FloatingIP"
         },
         {
             "name": "nodejs_vm",
-            "type_hierarchy": ["cloudify-types-base", "cloudify-types-host", "cloudify-openstack-server", "vm-host"],
+            "type_hierarchy": ["cloudify.nodes.Root", "cloudify.nodes.Compute", "cloudify.openstack.nodes.Server", "vm_host"],
             "id": "nodejs_vm",
             "type": "vm_host"
         },
@@ -31,7 +31,7 @@ describe('Service: NodeService', function () {
                 "type": "cloudify.relationships.contained_in"
             }],
             "name": "nodejs",
-            "type_hierarchy": ["cloudify-types-base", "cloudify-types-middleware-server", "cloudify-types-app-server", "cloudify-types-bash-app-server", "nodejs-server"],
+            "type_hierarchy": ["cloudify.nodes.Root", "cloudify.nodes.SoftwareComponent", "cloudify.nodes.ApplicationServer", "cloudify.bash.nodes.ApplicationServer", "nodejs_server"],
             "id": "nodejs",
             "host_id": "nodejs_vm",
             "type": "nodejs_server"
@@ -60,13 +60,13 @@ describe('Service: NodeService', function () {
             var nodesTree = nodeService.createNodesTree(nodesList);
 
             expect(nodesTree.length).toBe(1);
-            expect(nodesTree[0].type).not.toBe('cloudify.openstack.floatingip');
-            expect(nodesTree[0].type).not.toBe('cloudify.libcloud.floatingip');
+            expect(nodesTree[0].type).not.toBe('cloudify.openstack.nodes.FloatingIP');
+            expect(nodesTree[0].type).not.toBe('cloudify.libcloud.nodes.FloatingIP');
             expect(nodesTree[0].dataType).toBe('compute');
             expect(nodesTree[0].children.length).toBe(1);
             expect(nodesTree[0].children[0].children).toBeUndefined();
-            expect(nodesTree[0].children[0].type).not.toBe('cloudify.openstack.floatingip');
-            expect(nodesTree[0].children[0].type).not.toBe('cloudify.libcloud.floatingip');
+            expect(nodesTree[0].children[0].type).not.toBe('cloudify.openstack.nodes.FloatingIP');
+            expect(nodesTree[0].children[0].type).not.toBe('cloudify.libcloud.nodes.FloatingIP');
             expect(nodesTree[0].children[0].dataType).toBe('middleware');
         });
     });
