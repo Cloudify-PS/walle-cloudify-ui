@@ -1,68 +1,79 @@
 <div id="deployment-header">
-    <div class="header-left">
 
-        <div app-status-widget id="appStatus" ng-model="deployments['*'].process" status="{{ deployments['*'].state }}"></div>
-
-        <div class="content-header">
-            <div class="breadcrumbs"><ul id="deployments" breadcrumbs></ul></div>
+    <div class="deploymentLoader" data-ng-show="isInitilizing()">
+        <div data-ng-show="isInitilizingLoader">
+            <div class="loader"></div>
+            <p>Initilizing <b>{{ deploymentId }}</b><br> Please wait...</p>
         </div>
-
-        <div class="buttons-group sections">
-            <button data-ng-repeat="section in navMenu"
-                    data-ng-click="goToSection(section)"
-                    data-ng-class="isSectionActive(section)"
-                    class="btn btn-default">{{ section.name }}</button>
-        </div>
-
-        <div settings-toggles id="settings-button" toggles="toggleBar" data-ng-show="selectview"></div>
-
-        <div class="actions">
-            <div class="gs-selection-button" ng-show="!deploymentInProgress">
-                <div multi:select:menu
-                     class="gs-select"
-                     data-options="workflowsList"
-                     data-ng-model="selectedWorkflow.data"
-                     data-text="Select workflow"></div>
-            </div>
-            <div class="executingWorkflow" ng-show="deploymentInProgress">
-                <div class="deploymentExecute" ng-show="deploymentInProgress"></div>
-                {{ currentExecution.workflow_id != null ? 'deployment.process.' + currentExecution.workflow_id : 'deployment.process.wait' | i18n }}
-            </div>
-            <i class="deployment-play" ng-class="{play: isExecuteEnabled(), disabled: !isExecuteEnabled()}" ng-click="toggleConfirmationDialog('execute')" ng-show="!deploymentInProgress"></i>
-
-            <i class="deployment-pause fa fa-times-circle" ng-show="deploymentInProgress && currentExecution.workflow_id != null" ng-click="toggleConfirmationDialog('cancel')"></i>
-        </div>
-
-        <div ng-show="isConfirmationDialogVisible" ng-controller="ExecuteDialogCtrl">
-            <div class="dialogBoxBg"></div>
-            <div id="confirmationDialogContainer" class="dialogBox">
-                <div class="dialogDescription" ng-show="confirmationType == 'execute'">{{ 'deployments.confirmationPopup.descriptionExecute' | i18n }} {{selectedWorkflow.data.value}}?</div>
-                <div class="dialogDescription" ng-show="confirmationType == 'cancel'">{{ 'deployments.confirmationPopup.descriptionCancel' | i18n }} {{executedData.workflow_id}}?</div>
-                <div class="dialogInputs executeInputs" ng-show="isParamsVisible()">
-                    <div class="buttons-group executeBtns">
-                        <button data-ng-class="{'active': inputsState == 'params'}" class="btn btn-default" data-ng-click="toggleInputsState('params')">Parameters</button>
-                        <button data-ng-class="{'active': inputsState == 'raw'}" class="btn btn-default" data-ng-click="toggleInputsState('raw')">Raw</button>
-                    </div>
-                    <div class="inputsParameters" ng-show="inputsState == 'params'">
-                        <ul>
-                            <li ng-repeat="(name, value) in selectedWorkflow.data.parameters">{{name}}: <input type="text" ng-model="inputs[name]" placeholder="{{ name }}" /></li>
-                        </ul>
-                    </div>
-                    <div class="inputsRaw" ng-show="inputsState == 'raw'">
-                        <textarea ng-model="rawString"></textarea>
-                    </div>
-                </div>
-                <div class="error-message" data-ng-show="isExecuteError()">{{ executeErrorMessage }}</div>
-                <div class="buttonsContainer confirmationButtons" ng-show="confirmationType == 'execute'">
-                    <button id="cancelBtn" class="dialogButton" ng-click="closeDialog()">{{ 'deployments.confirmationPopup.cancelBtn' | i18n }}</button>
-                    <button id="confirmBtn" class="dialogButton" ng-class="{disabled: !isExecuteEnabled(), enabled: isExecuteEnabled(), loader: inProcess}" ng-click="executeWorkflow()">{{ 'deployments.confirmationPopup.confirmBtn' | i18n }}</button>
-                </div>
-                <div class="buttonsContainer confirmationButtons" ng-show="confirmationType == 'cancel'">
-                    <button id="cancelBtn" class="dialogButton" ng-click="toggleConfirmationDialog()">{{ 'deployments.confirmationPopup.cancelBtn' | i18n }}</button>
-                    <button id="confirmBtn" class="dialogButton" ng-click="cancelWorkflow(executedData)">{{ 'deployments.confirmationPopup.confirmBtn' | i18n }}</button>
-                </div>
-            </div>
-        </div>
-
     </div>
+
+    <div class="header-left">
+        <div data-ng-hide="isInitilizing()">
+
+            <div app-status-widget id="appStatus" ng-model="deployments['*'].process" status="{{ deployments['*'].state }}"></div>
+
+            <div class="content-header">
+                <div class="breadcrumbs"><ul id="deployments" breadcrumbs></ul></div>
+            </div>
+
+            <div class="buttons-group sections">
+                <button data-ng-repeat="section in navMenu"
+                        data-ng-click="goToSection(section)"
+                        data-ng-class="isSectionActive(section)"
+                        class="btn btn-default">{{ section.name }}</button>
+            </div>
+
+            <div settings-toggles id="settings-button" toggles="toggleBar" data-ng-show="selectview"></div>
+
+            <div class="actions">
+                <div class="gs-selection-button" ng-show="!deploymentInProgress">
+                    <div multi:select:menu
+                         class="gs-select"
+                         data-options="workflowsList"
+                         data-ng-model="selectedWorkflow.data"
+                         data-text="Select workflow"></div>
+                </div>
+                <div class="executingWorkflow" ng-show="deploymentInProgress">
+                    <div class="deploymentExecute" ng-show="deploymentInProgress"></div>
+                    {{ currentExecution.workflow_id != null ? 'deployment.process.' + currentExecution.workflow_id : 'deployment.process.wait' | i18n }}
+                </div>
+                <i class="deployment-play" ng-class="{play: isExecuteEnabled(), disabled: !isExecuteEnabled()}" ng-click="toggleConfirmationDialog('execute')" ng-show="!deploymentInProgress"></i>
+
+                <i class="deployment-pause fa fa-times-circle" ng-show="deploymentInProgress && currentExecution.workflow_id != null" ng-click="toggleConfirmationDialog('cancel')"></i>
+            </div>
+
+            <div ng-show="isConfirmationDialogVisible" ng-controller="ExecuteDialogCtrl">
+                <div class="dialogBoxBg"></div>
+                <div id="confirmationDialogContainer" class="dialogBox">
+                    <div class="dialogDescription" ng-show="confirmationType == 'execute'">{{ 'deployments.confirmationPopup.descriptionExecute' | i18n }} {{selectedWorkflow.data.value}}?</div>
+                    <div class="dialogDescription" ng-show="confirmationType == 'cancel'">{{ 'deployments.confirmationPopup.descriptionCancel' | i18n }} {{executedData.workflow_id}}?</div>
+                    <div class="dialogInputs executeInputs" ng-show="isParamsVisible()">
+                        <div class="buttons-group executeBtns">
+                            <button data-ng-class="{'active': inputsState == 'params'}" class="btn btn-default" data-ng-click="toggleInputsState('params')">Parameters</button>
+                            <button data-ng-class="{'active': inputsState == 'raw'}" class="btn btn-default" data-ng-click="toggleInputsState('raw')">Raw</button>
+                        </div>
+                        <div class="inputsParameters" ng-show="inputsState == 'params'">
+                            <ul>
+                                <li ng-repeat="(name, value) in selectedWorkflow.data.parameters">{{name}}: <input type="text" ng-model="inputs[name]" placeholder="{{ name }}" /></li>
+                            </ul>
+                        </div>
+                        <div class="inputsRaw" ng-show="inputsState == 'raw'">
+                            <textarea ng-model="rawString"></textarea>
+                        </div>
+                    </div>
+                    <div class="error-message" data-ng-show="isExecuteError()">{{ executeErrorMessage }}</div>
+                    <div class="buttonsContainer confirmationButtons" ng-show="confirmationType == 'execute'">
+                        <button id="cancelBtn" class="dialogButton" ng-click="closeDialog()">{{ 'deployments.confirmationPopup.cancelBtn' | i18n }}</button>
+                        <button id="confirmBtn" class="dialogButton" ng-class="{disabled: !isExecuteEnabled(), enabled: isExecuteEnabled(), loader: inProcess}" ng-click="executeWorkflow()">{{ 'deployments.confirmationPopup.confirmBtn' | i18n }}</button>
+                    </div>
+                    <div class="buttonsContainer confirmationButtons" ng-show="confirmationType == 'cancel'">
+                        <button id="cancelBtn" class="dialogButton" ng-click="toggleConfirmationDialog()">{{ 'deployments.confirmationPopup.cancelBtn' | i18n }}</button>
+                        <button id="confirmBtn" class="dialogButton" ng-click="cancelWorkflow(executedData)">{{ 'deployments.confirmationPopup.confirmBtn' | i18n }}</button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
 </div>

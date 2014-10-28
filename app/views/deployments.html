@@ -34,7 +34,7 @@
                         {{ 'deployments.process.' + getExecutionAttr(deployment, 'workflow_id') | i18n }}
                     </div>
                     <i class="deployment-play" ng-class="{play: isExecuteEnabled(deployment.id), playDisabled: !isExecuteEnabled(deployment.id)}" ng-click="toggleConfirmationDialog(deployment, 'execute')" ng-show="!isExecuting(deployment.blueprint_id, deployment.id)"></i>
-                    <i class="deployment-pause fa fa-times-circle" ng-show="isExecuting(deployment.blueprint_id, deployment.id)" ng-click="toggleConfirmationDialog(deployment, 'cancel')"></i>
+                    <i class="deployment-pause fa fa-times-circle" ng-show="isExecuting(deployment.blueprint_id, deployment.id, getExecutionAttr(deployment, 'workflow_id'))" ng-click="toggleConfirmationDialog(deployment, 'cancel')"></i>
                 </td>
                 <td class="delete">
                     <button class="gs-btn btn-sm" data-ng-click="deleteDeployment(deployment)">Delete</button>
