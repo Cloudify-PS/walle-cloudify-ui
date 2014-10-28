@@ -17,7 +17,7 @@ angular.module('cosmoUiApp')
             link: function postLink($scope, $element) {
 
                 $scope.events = [];
-                $scope.minimizeMode = true;
+                $scope.minimizeMode = false;
 
                 var height = 0,
                     minHeight = 70;

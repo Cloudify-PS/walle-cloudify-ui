@@ -400,13 +400,16 @@ angular.module('cosmoUiApp')
                     $scope.$emit('toggleChange', toggleBar);
                 });
 
+                $scope.isInitilizingLoader = false;
                 $scope.isInitilizing = function() {
                     if($scope.currentExecution === null) {
                         return true;
                     }
                     else if($scope.currentExecution.workflow_id === 'create_deployment_environment') {
+                        $scope.isInitilizingLoader = true;
                         return true;
                     }
+                    $scope.isInitilizingLoader = false;
                     return false;
                 };
             }
