@@ -21,7 +21,7 @@
                 <td class="blueprint" ng-click="redirectTo(deployment)">{{deployment.blueprint_id}}</td>
                 <td class="create" ng-click="redirectTo(deployment)">{{deployment.created_at | dateFormat: 'yyyy-MM-dd HH:mm:ss'}}</td>
                 <td class="description" ng-click="redirectTo(deployment)">{{deployment.updated_at | dateFormat: 'yyyy-MM-dd HH:mm:ss'}}</td>
-                <td class="actions">
+                <td class="actions" ng-click="layerRedirectTo(deployment, $event, 'td.actions')">
                     <div class="gs-selection-button" ng-show="!isExecuting(deployment.blueprint_id, deployment.id)">
                         <div multi:select:menu
                              class="gs-select"
@@ -36,7 +36,7 @@
                     <i class="deployment-play" ng-class="{play: isExecuteEnabled(deployment.id), playDisabled: !isExecuteEnabled(deployment.id)}" ng-click="toggleConfirmationDialog(deployment, 'execute')" ng-show="!isExecuting(deployment.blueprint_id, deployment.id)"></i>
                     <i class="deployment-pause fa fa-times-circle" ng-show="isExecuting(deployment.blueprint_id, deployment.id, getExecutionAttr(deployment, 'workflow_id'))" ng-click="toggleConfirmationDialog(deployment, 'cancel')"></i>
                 </td>
-                <td class="delete">
+                <td class="delete" ng-click="layerRedirectTo(deployment, $event, 'td.delete')">
                     <button class="gs-btn btn-sm" data-ng-click="deleteDeployment(deployment)">Delete</button>
                 </td>
             </tr>
