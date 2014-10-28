@@ -7,7 +7,7 @@
  * # floatingNodePanel
  */
 angular.module('cosmoUiApp')
-    .directive('floatingDeploymentNodePanel', function (CloudifyService) {
+    .directive('floatingDeploymentNodePanel', function (CloudifyService, $rootScope) {
         return {
             templateUrl: 'views/deployment/floatingNodePanel.html',
             restrict: 'EA',
@@ -74,6 +74,10 @@ angular.module('cosmoUiApp')
                     }
                 }, true);
 
+                $rootScope.$on('showDepPanel', function(e, showPanel){
+                    $scope.showPanel = showPanel;
+                });
+
                 $scope.nodeSelected = function(node) {
                     $scope.selectedNode = node;
                     if (node !== null) {
@@ -102,8 +106,7 @@ angular.module('cosmoUiApp')
                 };
 
                 $scope.hideProperties = function () {
-                    $scope.showProperties = null;
-                    $scope.node = null;
+                    $scope.showPanel = false;
                 };
 
                 $scope.getPropertyKeyName = function(key) {

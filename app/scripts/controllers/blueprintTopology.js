@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('cosmoUiApp')
-    .controller('BlueprintTopologyCtrl', function ($scope, $routeParams, NodeService, blueprintCoordinateService) {
+    .controller('BlueprintTopologyCtrl', function ($scope, $routeParams, $rootScope, NodeService, blueprintCoordinateService) {
         $scope.blueprintId = $routeParams.blueprintId;
 
         $scope.$on('toggleChange', function(event, toggleBar){
@@ -55,6 +55,7 @@ angular.module('cosmoUiApp')
         $scope.viewNode = function (viewNode, nodeType) {
             viewNode.nodeType = nodeType;
             $scope.viewNodeDetails = viewNode;
+            $rootScope.$emit('showBpPanel', true);
         };
 
     });

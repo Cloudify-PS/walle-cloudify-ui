@@ -33,12 +33,13 @@
         top: 0;
         right: 0;
         width: 600px;
+        height: 100%;
         border-left: 4px solid $COSMOUI_BLUEPRINT_DETAILS_LEFT_BORDER_COLOR;
         background-color: $COSMOUI_BLUEPRINT_DETAILS_BACKGROUND;
         padding-left: 19px;
         padding-right: 13px;
         padding-top: 20px;
-        z-index: 9999;
+        z-index: 10001;
 
         .title {
             padding-bottom: $COSMOUI_BLUEPRINT_DETAILS_TITLE_PADDING_BOTTOM;
