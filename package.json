@@ -74,7 +74,8 @@
         "lodash",
         "tar.gz",
         "fs.extra",
-        "influx"
+        "influx",
+        "express-params"
     ],
     "engines": {
         "node": ">=0.8.0"
