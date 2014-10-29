@@ -7,18 +7,30 @@
  * # floatingBlueprintNodePanel
  */
 angular.module('cosmoUiApp')
-    .directive('floatingBlueprintNodePanel', function ($rootScope) {
+    .directive('floatingBlueprintNodePanel', function () {
         return {
             templateUrl: 'views/blueprint/floatingNodePanel.html',
             restrict: 'EA',
             scope: {
                 node: '=node',
-                nodes: '=nodeLists'
+                nodes: '=nodeLists',
+                showPanel : '@show'
             },
-            link: function postLink($scope) {
+            link: function postLink($scope, element) {
+
+                $scope.hideProperties = function(){
+                    $scope.node = null;
+                };
+
+                $scope.$watch('node', function(newValue){
+                    if ( !!newValue ){
+                        element.show();
+                    }else{
+                        element.hide();
+                    }
+                });
 
                 function _viewNode(node) {
-
                     $scope.propSection = 'general';
                     $scope.showProperties = {
                         properties: node.properties,
@@ -55,14 +67,6 @@ angular.module('cosmoUiApp')
                         }
                     }
                 }, true);
-
-                $rootScope.$on('showBpPanel', function(e, showPanel){
-                    $scope.showPanel = showPanel;
-                });
-
-                $scope.hideProperties = function () {
-                    $scope.showPanel = false;
-                };
 
                 $scope.getNodeById = function(nodeId) {
                     angular.forEach($scope.nodes, function(node){
