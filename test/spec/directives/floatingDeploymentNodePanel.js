@@ -79,5 +79,23 @@ describe('Directive: floatingDeploymentNodePanel', function () {
             });
 
         });
+
+        xit('should show panel when node is set', function() {
+            spyOn($.fn, 'show').andCallThrough();
+            scope.node = _node;
+
+            scope.$apply();
+
+            expect($(element).show).toBe("show");
+        });
+
+        it('should hide panel when node is set to null', function() {
+            spyOn($.fn, 'hide').andCallThrough();
+            scope.node = null;
+
+            scope.$apply();
+
+            expect($(element).hide).toHaveBeenCalled();
+        });
     });
 });

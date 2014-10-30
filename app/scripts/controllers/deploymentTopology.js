@@ -4,6 +4,7 @@ angular.module('cosmoUiApp')
     .controller('DeploymentTopologyCtrl', function ($scope, $rootScope, $routeParams, NodeService, blueprintCoordinateService, CloudifyService) {
 
         var isGotExecuteNodes = false;
+        $scope.page = {};
 
         $scope.deploymentId = $routeParams.deploymentId;
 
@@ -17,14 +18,13 @@ angular.module('cosmoUiApp')
 
         $scope.$on('topologyNodeSelected', function(e, viewNode) {
             viewNode.nodeType = 'node';
-            $scope.viewNode = viewNode;
-            $rootScope.$emit('showDepPanel', true);
+            $scope.page.viewNode = viewNode;
         });
 
         $scope.$on('topologyRelationshipSelected', function(e, viewNode) {
             viewNode.nodeType = 'relationship';
-            $scope.viewNode = viewNode;
-            $rootScope.$emit('showDepPanel', true);
+            $scope.page.viewNode = viewNode;
+
         });
 
         $scope.$on('nodesList', function(event, nodeList){

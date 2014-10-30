@@ -1,8 +1,7 @@
 'use strict';
 
-describe('Controller: BlueprintTopologyCtrl', function () {
-
-    var BlueprintTopologyCtrl, scope;
+describe('Controller: DeploymentTopologyCtrl', function () {
+    var DeploymentTopologyCtrl, scope;
     var _node = {
         "relationships": [{
             "type_hierarchy": ["cloudify.relationships.depends_on", "cloudify.relationships.connected_to", "cloudify.openstack.server_connected_to_floating_ip"],
@@ -41,7 +40,7 @@ describe('Controller: BlueprintTopologyCtrl', function () {
 
             scope = $rootScope.$new();
 
-            BlueprintTopologyCtrl = $controller('BlueprintTopologyCtrl', {
+            DeploymentTopologyCtrl = $controller('DeploymentTopologyCtrl', {
                 $scope: scope
             });
         }));
@@ -49,7 +48,7 @@ describe('Controller: BlueprintTopologyCtrl', function () {
 
     describe('Controller tests', function() {
         it('should create a controller', function () {
-            expect(BlueprintTopologyCtrl).not.toBeUndefined();
+            expect(DeploymentTopologyCtrl).not.toBeUndefined();
         });
 
         it('should update page object on topologyNodeSelected event broadcast', function() {
