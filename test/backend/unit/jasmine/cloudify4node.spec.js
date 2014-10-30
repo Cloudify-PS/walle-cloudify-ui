@@ -35,9 +35,9 @@ describe ('cloudify4node', function(){
 
             });
 
-            waitsFor( function(){
+            waitsFor(function(){
                 return gotBlueprints;
-            }, 'waiting for gotBlueprints',1000);
+            }, 'waiting for gotBlueprints', 5000);
 
             runs(function(){
                 expect(writeIsInvoked).toBe(false);
