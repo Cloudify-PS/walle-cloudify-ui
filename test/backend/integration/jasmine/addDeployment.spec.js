@@ -62,7 +62,7 @@ describe('Integration: addDeployment', function () {
             successResult.created_at = result.created_at;
             successResult.blueprint_id = blueprints[0].id;
 
-            expect(JSON.stringify(result)).toBe(JSON.stringify(successResult));
+            expect(result).toEqual(successResult);
         });
     });
 });

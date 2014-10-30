@@ -45,7 +45,7 @@ describe('Integration: addBlueprint', function () {
             successResult.updated_at = result.updated_at;
             successResult.created_at = result.created_at;
 
-            expect(JSON.stringify(result)).toBe(JSON.stringify(successResult));
+            expect(result).toEqual(successResult);
         });
     });
 });
