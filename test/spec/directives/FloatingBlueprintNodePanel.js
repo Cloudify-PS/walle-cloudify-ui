@@ -106,7 +106,6 @@ describe('Directive: floatingBlueprintNodePanel', function () {
                 expect(scope.showProperties.relationships).toBeUndefined();
                 expect(scope.showProperties.general.name).toBe('floatingip');
             });
-
         });
 
         it('should create showProperties object with relationships for node view panel', function() {
@@ -121,6 +120,24 @@ describe('Directive: floatingBlueprintNodePanel', function () {
                 expect(scope.showProperties.relationships).toBeDefined();
                 expect(scope.showProperties.general.name).toBe('nodejs_vm');
             });
+        });
+
+        xit('should show panel when node is set', function() {
+            spyOn($.fn, 'show').andCallThrough();
+            scope.node = _node;
+
+            scope.$apply();
+
+            expect($(element).show).toBe("show");
+        });
+
+        it('should hide panel when node is set to null', function() {
+            spyOn($.fn, 'hide').andCallThrough();
+            scope.node = null;
+
+            scope.$apply();
+
+            expect($(element).hide).toHaveBeenCalled();
         });
     });
 });

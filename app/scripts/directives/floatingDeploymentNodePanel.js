@@ -25,10 +25,10 @@ angular.module('cosmoUiApp')
                     $scope.node = null;
                 };
 
-                $scope.$watch('node', function(newValue){
-                    if ( !!newValue ){
+                $scope.$watch('node', function(newValue) {
+                    if (!!newValue) {
                         element.show();
-                    }else{
+                    } else {
                         element.hide();
                     }
                 });
