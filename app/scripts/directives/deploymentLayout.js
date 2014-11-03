@@ -77,14 +77,18 @@ angular.module('cosmoUiApp')
 
                         // Add breadcrumbs for the current deployment
                         $scope.breadcrumb = [
+//                            {
+//                                href: '#/blueprint/' + dataDeployment.blueprint_id + '/topology',
+//                                label: dataDeployment.blueprint_id,
+//                                id: 'blueprint'
+//                            },
                             {
-                                href: '#/blueprint/' + dataDeployment.blueprint_id + '/topology',
-                                label: dataDeployment.blueprint_id,
-                                id: 'blueprint'
-                            },
-                            {
-                                href: '',
+                                href: false,
                                 label: dataDeployment.id,
+                                brackets: {
+                                    label: dataDeployment.blueprint_id,
+                                    href: '#/blueprint/' + dataDeployment.blueprint_id + '/topology'
+                                },
                                 id: 'deployment'
                             }
                         ];
