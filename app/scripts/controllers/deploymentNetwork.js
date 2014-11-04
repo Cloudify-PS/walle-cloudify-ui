@@ -11,6 +11,7 @@ angular.module('cosmoUiApp')
     .controller('DeploymentNetworkCtrl', function ($scope, $routeParams, $timeout, CloudifyService, bpNetworkService, NetworksService) {
 
         $scope.deploymentId = $routeParams.deploymentId;
+        $scope.page = {};
 
         var nodes = [];
 
@@ -30,7 +31,7 @@ angular.module('cosmoUiApp')
             });
 
         $scope.viewNodeDetails = function (viewNode) {
-            $scope.viewNode = viewNode;
+            $scope.page.viewNode = viewNode;
         };
 
     });
