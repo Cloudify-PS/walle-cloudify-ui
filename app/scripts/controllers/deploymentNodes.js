@@ -11,6 +11,7 @@ angular.module('cosmoUiApp')
     .controller('DeploymentNodesCtrl', function ($scope, $routeParams, NodeService) {
 
         $scope.deploymentId = $routeParams.deploymentId;
+        $scope.page = {};
 
         $scope.$on('nodesList', function(e, nodesList){
             NodeService.createNodesTree(nodesList);
@@ -40,7 +41,7 @@ angular.module('cosmoUiApp')
         };
 
         $scope.viewNodeDetails = function (viewNode) {
-            $scope.viewNode = viewNode;
+            $scope.page.viewNode = viewNode;
         };
 
     });

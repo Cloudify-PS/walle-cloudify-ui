@@ -11,6 +11,7 @@ angular.module('cosmoUiApp')
     .controller('BlueprintNodesCtrl', function ($scope, $routeParams, NodeService) {
 
         $scope.blueprintId = $routeParams.blueprintId;
+        $scope.page = {};
 
         $scope.$on('blueprintData', function(event, data){
             NodeService.createNodesTree(data.plan.nodes);
@@ -41,7 +42,7 @@ angular.module('cosmoUiApp')
         };
 
         $scope.viewNode = function (viewNode) {
-            $scope.viewNodeDetails = viewNode;
+            $scope.page.viewNodeDetails = viewNode;
         };
 
     });
