@@ -61,7 +61,11 @@
                 </div>
                 <div class="inputsParameters" ng-show="inputsState == 'params'">
                     <ul>
-                        <li ng-repeat="(name, value) in selectedWorkflow.data.parameters">{{name}}: <input type="text" ng-model="inputs[name]" placeholder="{{ name }}"></li>
+                        <li ng-repeat="(name, value) in selectedWorkflow.data.parameters">
+                            {{name}}:
+                            <input type="text" ng-model="inputs[name]" placeholder="{{ name }}" ng-show="isInputText(selectedWorkflow.data.parameters[name])">
+                            <input type="select" ng-model="inputs[name]" ng-options="" ng-show="!isInputText(selectedWorkflow.data.parameters[name])">
+                        </li>
                     </ul>
                 </div>
                 <div class="inputsRaw" ng-show="inputsState == 'raw'">
@@ -70,12 +74,12 @@
             </div>
             <div class="error-message" data-ng-show="isExecuteError()">{{ executeErrorMessage }}</div>
             <div class="buttonsContainer confirmationButtons" ng-show="confirmationType == 'execute'">
-                <button id="cancelBtn" class="dialogButton" ng-click="toggleConfirmationDialog()">{{ 'deployments.confirmationPopup.cancelBtn' | i18n }}</button>
-                <button id="confirmBtn" class="dialogButton" ng-class="{disabled: !isExecuteEnabled(), enabled: isExecuteEnabled(), loader: inProcess}" ng-click="executeWorkflow(selectedDeployment)">{{ 'deployments.confirmationPopup.confirmBtn' | i18n }}</button>
+                <button class="dialogButton" ng-click="closeDialog()">{{ 'deployments.confirmationPopup.cancelBtn' | i18n }}</button>
+                <button class="dialogButton" ng-class="{disabled: !isExecuteEnabled(), enabled: isExecuteEnabled(), loader: inProcess}" ng-click="executeWorkflow(selectedDeployment)">{{ 'deployments.confirmationPopup.confirmBtn' | i18n }}</button>
             </div>
             <div class="buttonsContainer confirmationButtons" ng-show="confirmationType == 'cancel'">
-                <button id="cancelBtn" class="dialogButton" ng-click="toggleConfirmationDialog()">{{ 'deployments.confirmationPopup.cancelBtn' | i18n }}</button>
-                <button id="confirmBtn" class="dialogButton" ng-click="cancelWorkflow(executedData)">{{ 'deployments.confirmationPopup.confirmBtn' | i18n }}</button>
+                <button class="dialogButton" ng-click="toggleConfirmationDialog()">{{ 'deployments.confirmationPopup.cancelBtn' | i18n }}</button>
+                <button class="dialogButton" ng-click="cancelWorkflow(executedData)">{{ 'deployments.confirmationPopup.confirmBtn' | i18n }}</button>
             </div>
         </div>
     </div>

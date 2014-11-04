@@ -17,6 +17,7 @@ angular.module('cosmoUiApp')
         $scope.selectedWorkflow = {
             data: null
         };
+        $scope.inputs = {};
         var selectedWorkflows = [];
         var workflows = [];
         var cosmoError = false;
