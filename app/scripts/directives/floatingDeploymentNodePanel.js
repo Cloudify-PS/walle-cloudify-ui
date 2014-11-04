@@ -74,6 +74,9 @@ angular.module('cosmoUiApp')
 
                 $scope.$watch('node', function(node){
                     if(node) {
+                        $scope.selectedNode = null;
+                        $scope.propSection = 'general';
+
                         switch(node.nodeType) {
                         case 'node':
                             _viewNode(node);
