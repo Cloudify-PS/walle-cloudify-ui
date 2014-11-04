@@ -61,7 +61,7 @@
                 </div>
                 <div class="inputsParameters" ng-show="inputsState == 'params'">
                     <ul>
-                        <li ng-repeat="(name, value) in selectedWorkflow.data.parameters">{{name}}: <input type="text" ng-model="inputs[name]" placeholder="{{ name }}"></li>
+                        <li ng-repeat="(name, value) in selectedWorkflow.data.parameters">{{name}}: <input type="text" ng-model="inputs[name]" placeholder="Enter Value"></li>
                     </ul>
                 </div>
                 <div class="inputsRaw" ng-show="inputsState == 'raw'">
