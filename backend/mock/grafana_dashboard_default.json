@@ -1,12 +1,13 @@
 {
     "id": null,
-    "title": "Grafana",
-    "originalTitle": "Grafana",
+    "title": "MonitoringDep",
+    "originalTitle": "MonitoringDep",
     "tags": [],
     "style": "cloudify",
     "timezone": "browser",
     "editable": true,
     "hideControls": false,
+    "sharedCrosshair": false,
     "rows": [
         {
             "title": "CPU Utillization & Disk IO",
@@ -14,6 +15,78 @@
             "editable": true,
             "collapse": false,
             "panels": [
+                {
+                    "error": false,
+                    "span": 6,
+                    "editable": true,
+                    "type": "graph",
+                    "id": 5,
+                    "datasource": null,
+                    "renderer": "flot",
+                    "x-axis": true,
+                    "y-axis": true,
+                    "scale": 1,
+                    "y_formats": [
+                        "short",
+                        "short"
+                    ],
+                    "grid": {
+                        "leftMax": null,
+                        "rightMax": null,
+                        "leftMin": null,
+                        "rightMin": null,
+                        "threshold1": null,
+                        "threshold2": null,
+                        "threshold1Color": "rgba(216, 200, 27, 0.27)",
+                        "threshold2Color": "rgba(234, 112, 112, 0.22)"
+                    },
+                    "annotate": {
+                        "enable": false
+                    },
+                    "resolution": 100,
+                    "lines": true,
+                    "fill": 2,
+                    "linewidth": 1,
+                    "points": false,
+                    "pointradius": 5,
+                    "bars": false,
+                    "stack": true,
+                    "legend": {
+                        "show": true,
+                        "values": false,
+                        "min": false,
+                        "max": false,
+                        "current": false,
+                        "total": false,
+                        "avg": false,
+                        "alignAsTable": true,
+                        "rightSide": false
+                    },
+                    "percentage": false,
+                    "zerofill": true,
+                    "nullPointMode": "connected",
+                    "steppedLine": false,
+                    "tooltip": {
+                        "value_type": "cumulative",
+                        "query_as_alias": true,
+                        "shared": false
+                    },
+                    "targets": [
+                        {
+                            "target": "",
+                            "function": "mean",
+                            "column": "value",
+                            "rawQuery": true,
+                            "query": "select  mean(value) from /{%deployment%}\\.vm\\..*?\\.cpu_total_system/ where  time > now() - 15m     group by time(10)  order asc",
+                            "alias": "$2 CPU System"
+                        }
+                    ],
+                    "aliasColors": {
+                        "vm_c6208 CPU System": "#6ED0E0"
+                    },
+                    "seriesOverrides": [],
+                    "title": "CPU Utilization System"
+                },
                 {
                     "error": false,
                     "span": 6,
@@ -67,102 +140,29 @@
                     "steppedLine": false,
                     "tooltip": {
                         "value_type": "cumulative",
-                        "query_as_alias": true
+                        "query_as_alias": true,
+                        "shared": false
                     },
                     "targets": [
                         {
                             "function": "mean",
                             "column": "value",
-                            "query": "select  mean(value) from /{%deployment%}\\.vm\\..*?\\.cpu_total_user/ where  time > now() - 5m     group by time(10)  order asc",
+                            "query": "select  mean(value) from /{%deployment%}\\.vm\\..*?\\.cpu_total_user/ where  time > now() - 15m     group by time(10)  order asc",
                             "rawQuery": true,
                             "interval": "10",
                             "alias": "$2 CPU User"
-                        },
-                        {
-                            "target": "",
-                            "function": "mean",
-                            "column": "value",
-                            "rawQuery": true,
-                            "query": "select  mean(value) from /{%deployment%}\\.vm\\..*?\\.cpu_total_system/ where  time > now() - 5m     group by time(10)  order asc",
-                            "alias": "$2 CPU System"
                         }
                     ],
-                    "aliasColors": {},
+                    "aliasColors": {
+                        "vm_c6208 CPU User": "#705DA0"
+                    },
                     "seriesOverrides": [],
-                    "title": "CPU Utilization"
-                },
-                {
-                    "error": false,
-                    "span": 6,
-                    "editable": true,
-                    "type": "graph",
-                    "id": 3,
-                    "datasource": null,
-                    "renderer": "flot",
-                    "x-axis": true,
-                    "y-axis": true,
-                    "scale": 1,
-                    "y_formats": [
-                        "short",
-                        "short"
-                    ],
-                    "grid": {
-                        "leftMax": null,
-                        "rightMax": null,
-                        "leftMin": null,
-                        "rightMin": null,
-                        "threshold1": null,
-                        "threshold2": null,
-                        "threshold1Color": "rgba(216, 200, 27, 0.27)",
-                        "threshold2Color": "rgba(234, 112, 112, 0.22)"
-                    },
-                    "annotate": {
-                        "enable": false
-                    },
-                    "resolution": 100,
-                    "lines": true,
-                    "fill": 0,
-                    "linewidth": 1,
-                    "points": false,
-                    "pointradius": 5,
-                    "bars": false,
-                    "stack": false,
-                    "legend": {
-                        "show": true,
-                        "values": false,
-                        "min": false,
-                        "max": false,
-                        "current": false,
-                        "total": false,
-                        "avg": false,
-                        "alignAsTable": true
-                    },
-                    "percentage": false,
-                    "zerofill": true,
-                    "nullPointMode": "connected",
-                    "steppedLine": false,
-                    "tooltip": {
-                        "value_type": "cumulative",
-                        "query_as_alias": true
-                    },
-                    "targets": [
-                        {
-                            "function": "mean",
-                            "column": "value",
-                            "rawQuery": true,
-                            "query": "select  mean(value) from /{%deployment%}\\.vm\\..*?\\.iostat_.*?_average_queue_length/ where  time > now() - 5m     group by time(10)  order asc",
-                            "alias": "$2 $3",
-                            "hide": false
-                        }
-                    ],
-                    "aliasColors": {},
-                    "seriesOverrides": [],
-                    "title": "Disk IO"
+                    "title": "CPU Utilization User"
                 }
             ]
         },
         {
-            "title": "Physical Memory & Network IO",
+            "title": "CPU Utillization & Disk IO",
             "height": "250px",
             "editable": true,
             "collapse": false,
@@ -219,7 +219,8 @@
                     "steppedLine": false,
                     "tooltip": {
                         "value_type": "cumulative",
-                        "query_as_alias": true
+                        "query_as_alias": true,
+                        "shared": false
                     },
                     "targets": [
                         {
@@ -227,14 +228,93 @@
                             "function": "mean",
                             "column": "value",
                             "rawQuery": true,
-                            "query": "select  mean(value) from /{%deployment%}\\.vm\\..*?\\.memory_MemFree/ where  time > now() - 5m     group by time(10)  order asc",
+                            "query": "select  mean(value) from /{%deployment%}\\.vm\\..*?\\.memory_MemFree/ where  time > now() - 15m     group by time(10)  order asc",
                             "alias": "$2 Free Physical Memory"
+                        }
+                    ],
+                    "aliasColors": {
+                        "vm_c6208 Free Physical Memory": "#7EB26D"
+                    },
+                    "seriesOverrides": [],
+                    "title": "Physical Memory"
+                },
+                {
+                    "error": false,
+                    "span": 6,
+                    "editable": true,
+                    "type": "graph",
+                    "id": 3,
+                    "datasource": null,
+                    "renderer": "flot",
+                    "x-axis": true,
+                    "y-axis": true,
+                    "scale": 1,
+                    "y_formats": [
+                        "short",
+                        "short"
+                    ],
+                    "grid": {
+                        "leftMax": null,
+                        "rightMax": null,
+                        "leftMin": null,
+                        "rightMin": null,
+                        "threshold1": null,
+                        "threshold2": null,
+                        "threshold1Color": "rgba(216, 200, 27, 0.27)",
+                        "threshold2Color": "rgba(234, 112, 112, 0.22)"
+                    },
+                    "annotate": {
+                        "enable": false
+                    },
+                    "resolution": 100,
+                    "lines": true,
+                    "fill": 0,
+                    "linewidth": 1,
+                    "points": false,
+                    "pointradius": 5,
+                    "bars": false,
+                    "stack": false,
+                    "legend": {
+                        "show": true,
+                        "values": false,
+                        "min": false,
+                        "max": false,
+                        "current": false,
+                        "total": false,
+                        "avg": false,
+                        "alignAsTable": true
+                    },
+                    "percentage": false,
+                    "zerofill": true,
+                    "nullPointMode": "connected",
+                    "steppedLine": false,
+                    "tooltip": {
+                        "value_type": "cumulative",
+                        "query_as_alias": true,
+                        "shared": false
+                    },
+                    "targets": [
+                        {
+                            "function": "mean",
+                            "column": "value",
+                            "rawQuery": true,
+                            "query": "select  mean(value) from /{%deployment%}\\.vm\\..*?\\.iostat_.*?_average_queue_length/ where  time > now() - 15m     group by time(10)  order asc",
+                            "alias": "$2 $3",
+                            "hide": false
                         }
                     ],
                     "aliasColors": {},
                     "seriesOverrides": [],
-                    "title": "Physical Memory"
-                },
+                    "title": "Disk IO"
+                }
+            ]
+        },
+        {
+            "title": "Physical Memory & Network IO",
+            "height": "250px",
+            "editable": true,
+            "collapse": false,
+            "panels": [
                 {
                     "error": false,
                     "span": 6,
@@ -287,20 +367,89 @@
                     "steppedLine": false,
                     "tooltip": {
                         "value_type": "cumulative",
-                        "query_as_alias": true
+                        "query_as_alias": true,
+                        "shared": false
                     },
                     "targets": [
                         {
                             "function": "mean",
                             "column": "value",
                             "rawQuery": true,
-                            "query": "select  mean(value) from /{%deployment%}\\.vm\\..*?\\.network_.*?_(rx|tx)_packets/ where  time > now() - 5m     group by time(10)  order asc",
+                            "query": "select  mean(value) from /{%deployment%}\\.vm\\..*?\\.network_.*?_rx_packets/ where  time > now() - 15m     group by time(10)  order asc",
                             "alias": "$2 $3"
                         }
                     ],
                     "aliasColors": {},
                     "seriesOverrides": [],
-                    "title": "Network IO"
+                    "title": "Network IO RX"
+                },
+                {
+                    "error": false,
+                    "span": 6,
+                    "editable": true,
+                    "type": "graph",
+                    "id": 6,
+                    "datasource": null,
+                    "renderer": "flot",
+                    "x-axis": true,
+                    "y-axis": true,
+                    "scale": 1,
+                    "y_formats": [
+                        "short",
+                        "short"
+                    ],
+                    "grid": {
+                        "leftMax": null,
+                        "rightMax": null,
+                        "leftMin": null,
+                        "rightMin": null,
+                        "threshold1": null,
+                        "threshold2": null,
+                        "threshold1Color": "rgba(216, 200, 27, 0.27)",
+                        "threshold2Color": "rgba(234, 112, 112, 0.22)"
+                    },
+                    "annotate": {
+                        "enable": false
+                    },
+                    "resolution": 100,
+                    "lines": true,
+                    "fill": 2,
+                    "linewidth": 1,
+                    "points": false,
+                    "pointradius": 5,
+                    "bars": false,
+                    "stack": true,
+                    "legend": {
+                        "show": true,
+                        "values": false,
+                        "min": false,
+                        "max": false,
+                        "current": false,
+                        "total": false,
+                        "avg": false,
+                        "alignAsTable": true
+                    },
+                    "percentage": false,
+                    "zerofill": true,
+                    "nullPointMode": "connected",
+                    "steppedLine": false,
+                    "tooltip": {
+                        "value_type": "cumulative",
+                        "query_as_alias": true,
+                        "shared": false
+                    },
+                    "targets": [
+                        {
+                            "function": "mean",
+                            "column": "value",
+                            "rawQuery": true,
+                            "query": "select  mean(value) from /{%deployment%}\\.vm\\..*?\\.network_.*?_tx_packets/ where  time > now() - 15m     group by time(10)  order asc",
+                            "alias": "$2 $3"
+                        }
+                    ],
+                    "aliasColors": {},
+                    "seriesOverrides": [],
+                    "title": "Network IO TX"
                 }
             ]
         }
