@@ -12,6 +12,7 @@ angular.module('cosmoUiApp')
 
         $scope.blueprintId = $routeParams.blueprintId;
         $scope.networks = [];
+        $scope.page = {};
 
         $scope.$on('blueprintData', function(event, data){
 
@@ -25,7 +26,7 @@ angular.module('cosmoUiApp')
         });
 
         $scope.viewNodeDetails = function (viewNode) {
-            $scope.viewNode = viewNode;
+            $scope.page.viewNode = viewNode;
         };
 
     });

@@ -5,7 +5,7 @@
          section="Nodes"
          selectview="false"></div>
 
-    <div floating-deployment-node-panel node="viewNode" depid="deploymentId"></div>
+    <div floating-deployment-node-panel node="page.viewNode" depid="deploymentId" class="right-panel"></div>
 
     <!--<div deployment-events="deploymentId"></div>-->
 
@@ -29,13 +29,13 @@
                 <td>{{ row.type }}</td>
                 <td>{{ row.number_of_instances }}</td>
                 <td>
-                        <span data-ng-if="getRelationshipByType(row, 'contained').length > 0"
-                              data-ng-repeat="container in getRelationshipByType(row, 'contained')">{{ container.name }}</span>
+                    <span data-ng-if="getRelationshipByType(row, 'contained').length > 0"
+                          data-ng-repeat="container in getRelationshipByType(row, 'contained')">{{ container.target_id }}</span>
                     <span data-ng-if="getRelationshipByType(row, 'contained').length == 0">--</span>
                 </td>
                 <td>
-                        <span data-ng-if="getRelationshipByType(row, 'connected').length > 0"
-                              data-ng-repeat="connection in getRelationshipByType(row, 'connected')">{{ connection.name }}</span>
+                    <span data-ng-if="getRelationshipByType(row, 'connected').length > 0"
+                          data-ng-repeat="connection in getRelationshipByType(row, 'connected')">{{ connection.target_id }}</span>
                     <span data-ng-if="getRelationshipByType(row, 'connected').length == 0">--</span>
                 </td>
                 <td>

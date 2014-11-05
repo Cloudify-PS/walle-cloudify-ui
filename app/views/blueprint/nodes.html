@@ -4,7 +4,7 @@
          blueprint-id="blueprintId"
          section="Nodes"></div>
 
-    <div floating-blueprint-node-panel node="viewNodeDetails" node-lists="planNodes"></div>
+    <div floating-blueprint-node-panel node="page.viewNodeDetails" node-lists="planNodes" class="right-panel"></div>
 
     <div class="nodesTable">
         <table class="table">
@@ -26,11 +26,13 @@
                 <td>{{ row.type }}</td>
                 <td>{{ row.instances.deploy }}</td>
                 <td>
-                    <span data-ng-if="getRelationshipByType(row, 'contained_in').length > 0" data-ng-repeat="container in getRelationshipByType(row, 'contained_in')">{{ container.name }}</span>
+                    <span data-ng-if="getRelationshipByType(row, 'contained_in').length > 0"
+                          data-ng-repeat="container in getRelationshipByType(row, 'contained_in')">{{ container.target_id }}</span>
                     <span data-ng-if="getRelationshipByType(row, 'contained_in').length == 0">--</span>
                 </td>
                 <td>
-                    <span data-ng-if="getRelationshipByType(row, 'connected_to').length > 0" data-ng-repeat="connection in getRelationshipByType(row, 'connected_to')">{{ connection.name }}</span>
+                    <span data-ng-if="getRelationshipByType(row, 'connected_to').length > 0"
+                          data-ng-repeat="connection in getRelationshipByType(row, 'connected_to')">{{ connection.target_id }}</span>
                     <span data-ng-if="getRelationshipByType(row, 'connected_to').length == 0">--</span>
                 </td>
                 <td>

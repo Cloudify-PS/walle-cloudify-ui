@@ -225,6 +225,7 @@ html, body, .layout {
             a, a:link, a:visited, a:hover, a:active {
                 text-decoration: none;
                 color: $COSMOUI_BREADCRUMB_ITEM_COLOR;
+                cursor: pointer;
             }
             a:hover {
                 color: $COSMOUI_BREADCRUMB_ITEM_COLOR_HOVER;
@@ -233,16 +234,17 @@ html, body, .layout {
             &.active {
                 color: #333;
             }
+
+            span {
+                color: $COSMOUI_BREADCRUMB_LAST_ITEM_COLOR;
+                cursor: default;
+            }
         }
         li:not(:last-child):after {
             display: inline-block;
             content: ">";
             padding-left: 5px;
             color: $COSMOUI_BREADCRUMB_LAST_ITEM_COLOR;
-        }
-        li:last-child a {
-            color: $COSMOUI_BREADCRUMB_LAST_ITEM_COLOR;
-            cursor: default;
         }
         //li:last-child:not(:first-child):after{
         //  content: "\f057";
