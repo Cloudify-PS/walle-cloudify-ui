@@ -35,7 +35,8 @@
             "description": "Please enter deployment name",
             "cancelBtn": "Cancel",
             "deployBtn": "Create",
-            "deployName": "Deployment name"
+            "deployName": "Deployment name",
+            "enterValue": "Enter Value"
         },
         "deleteDialog": {
             "cancelBtn": "Cancel",
