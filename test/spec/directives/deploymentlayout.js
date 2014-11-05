@@ -61,7 +61,7 @@ describe('Directive: deploymentLayout', function () {
                 return element.children().scope().breadcrumb.length > 0;
             });
             runs(function() {
-                expect(element.children().scope().breadcrumb[0].href).toBe('#/blueprint/blueprint1/topology');
+                expect(element.children().scope().breadcrumb[0].brackets.href).toBe('#/blueprint/blueprint1/topology');
             });
 
         });
