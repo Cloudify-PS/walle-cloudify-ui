@@ -9,18 +9,18 @@ angular.module('cosmoUiApp')
         $scope.inputsJSON = null;
         $scope.inputsState = 'params';
 
-        $scope.isDeployEnabled = function() {
+        $scope.isDeployEnabled = function () {
             return $scope.deployment_id !== null && $scope.deployment_id.length > 0;
         };
 
-        $scope.isParamsVisible = function() {
+        $scope.isParamsVisible = function () {
             if ($scope.selectedBlueprint === null) {
                 return;
             }
             return Object.getOwnPropertyNames($scope.selectedBlueprint.plan.inputs).length > 0;
         };
 
-        $scope.deployBlueprint = function(blueprintId) {
+        $scope.deployBlueprint = function (blueprintId) {
             if (!_validateDeploymentName($scope.deployment_id)) {
                 return;
             }
@@ -29,7 +29,8 @@ angular.module('cosmoUiApp')
             if ($scope.inputsState === 'raw') {
                 try {
                     $scope.inputs = JSON.parse($scope.inputsJSON);
-                } catch (e) {}
+                } catch (e) {
+                }
             }
 
             var params = {
@@ -41,9 +42,9 @@ angular.module('cosmoUiApp')
             if ($scope.isDeployEnabled()) {
                 $scope.inProcess = true;
                 CloudifyService.blueprints.deploy(params)
-                    .then(function(data) {
+                    .then(function (data) {
                         $scope.inProcess = false;
-                        if(data.hasOwnProperty('message')) {
+                        if (data.hasOwnProperty('message')) {
                             $scope.deployErrorMessage = data.message;
                             $scope.deployError = true;
                         }
@@ -54,22 +55,33 @@ angular.module('cosmoUiApp')
             }
         };
 
-        $scope.isDeployError = function() {
+        $scope.isDeployError = function () {
             return $scope.deployError;
         };
 
-        $scope.closeDialog = function() {
+        $scope.closeDialog = function () {
             _resetDialog();
             $scope.toggleDeployDialog();
         };
 
-        $scope.toggleInputsState = function(state) {
+        $scope.toggleInputsState = function (state) {
             $scope.inputsState = state;
         };
 
+        $scope.$watch('selectedBlueprint', function (selectedBlueprint) {
+            if (selectedBlueprint !== null && selectedBlueprint.hasOwnProperty('plan')) {
+                for (var name in selectedBlueprint.plan.inputs) {
+                    var planInput = selectedBlueprint.plan.inputs[name];
+                    if (planInput.hasOwnProperty('default')) {
+                        $scope.inputs[name] = planInput.default;
+                    }
+                }
+            }
+        }, true);
+
         // Temporary solution - should be handled by Cosmo, not UI side
         function _validateDeploymentName(deploymentName) {
-            if(/[^a-zA-Z0-9_]/.test(deploymentName)) {
+            if (/[^a-zA-Z0-9_]/.test(deploymentName)) {
                 $scope.deployErrorMessage = 'Invalid deployment name. Only Alphanumeric text allowed.';
                 $scope.deployError = true;
 
