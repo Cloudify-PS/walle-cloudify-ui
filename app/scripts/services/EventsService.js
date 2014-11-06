@@ -17,6 +17,7 @@ angular.module('cosmoUiApp')
                 .from(0)
                 .size(1000);
             var activeFilters = {};
+            var activeFiltersArr = {};
             var rangePrefix = 'range';
             var isAutoPull = false;
             var autoPullTimer = '3000';
@@ -46,18 +47,30 @@ angular.module('cosmoUiApp')
                 return activeFilters.hasOwnProperty(field + term);
             }
 
-            function _applyFilters(query) {
-                var filter = null;
-                var filters = Object.keys(activeFilters).map(function (k) {
-                    return activeFilters[k];
-                });
-                if (filters.length > 1) {
-                    filter = ejs.AndFilter(filters);
+            function _applyFilters() {
+
+                console.log(['_applyFilters', activeFiltersArr]);
+
+                var filters = [];
+                for(var field in activeFiltersArr) {
+                    filters.push(ejs.TermsFilter(field, activeFiltersArr[field]));
                 }
-                else if (filters.length === 1) {
-                    filter = filters[0];
-                }
-                return filter ? ejs.FilteredQuery(query, filter) : query;
+
+//
+//                var filter = null;
+//                var filters = Object.keys(activeFilters).map(function (k) {
+//                    return activeFilters[k];
+//                });
+//                if (filters.length > 1) {
+//                    filter = ejs.AndFilter(filters);
+//                }
+//                else if (filters.length === 1) {
+//                    filter = filters[0];
+//                }
+
+                //console.log(['_applyFilters', filter.toString(), filters.toString()]);
+                //return filter ? ejs.FilteredQuery(query, filter) : query;
+                return ejs.AndFilter(filters);
             }
 
 
@@ -86,6 +99,13 @@ angular.module('cosmoUiApp')
             function filter(field, term) {
                 if(!filterRemove(field, term)) {
                     activeFilters[field + term] = ejs.TermFilter(field, term ? term.toLowerCase() : term);
+                }
+
+                if(!activeFiltersArr.hasOwnProperty(field)) {
+                    activeFiltersArr[field] = [];
+                }
+                if(activeFiltersArr[field].indexOf(term) === -1) {
+                    activeFiltersArr[field].push(term);
                 }
             }
 
@@ -165,19 +185,22 @@ angular.module('cosmoUiApp')
             function execute(callbackFn, autoPull, customPullTime) {
                 var results;
                 if(sortField) {
-                    //$log.info(['Query 1: ', _applyFilters(oQuery.query('*')).toString()])
+                    $log.info(['Query 1: ', _applyFilters(oQuery.query('*')).toString()])
                     results = client
-                        .query(_applyFilters(oQuery.query('*')))
+                        .query(ejs.MatchAllQuery())
+                        .filter(_applyFilters())
                         .sort([sortField])
                         .doSearch();
                 }
                 else {
-                    //$log.info(['Query 2: ', _applyFilters(oQuery.query('*')).toString()])
+                    $log.info(['Query 2: ', _applyFilters(oQuery.query('*')).toString()])
                     results = client
-                        .query(_applyFilters(oQuery.query('*')))
+                        .query(ejs.MatchAllQuery())
+                        .filter(_applyFilters())
                         .sort([ejs.Sort('@timestamp').order('desc')])
                         .doSearch();
                 }
+                console.log(['results', results]);
                 results.then(function(data){
                     if(data.hasOwnProperty('error')) {
                         $log.error(data.error);
