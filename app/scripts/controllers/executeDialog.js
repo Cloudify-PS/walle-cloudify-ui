@@ -55,8 +55,6 @@ angular.module('cosmoUiApp')
                 inputs: $scope.inputs
             };
 
-            console.log(['params', params]);
-
             if ($scope.isExecuteEnabled()) {
                 $scope.inProcess = true;
                 CloudifyService.deployments.execute(params)
