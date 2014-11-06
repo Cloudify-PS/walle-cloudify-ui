@@ -67,6 +67,17 @@ angular.module('cosmoUiApp')
             $scope.inputsState = state;
         };
 
+        $scope.$watch('selectedBlueprint', function(selectedBlueprint){
+            if(selectedBlueprint !== null && selectedBlueprint.hasOwnProperty('plan')) {
+                for(var name in selectedBlueprint.plan.inputs) {
+                    var planInput = selectedBlueprint.plan.inputs[name];
+                    if(planInput.hasOwnProperty('default')) {
+                        $scope.inputs[name] = planInput.default;
+                    }
+                }
+            }
+        }, true);
+
         // Temporary solution - should be handled by Cosmo, not UI side
         function _validateDeploymentName(deploymentName) {
             if(/[^a-zA-Z0-9_]/.test(deploymentName)) {
