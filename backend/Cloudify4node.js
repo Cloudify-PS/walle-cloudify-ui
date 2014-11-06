@@ -400,7 +400,6 @@ Cloudify4node.getProviderContext = function(callback) {
 };
 
 Cloudify4node.getEvents = function(query, callback) {
-    logger.debug('getEvents', query);
     var data = query;
     var requestData = createRequestData({
         path: '/events',
