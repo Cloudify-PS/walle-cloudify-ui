@@ -29,9 +29,6 @@ angular.module('cosmoUiApp')
         };
 
         $scope.toggleDeployDialog = function(blueprint) {
-
-            console.log(['toggleDeployDialog', blueprint]);
-
             $scope.selectedBlueprint = blueprint || null;
             $scope.isDeployDialogVisible = $scope.isDeployDialogVisible === false;
         };
