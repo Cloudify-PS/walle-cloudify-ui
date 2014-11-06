@@ -80,17 +80,16 @@ angular.module('cosmoUiApp')
         }
 
         function _isAppNode(typeHierarchy) {
-            return typeHierarchy.indexOf('cloudify-types-app-module') > 0;
+            return typeHierarchy.indexOf('cloudify-nodes-ApplicationModule') > 0;
         }
 
         function _isIgnoreNode(node) {
             var networkNodes = [
-                'floatingip',
-                'network',
-                'port',
-                'subnet',
-                'security_group',
-                'subnet'
+                'FloatingIp',
+                'Network',
+                'Port',
+                'Subnet',
+                'SecurityGroup'
             ];
 
             var searchExp = new RegExp(networkNodes.join('|'), 'gi');

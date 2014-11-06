@@ -43,7 +43,12 @@ angular.module('cosmoUiApp')
                 };
 
                 $scope.getTypeClass = function(type) {
-                    return 'cloudify-types-' + type.replace('_', '-');
+                    var typeParts = type.split('_');
+                    for (var i = 0; i < typeParts.length; i++) {
+                        typeParts[i] = typeParts[i].charAt(0).toUpperCase() + typeParts[i].slice(1);
+                    }
+                    typeParts = typeParts.join('');
+                    return 'cloudify-nodes-' + typeParts;
                 };
 
                 $scope.setHeaderHover = function(nodeName) {
