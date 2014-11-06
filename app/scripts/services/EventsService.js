@@ -12,12 +12,11 @@ angular.module('cosmoUiApp')
             /*jshint validthis: true */
             var _this = this;
             var ejs = ejsResource(server);
-            var oQuery = ejs.QueryStringQuery();
             var client = ejs.Request()
                 .from(0)
                 .size(1000);
             var activeFilters = {};
-            var activeFiltersArr = {};
+            var rangeFilter = {};
             var rangePrefix = 'range';
             var isAutoPull = false;
             var autoPullTimer = '3000';
@@ -43,33 +42,14 @@ angular.module('cosmoUiApp')
                 isAutoPullByDate = condition;
             }
 
-            function _isActiveFilter(field, term) {
-                return activeFilters.hasOwnProperty(field + term);
-            }
-
             function _applyFilters() {
-
-                console.log(['_applyFilters', activeFiltersArr]);
-
                 var filters = [];
-                for(var field in activeFiltersArr) {
-                    filters.push(ejs.TermsFilter(field, activeFiltersArr[field]));
+                for(var field in activeFilters) {
+                    filters.push(ejs.TermsFilter(field, activeFilters[field]));
                 }
-
-//
-//                var filter = null;
-//                var filters = Object.keys(activeFilters).map(function (k) {
-//                    return activeFilters[k];
-//                });
-//                if (filters.length > 1) {
-//                    filter = ejs.AndFilter(filters);
-//                }
-//                else if (filters.length === 1) {
-//                    filter = filters[0];
-//                }
-
-                //console.log(['_applyFilters', filter.toString(), filters.toString()]);
-                //return filter ? ejs.FilteredQuery(query, filter) : query;
+                for(var rangeField in rangeFilter) {
+                    filters.push(ejs.RangeFilter(rangeField).from(rangeFilter[rangeField].gte).to(rangeFilter[rangeField].lte));
+                }
                 return ejs.AndFilter(filters);
             }
 
@@ -97,38 +77,38 @@ angular.module('cosmoUiApp')
             }
 
             function filter(field, term) {
-                if(!filterRemove(field, term)) {
-                    activeFilters[field + term] = ejs.TermFilter(field, term ? term.toLowerCase() : term);
+                if(!activeFilters.hasOwnProperty(field)) {
+                    activeFilters[field] = [];
                 }
-
-                if(!activeFiltersArr.hasOwnProperty(field)) {
-                    activeFiltersArr[field] = [];
-                }
-                if(activeFiltersArr[field].indexOf(term) === -1) {
-                    activeFiltersArr[field].push(term);
+                if(activeFilters[field].indexOf(term.toLowerCase()) === -1) {
+                    activeFilters[field].push(term.toLowerCase());
                 }
             }
 
             function filterRemove(field, term) {
-                if(_isActiveFilter(field, term)) {
-                    delete activeFilters[field + term];
+                if(rangeFilter.hasOwnProperty(field)) {
+                    delete rangeFilter[field];
+                    return true;
+                }
+                if(activeFilters.hasOwnProperty(field)) {
+                    term = term.toLowerCase();
+                    if(activeFilters[field].indexOf(term) !== -1) {
+                        activeFilters[field].splice(activeFilters[field].indexOf(term), 1);
+                    }
+                    if(activeFilters[field].length === 0) {
+                        delete activeFilters[field];
+                    }
                     return true;
                 }
                 return false;
             }
 
             function filterRange(field, conditions) {
-                if(_isActiveFilter(field, rangePrefix)) {
-                    delete activeFilters[field + rangePrefix];
-                }
                 if(conditions !== undefined) {
-                    activeFilters[field + rangePrefix] = ejs.RangeFilter(field);
-                    for(var c in conditions) {
-                        var condition = conditions[c];
-                        if(activeFilters[field + rangePrefix].hasOwnProperty(c)) {
-                            activeFilters[field + rangePrefix] = activeFilters[field + rangePrefix][c](condition);
-                        }
+                    if(!rangeFilter.hasOwnProperty(field)) {
+                        rangeFilter[field] = [];
                     }
+                    rangeFilter[field] = conditions;
                 }
             }
 
@@ -185,7 +165,6 @@ angular.module('cosmoUiApp')
             function execute(callbackFn, autoPull, customPullTime) {
                 var results;
                 if(sortField) {
-                    $log.info(['Query 1: ', _applyFilters(oQuery.query('*')).toString()])
                     results = client
                         .query(ejs.MatchAllQuery())
                         .filter(_applyFilters())
@@ -193,14 +172,12 @@ angular.module('cosmoUiApp')
                         .doSearch();
                 }
                 else {
-                    $log.info(['Query 2: ', _applyFilters(oQuery.query('*')).toString()])
                     results = client
                         .query(ejs.MatchAllQuery())
                         .filter(_applyFilters())
                         .sort([ejs.Sort('@timestamp').order('desc')])
                         .doSearch();
                 }
-                console.log(['results', results]);
                 results.then(function(data){
                     if(data.hasOwnProperty('error')) {
                         $log.error(data.error);

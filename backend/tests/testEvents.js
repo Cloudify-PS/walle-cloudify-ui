@@ -18,7 +18,15 @@ var dataBody = {
                     {
                         "terms": {
                             "context.blueprint_id": [
-                                "MonitoringBp"
+                                "monitoringbp"
+                            ]
+                        }
+                    },
+                    {
+                        "terms": {
+                            "context.deployment_id": [
+                                "monitoringdep",
+                                "monitoringbptest"
                             ]
                         }
                     }
