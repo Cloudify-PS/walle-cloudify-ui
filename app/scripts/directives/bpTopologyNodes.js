@@ -42,13 +42,9 @@ angular.module('cosmoUiApp')
                     return relationship.type_hierarchy.join(',').indexOf('connected_to') > -1;
                 };
 
+                // TODO: 3.2 - Check if function still needed
                 $scope.getTypeClass = function(type) {
-                    var typeParts = type.split('_');
-                    for (var i = 0; i < typeParts.length; i++) {
-                        typeParts[i] = typeParts[i].charAt(0).toUpperCase() + typeParts[i].slice(1);
-                    }
-                    typeParts = typeParts.join('');
-                    return 'cloudify-nodes-' + typeParts;
+                    return 'cloudify-nodes-' + type;
                 };
 
                 $scope.setHeaderHover = function(nodeName) {
