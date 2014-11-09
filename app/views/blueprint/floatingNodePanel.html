@@ -31,7 +31,7 @@
                 </table>
             </div>
             <div ng-switch-when="relationships">
-                <div ng-show="showProperties.relationships.length == undefined">{{ 'plans.details.noRelationships' | i18n }}</div>
+                <div class="no-relationships" ng-show="showProperties.relationships.length == undefined">{{ 'plans.details.noRelationships' | i18n }}</div>
                 <table ng-show="showProperties.relationships.length != undefined">
                     <tr>
                         <td>{{ 'plans.details.target' | i18n }}</td>
