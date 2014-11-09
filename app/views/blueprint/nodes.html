@@ -27,12 +27,12 @@
                 <td>{{ row.instances.deploy }}</td>
                 <td>
                     <span data-ng-if="getRelationshipByType(row, 'contained_in').length > 0"
-                          data-ng-repeat="container in getRelationshipByType(row, 'contained_in')">{{ container.target_id }}</span>
+                          data-ng-repeat="container in getRelationshipByType(row, 'contained_in')">{{ container.target_id }}{{$last ? '' : ', '}}</span>
                     <span data-ng-if="getRelationshipByType(row, 'contained_in').length == 0">--</span>
                 </td>
                 <td>
                     <span data-ng-if="getRelationshipByType(row, 'connected_to').length > 0"
-                          data-ng-repeat="connection in getRelationshipByType(row, 'connected_to')">{{ connection.target_id }}</span>
+                          data-ng-repeat="connection in getRelationshipByType(row, 'connected_to')">{{ connection.target_id }}{{$last ? '' : ', '}}</span>
                     <span data-ng-if="getRelationshipByType(row, 'connected_to').length == 0">--</span>
                 </td>
                 <td>

@@ -30,12 +30,12 @@
                 <td>{{ row.number_of_instances }}</td>
                 <td>
                     <span data-ng-if="getRelationshipByType(row, 'contained').length > 0"
-                          data-ng-repeat="container in getRelationshipByType(row, 'contained')">{{ container.target_id }}</span>
+                          data-ng-repeat="container in getRelationshipByType(row, 'contained')">{{ container.target_id }}{{$last ? '' : ', '}}</span></span>
                     <span data-ng-if="getRelationshipByType(row, 'contained').length == 0">--</span>
                 </td>
                 <td>
                     <span data-ng-if="getRelationshipByType(row, 'connected').length > 0"
-                          data-ng-repeat="connection in getRelationshipByType(row, 'connected')">{{ connection.target_id }}</span>
+                          data-ng-repeat="connection in getRelationshipByType(row, 'connected')">{{ connection.target_id }}{{$last ? '' : ', '}}</span>
                     <span data-ng-if="getRelationshipByType(row, 'connected').length == 0">--</span>
                 </td>
                 <td>
