@@ -85,7 +85,7 @@
                         "vm_c6208 CPU System": "#6ED0E0"
                     },
                     "seriesOverrides": [],
-                    "title": "CPU Utilization System"
+                    "title": "CPU Utilization - System"
                 },
                 {
                     "error": false,
@@ -157,7 +157,7 @@
                         "vm_c6208 CPU User": "#705DA0"
                     },
                     "seriesOverrides": [],
-                    "title": "CPU Utilization User"
+                    "title": "CPU Utilization - User"
                 }
             ]
         },
@@ -381,7 +381,7 @@
                     ],
                     "aliasColors": {},
                     "seriesOverrides": [],
-                    "title": "Network IO RX"
+                    "title": "Network IO - RX"
                 },
                 {
                     "error": false,
@@ -449,7 +449,7 @@
                     ],
                     "aliasColors": {},
                     "seriesOverrides": [],
-                    "title": "Network IO TX"
+                    "title": "Network IO - TX"
                 }
             ]
         }
