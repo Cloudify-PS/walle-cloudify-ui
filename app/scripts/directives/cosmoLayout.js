@@ -22,7 +22,7 @@ angular.module('cosmoUiApp')
                     $('#left-side-menu').after(rightPanel);
                     rightPanel.attr('id', 'right-side-menu');
                 }
-                setTimeout(doIt, 0);
+//                setTimeout(doIt, 0);
 
                 scope.embeded = ($routeParams.hasOwnProperty('embed') && $routeParams.embed === 'true') ? true : false;
 
