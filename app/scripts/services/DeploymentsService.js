@@ -18,7 +18,7 @@ angular.module('cosmoUiApp')
             var callParams = {
                 url: '/backend/deployments/execute',
                 method: 'POST',
-                data: {'deployment_id': params.deployment_id, 'workflow_id': params.workflow_id}
+                data: {'deployment_id': params.deployment_id, 'workflow_id': params.workflow_id, parameters: params.inputs}
             };
             return _load('deployments/execute', callParams);
         }

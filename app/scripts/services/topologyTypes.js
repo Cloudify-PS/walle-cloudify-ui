@@ -3,57 +3,59 @@
 angular.module('cosmoUiApp')
     .service('topologyTypes', function topologyTypes() {
 
+        // TODO: 3.2 - Add method to check if specific node should be ignored in topology (instead of _isIgnoreNode in NodeService)
+        // TODO: 3.2 - Add method to check if specific node is app node (instead of _isAppNode in NodeService)
         var types = {
             'cloudify.nodes.Root': {
-                icon: 'cloudify-types-base'
+                icon: 'cloudify-nodes-Root'
             },
             'cloudify.nodes.Compute': {
-                icon: 'cloudify-types-base cloudify-types-host'
+                icon: 'cloudify-nodes-Root cloudify-nodes-Compute'
             },
             'cloudify.nodes.SoftwareComponent': {
-                icon: 'cloudify-types-base cloudify-types-middleware-server'
+                icon: 'cloudify-nodes-Root cloudify-nodes-SoftwareComponent'
             },
             'cloudify.nodes.WebServer': {
-                icon: 'cloudify-types-base cloudify-types-middleware-server cloudify-types-web-server'
+                icon: 'cloudify-nodes-Root cloudify-nodes-SoftwareComponent cloudify-nodes-WebServer'
             },
             'cloudify.nodes.ApplicationServer': {
-                icon: 'cloudify-types-base cloudify-types-middleware-server cloudify-types-app-server'
+                icon: 'cloudify-nodes-Root cloudify-nodes-SoftwareComponent cloudify-nodes-ApplicationServer'
             },
             'cloudify.nodes.DBMS': {
-                icon: 'cloudify-types-base cloudify-types-middleware-server cloudify-types-db-server'
+                icon: 'cloudify-nodes-Root cloudify-nodes-SoftwareComponent cloudify-nodes-DBMS'
             },
             'cloudify.nodes.ApplicationModule': {
-                icon: 'cloudify-types-base cloudify-types-app-module'
+                icon: 'cloudify-nodes-Root cloudify-nodes-ApplicationModule'
             },
             'cloudify.nodes.Port': {
-                icon: 'cloudify-types-base cloudify-types-port'
+                icon: 'cloudify-nodes-Root cloudify-nodes-Port'
             },
             'cloudify.nodes.Network': {
-                icon: 'cloudify-types-base cloudify-types-network'
+                icon: 'cloudify-nodes-Root cloudify-nodes-Network'
             },
             'cloudify.nodes.Subnet': {
-                icon: 'cloudify-types-base cloudify-types-subnet'
+                icon: 'cloudify-nodes-Root cloudify-nodes-Subnet'
             },
             'cloudify.nodes.Router': {
-                icon: 'cloudify-types-base cloudify-types-router'
+                icon: 'cloudify-nodes-Root cloudify-nodes-Router'
             },
             'cloudify.nodes.LoadBalancer': {
-                icon: 'cloudify-types-base cloudify-types-load-balancer'
+                icon: 'cloudify-nodes-Root cloudify-nodes-LoadBalancer'
             },
             'cloudify.nodes.VirtualIP': {
-                icon: 'cloudify-types-base cloudify-types-virtual-ip'
+                icon: 'cloudify-nodes-Root cloudify-nodes-VirtualIP'
             },
             'cloudify.nodes.SecurityGroup': {
-                icon: 'cloudify-types-base cloudify-types-security-group'
+                icon: 'cloudify-nodes-Root cloudify-nodes-SecurityGroup'
             },
             'cloudify.nodes.Tier': {
-                icon: 'cloudify-types-base cloudify-types-tier'
+                icon: 'cloudify-nodes-Root cloudify-nodes-Tier'
             },
             'cloudify.nodes.ObjectStorage': {
-                icon: 'cloudify-types-base cloudify-types-object-container'
+                icon: 'cloudify-nodes-Root cloudify-nodes-ObjectStorage'
             },
             'cloudify.nodes.MessageBusServer': {
-                icon: 'cloudify-types-base cloudify-types-message-bus-server'
+                icon: 'cloudify-nodes-Root cloudify-nodes-MessageBusServer'
             }
         };
 

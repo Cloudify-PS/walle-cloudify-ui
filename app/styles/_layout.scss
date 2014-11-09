@@ -283,6 +283,11 @@ html, body, .layout {
     width: 400px;
 }
 
+.floating-panel {
+    width: 400px;
+    display: none;
+}
+
 .buttons-group {
     $RADIUS: 30px;
     display: inline-block;
