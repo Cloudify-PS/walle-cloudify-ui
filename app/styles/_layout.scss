@@ -319,5 +319,8 @@ html, body, .layout {
             background-color: $clr-base-01;
             border: $COSMOUI_BLUEPRINT_BUTTON_GROUP_BORDER_COLOR;
         }
+        &:focus {
+          outline:0;
+        }
     }
 }
