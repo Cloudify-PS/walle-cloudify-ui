@@ -283,6 +283,11 @@ html, body, .layout {
     width: 400px;
 }
 
+.floating-panel {
+    width: 400px;
+    display: none;
+}
+
 .buttons-group {
     $RADIUS: 30px;
     display: inline-block;
@@ -313,6 +318,9 @@ html, body, .layout {
         &:hover:not(.active) {
             background-color: $clr-base-01;
             border: $COSMOUI_BLUEPRINT_BUTTON_GROUP_BORDER_COLOR;
+        }
+        &:focus {
+          outline:0;
         }
     }
 }

@@ -73,6 +73,9 @@
             "install": "Install",
             "uninstall": "Uninstall",
             "wait": "Please wait"
+        },
+        "monitoring": {
+            "loading": "Please wait while monitoring dashboard loads"
         }
     },
     "deployments": {

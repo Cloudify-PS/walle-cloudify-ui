@@ -15,17 +15,8 @@ angular.module('cosmoUiApp')
             restrict: 'C',
             transclude: true,
             replace: true,
-            link: function postLink(scope, element/*, attrs*/) {
-                function doIt(){
-                    var rightPanel = element.find('.right-panel');
-                    $('#right-side-menu').remove();
-                    $('#left-side-menu').after(rightPanel);
-                    rightPanel.attr('id', 'right-side-menu');
-                }
-                setTimeout(doIt, 0);
-
+            link: function postLink(scope) {
                 scope.embeded = ($routeParams.hasOwnProperty('embed') && $routeParams.embed === 'true') ? true : false;
-
                 scope.versions = appConfig.versions;
             }
         };

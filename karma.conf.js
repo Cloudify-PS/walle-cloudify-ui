@@ -44,11 +44,12 @@ module.exports = function(config) {
         // use dots reporter, as travis terminal does not support escaping sequences
         // possible values: 'dots', 'progress'
         // CLI --reporters progress
-        reporters: ['spec'],
+        reporters: ['spec', 'progress', 'junit'],
 
         junitReporter: {
             // will be resolved to basePath (in the same way as files/exclude patterns)
-            outputFile: 'test-results.xml'
+            outputFile: 'test-results.xml',
+            suite: ''
         },
 
         // web server port
@@ -105,7 +106,8 @@ module.exports = function(config) {
             'karma-phantomjs-launcher',
             'karma-chrome-launcher',
             'karma-firefox-launcher',
-            'karma-spec-reporter'
+            'karma-spec-reporter',
+            'karma-junit-reporter'
         ]
     };
 
