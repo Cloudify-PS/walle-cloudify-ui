@@ -30,6 +30,7 @@ module.exports = function(config) {
             'app/bower_components/elastic.js/dist/elastic-angular-client.js',
             'app/scripts/*.js',
             'app/scripts/**/*.js',
+            '.tmp/styles/main.css',
             'test/mock/**/*.js',
             'test/spec/*.js',
             'test/spec/**/*.js',

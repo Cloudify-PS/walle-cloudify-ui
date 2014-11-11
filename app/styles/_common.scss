@@ -63,10 +63,6 @@ table.table {
                         &.playDisabled {
                             background-image: url($img-deployment-play-disabled);
                         }
-
-                        &:hover {
-                            background-image: url($img-deployment-play-selected);
-                        }
                     }
 
                     &.deployment-pause {
