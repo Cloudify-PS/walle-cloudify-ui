@@ -28,6 +28,7 @@ module.exports = function(config) {
             'app/bower_components/d3/d3.js',
             'app/scripts/*.js',
             'app/scripts/**/*.js',
+            '.tmp/styles/main.css',
             'test/mock/**/*.js',
             'test/spec/**/*.js',
             '.tmp/viewTemplates/templates.js'

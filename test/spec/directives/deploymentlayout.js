@@ -63,7 +63,23 @@ describe('Directive: deploymentLayout', function () {
             runs(function() {
                 expect(element.children().scope().breadcrumb[0].brackets.href).toBe('#/blueprint/blueprint1/topology');
             });
+        });
 
+        it('should not set a hover effect on the execute button', function() {
+            scope.$apply();
+            var _playBtn = element.find('.deployment-play')[0];
+            $('body').append('<div id="deployment">' +
+                    '<div id="deployment-header">' +
+                        '<div class="header-left">' +
+                            '<div class="actions"></div>' +
+                        '</div>' +
+                    '</div>' +
+                '</div>');
+            $('.actions').append(_playBtn);
+
+            $('.deployment-play').trigger('mouseover');
+
+            expect($('.deployment-play').css('background-image').indexOf('images/play_disabled.png')).not.toBe(-1);
         });
     });
 
