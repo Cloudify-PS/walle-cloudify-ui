@@ -69,7 +69,7 @@ angular.module('cosmoUiApp')
         };
 
         $scope.$watch('selectedBlueprint', function (selectedBlueprint) {
-            if (selectedBlueprint !== null && selectedBlueprint.hasOwnProperty('plan')) {
+            if (selectedBlueprint && selectedBlueprint.hasOwnProperty('plan')) {
                 for (var name in selectedBlueprint.plan.inputs) {
                     var planInput = selectedBlueprint.plan.inputs[name];
                     if (planInput.hasOwnProperty('default')) {

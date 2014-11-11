@@ -12,6 +12,7 @@ angular.module('cosmoUiApp')
             /*jshint validthis: true */
             var _this = this;
             var ejs = ejsResource(server);
+            var query = ejs.MatchAllQuery();
             var client = ejs.Request()
                 .from(0)
                 .size(1000);
@@ -80,7 +81,7 @@ angular.module('cosmoUiApp')
                 if(!activeFilters.hasOwnProperty(field)) {
                     activeFilters[field] = [];
                 }
-                if(activeFilters[field].indexOf(term.toLowerCase()) === -1) {
+                if(typeof term === 'string' && activeFilters[field].indexOf(term.toLowerCase()) === -1) {
                     activeFilters[field].push(term.toLowerCase());
                 }
             }
@@ -163,22 +164,31 @@ angular.module('cosmoUiApp')
             }
 
             function execute(callbackFn, autoPull, customPullTime) {
+
+                console.log('execute called');
+
                 var results;
                 if(sortField) {
                     results = client
-                        .query(ejs.MatchAllQuery())
+                        .query(query)
                         .filter(_applyFilters())
                         .sort([sortField])
                         .doSearch();
                 }
                 else {
                     results = client
-                        .query(ejs.MatchAllQuery())
+                        .query(query)
                         .filter(_applyFilters())
                         .sort([ejs.Sort('@timestamp').order('desc')])
                         .doSearch();
                 }
+
+                console.log('execute results', results);
+
                 results.then(function(data){
+
+                    console.log('execute results called');
+
                     if(data.hasOwnProperty('error')) {
                         $log.error(data.error);
                     }
@@ -186,7 +196,7 @@ angular.module('cosmoUiApp')
                         if(mergeData === true) {
                             mergeLastDataWith(data);
                         }
-                        callbackFn(data);
+                        callbackFn(data, results);
                         lastData = data;
                         if(autoPull === true) {
                             _this.autoPull(callbackFn, customPullTime);
