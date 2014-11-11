@@ -75,7 +75,7 @@
             "wait": "Please wait"
         },
         "monitoring": {
-            "loading": "Please wait while we load monitoring..."
+            "loading": "Please wait while monitoring dashboard loads"
         }
     },
     "deployments": {
