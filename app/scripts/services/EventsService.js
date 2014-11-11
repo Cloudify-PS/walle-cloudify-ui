@@ -164,31 +164,16 @@ angular.module('cosmoUiApp')
             }
 
             function execute(callbackFn, autoPull, customPullTime) {
+                var results,
+                    sort = sortField ? sortField : ejs.Sort('@timestamp').order('desc');
 
-                console.log('execute called');
-
-                var results;
-                if(sortField) {
-                    results = client
-                        .query(query)
-                        .filter(_applyFilters())
-                        .sort([sortField])
-                        .doSearch();
-                }
-                else {
-                    results = client
-                        .query(query)
-                        .filter(_applyFilters())
-                        .sort([ejs.Sort('@timestamp').order('desc')])
-                        .doSearch();
-                }
-
-                console.log('execute results', results);
+                results = client
+                    .query(query)
+                    .filter(_applyFilters())
+                    .sort([sort])
+                    .doSearch();
 
                 results.then(function(data){
-
-                    console.log('execute results called');
-
                     if(data.hasOwnProperty('error')) {
                         $log.error(data.error);
                     }
@@ -213,6 +198,7 @@ angular.module('cosmoUiApp')
             _this.stopAutoPull = stopAutoPull;
             _this.autoPull = _autoPull;
             _this.execute = execute;
+            _this.getClient = function(){ return client; }; // for tests..
         }
 
         this.newInstance = function(server) {

@@ -349,6 +349,11 @@ module.exports = function (grunt) {
             unit: {
                 configFile: 'karma.conf.js',
                 singleRun: true
+            },
+            debug: {
+                configFile: 'karma.conf.js',
+                singleRun: false /** TODO : find how to : 1) tell karma to use chrome from here.. override conf file**/
+                                                         /** 2) tell karma to run a single test from here... override conf file **/
             }
         },
         ngmin: {
@@ -410,7 +415,7 @@ module.exports = function (grunt) {
                 'concurrent:test',
                 'connect:test',
                 'html2js',
-                'karma'
+                'karma:unit'
             ];
         }
 
