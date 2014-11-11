@@ -7,7 +7,7 @@ module.exports = function(config) {
 
         // list of files / patterns to load in the browser
         files: [
-            'app/bower_components/jquery/dist/jquery.min.js',
+            'app/bower_components/jquery/dist/jquery.js',
             'app/bower_components/angular/angular.js',
             'app/bower_components/angular-mocks/angular-mocks.js',
             'app/bower_components/ng-file-upload/angular-file-upload.js',
@@ -26,9 +26,13 @@ module.exports = function(config) {
             'app/bower_components/perfect-scrollbar/min/perfect-scrollbar.with-mousewheel.min.js',
             'app/bower_components/angular-perfect-scrollbar/src/angular-perfect-scrollbar.js',
             'app/bower_components/d3/d3.js',
+            'app/bower_components/elastic.js/dist/elastic.js',
+            'app/bower_components/elastic.js/dist/elastic-angular-client.js',
             'app/scripts/*.js',
             'app/scripts/**/*.js',
+            '.tmp/styles/main.css',
             'test/mock/**/*.js',
+            'test/spec/*.js',
             'test/spec/**/*.js',
             '.tmp/viewTemplates/templates.js'
         ],
@@ -41,11 +45,12 @@ module.exports = function(config) {
         // use dots reporter, as travis terminal does not support escaping sequences
         // possible values: 'dots', 'progress'
         // CLI --reporters progress
-        reporters: ['spec'],
+        reporters: ['spec', 'progress', 'junit'],
 
         junitReporter: {
             // will be resolved to basePath (in the same way as files/exclude patterns)
-            outputFile: 'test-results.xml'
+            outputFile: 'test-results.xml',
+            suite: ''
         },
 
         // web server port
@@ -102,7 +107,8 @@ module.exports = function(config) {
             'karma-phantomjs-launcher',
             'karma-chrome-launcher',
             'karma-firefox-launcher',
-            'karma-spec-reporter'
+            'karma-spec-reporter',
+            'karma-junit-reporter'
         ]
     };
 
