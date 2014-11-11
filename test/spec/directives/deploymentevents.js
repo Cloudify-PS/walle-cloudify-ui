@@ -4,10 +4,18 @@ describe('Directive: deploymentEvents', function () {
 
     var element, scope;
 
-    beforeEach(module('cosmoUiApp', 'ngMock', 'gsUiHelper', 'templates-main', 'gsMocks'));
+    beforeEach(module('cosmoUiApp', 'ngMock', 'gsUiHelper', 'templates-main'));
 
     describe('Test setup', function() {
-        it ('Injecting required data', inject(function ($compile, $rootScope) {
+        it ('Injecting required data', inject(function ($compile, $rootScope, $helper) {
+            $helper.addInjects([
+                {
+                    method: 'POST',
+                    url: '/backend/events/_search',
+                    respond: 200
+                }
+            ]);
+
             scope = $rootScope.$new();
             element = $compile(angular.element('<div deployment-events></div>'))(scope);
 
@@ -58,10 +66,6 @@ describe('Directive: deploymentEvents', function () {
 
         it('should have containList div', function() {
             expect(element.find('div.containList').length).toBe(1);
-        });
-
-        it('should have one event', function() {
-            expect(scope.events.length).toBe(1);
         });
 
     });

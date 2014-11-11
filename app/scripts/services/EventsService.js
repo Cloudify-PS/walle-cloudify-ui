@@ -12,11 +12,12 @@ angular.module('cosmoUiApp')
             /*jshint validthis: true */
             var _this = this;
             var ejs = ejsResource(server);
-            var oQuery = ejs.QueryStringQuery();
+            var query = ejs.MatchAllQuery();
             var client = ejs.Request()
                 .from(0)
                 .size(1000);
             var activeFilters = {};
+            var rangeFilter = {};
             var rangePrefix = 'range';
             var isAutoPull = false;
             var autoPullTimer = '3000';
@@ -42,22 +43,15 @@ angular.module('cosmoUiApp')
                 isAutoPullByDate = condition;
             }
 
-            function _isActiveFilter(field, term) {
-                return activeFilters.hasOwnProperty(field + term);
-            }
-
-            function _applyFilters(query) {
-                var filter = null;
-                var filters = Object.keys(activeFilters).map(function (k) {
-                    return activeFilters[k];
-                });
-                if (filters.length > 1) {
-                    filter = ejs.AndFilter(filters);
+            function _applyFilters() {
+                var filters = [];
+                for(var field in activeFilters) {
+                    filters.push(ejs.TermsFilter(field, activeFilters[field]));
                 }
-                else if (filters.length === 1) {
-                    filter = filters[0];
+                for(var rangeField in rangeFilter) {
+                    filters.push(ejs.RangeFilter(rangeField).from(rangeFilter[rangeField].gte).to(rangeFilter[rangeField].lte));
                 }
-                return filter ? ejs.FilteredQuery(query, filter) : query;
+                return ejs.AndFilter(filters);
             }
 
 
@@ -84,31 +78,38 @@ angular.module('cosmoUiApp')
             }
 
             function filter(field, term) {
-                if(!filterRemove(field, term)) {
-                    activeFilters[field + term] = ejs.TermFilter(field, term ? term.toLowerCase() : term);
+                if(!activeFilters.hasOwnProperty(field)) {
+                    activeFilters[field] = [];
+                }
+                if(typeof term === 'string' && activeFilters[field].indexOf(term.toLowerCase()) === -1) {
+                    activeFilters[field].push(term.toLowerCase());
                 }
             }
 
             function filterRemove(field, term) {
-                if(_isActiveFilter(field, term)) {
-                    delete activeFilters[field + term];
+                if(rangeFilter.hasOwnProperty(field)) {
+                    delete rangeFilter[field];
+                    return true;
+                }
+                if(activeFilters.hasOwnProperty(field)) {
+                    term = term.toLowerCase();
+                    if(activeFilters[field].indexOf(term) !== -1) {
+                        activeFilters[field].splice(activeFilters[field].indexOf(term), 1);
+                    }
+                    if(activeFilters[field].length === 0) {
+                        delete activeFilters[field];
+                    }
                     return true;
                 }
                 return false;
             }
 
             function filterRange(field, conditions) {
-                if(_isActiveFilter(field, rangePrefix)) {
-                    delete activeFilters[field + rangePrefix];
-                }
                 if(conditions !== undefined) {
-                    activeFilters[field + rangePrefix] = ejs.RangeFilter(field);
-                    for(var c in conditions) {
-                        var condition = conditions[c];
-                        if(activeFilters[field + rangePrefix].hasOwnProperty(c)) {
-                            activeFilters[field + rangePrefix] = activeFilters[field + rangePrefix][c](condition);
-                        }
+                    if(!rangeFilter.hasOwnProperty(field)) {
+                        rangeFilter[field] = [];
                     }
+                    rangeFilter[field] = conditions;
                 }
             }
 
@@ -163,21 +164,15 @@ angular.module('cosmoUiApp')
             }
 
             function execute(callbackFn, autoPull, customPullTime) {
-                var results;
-                if(sortField) {
-                    //$log.info(['Query 1: ', _applyFilters(oQuery.query('*')).toString()])
-                    results = client
-                        .query(_applyFilters(oQuery.query('*')))
-                        .sort([sortField])
-                        .doSearch();
-                }
-                else {
-                    //$log.info(['Query 2: ', _applyFilters(oQuery.query('*')).toString()])
-                    results = client
-                        .query(_applyFilters(oQuery.query('*')))
-                        .sort([ejs.Sort('@timestamp').order('desc')])
-                        .doSearch();
-                }
+                var results,
+                    sort = sortField ? sortField : ejs.Sort('@timestamp').order('desc');
+
+                results = client
+                    .query(query)
+                    .filter(_applyFilters())
+                    .sort([sort])
+                    .doSearch();
+
                 results.then(function(data){
                     if(data.hasOwnProperty('error')) {
                         $log.error(data.error);
@@ -186,7 +181,7 @@ angular.module('cosmoUiApp')
                         if(mergeData === true) {
                             mergeLastDataWith(data);
                         }
-                        callbackFn(data);
+                        callbackFn(data, results);
                         lastData = data;
                         if(autoPull === true) {
                             _this.autoPull(callbackFn, customPullTime);
@@ -203,6 +198,7 @@ angular.module('cosmoUiApp')
             _this.stopAutoPull = stopAutoPull;
             _this.autoPull = _autoPull;
             _this.execute = execute;
+            _this.getClient = function(){ return client; }; // for tests..
         }
 
         this.newInstance = function(server) {
