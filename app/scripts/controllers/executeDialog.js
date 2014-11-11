@@ -5,7 +5,6 @@ angular.module('cosmoUiApp')
         $scope.executeError = false;
         $scope.executeErrorMessage = 'Error executing workflow';
         $scope.inputs = {};
-        $scope.inputsJSON = {};
         $scope.rawString = '';
         $scope.inputsState = 'params';
 
