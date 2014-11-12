@@ -14,6 +14,19 @@ angular.module('cosmoUiApp')
             }
 
             var _enabled = true;
+
+            $scope.updateInputs();
+
+            for (var input in $scope.inputs) {
+                if ($scope.inputs[input] === '' || $scope.inputs[input] === null) {
+                    _enabled = false;
+                }
+            }
+
+            return _enabled;
+        };
+
+        $scope.updateInputs = function() {
             if ($scope.inputsState === 'raw') {
                 if ($scope.rawString === '') {
                     $scope.rawString = JSON.stringify($scope.inputs, undefined, 2);
@@ -27,12 +40,10 @@ angular.module('cosmoUiApp')
                 for (var param in $scope.selectedWorkflow.data.parameters) {
                     if ($scope.inputs[param] === undefined || $scope.inputs[param] === '') {
                         $scope.inputs[param] = '';
-                        _enabled = false;
                     }
                 }
                 $scope.rawString = JSON.stringify($scope.inputs, undefined, 2);
             }
-            return _enabled;
         };
 
         $scope.isParamsVisible = function() {
