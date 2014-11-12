@@ -16,7 +16,14 @@ angular.module('cosmoUiApp')
             var _enabled = true;
 
             if ($scope.inputsState === 'raw') {
-                $scope.rawString = JSON.stringify($scope.inputs, undefined, 2);
+                if ($scope.rawString === '') {
+                    $scope.rawString = JSON.stringify($scope.inputs, undefined, 2);
+                } else {
+                    var _rawJSON = JSON.parse($scope.rawString);
+                    for (var input in _rawJSON) {
+                        $scope.inputs[input] = _rawJSON[input];
+                    }
+                }
             } else {
                 for (var input in $scope.selectedBlueprint.plan.inputs) {
                     if ($scope.inputs[input] === undefined || $scope.inputs[input] === '') {
@@ -24,6 +31,10 @@ angular.module('cosmoUiApp')
                         _enabled = false;
                     }
                 }
+                $scope.rawString = JSON.stringify($scope.inputs, undefined, 2);
+            }
+            if ($scope.deployment_id === null) {
+                _enabled = false;
             }
             return _enabled;
         };
@@ -91,6 +102,7 @@ angular.module('cosmoUiApp')
                         $scope.inputs[name] = planInput.default;
                     }
                 }
+                $scope.rawString = JSON.stringify($scope.inputs, undefined, 2);
             }
         }, true);
 
