@@ -8,29 +8,26 @@ angular.module('cosmoUiApp')
         $scope.inputs = {};
         $scope.inputsState = 'params';
         $scope.rawString = '';
+        var RAW = 'raw';
 
         $scope.isDeployEnabled = function () {
-            if ($scope.selectedBlueprint === null || $scope.selectedBlueprint === undefined) {
+            if (!$scope.selectedBlueprint) {
                 return false;
             }
-            var _enabled = true;
 
             $scope.updateInputs();
 
             for (var input in $scope.inputs) {
                 if ($scope.inputs[input] === '' || $scope.inputs[input] === null) {
-                    _enabled = false;
+                    return false;
                 }
             }
 
-            if ($scope.deployment_id === null) {
-                _enabled = false;
-            }
-            return _enabled;
+            return true;
         };
 
         $scope.updateInputs = function() {
-            if ($scope.inputsState === 'raw') {
+            if ($scope.inputsState === RAW) {
                 if ($scope.rawString === '') {
                     $scope.rawString = JSON.stringify($scope.inputs, undefined, 2);
                 } else {
@@ -62,7 +59,7 @@ angular.module('cosmoUiApp')
             }
             $scope.deployError = false;
 
-            if ($scope.inputsState === 'raw') {
+            if ($scope.inputsState === RAW) {
                 try {
                     $scope.inputs = JSON.parse($scope.rawString);
                 } catch (e) {
