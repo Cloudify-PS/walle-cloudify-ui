@@ -92,10 +92,6 @@ table.table {
     tbody:nth-child(odd) {
         tr {
             background-color: $COSMOUI_LIST_LINE_ODD_BACKGROUND;
-            &:hover {
-                background-color: $COSMOUI_LIST_HOVER_BACKGROUND;
-                cursor: $COSMOUI_DIALOG_CURSOR;
-            }
         }
     }
     i {
