@@ -15,7 +15,14 @@ angular.module('cosmoUiApp')
 
             var _enabled = true;
             if ($scope.inputsState === 'raw') {
-                $scope.rawString = JSON.stringify($scope.inputs, undefined, 2);
+                if ($scope.rawString === '') {
+                    $scope.rawString = JSON.stringify($scope.inputs, undefined, 2);
+                } else {
+                    var _rawJSON = JSON.parse($scope.rawString);
+                    for (var input in _rawJSON) {
+                        $scope.inputs[input] = _rawJSON[input];
+                    }
+                }
             } else {
                 for (var param in $scope.selectedWorkflow.data.parameters) {
                     if ($scope.inputs[param] === undefined || $scope.inputs[param] === '') {
@@ -23,6 +30,7 @@ angular.module('cosmoUiApp')
                         _enabled = false;
                     }
                 }
+                $scope.rawString = JSON.stringify($scope.inputs, undefined, 2);
             }
             return _enabled;
         };
@@ -32,35 +40,12 @@ angular.module('cosmoUiApp')
 
             if ($scope.selectedWorkflow.data !== null) {
                 if ($scope.selectedWorkflow.data.parameters !== undefined && Object.getOwnPropertyNames($scope.selectedWorkflow.data.parameters).length > 0) {
-                    setInputs();
                     _visible = true;
                 }
             }
 
             return _visible;
         };
-
-        function setInputs() {
-            for(var param in $scope.selectedWorkflow.data.parameters) {
-                if (param) {
-                    var _defaultVal = $scope.selectedWorkflow.data.parameters[param].default;
-                    var _valStr = JSON.stringify(_defaultVal);
-
-                    if (_defaultVal !== undefined && _valStr !== '{}' && _valStr !== '' && _valStr !== '[]') {
-                        switch(typeof(_defaultVal)) {
-                            case 'array':
-                            case 'object':
-                                $scope.inputs[param] = _valStr;
-                                break;
-                            default:
-                                $scope.inputs[param] = _defaultVal;
-                        }
-                    } else if (typeof($scope.selectedWorkflow.data.parameters[param]) === 'array' && $scope.selectedWorkflow.data.parameters[param].length > 0) {
-                        $scope.inputs[param] = $scope.selectedWorkflow.data.parameters[param];
-                    }
-                }
-            }
-        }
 
         $scope.executeWorkflow = function() {
             $scope.executeError = false;
@@ -113,7 +98,6 @@ angular.module('cosmoUiApp')
         };
 
         $scope.closeDialog = function() {
-            _resetDialog();
             $scope.toggleConfirmationDialog();
         };
 
@@ -131,12 +115,32 @@ angular.module('cosmoUiApp')
             return _type === 'text';
         };
 
+        $scope.$watch('selectedWorkflow.data', function (data) {
+            if (data && data !== null) {
+                _resetDialog();
+                setInputs();
+            }
+        });
+
+        function setInputs() {
+            for(var param in $scope.selectedWorkflow.data.parameters) {
+                if (param) {
+                    var _defaultVal = $scope.selectedWorkflow.data.parameters[param].default;
+                    var _valStr = JSON.stringify(_defaultVal);
+
+                    if (_defaultVal !== undefined && _valStr !== '{}' && _valStr !== '' && _valStr !== '[]') {
+                        $scope.inputs[param] = _defaultVal.toString();
+                    } else if (typeof($scope.selectedWorkflow.data.parameters[param]) === 'array' && $scope.selectedWorkflow.data.parameters[param].length > 0) {
+                        $scope.inputs[param] = $scope.selectedWorkflow.data.parameters[param];
+                    }
+                }
+            }
+        }
+
         function _resetDialog() {
             $scope.workflow_id = null;
             $scope.executeError = false;
             $scope.inputs = {};
             $scope.inputsState = 'params';
         }
-
-        _resetDialog();
     });
