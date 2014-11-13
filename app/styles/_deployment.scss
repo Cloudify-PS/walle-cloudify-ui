@@ -67,6 +67,8 @@
                     font-size: 13px;
                     color: #333333;
                     width: 100%;
+                    table-layout: fixed;
+                    float: left;
 
                     tr {
                         height: 30px;
@@ -79,7 +81,9 @@
                         td {
                             min-width: 120px;
                             vertical-align: middle;
-                            padding-left: 5px;
+                            padding: 5px;
+                            word-break: break-all;
+                            vertical-align: top;
 
                             table {
                                 tr:first-child td {
@@ -277,7 +281,7 @@
                 padding: 0px 5px 0px 5px;
                 border: 1px solid #d3dfe2;
                 cursor: pointer;
-                margin: 6px 4px 0px 0px;
+                margin: 2px 4px 0px 0px;
                 padding-right: 17px;
             }
 
@@ -1044,6 +1048,7 @@
         position: relative;
         white-space: nowrap;
         margin: 40px 0 0 20px;
+        height: 600px;
         .relations {
             position: absolute;
             top: 0;
