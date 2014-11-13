@@ -17,6 +17,7 @@ conf/dev
 settings.json
 *.tgz
 backend/tmp
+test-results.xml
 
 # QuickBuild
 .qbcache/
