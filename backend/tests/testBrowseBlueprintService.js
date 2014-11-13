@@ -1,12 +1,20 @@
+var conf = require("../../backend/appConf");
+var log4js = require('log4js');
+log4js.configure(conf.log4js);
+var logger = log4js.getLogger('testBrowseBlueprintService');
+
 var browseBlueprintService = require('../services/BrowseBluerprintService');
 var cloudify4node = require('../Cloudify4node');
 
-
-browseBlueprintService.fileGetContent('nodecellar', 'cosmo-nodecellar-openstack-master/LICENSE', function(err, content){
-
-    console.log('fileGetContent', err, content);
-
+browseBlueprintService.deleteBlueprint('monBrowse', function(err){
+    logger.debug('deleteBlueprint error', err);
 });
+
+//browseBlueprintService.fileGetContent('nodecellar', 'cosmo-nodecellar-openstack-master/LICENSE', function(err, content){
+//
+//    console.log('fileGetContent', err, content);
+//
+//});
 
 
 //cloudify4node.browseBlueprint('nodecellar' ,function(err, data) {
