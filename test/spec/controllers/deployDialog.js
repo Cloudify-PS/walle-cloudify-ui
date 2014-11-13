@@ -21,6 +21,100 @@ describe('Controller: DeploydialogCtrl', function () {
         }
     };
 
+    var _blueprint = {
+        "id": "blueprint1",
+        "plan": {
+            "inputs": {
+                "webserver_port": {
+                    "default": 8080,
+                    "description": "The HTTP web server port\n"
+                },
+                "flavor_name": {
+                    "description": "Openstack flavor name to use for the new server\n"
+                },
+                "agent_user": {
+                    "description": "User name used when SSH-ing into the started machine\n"
+                },
+                "image_name": {
+                    "description": "Openstack image name to use for the new server\n"
+                }
+            },
+            "workflows": {
+                "execute_operation": {
+                    "operation": "cloudify.plugins.workflows.execute_operation",
+                    "parameters": {
+                        "operation_kwargs": {
+                            "default": {}
+                        },
+                        "node_ids": {
+                            "default": []
+                        },
+                        "node_instance_ids": {
+                            "default": []
+                        },
+                        "run_by_dependency_order": {
+                            "default": false
+                        },
+                        "operation": {},
+                        "type_names": {
+                            "default": []
+                        }
+                    },
+                    "plugin": "default_workflows"
+                },
+                "install": {
+                    "operation": "cloudify.plugins.workflows.install",
+                    "plugin": "default_workflows"
+                },
+                "uninstall": {
+                    "operation": "cloudify.plugins.workflows.uninstall",
+                    "plugin": "default_workflows"
+                }
+            }
+        },
+        "deployments": [{
+            "inputs": {
+                "flavor_name": "flavor_name",
+                "webserver_port": 8080,
+                "image_name": "image_name",
+                "agent_user": "agent_user"
+            },
+            "blueprint_id": "blueprint1",
+            "created_at": "2014-11-10 23:15:06.908209",
+            "workflows": [{
+                "created_at": null,
+                "name": "execute_operation",
+                "parameters": {
+                    "operation_kwargs": {
+                        "default": {}
+                    },
+                    "node_ids": {
+                        "default": []
+                    },
+                    "node_instance_ids": {
+                        "default": []
+                    },
+                    "run_by_dependency_order": {
+                        "default": false
+                    },
+                    "operation": {},
+                    "type_names": {
+                        "default": []
+                    }
+                }
+            }, {
+                "created_at": null,
+                "name": "install",
+                "parameters": {}
+            }, {
+                "created_at": null,
+                "name": "uninstall",
+                "parameters": {}
+            }],
+            "id": "deployment1"
+        }]
+    };
+
     var _error = {
         "message": "Required input 'image_name' was not specified - expected inputs: [u'webserver_port', u'image_name', u'flavor_name', u'agent_user']",
         "error_code": "missing_required_deployment_input_error"
@@ -62,39 +156,23 @@ describe('Controller: DeploydialogCtrl', function () {
         });
 
         it('should disable blueprint deploy option if deployment name is not provided', function() {
+            scope.selectedBlueprint = _blueprint;
             scope.deployment_id = null;
+            scope.inputs = _deployment.inputs;
 
             expect(scope.isDeployEnabled()).toBe(false);
         });
 
-        it('should enable blueprint deploy option if deployment name is not provided', function() {
+        it('should enable blueprint deploy option if deployment name is provided', function() {
+            scope.selectedBlueprint = _blueprint;
             scope.deployment_id = 'deployment1';
+            scope.inputs = _deployment.inputs;
 
             expect(scope.isDeployEnabled()).toBe(true);
         });
 
-        it('should show error message if inputs parameters are not provided', function() {
-            scope.inputs = {};
-
-            scope.deployBlueprint('blueprint1');
-            scope.$apply();
-
-            waitsFor(function() {
-                return scope.inProcess === false;
-            });
-            runs(function() {
-                expect(scope.deployErrorMessage).toBe(_error.message);
-                expect(scope.deployError).toBe(true);
-            });
-        });
-
         it('should pass all params provided to CloudifyService on deployment creation', function() {
-            scope.inputs = {
-                "agent_user": "agent_user",
-                "flavor_name": "flavor_name",
-                "image_name": "image_name",
-                "webserver_port":" webserver_port"
-            };
+            scope.inputs = _deployment.inputs;
             spyOn(scope, 'redirectToDeployment').andCallThrough();
 
             scope.deployBlueprint('blueprint1');
@@ -106,6 +184,16 @@ describe('Controller: DeploydialogCtrl', function () {
             runs(function() {
                 expect(scope.redirectToDeployment).toHaveBeenCalledWith('deployment1');
             });
+        });
+
+        it('should update input JSON object when one of the inputs is updated', function() {
+            scope.inputs = _deployment.inputs;
+            scope.inputs['image_name'] = 'new value';
+
+            scope.updateInputs();
+            scope.$apply();
+
+            expect(JSON.parse(scope.rawString)['image_name']).toBe('new value');
         });
     });
 });
