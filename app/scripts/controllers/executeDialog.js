@@ -7,13 +7,12 @@ angular.module('cosmoUiApp')
         $scope.inputs = {};
         $scope.rawString = '';
         $scope.inputsState = 'params';
+        var RAW = 'raw';
 
         $scope.isExecuteEnabled = function() {
             if ($scope.selectedWorkflow.data === null) {
                 return false;
             }
-
-            $scope.updateInputs();
 
             for (var input in $scope.inputs) {
                 if ($scope.inputs[input] === '' || $scope.inputs[input] === null) {
@@ -25,24 +24,36 @@ angular.module('cosmoUiApp')
         };
 
         $scope.updateInputs = function() {
-            if ($scope.inputsState === 'raw') {
-                if ($scope.rawString === '') {
-                    $scope.rawString = JSON.stringify($scope.inputs, undefined, 2);
-                } else {
-                    var _rawJSON = JSON.parse($scope.rawString);
-                    for (var input in _rawJSON) {
-                        $scope.inputs[input] = _rawJSON[input];
-                    }
+            if ($scope.inputsState === RAW) {
+                $scope.rawString = JSON.stringify($scope.inputs, undefined, 2);
+                var _rawJSON = JSON.parse($scope.rawString);
+                for (var input in _rawJSON) {
+                    $scope.inputs[input] = _rawJSON[input];
                 }
             } else {
-                for (var param in $scope.selectedWorkflow.data.parameters) {
-                    if ($scope.inputs[param] === undefined || $scope.inputs[param] === '') {
-                        $scope.inputs[param] = '';
+                try {
+                    $scope.inputs = JSON.parse($scope.rawString);
+                    $scope.showError = false;
+                    for (var param in $scope.selectedWorkflow.data.parameters) {
+                        if ($scope.inputs[param] === undefined || $scope.inputs[param] === '') {
+                            $scope.inputs[param] = '';
+                        }
                     }
+                } catch (e) {
+                    $scope.inputsState = RAW;
+                    $scope.showError = true;
+                    $scope.executeErrorMessage = 'Invalid JSON';
                 }
+
                 $scope.rawString = JSON.stringify($scope.inputs, undefined, 2);
             }
         };
+
+        $scope.$watch('inputsState', function() {
+            if (!!$scope.selectedWorkflow.data) {
+                $scope.updateInputs();
+            }
+        });
 
         $scope.isParamsVisible = function() {
             var _visible = false;
@@ -59,7 +70,7 @@ angular.module('cosmoUiApp')
         $scope.executeWorkflow = function() {
             $scope.showError = false;
 
-            if ($scope.inputsState === 'raw') {
+            if ($scope.inputsState === RAW) {
                 try {
                     $scope.inputs = JSON.parse($scope.rawString);
                 } catch (e) {}

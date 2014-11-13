@@ -112,7 +112,6 @@ angular.module('cosmoUiApp')
                         $scope.inputs[name] = planInput.default;
                     }
                 }
-//                $scope.rawString = JSON.stringify($scope.inputs, undefined, 2);
             }
         }, true);
 
