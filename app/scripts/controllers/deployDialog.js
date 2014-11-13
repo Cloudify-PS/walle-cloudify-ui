@@ -3,15 +3,55 @@
 angular.module('cosmoUiApp')
     .controller('DeployDialogCtrl', function ($scope, CloudifyService) {
         $scope.deployment_id = null;
-        $scope.deployError = false;
+        $scope.showError = false;
         $scope.deployErrorMessage = 'Error deploying blueprint';
         $scope.inputs = {};
-        $scope.inputsJSON = null;
         $scope.inputsState = 'params';
+        $scope.rawString = '';
+        var RAW = 'raw';
 
         $scope.isDeployEnabled = function () {
-            return $scope.deployment_id !== null && $scope.deployment_id.length > 0;
+            if (!$scope.selectedBlueprint || !$scope.deployment_id) {
+                return false;
+            }
+
+            for (var input in $scope.inputs) {
+                if ($scope.inputs[input] === '' || $scope.inputs[input] === null) {
+                    return false;
+                }
+            }
+            return true;
         };
+
+        $scope.updateInputs = function() {
+            if ($scope.inputsState === RAW) {
+                $scope.rawString = JSON.stringify($scope.inputs, undefined, 2);
+                var _rawJSON = JSON.parse($scope.rawString);
+                for (var input in _rawJSON) {
+                    $scope.inputs[input] = _rawJSON[input];
+                }
+            } else {
+                try {
+                    $scope.inputs = JSON.parse($scope.rawString);
+                    $scope.showError = false;
+                    for (var input in $scope.selectedBlueprint.plan.inputs) {
+                        if ($scope.inputs[input] === undefined || $scope.inputs[input] === '') {
+                            $scope.inputs[input] = '';
+                        }
+                    }
+                } catch(e) {
+                    $scope.inputsState = RAW;
+                    $scope.showError = true;
+                    $scope.deployErrorMessage = 'Invalid JSON';
+                }
+            }
+        };
+
+        $scope.$watch('inputsState', function() {
+            if (!!$scope.selectedBlueprint) {
+                $scope.updateInputs();
+            }
+        });
 
         $scope.isParamsVisible = function () {
             if ($scope.selectedBlueprint === null) {
@@ -24,11 +64,11 @@ angular.module('cosmoUiApp')
             if (!_validateDeploymentName($scope.deployment_id)) {
                 return;
             }
-            $scope.deployError = false;
+            $scope.showError = false;
 
-            if ($scope.inputsState === 'raw') {
+            if ($scope.inputsState === RAW) {
                 try {
-                    $scope.inputs = JSON.parse($scope.inputsJSON);
+                    $scope.inputs = JSON.parse($scope.rawString);
                 } catch (e) {
                 }
             }
@@ -46,17 +86,13 @@ angular.module('cosmoUiApp')
                         $scope.inProcess = false;
                         if (data.hasOwnProperty('message')) {
                             $scope.deployErrorMessage = data.message;
-                            $scope.deployError = true;
+                            $scope.showError = true;
                         }
                         else {
                             $scope.redirectToDeployment($scope.deployment_id);
                         }
                     });
             }
-        };
-
-        $scope.isDeployError = function () {
-            return $scope.deployError;
         };
 
         $scope.closeDialog = function () {
@@ -83,7 +119,7 @@ angular.module('cosmoUiApp')
         function _validateDeploymentName(deploymentName) {
             if (/[^a-zA-Z0-9_]/.test(deploymentName)) {
                 $scope.deployErrorMessage = 'Invalid deployment name. Only Alphanumeric text allowed.';
-                $scope.deployError = true;
+                $scope.showError = true;
 
                 return false;
             }
@@ -92,9 +128,8 @@ angular.module('cosmoUiApp')
 
         function _resetDialog() {
             $scope.deployment_id = null;
-            $scope.deployError = false;
+            $scope.showError = false;
             $scope.inputs = {};
-            $scope.inputsJSON = null;
             $scope.inputsState = 'params';
         }
 
