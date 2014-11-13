@@ -2,7 +2,7 @@
 
 angular.module('cosmoUiApp')
     .controller('ExecuteDialogCtrl', function ($scope, CloudifyService) {
-        $scope.executeError = false;
+        $scope.showError = false;
         $scope.executeErrorMessage = 'Error executing workflow';
         $scope.inputs = {};
         $scope.rawString = '';
@@ -10,20 +10,18 @@ angular.module('cosmoUiApp')
 
         $scope.isExecuteEnabled = function() {
             if ($scope.selectedWorkflow.data === null) {
-                return;
+                return false;
             }
-
-            var _enabled = true;
 
             $scope.updateInputs();
 
             for (var input in $scope.inputs) {
                 if ($scope.inputs[input] === '' || $scope.inputs[input] === null) {
-                    _enabled = false;
+                     return false;
                 }
             }
 
-            return _enabled;
+            return true;
         };
 
         $scope.updateInputs = function() {
@@ -59,7 +57,7 @@ angular.module('cosmoUiApp')
         };
 
         $scope.executeWorkflow = function() {
-            $scope.executeError = false;
+            $scope.showError = false;
 
             if ($scope.inputsState === 'raw') {
                 try {
@@ -80,7 +78,7 @@ angular.module('cosmoUiApp')
                         $scope.inProcess = false;
                         if(data.hasOwnProperty('message')) {
                             $scope.executeErrorMessage = data.message;
-                            $scope.executeError = true;
+                            $scope.showError = true;
                         } else {
                             $scope.closeDialog();
                         }
@@ -95,17 +93,13 @@ angular.module('cosmoUiApp')
             };
             CloudifyService.deployments.updateExecutionState(callParams).then(function (data) {
                 if (data.hasOwnProperty('error_code')) {
-                    $scope.executeError = true;
+                    $scope.showError = true;
                     $scope.executeErrorMessage = data.message;
                 }
                 else {
                     $scope.closeDialog();
                 }
             });
-        };
-
-        $scope.isExecuteError = function() {
-            return $scope.executeError;
         };
 
         $scope.closeDialog = function() {
@@ -150,7 +144,7 @@ angular.module('cosmoUiApp')
 
         function _resetDialog() {
             $scope.workflow_id = null;
-            $scope.executeError = false;
+            $scope.showError = false;
             $scope.inputs = {};
             $scope.inputsState = 'params';
         }
