@@ -16,7 +16,7 @@ angular.module('cosmoUiApp')
 
             for (var input in $scope.inputs) {
                 if ($scope.inputs[input] === '' || $scope.inputs[input] === null) {
-                     return false;
+                    return false;
                 }
             }
 
