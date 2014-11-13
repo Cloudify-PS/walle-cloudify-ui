@@ -3,7 +3,7 @@
 angular.module('cosmoUiApp')
     .controller('DeployDialogCtrl', function ($scope, CloudifyService) {
         $scope.deployment_id = null;
-        $scope.deployError = false;
+        $scope.showError = false;
         $scope.deployErrorMessage = 'Error deploying blueprint';
         $scope.inputs = {};
         $scope.inputsState = 'params';
@@ -33,6 +33,7 @@ angular.module('cosmoUiApp')
             } else {
                 try {
                     $scope.inputs = JSON.parse($scope.rawString);
+                    $scope.showError = false;
                     for (var input in $scope.selectedBlueprint.plan.inputs) {
                         if ($scope.inputs[input] === undefined || $scope.inputs[input] === '') {
                             $scope.inputs[input] = '';
@@ -40,7 +41,7 @@ angular.module('cosmoUiApp')
                     }
                 } catch(e) {
                     $scope.inputsState = RAW;
-                    $scope.deployError = true;
+                    $scope.showError = true;
                     $scope.deployErrorMessage = 'Invalid JSON';
                 }
             }
@@ -63,7 +64,7 @@ angular.module('cosmoUiApp')
             if (!_validateDeploymentName($scope.deployment_id)) {
                 return;
             }
-            $scope.deployError = false;
+            $scope.showError = false;
 
             if ($scope.inputsState === RAW) {
                 try {
@@ -85,17 +86,13 @@ angular.module('cosmoUiApp')
                         $scope.inProcess = false;
                         if (data.hasOwnProperty('message')) {
                             $scope.deployErrorMessage = data.message;
-                            $scope.deployError = true;
+                            $scope.showError = true;
                         }
                         else {
                             $scope.redirectToDeployment($scope.deployment_id);
                         }
                     });
             }
-        };
-
-        $scope.isDeployError = function () {
-            return $scope.deployError;
         };
 
         $scope.closeDialog = function () {
@@ -123,7 +120,7 @@ angular.module('cosmoUiApp')
         function _validateDeploymentName(deploymentName) {
             if (/[^a-zA-Z0-9_]/.test(deploymentName)) {
                 $scope.deployErrorMessage = 'Invalid deployment name. Only Alphanumeric text allowed.';
-                $scope.deployError = true;
+                $scope.showError = true;
 
                 return false;
             }
@@ -132,7 +129,7 @@ angular.module('cosmoUiApp')
 
         function _resetDialog() {
             $scope.deployment_id = null;
-            $scope.deployError = false;
+            $scope.showError = false;
             $scope.inputs = {};
             $scope.inputsState = 'params';
         }

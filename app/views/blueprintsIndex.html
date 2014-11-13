@@ -84,7 +84,7 @@
                     <textarea ng-model="rawString"></textarea>
                 </div>
             </div>
-            <div id="deploy-error-message" ng-show="isDeployError()">{{deployErrorMessage}}</div>
+            <div id="deploy-error-message" ng-show="showError">{{deployErrorMessage}}</div>
             <div class="buttonsContainer deployButtons">
                 <button id="deployBtn" class="dialogButton" ng-class="{disabled: !isDeployEnabled(), enabled: isDeployEnabled(), loader: inProcess}" ng-click="deployBlueprint(selectedBlueprint.id)">{{ 'blueprints.deployDialog.deployBtn' | i18n }}</button>
             </div>
