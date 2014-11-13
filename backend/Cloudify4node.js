@@ -181,7 +181,14 @@ Cloudify4node.deleteBlueprint = function(blueprint_id, callback) {
         method: 'DELETE'
     });
 
-    createRequest(requestData, callback );
+    browseBlueprint.deleteBlueprint(blueprint_id, function(err){
+        if (err) {
+            callback(err, null);
+        }
+        else {
+            createRequest(requestData, callback);
+        }
+    });
 };
 
 Cloudify4node.archiveBlueprint = function(blueprint_id, callback) {

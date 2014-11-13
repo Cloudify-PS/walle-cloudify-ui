@@ -21,6 +21,22 @@ module.exports.fileGetContent = function(id, relativePath, callbackFn) {
     fs.readFile(path.join(conf.browseBlueprint.path, id, relativePath), 'utf-8', callbackFn);
 };
 
+module.exports.deleteBlueprint = function(id, callbackFn) {
+    fs.remove(path.join(conf.browseBlueprint.path, id + '.tar.gz'), function (err) {
+        if (err) {
+            callbackFn(err);
+        }
+    });
+
+    fs.rmrf(path.join(conf.browseBlueprint.path, id), function (err) {
+        if (err) {
+            callbackFn(err);
+        }
+    });
+
+    return callbackFn(null);
+};
+
 module.exports.Walker = function() {
     var _finalCallback = null;
     var root = { 'name': 'root', 'children': []};
