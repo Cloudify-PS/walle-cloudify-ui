@@ -50,7 +50,7 @@ angular.module('cosmoUiApp')
         };
 
         $scope.$watch('inputsState', function() {
-            if (!!$scope.selectedWorkflow.data) {
+            if (!!$scope.selectedWorkflow && !!$scope.selectedWorkflow.data) {
                 $scope.updateInputs();
             }
         });
