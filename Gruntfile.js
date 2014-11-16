@@ -411,6 +411,7 @@ module.exports = function (grunt) {
         var tasks  = [];
         if ( testBackend === undefined || testBackend === '' || testBackend === 'all' || testBackend === 'frontend') { // default
             tasks = [
+                'jshint',
                 'clean:server',
                 'concurrent:test',
                 'connect:test',
