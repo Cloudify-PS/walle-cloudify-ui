@@ -34,9 +34,9 @@ angular.module('cosmoUiApp')
                 try {
                     $scope.inputs = JSON.parse($scope.rawString);
                     $scope.showError = false;
-                    for (var input in $scope.selectedBlueprint.plan.inputs) {
-                        if ($scope.inputs[input] === undefined || $scope.inputs[input] === '') {
-                            $scope.inputs[input] = '';
+                    for (var inp in $scope.selectedBlueprint.plan.inputs) {
+                        if ($scope.inputs[inp] === undefined || $scope.inputs[inp] === '') {
+                            $scope.inputs[inp] = '';
                         }
                     }
                 } catch(e) {
