@@ -278,15 +278,10 @@ describe('Directive: bpTopologyNodes', function () {
     }];
 
     var element, scope;
-    beforeEach(module('cosmoUiApp', 'ngMock', 'templates-main'));
+    beforeEach(module('cosmoUiApp', 'ngMock', 'gsUiHelper', 'templates-main'));
 
     function compileDirective(opts) {
-        inject(function($compile, $rootScope, $httpBackend) {
-            $httpBackend.whenGET("/backend/configuration?access=all").respond(200);
-            $httpBackend.whenGET("/backend/versions/ui").respond(200);
-            $httpBackend.whenGET("/backend/versions/manager").respond(200);
-            $httpBackend.whenGET("/backend/version/latest?version=00").respond('300');
-
+        inject(function($compile, $rootScope) {
             if (!opts || !opts.scope) {
                 scope = $rootScope.$new();
             } else {
