@@ -24,10 +24,10 @@ angular.module('cosmoUiApp')
         $scope.$on('topologyRelationshipSelected', function(e, viewNode) {
             viewNode.nodeType = 'relationship';
             $scope.page.viewNode = viewNode;
-
         });
 
         $scope.$on('nodesList', function(event, nodeList){
+            $scope.nodesList = nodeList;
             $scope.nodesTree = NodeService.createNodesTree(nodeList);
             blueprintCoordinateService.resetCoordinates();
             blueprintCoordinateService.setMap(_getNodesConnections(nodeList));

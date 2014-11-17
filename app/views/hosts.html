@@ -54,6 +54,7 @@
                 <th class="deploymentId">Deployment ID</th>
                 <th class="">Host ID</th>
                 <th class="">Private IPs</th>
+                <th class="">Public IPs</th>
                 <!--<th class="">Security Groups</th>-->
                 <!--<th class="">Image ID</th>-->
                 <!--<th class="">Flavor ID</th>-->
@@ -67,6 +68,7 @@
                     <td class="deploymentId">{{row.deployment_id == null && '-' || row.deployment_id }}</td>
                     <td class="">{{row.host_id == null && '-' || row.host_id }}</td>
                     <td class="">{{row.runtime_properties.ips == null && '-' || row.runtime_properties.ips }}</td>
+                    <td class="">{{row.runtime_properties.ip_addresses == null && '-' || row.runtime_properties.ip_addresses.join(', ') }}</td>
                     <!--<td class="">{{row.runtime_properties.security_groups == null && '-' || row.runtime_properties.security_groups }}</td>-->
                     <!--<td class="">{{row.runtime_properties.image_id == null && '-' || row.runtime_properties.image_id }}</td>-->
                     <!--<td class="">{{row.runtime_properties.flavor_id == null && '-' || row.runtime_properties.flavor_id }}</td>-->

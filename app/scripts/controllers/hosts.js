@@ -32,6 +32,9 @@ angular.module('cosmoUiApp')
             $scope.filterLoading = true;
             NodeSearchService.execute(_type, _filter, _filterBlueprint)
                 .then(function(data){
+
+                    console.log(['NodeSearchService', data]);
+
                     $scope.nodesList = data;
                     $scope.filterLoading = false;
                 });

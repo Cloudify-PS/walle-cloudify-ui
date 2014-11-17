@@ -7,19 +7,23 @@
  * # floatingNodePanel
  */
 angular.module('cosmoUiApp')
-    .directive('floatingDeploymentNodePanel', function (CloudifyService) {
+    .directive('floatingDeploymentNodePanel', function (CloudifyService, UpdateNodes) {
         return {
             templateUrl: 'views/deployment/floatingNodePanel.html',
             restrict: 'EA',
             scope: {
                 id: '=depid',
                 node: '=node',
-                showPanel : '@show'
+                showPanel : '@show',
+                nodesList: '=nodesList'
             },
             link: function postLink($scope, element) {
 
+                var _updateNodes = UpdateNodes.newInstance();
+
                 $scope.propSection = 'general';
                 $scope.selectedRelationship = '';
+
 
                 $scope.hideProperties = function(){
                     $scope.node = null;
@@ -62,6 +66,9 @@ angular.module('cosmoUiApp')
                     $scope.selectNodesArr = [];
                     CloudifyService.getNodeInstances()
                         .then(function (instances) {
+
+                            _updateNodes.runUpdate(instances, $scope.nodesList);
+
                             instances.forEach(function (instance) {
                                 if (instance.deployment_id === $scope.id) {
                                     if(instance.node_id === nodeId) {
@@ -99,8 +106,9 @@ angular.module('cosmoUiApp')
                             general: {
                                 'name': node.id,
                                 'type': node.type,
-                                'state': node.runtime_properties !== null ? node.runtime_properties.state : 'N/A',
-                                'ip': node.runtime_properties !== null ? node.runtime_properties.ip : 'N/A'
+                                'state': node.runtime_properties !== null ? node.runtime_properties.state : '',
+                                'ip': node.runtime_properties !== null ? node.runtime_properties.ip : '',
+                                'ip_addresses': node.runtime_properties !== null ? node.runtime_properties.ip_addresses.join(', ') : ''
                             }
                         };
                         $scope.propSection = 'general';
@@ -121,6 +129,9 @@ angular.module('cosmoUiApp')
                     var name = key;
                     if (key === 'ip') {
                         name = 'private ip';
+                    }
+                    if (key === 'ip_addresses') {
+                        name = 'public ip\'s';
                     }
                     return name;
                 };
