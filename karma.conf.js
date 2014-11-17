@@ -40,12 +40,14 @@ module.exports = function(config) {
         // list of files to exclude
         exclude: [],
 
-        preprocessors: {},
+        preprocessors: {
+            'app/scripts/**/*.js' : ['coverage']
+        },
 
         // use dots reporter, as travis terminal does not support escaping sequences
         // possible values: 'dots', 'progress'
         // CLI --reporters progress
-        reporters: ['spec', 'progress', 'junit'],
+        reporters: ['coverage'],
 
         junitReporter: {
             // will be resolved to basePath (in the same way as files/exclude patterns)
@@ -101,9 +103,19 @@ module.exports = function(config) {
         // report which specs are slower than 500ms
         // CLI --report-slower-than 500
         reportSlowerThan: 500,
+        coverageReporter: {
+            type : 'html',
+            dir : 'coverage/',
+            subdir: function(browser){
+                var result = browser.toLowerCase().split(/[ /-]/)[0];
+                console.log('this is browser',result);
+                return result;
+            }
+        },
 
         plugins: [
             'karma-jasmine',
+            'karma-coverage',
             'karma-phantomjs-launcher',
             'karma-chrome-launcher',
             'karma-firefox-launcher',
