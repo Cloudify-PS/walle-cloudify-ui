@@ -108,7 +108,7 @@ angular.module('cosmoUiApp')
                                 'type': node.type,
                                 'state': node.runtime_properties !== null ? node.runtime_properties.state : '',
                                 'ip': node.runtime_properties !== null ? node.runtime_properties.ip : '',
-                                'ip_addresses': node.runtime_properties !== null ? node.runtime_properties.ip_addresses.join(', ') : ''
+                                'ip_addresses': node.runtime_properties !== null && node.runtime_properties.hasOwnProperty('ip_addresses') ? node.runtime_properties.ip_addresses.join(', ') : ''
                             }
                         };
                         $scope.propSection = 'general';
