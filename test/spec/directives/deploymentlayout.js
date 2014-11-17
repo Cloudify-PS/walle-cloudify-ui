@@ -50,6 +50,10 @@ describe('Directive: deploymentLayout', function () {
     });
 
     describe('Directive tests', function() {
+        afterEach(function() {
+            $('#deployment').remove();
+        });
+
         it('should create an element with isExecuteEnabled function', function() {
             expect(typeof(element.children().scope().isExecuteEnabled)).toBe('function');
         });

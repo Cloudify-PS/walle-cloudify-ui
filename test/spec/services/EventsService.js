@@ -112,7 +112,6 @@ describe('Service: EventsService', function () {
         beforeEach(inject(function($q){
             var client = events.getClient();
             client.doSearch = function(){
-                debugger;
                 query = this._self();
                 var deferred = $q.defer();
                 deferred.resolve({});
