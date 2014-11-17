@@ -15,9 +15,9 @@ angular.module('cosmoUiApp')
         /**
          * Hosts
          */
-        var _type = 'host';
-        var _filter = {};
-        var _filterBlueprint = null;
+        var _type = 'cloudify.nodes.Compute';
+        var _deployments = {};
+        var _blueprint = null;
         var _deploymentsList = NodeSearchService.getDeployments();
 
         $scope.deploymentsList = _deploymentsList;
@@ -30,7 +30,7 @@ angular.module('cosmoUiApp')
 
         function _execute() {
             $scope.filterLoading = true;
-            NodeSearchService.execute(_type, _filter, _filterBlueprint)
+            NodeSearchService.execute(_type, _blueprint, _deployments)
                 .then(function(data){
                     $scope.nodesList = data;
                     $scope.filterLoading = false;
@@ -38,28 +38,22 @@ angular.module('cosmoUiApp')
         }
 
         $scope.getBlueprintId = function() {
-            return _filterBlueprint;
+            return _blueprint;
         };
 
         $scope.$watch('eventsFilter.blueprints', function(newValue){
             if(newValue !== null) {
                 $scope.deploymentsList = $filter('filterListByList')(_deploymentsList, [newValue]);
-                _filterBlueprint = newValue.value;
+                _blueprint = newValue.value;
             }
             else {
                 $scope.deploymentsList = [];
-                _filterBlueprint = null;
+                _blueprint = null;
             }
         }, true);
 
         $scope.$watch('eventsFilter.deployments', function(newValue){
-            if(newValue !== null) {
-                _filter = {
-                    'deployment_id': newValue.value
-                };
-            } else {
-                _filter = {};
-            }
+            _deployments = newValue;
         }, true);
 
         $scope.execute = function() {
