@@ -15,20 +15,20 @@
                      data-ng-model="eventsFilter.blueprints"
                      data-init="{{ filterModel.blueprints }}"
                      data-text="Choose Blueprints"
-                     data-listner="true"
+                     data-listener="true"
                      name="blueprints"></div>
             </div>
 
             <div class="filter" data-ng-show="deploymentsList.length">
                 Deployments:<br>
                 <div multi:select:menu
-                     data-multiple="false"
+                     data-multiple="true"
                      data-options="deploymentsList"
                      data-ng-model="eventsFilter.deployments"
                      data-filter="eventsFilter.blueprints"
                      data-init="{{ filterModel.deployments }}"
                      data-text="Choose Deployments"
-                     data-listner="true"
+                     data-listener="true"
                      name="deployments"></div>
             </div>
 
