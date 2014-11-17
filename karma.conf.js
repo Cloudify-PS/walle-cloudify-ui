@@ -41,7 +41,7 @@ module.exports = function(config) {
         exclude: [],
 
         preprocessors: {
-            'app/scripts/**/*.js' : ['coverage']
+            'app/scripts/**/*.js' : ['spec', 'progress', 'junit', 'coverage']
         },
 
         // use dots reporter, as travis terminal does not support escaping sequences
