@@ -385,7 +385,7 @@ module.exports = function (grunt) {
                 }
             }
         },
-        /** using istanbul directly sinve jasmine-node-coverage plugin does not work properly yet...**/
+        /** using istanbul directly since jasmine-node-coverage plugin does not work properly yet...**/
 
         instrument: {
             files: 'backend/**/*.js',
