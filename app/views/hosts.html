@@ -60,7 +60,7 @@
                 <!--<th class="">Flavor ID</th>-->
             </tr>
             </thead>
-            <tbody class="animate-repeat" ng-repeat="row in nodesList | filter: searchFilter" ng-init="isOpen=false">
+            <tbody ng-repeat="row in nodesList | filter: searchFilter" ng-init="isOpen=false">
                 <tr>
                     <td class="id">{{row.id == null && '-' || row.id }}</td>
                     <td class="state">{{row.state == null && '-' || row.state }}</td>
