@@ -18,6 +18,7 @@ angular.module('cosmoUiApp')
         var _type = 'cloudify.nodes.Compute';
         var _deployments = {};
         var _blueprint = null;
+        var _currentBlueprint = null;
         var _deploymentsList = NodeSearchService.getDeployments();
 
         $scope.deploymentsList = _deploymentsList;
@@ -34,11 +35,12 @@ angular.module('cosmoUiApp')
                 .then(function(data){
                     $scope.nodesList = data;
                     $scope.filterLoading = false;
+                    _currentBlueprint = _blueprint;
                 });
         }
 
         $scope.getBlueprintId = function() {
-            return _blueprint;
+            return _currentBlueprint;
         };
 
         $scope.$watch('eventsFilter.blueprints', function(newValue){
