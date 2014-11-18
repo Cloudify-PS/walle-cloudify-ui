@@ -385,7 +385,8 @@ module.exports = function (grunt) {
                 }
             }
         },
-        /** using istanbul directly since jasmine-node-coverage plugin does not work properly yet...**/
+        /* using istanbul directly since jasmine-node-coverage plugin does not work properly yet...*/
+       /* reference: https://github.com/taichi/grunt-istanbul */
 
         instrument: {
             files: 'backend/**/*.js',
