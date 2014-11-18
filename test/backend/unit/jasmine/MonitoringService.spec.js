@@ -23,20 +23,20 @@ describe ('MonitoringService', function(){
             expect(dashboard.title).toBe('unitTestDashboard');
         });
 
-        it ('should have dashboard with 2 rows', function(){
-            expect(dashboard.rows.length).toBe(2);
+        it ('should have dashboard with 3 rows', function(){
+            expect(dashboard.rows.length).toBe(3);
         });
 
         it ('should have row with 2 panels', function(){
             expect(dashboard.rows[0].panels.length).toBe(2);
         });
 
-        it ('should have panel with 2 targets', function(){
-            expect(dashboard.rows[0].panels[0].targets.length).toBe(2);
+        it ('should have panel with 1 targets', function(){
+            expect(dashboard.rows[0].panels[0].targets.length).toBe(1);
         });
 
         it ('should have target query with series of "unitTestDashboard"', function(){
-            expect(dashboard.rows[0].panels[0].targets[0].query).toBe('select  mean(value) from /unitTestDashboard\\.vm\\..*?\\.cpu_total_user/ where  time > now() - 5m     group by time(10)  order asc');
+            expect(dashboard.rows[0].panels[0].targets[0].query).toBe('select  mean(value) from /unitTestDashboard\\.vm\\..*?\\.cpu_total_system/ where  time > now() - 15m     group by time(10)  order asc');
         });
 
     });
