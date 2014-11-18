@@ -145,7 +145,10 @@ module.exports = function (grunt) {
                     }
                 ]
             },
-            server: '.tmp'
+            server: '.tmp',
+            coverageBackend: ['backend-coverage'],
+            coverageFrontend: ['coverage'],
+            instrumentBackend: ['backend-instrument']
         },
         jshint: {
             options: {
@@ -327,6 +330,11 @@ module.exports = function (grunt) {
                         ]
                     }
                 ]
+            },
+            backendCoverageTests: {
+                expand:true,
+                dest: 'backend-instrument',
+                src: ['test/**/*']
             }
         },
         concurrent: {
@@ -377,8 +385,32 @@ module.exports = function (grunt) {
                 }
             }
         },
+        /* using istanbul directly since jasmine-node-coverage plugin does not work properly yet...*/
+       /* reference: https://github.com/taichi/grunt-istanbul */
+
+        instrument: {
+            files: 'backend/**/*.js',
+            options: {
+                lazy: true,
+                basePath: 'backend-instrument/'
+            }
+        },
+        storeCoverage: {
+            options: {
+                dir: 'backend-coverage/reports'
+            }
+        },
+        makeReport: {
+            src: 'backend-coverage/reports/**/*.json',
+            options: {
+                type: 'html',
+                dir: 'backend-coverage/html/reports',
+                print: 'detail'
+            }
+        },
         jasmine_node: {
             unit: ['test/backend/unit/jasmine/'],
+            unitInstrument: ['backend-instrument/test/backend/unit/jasmine'],
             integration: ['test/backend/integration/jasmine/']
         },
         html2js: {
@@ -420,10 +452,10 @@ module.exports = function (grunt) {
             ];
         }
 
-        if( testBackend === 'all' || testBackend === 'backend') {
-            tasks.push('jasmine_node');
+        if( testBackend === undefined || testBackend === '' || testBackend === 'all' || testBackend === 'backend') {
+            // guy - we always use code coverage in grunt.. when debug from the IDE so no need for no instrumented mode in grunt.
+            tasks = tasks.concat( ['clean:coverageBackend','instrument', 'copy:backendCoverageTests', 'jasmine_node:unitInstrument', 'storeCoverage', 'makeReport','clean:instrumentBackend']);
         }
-
         grunt.task.run(tasks);
     });
 
@@ -452,8 +484,9 @@ module.exports = function (grunt) {
 
     grunt.registerTask('default', [
         'jshint',
-        'test',
+        'test:all',
         'build',
         'backend'
     ]);
+
 };
