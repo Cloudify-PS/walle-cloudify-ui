@@ -25,17 +25,28 @@ angular.module('cosmoUiApp')
 
         $scope.updateInputs = function() {
             if ($scope.inputsState === RAW) {
+                for (var input in $scope.inputs) {
+                    if ($scope.inputs[input] === '') {
+                        $scope.inputs[input] = '""';
+                    }
+                    $scope.inputs[input] = JSON.parse($scope.inputs[input]);
+                }
                 $scope.rawString = JSON.stringify($scope.inputs, undefined, 2);
                 var _rawJSON = JSON.parse($scope.rawString);
-                for (var input in _rawJSON) {
-                    $scope.inputs[input] = _rawJSON[input];
+                for (var _rawJsonInput in _rawJSON) {
+                    $scope.inputs[_rawJsonInput] = _rawJSON[_rawJsonInput];
                 }
             } else {
                 try {
                     $scope.inputs = JSON.parse($scope.rawString);
+                    for (var _parsedInput in $scope.inputs) {
+                        if (typeof($scope.inputs[_parsedInput]) === 'string') {
+                            $scope.inputs[_parsedInput] = JSON.stringify($scope.inputs[_parsedInput]);
+                        }
+                    }
                     $scope.showError = false;
                     for (var param in $scope.selectedWorkflow.data.parameters) {
-                        if ($scope.inputs[param] === undefined || $scope.inputs[param] === '') {
+                        if ($scope.inputs[param] === undefined || $scope.inputs[param] === '' || $scope.inputs[param] === '""') {
                             $scope.inputs[param] = '';
                         }
                     }

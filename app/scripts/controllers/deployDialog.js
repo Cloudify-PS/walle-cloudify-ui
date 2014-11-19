@@ -26,17 +26,28 @@ angular.module('cosmoUiApp')
 
         $scope.updateInputs = function() {
             if ($scope.inputsState === RAW) {
+                for (var input in $scope.inputs) {
+                    if ($scope.inputs[input] === '') {
+                        $scope.inputs[input] = '""';
+                    }
+                    $scope.inputs[input] = JSON.parse($scope.inputs[input]);
+                }
                 $scope.rawString = JSON.stringify($scope.inputs, null, 2);
                 var _rawJSON = JSON.parse($scope.rawString);
-                for (var input in _rawJSON) {
-                    $scope.inputs[input] = _rawJSON[input];
+                for (var _rawJsonInput in _rawJSON) {
+                    $scope.inputs[_rawJsonInput] = _rawJSON[_rawJsonInput];
                 }
             } else {
                 try {
                     $scope.inputs = JSON.parse($scope.rawString);
+                    for (var _parsedInput in $scope.inputs) {
+                        if (typeof($scope.inputs[_parsedInput]) === 'string') {
+                            $scope.inputs[_parsedInput] = JSON.stringify($scope.inputs[_parsedInput]);
+                        }
+                    }
                     $scope.showError = false;
                     for (var _input in $scope.selectedBlueprint.plan.inputs) {
-                        if ($scope.inputs[_input] === undefined || $scope.inputs[_input] === '') {
+                        if ($scope.inputs[_input] === undefined || $scope.inputs[_input] === '' || $scope.inputs[_input] === '""') {
                             $scope.inputs[_input] = '';
                         }
                     }
