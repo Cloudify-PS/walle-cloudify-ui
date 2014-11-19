@@ -32,15 +32,11 @@ angular.module('cosmoUiApp')
                     $scope.inputs[input] = JSON.parse($scope.inputs[input]);
                 }
                 $scope.rawString = JSON.stringify($scope.inputs, undefined, 2);
-                var _rawJSON = JSON.parse($scope.rawString);
-                for (var _rawJsonInput in _rawJSON) {
-                    $scope.inputs[_rawJsonInput] = _rawJSON[_rawJsonInput];
-                }
             } else {
                 try {
                     $scope.inputs = JSON.parse($scope.rawString);
                     for (var _parsedInput in $scope.inputs) {
-                        if (typeof($scope.inputs[_parsedInput]) === 'string') {
+                        if (typeof($scope.inputs[_parsedInput]) === 'string' || typeof($scope.inputs[_parsedInput]) === 'object') {
                             $scope.inputs[_parsedInput] = JSON.stringify($scope.inputs[_parsedInput]);
                         }
                     }
