@@ -334,7 +334,7 @@ module.exports = function (grunt) {
             backendCoverageTests: {
                 expand:true,
                 dest: 'backend-instrument',
-                src: ['test/**/*']
+                src: ['test/**/*', 'backend/mock/**/*']
             }
         },
         concurrent: {
