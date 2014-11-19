@@ -26,6 +26,12 @@ angular.module('cosmoUiApp')
 
         $scope.updateInputs = function() {
             if ($scope.inputsState === RAW) {
+                if ($scope.showError && !_validateJSON()) {
+                    return;
+                } else {
+                    $scope.showError = false;
+                }
+
                 for (var input in $scope.inputs) {
                     if ($scope.inputs[input] === '') {
                         $scope.inputs[input] = '""';
@@ -140,6 +146,15 @@ angular.module('cosmoUiApp')
                 return false;
             }
             return true;
+        }
+
+        function _validateJSON() {
+            try {
+                JSON.parse($scope.rawString);
+                return true;
+            } catch (e) {
+                return  false;
+            }
         }
 
         function _resetDialog() {

@@ -26,6 +26,12 @@ angular.module('cosmoUiApp')
         $scope.updateInputs = function() {
             if ($scope.inputsState === RAW) {
                 for (var input in $scope.inputs) {
+                    if ($scope.showError && !_validateJSON()) {
+                        return;
+                    } else {
+                        $scope.showError = false;
+                    }
+
                     if ($scope.inputs[input] === '') {
                         $scope.inputs[input] = '""';
                     }
@@ -51,8 +57,6 @@ angular.module('cosmoUiApp')
                     $scope.showError = true;
                     $scope.executeErrorMessage = 'Invalid JSON';
                 }
-
-                $scope.rawString = JSON.stringify($scope.inputs, undefined, 2);
             }
         };
 
@@ -135,16 +139,6 @@ angular.module('cosmoUiApp')
             $scope.inputsState = state;
         };
 
-        $scope.isInputText = function(node) {
-            var _type = 'text';
-            if (node.default) {
-                if ((typeof(node.default) === 'array' && node.default.length > 0)) {
-                    _type = 'array';
-                }
-            }
-            return _type === 'text';
-        };
-
         $scope.$watch('selectedWorkflow.data', function (data) {
             if (data && data !== null) {
                 _resetDialog();
@@ -164,6 +158,15 @@ angular.module('cosmoUiApp')
                         $scope.inputs[param] = $scope.selectedWorkflow.data.parameters[param];
                     }
                 }
+            }
+        }
+
+        function _validateJSON() {
+            try {
+                JSON.parse($scope.rawString);
+                return true;
+            } catch (e) {
+                return  false;
             }
         }
 
