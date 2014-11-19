@@ -75,6 +75,13 @@ angular.module('cosmoUiApp')
         };
 
         $scope.executeWorkflow = function() {
+            for (var input in $scope.inputs) {
+                if ($scope.inputs[input] === '') {
+                    $scope.inputs[input] = '""';
+                }
+                $scope.inputs[input] = JSON.parse($scope.inputs[input]);
+            }
+
             $scope.showError = false;
 
             if ($scope.inputsState === RAW) {

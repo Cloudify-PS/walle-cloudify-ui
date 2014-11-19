@@ -33,7 +33,6 @@ angular.module('cosmoUiApp')
                     $scope.inputs[input] = JSON.parse($scope.inputs[input]);
                 }
                 $scope.rawString = JSON.stringify($scope.inputs, null, 2);
-                var _rawJSON = JSON.parse($scope.rawString);
             } else {
                 try {
                     $scope.inputs = JSON.parse($scope.rawString);
@@ -73,6 +72,14 @@ angular.module('cosmoUiApp')
             if (!_validateDeploymentName($scope.deployment_id)) {
                 return;
             }
+
+            for (var input in $scope.inputs) {
+                if ($scope.inputs[input] === '') {
+                    $scope.inputs[input] = '""';
+                }
+                $scope.inputs[input] = JSON.parse($scope.inputs[input]);
+            }
+
             $scope.showError = false;
 
             if ($scope.inputsState === RAW) {
