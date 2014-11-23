@@ -22,3 +22,6 @@ test-results.xml
 # QuickBuild
 .qbcache/
 backend/appConf.js
+coverage
+backend-coverage
+backend-instrument

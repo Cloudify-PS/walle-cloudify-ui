@@ -8,10 +8,11 @@
  * Service in the cosmoUiApp.
  */
 angular.module('cosmoUiApp')
-    .service('NodeSearchService', function Nodesearchservice($q, CloudifyService) {
+    .service('NodeSearchService', function Nodesearchservice($q, CloudifyService, UpdateNodes) {
 
         var blueprintsList = [];
         var deploymentsList = [];
+        var _updateNodes = UpdateNodes.newInstance();
 
         // get all data for node search page.
         // we need to iterate over blueprints and deployments and extract the relevant information to construct
@@ -125,10 +126,9 @@ angular.module('cosmoUiApp')
 
             _getDeploymentsNodes(deployments)
                 .then(function(nodes){
-
                     _getDeploymentNodesInstances(deployments)
                         .then(function(instances){
-
+                            _updateNodes.runUpdate(instances, nodes);
                             _filterNodesByType(type, instances, nodes)
                                 .then(function(instances){
                                     deferred.resolve(instances);

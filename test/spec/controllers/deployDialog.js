@@ -37,6 +37,12 @@ describe('Controller: DeploydialogCtrl', function () {
                 },
                 "image_name": {
                     "description": "Openstack image name to use for the new server\n"
+                },
+                "bool_variable": {
+                    "default": false
+                },
+                "str_variable": {
+                    "default": "some string"
                 }
             },
             "workflows": {
@@ -194,6 +200,17 @@ describe('Controller: DeploydialogCtrl', function () {
             scope.$apply();
 
             expect(JSON.parse(scope.rawString)['image_name']).toBe('new value');
+        });
+
+        it('should save input type when converting inputs to JSON', function() {
+            scope.inputs = _deployment.inputs;
+
+            scope.updateInputs();
+            scope.$apply();
+
+            expect(typeof(JSON.parse(scope.rawString)['webserver_port'])).toBe('number');
+            expect(typeof(JSON.parse(scope.rawString)['bool_variable'])).toBe('boolean');
+            expect(typeof(JSON.parse(scope.rawString)['str_variable'])).toBe('string');
         });
     });
 });

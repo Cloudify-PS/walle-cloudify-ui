@@ -26,7 +26,7 @@ angular.module('cosmoUiApp')
 
         $scope.updateInputs = function() {
             if ($scope.inputsState === RAW) {
-                $scope.rawString = JSON.stringify($scope.inputs, undefined, 2);
+                $scope.rawString = JSON.stringify($scope.inputs, null, 2);
                 var _rawJSON = JSON.parse($scope.rawString);
                 for (var input in _rawJSON) {
                     $scope.inputs[input] = _rawJSON[input];

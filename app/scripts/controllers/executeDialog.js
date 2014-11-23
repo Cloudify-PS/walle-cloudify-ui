@@ -145,7 +145,7 @@ angular.module('cosmoUiApp')
                     var _valStr = JSON.stringify(_defaultVal);
 
                     if (_defaultVal !== undefined && _valStr !== '{}' && _valStr !== '' && _valStr !== '[]') {
-                        $scope.inputs[param] = _defaultVal.toString();
+                        $scope.inputs[param] = _defaultVal;
                     } else if (typeof($scope.selectedWorkflow.data.parameters[param]) === 'array' && $scope.selectedWorkflow.data.parameters[param].length > 0) {
                         $scope.inputs[param] = $scope.selectedWorkflow.data.parameters[param];
                     }
