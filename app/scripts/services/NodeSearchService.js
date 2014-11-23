@@ -11,40 +11,36 @@ angular.module('cosmoUiApp')
     .service('NodeSearchService', function Nodesearchservice($q, CloudifyService) {
 
         var blueprintsList = [];
-        var deploymentList = [];
-        var nodesList = [];
+        var deploymentsList = [];
 
-        (function _initData() {
-            CloudifyService.blueprints.list()
-                .then(function (data) {
-                    for (var j in data) {
-                        var blueprint = data[j];
-                        blueprintsList.push({'value': blueprint.id, 'label': blueprint.id});
-                        for (var i in blueprint.deployments) {
-                            var deployemnt = blueprint.deployments[i];
-                            deploymentList.push({'value': deployemnt.id, 'label': deployemnt.id, 'parent': blueprint.id});
-                        }
-                    }
+        // get all data for node search page.
+        // we need to iterate over blueprints and deployments and extract the relevant information to construct
+        // the select lists etc..
+        function _getNodeSearchData(){
+            return CloudifyService.blueprints.list()
+                .then(function (blueprints) {
+                    blueprintsList = _.map(blueprints, function (blueprint) {
+                        return {'value': blueprint.id, 'label': blueprint.id};
+                    });
+
+                    _.each(blueprints, function (blueprint) {
+                        deploymentsList = deploymentsList.concat(_.map(blueprint.deployments, function (dep) {
+                            return {'value': dep.id, 'label': dep.id, 'parent': blueprint.id};
+                        }));
+                    });
+
+                    return {
+                        blueprints: blueprintsList,
+                        deployments: deploymentsList
+                    };
                 });
-        })();
-
-        function _getBlueprints() {
-            return blueprintsList;
-        }
-
-        function _getDeployments() {
-            return deploymentList;
-        }
-
-        function _getNodesList() {
-            return nodesList;
         }
 
         function _getDeploymentsByBlueprintId(id) {
             var deployments = [];
-            for(var i in deploymentList) {
-                if(deploymentList[i].parent === id) {
-                    deployments.push(deploymentList[i]);
+            for(var i in deploymentsList) {
+                if(deploymentsList[i].parent === id) {
+                    deployments.push(deploymentsList[i]);
                 }
             }
             return deployments;
@@ -143,8 +139,6 @@ angular.module('cosmoUiApp')
             return deferred.promise;
         }
 
-        this.getBlueprints = _getBlueprints;
-        this.getDeployments = _getDeployments;
-        this.getNodesList = _getNodesList;
+        this.getNodeSearchData = _getNodeSearchData;
         this.execute = _execute;
     });
