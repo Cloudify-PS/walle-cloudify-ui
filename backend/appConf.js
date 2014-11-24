@@ -79,7 +79,6 @@ var privateConfiguration = {
         dbname: 'cloudify'
     }
 }
-logger.debug("browseBlueprint path: " + privateConfiguration.browseBlueprint.path);
 
 
 
