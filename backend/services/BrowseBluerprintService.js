@@ -26,15 +26,17 @@ module.exports.deleteBlueprint = function(id, callbackFn) {
         if (err) {
             callbackFn(err);
         }
-    });
-
-    fs.rmrf(path.join(conf.browseBlueprint.path, id), function (err) {
-        if (err) {
-            callbackFn(err);
+        else {
+            fs.rmrf(path.join(conf.browseBlueprint.path, id), function (err) {
+                if (err) {
+                    callbackFn(err);
+                }
+                else {
+                    return callbackFn(null);
+                }
+            });
         }
     });
-
-    return callbackFn(null);
 };
 
 module.exports.Walker = function() {
