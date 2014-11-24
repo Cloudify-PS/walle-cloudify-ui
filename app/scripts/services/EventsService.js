@@ -92,7 +92,6 @@ angular.module('cosmoUiApp')
                     return true;
                 }
                 if(activeFilters.hasOwnProperty(field)) {
-                    term = term;
                     if(activeFilters[field].indexOf(term) !== -1) {
                         activeFilters[field].splice(activeFilters[field].indexOf(term), 1);
                     }
