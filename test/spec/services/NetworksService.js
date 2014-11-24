@@ -3,6 +3,7 @@
 describe('Service: NetworksService', function () {
 
     var NetworksService;
+    var colors;
     var providerData = {
         "name": "cloudify_openstack",
         "context": {
@@ -625,6 +626,18 @@ describe('Service: NetworksService', function () {
         it('should have subnet', function(){
             expect(results.external[1].type).toBe('subnet');
         });
+
+        beforeEach(function(){
+            colors = NetworksService.getNetworkColor();
+        });
+
+        it('should have 13 kind of colors', function(){
+            expect(colors.length).toBe(7);
+        });
+
+//        it('should contain sample of the color "#D62728"', function(){
+//            expect(colors).toContain('#D62728');
+//        });
 
     });
 

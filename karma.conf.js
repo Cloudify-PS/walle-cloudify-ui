@@ -33,7 +33,8 @@ module.exports = function(config) {
             '.tmp/styles/main.css',
             'test/mock/**/*.js',
             'test/spec/*.js',
-            'test/spec/**/*.js',
+//            'test/spec/**/*.js',
+            'test/spec/services/NetworksService.js',
             '.tmp/viewTemplates/templates.js'
         ],
 
