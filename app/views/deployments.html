@@ -63,7 +63,8 @@
                     <ul>
                         <li ng-repeat="(name, value) in selectedWorkflow.data.parameters">
                             {{name}}:
-                            <input type="text" ng-model="inputs[name]" placeholder="{{ 'blueprints.deployDialog.enterValue' | i18n }}">
+                            <input type="text" ng-model="inputs[name]" placeholder="{{ 'blueprints.deployDialog.enterValue' | i18n }}" ng-show="isInputText(selectedWorkflow.data.parameters[name])">
+                            <input type="select" ng-model="inputs[name]" ng-options="" ng-show="!isInputText(selectedWorkflow.data.parameters[name])">
                         </li>
                     </ul>
                 </div>
