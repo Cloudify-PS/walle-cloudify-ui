@@ -35,7 +35,7 @@
             <button class="gs-btn" data-ng-click="execute()" ng-class="{gsBtnDisabled: isSearchDisabled() == true}">Show</button>
 
             <div class="search">
-                <input type="text" placeholder="Search" data-ng-model="searchFilter" />
+                <input type="text" spellcheck="false" placeholder="Search" data-ng-model="searchFilter" />
             </div>
 
             <div class="loading" data-ng-show="filterLoading"></div>

@@ -45,11 +45,11 @@
             <form id="uploadForm" name="uploadForm">
                 <div id="browse">
                     <div id="browseBtn" class="dialogButton">{{ 'blueprints.uploadPopup.browseBtn' | i18n }}</div>
-                    <input type="text" id="browseTxt" ng-model="selectedFile.name" placeholder="{{ 'blueprints.uploadPopup.browseText' | i18n }}">
+                    <input type="text" spellcheck="false" id="browseTxt" ng-model="selectedFile.name" placeholder="{{ 'blueprints.uploadPopup.browseText' | i18n }}">
                     <input type="file" name="fileInput" id="fileInput" accept=".tar,.gz" ng-file-select="onFileSelect($files)">
                 </div>
                 <div id="name">
-                    <input type="text" ng-model="blueprintName" placeholder="{{ 'blueprints.uploadPopup.blueprintName' | i18n }}">
+                    <input type="text" spellcheck="false" ng-model="blueprintName" placeholder="{{ 'blueprints.uploadPopup.blueprintName' | i18n }}">
                 </div>
                 <div id="mainFile" style="display:none">Application file: <input type="text" ng-model="mainFileName"></div>
                 <div id="upload-error-message" ng-show="isUploadError()">{{errorMessage}}</div>
@@ -68,7 +68,7 @@
             <div class="dialogDescription">{{ 'blueprints.deployDialog.description' | i18n }}</div>
             <div class="dialogClose dialogButton" ng-click="closeDialog()"></div>
             <div class="dialogDeploymentName">
-                <input type="text" ng-model="deployment_id" ng-enter="deployBlueprint(selectedBlueprint.id)" placeholder="{{ 'blueprints.deployDialog.deployName' | i18n }}">
+                <input type="text" spellcheck="false" ng-model="deployment_id" ng-enter="deployBlueprint(selectedBlueprint.id)" placeholder="{{ 'blueprints.deployDialog.deployName' | i18n }}">
             </div>
             <div class="dialogInputs deployInputs" ng-show="isParamsVisible()">
                 <div class="buttons-group deployBtns">
