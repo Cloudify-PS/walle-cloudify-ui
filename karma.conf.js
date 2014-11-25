@@ -28,6 +28,7 @@ module.exports = function(config) {
             'app/bower_components/d3/d3.js',
             'app/bower_components/elastic.js/dist/elastic.js',
             'app/bower_components/elastic.js/dist/elastic-angular-client.js',
+            'app/bower_components/lodash/dist/lodash.js',
             'app/scripts/*.js',
             'app/scripts/**/*.js',
             '.tmp/styles/main.css',

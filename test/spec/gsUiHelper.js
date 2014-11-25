@@ -17,7 +17,7 @@ angular.module('gsUiHelper')
                     var inject = injects[i];
                     switch(inject.method ? inject.method.toUpperCase() : 'GET') {
                         case 'POST':
-                            $httpBackend.whenPOST(inject.url).respond(inject.statusCode || 200,  inject.respond);
+                            $httpBackend.whenPOST(inject.url).respond(inject.statusCode || 200, inject.respond);
                             break;
                         case 'GET':
                             $httpBackend.whenGET(inject.url).respond(inject.statusCode || 200, inject.respond);

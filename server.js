@@ -14,6 +14,7 @@ if ( isLocalhost() ){
 
 var express = require('express');
 require('express-params');
+/*jshint -W079 */
 var _ = require('lodash');
 var app = express();
 var port = 9001;
