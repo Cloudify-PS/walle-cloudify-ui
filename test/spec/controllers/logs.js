@@ -31,15 +31,35 @@ describe('Controller: LogsCtrl', function () {
                 var deferred = $q.defer();
                 var blueprints = [
                     {
-                        "updated_at": "2014-08- 21 00:54:04.878540",
-                        "created_at": "2014-08-21 00:54:04.878540",
                         "id": "blueprint1",
-                        "deployments": []
+                        "deployments": [
+                            {
+                                "blueprint_id": "blueprint1",
+                                "id": "firstDep"
+                            },
+                            {
+                                "blueprint_id": "blueprint1",
+                                "id": "secondDep"
+                            }
+                        ]
+                    },
+                    {
+                        "id": "blueprint2",
+                        "deployments": [
+                            {
+                                "blueprint_id": "blueprint2",
+                                "id": "onlyOneDeployment"
+                            }
+                        ]
                     }
                 ];
-
                 deferred.resolve(blueprints);
+                return deferred.promise;
+            };
 
+            CloudifyService.deployments.getDeploymentExecutions = function() {
+                var deferred = $q.defer();
+                deferred.resolve([]);
                 return deferred.promise;
             };
 
@@ -59,16 +79,17 @@ describe('Controller: LogsCtrl', function () {
             expect(LogsCtrl).not.toBeUndefined();
         });
 
-//        it('should select all blueprints and show their events from the last 5 minutes on first page entry', function() {
-//            scope.$apply();
-//
-//            waitsFor(function() {
-//                return scope.eventsFilter.blueprints.length > 0;
-//            });
-//            runs(function() {
-//                expect(JSON.stringify(scope.eventsFilter.blueprints)).toBe(JSON.stringify(scope.blueprintsList));
-//            });
-//        });
+        it('should select all blueprints and show their events from the last 5 minutes on first page entry', function() {
+            scope.$apply();
+
+            waitsFor(function() {
+                return scope.eventsFilter.blueprints.length > 0;
+            }, "The eventsFilter of blueprints should be incremented", 1000);
+
+            runs(function() {
+                expect(JSON.stringify(scope.eventsFilter.blueprints)).toBe(JSON.stringify(scope.blueprintsList));
+            });
+        });
 
         it('should set isSearchDisabled flag to true if no blueprints were selected', function() {
             scope.isSearchDisabled = false;
@@ -89,5 +110,6 @@ describe('Controller: LogsCtrl', function () {
 
             expect(scope.isSearchDisabled).toBe(false);
         });
+
     });
 });
