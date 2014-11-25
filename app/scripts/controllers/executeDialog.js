@@ -10,16 +10,14 @@ angular.module('cosmoUiApp')
         var RAW = 'raw';
 
         $scope.isExecuteEnabled = function() {
-            if ($scope.selectedWorkflow.data === null) {
+            if ($scope.selectedWorkflow.data === null || $scope.showError) {
                 return false;
             }
-
             for (var input in $scope.inputs) {
                 if ($scope.inputs[input] === '' || $scope.inputs[input] === null) {
                     return false;
                 }
             }
-
             return true;
         };
 
@@ -32,8 +30,8 @@ angular.module('cosmoUiApp')
                         $scope.showError = false;
                     }
 
-                    if ($scope.inputs[input] === '') {
-                        $scope.inputs[input] = '""';
+                    if ($scope.inputs[input] === '' || $scope.inputs[input] === null) {
+                        $scope.inputs[input] = null;
                         }
                     try {
                         $scope.inputs[input] = JSON.parse($scope.inputs[input]);
@@ -56,7 +54,7 @@ angular.module('cosmoUiApp')
                     }
                     $scope.showError = false;
                     for (var param in $scope.selectedWorkflow.data.parameters) {
-                        if ($scope.inputs[param] === undefined || $scope.inputs[param] === '' || $scope.inputs[param] === '""') {
+                        if ($scope.inputs[param] === undefined || $scope.inputs[param] === '' || $scope.inputs[param] === '""' || $scope.inputs[param] === 'null') {
                             $scope.inputs[param] = '';
                         }
                     }
@@ -65,14 +63,21 @@ angular.module('cosmoUiApp')
                     $scope.showError = true;
                     $scope.executeErrorMessage = 'Invalid JSON';
                 }
-
-                $scope.rawString = JSON.stringify($scope.inputs, undefined, 2);
             }
         };
 
         $scope.$watch('inputsState', function() {
             if (!!$scope.selectedWorkflow && !!$scope.selectedWorkflow.data) {
                 $scope.updateInputs();
+            }
+        });
+
+        $scope.$watch('rawString', function() {
+            if (!_validateJSON() && $scope.rawString.length > 0) {
+                $scope.showError = true;
+                $scope.executeErrorMessage = 'Invalid JSON';
+            } else {
+                $scope.showError = false;
             }
         });
 
@@ -175,6 +180,8 @@ angular.module('cosmoUiApp')
                         $scope.inputs[param] = _defaultVal;
                     } else if (typeof($scope.selectedWorkflow.data.parameters[param]) === 'array' && $scope.selectedWorkflow.data.parameters[param].length > 0) {
                         $scope.inputs[param] = $scope.selectedWorkflow.data.parameters[param];
+                    } else {
+                        $scope.inputs[param] = null;
                     }
                 }
             }
