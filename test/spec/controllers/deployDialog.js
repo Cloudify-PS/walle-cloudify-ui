@@ -26,17 +26,13 @@ describe('Controller: DeploydialogCtrl', function () {
         "plan": {
             "inputs": {
                 "webserver_port": {
-                    "default": 8080,
-                    "description": "The HTTP web server port\n"
+                    "default": 8080
                 },
                 "flavor_name": {
-                    "description": "Openstack flavor name to use for the new server\n"
                 },
                 "agent_user": {
-                    "description": "User name used when SSH-ing into the started machine\n"
                 },
                 "image_name": {
-                    "description": "Openstack image name to use for the new server\n"
                 },
                 "bool_variable": {
                     "default": false
@@ -194,7 +190,8 @@ describe('Controller: DeploydialogCtrl', function () {
 
         it('should update input JSON object when one of the inputs is updated', function() {
             scope.inputs = _deployment.inputs;
-            scope.inputs['image_name'] = 'new value';
+            scope.inputs['image_name'] = "new value";
+            scope.rawString = JSON.stringify(scope.inputs, null, 2);
 
             scope.updateInputs();
             scope.$apply();

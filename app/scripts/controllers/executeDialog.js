@@ -14,7 +14,7 @@ angular.module('cosmoUiApp')
                 return false;
             }
             for (var input in $scope.inputs) {
-                if ($scope.inputs[input] === '' || $scope.inputs[input] === null) {
+                if ($scope.inputs[input] === null) {
                     return false;
                 }
             }
@@ -30,9 +30,9 @@ angular.module('cosmoUiApp')
                         $scope.showError = false;
                     }
 
-                    if ($scope.inputs[input] === '' || $scope.inputs[input] === null) {
+                    if ($scope.inputs[input] === '' || $scope.inputs[input] === 'null') {
                         $scope.inputs[input] = null;
-                        }
+                    }
                     try {
                         $scope.inputs[input] = JSON.parse($scope.inputs[input]);
                     } catch(e) {
@@ -41,8 +41,8 @@ angular.module('cosmoUiApp')
                 }
                 $scope.rawString = JSON.stringify($scope.inputs, undefined, 2);
                 var _rawJSON = JSON.parse($scope.rawString);
-                for (var input in _rawJSON) {
-                    $scope.inputs[input] = _rawJSON[input];
+                for (var rawInput in _rawJSON) {
+                    $scope.inputs[input] = _rawJSON[rawInput];
                 }
             } else {
                 try {
@@ -54,7 +54,7 @@ angular.module('cosmoUiApp')
                     }
                     $scope.showError = false;
                     for (var param in $scope.selectedWorkflow.data.parameters) {
-                        if ($scope.inputs[param] === undefined || $scope.inputs[param] === '' || $scope.inputs[param] === '""' || $scope.inputs[param] === 'null') {
+                        if ($scope.inputs[param] === undefined || $scope.inputs[param] === '' || $scope.inputs[param] === 'null') {
                             $scope.inputs[param] = '';
                         }
                     }
@@ -98,7 +98,11 @@ angular.module('cosmoUiApp')
                 if ($scope.inputs[input] === '') {
                     $scope.inputs[input] = '""';
                 }
-                $scope.inputs[input] = JSON.parse($scope.inputs[input]);
+                try {
+                    $scope.inputs[input] = JSON.parse($scope.inputs[input]);
+                } catch(e) {
+                    $scope.inputs[input] = $scope.inputs[input];
+                }
             }
             $scope.showError = false;
 
@@ -190,9 +194,23 @@ angular.module('cosmoUiApp')
         function _validateJSON() {
             try {
                 JSON.parse($scope.rawString);
-                return true;
+                return _validateJsonKeys();
             } catch (e) {
                 return  false;
+            }
+        }
+
+        function _validateJsonKeys() {
+            try {
+                var _json = JSON.parse($scope.rawString);
+                for (var i in $scope.inputs) {
+                    if (_json[i] === undefined) {
+                        return false;
+                    }
+                }
+                return true;
+            } catch (e) {
+                return false;
             }
         }
 

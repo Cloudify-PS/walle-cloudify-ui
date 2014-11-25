@@ -65,6 +65,7 @@ describe('Controller: ExecuteDialogCtrl', function () {
             scope.selectedWorkflow = _workflow;
             scope.inputs = _deployment.inputs;
             scope.inputs['image_name'] = 'new value';
+            scope.rawString = JSON.stringify(scope.inputs, null, 2);
 
             scope.updateInputs();
             scope.$apply();
