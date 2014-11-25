@@ -25,7 +25,7 @@ angular.module('cosmoUiApp')
                 class: 'event-text-green'
             },
             'workflow_succeeded': {
-                text: 'Workflow end successfully',
+                text: 'Workflow ended successfully',
                 icon: 'workflow-end-successfully',
                 class: 'event-text-green'
             },
@@ -40,7 +40,7 @@ angular.module('cosmoUiApp')
                 class: 'event-text-red'
             },
             'workflow_stage': {
-                text: 'Workflow Stage',
+                text: 'Workflow staged',
                 icon: 'workflow-stage',
                 class: 'event-text-green'
             },
@@ -60,7 +60,7 @@ angular.module('cosmoUiApp')
                 class: 'event-text-green'
             },
             'task_succeeded': {
-                text: 'Task end successfully',
+                text: 'Task ended successfully',
                 icon: 'task-success',
                 class: 'event-text-green'
             },
@@ -70,7 +70,7 @@ angular.module('cosmoUiApp')
                 class: 'event-text-red'
             },
             'task_retried': {
-                text: 'Task Retried',
+                text: 'Task retried',
                 icon: 'task-retried',
                 class: 'event-text-red'
             },
