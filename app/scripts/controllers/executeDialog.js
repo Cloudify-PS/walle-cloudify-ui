@@ -75,7 +75,6 @@ angular.module('cosmoUiApp')
         $scope.$watch('rawString', function() {
             if (!_validateJSON() && $scope.rawString.length > 0) {
                 $scope.showError = true;
-                $scope.executeErrorMessage = 'Invalid JSON';
             } else {
                 $scope.showError = false;
             }
@@ -194,6 +193,7 @@ angular.module('cosmoUiApp')
         function _validateJSON() {
             try {
                 JSON.parse($scope.rawString);
+                $scope.executeErrorMessage = 'Invalid JSON';
                 return _validateJsonKeys();
             } catch (e) {
                 return  false;
@@ -205,6 +205,7 @@ angular.module('cosmoUiApp')
                 var _json = JSON.parse($scope.rawString);
                 for (var i in $scope.inputs) {
                     if (_json[i] === undefined) {
+                        $scope.executeErrorMessage = 'Missing key in JSON';
                         return false;
                     }
                 }
