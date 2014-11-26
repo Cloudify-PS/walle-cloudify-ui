@@ -36,7 +36,7 @@ angular.module('cosmoUiApp')
                             if(relatedNode.hasOwnProperty('runtime_properties') &&
                                 relatedNode.runtime_properties !== null &&
                                 relatedNode.runtime_properties.hasOwnProperty('floating_ip_address')) {
-                                _idsAddresses.push(relatedNode.runtime_properties.floating_ip_adress);
+                                _idsAddresses.push(relatedNode.runtime_properties.floating_ip_address);
                             }
                         }
                     }

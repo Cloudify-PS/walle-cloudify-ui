@@ -81,8 +81,8 @@ angular.module('cosmoUiApp')
                 if(!activeFilters.hasOwnProperty(field)) {
                     activeFilters[field] = [];
                 }
-                if(typeof term === 'string' && activeFilters[field].indexOf(term.toLowerCase()) === -1) {
-                    activeFilters[field].push(term.toLowerCase());
+                if(typeof term === 'string' && activeFilters[field].indexOf(term) === -1) {
+                    activeFilters[field].push(term);
                 }
             }
 
@@ -92,7 +92,6 @@ angular.module('cosmoUiApp')
                     return true;
                 }
                 if(activeFilters.hasOwnProperty(field)) {
-                    term = term.toLowerCase();
                     if(activeFilters[field].indexOf(term) !== -1) {
                         activeFilters[field].splice(activeFilters[field].indexOf(term), 1);
                     }

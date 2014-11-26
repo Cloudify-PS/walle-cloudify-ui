@@ -120,7 +120,7 @@ describe('Service: EventsService', function () {
 
             events.filter('blueprint_id', 'monitoringbp');
             events.filter('deployment_id', 'monitoringdep');
-            events.filter('deployment_id', 'monitoringbptest');
+            events.filter('deployment_id', 'MonitoringBpTest');
             events.filterRange('@timestamp', {
                 gte: '2014-11-04T11:13:16.838Z',
                 lte: '2014-11-09T11:18:16.838Z'
@@ -138,12 +138,16 @@ describe('Service: EventsService', function () {
 
         it('should create query with two deployments ID filter', function(){
             expect(query.filter.and.filters[1].terms.deployment_id[0]).toEqual('monitoringdep');
-            expect(query.filter.and.filters[1].terms.deployment_id[1]).toEqual('monitoringbptest');
+            expect(query.filter.and.filters[1].terms.deployment_id[1]).toEqual('MonitoringBpTest');
         });
 
         it('should create query with @timestamp range filter', function(){
             expect(query.filter.and.filters[2].range['@timestamp'].from).toEqual('2014-11-04T11:13:16.838Z');
             expect(query.filter.and.filters[2].range['@timestamp'].to).toEqual('2014-11-09T11:18:16.838Z');
+        });
+
+        it('should return the second deployment id as camel case (CFY-1675)', function(){
+            expect(query.filter.and.filters[1].terms.deployment_id[1]).toEqual('MonitoringBpTest');
         });
 
     });

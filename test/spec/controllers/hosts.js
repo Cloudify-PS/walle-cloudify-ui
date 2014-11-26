@@ -64,20 +64,26 @@ describe('Controller: HostsCtrl', function () {
                         state: "uninitialized"
                     }
                 ];
-
                 deferred.resolve(instances);
-
                 return deferred.promise;
             };
 
-            NodeSearchService.getBlueprints = function() {
-                return [{
-                    "id": "blueprint1",
-                    "deployments": [{
+            NodeSearchService.getNodeSearchData = function() {
+                var deferred = $q.defer();
+                deferred.resolve({
+                    blueprints: [{
+                        "id": "blueprint1",
+                        "deployments": [{
+                            "blueprint_id": "blueprint1",
+                            "id": "deployment1"
+                        }]
+                    }],
+                    deployments: [{
                         "blueprint_id": "blueprint1",
                         "id": "deployment1"
                     }]
-                }];
+                });
+                return deferred.promise;
             };
 
             HostsCtrl = $controller('HostsCtrl', {

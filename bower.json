@@ -23,7 +23,8 @@
     "angular-timer": "~1.1.5",
     "angular-datepicker": "https://github.com/g00fy-/angular-datepicker.git#~1.0.3",
     "grafana": "https://github.com/grafana/grafana.git#~1.6.1",
-    "angular-perfect-scrollbar": "itsdrewmiller/angular-perfect-scrollbar#fa1adaeb309b228d97e5ae1f2d7391e248161a4a"
+    "angular-perfect-scrollbar": "itsdrewmiller/angular-perfect-scrollbar#fa1adaeb309b228d97e5ae1f2d7391e248161a4a",
+    "lodash": "~2.4.1"
   },
   "devDependencies": {
     "angular-mocks": "~1.2.21",
