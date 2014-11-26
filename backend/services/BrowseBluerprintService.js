@@ -24,16 +24,14 @@ module.exports.fileGetContent = function(id, relativePath, callbackFn) {
 module.exports.deleteBlueprint = function(id, callbackFn) {
     fs.remove(path.join(conf.browseBlueprint.path, id + '.tar.gz'), function (err) {
         if (err) {
-            callbackFn(err);
+            return callbackFn(err);
         }
-    });
-    fs.remove(path.join(conf.browseBlueprint.path, id), function (err) {
-        if (err) {
-            callbackFn(err);
-        }
-        else {
+        fs.remove(path.join(conf.browseBlueprint.path, id), function (err) {
+            if (err) {
+                return callbackFn(err);
+            }
             return callbackFn(null);
-        }
+        });
     });
 };
 
