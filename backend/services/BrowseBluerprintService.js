@@ -27,7 +27,7 @@ module.exports.deleteBlueprint = function(id, callbackFn) {
             callbackFn(err);
         }
     });
-    fs.rmrf(path.join(conf.browseBlueprint.path, id), function (err) {
+    fs.remove(path.join(conf.browseBlueprint.path, id), function (err) {
         if (err) {
             callbackFn(err);
         }
