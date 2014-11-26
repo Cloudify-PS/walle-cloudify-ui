@@ -93,9 +93,6 @@ angular.module('cosmoUiApp')
         };
 
         $scope.deployBlueprint = function (blueprintId) {
-            if (!_validateDeploymentName($scope.deployment_id)) {
-                return;
-            }
             for (var input in $scope.inputs) {
                 if ($scope.inputs[input] === '' || $scope.inputs[input] === 'null') {
                     $scope.inputs[input] = '""';
