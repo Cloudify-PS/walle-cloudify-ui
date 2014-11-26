@@ -212,5 +212,20 @@ describe('Controller: DeploydialogCtrl', function () {
             expect(typeof(JSON.parse(scope.rawString)['bool_variable'])).toBe('boolean');
             expect(typeof(JSON.parse(scope.rawString)['str_variable'])).toBe('string');
         });
+
+        it('should not validate deployment name', function() {
+            scope.deployment_id = '~~~!!!@@@';
+            spyOn(scope, 'redirectToDeployment').andCallThrough();
+
+            scope.deployBlueprint('blueprint1');
+            scope.$apply();
+
+            waitsFor(function() {
+                return scope.inProcess === false;
+            });
+            runs(function() {
+                expect(scope.redirectToDeployment).toHaveBeenCalledWith(scope.deployment_id);
+            });
+        });
     });
 });

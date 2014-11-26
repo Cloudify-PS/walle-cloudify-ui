@@ -2,7 +2,7 @@
 
 describe('Controller: FileSelectionDialogCtrl', function () {
 
-    var FileSelectionDialogCtrl, scope;
+    var FileSelectionDialogCtrl, _cloudifyService, scope;
 
     // load the controller's module
     beforeEach(module('cosmoUiApp', 'ngMock'));
@@ -16,17 +16,11 @@ describe('Controller: FileSelectionDialogCtrl', function () {
             $httpBackend.whenGET('/backend/version/latest?version=00').respond('300');
 
             scope = $rootScope.$new();
-
-            CloudifyService.blueprints.add = function(data, successCallback, errorCallback) {
-                var e = {
-                    "responseText": '{"status": 400  , "message": "400: Invalid blueprint name", "error_code": "Blueprint name required"}'
-                };
-                errorCallback(e);
-            };
+            _cloudifyService = CloudifyService;
 
             FileSelectionDialogCtrl = $controller('FileSelectionDialogCtrl', {
                 $scope: scope,
-                CloudifyService: CloudifyService
+                CloudifyService: _cloudifyService
             });
         }));
     });
@@ -38,14 +32,43 @@ describe('Controller: FileSelectionDialogCtrl', function () {
 
         it('should require a blueprint name', function() {
             scope.selectedFile = {};
+            _cloudifyService.blueprints.add = function(data, successCallback, errorCallback) {
+                var e = {
+                    "responseText": '{"status": 400  , "message": "400: Invalid blueprint name", "error_code": "Blueprint name required"}'
+                };
+                errorCallback(e);
+            };
+
             scope.uploadFile();
+            scope.$apply();
 
             waitsFor(function() {
                 return scope.uploadError === true;
             });
-
             runs(function() {
                 expect(scope.errorMessage).toBe('400: Invalid blueprint name');
+            });
+        });
+
+        it('should not validate blueprint name', function() {
+            scope.blueprintName = '~~~!!!@@@';
+            scope.selectedFile = {};
+            scope.uploadDone = function() {
+                scope.uploadInProcess = false;
+            };
+            _cloudifyService.blueprints.add = function(data, successCallback, errorCallback) {
+                successCallback();
+            };
+            spyOn(scope, 'uploadDone').andCallThrough();
+
+            scope.uploadFile();
+            scope.$apply();
+
+            waitsFor(function() {
+                return scope.uploadInProcess === false;
+            });
+            runs(function() {
+                expect(scope.uploadDone).toHaveBeenCalledWith(scope.blueprintName);
             });
         });
     });

@@ -39,7 +39,6 @@ angular.module('cosmoUiApp')
                         $scope.uploadError = false;
                         $scope.uploadDone($scope.blueprintName);
                     });
-
                     $scope.uploadDone($scope.blueprintName);
                 },
                 function(e) {
