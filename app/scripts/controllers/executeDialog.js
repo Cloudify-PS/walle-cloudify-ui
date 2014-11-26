@@ -205,7 +205,7 @@ angular.module('cosmoUiApp')
                 var _json = JSON.parse($scope.rawString);
                 for (var i in $scope.inputs) {
                     if (_json[i] === undefined) {
-                        $scope.executeErrorMessage = 'Missing key in JSON';
+                        $scope.executeErrorMessage = 'Missing '  + i +  ' key in JSON';
                         return false;
                     }
                 }

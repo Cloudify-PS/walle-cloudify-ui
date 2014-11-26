@@ -173,7 +173,7 @@ angular.module('cosmoUiApp')
                 var _json = JSON.parse($scope.rawString);
                 for (var i in $scope.inputs) {
                     if (_json[i] === undefined) {
-                        $scope.deployErrorMessage = 'Missing key in JSON';
+                        $scope.deployErrorMessage = 'Missing ' + i + ' key in JSON';
                         return false;
                     }
                 }
