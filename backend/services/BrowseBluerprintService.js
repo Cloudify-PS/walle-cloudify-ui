@@ -24,8 +24,7 @@ module.exports.fileGetContent = function(id, relativePath, callbackFn) {
 module.exports.deleteBlueprint = function(id, callbackFn) {
     fs.remove(path.join(conf.browseBlueprint.path, id + '.tar.gz'), function (err) {
         if (err) {
-            console.log('err 1', err);
-            callbackFn(err);
+            return callbackFn(err);
         }
         else {
             fs.removeSync(path.join(conf.browseBlueprint.path, id));
