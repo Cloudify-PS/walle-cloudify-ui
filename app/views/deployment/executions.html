@@ -22,7 +22,7 @@
                 <td class="workflow">{{ row.workflow_id }}</td>
                 <td class="id">{{ row.id }}</td>
                 <td class="created">{{ row.created_at | dateFormat: 'yyyy-MM-dd HH:mm:ss' }}</td>
-                <td class="status">{{ row.status }}</td>
+                <td class="status">{{ 'deployment.executions.' + row.status | i18n }}</td>
                 <td class="error">{{ row.error }}</td>
             </tr>
             </tbody>
