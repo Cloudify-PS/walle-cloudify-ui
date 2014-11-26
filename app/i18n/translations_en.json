@@ -67,6 +67,15 @@
                 "workflow": "Workflow"
             }
         },
+        "executions": {
+            "terminated": "Completed successfully",
+            "failed": "Failed",
+            "cancelled": "Cancelled",
+            "pending": "Pending",
+            "started": "Started",
+            "cancelling": "Cancelling",
+            "force_cancelling": "Force cancelling"
+        },
         "process": {
             "create_deployment_environment": "Initializing",
             "delete_deployment_environment": "Deletes",
