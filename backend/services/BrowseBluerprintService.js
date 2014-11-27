@@ -1,5 +1,6 @@
 var conf = require("../appConf");
 var fs = require('fs.extra');
+var _fs = require('fs');
 var path = require('path');
 
 module.exports.isBlueprintExist = function (id, callbackFn) {
@@ -22,19 +23,43 @@ module.exports.fileGetContent = function(id, relativePath, callbackFn) {
 };
 
 module.exports.deleteBlueprint = function(id, callbackFn) {
-    fs.remove(path.join(conf.browseBlueprint.path, id + '.tar.gz'), function (err) {
-        if (err) {
-            callbackFn(err);
+    function removeFile(id, callbackFn) {
+        fs.exists(path.join(conf.browseBlueprint.path, id + '.tar.gz'), function (exists){
+            if(exists) {
+                fs.remove(path.join(conf.browseBlueprint.path, id + '.tar.gz'), function(err){
+                    if(err) {
+                        return callbackFn(err);
+                    }
+                    return callbackFn(null);
+                });
+            }
+            else {
+                return callbackFn(null);
+            }
+        });
+    }
+
+    function removeFolder(id, callbackFn) {
+        fs.exists(path.join(conf.browseBlueprint.path, id), function (exists){
+            if(exists) {
+                fs.rmrf(path.join(conf.browseBlueprint.path, id), function(err){
+                    if(err) {
+                        return callbackFn(err);
+                    }
+                    return callbackFn(null);
+                });
+            }
+            else {
+                return callbackFn(null);
+            }
+        });
+    }
+
+    return removeFile(id, function(err){
+        if(err === null) {
+            return removeFolder(id, callbackFn);
         }
     });
-
-    fs.rmrf(path.join(conf.browseBlueprint.path, id), function (err) {
-        if (err) {
-            callbackFn(err);
-        }
-    });
-
-    return callbackFn(null);
 };
 
 module.exports.Walker = function() {

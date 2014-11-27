@@ -24,10 +24,10 @@ angular.module('cosmoUiApp')
         $scope.executionList = [];
 
         $scope.eventsFilter = {
-            'blueprints': null,
-            'deployments': null,
-            'executions': null,
-            'timeframe': null
+            'blueprints': [],
+            'deployments': [],
+            'executions': [],
+            'timeframe': []
         };
 
         $scope.defaultTimeframe = 1000 * 60 * 5;
@@ -146,17 +146,15 @@ angular.module('cosmoUiApp')
                         _loadExecutions(deployemnt.id);
                     }
                 }
-                //_autoFirstPull();
-                //executeLogs();
+                _autoFirstPull();
             });
 
-//        function _autoFirstPull() {
-//            $scope.eventsFilter.blueprints = [];
-//            angular.forEach($scope.blueprintsList, function(blueprint){
-//                $scope.eventsFilter.blueprints.push(blueprint);
-//            });
-//            executeLogs();
-//        }
+        function _autoFirstPull() {
+            angular.forEach($scope.blueprintsList, function(blueprint){
+                $scope.eventsFilter.blueprints.push(blueprint);
+            });
+            executeLogs();
+        }
 
         function _loadExecutions(deployment_id) {
             CloudifyService.deployments.getDeploymentExecutions(deployment_id)

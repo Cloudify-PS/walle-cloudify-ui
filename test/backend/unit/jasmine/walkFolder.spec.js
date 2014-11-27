@@ -12,7 +12,7 @@ describe('Backend: walkFolder', function () {
         expect(walker).not.toBeUndefined();
     });
 
-    it('should return folder content without hidden files & symbolic links', function() {
+    it('should return folder content without hidden files & symbolic links', function(done) {
         var folderFiles = {};
         walker.walk('./test/backend/resources/content', function(err, data) {
             folderFiles = data;
@@ -24,6 +24,7 @@ describe('Backend: walkFolder', function () {
 
         runs(function () {
             expect(folderFiles.children.length).toBe(1);
+            done();
         });
     });
 });
