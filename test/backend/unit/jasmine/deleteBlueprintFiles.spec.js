@@ -20,39 +20,35 @@ describe('Backend: Delete Blueprints Files (CFY-1496)', function(){
 
     describe('Create files and folder', function(){
         beforeEach(function(){
+            fs.mkdir(conf.browseBlueprint.path, function (e) {
+                if (!e || (e && e.code === 'EEXIST')) {
+                    fs.writeFile(path.resolve(conf.browseBlueprint.path, prefix + blueprint + fileExt), '', function (err) {
+                        if (err) {
+                            throw err;
+                        } else {
+                            writeFileComplete = true;
+                        }
+                    });
 
-            fs.exists(conf.browseBlueprint.path, function(exists){
-                if(exists) {
-                    tmpExists = exists;
+                    fs.mkdir(path.resolve(conf.browseBlueprint.path, prefix + blueprint), function (e) {
+                        if (!e || (e && e.code === 'EEXIST')) {
+                            mkdirComplete = true;
+                        } else {
+                            throw e;
+                        }
+                    });
                 }
             });
-
-            fs.writeFile(path.resolve(conf.browseBlueprint.path, prefix + blueprint + fileExt), '', function(err) {
-                if(err) {
-                    throw err;
-                } else {
-                    writeFileComplete = true;
-                }
-            });
-//            fs.mkdir(path.resolve(conf.browseBlueprint.path, prefix + blueprint), function(e){
-//                if(!e || (e && e.code === 'EEXIST')){
-//                    mkdirComplete = true;
-//                } else {
-//                    throw e;
-//                }
-//            });
         });
 
         it('should have blueprint file', function(){
             waitsFor(function() {
-                console.log('waitfor', writeFileComplete, tmpExists);
-                return writeFileComplete === tmpExists === true;
+                return writeFileComplete;
             }, "The Blueprint file created", 1000);
 
             runs(function() {
-                console.log('im inside the run');
-                //var fileExists = fs.existsSync(path.resolve(conf.browseBlueprint.path, prefix + blueprint + fileExt));
-                //expect(fileExists).toBe(true);
+                var fileExists = fs.existsSync(path.resolve(conf.browseBlueprint.path, prefix + blueprint + fileExt));
+                expect(fileExists).toBe(true);
             });
         });
 //
