@@ -171,7 +171,6 @@ describe('Controller: DeploydialogCtrl', function () {
         it('should disable blueprint deploy option if deployment name is not provided', function() {
             scope.selectedBlueprint = _blueprint;
             scope.deployment_id = null;
-            scope.inputs = _deployment.inputs;
 
             expect(scope.isDeployEnabled()).toBe(false);
         });
@@ -179,7 +178,6 @@ describe('Controller: DeploydialogCtrl', function () {
         it('should enable blueprint deploy option if deployment name is provided', function() {
             scope.selectedBlueprint = _blueprint;
             scope.deployment_id = 'deployment1';
-            scope.inputs = _deployment.inputs;
 
             expect(scope.isDeployEnabled()).toBe(true);
         });

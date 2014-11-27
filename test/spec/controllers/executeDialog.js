@@ -2,25 +2,6 @@
 
 describe('Controller: ExecuteDialogCtrl', function () {
     var ExecuteDialogCtrl, scope;
-    var _deployment = {
-        "inputs": {
-            "webserver_port": 8080,
-            "image_name": "image_name",
-            "agent_user": "agent_user",
-            "flavor_name": "flavor_name",
-            "bool_input": false
-        },
-        "blueprint_id": "blueprint1",
-        "id": "deployment1",
-        "outputs": {
-            "http_endpoint": {
-                "description": "HTTP web server endpoint.",
-                "value": {
-                    "get_attribute": ["vm", "ip"]
-                }
-            }
-        }
-    };
     var _workflow = {
         "data": {
             "value":"execute_operation",
