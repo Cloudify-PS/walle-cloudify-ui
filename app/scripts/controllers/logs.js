@@ -85,7 +85,7 @@ angular.module('cosmoUiApp')
                     if(data && data.hasOwnProperty('hits')) {
                         lastData = _convertDates(data.hits.hits);
                         if(lastData.length !== lastAmount) {
-                            if(document.body.scrollTop === 0) {
+                            if(document.body.scrollTop === 0 || $scope.logsHits) {
                                 pushLogs();
                             }
                             else {
@@ -168,21 +168,6 @@ angular.module('cosmoUiApp')
                 });
         }
 
-//        function filterLogs(field, newValue, oldValue, execute) {
-//            if(newValue === null) {
-//                return;
-//            }
-//            if(oldValue !== null && oldValue.value !== null) {
-//                events.filter(field, oldValue.value);
-//            }
-//            if(newValue.value !== null) {
-//                events.filter(field, newValue.value);
-//            }
-//            if(execute === true) {
-//                executeLogs();
-//            }
-//        }
-
         function filterLogsByList(field, newValues, oldValues, execute) {
             for(var oi in oldValues) {
                 events.filterRemove(field, oldValues[oi].value);
@@ -217,8 +202,6 @@ angular.module('cosmoUiApp')
 
         (function _LoadEvents() {
             filterLogsByRange('@timestamp', _filterByTimeframe($scope.defaultTimeframe, $scope.filterModel.startdate), null);
-            //filterLogs('type', {value: 'cloudify_log'}, null);
-            //filterLogs('type', {value: 'cloudify_event'}, null);
         })();
 
         $scope.execute = function() {
