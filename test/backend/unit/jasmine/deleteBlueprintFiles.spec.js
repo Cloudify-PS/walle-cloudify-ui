@@ -19,7 +19,10 @@ describe('Backend: Delete Blueprints Files (CFY-1496)', function(){
     describe('Create files and folder', function(){
         beforeEach(function(){
             fs.writeFile(path.resolve(conf.browseBlueprint.path, prefix + blueprint + fileExt), '', {'mode': '0666'}, function(err) {
-                if(!err) {
+
+                logger.debug('writeFile error: ', err);
+
+                if(err === null) {
                     writeFileComplete = true;
                 }
             });
