@@ -34,16 +34,17 @@ describe('Backend: Delete Blueprints Files (CFY-1496)', function(){
 //            });
         });
 
-//        it('should have blueprint file', function(){
-//            waitsFor(function() {
-//                return writeFileComplete === true;
-//            }, "The Blueprint file created", 1000);
-//
-//            runs(function() {
-//                var fileExists = fs.existsSync(path.resolve(conf.browseBlueprint.path, prefix + blueprint + fileExt));
-//                expect(fileExists).toBe(true);
-//            });
-//        });
+        it('should have blueprint file', function(){
+            waitsFor(function() {
+                return writeFileComplete === true;
+            }, "The Blueprint file created", 1000);
+
+            runs(function() {
+                console.log('im inside the run');
+                //var fileExists = fs.existsSync(path.resolve(conf.browseBlueprint.path, prefix + blueprint + fileExt));
+                //expect(fileExists).toBe(true);
+            });
+        });
 //
 //        it('should have blueprint folder', function(){
 //            waitsFor(function() {
