@@ -75,6 +75,7 @@ html, body, .layout {
 
 #left-side-menu {
     width: $LEFT_MENU_WIDTH;
+    min-width: $LEFT_MENU_WIDTH;
     background: white;
     display: table-cell;
 }
