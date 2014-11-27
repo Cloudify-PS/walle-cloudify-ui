@@ -25,31 +25,22 @@ angular.module('cosmoUiApp')
 
         $scope.updateInputs = function() {
             if ($scope.inputsState === RAW) {
-                for (var input in $scope.inputs) {
-                    // if error message is shown & json is invalid, stop raw JSON update process until JSON is fixed & valid.
-                    if ($scope.showError && !_validateJSON()) {
-                        return;
-                    } else {
-                        $scope.showError = false;
-                    }
+                // if error message is shown & json is invalid, stop raw JSON update process until JSON is fixed & valid.
+                if ($scope.showError && !_validateJSON()) {
+                    return;
+                } else {
+                    $scope.showError = false;
+                }
 
+                for (var input in $scope.inputs) {
                     // if any of the inputs is empty or null, set its value to null
-                    if ($scope.inputs[input] === '' || $scope.inputs[input] === 'null') {
+                    if ($scope.inputs[input] === '' || $scope.inputs[input] === null) {
                         $scope.inputs[input] = null;
                     }
                     // try to parse input value. if parse fails, keep the input value as it is.
-                    try {
-                        $scope.inputs[input] = JSON.parse($scope.inputs[input]);
-                    } catch(e) {
-                        $scope.inputs[input] = $scope.inputs[input];
-                    }
+                    _parseInputs();
                 }
-                $scope.rawString = JSON.stringify($scope.inputs, undefined, 2);
-                var _rawJSON = JSON.parse($scope.rawString);
-                // set inputs value with the values of the stringified JSON
-                for (var rawInput in _rawJSON) {
-                    $scope.inputs[input] = _rawJSON[rawInput];
-                }
+                $scope.rawString = JSON.stringify($scope.inputs, null, 2);
             } else {
                 try {
                     $scope.inputs = JSON.parse($scope.rawString);
@@ -69,7 +60,7 @@ angular.module('cosmoUiApp')
                 } catch (e) {
                     $scope.inputsState = RAW;
                     $scope.showError = true;
-                    $scope.executeErrorMessage = 'Invalid JSON';
+                    $scope.executeErrorMessage = 'Invalid JSON: ' + e.message;
                 }
             }
         };
@@ -102,17 +93,8 @@ angular.module('cosmoUiApp')
         };
 
         $scope.executeWorkflow = function() {
-            for (var input in $scope.inputs) {
-                // if input value is empty, set if to empty string to make sure the data is valid to be parsed
-                if ($scope.inputs[input] === '') {
-                    $scope.inputs[input] = '""';
-                }
-                try {
-                    $scope.inputs[input] = JSON.parse($scope.inputs[input]);
-                } catch(e) {
-                    $scope.inputs[input] = $scope.inputs[input];
-                }
-            }
+            // parse inputs so "true" string will become boolean etc.
+            _parseInputs();
             $scope.showError = false;
 
             if ($scope.inputsState === RAW) {
@@ -213,17 +195,23 @@ angular.module('cosmoUiApp')
 
         // JSON keys validation, verifying all expected keys exists in JSON
         function _validateJsonKeys() {
-            try {
-                var _json = JSON.parse($scope.rawString);
-                for (var i in $scope.inputs) {
-                    if (_json[i] === undefined) {
-                        $scope.executeErrorMessage = 'Missing '  + i +  ' key in JSON';
-                        return false;
-                    }
+            var _json = JSON.parse($scope.rawString);
+            for (var i in $scope.inputs) {
+                if (_json[i] === undefined) {
+                    $scope.executeErrorMessage = 'Missing '  + i +  ' key in JSON';
+                    return false;
                 }
-                return true;
-            } catch (e) {
-                return false;
+            }
+            return true;
+        }
+
+        function _parseInputs() {
+            for (var input in $scope.inputs) {
+                try {
+                    $scope.inputs[input] = JSON.parse($scope.inputs[input]);
+                } catch(e) {
+                    $scope.inputs[input] = $scope.inputs[input];
+                }
             }
         }
 

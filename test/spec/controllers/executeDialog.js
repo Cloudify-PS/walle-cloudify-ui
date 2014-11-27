@@ -65,6 +65,7 @@ describe('Controller: ExecuteDialogCtrl', function () {
             scope.selectedWorkflow = _workflow;
             scope.inputs = _deployment.inputs;
             scope.inputs['image_name'] = 'new value';
+            // setting the 'rawString' scope variable for the test. updateInputs scope method requires this variable data.
             scope.rawString = JSON.stringify(scope.inputs, null, 2);
 
             scope.updateInputs();

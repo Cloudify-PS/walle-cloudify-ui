@@ -40,18 +40,9 @@ angular.module('cosmoUiApp')
                         $scope.inputs[input] = null;
                     }
                     // try to parse input value. if parse fails, keep the input value as it is.
-                    try {
-                        $scope.inputs[input] = JSON.parse($scope.inputs[input]);
-                    } catch(e) {
-                        $scope.inputs[input] = $scope.inputs[input];
-                    }
+                    _parseInputs();
                 }
                 $scope.rawString = JSON.stringify($scope.inputs, null, 2);
-                var _rawJSON = JSON.parse($scope.rawString);
-                // set inputs value with the values of the stringified JSON
-                for (var rawInput in _rawJSON) {
-                    $scope.inputs[input] = _rawJSON[rawInput];
-                }
             } else {
                 try {
                     $scope.inputs = JSON.parse($scope.rawString);
@@ -68,10 +59,10 @@ angular.module('cosmoUiApp')
                             $scope.inputs[_input] = '';
                         }
                     }
-                } catch(e) {
+                } catch (e) {
                     $scope.inputsState = RAW;
                     $scope.showError = true;
-                    $scope.deployErrorMessage = 'Invalid JSON';
+                    $scope.deployErrorMessage = 'Invalid JSON: ' + e.message;
                 }
             }
         };
@@ -88,9 +79,6 @@ angular.module('cosmoUiApp')
                 $scope.showError = true;
             } else {
                 $scope.showError = false;
-                if ($scope.selectedBlueprint && $scope.deployment_id) {
-                    return false;
-                }
             }
         });
 
@@ -102,17 +90,8 @@ angular.module('cosmoUiApp')
         };
 
         $scope.deployBlueprint = function (blueprintId) {
-            for (var input in $scope.inputs) {
-                // if input value is empty or null, set if to empty string to make sure the data is valid to be parsed
-                if ($scope.inputs[input] === '' || $scope.inputs[input] === 'null') {
-                    $scope.inputs[input] = '""';
-                }
-                try {
-                    $scope.inputs[input] = JSON.parse($scope.inputs[input]);
-                } catch(e) {
-                    $scope.inputs[input] = $scope.inputs[input];
-                }
-            }
+            // parse inputs so "true" string will become boolean etc.
+            _parseInputs();
             $scope.showError = false;
 
             if ($scope.inputsState === RAW) {
@@ -179,17 +158,23 @@ angular.module('cosmoUiApp')
 
         // JSON keys validation, verifying all expected keys exists in JSON
         function _validateJsonKeys() {
-            try {
-                var _json = JSON.parse($scope.rawString);
-                for (var i in $scope.inputs) {
-                    if (_json[i] === undefined) {
-                        $scope.deployErrorMessage = 'Missing ' + i + ' key in JSON';
-                        return false;
-                    }
+            var _json = JSON.parse($scope.rawString);
+            for (var i in $scope.inputs) {
+                if (_json[i] === undefined) {
+                    $scope.deployErrorMessage = 'Missing ' + i + ' key in JSON';
+                    return false;
                 }
-                return true;
-            } catch (e) {
-                return false;
+            }
+            return true;
+        }
+
+        function _parseInputs() {
+            for (var input in $scope.inputs) {
+                try {
+                    $scope.inputs[input] = JSON.parse($scope.inputs[input]);
+                } catch(e) {
+                    $scope.inputs[input] = $scope.inputs[input];
+                }
             }
         }
 

@@ -191,6 +191,7 @@ describe('Controller: DeploydialogCtrl', function () {
         it('should update input JSON object when one of the inputs is updated', function() {
             scope.inputs = _deployment.inputs;
             scope.inputs['image_name'] = "new value";
+            // setting the 'rawString' scope variable for the test. updateInputs scope method requires this variable data.
             scope.rawString = JSON.stringify(scope.inputs, null, 2);
 
             scope.updateInputs();
