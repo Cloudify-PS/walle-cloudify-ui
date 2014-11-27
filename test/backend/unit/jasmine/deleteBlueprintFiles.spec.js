@@ -56,18 +56,18 @@ describe('Backend: Delete Blueprints Files (CFY-1496)', function(){
             });
         });
 
-        afterEach(function() {
-            beforeEach(function(){
-                browseBlueprint.deleteBlueprint(prefix + blueprint, function(err){
-                    if (err) {
-                        throw err;
-                    }
-                    else {
-                        blueprintRemove = true;
-                    }
-                });
-            });
-        });
+//        afterEach(function() {
+//            beforeEach(function(){
+//                browseBlueprint.deleteBlueprint(prefix + blueprint, function(err){
+//                    if (err) {
+//                        throw err;
+//                    }
+//                    else {
+//                        blueprintRemove = true;
+//                    }
+//                });
+//            });
+//        });
     });
 
 //    describe('Delete files and folder', function(){
