@@ -2,25 +2,6 @@
 
 describe('Controller: ExecuteDialogCtrl', function () {
     var ExecuteDialogCtrl, scope;
-    var _deployment = {
-        "inputs": {
-            "webserver_port": 8080,
-            "image_name": "image_name",
-            "agent_user": "agent_user",
-            "flavor_name": "flavor_name",
-            "bool_input": false
-        },
-        "blueprint_id": "blueprint1",
-        "id": "deployment1",
-        "outputs": {
-            "http_endpoint": {
-                "description": "HTTP web server endpoint.",
-                "value": {
-                    "get_attribute": ["vm", "ip"]
-                }
-            }
-        }
-    };
     var _workflow = {
         "data": {
             "value":"execute_operation",
@@ -57,31 +38,40 @@ describe('Controller: ExecuteDialogCtrl', function () {
     });
 
     describe('Controller tests', function() {
+        beforeEach(function() {
+            scope.inputs = {
+                "webserver_port": 8080,
+                "image_name": "image_name",
+                "agent_user": "agent_user",
+                "flavor_name": "flavor_name",
+                "bool_variable": false,
+                "str_variable": "some string"
+            };
+        });
+
         it('should create a controller', function () {
             expect(ExecuteDialogCtrl).not.toBeUndefined();
         });
 
         it('should update input JSON object when one of the parameters is updated', function() {
             scope.selectedWorkflow = _workflow;
-            scope.inputs = _deployment.inputs;
             scope.inputs['image_name'] = 'new value';
+            scope.inputsState = 'raw';
 
             scope.updateInputs();
-            scope.$apply();
 
             expect(JSON.parse(scope.rawString)['image_name']).toBe('new value');
         });
 
-        it('should keep input type when cpnverting to JSON object', function() {
+        it('should keep input type when converting to JSON object', function() {
             scope.selectedWorkflow = _workflow;
-            scope.inputs = _deployment.inputs;
+            scope.inputsState = 'raw';
 
             scope.updateInputs();
-            scope.$apply();
 
-            expect(typeof(JSON.parse(scope.rawString)['image_name'])).toBe('string');
+            expect(typeof(JSON.parse(scope.rawString)['str_variable'])).toBe('string');
             expect(typeof(JSON.parse(scope.rawString)['webserver_port'])).toBe('number');
-            expect(typeof(JSON.parse(scope.rawString)['bool_input'])).toBe('boolean');
+            expect(typeof(JSON.parse(scope.rawString)['bool_variable'])).toBe('boolean');
         });
     });
 });

@@ -26,17 +26,13 @@ describe('Controller: DeploydialogCtrl', function () {
         "plan": {
             "inputs": {
                 "webserver_port": {
-                    "default": 8080,
-                    "description": "The HTTP web server port\n"
+                    "default": 8080
                 },
                 "flavor_name": {
-                    "description": "Openstack flavor name to use for the new server\n"
                 },
                 "agent_user": {
-                    "description": "User name used when SSH-ing into the started machine\n"
                 },
                 "image_name": {
-                    "description": "Openstack image name to use for the new server\n"
                 },
                 "bool_variable": {
                     "default": false
@@ -157,6 +153,17 @@ describe('Controller: DeploydialogCtrl', function () {
     });
 
     describe('Controller tests', function() {
+        beforeEach(function() {
+            scope.inputs = {
+                "webserver_port": 8080,
+                "image_name": "image_name",
+                "agent_user": "agent_user",
+                "flavor_name": "flavor_name",
+                "bool_variable": false,
+                "str_variable": "some string"
+            };
+        });
+
         it('should create a controller', function () {
             expect(DeployDialogCtrl).not.toBeUndefined();
         });
@@ -164,7 +171,6 @@ describe('Controller: DeploydialogCtrl', function () {
         it('should disable blueprint deploy option if deployment name is not provided', function() {
             scope.selectedBlueprint = _blueprint;
             scope.deployment_id = null;
-            scope.inputs = _deployment.inputs;
 
             expect(scope.isDeployEnabled()).toBe(false);
         });
@@ -172,13 +178,11 @@ describe('Controller: DeploydialogCtrl', function () {
         it('should enable blueprint deploy option if deployment name is provided', function() {
             scope.selectedBlueprint = _blueprint;
             scope.deployment_id = 'deployment1';
-            scope.inputs = _deployment.inputs;
 
             expect(scope.isDeployEnabled()).toBe(true);
         });
 
         it('should pass all params provided to CloudifyService on deployment creation', function() {
-            scope.inputs = _deployment.inputs;
             spyOn(scope, 'redirectToDeployment').andCallThrough();
 
             scope.deployBlueprint('blueprint1');
@@ -193,20 +197,20 @@ describe('Controller: DeploydialogCtrl', function () {
         });
 
         it('should update input JSON object when one of the inputs is updated', function() {
-            scope.inputs = _deployment.inputs;
-            scope.inputs['image_name'] = 'new value';
+            scope.inputs['image_name'] = "new value";
+            scope.inputsState = 'raw';
 
             scope.updateInputs();
-            scope.$apply();
 
             expect(JSON.parse(scope.rawString)['image_name']).toBe('new value');
         });
 
         it('should save input type when converting inputs to JSON', function() {
-            scope.inputs = _deployment.inputs;
+            scope.selectedBlueprint = _blueprint;
+            scope.rawString = JSON.stringify(scope.inputs, null, 2);
+            scope.inputsState = 'raw';
 
             scope.updateInputs();
-            scope.$apply();
 
             expect(typeof(JSON.parse(scope.rawString)['webserver_port'])).toBe('number');
             expect(typeof(JSON.parse(scope.rawString)['bool_variable'])).toBe('boolean');
@@ -215,10 +219,10 @@ describe('Controller: DeploydialogCtrl', function () {
 
         it('should not validate deployment name', function() {
             scope.deployment_id = '~~~!!!@@@';
+            scope.inputsState = 'raw';
             spyOn(scope, 'redirectToDeployment').andCallThrough();
 
             scope.deployBlueprint('blueprint1');
-            scope.$apply();
 
             waitsFor(function() {
                 return scope.inProcess === false;

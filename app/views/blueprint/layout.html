@@ -25,7 +25,7 @@
                 <div class="dialogDescription">{{ 'blueprints.deployDialog.description' | i18n }}</div>
                 <div class="dialogClose dialogButton" ng-click="closeDialog()"></div>
                 <div class="dialogDeploymentName">
-                    <input type="text" ng-model="deployment_id" ng-enter="deployBlueprint(selectedBlueprint.id)" placeholder="{{ 'blueprints.deployDialog.deployName' | i18n }}">
+                    <input type="text" spellcheck="false" ng-model="deployment_id" ng-enter="deployBlueprint(selectedBlueprint.id)" placeholder="{{ 'blueprints.deployDialog.deployName' | i18n }}">
                 </div>
                     <div class="dialogInputs deployInputs" ng-show="isParamsVisible()">
                     <div class="buttons-group deployBtns">
@@ -34,11 +34,11 @@
                     </div>
                     <div class="inputsParameters" ng-show="inputsState == 'params'">
                         <ul>
-                            <li ng-repeat="(name, value) in selectedBlueprint.plan.inputs">{{name}}: <input type="text" ng-model="inputs[name]" placeholder="{{ 'blueprints.deployDialog.enterValue' | i18n }}"></li>
+                            <li ng-repeat="(name, value) in selectedBlueprint.plan.inputs">{{name}}: <input type="text" spellcheck="false" ng-trim="false" ng-model="inputs[name]" placeholder="{{ 'blueprints.deployDialog.enterValue' | i18n }}"></li>
                         </ul>
                     </div>
                     <div class="inputsRaw" ng-show="inputsState == 'raw'">
-                        <textarea ng-model="rawString"></textarea>
+                        <textarea ng-model="rawString" spellcheck="false"></textarea>
                     </div>
                 </div>
                 <div id="deploy-error-message" ng-show="showError">{{deployErrorMessage}}</div>

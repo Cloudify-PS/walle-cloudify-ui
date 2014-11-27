@@ -54,11 +54,11 @@
                         </div>
                         <div class="inputsParameters" ng-show="inputsState == 'params'">
                             <ul>
-                                <li ng-repeat="(name, value) in selectedWorkflow.data.parameters">{{name}}: <input type="text" ng-model="inputs[name]" placeholder="{{ 'blueprints.deployDialog.enterValue' | i18n }}" /></li>
+                                <li ng-repeat="(name, value) in selectedWorkflow.data.parameters">{{name}}: <input type="text" spellcheck="false" ng-trim="false" ng-model="inputs[name]" placeholder="{{ 'blueprints.deployDialog.enterValue' | i18n }}" /></li>
                             </ul>
                         </div>
                         <div class="inputsRaw" ng-show="inputsState == 'raw'">
-                            <textarea ng-model="rawString"></textarea>
+                            <textarea ng-model="rawString" spellcheck="false"></textarea>
                         </div>
                     </div>
                     <div class="error-message" data-ng-show="showError">{{ executeErrorMessage }}</div>

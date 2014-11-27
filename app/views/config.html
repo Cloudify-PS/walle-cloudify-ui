@@ -10,10 +10,10 @@
                     <div id="text">{{ 'config.mainMessage' | i18n }}</div>
                     <form>
                         <label for="cosmoServer">{{ 'config.addressLabel' | i18n }}</label>
-                        <input type="text" id="cosmoServer" ng-model="cosmoServer">
+                        <input type="text" spellcheck="false" id="cosmoServer" ng-model="cosmoServer">
 
                         <label for="cosmoPort">{{ 'config.portLabel' | i18n }}</label>
-                        <input type="text" id="cosmoPort" ng-model="cosmoPort" maxlength="5" required>
+                        <input type="text" spellcheck="false" id="cosmoPort" ng-model="cosmoPort" maxlength="5" required>
 
                         <label><input type="checkbox" ng-model="cosmoLogs"> Enable Logs</label>
 
