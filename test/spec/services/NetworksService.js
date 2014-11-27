@@ -4,7 +4,7 @@ describe('Service: NetworksService', function () {
 
     var NetworksService;
     var color;
-    var colorsList = ['#1F77B4', '#FF7F0E', '#2CA02C', '#D62728', '#9467BD', '#8C564B', '#4b6c8b', '#550000', '#dc322f', '#FF6600', '#cce80b', '#003300', '#805e00'];
+    var colorsList;
     var providerData = {
         "name": "cloudify_openstack",
         "context": {
@@ -591,6 +591,7 @@ describe('Service: NetworksService', function () {
                 NetworksService = _NetworksService_;
             });
 
+            colorsList = NetworksService.getNetworkColors();
         });
     });
 
@@ -628,18 +629,25 @@ describe('Service: NetworksService', function () {
             expect(results.external[1].type).toBe('subnet');
         });
 
-        beforeEach(function(){
-            color = NetworksService.getNetworkColor();
-        });
-
         it('should have 13 kind of colors', function(){
-            expect(color.length).toBe(7);
+            expect(colorsList.length).toBe(13);
         });
 
-        it('should contain sample of the color "#D62728"', function(){
-            expect(colorsList).toContain(color);
+        it('should contain the 5th color', function(){
+            color = NetworksService.getNetworkColor();
+            expect(color).toContain(colorsList[4]);
         });
 
+        describe('Reset Colors', function() {
+            beforeEach(function(){
+                NetworksService.resetNetworkColors();
+            });
+
+            it('should contain the 2st color', function(){
+                color = NetworksService.getNetworkColor();
+                expect(color).toContain(colorsList[1]);
+            });
+        });
     });
 
 });
