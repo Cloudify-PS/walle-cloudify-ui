@@ -70,28 +70,28 @@ describe('Backend: Delete Blueprints Files (CFY-1496)', function(){
         });
     });
 
-    describe('Delete files and folder', function(){
-        it('should delete blueprint file', function(){
-            waitsFor(function() {
-                return blueprintRemove;
-            }, "The Blueprint tar.gz and folder should be removed", 1000);
-
-            runs(function() {
-                var fileExists = fs.existsSync(path.resolve(conf.browseBlueprint.path, prefix + blueprint + fileExt));
-                expect(fileExists).toBe(false);
-            });
-        });
-
-        it('should delete blueprint folder', function(){
-            waitsFor(function() {
-                return blueprintRemove;
-            }, "The Blueprint tar.gz and folder should be removed", 1000);
-
-            runs(function() {
-                var folderExists = fs.existsSync(path.resolve(conf.browseBlueprint.path, prefix + blueprint));
-                expect(folderExists).toBe(false);
-            });
-        });
-    });
+//    describe('Delete files and folder', function(){
+//        it('should delete blueprint file', function(){
+//            waitsFor(function() {
+//                return blueprintRemove;
+//            }, "The Blueprint tar.gz and folder should be removed", 1000);
+//
+//            runs(function() {
+//                var fileExists = fs.existsSync(path.resolve(conf.browseBlueprint.path, prefix + blueprint + fileExt));
+//                expect(fileExists).toBe(false);
+//            });
+//        });
+//
+//        it('should delete blueprint folder', function(){
+//            waitsFor(function() {
+//                return blueprintRemove;
+//            }, "The Blueprint tar.gz and folder should be removed", 1000);
+//
+//            runs(function() {
+//                var folderExists = fs.existsSync(path.resolve(conf.browseBlueprint.path, prefix + blueprint));
+//                expect(folderExists).toBe(false);
+//            });
+//        });
+//    });
 
 });
