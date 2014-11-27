@@ -14,10 +14,19 @@ var writeFileComplete = false;
 var mkdirComplete = false;
 var blueprintRemove = false;
 
+var tmpExists = false;
+
 describe('Backend: Delete Blueprints Files (CFY-1496)', function(){
 
     describe('Create files and folder', function(){
         beforeEach(function(){
+
+            fs.exists(conf.browseBlueprint.path, function(exists){
+                if(exists) {
+                    tmpExists = exists;
+                }
+            });
+
             fs.writeFile(path.resolve(conf.browseBlueprint.path, prefix + blueprint + fileExt), '', function(err) {
                 if(err) {
                     throw err;
@@ -36,7 +45,8 @@ describe('Backend: Delete Blueprints Files (CFY-1496)', function(){
 
         it('should have blueprint file', function(){
             waitsFor(function() {
-                return writeFileComplete === true;
+                console.log('waitfor', writeFileComplete, tmpExists);
+                return writeFileComplete === tmpExists === true;
             }, "The Blueprint file created", 1000);
 
             runs(function() {
