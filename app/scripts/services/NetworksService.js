@@ -15,6 +15,7 @@ angular.module('cosmoUiApp')
         var _colorIdx = 0;
 
         function _createNetworkTree(providerData, nodes) {
+            _resetNetworkColors();
             var _extNetworks = [];
             var externalNetwork = {
                 'id': providerData.context.resources.ext_network.id,
@@ -198,6 +199,14 @@ angular.module('cosmoUiApp')
             return ports;
         }
 
+        function _resetNetworkColors() {
+            _colorIdx = 0;
+        }
+
+        function _getNetworkColors() {
+            return _colors;
+        }
+
         function _getNetworkColor() {
             _colorIdx = _colorIdx < _colors.length ? _colorIdx + 1 : 0;
             return _colors[_colorIdx];
@@ -226,6 +235,8 @@ angular.module('cosmoUiApp')
 
 
         this.createNetworkTree = _createNetworkTree;
+        this.resetNetworkColors = _resetNetworkColors;
+        this.getNetworkColors = _getNetworkColors;
         this.getNetworkColor = _getNetworkColor;
 
     });
