@@ -15,7 +15,7 @@ angular.module('cosmoUiApp')
             }
             for (var input in $scope.inputs) {
                 // if any of the inputs value is null, the execute button should be disabled
-                if ($scope.inputs[input] === null) {
+                if ($scope.inputs[input] === null || ($scope.inputsState !== RAW && $scope.inputs[input] === '')) {
                     return false;
                 }
             }
@@ -24,30 +24,11 @@ angular.module('cosmoUiApp')
 
         $scope.updateInputs = function() {
             if ($scope.inputsState === RAW) {
-                _updateRAW();
+                _formToRaw();
             } else {
-                _updateForm();
+                _rawToForm();
             }
         };
-
-        function _updateRAW() {
-            // if error message is shown & json is invalid, stop raw JSON update process until JSON is fixed & valid.
-            if ($scope.showError && !_validateJSON()) {
-                return;
-            } else {
-                $scope.showError = false;
-            }
-
-            for (var input in $scope.inputs) {
-                // if any of the inputs is empty or null, set its value to null
-                if ($scope.inputs[input] === '' || $scope.inputs[input] === null) {
-                    $scope.inputs[input] = null;
-                }
-                // try to parse input value. if parse fails, keep the input value as it is.
-                _parseInputs();
-            }
-            $scope.rawString = JSON.stringify($scope.inputs, null, 2);
-        }
 
         $scope.$watch('inputsState', function() {
             if (!!$scope.selectedWorkflow && !!$scope.selectedWorkflow.data) {
@@ -58,9 +39,10 @@ angular.module('cosmoUiApp')
         // watching the raw json string changes, validating json on every change
         $scope.$watch('rawString', function() {
             if ($scope.rawString !== undefined) {
-                if (!_validateJSON()) {
+                if (!_validateJSON() && !!$scope.selectedWorkflow.data) {
                     $scope.showError = true;
                 } else {
+                    $scope.inputs = JSON.parse($scope.rawString);
                     $scope.showError = false;
                 }
             }
@@ -169,7 +151,26 @@ angular.module('cosmoUiApp')
             $scope.rawString = JSON.stringify($scope.inputs, null, 2);
         }
 
-        function _updateForm() {
+        function _formToRaw() {
+            // if error message is shown & json is invalid, stop raw JSON update process until JSON is fixed & valid.
+            if ($scope.showError && !_validateJSON()) {
+                return;
+            } else {
+                $scope.showError = false;
+            }
+
+            for (var input in $scope.inputs) {
+                // if any of the inputs is empty or null, set its value to null
+                if ($scope.inputs[input] === '' || $scope.inputs[input] === null) {
+                    $scope.inputs[input] = null;
+                }
+            }
+            // try to parse input value. if parse fails, keep the input value as it is.
+            _parseInputs();
+            $scope.rawString = JSON.stringify($scope.inputs, null, 2);
+        }
+
+        function _rawToForm() {
             try {
                 $scope.inputs = JSON.parse($scope.rawString);
                 for (var _parsedInput in $scope.inputs) {
@@ -196,10 +197,10 @@ angular.module('cosmoUiApp')
         function _validateJSON() {
             try {
                 JSON.parse($scope.rawString);
-                $scope.executeErrorMessage = 'Invalid JSON: ' + e.message;
                 return _validateJsonKeys();
             } catch (e) {
-                return  false;
+                $scope.executeErrorMessage = 'Invalid JSON: ' + e.message;
+                return false;
             }
         }
 
