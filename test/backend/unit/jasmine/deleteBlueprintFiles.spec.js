@@ -19,19 +19,17 @@ describe('Backend: Delete Blueprints Files (CFY-1496)', function(){
     describe('Create files and folder', function(){
         beforeEach(function(){
             fs.writeFile(path.resolve(conf.browseBlueprint.path, prefix + blueprint + fileExt), '', {'mode': '0666'}, function(err) {
-                if(err) {
-                    throw err;
-                } else {
+                if(!err) {
                     writeFileComplete = true;
                 }
             });
-            fs.mkdir(path.resolve(conf.browseBlueprint.path, prefix + blueprint), function(e){
-                if(!e || (e && e.code === 'EEXIST')){
-                    mkdirComplete = true;
-                } else {
-                    throw e;
-                }
-            });
+//            fs.mkdir(path.resolve(conf.browseBlueprint.path, prefix + blueprint), function(e){
+//                if(!e || (e && e.code === 'EEXIST')){
+//                    mkdirComplete = true;
+//                } else {
+//                    throw e;
+//                }
+//            });
         });
 
         it('should have blueprint file', function(){
