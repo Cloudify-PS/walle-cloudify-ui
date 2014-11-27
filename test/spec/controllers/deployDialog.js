@@ -153,6 +153,17 @@ describe('Controller: DeploydialogCtrl', function () {
     });
 
     describe('Controller tests', function() {
+        beforeEach(function() {
+            scope.inputs = {
+                "webserver_port": 8080,
+                "image_name": "image_name",
+                "agent_user": "agent_user",
+                "flavor_name": "flavor_name",
+                "bool_variable": false,
+                "str_variable": "some string"
+            };
+        });
+
         it('should create a controller', function () {
             expect(DeployDialogCtrl).not.toBeUndefined();
         });
@@ -174,7 +185,6 @@ describe('Controller: DeploydialogCtrl', function () {
         });
 
         it('should pass all params provided to CloudifyService on deployment creation', function() {
-            scope.inputs = _deployment.inputs;
             spyOn(scope, 'redirectToDeployment').andCallThrough();
 
             scope.deployBlueprint('blueprint1');
@@ -189,22 +199,20 @@ describe('Controller: DeploydialogCtrl', function () {
         });
 
         it('should update input JSON object when one of the inputs is updated', function() {
-            scope.inputs = _deployment.inputs;
             scope.inputs['image_name'] = "new value";
-            // setting the 'rawString' scope variable for the test. updateInputs scope method requires this variable data.
-            scope.rawString = JSON.stringify(scope.inputs, null, 2);
+            scope.inputsState = 'raw';
 
             scope.updateInputs();
-            scope.$apply();
 
             expect(JSON.parse(scope.rawString)['image_name']).toBe('new value');
         });
 
         it('should save input type when converting inputs to JSON', function() {
-            scope.inputs = _deployment.inputs;
+            scope.selectedBlueprint = _blueprint;
+            scope.rawString = JSON.stringify(scope.inputs, null, 2);
+            scope.inputsState = 'raw';
 
             scope.updateInputs();
-            scope.$apply();
 
             expect(typeof(JSON.parse(scope.rawString)['webserver_port'])).toBe('number');
             expect(typeof(JSON.parse(scope.rawString)['bool_variable'])).toBe('boolean');
@@ -213,10 +221,10 @@ describe('Controller: DeploydialogCtrl', function () {
 
         it('should not validate deployment name', function() {
             scope.deployment_id = '~~~!!!@@@';
+            scope.inputsState = 'raw';
             spyOn(scope, 'redirectToDeployment').andCallThrough();
 
             scope.deployBlueprint('blueprint1');
-            scope.$apply();
 
             waitsFor(function() {
                 return scope.inProcess === false;
