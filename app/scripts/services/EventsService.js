@@ -45,15 +45,23 @@ angular.module('cosmoUiApp')
 
             function _applyFilters() {
                 var filters = [];
+                var startTime = new Date().getTime();
                 for(var field in activeFilters) {
                     filters.push(ejs.TermsFilter(field, activeFilters[field]));
                 }
                 for(var rangeField in rangeFilter) {
-                    filters.push(ejs.RangeFilter(rangeField).from(rangeFilter[rangeField].gte).to(rangeFilter[rangeField].lte));
+                    filters.push(ejs.RangeFilter(rangeField)
+                            .from(_rangeTime(startTime - rangeFilter[rangeField].gte))
+                            .to(_rangeTime(startTime + rangeFilter[rangeField].lte))
+                    );
                 }
                 return ejs.AndFilter(filters);
             }
 
+            function _rangeTime(time) {
+                var fromTime = new Date();
+                return new Date(fromTime.setTime(time));
+            }
 
             function _autoPull(callbackFn, customPullTime) {
                 var deferred = $q.defer();

@@ -19,6 +19,8 @@ angular.module('cosmoUiApp')
             _deploymentsList = [],
             _executionList = [];
 
+        var defaultForwardTime = 1000 * 60 * 5;
+
         $scope.blueprintsList = [];
         $scope.deploymentsList = [];
         $scope.executionList = [];
@@ -192,16 +194,15 @@ angular.module('cosmoUiApp')
             }
         }
 
-        function _filterByTimeframe( timestamp, startdate ) {
-            var fromTime = new Date();
+        function _filterByTimeframe( timestamp ) {
             return {
-                'gte': new Date(fromTime.setTime(startdate - timestamp)),
-                'lte': new Date(fromTime.setTime(startdate + (1000 * 60 * 5)))
+                'gte': timestamp,
+                'lte': defaultForwardTime
             };
         }
 
         (function _LoadEvents() {
-            filterLogsByRange('@timestamp', _filterByTimeframe($scope.defaultTimeframe, $scope.filterModel.startdate), null);
+            filterLogsByRange('@timestamp', _filterByTimeframe($scope.defaultTimeframe), null);
         })();
 
         $scope.execute = function() {
@@ -234,7 +235,7 @@ angular.module('cosmoUiApp')
 
         $scope.$watch('eventsFilter.timeframe', function(newValue){
             if(newValue !== null && newValue !== undefined && newValue.hasOwnProperty('value')) {
-                filterLogsByRange('@timestamp', _filterByTimeframe(newValue.value, $scope.filterModel.startdate), false);
+                filterLogsByRange('@timestamp', _filterByTimeframe(newValue.value), false);
             }
         });
 
