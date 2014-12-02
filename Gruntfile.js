@@ -17,17 +17,17 @@ var mountFolder = function (connect, dir) {
 
 module.exports = function (grunt) {
 
-    var versionFilename = 'VERSION';
-    if (grunt.file.exists(versionFilename)) {
-        var buildVersion = grunt.file.readJSON(versionFilename).version;
-        logger.info('build version', buildVersion);
-        logger.info('setting version on package', buildVersion);
-        var packageFile = grunt.file.readJSON('package.json');
-        packageFile.version = buildVersion;
-        grunt.file.write('package.json', JSON.stringify(packageFile, {}, 4));
-    } else {
-        logger.info('no ', versionFilename, 'file');
-    }
+//    var versionFilename = 'VERSION';
+//    if (grunt.file.exists(versionFilename)) {
+//        var buildVersion = grunt.file.readJSON(versionFilename).version;
+//        logger.info('build version', buildVersion);
+//        logger.info('setting version on package', buildVersion);
+//        var packageFile = grunt.file.readJSON('package.json');
+//        packageFile.version = buildVersion;
+//        grunt.file.write('package.json', JSON.stringify(packageFile, {}, 4));
+//    } else {
+//        logger.info('no ', versionFilename, 'file');
+//    }
 
     // load all grunt tasks
     require('matchdep').filterDev('grunt-*').forEach(grunt.loadNpmTasks);
