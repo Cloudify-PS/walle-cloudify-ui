@@ -55,6 +55,14 @@ describe('Service: EventsService', function () {
         "timed_out": false
     };
 
+    var timeRangeBackward = (1000 * 60 * 15);
+    var timeRangeForward = (1000 * 60 * 5);
+
+    function _rangeTime(time) {
+        var fromTime = new Date();
+        return new Date(fromTime.setTime(time));
+    }
+
     describe('Test setup', function() {
         it('Injecting required data & initializing a new instance', function() {
 
@@ -73,6 +81,7 @@ describe('Service: EventsService', function () {
                 eventsService = EventsService;
 
                 events = eventsService.newInstance('/backend/events');
+
                 _callback = function(data) {
                     isExecuted = true;
                 };
@@ -122,8 +131,8 @@ describe('Service: EventsService', function () {
             events.filter('deployment_id', 'monitoringdep');
             events.filter('deployment_id', 'MonitoringBpTest');
             events.filterRange('@timestamp', {
-                gte: '2014-11-04T11:13:16.838Z',
-                lte: '2014-11-09T11:18:16.838Z'
+                gte: timeRangeBackward, // = 15 min backward
+                lte: timeRangeForward // = 5 min forward
             });
             events.execute(_callback, false);
         }));
@@ -141,9 +150,14 @@ describe('Service: EventsService', function () {
             expect(query.filter.and.filters[1].terms.deployment_id[1]).toEqual('MonitoringBpTest');
         });
 
-        it('should create query with @timestamp range filter', function(){
-            expect(query.filter.and.filters[2].range['@timestamp'].from).toEqual('2014-11-04T11:13:16.838Z');
-            expect(query.filter.and.filters[2].range['@timestamp'].to).toEqual('2014-11-09T11:18:16.838Z');
+        it('should create query with @timestamp range 15 min backward filter', function(){
+            var startTime = new Date().getTime();
+            expect(query.filter.and.filters[2].range['@timestamp'].from).toEqual(_rangeTime(startTime - timeRangeBackward));
+        });
+
+        it('should create query with @timestamp range 5 min forward filter', function(){
+            var startTime = new Date().getTime();
+            expect(query.filter.and.filters[2].range['@timestamp'].to).toEqual(_rangeTime(startTime + timeRangeForward));
         });
 
         it('should return the second deployment id as camel case (CFY-1675)', function(){

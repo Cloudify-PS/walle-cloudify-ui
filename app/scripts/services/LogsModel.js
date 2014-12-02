@@ -6,8 +6,7 @@ angular.module('cosmoUiApp')
             'blueprints': [null],
             'deployments': [null],
             'executions': [null],
-            'timeframe': [(1000 * 60 * 5)],
-            'startdate': new Date().getTime()
+            'timeframe': [(1000 * 60 * 5)]
         };
         var fromTimeText = 'now';
         var filterModel = angular.copy(filterModelDefaults);
