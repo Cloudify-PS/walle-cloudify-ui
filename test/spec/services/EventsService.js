@@ -152,12 +152,12 @@ describe('Service: EventsService', function () {
 
         it('should create query with @timestamp range 15 min backward filter', function(){
             var startTime = new Date().getTime();
-            expect(query.filter.and.filters[2].range['@timestamp'].from).toEqual(_rangeTime(startTime - timeRangeBackward));
+            expect(query.filter.and.filters[2].range['@timestamp'].from.toString()).toEqual(_rangeTime(startTime - timeRangeBackward).toString());
         });
 
         it('should create query with @timestamp range 5 min forward filter', function(){
             var startTime = new Date().getTime();
-            expect(query.filter.and.filters[2].range['@timestamp'].to).toEqual(_rangeTime(startTime + timeRangeForward));
+            expect(query.filter.and.filters[2].range['@timestamp'].to.toString()).toEqual(_rangeTime(startTime + timeRangeForward).toString());
         });
 
         it('should return the second deployment id as camel case (CFY-1675)', function(){

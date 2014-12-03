@@ -118,6 +118,11 @@ angular.module('cosmoUiApp', [
     .run(['I18next', 'CloudifyService', '$log', 'appConfig', function(I18next, CloudifyService, $log, appConfig) {
 
         CloudifyService.getConfiguration().then(function (data) {
+            if ( !data ){
+                data = { 'i18n' : {
+                    'language' : 'en'
+                }};
+            }
             var i18nConf = data.i18n;
             if (i18nConf) {
                 I18next.setOptions({
@@ -130,14 +135,14 @@ angular.module('cosmoUiApp', [
 
         CloudifyService.getVersionsUi()
             .then(function(data){
-                if(data.hasOwnProperty('version')) {
+                if(!!data && data.hasOwnProperty('version')) {
                     appConfig.versions.ui = data.version;
                 }
             });
 
         CloudifyService.getVersionsManager()
             .then(function(data){
-                if(data.hasOwnProperty('version')) {
+                if(!!data && data.hasOwnProperty('version')) {
                     appConfig.versions.manager = data.version;
                 }
             });
