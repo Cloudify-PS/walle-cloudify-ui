@@ -22,7 +22,7 @@ describe('Controller: LogsCtrl', function () {
                         filterRange: function() {},
                         filterRemove: function() {},
                         filter: function() {},
-                        execute: function() {}
+                        execute: function() { console.log('have been called'); }
                     };
                 }
             };
@@ -73,7 +73,7 @@ describe('Controller: LogsCtrl', function () {
         }));
     });
 
-    describe('Controller tests', function() {
+    xdescribe('Controller tests', function() {
 
         it('should create a controller', function () {
             expect(LogsCtrl).not.toBeUndefined();
@@ -110,6 +110,23 @@ describe('Controller: LogsCtrl', function () {
 
             expect(scope.isSearchDisabled).toBe(false);
         });
-
     });
+
+    describe('logs controller', function(){
+        describe('#first load', function(){
+            it('should not execute logs if no deployments were selected in filter', function() {
+                scope.eventsFilter.deployments = [{
+                    name: 'deployment1'
+                }];
+//            scope.eventsFilter.deployments = [];
+                spyOn(scope.events, 'execute').andCallThrough();
+
+                scope.$apply();
+
+                expect(scope.events.execute).not.toHaveBeenCalled();
+            });
+        })
+    });
+
+
 });

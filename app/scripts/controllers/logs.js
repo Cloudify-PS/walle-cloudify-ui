@@ -15,8 +15,8 @@ angular.module('cosmoUiApp')
         /**
          * Logs
          */
-        var events = EventsService.newInstance('/backend/events'),
-            _deploymentsList = [],
+        $scope.events = EventsService.newInstance('/backend/events');
+        var _deploymentsList = [],
             _executionList = [];
 
         var defaultForwardTime = 1000 * 60 * 5;
@@ -82,7 +82,7 @@ angular.module('cosmoUiApp')
                 }
             });
 
-            events
+            $scope.events
                 .execute(function(data){
                     if(data && data.hasOwnProperty('hits')) {
                         lastData = _convertDates(data.hits.hits);
@@ -112,7 +112,7 @@ angular.module('cosmoUiApp')
 
                     // Stop AutoPull after 10 failures
                     if(troubleShoot === executeRetry) {
-                        events.stopAutoPull();
+                        $scope.events.stopAutoPull();
                     }
                 }, autoPull);
         }
@@ -152,6 +152,7 @@ angular.module('cosmoUiApp')
             });
 
         function _autoFirstPull() {
+            debugger;
             angular.forEach($scope.blueprintsList, function(blueprint){
                 $scope.eventsFilter.blueprints.push(blueprint);
             });
@@ -174,10 +175,10 @@ angular.module('cosmoUiApp')
 
         function filterLogsByList(field, newValues, oldValues, execute) {
             for(var oi in oldValues) {
-                events.filterRemove(field, oldValues[oi].value);
+                $scope.events.filterRemove(field, oldValues[oi].value);
             }
             for(var ni in newValues) {
-                events.filter(field, newValues[ni].value);
+                $scope.events.filter(field, newValues[ni].value);
             }
             if(execute === true) {
                 executeLogs();
@@ -186,10 +187,10 @@ angular.module('cosmoUiApp')
 
         function filterLogsByRange(field, newValue, execute) {
             if(newValue === null) {
-                events.filterRange(field);
+                $scope.events.filterRange(field);
             }
             if(newValue !== null) {
-                events.filterRange(field, newValue);
+                $scope.events.filterRange(field, newValue);
             }
             if(execute === true) {
                 executeLogs();
@@ -264,7 +265,7 @@ angular.module('cosmoUiApp')
             $scope.eventSortList.current = field;
 
             // Apply Sort
-            events.sort(field, $scope.eventSortList[field]);
+            $scope.events.sort(field, $scope.eventSortList[field]);
             executeLogs();
         };
 
