@@ -152,7 +152,6 @@ angular.module('cosmoUiApp')
             });
 
         function _autoFirstPull() {
-            debugger;
             angular.forEach($scope.blueprintsList, function(blueprint){
                 $scope.eventsFilter.blueprints.push(blueprint);
             });
