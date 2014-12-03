@@ -155,7 +155,7 @@ angular.module('cosmoUiApp')
             angular.forEach($scope.blueprintsList, function(blueprint){
                 $scope.eventsFilter.blueprints.push(blueprint);
             });
-            if($scope.eventsFilter.blueprints.length > 0) {
+            if($scope.eventsFilter.deployments.length > 0) {
                 executeLogs();
             }
         }
