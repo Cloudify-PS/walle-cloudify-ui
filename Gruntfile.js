@@ -1,6 +1,6 @@
 // Generated on 2013-10-15 using generator-angular 0.3.0
 'use strict';
-var logger = require('log4js').getLogger('Gruntfile');
+// var logger = require('log4js').getLogger('Gruntfile');
 var LIVERELOAD_PORT = 35729;
 var lrSnippet = require('connect-livereload')({ port: LIVERELOAD_PORT });
 var proxySnippet = require('grunt-connect-proxy/lib/utils').proxyRequest;
