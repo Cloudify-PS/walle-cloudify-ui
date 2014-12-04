@@ -36,7 +36,7 @@ describe ('MonitoringService', function(){
         });
 
         it ('should have target query with series of "unitTestDashboard"', function(){
-            expect(dashboard.rows[0].panels[0].targets[0].query).toBe('select  mean(value) from /unitTestDashboard\\.vm\\..*?\\.cpu_total_system/ where  time > now() - 15m     group by time(10)  order asc');
+            expect(dashboard.rows[0].panels[0].targets[0].query).toBe('select  mean(value) from /unitTestDashboard\\..*?\\.cpu_total_system/ where  time > now() - 15m     group by time(10)  order asc');
         });
 
     });
