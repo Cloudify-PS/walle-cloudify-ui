@@ -34,8 +34,7 @@ module.exports = function(config) {
             '.tmp/styles/main.css',
             'test/mock/**/*.js',
             'test/spec/*.js',
-            //'test/spec/**/*.js',
-            'test/spec/services/EventsService.js',
+            'test/spec/**/*.js',
             '.tmp/viewTemplates/templates.js'
         ],
 
