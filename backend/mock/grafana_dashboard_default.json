@@ -77,7 +77,7 @@
                             "function": "mean",
                             "column": "value",
                             "rawQuery": true,
-                            "query": "select  mean(value) from /{%deployment%}\\.vm\\..*?\\.cpu_total_system/ where  time > now() - 15m     group by time(10)  order asc",
+                            "query": "select  mean(value) from /{%deployment%}\\..*?\\.cpu_total_system/ where  time > now() - 15m     group by time(10)  order asc",
                             "alias": "$2 CPU System"
                         }
                     ],
@@ -147,7 +147,7 @@
                         {
                             "function": "mean",
                             "column": "value",
-                            "query": "select  mean(value) from /{%deployment%}\\.vm\\..*?\\.cpu_total_user/ where  time > now() - 15m     group by time(10)  order asc",
+                            "query": "select  mean(value) from /{%deployment%}\\..*?\\.cpu_total_user/ where  time > now() - 15m     group by time(10)  order asc",
                             "rawQuery": true,
                             "interval": "10",
                             "alias": "$2 CPU User"
@@ -228,7 +228,7 @@
                             "function": "mean",
                             "column": "value",
                             "rawQuery": true,
-                            "query": "select  mean(value) from /{%deployment%}\\.vm\\..*?\\.memory_MemFree/ where  time > now() - 15m     group by time(10)  order asc",
+                            "query": "select  mean(value) from /{%deployment%}\\..*?\\.memory_MemFree/ where  time > now() - 15m     group by time(10)  order asc",
                             "alias": "$2 Free Physical Memory"
                         }
                     ],
@@ -298,7 +298,7 @@
                             "function": "mean",
                             "column": "value",
                             "rawQuery": true,
-                            "query": "select  mean(value) from /{%deployment%}\\.vm\\..*?\\.iostat_.*?_average_queue_length/ where  time > now() - 15m     group by time(10)  order asc",
+                            "query": "select  mean(value) from /{%deployment%}\\..*?\\.iostat_.*?_average_queue_length/ where  time > now() - 15m     group by time(10)  order asc",
                             "alias": "$2 $3",
                             "hide": false
                         }
@@ -375,7 +375,7 @@
                             "function": "mean",
                             "column": "value",
                             "rawQuery": true,
-                            "query": "select  mean(value) from /{%deployment%}\\.vm\\..*?\\.network_.*?_rx_packets/ where  time > now() - 15m     group by time(10)  order asc",
+                            "query": "select  mean(value) from /{%deployment%}\\..*?\\.network_.*?_rx_packets/ where  time > now() - 15m     group by time(10)  order asc",
                             "alias": "$2 $3"
                         }
                     ],
@@ -443,7 +443,7 @@
                             "function": "mean",
                             "column": "value",
                             "rawQuery": true,
-                            "query": "select  mean(value) from /{%deployment%}\\.vm\\..*?\\.network_.*?_tx_packets/ where  time > now() - 15m     group by time(10)  order asc",
+                            "query": "select  mean(value) from /{%deployment%}\\..*?\\.network_.*?_tx_packets/ where  time > now() - 15m     group by time(10)  order asc",
                             "alias": "$2 $3"
                         }
                     ],
