@@ -69,6 +69,15 @@ describe('Service: NodeService', function () {
             expect(nodesTree[0].children[0].type).not.toBe('cloudify.libcloud.nodes.FloatingIP');
             expect(nodesTree[0].children[0].dataType).toBe('middleware');
         });
+
+        it('should set isHost parameter to true only for Compute type nodes', function() {
+            var nodesTree = nodeService.createNodesTree(nodesList);
+
+            expect(nodesTree[0].dataType).toBe('compute');
+            expect(nodesTree[0].isHost).toBe(true);
+            expect(nodesTree[0].children[0].id).toBe('nodejs');
+            expect(nodesTree[0].children[0].isHost).toBe(false);
+        });
     });
 
 });

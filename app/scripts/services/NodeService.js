@@ -70,6 +70,7 @@ angular.module('cosmoUiApp')
             nodes.forEach(function(node) {
                 node.class = _getNodeClass(node.type_hierarchy);
                 node.isApp = _isAppNode(node.type_hierarchy);
+                node.isHost = _isHostNode(node.type_hierarchy);
                 orderedNodes[node.id] = node;
             });
             return orderedNodes;
@@ -85,6 +86,10 @@ angular.module('cosmoUiApp')
         // TODO: 3.2 - Move method to topologyTypes and use the service instead of local function
         function _isAppNode(typeHierarchy) {
             return typeHierarchy.indexOf('cloudify-nodes-ApplicationModule') > 0;
+        }
+
+        function _isHostNode(typeHierarchy) {
+            return typeHierarchy.indexOf('cloudify-nodes-Compute') > 0;
         }
 
         // TODO: 3.2 - Move method to topologyTypes and use the service instead of local function

@@ -16,7 +16,7 @@
         </div>
     </div>
 
-    <div class="connections" ng-show="node.isApp == false">
+    <div class="connections" ng-show="node.isHost == true">
         <div class="connection" ng-class="relationship.target_id" data-ng-show="isConnectedTo(relationship)" data-ng-repeat="relationship in node.relationships">
             <i class="icon topology-glyph cloudify-nodes-Root" ng-class="relationship.node.class" ng-click="onRelationshipSelected(relationship)"></i>
         </div>
