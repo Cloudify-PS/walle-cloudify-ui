@@ -18,6 +18,8 @@ angular.module('cosmoUiApp')
         // we need to iterate over blueprints and deployments and extract the relevant information to construct
         // the select lists etc..
         function _getNodeSearchData(){
+            blueprintsList = [];
+            deploymentsList = [];
             return CloudifyService.blueprints.list()
                 .then(function (blueprints) {
                     blueprintsList = _.map(blueprints, function (blueprint) {
