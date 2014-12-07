@@ -101,6 +101,7 @@
                     &.icon-events {
                         width: 60px;
                         min-width: 45px;
+                        padding-top: 2px !important;
                         &.gs-icon-logs {
                             padding-left: 11px;
                             font-size: 62px;
@@ -122,6 +123,15 @@
                     }
                     &.event-text-red {
                         color: $COSMOUI_EVENTS_LIST_TEXT_FAILED;
+                    }
+                }
+            }
+
+            &.eventsTable {
+                tr {
+                    td {
+                        vertical-align: top;
+                        padding-top: 7px;
                     }
                 }
             }
