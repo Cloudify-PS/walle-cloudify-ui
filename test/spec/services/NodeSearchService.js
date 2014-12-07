@@ -4,8 +4,7 @@ describe('Service: NodeSearchService', function () {
 
     var NodeSearchService,
         nodeSearchData,
-        nodeSearchDataSec,
-        executeData = [];
+        nodeSearchDataSec;
 
     describe('Test setup', function() {
         it('Injecting required data & initializing a new instance', function() {
