@@ -92,9 +92,9 @@ angular.module('cosmoUiApp')
             }
         };
 
-        $scope.cancelWorkflow = function(executedData) {
+        $scope.cancelWorkflow = function(execution_id) {
             var callParams = {
-                'execution_id': executedData.id,
+                'execution_id': execution_id,
                 'state': 'cancel'
             };
             CloudifyService.deployments.updateExecutionState(callParams).then(function (data) {
