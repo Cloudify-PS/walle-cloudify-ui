@@ -21,7 +21,7 @@ describe('Controller: LogsCtrl', function () {
                     filterRange: function() {},
                     filterRemove: function() {},
                     filter: function() {},
-                    execute: function() { console.log('have been called'); }
+                    execute: function() {}
                 };
             }
         };

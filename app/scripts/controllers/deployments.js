@@ -75,22 +75,6 @@ angular.module('cosmoUiApp')
                 workflow !== 'create_deployment_environment';
         };
 
-        $scope.cancelExecution = function(deployment) {
-            var callParams = {
-                'execution_id': $scope.getExecutionAttr(deployment, 'id'),
-                'state': 'cancel'
-            };
-            CloudifyService.deployments.updateExecutionState(callParams).then(function(data) {
-                if(data.hasOwnProperty('error_code')) {
-                    $scope.executedErr = data.message;
-                }
-                else {
-                    _executedDeployments[deployment.blueprint_id][deployment.id] = null;
-                    $scope.toggleConfirmationDialog();
-                }
-            });
-        };
-
         $scope.isExecuteEnabled = function(deployment_id) {
             return selectedWorkflows[deployment_id] !== undefined;
         };
@@ -102,14 +86,6 @@ angular.module('cosmoUiApp')
             $scope.selectedDeployment = deployment;
             $scope.confirmationType = confirmationType;
             $scope.isConfirmationDialogVisible = $scope.isConfirmationDialogVisible === false;
-        };
-
-        $scope.confirmConfirmationDialog = function(deployment) {
-            if ($scope.confirmationType === 'execute') {
-                $scope.executeDeployment(deployment);
-            } else if ($scope.confirmationType === 'cancel') {
-                $scope.cancelExecution(deployment);
-            }
         };
 
         $scope.redirectTo = function (deployment) {
@@ -133,7 +109,6 @@ angular.module('cosmoUiApp')
                         if (_executedDeployments[blueprint_id] === undefined) {
                             _executedDeployments[blueprint_id] = [];
                         }
-
                         for (var i = 0; i < data.length; i++) {
                             if (data[i].status !== null && data[i].status !== 'failed' && data[i].status !== 'terminated' && data[i].status !== 'cancelled') {
                                 selectedWorkflows[deployment_id] = data[i].workflow_id;

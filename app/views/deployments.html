@@ -78,7 +78,7 @@
             </div>
             <div class="buttonsContainer confirmationButtons" ng-show="confirmationType == 'cancel'">
                 <button class="dialogButton" ng-click="toggleConfirmationDialog()">{{ 'deployments.confirmationPopup.cancelBtn' | i18n }}</button>
-                <button class="dialogButton" ng-click="cancelWorkflow(executedData)">{{ 'deployments.confirmationPopup.confirmBtn' | i18n }}</button>
+                <button class="dialogButton" ng-click="cancelWorkflow(getExecutionAttr(selectedDeployment, 'id'))">{{ 'deployments.confirmationPopup.confirmBtn' | i18n }}</button>
             </div>
         </div>
     </div>

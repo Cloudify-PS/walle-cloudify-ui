@@ -64,7 +64,6 @@ angular.module('cosmoUiApp')
             // parse inputs so "true" string will become boolean etc.
             _parseInputs();
             $scope.showError = false;
-
             if ($scope.inputsState === RAW) {
                 try {
                     $scope.inputs = JSON.parse($scope.rawString);
@@ -92,9 +91,9 @@ angular.module('cosmoUiApp')
             }
         };
 
-        $scope.cancelWorkflow = function(executedData) {
+        $scope.cancelWorkflow = function(execution_id) {
             var callParams = {
-                'execution_id': executedData.id,
+                'execution_id': execution_id,
                 'state': 'cancel'
             };
             CloudifyService.deployments.updateExecutionState(callParams).then(function (data) {

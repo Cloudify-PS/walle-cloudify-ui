@@ -1,7 +1,7 @@
 'use strict';
 
 describe('Controller: ExecuteDialogCtrl', function () {
-    var ExecuteDialogCtrl, scope;
+    var ExecuteDialogCtrl, _cloudifyService, scope;
     var _workflow = {
         "data": {
             "value":"execute_operation",
@@ -16,6 +16,11 @@ describe('Controller: ExecuteDialogCtrl', function () {
                 "type_names":{"default":[]}}
         }
     };
+    var _executionError = {
+        "error_code": "1",
+        "message": "Error"
+    };
+    var _execution = {};
 
     beforeEach(module('cosmoUiApp', 'ngMock', 'templates-main'));
 
@@ -28,9 +33,26 @@ describe('Controller: ExecuteDialogCtrl', function () {
 
             scope = $rootScope.$new();
 
+            _cloudifyService = CloudifyService;
+            _cloudifyService.deployments.execute = function(executionData) {
+                var deferred = $q.defer();
+
+                deferred.resolve(executionData.inputs === undefined || JSON.stringify(executionData.inputs) === '{}' ? _executionError : _execution);
+
+                return deferred.promise;
+            };
+
+            _cloudifyService.deployments.updateExecutionState = function(execution_id) {
+                var deferred = $q.defer();
+
+                deferred.resolve(execution_id);
+
+                return deferred.promise;
+            };
+
             ExecuteDialogCtrl = $controller('ExecuteDialogCtrl', {
                 $scope: scope,
-                CloudifyService: CloudifyService
+                CloudifyService: _cloudifyService
             });
 
             scope.$digest();
@@ -72,6 +94,33 @@ describe('Controller: ExecuteDialogCtrl', function () {
             expect(typeof(JSON.parse(scope.rawString)['str_variable'])).toBe('string');
             expect(typeof(JSON.parse(scope.rawString)['webserver_port'])).toBe('number');
             expect(typeof(JSON.parse(scope.rawString)['bool_variable'])).toBe('boolean');
+        });
+
+        it('should show error message if required parameters are not provided', function() {
+            scope.rawString = '{}';
+            scope.inputs = {};
+            scope.toggleConfirmationDialog = function(){};
+            scope.isExecuteEnabled = function() {
+                return true;
+            };
+
+            scope.executeWorkflow();
+            scope.$apply();
+
+            waitsFor(function() {
+                return scope.executeErrorMessage !== false;
+            });
+            runs(function() {
+                expect(scope.executeErrorMessage).toBe(_executionError.message);
+            });
+        });
+
+        it('should cancel execution by its id', function() {
+            spyOn(_cloudifyService.deployments, 'updateExecutionState').andCallThrough();
+
+            scope.cancelWorkflow('123');
+
+            expect(_cloudifyService.deployments.updateExecutionState).toHaveBeenCalledWith({ execution_id : '123', state : 'cancel' });
         });
     });
 });
