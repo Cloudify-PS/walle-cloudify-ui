@@ -314,41 +314,6 @@ angular.module('cosmoUiApp')
                     return $scope.selectedWorkflow.data !== null;
                 }
 
-                function _cancelExecution() {
-                    var callParams = {
-                        'execution_id': $scope.executedData.id,
-                        'state': 'cancel'
-                    };
-                    CloudifyService.deployments.updateExecutionState(callParams).then(function (data) {
-                        if (data.hasOwnProperty('error_code')) {
-                            $scope.executedErr = data.message;
-                        }
-                        else {
-                            $scope.executedData = null;
-                            _toggleConfirmationDialog();
-                        }
-                    });
-                }
-
-                function _executeDeployment() {
-                    if (_isExecuteEnabled()) {
-                        $scope.deploymentInProgress = true;
-                        CloudifyService.deployments.execute({
-                            deployment_id: $scope.id,
-                            workflow_id: $scope.selectedWorkflow.data.value,
-                            parameters: $scope.selectedWorkflow.data.parameters
-                        }).then(function (execution) {
-                            if (execution.hasOwnProperty('error_code')) {
-                                $scope.executedErr = execution.message;
-                            }
-                            else {
-                                $scope.currentExecution = execution;
-                                $scope.isConfirmationDialogVisible = false;
-                            }
-                        });
-                    }
-                }
-
                 function _loadExecutions() {
                     CloudifyService.deployments.getDeploymentExecutions($scope.id)
                         .then(function(data) {
@@ -373,13 +338,6 @@ angular.module('cosmoUiApp')
 
                 $scope.isExecuteEnabled = _isExecuteEnabled;
                 $scope.toggleConfirmationDialog = _toggleConfirmationDialog;
-                $scope.confirmConfirmationDialog = function () {
-                    if ($scope.confirmationType === 'execute') {
-                        _executeDeployment();
-                    } else if ($scope.confirmationType === 'cancel') {
-                        _cancelExecution();
-                    }
-                };
 
                 function _setDeploymentModel( data ) {
                     deploymentModel['*'] = angular.copy(deploymentDataModel);

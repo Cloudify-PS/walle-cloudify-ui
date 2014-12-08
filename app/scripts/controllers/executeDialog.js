@@ -64,7 +64,6 @@ angular.module('cosmoUiApp')
             // parse inputs so "true" string will become boolean etc.
             _parseInputs();
             $scope.showError = false;
-
             if ($scope.inputsState === RAW) {
                 try {
                     $scope.inputs = JSON.parse($scope.rawString);
