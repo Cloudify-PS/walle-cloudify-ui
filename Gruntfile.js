@@ -411,6 +411,15 @@ module.exports = function (grunt) {
             }
         },
         jasmine_node: {
+            options: {
+                jUnit: {
+                    report: true,
+                    savePath: 'backend_test_results/',
+                    useDotNotation: true,
+                    consolidate:true,
+                    consolidateAll: true
+                }
+            },
             unit: ['test/backend/unit/jasmine/'],
             unitInstrument: ['backend-instrument/test/backend/unit/jasmine'],
             integration: ['test/backend/integration/jasmine/']
