@@ -8,7 +8,7 @@
  * Service in the cosmoUiApp.
  */
 angular.module('cosmoUiApp')
-    .service('CloudifyService', function Cloudifyservice($rootScope, $q, $log, $timeout, RestLoader, BlueprintsService, DeploymentsService) {
+    .service('CloudifyService', function Cloudifyservice($rootScope, $q, $log, $timeout, RestLoader, BlueprintsService, DeploymentsService, VersionService) {
 
         var autoPull = [],
             autoPullPromise = {};
@@ -100,33 +100,6 @@ angular.module('cosmoUiApp')
             return _load('configuration', callParams);
         }
 
-        function _getVersionsUi() {
-            var callParams = {
-                url: '/backend/versions/ui',
-                method: 'GET'
-            };
-            return _load('versions/ui', callParams);
-        }
-
-        function _getVersionsManager() {
-            var callParams = {
-                url: '/backend/versions/manager',
-                method: 'GET'
-            };
-            return _load('versions/manager', callParams);
-        }
-
-        function _getLatestVersion(version) {
-            var callParams = {
-                url: '/backend/version/latest',
-                method: 'GET',
-                params: {
-                    version: version
-                }
-            };
-            return _load('version/latest', callParams);
-        }
-
         this.autoPull = _autoPull;
         this.autoPullStop = _autoPullStop;
         this.getNode = _getNode;
@@ -136,11 +109,9 @@ angular.module('cosmoUiApp')
         this.setSettings = _setSettings;
         this.getSettings = _getSettings;
         this.getConfiguration = _getConfiguration;
-        this.getVersionsUi = _getVersionsUi;
-        this.getVersionsManager = _getVersionsManager;
-        this.getLatestVersion = _getLatestVersion;
 
         this.blueprints = BlueprintsService;
         this.deployments = DeploymentsService;
+        this.version = VersionService;
 
     });

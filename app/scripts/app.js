@@ -133,30 +133,14 @@ angular.module('cosmoUiApp', [
             $log.info('problem loading configuration for i18n init');
         });
 
-        CloudifyService.getVersionsUi()
+        CloudifyService.version.getUiVersion()
             .then(function(data){
                 if(!!data && data.hasOwnProperty('version')) {
                     appConfig.versions.ui = data.version;
-
-                    var currentVersion = appConfig.versions.ui.split('.').join('');
-                    if (currentVersion.indexOf('-') !== -1) {
-                        currentVersion = currentVersion.substring(0, currentVersion.indexOf('-'));
-                    }
-                    // Checking if current UI version is the latest
-                    CloudifyService.getLatestVersion(currentVersion)
-                        .then(function(ver) {
-                            var _currentVer = parseInt(currentVersion, 10);
-                            var _ver = parseInt(ver, 10);
-                            if (!isNaN(_ver)) {
-                                appConfig.updateVersion = _ver > _currentVer;
-                            } else {
-                                appConfig.updateVersion = false;
-                            }
-                        });
                 }
             });
 
-        CloudifyService.getVersionsManager()
+        CloudifyService.version.getManagerVersion()
             .then(function(data){
                 if(!!data && data.hasOwnProperty('version')) {
                     appConfig.versions.manager = data.version;

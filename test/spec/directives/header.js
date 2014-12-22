@@ -23,19 +23,6 @@ describe('Directive: header', function () {
         });
     }
 
-    function updateLatestVersion(valid) {
-        inject(function($q, CloudifyService) {
-            CloudifyService.getLatestVersion = function() {
-                var deferred = $q.defer();
-                var _version = valid ? '100' : 'invalid result';
-
-                deferred.resolve(_version);
-
-                return deferred.promise;
-            };
-        });
-    }
-
     describe('Directive tests', function() {
 
         it('should create an element with searchCloudify function', function() {
@@ -53,33 +40,26 @@ describe('Directive: header', function () {
             expect(element.find('div.version-check div').length).toBe(1);
         });
 
-        it('should show an update available message div when updateVersion variable is true', inject(function($rootScope, appConfig) {
+        it('should show an update available message div when updateVersion variable is true', inject(function($rootScope) {
             var _scope = $rootScope.$new();
-            appConfig.updateVersion = true;
+            _scope.updateVersion = true;
 
             compileDirective({scope: _scope});
 
             expect(element.find('div#needUpdate').hasClass('ng-hide')).toBe(false);
         }));
 
-        it('should not show update message when valid version result returns', inject(function($rootScope, appConfig) {
+        it('should not show update message when valid version result returns', inject(function($rootScope, CloudifyService, $q, appConfig) {
             var _scope = $rootScope.$new();
-            appConfig.updateVersion = true;
-            _scope.updateVersion = false;
+            appConfig.versions.ui = '3.1.0';
+            CloudifyService.version.getLatest = function() {
+                var deferred = $q.defer();
+                var result = '300';
 
-            compileDirective({scope: _scope});
+                deferred.resolve(result);
 
-            waitsFor(function() {
-                return _scope.updateVersion !== false;
-            });
-            runs(function() {
-                expect(_scope.updateVersion).toBe(true);
-            });
-        }));
-
-        it('should not show update message when invalid version result returns', inject(function($rootScope, appConfig) {
-            var _scope = $rootScope.$new();
-            appConfig.updateVersion = false;
+                return deferred.promise;
+            };
             _scope.updateVersion = true;
 
             compileDirective({scope: _scope});
@@ -92,13 +72,27 @@ describe('Directive: header', function () {
             });
         }));
 
-        it('should not check ui version when switching between pages', inject(function($rootScope, CloudifyService) {
+        it('should not show update message when invalid version result returns', inject(function($rootScope, CloudifyService, $q, appConfig) {
             var _scope = $rootScope.$new();
-            spyOn(CloudifyService, 'getLatestVersion').andCallThrough();
+            appConfig.versions.ui = '3.1.0';
+            CloudifyService.version.getLatest = function() {
+                var deferred = $q.defer();
+                var result = 'invalid result';
+
+                deferred.resolve(result);
+
+                return deferred.promise;
+            };
+            _scope.updateVersion = true;
 
             compileDirective({scope: _scope});
 
-            expect(CloudifyService.getLatestVersion).not.toHaveBeenCalled();
+            waitsFor(function() {
+                return _scope.updateVersion !== true;
+            });
+            runs(function() {
+                expect(_scope.updateVersion).toBe(false);
+            });
         }));
     });
 });
