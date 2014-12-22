@@ -10,21 +10,7 @@ angular.module('cosmoUiApp')
                     name: 'John Doe'
                 };
 
-                var currentVersion = appConfig.versions.ui.split('.').join('');
-                if (currentVersion.indexOf('-') !== -1) {
-                    currentVersion = currentVersion.substring(0, currentVersion.indexOf('-'));
-                }
-
-                CloudifyService.getLatestVersion(currentVersion)
-                    .then(function(ver) {
-                        var _currentVer = parseInt(currentVersion, 10);
-                        var _ver = parseInt(ver, 10);
-                        if (!isNaN(_ver)) {
-                            scope.updateVersion = _ver > _currentVer;
-                        } else {
-                            scope.updateVersion = false;
-                        }
-                    });
+                scope.updateVersion = appConfig.updateVersion;
 
                 scope.searchCloudify = function() {
                     $log.info('search ' + element.find('#search-field').val());

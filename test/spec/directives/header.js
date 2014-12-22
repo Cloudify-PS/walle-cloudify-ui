@@ -53,20 +53,20 @@ describe('Directive: header', function () {
             expect(element.find('div.version-check div').length).toBe(1);
         });
 
-        it('should show an update available message div when updateVersion variable is true', inject(function($rootScope) {
+        it('should show an update available message div when updateVersion variable is true', inject(function($rootScope, appConfig) {
             var _scope = $rootScope.$new();
-            _scope.updateVersion = true;
+            appConfig.updateVersion = true;
 
             compileDirective({scope: _scope});
 
             expect(element.find('div#needUpdate').hasClass('ng-hide')).toBe(false);
         }));
 
-        it('should not show update message when valid version result returns', inject(function($rootScope) {
+        it('should not show update message when valid version result returns', inject(function($rootScope, appConfig) {
             var _scope = $rootScope.$new();
+            appConfig.updateVersion = true;
             _scope.updateVersion = false;
 
-            updateLatestVersion(true);
             compileDirective({scope: _scope});
 
             waitsFor(function() {
@@ -77,11 +77,11 @@ describe('Directive: header', function () {
             });
         }));
 
-        it('should not show update message when invalid version result returns', inject(function($rootScope) {
+        it('should not show update message when invalid version result returns', inject(function($rootScope, appConfig) {
             var _scope = $rootScope.$new();
+            appConfig.updateVersion = false;
             _scope.updateVersion = true;
 
-            updateLatestVersion(false);
             compileDirective({scope: _scope});
 
             waitsFor(function() {
@@ -90,6 +90,15 @@ describe('Directive: header', function () {
             runs(function() {
                 expect(_scope.updateVersion).toBe(false);
             });
+        }));
+
+        it('should not check ui version when switching between pages', inject(function($rootScope, CloudifyService) {
+            var _scope = $rootScope.$new();
+            spyOn(CloudifyService, 'getLatestVersion').andCallThrough();
+
+            compileDirective({scope: _scope});
+
+            expect(CloudifyService.getLatestVersion).not.toHaveBeenCalled();
         }));
     });
 });
