@@ -49,12 +49,11 @@ describe('Directive: header', function () {
             expect(element.find('div#needUpdate').hasClass('ng-hide')).toBe(false);
         }));
 
-        it('should not show update message when valid version result returns', inject(function($rootScope, CloudifyService, $q, appConfig) {
+        it('should not show update message when valid version result returns', inject(function($rootScope, CloudifyService, $q) {
             var _scope = $rootScope.$new();
-            appConfig.versions.ui = '3.1.0';
-            CloudifyService.version.getLatest = function() {
+            CloudifyService.version.needUpdate = function() {
                 var deferred = $q.defer();
-                var result = '300';
+                var result = false;
 
                 deferred.resolve(result);
 
@@ -72,10 +71,9 @@ describe('Directive: header', function () {
             });
         }));
 
-        it('should not show update message when invalid version result returns', inject(function($rootScope, CloudifyService, $q, appConfig) {
+        it('should not show update message when invalid version result returns', inject(function($rootScope, CloudifyService, $q) {
             var _scope = $rootScope.$new();
-            appConfig.versions.ui = '3.1.0';
-            CloudifyService.version.getLatest = function() {
+            CloudifyService.version.needUpdate = function() {
                 var deferred = $q.defer();
                 var result = 'invalid result';
 

@@ -1,22 +1,22 @@
 'use strict';
 
 describe('Service: VersionService', function () {
-    var versionService, httpBackend;
+    var versionService;
+    var latestUrl = '/backend/version/latest';
+    var managerUrl = '/backend/versions/manager';
+    var uiUrl = '/backend/versions/ui';
+    var ver = '320';
 
-    describe('Test setup', function() {
-        it('Injecting required data & initializing a new instance', function() {
+    beforeEach(function() {
+        // load the filter's module
+        module('cosmoUiApp', 'ngMock');
 
-            // load the filter's module
-            module('cosmoUiApp', 'ngMock');
+        // initialize a new instance of the filter
+        inject(function (VersionService, $httpBackend) {
+            $httpBackend.whenGET('/backend/configuration?access=all').respond(200);
+            $httpBackend.whenGET('/backend/version/latest?version=00').respond('300');
 
-            // initialize a new instance of the filter
-            inject(function (VersionService, $httpBackend) {
-                httpBackend = $httpBackend;
-                httpBackend.whenGET('/backend/configuration?access=all').respond(200);
-                httpBackend.whenGET('/backend/version/latest?version=00').respond('300');
-
-                versionService = VersionService;
-            });
+            versionService = VersionService;
         });
     });
 
@@ -26,42 +26,44 @@ describe('Service: VersionService', function () {
             expect(versionService).not.toBeUndefined();
         });
 
-        it('should call backend for ui version', function() {
-            var url = '/backend/versions/ui';
-
-            httpBackend.whenGET('/backend/versions/manager').respond(200);
-            httpBackend.whenGET(url).respond(200, '310');
-            httpBackend.expectGET(url);
+        it('should call backend for ui version', inject(function($httpBackend) {
+            $httpBackend.expectGET(uiUrl).respond(200, '310');
 
             versionService.getUiVersion();
+        }));
 
-            httpBackend.flush();
-        });
-
-        it('should call backend for manager version', function() {
-            var url = '/backend/versions/manager';
-            httpBackend.whenGET('/backend/versions/ui').respond(200);
-            httpBackend.whenGET(url).respond(200, '310');
-            httpBackend.expectGET(url);
+        it('should call backend for manager version', inject(function($httpBackend) {
+            $httpBackend.expectGET(managerUrl).respond(200, '310');
 
             versionService.getManagerVersion();
+        }));
 
-            httpBackend.flush();
-
-        });
-
-        it('should call backend for latest version', function() {
-            var url = '/backend/version/latest';
-            var ver = '320';
-            httpBackend.whenGET('/backend/versions/ui').respond(200);
-            httpBackend.whenGET('/backend/versions/manager').respond(200);
-            httpBackend.whenGET(url + '?version=' + ver).respond(200, '310');
-            httpBackend.expectGET(url + '?version=' + ver);
+        it('should call backend for latest version', inject(function($httpBackend) {
+            $httpBackend.expectGET(latestUrl + '?version=' + ver).respond(200, '310');
 
             versionService.getLatest(ver);
+        }));
 
-            httpBackend.flush();
-        });
+
+        xit('should invoke only once when multiple calls for latest version are made', inject(function($httpBackend) {
+            $httpBackend.expectGET(latestUrl + '?version=' + ver).respond(200, '321');
+            var result;
+
+            versionService.getLatest(ver);
+            versionService.getLatest(ver).then(function(latest) {
+                console.log(latest);
+                result = latest;
+            });
+
+            waitsFor(function() {
+                return result !== undefined;
+            });
+            runs(function() {
+                expect(result).toBe('321');
+            });
+
+            $httpBackend.flush();
+        }));
 
     });
 });

@@ -115,7 +115,7 @@ angular.module('cosmoUiApp', [
             manager: '0.0'
         }
     })
-    .run(['I18next', 'CloudifyService', '$log', 'appConfig', function(I18next, CloudifyService, $log, appConfig) {
+    .run(['I18next', 'CloudifyService', '$log', 'appConfig', function(I18next, CloudifyService, $log) {
 
         CloudifyService.getConfiguration().then(function (data) {
             if ( !data ){
@@ -132,18 +132,4 @@ angular.module('cosmoUiApp', [
         }, function () {
             $log.info('problem loading configuration for i18n init');
         });
-
-        CloudifyService.version.getUiVersion()
-            .then(function(data){
-                if(!!data && data.hasOwnProperty('version')) {
-                    appConfig.versions.ui = data.version;
-                }
-            });
-
-        CloudifyService.version.getManagerVersion()
-            .then(function(data){
-                if(!!data && data.hasOwnProperty('version')) {
-                    appConfig.versions.manager = data.version;
-                }
-            });
     }]);
