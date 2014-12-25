@@ -27,13 +27,13 @@ describe('Service: VersionService', function () {
         });
 
         it('should call backend for ui version', inject(function($httpBackend) {
-            $httpBackend.expectGET(uiUrl).respond(200, '310');
+            $httpBackend.expectGET(uiUrl).respond(200, {version: 310});
 
             versionService.getUiVersion();
         }));
 
         it('should call backend for manager version', inject(function($httpBackend) {
-            $httpBackend.expectGET(managerUrl).respond(200, {version: '310'});
+            $httpBackend.expectGET(managerUrl).respond(200, {version: 310});
 
             versionService.getManagerVersion();
         }));
@@ -64,9 +64,9 @@ describe('Service: VersionService', function () {
             $httpBackend.flush();
         }));
 
-        it('should check if UI requires an update and return a boolean response', inject(function($httpBackend) {
-            $httpBackend.whenGET(uiUrl).respond(200, {version: '310'});
-            $httpBackend.whenGET(latestUrl + '?version=' + ver).respond(200, '320');
+        it('should return false if latest version returns invalid', inject(function($httpBackend) {
+            $httpBackend.whenGET(uiUrl).respond(200, {version: 310});
+            $httpBackend.whenGET(latestUrl + '?version=' + ver).respond(200, 'aaa');
             var result;
 
             versionService.needUpdate().then(function(needUpdate) {
@@ -83,9 +83,47 @@ describe('Service: VersionService', function () {
             $httpBackend.flush();
         }));
 
+        it('should return false if UI requires an update', inject(function($httpBackend) {
+            $httpBackend.whenGET(uiUrl).respond(200, {version: 310});
+            $httpBackend.whenGET(latestUrl + '?version=' + ver).respond(200, '310');
+            var result;
+
+            versionService.needUpdate().then(function(needUpdate) {
+                result = needUpdate;
+            });
+
+            waitsFor(function() {
+                return result !== undefined;
+            });
+            runs(function() {
+                expect(result).toBe(false);
+            });
+
+            $httpBackend.flush();
+        }));
+
+        it('should return true if UI requires an update', inject(function($httpBackend) {
+            $httpBackend.whenGET(uiUrl).respond(200, {version: 310});
+            $httpBackend.whenGET(latestUrl + '?version=' + ver).respond(200, '320');
+            var result;
+
+            versionService.needUpdate().then(function(needUpdate) {
+                result = needUpdate;
+            });
+
+            waitsFor(function() {
+                return result !== undefined;
+            });
+            runs(function() {
+                expect(result).toBe(true);
+            });
+
+            $httpBackend.flush();
+        }));
+
         it('should return an object holding the ui & manager current versions', inject(function($httpBackend) {
-            $httpBackend.whenGET(uiUrl).respond(200, {version: '310'});
-            $httpBackend.whenGET(managerUrl).respond(200, {version: '320'});
+            $httpBackend.whenGET(uiUrl).respond(200, {version: 310});
+            $httpBackend.whenGET(managerUrl).respond(200, {version: 320});
             var result;
 
             versionService.getVersions().then(function(versions) {
@@ -96,8 +134,31 @@ describe('Service: VersionService', function () {
                 return result !== undefined;
             });
             runs(function() {
-                expect(result.ui).toBe('310');
-                expect(result.manager).toBe('320');
+                expect(result.ui).toBe(310);
+                expect(result.manager).toBe(320);
+            });
+
+            $httpBackend.flush();
+        }));
+
+        it('should return cached latest version from second call', inject(function($httpBackend) {
+            $httpBackend.expectGET(latestUrl + '?version=' + ver).respond(200, '320');
+            var result1;
+            var result2;
+
+            versionService.getLatest(ver).then(function(latest1) {
+                result1 =  latest1.data;
+                versionService.getLatest(ver).then(function(latest2) {
+                    result2 = latest2.data;
+                });
+            });
+
+
+            waitsFor(function() {
+                return result2 !== undefined;
+            });
+            runs(function() {
+                expect(result2).toEqual(result1);
             });
 
             $httpBackend.flush();

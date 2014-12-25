@@ -88,7 +88,7 @@ angular.module('cosmoUiApp')
                         _getLatest(currentVersion)
                             .then(function(ver) {
                                 var _currentVer = parseInt(currentVersion, 10);
-                                var _ver = parseInt(ver, 10);
+                                var _ver = parseInt(ver.data, 10);
                                 if (!isNaN(_ver)) {
                                     deferred.resolve(_ver > _currentVer);
                                 } else {
