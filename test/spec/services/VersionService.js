@@ -5,7 +5,7 @@ describe('Service: VersionService', function () {
     var latestUrl = '/backend/version/latest';
     var managerUrl = '/backend/versions/manager';
     var uiUrl = '/backend/versions/ui';
-    var ver = '320';
+    var ver = '310';
 
     beforeEach(function() {
         // load the filter's module
@@ -33,7 +33,7 @@ describe('Service: VersionService', function () {
         }));
 
         it('should call backend for manager version', inject(function($httpBackend) {
-            $httpBackend.expectGET(managerUrl).respond(200, '310');
+            $httpBackend.expectGET(managerUrl).respond(200, {version: '310'});
 
             versionService.getManagerVersion();
         }));
@@ -45,14 +45,13 @@ describe('Service: VersionService', function () {
         }));
 
 
-        xit('should invoke only once when multiple calls for latest version are made', inject(function($httpBackend) {
+        it('should invoke only once when multiple calls for latest version are made', inject(function($httpBackend) {
             $httpBackend.expectGET(latestUrl + '?version=' + ver).respond(200, '321');
             var result;
 
             versionService.getLatest(ver);
             versionService.getLatest(ver).then(function(latest) {
-                console.log(latest);
-                result = latest;
+                result = latest.data;
             });
 
             waitsFor(function() {
@@ -60,6 +59,45 @@ describe('Service: VersionService', function () {
             });
             runs(function() {
                 expect(result).toBe('321');
+            });
+
+            $httpBackend.flush();
+        }));
+
+        it('should check if UI requires an update and return a boolean response', inject(function($httpBackend) {
+            $httpBackend.whenGET(uiUrl).respond(200, {version: '310'});
+            $httpBackend.whenGET(latestUrl + '?version=' + ver).respond(200, '320');
+            var result;
+
+            versionService.needUpdate().then(function(needUpdate) {
+                result = needUpdate;
+            });
+
+            waitsFor(function() {
+                return result !== undefined;
+            });
+            runs(function() {
+                expect(result).toBe(false);
+            });
+
+            $httpBackend.flush();
+        }));
+
+        it('should return an object holding the ui & manager current versions', inject(function($httpBackend) {
+            $httpBackend.whenGET(uiUrl).respond(200, {version: '310'});
+            $httpBackend.whenGET(managerUrl).respond(200, {version: '320'});
+            var result;
+
+            versionService.getVersions().then(function(versions) {
+                result = versions;
+            });
+
+            waitsFor(function() {
+                return result !== undefined;
+            });
+            runs(function() {
+                expect(result.ui).toBe('310');
+                expect(result.manager).toBe('320');
             });
 
             $httpBackend.flush();

@@ -26,9 +26,10 @@ angular.module('cosmoUiApp')
                 return deferred.promise;
 
             } else if (!!inProgress) {  // if latest version request is in progress, return the active promise
-                var defer = $q.defer;
+                var defer = $q.defer();
                 // NO RESOLVE
                 defers.push(defer);
+
                 return defer.promise;
 
             } else {    // if there is no cached version and there are no active requests, make a request to backend to load the latest version number
@@ -81,8 +82,8 @@ angular.module('cosmoUiApp')
 
             _getUiVersion()
                 .then(function(data){
-                    if(!!data && data.hasOwnProperty('version')) {
-                        var currentVersion = data;
+                    if(!!data && data.data.hasOwnProperty('version')) {
+                        var currentVersion = data.data.version;
 
                         _getLatest(currentVersion)
                             .then(function(ver) {
@@ -105,7 +106,7 @@ angular.module('cosmoUiApp')
          * @private
          */
         function _getVersions() {
-            var deferred = $q.defer();
+            var deferred =  $q.defer();
             var versions = {};
 
             $q.all([
