@@ -18,7 +18,7 @@ settings.json
 *.tgz
 backend/tmp
 test-results.xml
-
+backend_test_results
 # QuickBuild
 .qbcache/
 backend/appConf.js
