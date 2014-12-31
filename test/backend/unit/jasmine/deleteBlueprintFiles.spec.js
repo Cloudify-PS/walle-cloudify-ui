@@ -1,8 +1,8 @@
 'use strict';
 
-var conf = require("../../../../backend/appConf");
+var conf = require('../../../../backend/appConf');
 var logger = require('log4js').getLogger('deleteBlueprintFiles.spec');
-var browseBlueprint = require('../../../../backend/services/BrowseBluerprintService');
+var browseBlueprint = require('../../../../backend/services/BrowseBlueprintService');
 var fs = require('fs');
 var path = require('path');
 
@@ -15,7 +15,7 @@ var mkdirComplete = false;
 var blueprintRemove = false;
 
 describe('Backend: Delete Blueprints Files (CFY-1496)', function(){
-
+    logger.info('running test');
     describe('Create files and folder', function(){
         beforeEach(function(){
             fs.mkdir(conf.browseBlueprint.path, function (e) {
@@ -42,7 +42,7 @@ describe('Backend: Delete Blueprints Files (CFY-1496)', function(){
         it('should have blueprint file', function(){
             waitsFor(function() {
                 return writeFileComplete;
-            }, "The Blueprint file created", 1000);
+            }, 'The Blueprint file created', 1000);
 
             runs(function() {
                 var fileExists = fs.existsSync(path.resolve(conf.browseBlueprint.path, prefix + blueprint + fileExt));
@@ -53,7 +53,7 @@ describe('Backend: Delete Blueprints Files (CFY-1496)', function(){
         it('should have blueprint folder', function(){
             waitsFor(function() {
                 return mkdirComplete;
-            }, "The Blueprint folder created", 1000);
+            }, 'The Blueprint folder created', 1000);
 
             runs(function() {
                 var folderExists = fs.existsSync(path.resolve(conf.browseBlueprint.path, prefix + blueprint));
@@ -77,7 +77,7 @@ describe('Backend: Delete Blueprints Files (CFY-1496)', function(){
         it('should delete blueprint file', function(){
             waitsFor(function() {
                 return blueprintRemove;
-            }, "The Blueprint tar.gz and folder should be removed", 1000);
+            }, 'The Blueprint tar.gz and folder should be removed', 1000);
 
             runs(function() {
                 var fileExists = fs.existsSync(path.resolve(conf.browseBlueprint.path, prefix + blueprint + fileExt));
@@ -88,7 +88,7 @@ describe('Backend: Delete Blueprints Files (CFY-1496)', function(){
         it('should delete blueprint folder', function(){
             waitsFor(function() {
                 return blueprintRemove;
-            }, "The Blueprint tar.gz and folder should be removed", 1000);
+            }, 'The Blueprint tar.gz and folder should be removed', 1000);
 
             runs(function() {
                 var folderExists = fs.existsSync(path.resolve(conf.browseBlueprint.path, prefix + blueprint));

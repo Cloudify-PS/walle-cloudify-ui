@@ -1,6 +1,7 @@
-var conf = require("../appConf");
+'use strict';
+
+var conf = require('../appConf');
 var fs = require('fs.extra');
-var _fs = require('fs');
 var path = require('path');
 
 module.exports.isBlueprintExist = function (id, callbackFn) {
@@ -117,14 +118,18 @@ module.exports.Walker = function() {
                 if(files.hasOwnProperty(i)) {
                     addChild(rootFolder, _list, files[i]);
                 }
-                else counter--;
+                else{
+                    counter--;
+                }
             }
         });
     }
 
     function fileIsAscii(filename, callback) {
         require('fs').readFile(filename, function(err, buf) {
-            if (err) throw err;
+            if (!!err) {
+                throw err;
+            }
             var isAscii = true;
             for (var i=0, len=buf.length; i<len; i++) {
                 if (buf[i] > 127) { isAscii=false; break; }
@@ -137,6 +142,6 @@ module.exports.Walker = function() {
         _finalCallback = callback;
         origRoot = path.resolve(rootFolder);
         walkFolder(rootFolder, root.children);
-    }
+    };
 
-}
+};

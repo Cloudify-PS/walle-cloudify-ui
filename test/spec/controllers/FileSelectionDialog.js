@@ -34,7 +34,7 @@ describe('Controller: FileSelectionDialogCtrl', function () {
             scope.selectedFile = {};
             _cloudifyService.blueprints.add = function(data, successCallback, errorCallback) {
                 var e = {
-                    "responseText": '{"status": 400  , "message": "400: Invalid blueprint name", "error_code": "Blueprint name required"}'
+                    'responseText': '{\'status\': 400  , \'message\': \'400: Invalid blueprint name\', \'error_code\': \'Blueprint name required\'}'
                 };
                 errorCallback(e);
             };
@@ -56,7 +56,7 @@ describe('Controller: FileSelectionDialogCtrl', function () {
             scope.uploadDone = function() {
                 scope.uploadInProcess = false;
             };
-            _cloudifyService.blueprints.add = function(data, successCallback, errorCallback) {
+            _cloudifyService.blueprints.add = function(data, successCallback) {
                 successCallback();
             };
             spyOn(scope, 'uploadDone').andCallThrough();

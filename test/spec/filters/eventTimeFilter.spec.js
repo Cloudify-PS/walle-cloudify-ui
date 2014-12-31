@@ -10,10 +10,10 @@ describe('Filter: eventTimeFilter', function () {
 
             // initialize a new instance of the filter
             inject(function ($filter, $httpBackend) {
-                $httpBackend.whenGET("/backend/configuration?access=all").respond(200);
-                $httpBackend.whenGET("/backend/versions/ui").respond(200);
-                $httpBackend.whenGET("/backend/versions/manager").respond(200);
-                $httpBackend.whenGET("/backend/version/latest?version=00").respond('300');
+                $httpBackend.whenGET('/backend/configuration?access=all').respond(200);
+                $httpBackend.whenGET('/backend/versions/ui').respond(200);
+                $httpBackend.whenGET('/backend/versions/manager').respond(200);
+                $httpBackend.whenGET('/backend/version/latest?version=00').respond('300');
 
                 eventTimeFilter = $filter('eventTimeFilter');
             });
@@ -25,7 +25,7 @@ describe('Filter: eventTimeFilter', function () {
             expect(eventTimeFilter).not.toBeUndefined();
         });
 
-        it('should include "Today" string for current timestamp', function() {
+        it('should include \'Today\' string for current timestamp', function() {
             var result = eventTimeFilter(new Date().getTime());
 
             expect(result.indexOf('Today') > -1).toBe(true);

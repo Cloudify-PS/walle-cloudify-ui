@@ -2,7 +2,7 @@
 
 describe('Service: BreadcrumbsService', function () {
 
-    var BreadcrumbsService;
+    var mBreadcrumbsService;
 
     describe('Test setup', function() {
         it('Injecting required data & initializing a new instance', function() {
@@ -11,8 +11,8 @@ describe('Service: BreadcrumbsService', function () {
             module('cosmoUiApp', 'gsUiHelper');
 
             // Initialize a new instance of BreadcrumbsService
-            inject(function (_BreadcrumbsService_) {
-                BreadcrumbsService = _BreadcrumbsService_;
+            inject(function (BreadcrumbsService) {
+                mBreadcrumbsService = BreadcrumbsService;
             });
 
         });
@@ -21,7 +21,7 @@ describe('Service: BreadcrumbsService', function () {
     describe('Unit tests', function() {
 
         it('should create a new BreadcrumbsService instance', function() {
-            expect(BreadcrumbsService).not.toBeUndefined();
+            expect(mBreadcrumbsService).not.toBeUndefined();
         });
 
     });

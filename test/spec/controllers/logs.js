@@ -7,11 +7,11 @@ describe('Controller: LogsCtrl', function () {
 
 
     function mockBackend( $httpBackend ){
-        $httpBackend.whenGET("/backend/configuration?access=all").respond(200);
-        $httpBackend.whenGET("/backend/versions/ui").respond(200);
-        $httpBackend.whenGET("/backend/versions/manager").respond(200);
-        $httpBackend.whenGET("/backend/version/latest?version=00").respond('300');
-        $httpBackend.whenGET("/backend/blueprints").respond(200);
+        $httpBackend.whenGET('/backend/configuration?access=all').respond(200);
+        $httpBackend.whenGET('/backend/versions/ui').respond(200);
+        $httpBackend.whenGET('/backend/versions/manager').respond(200);
+        $httpBackend.whenGET('/backend/version/latest?version=00').respond('300');
+        $httpBackend.whenGET('/backend/blueprints').respond(200);
     }
 
     function mockEventsService (){
@@ -29,8 +29,8 @@ describe('Controller: LogsCtrl', function () {
 
     function mockCloudifyService( $q, CloudifyService ){
 
-        CloudifyService.getConfiguration = function(){
-           var deferred = $q.defer();
+        CloudifyService.getConfiguration = function () {
+            var deferred = $q.defer();
 
             deferred.resolve({});
 
@@ -41,24 +41,24 @@ describe('Controller: LogsCtrl', function () {
             var deferred = $q.defer();
             var blueprints = [
                 {
-                    "id": "blueprint1",
-                    "deployments": [
+                    'id': 'blueprint1',
+                    'deployments': [
                         {
-                            "blueprint_id": "blueprint1",
-                            "id": "firstDep"
+                            'blueprint_id': 'blueprint1',
+                            'id': 'firstDep'
                         },
                         {
-                            "blueprint_id": "blueprint1",
-                            "id": "secondDep"
+                            'blueprint_id': 'blueprint1',
+                            'id': 'secondDep'
                         }
                     ]
                 },
                 {
-                    "id": "blueprint2",
-                    "deployments": [
+                    'id': 'blueprint2',
+                    'deployments': [
                         {
-                            "blueprint_id": "blueprint2",
-                            "id": "onlyOneDeployment"
+                            'blueprint_id': 'blueprint2',
+                            'id': 'onlyOneDeployment'
                         }
                     ]
                 }
@@ -85,7 +85,7 @@ describe('Controller: LogsCtrl', function () {
     });
 
     function setup() {
-        inject(function ($controller, $rootScope, $httpBackend, $q, CloudifyService) {
+        inject(function ($controller, $rootScope, $httpBackend) {
             mockBackend($httpBackend);
             scope = $rootScope.$new();
             initializeController( );
@@ -100,7 +100,7 @@ describe('Controller: LogsCtrl', function () {
             try{
                 $timeout.flush();
             }catch(e){}
-        })
+        });
     }
 
     beforeEach(setup);

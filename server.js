@@ -19,13 +19,19 @@ var _ = require('lodash');
 var app = express();
 var port = 9001;
 var gsSettings = require('./backend/gsSettings');
-var conf = require('./backend/appConf');
-var cloudify4node;
+
+var services = require('./backend/services');
+
+var conf = services.conf;
+var cloudify4node = services.cloudify4node;
+
+
 var log4js = require('log4js');
 var logger = log4js.getLogger('server');
 var influx = require('influx');
 var fs = require('fs');
 var http = require('http');
+var controllers = require('./backend/controllers');
 
 fs.mkdir('logs', function(e) {
     if (!e) {
@@ -35,11 +41,6 @@ fs.mkdir('logs', function(e) {
     }
 });
 
-if (conf.useMock) {
-    cloudify4node = require('./backend/Cloudify4node-mock');
-} else {
-    cloudify4node = require('./backend/Cloudify4node');
-}
 
 logger.debug(JSON.stringify(conf));
 
@@ -74,13 +75,6 @@ if (process.env.NODE_ENV === 'production' || process.argv[2] === 'production') {
  * Config
  */
 
-if (app.get('env') === 'development') {
-    app.use(express.static(__dirname + '/.tmp'));
-    app.use(express.static(__dirname + '/app'));
-} else {
-    app.use(express.static(__dirname));
-}
-
 // cosmo REST APIs
 
 app.get('/backend/blueprints', function(request, response/*, next*/) {
@@ -94,6 +88,10 @@ app.post('/backend/blueprints/add', function(request, response){
         response.send(err !== null ? err : data, err !== null ? data : 200);
     });
 });
+
+app.post('/backend/blueprints/upload', controllers.blueprints.upload);
+
+
 
 app.get('/backend/blueprints/get', function(request, response) {
     cloudify4node.getBlueprintById(request.query.id, function(err, data) {

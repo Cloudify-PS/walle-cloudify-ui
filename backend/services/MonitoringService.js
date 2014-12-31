@@ -1,7 +1,10 @@
-var conf = require("../appConf");
+'use strict';
+var conf = require('../appConf');
 var log4js = require('log4js');
 var logger = log4js.getLogger('MonitoringService');
 var influx = require('influx');
+
+logger.info('loaded');
 
 function _createInfluxRequest(query, callback) {
     var influxClient = influx({
@@ -24,9 +27,9 @@ function _getDashboardSeries(query, callbackFn) {
 function _getDashboardSeriesList(query, callbackFn) {
     if(!query.hasOwnProperty('dashboardId')) {
         callbackFn({
-            "status": 400,
-            "message": "400: Invalid dashboardId",
-            "error_code": "Dashboard ID required"
+            'status': 400,
+            'message': '400: Invalid dashboardId',
+            'error_code': 'Dashboard ID required'
         }, null);
     }
     _createInfluxRequest({q: 'list series like /' + query.dashboardId + '..*/i', time_precision: query.time_precision}, function(err, data){

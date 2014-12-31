@@ -5,36 +5,36 @@ describe('Service: NodeService', function () {
     var nodeService;
     var nodesList = [
         {
-            "name": "floatingip",
-            "type_hierarchy": ["cloudify.nodes.Root", "cloudify.openstack.nodes.FloatingIP"],
-            "id": "floatingip",
-            "type": "cloudify.openstack.nodes.FloatingIP"
+            'name': 'floatingip',
+            'type_hierarchy': ['cloudify.nodes.Root', 'cloudify.openstack.nodes.FloatingIP'],
+            'id': 'floatingip',
+            'type': 'cloudify.openstack.nodes.FloatingIP'
         },
         {
-            "name": "floatingip",
-            "type_hierarchy": ["cloudify.nodes.Root", "cloudify.nodes.VirtualIP", "cloudify.libcloud.nodes.FloatingIP"],
-            "id": "floatingip",
-            "type": "cloudify.libcloud.nodes.FloatingIP"
+            'name': 'floatingip',
+            'type_hierarchy': ['cloudify.nodes.Root', 'cloudify.nodes.VirtualIP', 'cloudify.libcloud.nodes.FloatingIP'],
+            'id': 'floatingip',
+            'type': 'cloudify.libcloud.nodes.FloatingIP'
         },
         {
-            "name": "nodejs_vm",
-            "type_hierarchy": ["cloudify.nodes.Root", "cloudify.nodes.Compute", "cloudify.openstack.nodes.Server", "vm_host"],
-            "id": "nodejs_vm",
-            "type": "vm_host"
+            'name': 'nodejs_vm',
+            'type_hierarchy': ['cloudify.nodes.Root', 'cloudify.nodes.Compute', 'cloudify.openstack.nodes.Server', 'vm_host'],
+            'id': 'nodejs_vm',
+            'type': 'vm_host'
         },
         {
-            "relationships": [{
-                "type_hierarchy": ["cloudify.relationships.depends_on", "cloudify.relationships.contained_in"],
-                "target_id": "nodejs_vm",
-                "state": "reachable",
-                "base": "contained",
-                "type": "cloudify.relationships.contained_in"
+            'relationships': [{
+                'type_hierarchy': ['cloudify.relationships.depends_on', 'cloudify.relationships.contained_in'],
+                'target_id': 'nodejs_vm',
+                'state': 'reachable',
+                'base': 'contained',
+                'type': 'cloudify.relationships.contained_in'
             }],
-            "name": "nodejs",
-            "type_hierarchy": ["cloudify.nodes.Root", "cloudify.nodes.SoftwareComponent", "cloudify.nodes.ApplicationServer", "cloudify.bash.nodes.ApplicationServer", "nodejs_server"],
-            "id": "nodejs",
-            "host_id": "nodejs_vm",
-            "type": "nodejs_server"
+            'name': 'nodejs',
+            'type_hierarchy': ['cloudify.nodes.Root', 'cloudify.nodes.SoftwareComponent', 'cloudify.nodes.ApplicationServer', 'cloudify.bash.nodes.ApplicationServer', 'nodejs_server'],
+            'id': 'nodejs',
+            'host_id': 'nodejs_vm',
+            'type': 'nodejs_server'
         }
     ];
 
