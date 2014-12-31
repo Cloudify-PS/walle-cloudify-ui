@@ -1,14 +1,31 @@
-var ajax = require("http");
-var fs = require('fs');
-var conf = require("../backend/appConf");
-var log4js = require('log4js');
-log4js.configure(conf.log4js);
-var logger = log4js.getLogger('cloudify4node');
-var path = require('path');
-var targz = require('tar.gz');
-var browseBlueprint = require('./services/BrowseBluerprintService');
-var monitoring = require('./services/MonitoringService');
+'use strict';
 
+/**
+ * @module cloudifyRestClient
+ * @description
+ * implements cloudify REST client in nodejs
+ */
+
+var ajax = require('http'); // todo - what will happen if we get https instead? support https required.
+var fs = require('fs'); // todo - this class should not write directly to files.. at most should write to stream.
+var conf = require('../backend/appConf'); // todo: this class should not read directly from configuration
+var log4js = require('log4js');
+log4js.configure(conf.log4js); // todo: no need for this here..
+var logger = log4js.getLogger('cloudify4node');
+var path = require('path');  // todo: this class should not refer to FS paths.. lets remove it
+var targz = require('tar.gz'); // todo: this class should have nothing todo with tar.gz files directly.
+var browseBlueprint = require('./services/BrowseBlueprintService'); // todo: no need for this here.. this is a ui feature, not cloudify client related.
+var monitoring = require('./services/MonitoringService');  // todo: what does this have anything to do with cloudify4node?
+var querystring = require('querystring');
+
+/**
+ * @typedef Cloudify4node
+ * @name Cloudify4node
+ * @class Cloudify4node
+ * @namespace Cloudify4node
+ * @constructor
+ */
+function Cloudify4node() {}
 module.exports = Cloudify4node;
 
 // Enable/Disable logs
@@ -18,8 +35,10 @@ if(conf.cosmoLogs === true) {
     logger.setLevel('OFF');
 }
 
-function Cloudify4node(options) {}
 
+
+// todo - perhaps its time to remove a lot of code (80 lines) that "prepares" a bunch of stuff I doubt we need,
+// todo - and start using a 3rd-party to do that..
 function createRequest(requestData, callback) {
     var _callback = function(res) {
         var data = '';
@@ -30,7 +49,7 @@ function createRequest(requestData, callback) {
             return;
         }
 
-        logger.info('STATUS: ' + res.statusCode);
+        logger.trace('STATUS: ' + res.statusCode);
 
         res.on('data', function (chunk) {
             result += chunk;
@@ -40,7 +59,7 @@ function createRequest(requestData, callback) {
             var jsonStr = JSON.stringify(result);
             data = JSON.parse(jsonStr);
 
-            logger.info(['Request done, data: ',data]);
+            logger.trace(['Request done, data: ',data]);
 
             callback(null, data);
         });
@@ -95,6 +114,7 @@ function createRequestData(options) {
     return requestData;
 }
 
+// todo - Cloudify4node should be an instance.. why are we using static function declaration?
 Cloudify4node.getBlueprints = function(callback) {
     var requestData = createRequestData({
         path: '/blueprints',
@@ -104,12 +124,13 @@ Cloudify4node.getBlueprints = function(callback) {
     createRequest(requestData, callback);
 };
 
+// todo - Cloudify4node should be an instance.. why are we using static function declaration?
 Cloudify4node.addBlueprint = function(application_archive, blueprint_id, callback) {
     if (blueprint_id === undefined) {
         callback(400, {
-            "status": 400,
-            "message": "400: Invalid blueprint name",
-            "error_code": "Blueprint name required"
+            'status': 400,
+            'message': '400: Invalid blueprint name',
+            'error_code': 'Blueprint name required'
         });
         return;
     }
@@ -127,7 +148,7 @@ Cloudify4node.addBlueprint = function(application_archive, blueprint_id, callbac
     };
 
     var req = ajax.request(options, function(res) {
-        var responseMessage = "";
+        var responseMessage = '';
         logger.info('statusCode: ' + res.statusCode);
         res.on('data', function (chunk) {
             responseMessage += chunk.toString();
@@ -148,13 +169,112 @@ Cloudify4node.addBlueprint = function(application_archive, blueprint_id, callbac
     });
 
     fs.readFile(myFile.path, function(err, data) {
-        if (err) throw err;
+        if (err) {
+            throw err;
+        }
 
         req.write(data);
         req.end();
     });
 };
 
+/**
+ *
+ * @memberOf Cloudify4node
+ * @description
+ * This function gets a readStream to read a blueprint and writes it to a request to upload blueprint with cloudify manager
+ *
+ * @see  http://codewinds.com/blog/2013-08-04-nodejs-readable-streams.html
+ * @see http://stackoverflow.com/questions/6926721/event-loop-for-large-files
+ *
+ * @param {ReadStream} streamReader
+ * @param {object} opts
+ * @param {string} opts.blueprint_id the blueprint's ID.
+ * @param {object} opts.params
+ * @param {string} opts.params.application_file_name name of yaml file to look for in the tar.
+ * @param {function} callback function(err,data)
+ */
+// todo - Cloudify4node should be an instance.. why are we using static function declaration?
+Cloudify4node.uploadBlueprint = function(streamReader, opts, callback) {
+
+
+    logger.debug('uploading blueprint', opts);
+    if (!opts || !opts.blueprint_id) {
+        // todo : are we sure that this is the format we want? does not match other scenarios in this function. it is not a nodejs standard..
+        callback(400, {
+            'status': 400,
+            'message': '400: Invalid blueprint name',
+            'error_code': ' Blueprint name required'
+        });
+        return;
+    }
+
+    querystring.stringify(opts.params);
+
+    function handleResponse(res){
+        var responseMessage = '';
+        logger.debug('[uploadBlueprint] got response.  statusCode: ' + res.statusCode);
+
+        res.on('data', function (chunk) {
+            responseMessage += chunk.toString();
+            logger.debug('chunk: ' + chunk.toString());
+        });
+
+        res.on('end', function() {
+            if (res.statusCode === 200){
+                callback(null, res.statusCode);
+            } else {
+                callback(responseMessage, res.statusCode);
+            }
+        });
+    }
+
+    var requestOptions = {
+        hostname: conf.cosmoServer, // todo: remove this.. get configuration as parameter to constructor
+        port: conf.cosmoPort, // todo:remove this.. get configuration as parameter to constructor
+        path: '/blueprints/' + opts.blueprint_id + '?' + querystring.stringify(opts.params),
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/octet-stream',
+            'Transfer-Encoding': 'chunked'
+        }
+    };
+    logger.info('sending request', requestOptions);
+    var req = ajax.request(requestOptions, handleResponse);
+
+    req.on('error', function(e) {
+        logger.error('[uploadBlueprint] problem with request: ',e);
+        callback(e); // todo: this does not match the error format we use above.
+        return;
+    });
+
+
+    streamReader
+        .on('readable', function () {
+            logger.info('stream is readable');
+
+            var chunk;
+            while (null !== (chunk = streamReader.read())) {
+                logger.info('writing chunk', chunk);
+                req.write(chunk);
+            }
+            logger.info('chunk not writeable', chunk);
+        }).on('end', function () {
+            logger.info('stream end');
+            req.end();
+        });
+
+
+//    fs.readFile('../dev/master.tar.gz', function(err, data) {
+//        if (err) throw err;
+//
+//        req.write(data);
+//        req.end();
+//    });
+};
+
+
+// todo - Cloudify4node should be an instance.. why are we using static function declaration?
 Cloudify4node.getBlueprintById = function(blueprint_id, callback) {
     var requestData = createRequestData({
         path: '/blueprints/' + blueprint_id,
@@ -164,6 +284,7 @@ Cloudify4node.getBlueprintById = function(blueprint_id, callback) {
     createRequest(requestData, callback );
 };
 
+// todo - Cloudify4node should be an instance.. why are we using static function declaration?
 Cloudify4node.validateBlueprint = function(blueprint_id, callback) {
     var requestData = createRequestData({
         hostname: conf.cosmoServer,
@@ -175,6 +296,7 @@ Cloudify4node.validateBlueprint = function(blueprint_id, callback) {
     createRequest(requestData, callback );
 };
 
+// todo - Cloudify4node should be an instance.. why are we using static function declaration?
 Cloudify4node.deleteBlueprint = function(blueprint_id, callback) {
     var requestData = createRequestData({
         path: '/blueprints/' + blueprint_id,
@@ -191,6 +313,8 @@ Cloudify4node.deleteBlueprint = function(blueprint_id, callback) {
     });
 };
 
+// todo - Cloudify4node should be an instance.. why are we using static function declaration?
+// todo - cloudify rest API does not include anything about archiving, why is this here?
 Cloudify4node.archiveBlueprint = function(blueprint_id, callback) {
     var requestData = {
         hostname: conf.cosmoServer,
@@ -199,15 +323,19 @@ Cloudify4node.archiveBlueprint = function(blueprint_id, callback) {
         method: 'GET'
     };
 
+    function alreadyExists( name ){
+        return function(e) {
+            logger.debug('folder' + name + ' already exist :: ', e);
+        };
+    }
+
     fs.exists(conf.browseBlueprint.path, function (exists) {
         if (!exists) {
             var pathParts = conf.browseBlueprint.path.split('/');
             var pathToCreate = '';
             for (var i = 0; i < pathParts.length; i++) {
                 pathToCreate += pathParts[i] + '/';
-                fs.mkdir(pathToCreate, function(e) {
-                    console.log('folder' + pathParts[i] + ' already exist :: ' + e);
-                });
+                fs.mkdir(pathToCreate, alreadyExists(pathParts[i]));
             }
         }
         var filepath = path.join(conf.browseBlueprint.path, blueprint_id + '.tar.gz');
@@ -220,7 +348,7 @@ Cloudify4node.archiveBlueprint = function(blueprint_id, callback) {
                 })
                 .on('end', function () {
                     file.on('close', function(){
-                        var compress = new targz().extract(filepath, path.join(conf.browseBlueprint.path, blueprint_id), function(err){
+                        new targz().extract(filepath, path.join(conf.browseBlueprint.path, blueprint_id), function(err){
                             if(err) {
                                 console.log('problem with extract: ' + err);
                             }
@@ -241,6 +369,8 @@ Cloudify4node.archiveBlueprint = function(blueprint_id, callback) {
     });
 };
 
+// todo - Cloudify4node should be an instance.. why are we using static function declaration?
+// todo - cloudify rest api has nothing to do with "browse" on blueprint. why is this here?
 Cloudify4node.browseBlueprint = function(blueprint_id, callback) {
     browseBlueprint.isBlueprintExist(blueprint_id, function(err, isExist){
         if(!isExist) {
@@ -254,13 +384,16 @@ Cloudify4node.browseBlueprint = function(blueprint_id, callback) {
         else {
             browseBlueprint.browseBlueprint(blueprint_id, callback);
         }
-    })
+    });
 };
 
+// todo - Cloudify4node should be an instance.. why are we using static function declaration?
+// todo - cloudify rest api does not have a "browse" feature. why is this here?
 Cloudify4node.browseBlueprintFile = function(blueprint_id, relativePath, callback) {
     browseBlueprint.fileGetContent(blueprint_id, relativePath, callback);
 };
 
+// todo - Cloudify4node should be an instance.. why are we using static function declaration?
 Cloudify4node.getExecutionById = function(execution_id, callback) {
     var requestData = createRequestData({
         path: '/executions/' + execution_id,
@@ -270,6 +403,7 @@ Cloudify4node.getExecutionById = function(execution_id, callback) {
     createRequest(requestData, callback);
 };
 
+// todo - Cloudify4node should be an instance.. why are we using static function declaration?
 Cloudify4node.updateExecutionState = function(execution_id, new_state, callback) {
     var data = {
         'action': new_state
@@ -287,6 +421,7 @@ Cloudify4node.updateExecutionState = function(execution_id, new_state, callback)
     createRequest(requestData, callback);
 };
 
+// todo - Cloudify4node should be an instance.. why are we using static function declaration?
 Cloudify4node.getDeployments = function(callback) {
     var requestData = createRequestData({
         path: '/deployments',
@@ -296,6 +431,7 @@ Cloudify4node.getDeployments = function(callback) {
     createRequest(requestData, callback);
 };
 
+// todo - Cloudify4node should be an instance.. why are we using static function declaration?
 Cloudify4node.addDeployment = function(requestBody, callback) {
     var data = {
         'blueprint_id': requestBody.blueprint_id,
@@ -314,6 +450,7 @@ Cloudify4node.addDeployment = function(requestBody, callback) {
     createRequest(requestData, callback);
 };
 
+// todo - Cloudify4node should be an instance.. why are we using static function declaration?
 Cloudify4node.getDeploymentById = function(deployment_id, callback) {
     var requestData = createRequestData({
         path: '/deployments/' + deployment_id,
@@ -323,6 +460,7 @@ Cloudify4node.getDeploymentById = function(deployment_id, callback) {
     createRequest(requestData, callback);
 };
 
+// todo - Cloudify4node should be an instance.. why are we using static function declaration?
 Cloudify4node.deleteDeploymentById = function(deployment_id, ignore_live_nodes, callback) {
     var requestData = createRequestData({
         path: '/deployments/' + deployment_id + '?ignore_live_nodes=' + !!ignore_live_nodes,
@@ -332,6 +470,7 @@ Cloudify4node.deleteDeploymentById = function(deployment_id, ignore_live_nodes, 
     createRequest(requestData, callback);
 };
 
+// todo - Cloudify4node should be an instance.. why are we using static function declaration?
 Cloudify4node.getDeploymentNodes = function(deployment_id, state, callback) {
     var requestData = createRequestData({
         path: '/node-instances?deployment_id=' + deployment_id,
@@ -341,6 +480,7 @@ Cloudify4node.getDeploymentNodes = function(deployment_id, state, callback) {
     createRequest(requestData, callback);
 };
 
+// todo - Cloudify4node should be an instance.. why are we using static function declaration?
 Cloudify4node.getNodeInstances = function(callback) {
 
     var requestData = createRequestData({
@@ -351,10 +491,11 @@ Cloudify4node.getNodeInstances = function(callback) {
     createRequest(requestData, callback);
 };
 
+// todo - Cloudify4node should be an instance.. why are we using static function declaration?
 Cloudify4node.getNodeInstancesByDeploymentId = function(queryParams, callback) {
     var queryStr = '';
     if (queryParams !== null) {
-        queryStr = '?'
+        queryStr = '?';
         for (var param in queryParams) {
             queryStr += param + '=' + queryParams[param];
         }
@@ -367,6 +508,7 @@ Cloudify4node.getNodeInstancesByDeploymentId = function(queryParams, callback) {
     createRequest(requestData, callback);
 };
 
+// todo - Cloudify4node should be an instance.. why are we using static function declaration?
 Cloudify4node.getDeploymentExecutions = function(deployment_id, callback) {
     var requestData = createRequestData({
         path: '/executions?deployment_id=' + deployment_id + '&statuses=true',
@@ -376,6 +518,7 @@ Cloudify4node.getDeploymentExecutions = function(deployment_id, callback) {
     createRequest(requestData, callback);
 };
 
+// todo - Cloudify4node should be an instance.. why are we using static function declaration?
 Cloudify4node.executeDeployment = function(requestBody, callback) {
     var data = {
         'workflow_id': requestBody.workflow_id,
@@ -397,6 +540,8 @@ Cloudify4node.executeDeployment = function(requestBody, callback) {
     createRequest(requestData, callback);
 };
 
+// todo - Cloudify4node should be an instance.. why are we using static function declaration?
+// todo - shouldn't this  be deprecated?
 Cloudify4node.getProviderContext = function(callback) {
     var requestData = createRequestData({
         path: '/provider/context',
@@ -406,6 +551,7 @@ Cloudify4node.getProviderContext = function(callback) {
     createRequest(requestData, callback);
 };
 
+// todo - Cloudify4node should be an instance.. why are we using static function declaration?
 Cloudify4node.getEvents = function(query, callback) {
     var data = query;
     var requestData = createRequestData({
@@ -422,6 +568,7 @@ Cloudify4node.getEvents = function(query, callback) {
     createRequest(requestData, callback);
 };
 
+// todo - Cloudify4node should be an instance.. why are we using static function declaration?
 Cloudify4node.getWorkflows = function(deployment_id, callback) {
     var requestData = createRequestData({
         path: '/deployments/' + deployment_id + '/workflows',
@@ -431,10 +578,11 @@ Cloudify4node.getWorkflows = function(deployment_id, callback) {
     createRequest(requestData, callback);
 };
 
+// todo - Cloudify4node should be an instance.. why are we using static function declaration?
 Cloudify4node.getNode = function(node_id, queryParams, callback) {
     var queryStr = '';
     if (queryParams !== null) {
-        queryStr = '?'
+        queryStr = '?';
         for (var param in queryParams) {
             queryStr += param + '=' + queryParams[param] + '&';
         }
@@ -447,10 +595,11 @@ Cloudify4node.getNode = function(node_id, queryParams, callback) {
     createRequest(requestData, callback);
 };
 
+// todo - Cloudify4node should be an instance.. why are we using static function declaration?
 Cloudify4node.getNodes = function(queryParams, callback) {
     var queryStr = '';
     if (queryParams !== null) {
-        queryStr = '?'
+        queryStr = '?';
         for (var param in queryParams) {
             queryStr += param + '=' + queryParams[param] + '&';
         }
@@ -463,10 +612,12 @@ Cloudify4node.getNodes = function(queryParams, callback) {
     createRequest(requestData, callback);
 };
 
+/////   todo - WHY IS THIS HERE??????? WHAT DOES IT HAVE TO DO WITH CLOUDIFY REST API????
 Cloudify4node.getPackageJson = function(callback) {
     return callback(null, require('../package.json'));
 };
 
+// todo - Cloudify4node should be an instance.. why are we using static function declaration?
 Cloudify4node.getManagerVersion = function(callback) {
     var requestData = createRequestData({
         path: '/version',
@@ -477,6 +628,8 @@ Cloudify4node.getManagerVersion = function(callback) {
     //return callback(null, require('./mock/managerVersion.json'));
 };
 
+// todo: why is this API writing directly to response? need to change it!
+// todo: we can "writeHead" outside, and then declare we get "streamWriter" here.. which is an API, which is good.
 Cloudify4node.getLogsExportFile = function(response, callback) {
     var filePath = path.join(conf.logs.folder, conf.logs.file);
     new targz().compress(conf.logs.folder, filePath, function(err){
@@ -497,6 +650,8 @@ Cloudify4node.getLogsExportFile = function(response, callback) {
     });
 };
 
+// todo: these functions seem to be in the wrong place. they are not related to cloudify4node.
+
 Cloudify4node.getDashboardSeries = function(query, callback) {
     monitoring.getDashboardSeries(query, callback);
 };
@@ -508,3 +663,6 @@ Cloudify4node.getDeploymentDashboards = function(query, callback) {
 Cloudify4node.getDashboardSeriesList = function(query, callback) {
     monitoring.getDashboardSeriesList(query, callback);
 };
+
+
+

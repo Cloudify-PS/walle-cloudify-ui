@@ -1,9 +1,11 @@
+'use strict';
 var original = require('./Cloudify4node');
-var conf = require("../backend/appConf");
+//var conf = require('../backend/appConf');
 
+function Cloudify4node(/*options*/) {}
 module.exports = Cloudify4node;
 
-function Cloudify4node(options) {}
+
 
 function createRequest(filename) {
     return require('./mock/' + filename + '.json');
@@ -17,7 +19,7 @@ function getMock(filename){
     return function() {
         var callback = arguments[arguments.length - 1];
         return callback(null, createRequest(filename));
-    }
+    };
 }
 
 for ( var i in original ) {

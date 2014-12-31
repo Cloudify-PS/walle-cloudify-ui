@@ -1,8 +1,9 @@
-var cloudify4node = require('../Cloudify4node');
+'use strict';
+//var cloudify4node = require('../Cloudify4node');
 
-cloudify4node.getLogsExportFile(function(err, data) {
-    response.send(err !== null ? err : data);
-});
+//cloudify4node.getLogsExportFile(function(err, data) {
+//    response.send(err !== null ? err : data);
+//});
 
 //var compress = new targz().compress('logs/', '../logs/logs.tar.gz', function(err){
 //    if(err)

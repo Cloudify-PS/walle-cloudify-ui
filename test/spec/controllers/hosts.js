@@ -2,6 +2,7 @@
 
 describe('Controller: HostsCtrl', function () {
 
+    /*jshint camelcase: false */
     var HostsCtrl, scope;
 
     // load the controller's module
@@ -11,32 +12,32 @@ describe('Controller: HostsCtrl', function () {
     describe('Test setup', function() {
         it ('', inject(function ($controller, $rootScope, $httpBackend, $q, CloudifyService, NodeSearchService) {
 
-            $httpBackend.whenGET("/backend/configuration?access=all").respond(200);
-            $httpBackend.whenGET("/backend/versions/ui").respond(200);
-            $httpBackend.whenGET("/backend/versions/manager").respond(200);
-            $httpBackend.whenGET("/backend/version/latest?version=00").respond('300');
-            $httpBackend.whenGET("/backend/blueprints").respond(200);
+            $httpBackend.whenGET('/backend/configuration?access=all').respond(200);
+            $httpBackend.whenGET('/backend/versions/ui').respond(200);
+            $httpBackend.whenGET('/backend/versions/manager').respond(200);
+            $httpBackend.whenGET('/backend/version/latest?version=00').respond('300');
+            $httpBackend.whenGET('/backend/blueprints').respond(200);
 
             scope = $rootScope.$new();
 
             NodeSearchService.execute = function() {
                 var deferred = $q.defer();
                 var result = [{
-                    "type_hierarchy": ["cloudify.nodes.Root", "cloudify.nodes.Compute", "cloudify.openstack.nodes.Server", "vm_host"],
-                    "node_id": "nodejs_vm",
-                    "state": "uninitialized",
-                    "host_id": "nodejs_vm_6d2f0",
-                    "deployment_id": "deployment1",
-                    "id": "nodejs_vm_6d2f0",
-                    "type": "vm_host"
+                    'type_hierarchy': ['cloudify.nodes.Root', 'cloudify.nodes.Compute', 'cloudify.openstack.nodes.Server', 'vm_host'],
+                    'node_id': 'nodejs_vm',
+                    'state': 'uninitialized',
+                    'host_id': 'nodejs_vm_6d2f0',
+                    'deployment_id': 'deployment1',
+                    'id': 'nodejs_vm_6d2f0',
+                    'type': 'vm_host'
                 }, {
-                    "type_hierarchy": ["cloudify.nodes.Root", "cloudify.openstack.nodes.Server"],
-                    "node_id": "mongod_vm",
-                    "state": "uninitialized",
-                    "host_id": "mongod_vm_b9f82",
-                    "deployment_id": "deployment1",
-                    "id": "mongod_vm_b9f82",
-                    "type": "server"
+                    'type_hierarchy': ['cloudify.nodes.Root', 'cloudify.openstack.nodes.Server'],
+                    'node_id': 'mongod_vm',
+                    'state': 'uninitialized',
+                    'host_id': 'mongod_vm_b9f82',
+                    'deployment_id': 'deployment1',
+                    'id': 'mongod_vm_b9f82',
+                    'type': 'server'
                 }];
 
                 deferred.resolve(result);
@@ -48,20 +49,20 @@ describe('Controller: HostsCtrl', function () {
                 var deferred = $q.defer();
                 var instances = [
                     {
-                        deployment_id: "deployment1",
-                        host_id: "mongod_vm_783c7",
-                        id: "mongod_vm_0c2ae",
-                        node_id: "mongod_vm",
+                        deployment_id: 'deployment1',
+                        host_id: 'mongod_vm_783c7',
+                        id: 'mongod_vm_0c2ae',
+                        node_id: 'mongod_vm',
                         runtime_properties: null,
-                        state: "uninitialized"
+                        state: 'uninitialized'
                     },
                     {
-                        deployment_id: "deployment1",
-                        host_id: "mongod_783c7",
-                        id: "mongod_0c2ae",
-                        node_id: "mongod",
+                        deployment_id: 'deployment1',
+                        host_id: 'mongod_783c7',
+                        id: 'mongod_0c2ae',
+                        node_id: 'mongod',
                         runtime_properties: null,
-                        state: "uninitialized"
+                        state: 'uninitialized'
                     }
                 ];
                 deferred.resolve(instances);
@@ -72,15 +73,15 @@ describe('Controller: HostsCtrl', function () {
                 var deferred = $q.defer();
                 deferred.resolve({
                     blueprints: [{
-                        "id": "blueprint1",
-                        "deployments": [{
-                            "blueprint_id": "blueprint1",
-                            "id": "deployment1"
+                        'id': 'blueprint1',
+                        'deployments': [{
+                            'blueprint_id': 'blueprint1',
+                            'id': 'deployment1'
                         }]
                     }],
                     deployments: [{
-                        "blueprint_id": "blueprint1",
-                        "id": "deployment1"
+                        'blueprint_id': 'blueprint1',
+                        'id': 'deployment1'
                     }]
                 });
                 return deferred.promise;
@@ -93,13 +94,13 @@ describe('Controller: HostsCtrl', function () {
 
             scope.eventsFilter = {
                 'blueprints': {
-                    label: "blueprint1",
-                    value: "blueprint1"
+                    label: 'blueprint1',
+                    value: 'blueprint1'
                 },
                 'deployments': {
-                    label: "deployment1",
-                    parent: "blueprint1",
-                    value: "deployment1"
+                    label: 'deployment1',
+                    parent: 'blueprint1',
+                    value: 'deployment1'
                 }
             };
 

@@ -2,7 +2,7 @@
 
 describe('Service: NodeSearchService', function () {
 
-    var NodeSearchService,
+    var mNodeSearchService,
         nodeSearchData,
         nodeSearchDataSec;
 
@@ -12,8 +12,8 @@ describe('Service: NodeSearchService', function () {
             // Load the app module
             module('cosmoUiApp', 'gsUiHelper');
 
-            // Initialize a new instance of NodeSearchService
-            inject(function (_NodeSearchService_, $helper, CloudifyService, $q) {
+            // Initialize a new instance of mNodeSearchService
+            inject(function (NodeSearchService, $helper, CloudifyService, $q) {
                 $helper.addInjects([
                     {
                         url: '/backend/blueprints',
@@ -21,7 +21,7 @@ describe('Service: NodeSearchService', function () {
                     }
                 ]);
 
-                NodeSearchService = _NodeSearchService_;
+                mNodeSearchService = NodeSearchService;
 
                 CloudifyService.blueprints.list = function() {
                     var deferred = $q.defer();
@@ -47,7 +47,7 @@ describe('Service: NodeSearchService', function () {
                     ];
                     deferred.resolve(resolve);
                     return deferred.promise;
-                }
+                };
             });
 
         });
@@ -55,12 +55,12 @@ describe('Service: NodeSearchService', function () {
 
     describe('Unit tests', function() {
 
-        it('should create a new NodeSearchService instance', function() {
-            expect(NodeSearchService).not.toBeUndefined();
+        it('should create a new mNodeSearchService instance', function() {
+            expect(mNodeSearchService).not.toBeUndefined();
         });
 
         beforeEach(function(){
-            NodeSearchService.getNodeSearchData()
+            mNodeSearchService.getNodeSearchData()
                 .then(function(data){
                     nodeSearchData = data;
                 });
@@ -78,7 +78,7 @@ describe('Service: NodeSearchService', function () {
         });
 
         afterEach(function(){
-            NodeSearchService.getNodeSearchData()
+            mNodeSearchService.getNodeSearchData()
                 .then(function(data){
                     nodeSearchDataSec = data;
                 });

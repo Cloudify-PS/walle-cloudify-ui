@@ -1,5 +1,5 @@
 'use strict';
-
+/*jshint camelcase: false */
 var logger = require('log4js').getLogger('cloudify4node.spec');
 var cloudify4node = require('../../../../backend/Cloudify4node');
 
@@ -41,9 +41,9 @@ describe ('cloudify4node', function(){
 
             runs(function(){
                 expect(writeIsInvoked).toBe(false);
-            })
+            });
 
-        })
-    })
+        });
+    });
 });
 

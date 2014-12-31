@@ -1,135 +1,136 @@
 'use strict';
 
+/*jshint camelcase: false */
 describe('Controller: DeploydialogCtrl', function () {
     var DeployDialogCtrl, scope;
     var _deployment = {
-        "inputs": {
-            "webserver_port": 8080,
-            "image_name": "image_name",
-            "agent_user": "agent_user",
-            "flavor_name": "flavor_name"
+        'inputs': {
+            'webserver_port': 8080,
+            'image_name': 'image_name',
+            'agent_user': 'agent_user',
+            'flavor_name': 'flavor_name'
         },
-        "blueprint_id": "blueprint1",
-        "id": "deployment1",
-        "outputs": {
-            "http_endpoint": {
-                "description": "HTTP web server endpoint.",
-                "value": {
-                    "get_attribute": ["vm", "ip"]
+        'blueprint_id': 'blueprint1',
+        'id': 'deployment1',
+        'outputs': {
+            'http_endpoint': {
+                'description': 'HTTP web server endpoint.',
+                'value': {
+                    'get_attribute': ['vm', 'ip']
                 }
             }
         }
     };
 
     var _blueprint = {
-        "id": "blueprint1",
-        "plan": {
-            "inputs": {
-                "webserver_port": {
-                    "default": 8080
+        'id': 'blueprint1',
+        'plan': {
+            'inputs': {
+                'webserver_port': {
+                    'default': 8080
                 },
-                "flavor_name": {
+                'flavor_name': {
                 },
-                "agent_user": {
+                'agent_user': {
                 },
-                "image_name": {
+                'image_name': {
                 },
-                "bool_variable": {
-                    "default": false
+                'bool_variable': {
+                    'default': false
                 },
-                "str_variable": {
-                    "default": "some string"
+                'str_variable': {
+                    'default': 'some string'
                 }
             },
-            "workflows": {
-                "execute_operation": {
-                    "operation": "cloudify.plugins.workflows.execute_operation",
-                    "parameters": {
-                        "operation_kwargs": {
-                            "default": {}
+            'workflows': {
+                'execute_operation': {
+                    'operation': 'cloudify.plugins.workflows.execute_operation',
+                    'parameters': {
+                        'operation_kwargs': {
+                            'default': {}
                         },
-                        "node_ids": {
-                            "default": []
+                        'node_ids': {
+                            'default': []
                         },
-                        "node_instance_ids": {
-                            "default": []
+                        'node_instance_ids': {
+                            'default': []
                         },
-                        "run_by_dependency_order": {
-                            "default": false
+                        'run_by_dependency_order': {
+                            'default': false
                         },
-                        "operation": {},
-                        "type_names": {
-                            "default": []
+                        'operation': {},
+                        'type_names': {
+                            'default': []
                         }
                     },
-                    "plugin": "default_workflows"
+                    'plugin': 'default_workflows'
                 },
-                "install": {
-                    "operation": "cloudify.plugins.workflows.install",
-                    "plugin": "default_workflows"
+                'install': {
+                    'operation': 'cloudify.plugins.workflows.install',
+                    'plugin': 'default_workflows'
                 },
-                "uninstall": {
-                    "operation": "cloudify.plugins.workflows.uninstall",
-                    "plugin": "default_workflows"
+                'uninstall': {
+                    'operation': 'cloudify.plugins.workflows.uninstall',
+                    'plugin': 'default_workflows'
                 }
             }
         },
-        "deployments": [{
-            "inputs": {
-                "flavor_name": "flavor_name",
-                "webserver_port": 8080,
-                "image_name": "image_name",
-                "agent_user": "agent_user"
+        'deployments': [{
+            'inputs': {
+                'flavor_name': 'flavor_name',
+                'webserver_port': 8080,
+                'image_name': 'image_name',
+                'agent_user': 'agent_user'
             },
-            "blueprint_id": "blueprint1",
-            "created_at": "2014-11-10 23:15:06.908209",
-            "workflows": [{
-                "created_at": null,
-                "name": "execute_operation",
-                "parameters": {
-                    "operation_kwargs": {
-                        "default": {}
+            'blueprint_id': 'blueprint1',
+            'created_at': '2014-11-10 23:15:06.908209',
+            'workflows': [{
+                'created_at': null,
+                'name': 'execute_operation',
+                'parameters': {
+                    'operation_kwargs': {
+                        'default': {}
                     },
-                    "node_ids": {
-                        "default": []
+                    'node_ids': {
+                        'default': []
                     },
-                    "node_instance_ids": {
-                        "default": []
+                    'node_instance_ids': {
+                        'default': []
                     },
-                    "run_by_dependency_order": {
-                        "default": false
+                    'run_by_dependency_order': {
+                        'default': false
                     },
-                    "operation": {},
-                    "type_names": {
-                        "default": []
+                    'operation': {},
+                    'type_names': {
+                        'default': []
                     }
                 }
             }, {
-                "created_at": null,
-                "name": "install",
-                "parameters": {}
+                'created_at': null,
+                'name': 'install',
+                'parameters': {}
             }, {
-                "created_at": null,
-                "name": "uninstall",
-                "parameters": {}
+                'created_at': null,
+                'name': 'uninstall',
+                'parameters': {}
             }],
-            "id": "deployment1"
+            'id': 'deployment1'
         }]
     };
 
     var _error = {
-        "message": "Required input 'image_name' was not specified - expected inputs: [u'webserver_port', u'image_name', u'flavor_name', u'agent_user']",
-        "error_code": "missing_required_deployment_input_error"
+        'message': 'Required input \'image_name\' was not specified - expected inputs: [u\'webserver_port\', u\'image_name\', u\'flavor_name\', u\'agent_user\']',
+        'error_code': 'missing_required_deployment_input_error'
     };
 
     beforeEach(module('cosmoUiApp', 'ngMock', 'templates-main'));
 
     describe('Test setup', function() {
         it ('', inject(function ($controller, $rootScope, $httpBackend, $q, CloudifyService) {
-            $httpBackend.whenGET("/backend/configuration?access=all").respond(200);
-            $httpBackend.whenGET("/backend/versions/ui").respond(200);
-            $httpBackend.whenGET("/backend/versions/manager").respond(200);
-            $httpBackend.whenGET("/backend/version/latest?version=00").respond('300');
+            $httpBackend.whenGET('/backend/configuration?access=all').respond(200);
+            $httpBackend.whenGET('/backend/versions/ui').respond(200);
+            $httpBackend.whenGET('/backend/versions/manager').respond(200);
+            $httpBackend.whenGET('/backend/version/latest?version=00').respond('300');
 
             scope = $rootScope.$new();
 
@@ -141,7 +142,7 @@ describe('Controller: DeploydialogCtrl', function () {
                 return deferred.promise;
             };
 
-            scope.redirectToDeployment = function(deployment_id, blueprintId) {};
+            scope.redirectToDeployment = function() {};
 
             DeployDialogCtrl = $controller('DeployDialogCtrl', {
                 $scope: scope,
@@ -155,12 +156,12 @@ describe('Controller: DeploydialogCtrl', function () {
     describe('Controller tests', function() {
         beforeEach(function() {
             scope.inputs = {
-                "webserver_port": 8080,
-                "image_name": "image_name",
-                "agent_user": "agent_user",
-                "flavor_name": "flavor_name",
-                "bool_variable": false,
-                "str_variable": "some string"
+                'webserver_port': 8080,
+                'image_name': 'image_name',
+                'agent_user': 'agent_user',
+                'flavor_name': 'flavor_name',
+                'bool_variable': false,
+                'str_variable': 'some string'
             };
         });
 
@@ -197,12 +198,12 @@ describe('Controller: DeploydialogCtrl', function () {
         });
 
         it('should update input JSON object when one of the inputs is updated', function() {
-            scope.inputs['image_name'] = "new value";
+            scope.inputs.image_name = 'new value';
             scope.inputsState = 'raw';
 
             scope.updateInputs();
 
-            expect(JSON.parse(scope.rawString)['image_name']).toBe('new value');
+            expect(JSON.parse(scope.rawString).image_name).toBe('new value');
         });
 
         it('should save input type when converting inputs to JSON', function() {
@@ -212,9 +213,9 @@ describe('Controller: DeploydialogCtrl', function () {
 
             scope.updateInputs();
 
-            expect(typeof(JSON.parse(scope.rawString)['webserver_port'])).toBe('number');
-            expect(typeof(JSON.parse(scope.rawString)['bool_variable'])).toBe('boolean');
-            expect(typeof(JSON.parse(scope.rawString)['str_variable'])).toBe('string');
+            expect(typeof(JSON.parse(scope.rawString).webserver_port)).toBe('number');
+            expect(typeof(JSON.parse(scope.rawString).bool_variable)).toBe('boolean');
+            expect(typeof(JSON.parse(scope.rawString).str_variable)).toBe('string');
         });
 
         it('should not validate deployment name', function() {
