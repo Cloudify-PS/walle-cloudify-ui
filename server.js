@@ -24,13 +24,9 @@ var services = require('./backend/services');
 var conf = services.conf;
 var cloudify4node = services.cloudify4node;
 
-
-var conf = require('./backend/appConf');
-
 var port = conf.bindPort || 9001;
 var ip = conf.bindIp || '0.0.0.0';
 
-var cloudify4node;
 var log4js = require('log4js');
 var logger = log4js.getLogger('server');
 var influx = require('influx');
