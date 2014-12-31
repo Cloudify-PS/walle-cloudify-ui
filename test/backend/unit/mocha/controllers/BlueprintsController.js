@@ -56,6 +56,7 @@ describe('BlueprintsController', function(){
             req.files = { application_archive: 'guy.blueprint.tar.gz' };
 
             BlueprintsController.upload(req,res);
+            expect(fs.createReadStream.called).to.be(true);
         });
 
         it('should send back error if got one from manager', function(){
