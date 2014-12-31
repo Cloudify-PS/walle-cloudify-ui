@@ -1,3 +1,4 @@
+'use strict';
 var expect = require('expect.js');
 
 describe('GsHttpUtils', function(){
@@ -93,7 +94,7 @@ describe('GsHttpUtils', function(){
 
             GsHttpUtils.getUrl('http://do.redirect.com', function(){
                 expect(http.get.calledWith('http://some.other.url')).to.be(true);
-            })
+            });
         });
 
         it('should fail if return code not 200 and no redirect details specified on response', function(){

@@ -34,7 +34,7 @@ describe('Controller: FileSelectionDialogCtrl', function () {
             scope.selectedFile = {};
             _cloudifyService.blueprints.add = function(data, successCallback, errorCallback) {
                 var e = {
-                    'responseText': '{\'status\': 400  , \'message\': \'400: Invalid blueprint name\', \'error_code\': \'Blueprint name required\'}'
+                    'responseText': 'Error uploading blueprint'   // todo: verify with erez
                 };
                 errorCallback(e);
             };
@@ -46,7 +46,7 @@ describe('Controller: FileSelectionDialogCtrl', function () {
                 return scope.uploadError === true;
             });
             runs(function() {
-                expect(scope.errorMessage).toBe('400: Invalid blueprint name');
+                expect(scope.errorMessage).toBe('Error uploading blueprint'); // todo: verify with erez
             });
         });
 

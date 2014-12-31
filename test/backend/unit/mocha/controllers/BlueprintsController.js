@@ -1,5 +1,7 @@
+'use strict';
 var expect = require('expect.js');
 
+/*jshint camelcase: false */
 describe('BlueprintsController', function(){
 
     var BlueprintsController = require('../../../../../backend/controllers/BlueprintsController');
@@ -106,7 +108,7 @@ describe('BlueprintsController', function(){
 
         it('should handle errors if throws from getUrls', function(){
             req.body = { 'type' : 'url' , 'url' : 'http://some.url.com'};
-            sandbox.stub(services.httpUtils,'getUrl', sinon.spy(function( url, callback ){
+            sandbox.stub(services.httpUtils,'getUrl', sinon.spy(function( ){
                 throw new Error('unexpected');
             }));
             BlueprintsController.upload(req,res);

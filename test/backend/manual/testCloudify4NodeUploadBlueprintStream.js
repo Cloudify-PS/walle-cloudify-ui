@@ -1,3 +1,5 @@
+'use strict';
+
 var logger = require('log4js').getLogger('testCloudify4NodeUploadBlueprintStream');
 var fs = require('fs');
 var request = require('request');
@@ -41,7 +43,7 @@ function main(){
                 });
         }
 
-        var ajax = require('http');
+//        var ajax = require('http');
 //        if ( url.indexOf('https') === 0){
 //            ajax = require('https');
 //        }
@@ -62,7 +64,7 @@ function main(){
 //
 //        });
 
-        var theResponse = request.get(url).on('response',function (response) {
+        request.get(url).on('response', function (response) {
 
 
 //            logger.info('http read stream!!! go!!!', response.statusCode, response.headers );
@@ -70,7 +72,7 @@ function main(){
             readResponse(response);
 //            Cloudify4node.uploadBlueprint(response, { 'blueprint_id': 'guy' + new Date().getTime(), 'params': { 'application_file_name': 'ec2-blueprint.yaml'} }, function () {
 //                logger.info('upload callback', arguments);
-            });
+        });
 
 //        }).on('error', function(err){
 //            logger.error('got error', err);
@@ -89,8 +91,8 @@ function main(){
 
     process.on('uncaughtException', function(err){ logger.error('uncaught error',err);});
     urlStreamUpload('https://github.com/cloudify-cosmo/cloudify-nodecellar-example/archive/master.tar.gz');
-//    loadFromFile();
-//    oldFashionedUpload();
+    loadFromFile();
+    oldFashionedUpload();
 }
 
 if (require.main === module) {

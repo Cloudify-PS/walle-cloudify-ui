@@ -176,13 +176,34 @@ module.exports = function (grunt) {
                     ]
                 }
             },
+            backendMochaTest:{
+                options: {
+                    jshintrc: 'test/backend/unit/mocha/.jshintrc'
+                },
+                files: {
+                    src: [
+                        'test/backend/unit/mocha/**/*.js'
+                    ]
+                }
+            },
+            backendJasmineTest:{
+                options: {
+                    jshintrc: 'test/backend/.jshintrc'
+                },
+                files: {
+                    src: [
+                        'test/backend/**/*.js',
+                        '!test/backend/unit/mocha/**/*.js'
+                    ]
+                }
+            },
             test: {
                 options: {
-                    jshintrc: 'test/.jshintrc'
+                    jshintrc: 'test/spec/.jshintrc'
                 },
                 files: {
                     'src': [
-                        'test/**/*.js',
+                        'test/spec/**/*.js',
                         '!test/jasmine*/**/*'
                     ]
                 }

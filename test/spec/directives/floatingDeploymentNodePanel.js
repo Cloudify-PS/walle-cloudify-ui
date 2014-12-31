@@ -1,7 +1,7 @@
 'use strict';
 
 describe('Directive: floatingDeploymentNodePanel', function () {
-    var element, scope;
+    var element, scope, isolateScope;
     var _node = {
         'relationships': [{
             'type_hierarchy': ['cloudify.relationships.depends_on', 'cloudify.relationships.connected_to', 'cloudify.openstack.server_connected_to_floating_ip'],
@@ -53,6 +53,7 @@ describe('Directive: floatingDeploymentNodePanel', function () {
             $rootScope.$apply();
 
             scope = element.isolateScope();
+            isolateScope = element.children().scope();
             scope.$apply();
         }));
     });
@@ -81,21 +82,15 @@ describe('Directive: floatingDeploymentNodePanel', function () {
         });
 
         it('should show panel when node is set', function() {
-            spyOn($.fn, 'show').andCallThrough();
             scope.node = _node;
-
             scope.$apply();
-
-            expect($(element).show).toBe('show');
+            expect(isolateScope.showPanel).toBe(true);
         });
 
         it('should hide panel when node is set to null', function() {
-            spyOn($.fn, 'hide').andCallThrough();
             scope.node = null;
-
             scope.$apply();
-
-            expect($(element).hide).toHaveBeenCalled();
+            expect(isolateScope.showPanel).toBe(false);
         });
     });
 });
