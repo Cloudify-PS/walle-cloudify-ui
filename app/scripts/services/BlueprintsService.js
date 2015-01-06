@@ -42,14 +42,21 @@ angular.module('cosmoUiApp')
 
         function _add(data, successCallback, errorCallback) {
             $.ajax({
-                url: '/backend/blueprints/add',
+                url: '/backend/blueprints/upload',
                 data: data,
                 type: 'POST',
                 contentType: false,
                 processData: false,
                 cache: false,
                 success: function(data) {
-                    successCallback(data);
+                    data = JSON.parse(data);
+                    if (data.error_code) {
+                        errorCallback({
+                            responseText: data
+                        });
+                    } else {
+                        successCallback(data);
+                    }
                 },
                 error: function(e) {
                     errorCallback(e);

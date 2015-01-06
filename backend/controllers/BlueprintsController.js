@@ -64,7 +64,6 @@ var uploadTypes = new UploadTypes();
  * @param {object} res response
  */
 exports.upload = function( req, res ){
-
     var blueprintUploadData = req.body;
 
     if ( !blueprintUploadData ){
@@ -73,7 +72,7 @@ exports.upload = function( req, res ){
     }
 
     // resolve upload type
-    var type= uploadTypes.ids.FILE;
+    var type = uploadTypes.ids.FILE;
     if ( blueprintUploadData.hasOwnProperty('type') ){
         type = blueprintUploadData.type;
         logger.debug('request overrides type with value', type);
@@ -93,9 +92,9 @@ exports.upload = function( req, res ){
     }
 
     if ( type === uploadTypes.ids.FILE ){
-        var readStream = fs.createReadStream( req.files.application_archive, { bufferSize: 64 * 1024 });
+        var readStream = fs.createReadStream( req.files.application_archive.path, { bufferSize: 64 * 1024 });
 
-        services.cloudify4node.uploadBlueprint(readStream, blueprintUploadData.opts , uploadCallback);
+        services.cloudify4node.uploadBlueprint(readStream, JSON.parse(blueprintUploadData.opts) , uploadCallback);
     }else{ // url
         var url = blueprintUploadData.url;
         if ( !url ){
