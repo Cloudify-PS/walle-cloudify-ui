@@ -219,9 +219,18 @@ Cloudify4node.uploadBlueprint = function(streamReader, opts, callback) {
         });
 
         res.on('end', function() {
-            if (res.statusCode === 200){
+            if (res.statusCode === 200) {
+                console.log('200', responseMessage);
                 callback(null, res.statusCode);
+            } else if (res.statusCode === 400){
+                console.log('responseMessage', responseMessage);
+                callback(400, {
+                    'status': 400,
+                    'message': responseMessage,
+                    'error_code': 'Blueprint upload error'
+                });
             } else {
+                console.log('else', responseMessage);
                 callback(responseMessage, res.statusCode);
             }
         });
