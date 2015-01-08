@@ -197,13 +197,21 @@ Cloudify4node.addBlueprint = function(application_archive, blueprint_id, callbac
 // todo - Cloudify4node should be an instance.. why are we using static function declaration?
 Cloudify4node.uploadBlueprint = function(streamReader, opts, callback) {
     logger.debug('uploading blueprint', opts);
-    if (!opts || !opts.blueprint_id) {
-        // todo : are we sure that this is the format we want? does not match other scenarios in this function. it is not a nodejs standard..
-        callback(400, {
+    if (!opts || !opts.blueprint_id || !opts.params.application_file_name) {
+        var errJSON = {
             'status': 400,
-            'message': '400: Invalid blueprint name',
-            'error_code': ' Blueprint name required'
-        });
+            'message': '',
+            'error_code': 'Blueprint name required'
+        };
+        // todo : are we sure that this is the format we want? does not match other scenarios in this function. it is not a nodejs standard..
+        if (!opts.blueprint_id) {
+            errJSON.message = '400: Invalid blueprint name';
+            errJSON.error_code = 'Blueprint name required';
+        } else if (!opts.params.application_file_name) {
+            errJSON.message = '400: Invalid blueprint filename';
+            errJSON.error_code = 'Blueprint filename required';
+        }
+        callback(400, errJSON);
         return;
     }
 
@@ -220,18 +228,10 @@ Cloudify4node.uploadBlueprint = function(streamReader, opts, callback) {
 
         res.on('end', function() {
             if (res.statusCode === 200) {
-                console.log('200', responseMessage);
                 callback(null, res.statusCode);
-            } else if (res.statusCode === 400){
-                console.log('responseMessage', responseMessage);
-                callback(400, {
-                    'status': 400,
-                    'message': responseMessage,
-                    'error_code': 'Blueprint upload error'
-                });
             } else {
-                console.log('else', responseMessage);
-                callback(responseMessage, res.statusCode);
+                console.log('responseMessage', responseMessage);
+                callback(JSON.parse(responseMessage), res.statusCode);
             }
         });
     }

@@ -76,26 +76,26 @@ exports.upload = function( req, res ){
     if ( blueprintUploadData.hasOwnProperty('type') ){
         type = blueprintUploadData.type;
         logger.debug('request overrides type with value', type);
-    } else{
+    } else {
         logger.debug('request does not override type');
     }
 
     if ( !uploadTypes.isValid(type) ){
         res.status(400).send( { 'message' : 'invalid upload type [' + type + ']' } );
         return;
-    }else{
+    } else {
         logger.debug(type, 'is valid upload type');
     }
 
     function uploadCallback( err, data ){
-        res.send(err||data);
+        res.send(err || data, err !== null ? data : 200);
     }
 
     if ( type === uploadTypes.ids.FILE ){
         var readStream = fs.createReadStream( req.files.application_archive.path, { bufferSize: 64 * 1024 });
 
         services.cloudify4node.uploadBlueprint(readStream, JSON.parse(blueprintUploadData.opts) , uploadCallback);
-    }else{ // url
+    } else { // url
         var url = blueprintUploadData.url;
         if ( !url ){
             res.status(400).send({'message' : 'missing url on request'});
@@ -111,7 +111,7 @@ exports.upload = function( req, res ){
                 logger.debug('got response when fetching upload url');
                 services.cloudify4node.uploadBlueprint(response, blueprintUploadData.opts, uploadCallback);
             });
-        }catch(e){
+        } catch(e) {
             logger.error('unable to send request to url [', url ,'] reason:', e.message);
             res.status(500).send({'message' : e.message});
             return;

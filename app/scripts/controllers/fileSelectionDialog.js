@@ -52,10 +52,10 @@ angular.module('cosmoUiApp')
                 function(e) {
                     var responseText = null;
                     try {
-                        responseText = e.responseText;
+                        responseText = e.responseJSON;
                     } catch (e) {}
 
-                    if(responseText && responseText.hasOwnProperty('message')) {
+                    if (responseText && responseText.hasOwnProperty('message')) {
                         $scope.errorMessage = responseText.message;
                     } else if(e.hasOwnProperty('statusText')) {
                         $scope.errorMessage = e.statusText;

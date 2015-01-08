@@ -49,7 +49,7 @@ angular.module('cosmoUiApp')
                 processData: false,
                 cache: false,
                 success: function(data) {
-                    successCallback(JSON.parse(data));
+                    successCallback(data);
                 },
                 error: function(e) {
                     errorCallback(e);
