@@ -93,7 +93,6 @@ describe('Controller: FileSelectionDialogCtrl', function () {
             spyOn(scope, 'uploadDone').andCallThrough();
 
             scope.uploadFile();
-            scope.$apply();
 
             waitsFor(function() {
                 return scope.uploadInProcess === false;
