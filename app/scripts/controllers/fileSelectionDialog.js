@@ -28,7 +28,7 @@ angular.module('cosmoUiApp')
             if (filename) {
                 $scope.blueprintUploadOpts.params = {
                     application_file_name: filename
-                }
+                };
             }
         });
 
