@@ -10,11 +10,27 @@ angular.module('cosmoUiApp')
         $scope.blueprintFilename = '';
         $scope.uploadError = false;
         $scope.errorMessage = 'Error uploading blueprint';
+        $scope.blueprintUploadOpts = {
+            blueprint_id: '',
+            params: {
+                application_file_name: ''
+            }
+        };
 
         $scope.onFileSelect = function ($files) {
             $scope.selectedFile = $files[0];
             $log.info(['files were selected', $files]);
         };
+
+        $scope.$watch('blueprintUploadOpts.params.application_file_name', function(filename) {
+            $scope.blueprintUploadOpts.params = {};
+
+            if (filename) {
+                $scope.blueprintUploadOpts.params = {
+                    application_file_name: filename
+                }
+            }
+        });
 
         $scope.uploadFile = function() {
             $log.info(['upload: ', selectedFile]);
@@ -22,23 +38,14 @@ angular.module('cosmoUiApp')
             if (!$scope.isUploadEnabled()) {
                 return;
             }
-            var planForm = new FormData();
-            var opts = {
-                params: {}
-            };
-            planForm.append('application_archive', $scope.selectedFile);
-            if ($scope.blueprintName !== '') {
-                opts.blueprint_id = $scope.blueprintName;
-            }
-            if ($scope.blueprintFilename !== '') {
-                opts.params.application_file_name = $scope.blueprintFilename;
-            }
-            planForm.append('opts', JSON.stringify(opts));
+            var blueprintUploadForm = new FormData();
+            blueprintUploadForm.append('application_archive', $scope.selectedFile);
+            blueprintUploadForm.append('opts', JSON.stringify($scope.blueprintUploadOpts));
 
             $scope.uploadInProcess = true;
             $scope.uploadError = false;
 
-            CloudifyService.blueprints.add(planForm,
+            CloudifyService.blueprints.add(blueprintUploadForm,
                 function(data) {
                     if ($scope.blueprintName === undefined || $scope.blueprintName === '') {
                         $scope.blueprintName = data.id;
