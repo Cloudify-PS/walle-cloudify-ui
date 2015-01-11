@@ -2,7 +2,7 @@
 
 describe('Service: BlueprintsService', function () {
 
-    var BlueprintsService;
+    var mBlueprintsService;
 
     describe('Test setup', function() {
         it('Injecting required data & initializing a new instance', function() {
@@ -11,8 +11,8 @@ describe('Service: BlueprintsService', function () {
             module('cosmoUiApp', 'gsUiHelper');
 
             // Initialize a new instance of BlueprintsService
-            inject(function (_BlueprintsService_) {
-                BlueprintsService = _BlueprintsService_;
+            inject(function (BlueprintsService) {
+                mBlueprintsService = BlueprintsService;
             });
 
         });
@@ -21,24 +21,24 @@ describe('Service: BlueprintsService', function () {
     describe('Unit tests', function() {
 
         it('should create a new BlueprintsService instance', function() {
-            expect(BlueprintsService).not.toBeUndefined();
+            expect(mBlueprintsService).not.toBeUndefined();
         });
 
         it('should have list method', function(){
-            expect(BlueprintsService.list).not.toBeUndefined();
+            expect(mBlueprintsService.list).not.toBeUndefined();
         });
 
         beforeEach(function(){
-            spyOn(BlueprintsService, 'list');
-            BlueprintsService.list();
+            spyOn(mBlueprintsService, 'list');
+            mBlueprintsService.list();
         });
 
-        it("tracks that the spy was called list", function() {
-            expect(BlueprintsService.list).toHaveBeenCalled();
+        it('tracks that the spy was called list', function() {
+            expect(mBlueprintsService.list).toHaveBeenCalled();
         });
 
-        it("tracks its number of list calls", function() {
-            expect(BlueprintsService.list.calls.length).toEqual(1);
+        it('tracks its number of list calls', function() {
+            expect(mBlueprintsService.list.calls.length).toEqual(1);
         });
 
     });

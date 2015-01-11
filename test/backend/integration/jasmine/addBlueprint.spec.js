@@ -1,6 +1,7 @@
 'use strict';
 
 describe('Integration: addBlueprint', function () {
+    /*jshint camelcase: false */
     var fs = require('fs');
     var cloudify4node = require('../../../../backend/Cloudify4node');
     var fileData = require('../../resources/blueprint/fileData.json');
@@ -27,7 +28,7 @@ describe('Integration: addBlueprint', function () {
 
         waitsFor(function () {
             return fileData !== undefined;
-        }, "waiting for success result file to be loaded", 3000);
+        }, 'waiting for success result file to be loaded', 3000);
 
         runs(function () {
             logger.info('fileData loaded, uploading blueprint to manager');
@@ -38,7 +39,7 @@ describe('Integration: addBlueprint', function () {
 
         waitsFor(function () {
             return result !== undefined && successResult !== undefined;
-        }, "waiting for upload result", 10000);
+        }, 'waiting for upload result', 10000);
 
         runs(function () {
             logger.info('blueprint upload result returned, checking if result is as expected');

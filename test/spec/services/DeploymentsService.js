@@ -2,7 +2,7 @@
 
 describe('Service: DeploymentsService', function () {
 
-    var DeploymentsService;
+    var mDeploymentsService;
 
     describe('Test setup', function() {
         it('Injecting required data & initializing a new instance', function() {
@@ -11,8 +11,8 @@ describe('Service: DeploymentsService', function () {
             module('cosmoUiApp', 'gsUiHelper');
 
             // Initialize a new instance of DeploymentsService
-            inject(function (_DeploymentsService_) {
-                DeploymentsService = _DeploymentsService_;
+            inject(function (DeploymentsService) {
+                mDeploymentsService = DeploymentsService;
             });
 
         });
@@ -21,24 +21,24 @@ describe('Service: DeploymentsService', function () {
     describe('Unit tests', function() {
 
         it('should create a new DeploymentsService instance', function() {
-            expect(DeploymentsService).not.toBeUndefined();
+            expect(mDeploymentsService).not.toBeUndefined();
         });
 
         it('should have execute method', function(){
-            expect(DeploymentsService.execute).not.toBeUndefined();
+            expect(mDeploymentsService.execute).not.toBeUndefined();
         });
 
         beforeEach(function(){
-            spyOn(DeploymentsService, 'execute');
-            DeploymentsService.execute();
+            spyOn(mDeploymentsService, 'execute');
+            mDeploymentsService.execute();
         });
 
-        it("tracks that the spy was called execute", function() {
-            expect(DeploymentsService.execute).toHaveBeenCalled();
+        it('tracks that the spy was called execute', function() {
+            expect(mDeploymentsService.execute).toHaveBeenCalled();
         });
 
-        it("tracks its number of execute calls", function() {
-            expect(DeploymentsService.execute.calls.length).toEqual(1);
+        it('tracks its number of execute calls', function() {
+            expect(mDeploymentsService.execute.calls.length).toEqual(1);
         });
 
     });

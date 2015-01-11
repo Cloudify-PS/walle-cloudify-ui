@@ -1,7 +1,7 @@
 'use strict';
 
+/*jshint camelcase: false */
 describe('Integration: getDeploymentExecutions', function () {
-    var fs = require('fs');
     var cloudify4node = require('../../../../backend/Cloudify4node');
     var logger = require('log4js').getLogger('getDeploymentExecutions');
 
@@ -36,7 +36,7 @@ describe('Integration: getDeploymentExecutions', function () {
 
         waitsFor(function () {
             return result !== undefined;
-        }, "waiting for deployment executions list result", 5000);
+        }, 'waiting for deployment executions list result', 5000);
 
         runs(function () {
             logger.info('deployment executions result returned, checking if all executions are related to the requested deployment');

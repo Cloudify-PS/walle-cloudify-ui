@@ -1,5 +1,6 @@
 'use strict';
 
+/*jshint camelcase: false */
 describe('Integration: executeDeployment', function () {
     var fs = require('fs');
     var cloudify4node = require('../../../../backend/Cloudify4node');
@@ -19,8 +20,8 @@ describe('Integration: executeDeployment', function () {
         var successResult = null;
         var deployments = null;
         var requestBody = {
-            "workflow_id": "install",
-            "deployment_id": null
+            'workflow_id': 'install',
+            'deployment_id': null
         };
 
         cloudify4node.getDeployments(function(err, data) {
@@ -46,7 +47,7 @@ describe('Integration: executeDeployment', function () {
 
         waitsFor(function () {
             return result !== undefined;
-        }, "waiting for deployment execution result", 5000);
+        }, 'waiting for deployment execution result', 5000);
 
         runs(function () {
             logger.info('deployment execution result returned, checking if as expected');

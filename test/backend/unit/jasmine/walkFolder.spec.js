@@ -1,7 +1,7 @@
 'use strict';
 
 describe('Backend: walkFolder', function () {
-    var browseBlueprint = require('../../../../backend/services/BrowseBluerprintService');
+    var browseBlueprint = require('../../../../backend/services/BrowseBlueprintService');
     var walker = new browseBlueprint.Walker();
 
     it('has a browseBlueprint', function () {
@@ -20,7 +20,7 @@ describe('Backend: walkFolder', function () {
 
         waitsFor(function() {
             return folderFiles.children !== undefined;
-        }, "waiting for folder content", 5000);
+        }, 'waiting for folder content', 5000);
 
         runs(function () {
             expect(folderFiles.children.length).toBe(1);

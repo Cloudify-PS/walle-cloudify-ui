@@ -2,7 +2,7 @@
 
 describe('Service: RestLoader', function () {
 
-    var RestLoader;
+    var mRestLoader;
 
     describe('Test setup', function() {
         it('Injecting required data & initializing a new instance', function() {
@@ -10,9 +10,9 @@ describe('Service: RestLoader', function () {
             // Load the app module
             module('cosmoUiApp', 'gsUiHelper');
 
-            // Initialize a new instance of RestLoader
-            inject(function (_RestLoader_) {
-                RestLoader = _RestLoader_;
+            // Initialize a new instance of mRestLoader
+            inject(function (RestLoader) {
+                mRestLoader = RestLoader;
             });
 
         });
@@ -20,25 +20,25 @@ describe('Service: RestLoader', function () {
 
     describe('Unit tests', function() {
 
-        it('should create a new RestLoader instance', function() {
-            expect(RestLoader).not.toBeUndefined();
+        it('should create a new mRestLoader instance', function() {
+            expect(mRestLoader).not.toBeUndefined();
         });
 
         it('should have load method', function(){
-            expect(RestLoader.load).not.toBeUndefined();
+            expect(mRestLoader.load).not.toBeUndefined();
         });
 
         beforeEach(function(){
-            spyOn(RestLoader, 'load');
-            RestLoader.load();
+            spyOn(mRestLoader, 'load');
+            mRestLoader.load();
         });
 
-        it("tracks that the spy was called load", function() {
-            expect(RestLoader.load).toHaveBeenCalled();
+        it('tracks that the spy was called load', function() {
+            expect(mRestLoader.load).toHaveBeenCalled();
         });
 
-        it("tracks its number of load calls", function() {
-            expect(RestLoader.load.calls.length).toEqual(1);
+        it('tracks its number of load calls', function() {
+            expect(mRestLoader.load.calls.length).toEqual(1);
         });
 
     });

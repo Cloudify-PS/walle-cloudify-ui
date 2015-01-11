@@ -2,7 +2,7 @@
 
 describe('Service: CloudifyService', function () {
 
-    var CloudifyService;
+    var mCloudifyService;
 
     describe('Test setup', function() {
         it('Injecting required data & initializing a new instance', function() {
@@ -11,7 +11,7 @@ describe('Service: CloudifyService', function () {
             module('cosmoUiApp', 'gsUiHelper');
 
             // Initialize a new instance of CloudifyService
-            inject(function (_CloudifyService_, $helper) {
+            inject(function (CloudifyService, $helper) {
                 $helper.addInjects([
                     {
                         method: 'POST',
@@ -19,7 +19,7 @@ describe('Service: CloudifyService', function () {
                         respond: 200
                     }
                 ]);
-                CloudifyService = _CloudifyService_;
+                mCloudifyService = CloudifyService;
             });
 
         });
@@ -28,24 +28,24 @@ describe('Service: CloudifyService', function () {
     describe('Unit tests', function() {
 
         it('should create a new CloudifyService instance', function() {
-            expect(CloudifyService).not.toBeUndefined();
+            expect(mCloudifyService).not.toBeUndefined();
         });
 
         it('should have autoPull method', function(){
-            expect(CloudifyService.autoPull).not.toBeUndefined();
+            expect(mCloudifyService.autoPull).not.toBeUndefined();
         });
 
         beforeEach(function(){
-            spyOn(CloudifyService, 'autoPull');
-            CloudifyService.autoPull('getNode', {}, CloudifyService.getNode);
+            spyOn(mCloudifyService, 'autoPull');
+            mCloudifyService.autoPull('getNode', {}, mCloudifyService.getNode);
         });
 
-        it("tracks that the spy was called autoPull", function() {
-            expect(CloudifyService.autoPull).toHaveBeenCalled();
+        it('tracks that the spy was called autoPull', function() {
+            expect(mCloudifyService.autoPull).toHaveBeenCalled();
         });
 
-        it("tracks its number of autoPull calls", function() {
-            expect(CloudifyService.autoPull.calls.length).toEqual(1);
+        it('tracks its number of autoPull calls', function() {
+            expect(mCloudifyService.autoPull.calls.length).toEqual(1);
         });
 
     });

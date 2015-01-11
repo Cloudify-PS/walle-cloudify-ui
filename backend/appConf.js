@@ -5,8 +5,8 @@
  * <h1> Configuration file.</h1>
  *
  *
- * public configuration goes under "publicConfiguration" variable.
- * private configuration gets defaults at "privateConfiguration" variable.
+ * public configuration goes under 'publicConfiguration' variable.
+ * private configuration gets defaults at 'privateConfiguration' variable.
  *
  * overrides are at me.conf.
  *
@@ -27,7 +27,7 @@
  * <h1> meConf.js </h1>
  *
  * <p>
- *     The idea behind "meConf" is that your vcs ignores it.<br/>
+ *     The idea behind 'meConf' is that your vcs ignores it.<br/>
  *     meConf should export a simple json with the key-values it wants to override.<br/>
  * </p>
  *
@@ -52,15 +52,15 @@ var publicConfiguration = {
 var privateConfiguration = {
     cosmoServer: undefined,
     cosmoPort: 80,
-    cloudifyLicense:"tempLicense",
-    log4js:{
+    cloudifyLicense: 'tempLicense',
+    log4js: {
         appenders: [
-            { "type":"console" },
+            { 'type': 'console' },
             {
-                "type": "file",
-                "filename": "logs/application.log",
-                "maxLogSize": 20480,
-                "backups": 3
+                'type': 'file',
+                'filename': 'logs/application.log',
+                'maxLogSize': 20480,
+                'backups': 3
             }
         ],
         replaceConsole: true
@@ -79,9 +79,7 @@ var privateConfiguration = {
         dbname: 'cloudify'
     }
 };
-logger.debug("browseBlueprint path: " + privateConfiguration.browseBlueprint.path);
-
-
+logger.debug('browseBlueprint path: ' + privateConfiguration.browseBlueprint.path);
 
 
 /*************************************************************************************/
@@ -93,25 +91,25 @@ logger.debug("browseBlueprint path: " + privateConfiguration.browseBlueprint.pat
 
 var meConf = null;
 try {
-    meConf = require("../conf/dev/meConf");
-} catch( e ) {
-    logger.debug("meConf does not exist. ignoring.. " + e);
+    meConf = require('../conf/dev/meConf');
+} catch (e) {
+    logger.debug('meConf does not exist. ignoring.. ' + e);
 }
 
 var gsSettings = null;
 try {
-    gsSettings = require("./gsSettings");
-} catch( e ) {
-    logger.debug("gsSettings does not exist. ignoring.. " + e);
+    gsSettings = require('./gsSettings');
+} catch (e) {
+    logger.debug('gsSettings does not exist. ignoring.. ' + e);
 }
 
 var publicConfigurationInitialized = false;
 var privateConfigurationInitialized = false;
 
-function getPublicConfiguration(){
+function getPublicConfiguration() {
     if (!publicConfigurationInitialized) {
         publicConfigurationInitialized = true;
-        if (meConf != null) {
+        if (meConf !== null) {
             for (var i in publicConfiguration) {
                 if (meConf.hasOwnProperty(i)) {
                     publicConfiguration[i] = meConf[i];
@@ -122,27 +120,27 @@ function getPublicConfiguration(){
     return publicConfiguration;
 }
 
-function getPrivateConfiguration(){
-    if ( !privateConfigurationInitialized ) {
+function getPrivateConfiguration() {
+    if (!privateConfigurationInitialized) {
         privateConfigurationInitialized = true;
 
         var pubConf = getPublicConfiguration();
-
-        if ( pubConf != null ){
-            for ( var j in pubConf ){
-                privateConfiguration[j] = pubConf[j];
+        var i;
+        if (pubConf !== null) {
+            for (i in pubConf) {
+                privateConfiguration[i] = pubConf[i];
             }
         }
 
-        if ( meConf != null ){
-            for ( var i in meConf ){
-              privateConfiguration[i] = meConf[i];
+        if (meConf !== null) {
+            for (i in meConf) {
+                privateConfiguration[i] = meConf[i];
             }
         }
 
         if (gsSettings !== null) {
             var settings = gsSettings.read();
-            for ( var i in settings ){
+            for (i in settings) {
                 privateConfiguration[i] = settings[i];
             }
         }
@@ -150,15 +148,15 @@ function getPrivateConfiguration(){
     return privateConfiguration;
 }
 
-exports.sendPublicConfiguration = function( req, res ){
-    var name = req.param("name") || "conf";
+exports.sendPublicConfiguration = function (req, res) {
+    var name = req.param('name') || 'conf';
 
-    res.send( "window." + name + " = " + JSON.stringify(getPublicConfiguration()) + ";");
+    res.send('window.' + name + ' = ' + JSON.stringify(getPublicConfiguration()) + ';');
 };
 
-exports.applyConfiguration = function( settings ){
+exports.applyConfiguration = function (settings) {
     // todo : add support for public configuration
-    for ( var i in settings ){
+    for (var i in settings) {
         exports[i] = settings[i];
     }
     gsSettings.write(settings);
@@ -166,11 +164,11 @@ exports.applyConfiguration = function( settings ){
 };
 
 var prConf = getPrivateConfiguration();
-if ( prConf != null ){
-    for ( var i in prConf ){
-        if ( prConf[i] === undefined ){
+if (prConf !== null) {
+    for (var i in prConf) {
+        if (prConf[i] === undefined) {
 
-//            throw new Error("undefined configuration [" + i + "]");
+//            throw new Error('undefined configuration [' + i + ']');
         }
         exports[i] = prConf[i];
     }
@@ -179,8 +177,5 @@ if ( prConf != null ){
 exports.getPublicConfiguration = getPublicConfiguration;
 
 exports.getPrivateConfiguration = getPrivateConfiguration;
-
-
-return exports;
 
 

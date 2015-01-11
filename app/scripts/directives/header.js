@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('cosmoUiApp')
-    .directive('header', function ($log, CloudifyService, appConfig) {
+    .directive('header', function ($log, CloudifyService) {
         return {
             templateUrl: 'views/headerTemplate.html',
             restrict: 'A',
@@ -10,21 +10,9 @@ angular.module('cosmoUiApp')
                     name: 'John Doe'
                 };
 
-                var currentVersion = appConfig.versions.ui.split('.').join('');
-                if (currentVersion.indexOf('-') !== -1) {
-                    currentVersion = currentVersion.substring(0, currentVersion.indexOf('-'));
-                }
-
-                CloudifyService.getLatestVersion(currentVersion)
-                    .then(function(ver) {
-                        var _currentVer = parseInt(currentVersion, 10);
-                        var _ver = parseInt(ver, 10);
-                        if (!isNaN(_ver)) {
-                            scope.updateVersion = _ver > _currentVer;
-                        } else {
-                            scope.updateVersion = false;
-                        }
-                    });
+                CloudifyService.version.needUpdate().then(function(result) {
+                    scope.updateVersion = typeof(result) === 'boolean'? result : false;
+                });
 
                 scope.searchCloudify = function() {
                     $log.info('search ' + element.find('#search-field').val());

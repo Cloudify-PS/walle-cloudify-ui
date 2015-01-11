@@ -48,8 +48,11 @@
                     <input type="text" spellcheck="false" id="browseTxt" ng-model="selectedFile.name" placeholder="{{ 'blueprints.uploadPopup.browseText' | i18n }}">
                     <input type="file" name="fileInput" id="fileInput" accept=".tar,.gz" ng-file-select="onFileSelect($files)">
                 </div>
-                <div id="name">
-                    <input type="text" spellcheck="false" ng-model="blueprintName" placeholder="{{ 'blueprints.uploadPopup.blueprintName' | i18n }}">
+                <div class="name">
+                    <input type="text" spellcheck="false" ng-model="blueprintUploadOpts.blueprint_id" placeholder="{{ 'blueprints.uploadPopup.blueprintName' | i18n }}">
+                </div>
+                <div class="name">
+                    <input type="text" spellcheck="false" ng-model="blueprintUploadOpts.params.application_file_name" placeholder="{{ 'blueprints.uploadPopup.blueprintFilename' | i18n }}">
                 </div>
                 <div id="mainFile" style="display:none">Application file: <input type="text" ng-model="mainFileName"></div>
                 <div id="upload-error-message" ng-show="isUploadError()">{{errorMessage}}</div>

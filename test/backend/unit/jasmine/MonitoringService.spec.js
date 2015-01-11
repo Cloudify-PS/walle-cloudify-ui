@@ -4,7 +4,7 @@ var logger = require('log4js').getLogger('MonitoringService.spec');
 var MonitoringService = require('../../../../backend/services/MonitoringService');
 
 describe ('MonitoringService', function(){
-
+    logger.info('running test');
     describe ('Get Deployment default dashboards', function(){
 
         var dashboard;

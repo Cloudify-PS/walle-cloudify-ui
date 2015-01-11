@@ -1,10 +1,12 @@
-var conf = require("../../backend/appConf");
+'use strict';
+
+var conf = require('../../backend/appConf');
 var log4js = require('log4js');
 log4js.configure(conf.log4js);
 var logger = log4js.getLogger('testBrowseBlueprintService');
 
-var browseBlueprintService = require('../services/BrowseBluerprintService');
-var cloudify4node = require('../Cloudify4node');
+var browseBlueprintService = require('../services/BrowseBlueprintService');
+
 
 browseBlueprintService.deleteBlueprint('monBrowse', function(err){
     logger.debug('deleteBlueprint error', err);

@@ -9,11 +9,27 @@ angular.module('cosmoUiApp')
         $scope.blueprintName = '';
         $scope.uploadError = false;
         $scope.errorMessage = 'Error uploading blueprint';
+        $scope.blueprintUploadOpts = {
+            blueprint_id: '',
+            params: {
+                application_file_name: ''
+            }
+        };
 
         $scope.onFileSelect = function ($files) {
             $scope.selectedFile = $files[0];
             $log.info(['files were selected', $files]);
         };
+
+        $scope.$watch('blueprintUploadOpts.params.application_file_name', function(filename) {
+            $scope.blueprintUploadOpts.params = {};
+
+            if (filename) {
+                $scope.blueprintUploadOpts.params = {
+                    application_file_name: filename
+                };
+            }
+        });
 
         $scope.uploadFile = function() {
             $log.info(['upload: ', selectedFile]);
@@ -21,19 +37,17 @@ angular.module('cosmoUiApp')
             if (!$scope.isUploadEnabled()) {
                 return;
             }
+            var blueprintUploadForm = new FormData();
+            blueprintUploadForm.append('application_archive', $scope.selectedFile);
+            blueprintUploadForm.append('opts', JSON.stringify($scope.blueprintUploadOpts));
 
-            var planForm = new FormData();
-            planForm.append('application_archive', $scope.selectedFile);
-            if ($scope.blueprintName !== '') {
-                planForm.append('blueprint_id', $scope.blueprintName);
-            }
             $scope.uploadInProcess = true;
             $scope.uploadError = false;
 
-            CloudifyService.blueprints.add(planForm,
+            CloudifyService.blueprints.add(blueprintUploadForm,
                 function(data) {
                     if ($scope.blueprintName === undefined || $scope.blueprintName === '') {
-                        $scope.blueprintName = JSON.parse(data).id;
+                        $scope.blueprintName = data.id;
                     }
                     $scope.$apply(function() {
                         $scope.uploadError = false;
@@ -42,13 +56,12 @@ angular.module('cosmoUiApp')
                     $scope.uploadDone($scope.blueprintName);
                 },
                 function(e) {
-
                     var responseText = null;
                     try {
-                        responseText = JSON.parse(e.responseText);
+                        responseText = e.responseJSON;
                     } catch (e) {}
 
-                    if(responseText && responseText.hasOwnProperty('message')) {
+                    if (responseText && responseText.hasOwnProperty('message')) {
                         $scope.errorMessage = responseText.message;
                     } else if(e.hasOwnProperty('statusText')) {
                         $scope.errorMessage = e.statusText;

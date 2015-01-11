@@ -150,6 +150,14 @@ module.exports = function (grunt) {
             coverageFrontend: ['coverage'],
             instrumentBackend: ['backend-instrument']
         },
+        jsdoc : {
+            backend : {
+                src: ['backend/**/*.js'],
+                options: {
+                    destination: 'doc'
+                }
+            }
+        },
         jshint: {
             options: {
                 jshintrc: '.jshintrc'
@@ -158,9 +166,48 @@ module.exports = function (grunt) {
                 'Gruntfile.js',
                 '<%= yeoman.app %>/scripts/{,*/}*.js'
             ],
-            backend: [
-                'server.js'
-            ]
+            backend:{
+                options: {
+                    jshintrc: 'backend/.jshintrc'
+                },
+                files: {
+                    src: [
+                        'backend/**/*.js'
+                    ]
+                }
+            },
+            backendMochaTest:{
+                options: {
+                    jshintrc: 'test/backend/unit/mocha/.jshintrc'
+                },
+                files: {
+                    src: [
+                        'test/backend/unit/mocha/**/*.js'
+                    ]
+                }
+            },
+            backendJasmineTest:{
+                options: {
+                    jshintrc: 'test/backend/.jshintrc'
+                },
+                files: {
+                    src: [
+                        'test/backend/**/*.js',
+                        '!test/backend/unit/mocha/**/*.js'
+                    ]
+                }
+            },
+            test: {
+                options: {
+                    jshintrc: 'test/spec/.jshintrc'
+                },
+                files: {
+                    'src': [
+                        'test/spec/**/*.js',
+                        '!test/jasmine*/**/*'
+                    ]
+                }
+            }
         },
         coffee: {
             dist: {
@@ -410,7 +457,37 @@ module.exports = function (grunt) {
                 print: 'detail'
             }
         },
+        mochaTest: {
+            unit: {
+                options: {
+                    reporter: 'xunit-file'
+                },
+                src: ['test/backend/unit/mocha/**/*js']
+            },
+            develop: {
+                options: {
+                    reporter: 'spec'
+                },
+                src: ['test/backend/unit/mocha/**/*js']
+            }
+
+        },
+        /*jshint camelcase: false */
+        mocha_istanbul: {
+            coverage: {
+                'src' : 'test/backend/unit/mocha/**/*'
+            }
+        },
         jasmine_node: {
+            options: {
+                jUnit: {
+                    report: true,
+                    savePath: 'backend_test_results/',
+                    useDotNotation: true,
+                    consolidate:true,
+                    consolidateAll: true
+                }
+            },
             unit: ['test/backend/unit/jasmine/'],
             unitInstrument: ['backend-instrument/test/backend/unit/jasmine'],
             integration: ['test/backend/integration/jasmine/']
@@ -456,6 +533,8 @@ module.exports = function (grunt) {
 
         if( testBackend === undefined || testBackend === '' || testBackend === 'all' || testBackend === 'backend') {
             // guy - we always use code coverage in grunt.. when debug from the IDE so no need for no instrumented mode in grunt.
+
+            tasks = tasks.concat([ 'mocha_istanbul','mochaTest:unit']);
             tasks = tasks.concat( ['clean:coverageBackend','instrument', 'copy:backendCoverageTests', 'jasmine_node:unitInstrument', 'storeCoverage', 'makeReport','clean:instrumentBackend']);
         }
         grunt.task.run(tasks);
@@ -480,12 +559,13 @@ module.exports = function (grunt) {
     });
 
     grunt.registerTask('backend', function() {
-        grunt.config.set('jshint.options.jshintrc', '.backendhintrc');
+        grunt.config.set('jshint.options.jshintrc', 'backend/.jshintrc');
         grunt.task.run('jshint:backend');
     });
 
     grunt.registerTask('default', [
         'jshint',
+        'jsdoc',
         'test:all',
         'build',
         'backend'

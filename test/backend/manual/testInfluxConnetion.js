@@ -1,3 +1,4 @@
+'use strict';
 var influx = require('influx');
 
 var influxClient = influx({
@@ -7,7 +8,7 @@ var influxClient = influx({
     database : 'influxdb'
 });
 
-var query = "list series";
+var query = 'list series';
 
 influxClient.query(query, function(err, data){
 

@@ -9,7 +9,7 @@
  Use it wisely
  **/
 angular.module('cosmoUiApp')
-    .directive('cosmoLayout', function ($routeParams, appConfig) {
+    .directive('cosmoLayout', function ($routeParams, VersionService) {
         return {
             templateUrl: 'views/cosmoLayoutTemplate.html',
             restrict: 'C',
@@ -17,7 +17,9 @@ angular.module('cosmoUiApp')
             replace: true,
             link: function postLink(scope) {
                 scope.embeded = ($routeParams.hasOwnProperty('embed') && $routeParams.embed === 'true') ? true : false;
-                scope.versions = appConfig.versions;
+                VersionService.getVersions().then(function(versions) {
+                    scope.versions = versions;
+                });
             }
         };
     });

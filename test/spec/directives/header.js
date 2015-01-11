@@ -7,10 +7,10 @@ describe('Directive: header', function () {
 
     function compileDirective(opts) {
         inject(function($compile, $rootScope, $httpBackend) {
-            $httpBackend.whenGET("/backend/configuration?access=all").respond(200);
-            $httpBackend.whenGET("/backend/versions/ui").respond(200);
-            $httpBackend.whenGET("/backend/versions/manager").respond(200);
-            $httpBackend.whenGET("/backend/version/latest?version=00").respond('300');
+            $httpBackend.whenGET('/backend/configuration?access=all').respond(200);
+            $httpBackend.whenGET('/backend/versions/ui').respond(200);
+            $httpBackend.whenGET('/backend/versions/manager').respond(200);
+            $httpBackend.whenGET('/backend/version/latest?version=00').respond('300');
 
             if (!opts || !opts.scope) {
                 scope = $rootScope.$new();
@@ -20,19 +20,6 @@ describe('Directive: header', function () {
             element = $compile(angular.element('<div header></div>'))(scope);
 
             scope.$digest();
-        });
-    }
-
-    function updateLatestVersion(valid) {
-        inject(function($q, CloudifyService) {
-            CloudifyService.getLatestVersion = function() {
-                var deferred = $q.defer();
-                var _version = valid ? '100' : 'invalid result';
-
-                deferred.resolve(_version);
-
-                return deferred.promise;
-            };
         });
     }
 
@@ -62,26 +49,40 @@ describe('Directive: header', function () {
             expect(element.find('div#needUpdate').hasClass('ng-hide')).toBe(false);
         }));
 
-        it('should not show update message when valid version result returns', inject(function($rootScope) {
+        it('should not show update message when valid version result returns', inject(function($rootScope, CloudifyService, $q) {
             var _scope = $rootScope.$new();
-            _scope.updateVersion = false;
+            CloudifyService.version.needUpdate = function() {
+                var deferred = $q.defer();
+                var result = false;
 
-            updateLatestVersion(true);
+                deferred.resolve(result);
+
+                return deferred.promise;
+            };
+            _scope.updateVersion = true;
+
             compileDirective({scope: _scope});
 
             waitsFor(function() {
-                return _scope.updateVersion !== false;
+                return _scope.updateVersion !== true;
             });
             runs(function() {
-                expect(_scope.updateVersion).toBe(true);
+                expect(_scope.updateVersion).toBe(false);
             });
         }));
 
-        it('should not show update message when invalid version result returns', inject(function($rootScope) {
+        it('should not show update message when invalid version result returns', inject(function($rootScope, CloudifyService, $q) {
             var _scope = $rootScope.$new();
+            CloudifyService.version.needUpdate = function() {
+                var deferred = $q.defer();
+                var result = 'invalid result';
+
+                deferred.resolve(result);
+
+                return deferred.promise;
+            };
             _scope.updateVersion = true;
 
-            updateLatestVersion(false);
             compileDirective({scope: _scope});
 
             waitsFor(function() {

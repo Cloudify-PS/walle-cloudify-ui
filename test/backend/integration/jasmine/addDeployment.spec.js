@@ -1,5 +1,6 @@
 'use strict';
 
+/*jshint camelcase: false */
 describe('Integration: addDeployment', function () {
     var fs = require('fs');
     var cloudify4node = require('../../../../backend/Cloudify4node');
@@ -21,13 +22,13 @@ describe('Integration: addDeployment', function () {
         var blueprintName = 'blueprint' + new Date().getTime();
         var deploymentName = 'deployment' + new Date().getTime();
         var requestBody = {
-            "blueprint_id": blueprintName,
-            "deployment_id": deploymentName,
-            "inputs": {
-                "webserver_port": 8080,
-                "image_name": "image_name",
-                "agent_user": "agent_user",
-                "flavor_name": "flavor_name"
+            'blueprint_id': blueprintName,
+            'deployment_id': deploymentName,
+            'inputs': {
+                'webserver_port': 8080,
+                'image_name': 'image_name',
+                'agent_user': 'agent_user',
+                'flavor_name': 'flavor_name'
             }
         };
         fs.readFile('./test/backend/resources/deployment/createSuccessResult.json', 'utf-8', function (err, data) {
@@ -42,7 +43,7 @@ describe('Integration: addDeployment', function () {
 
         waitsFor(function () {
             return blueprints !== null;
-        }, "waiting for blueprints list to be loaded", 5000);
+        }, 'waiting for blueprints list to be loaded', 5000);
 
         runs(function() {
             logger.info('blueprints loaded, creating deployment');
@@ -54,7 +55,7 @@ describe('Integration: addDeployment', function () {
 
         waitsFor(function () {
             return result !== null && successResult !== null;
-        }, "waiting for deployment creation result", 5000);
+        }, 'waiting for deployment creation result', 5000);
 
         runs(function () {
             logger.info('deployment creation result returned, checking if result is as expected');
