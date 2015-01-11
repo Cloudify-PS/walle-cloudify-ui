@@ -61,11 +61,16 @@ describe('Controller: FileSelectionDialogCtrl', function () {
                 this.name = data;
             };
             scope.blueprintName = 'blueprint1';
-            scope.blueprintFilename = 'filename1';
+            scope.blueprintUploadOpts = {
+                blueprint_id: 'blueprint1',
+                params: {
+                    application_file_name: 'filename1'
+                }
+            };
 
             var expected = new FormData();
             expected.append('application_archive', scope.selectedFile);
-            expected.append('opts', '{"params":{"application_file_name":"filename1"},"blueprint_id":"blueprint1"}');
+            expected.append('opts', '{"blueprint_id":"blueprint1","params":{"application_file_name":"filename1"}}');
 
             spyOn(_cloudifyService.blueprints, 'add').andCallThrough();
 

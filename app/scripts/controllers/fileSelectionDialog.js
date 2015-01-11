@@ -7,7 +7,6 @@ angular.module('cosmoUiApp')
         $scope.uploadInProcess = false;
         $scope.selectedFile = '';
         $scope.blueprintName = '';
-        $scope.blueprintFilename = '';
         $scope.uploadError = false;
         $scope.errorMessage = 'Error uploading blueprint';
         $scope.blueprintUploadOpts = {
