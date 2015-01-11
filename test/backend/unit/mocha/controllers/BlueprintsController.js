@@ -52,8 +52,9 @@ describe('BlueprintsController', function(){
         });
 
         it('should open file stream if uploading file', function(){
-            req.body = { };
-            req.files = { application_archive: 'guy.blueprint.tar.gz' };
+            req.body = {};
+            req.body.opts = '{}';
+            req.files = { application_archive: 'guy.blueprint.tar.gz', path: '/mock/path' };
 
             BlueprintsController.upload(req,res);
             expect(fs.createReadStream.called).to.be(true);
@@ -61,6 +62,7 @@ describe('BlueprintsController', function(){
 
         it('should send back error if got one from manager', function(){
             req.body = { };
+            req.body.opts = '{}';
             req.files = { application_archive: 'guy.blueprint.tar.gz' };
             sandbox.stub(services.cloudify4node, 'uploadBlueprint', sinon.spy( function( stream, opts, callback ){
                 callback('error');
@@ -73,6 +75,7 @@ describe('BlueprintsController', function(){
 
         it('should send back data if got one from manager', function(){
             req.body = { };
+            req.body.opts = '{}';
             req.files = { application_archive: 'guy.blueprint.tar.gz' };
 
             sandbox.stub(services.cloudify4node,'uploadBlueprint', sinon.spy( function( stream, opts, callback ){

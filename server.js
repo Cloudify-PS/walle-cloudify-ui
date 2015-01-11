@@ -92,8 +92,6 @@ app.post('/backend/blueprints/add', function(request, response){
 
 app.post('/backend/blueprints/upload', controllers.blueprints.upload);
 
-
-
 app.get('/backend/blueprints/get', function(request, response) {
     cloudify4node.getBlueprintById(request.query.id, function(err, data) {
         response.send(err !== null ? err : data);

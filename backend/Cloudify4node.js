@@ -196,9 +196,9 @@ Cloudify4node.addBlueprint = function(application_archive, blueprint_id, callbac
  */
 // todo - Cloudify4node should be an instance.. why are we using static function declaration?
 Cloudify4node.uploadBlueprint = function(streamReader, opts, callback) {
-
-
+    opts = JSON.parse(opts);    // must parse opts from string to JSON, the FormData does not pass JSON objects, only as string
     logger.debug('uploading blueprint', opts);
+
     if (!opts || !opts.blueprint_id) {
         // todo : are we sure that this is the format we want? does not match other scenarios in this function. it is not a nodejs standard..
         callback(400, {
@@ -221,10 +221,10 @@ Cloudify4node.uploadBlueprint = function(streamReader, opts, callback) {
         });
 
         res.on('end', function() {
-            if (res.statusCode === 200){
+            if (res.statusCode === 200) {
                 callback(null, res.statusCode);
             } else {
-                callback(responseMessage, res.statusCode);
+                callback(JSON.parse(responseMessage), res.statusCode);
             }
         });
     }
@@ -248,7 +248,6 @@ Cloudify4node.uploadBlueprint = function(streamReader, opts, callback) {
         return;
     });
 
-
     streamReader
         .on('readable', function () {
             logger.info('stream is readable');
@@ -263,14 +262,6 @@ Cloudify4node.uploadBlueprint = function(streamReader, opts, callback) {
             logger.info('stream end');
             req.end();
         });
-
-
-//    fs.readFile('../dev/master.tar.gz', function(err, data) {
-//        if (err) throw err;
-//
-//        req.write(data);
-//        req.end();
-//    });
 };
 
 

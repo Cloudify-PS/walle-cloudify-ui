@@ -28,7 +28,8 @@
             "browseBtn": "+",
             "fileLabel": "Application file: ",
             "uploadBtn": "Save",
-            "blueprintName": "Blueprint name"
+            "blueprintName": "Blueprint name",
+            "blueprintFilename": "Blueprint filename (i.e blueprint.yaml)"
         },
         "deployDialog": {
             "title": "Deploy",
