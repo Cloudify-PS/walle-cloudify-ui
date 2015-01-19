@@ -11,15 +11,20 @@ angular.module('cosmoUiApp')
     .controller('BlueprintSourceCtrl', function ($scope, $routeParams, CloudifyService) {
 
         $scope.blueprintId = $routeParams.blueprintId;
+        var selectedBlueprint;
 
-        CloudifyService.blueprints.browse({id: $scope.blueprintId})
-            .then(function(browseData) {
-                $scope.browseData = [browseData];
-                $scope.browseData[0].show = true;
-                $scope.browseData[0].children[0].show = true;
-                locateFilesInBrowseTree(browseData.children);
-                autoOpenSourceFile();
-            });
+        $scope.$on('blueprintData', function(event, data){
+            selectedBlueprint = data;
+
+            CloudifyService.blueprints.browse({id: $scope.blueprintId, last_update: new Date(selectedBlueprint.updated_at).getTime()})
+                .then(function(browseData) {
+                    $scope.browseData = [browseData];
+                    $scope.browseData[0].show = true;
+                    $scope.browseData[0].children[0].show = true;
+                    locateFilesInBrowseTree(browseData.children);
+                    autoOpenSourceFile();
+                });
+        });
 
         var autoFilesList = ['blueprint.yaml', 'README.md'];
         var selectedAutoFile = null;
@@ -110,7 +115,7 @@ angular.module('cosmoUiApp')
         };
 
         $scope.openSourceFile = function(data) {
-            CloudifyService.blueprints.browseFile({id: $scope.blueprintId, path: data.relativePath})
+            CloudifyService.blueprints.browseFile({id: $scope.blueprintId, path: new Date(selectedBlueprint.updated_at).getTime() + '/' + data.relativePath})
                 .then(function(fileContent) {
                     $scope.dataCode = {
                         data: fileContent,

@@ -10,13 +10,13 @@ module.exports.isBlueprintExist = function (id, callbackFn) {
     });
 };
 
-module.exports.browseBlueprint = function (id, callbackFn){
+module.exports.browseBlueprint = function (id, last_update, callbackFn){
     if(id.indexOf('.') !== -1 || id.indexOf('/') !== -1) {
         var err = new Error('Blueprint ID can\'t contain spacial characters.');
         return callbackFn(err);
     }
     var walker = new this.Walker();
-    walker.walk(path.join(conf.browseBlueprint.path, id), callbackFn);
+    walker.walk(path.join(conf.browseBlueprint.path, id, last_update), callbackFn);
 };
 
 module.exports.fileGetContent = function(id, relativePath, callbackFn) {
@@ -25,9 +25,9 @@ module.exports.fileGetContent = function(id, relativePath, callbackFn) {
 
 module.exports.deleteBlueprint = function(id, callbackFn) {
     function removeFile(id, callbackFn) {
-        fs.exists(path.join(conf.browseBlueprint.path, id + '.tar.gz'), function (exists){
+        fs.exists(path.join(conf.browseBlueprint.path, id + '.archive'), function (exists){
             if(exists) {
-                fs.remove(path.join(conf.browseBlueprint.path, id + '.tar.gz'), function(err){
+                fs.remove(path.join(conf.browseBlueprint.path, id + '.archive'), function(err){
                     if(err) {
                         return callbackFn(err);
                     }

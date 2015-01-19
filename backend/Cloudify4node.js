@@ -17,6 +17,8 @@ var targz = require('tar.gz'); // todo: this class should have nothing todo with
 var browseBlueprint = require('./services/BrowseBlueprintService'); // todo: no need for this here.. this is a ui feature, not cloudify client related.
 var monitoring = require('./services/MonitoringService');  // todo: what does this have anything to do with cloudify4node?
 var querystring = require('querystring');
+var zlib = require('zlib');
+var tar = require('tar')
 
 /**
  * @typedef Cloudify4node
@@ -306,7 +308,7 @@ Cloudify4node.deleteBlueprint = function(blueprint_id, callback) {
 
 // todo - Cloudify4node should be an instance.. why are we using static function declaration?
 // todo - cloudify rest API does not include anything about archiving, why is this here?
-Cloudify4node.archiveBlueprint = function(blueprint_id, callback) {
+Cloudify4node.archiveBlueprint = function(blueprint_id, last_update, callback) {
     var requestData = {
         hostname: conf.cosmoServer,
         port: conf.cosmoPort,
@@ -329,7 +331,7 @@ Cloudify4node.archiveBlueprint = function(blueprint_id, callback) {
                 fs.mkdir(pathToCreate, alreadyExists(pathParts[i]));
             }
         }
-        var filepath = path.join(conf.browseBlueprint.path, blueprint_id + '.tar.gz');
+        var filepath = path.join(conf.browseBlueprint.path, blueprint_id + '.archive');
         var file = fs.createWriteStream(filepath);
 
         var req = ajax.get(requestData, function(response) {
@@ -339,41 +341,56 @@ Cloudify4node.archiveBlueprint = function(blueprint_id, callback) {
                 })
                 .on('end', function () {
                     file.on('close', function(){
-                        new targz().extract(filepath, path.join(conf.browseBlueprint.path, blueprint_id), function(err){
-                            if(err) {
-                                console.log('problem with extract: ' + err);
-                            }
-                            else {
-                                console.log('The extraction has ended!');
-                                callback(null, null);
-                            }
-                        });
+                        extractZlib(blueprint_id, last_update, callback);
                     });
                     file.end();
                 });
         });
 
         req.on('error', function(e) {
-            console.log('problem with request: ' + e.message);
+            logger.info('problem with request: ' + e.message);
             callback(e.message, null);
         });
     });
 };
 
+function extractZlib(blueprint_id, last_update, callback) {
+    logger.info('extracting with zlib');
+
+    var gunzipWriter = zlib.createGunzip();
+
+    fs.createReadStream(conf.browseBlueprint.path + '/' + blueprint_id + '.archive')
+        .pipe( gunzipWriter )
+        .pipe(tar.Extract({path: conf.browseBlueprint.path + '/' + blueprint_id + '/' + last_update}))
+        .on('error', function (err) {
+            logger.info('Error on extract', err);
+            callback(err, null);
+        })
+        .on('end', function () {
+            logger.info('zlib extracting done');
+            callback(null, null);
+        });
+
+    gunzipWriter.on('error', function(e){
+        logger.info('gunzip error', e);
+        callback({e: e, message: e.message}, null);
+    })
+}
+
 // todo - Cloudify4node should be an instance.. why are we using static function declaration?
 // todo - cloudify rest api has nothing to do with "browse" on blueprint. why is this here?
-Cloudify4node.browseBlueprint = function(blueprint_id, callback) {
+Cloudify4node.browseBlueprint = function(blueprint_id, last_update, callback) {
     browseBlueprint.isBlueprintExist(blueprint_id, function(err, isExist){
         if(!isExist) {
-            Cloudify4node.archiveBlueprint(blueprint_id, function(err){
+            Cloudify4node.archiveBlueprint(blueprint_id, last_update, function(err){
                 if(err) {
-                    console.log('Error!', err);
+                    callback(err, null);
+                } else {
+                    browseBlueprint.browseBlueprint(blueprint_id, last_update, callback);
                 }
-                browseBlueprint.browseBlueprint(blueprint_id, callback);
             });
-        }
-        else {
-            browseBlueprint.browseBlueprint(blueprint_id, callback);
+        } else {
+            browseBlueprint.browseBlueprint(blueprint_id, last_update, callback);
         }
     });
 };
