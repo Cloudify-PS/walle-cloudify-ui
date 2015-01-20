@@ -11,6 +11,7 @@ angular.module('cosmoUiApp')
     .controller('BlueprintSourceCtrl', function ($scope, $routeParams, CloudifyService) {
 
         $scope.blueprintId = $routeParams.blueprintId;
+        $scope.errorMessage = 'No preview available';
         var selectedBlueprint;
 
         $scope.$on('blueprintData', function(event, data){
@@ -18,6 +19,10 @@ angular.module('cosmoUiApp')
 
             CloudifyService.blueprints.browse({id: $scope.blueprintId, last_update: new Date(selectedBlueprint.updated_at).getTime()})
                 .then(function(browseData) {
+                    if (browseData.message) {
+                        $scope.errorMessage = browseData.message;
+                        return;
+                    }
                     $scope.browseData = [browseData];
                     $scope.browseData[0].show = true;
                     $scope.browseData[0].children[0].show = true;

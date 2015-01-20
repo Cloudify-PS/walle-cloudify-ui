@@ -17,7 +17,7 @@
                 <div code-highlight="yml" ng-model="dataCode"></div>
             </div>
             <div class="noPreview" ng-show="!isSourceText(filename)">
-                <p class="empty">No preview available.</p>
+                <p class="empty">{{errorMessage}}</p>
             </div>
         </div>
     </div>

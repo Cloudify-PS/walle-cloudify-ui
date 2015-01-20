@@ -103,7 +103,10 @@ module.exports.Walker = function() {
         });
     }
 
-    function doFinalCallback() {
+    function doFinalCallback(err) {
+        if (err) {
+            _finalCallback({message: 'Error browsing blueprint files'}, null);
+        }
         if (counter === 0) {
             _finalCallback(null, root);
         }
@@ -112,6 +115,9 @@ module.exports.Walker = function() {
     function walkFolder(rootFolder, _list) {
         counter++;
         fs.readdir(rootFolder, function (err, files) {
+            if (files.length === 0) {
+                doFinalCallback(true);
+            }
             counter += files.length;
             counter--;
             for (var i in files) {
