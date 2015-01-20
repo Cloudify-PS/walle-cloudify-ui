@@ -8,7 +8,7 @@ var path = require('path');
 
 var blueprint = 'blueprint';
 var prefix = 'unitTest-';
-var fileExt = '.tar.gz';
+var fileExt = '.archive';
 
 var writeFileComplete = false;
 var mkdirComplete = false;

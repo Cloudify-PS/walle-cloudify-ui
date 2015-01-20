@@ -18,7 +18,7 @@ var browseBlueprint = require('./services/BrowseBlueprintService'); // todo: no 
 var monitoring = require('./services/MonitoringService');  // todo: what does this have anything to do with cloudify4node?
 var querystring = require('querystring');
 var zlib = require('zlib');
-var tar = require('tar')
+var tar = require('tar');
 
 /**
  * @typedef Cloudify4node
@@ -114,6 +114,29 @@ function createRequestData(options) {
     }
 
     return requestData;
+}
+
+function extractZlib(blueprint_id, last_update, callback) {
+    logger.info('extracting with zlib');
+
+    var gunzipWriter = zlib.createGunzip();
+
+    fs.createReadStream(conf.browseBlueprint.path + '/' + blueprint_id + '.archive')
+        .pipe( gunzipWriter )
+        .pipe(tar.Extract({path: conf.browseBlueprint.path + '/' + blueprint_id + '/' + last_update}))
+        .on('error', function (err) {
+            logger.info('Error on extract', err);
+            callback(err, null);
+        })
+        .on('end', function () {
+            logger.info('zlib extracting done');
+            callback(null, null);
+        });
+
+    gunzipWriter.on('error', function(e){
+        logger.info('gunzip error', e);
+        callback({e: e, message: e.message}, null);
+    });
 }
 
 // todo - Cloudify4node should be an instance.. why are we using static function declaration?
@@ -353,29 +376,6 @@ Cloudify4node.archiveBlueprint = function(blueprint_id, last_update, callback) {
         });
     });
 };
-
-function extractZlib(blueprint_id, last_update, callback) {
-    logger.info('extracting with zlib');
-
-    var gunzipWriter = zlib.createGunzip();
-
-    fs.createReadStream(conf.browseBlueprint.path + '/' + blueprint_id + '.archive')
-        .pipe( gunzipWriter )
-        .pipe(tar.Extract({path: conf.browseBlueprint.path + '/' + blueprint_id + '/' + last_update}))
-        .on('error', function (err) {
-            logger.info('Error on extract', err);
-            callback(err, null);
-        })
-        .on('end', function () {
-            logger.info('zlib extracting done');
-            callback(null, null);
-        });
-
-    gunzipWriter.on('error', function(e){
-        logger.info('gunzip error', e);
-        callback({e: e, message: e.message}, null);
-    })
-}
 
 // todo - Cloudify4node should be an instance.. why are we using static function declaration?
 // todo - cloudify rest api has nothing to do with "browse" on blueprint. why is this here?
