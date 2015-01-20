@@ -77,7 +77,7 @@ describe('Backend: Delete Blueprints Files (CFY-1496)', function(){
         it('should delete blueprint file', function(){
             waitsFor(function() {
                 return blueprintRemove;
-            }, 'The Blueprint tar.gz and folder should be removed', 1000);
+            }, 'The Blueprint .archive and folder should be removed', 1000);
 
             runs(function() {
                 var fileExists = fs.existsSync(path.resolve(conf.browseBlueprint.path, prefix + blueprint + fileExt));
@@ -88,7 +88,7 @@ describe('Backend: Delete Blueprints Files (CFY-1496)', function(){
         it('should delete blueprint folder', function(){
             waitsFor(function() {
                 return blueprintRemove;
-            }, 'The Blueprint tar.gz and folder should be removed', 1000);
+            }, 'The Blueprint .archive and folder should be removed', 1000);
 
             runs(function() {
                 var folderExists = fs.existsSync(path.resolve(conf.browseBlueprint.path, prefix + blueprint));
