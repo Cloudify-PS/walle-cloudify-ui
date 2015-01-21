@@ -27,7 +27,7 @@ describe('ZlibService', function() {
             ZlibService.extract('invalidBlueprint', '345', function(err) {
                 expect(JSON.stringify(err.e)).to.be('{"errno":-3,"code":"Z_DATA_ERROR"}');
                 expect(err.message).to.be('incorrect header check');
-                fse.remove(conf.browseBlueprint.path + 'blueprint', null);
+                fse.remove(conf.browseBlueprint.path + 'invalidBlueprint', null);
             });
         });
     });
