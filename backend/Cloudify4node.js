@@ -17,8 +17,7 @@ var targz = require('tar.gz'); // todo: this class should have nothing todo with
 var browseBlueprint = require('./services/BrowseBlueprintService'); // todo: no need for this here.. this is a ui feature, not cloudify client related.
 var monitoring = require('./services/MonitoringService');  // todo: what does this have anything to do with cloudify4node?
 var querystring = require('querystring');
-var zlib = require('zlib');
-var tar = require('tar');
+var zlib = require('./services/ZlibService');
 
 /**
  * @typedef Cloudify4node
@@ -114,29 +113,6 @@ function createRequestData(options) {
     }
 
     return requestData;
-}
-
-function extractZlib(blueprint_id, last_update, callback) {
-    logger.info('extracting with zlib');
-
-    var gunzipWriter = zlib.createGunzip();
-
-    fs.createReadStream(conf.browseBlueprint.path + '/' + blueprint_id + '.archive')
-        .pipe( gunzipWriter )
-        .pipe(tar.Extract({path: conf.browseBlueprint.path + '/' + blueprint_id + '/' + last_update}))
-        .on('error', function (err) {
-            logger.info('Error on extract', err);
-            callback(err, null);
-        })
-        .on('end', function () {
-            logger.info('zlib extracting done');
-            callback(null, null);
-        });
-
-    gunzipWriter.on('error', function(e){
-        logger.info('gunzip error', e);
-        callback({e: e, message: e.message}, null);
-    });
 }
 
 // todo - Cloudify4node should be an instance.. why are we using static function declaration?
@@ -364,7 +340,7 @@ Cloudify4node.archiveBlueprint = function(blueprint_id, last_update, callback) {
                 })
                 .on('end', function () {
                     file.on('close', function(){
-                        extractZlib(blueprint_id, last_update, callback);
+                        zlib.extract(blueprint_id, last_update, callback);
                     });
                     file.end();
                 });

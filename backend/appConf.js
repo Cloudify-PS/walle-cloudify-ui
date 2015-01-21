@@ -70,7 +70,7 @@ var privateConfiguration = {
         file: 'logs.tar.gz'
     },
     browseBlueprint: {
-        path: os.tmpdir() + '/blueprints'
+        path: os.tmpdir() + 'blueprints'
     },
     influx: {
         host: 'localhost',
