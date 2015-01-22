@@ -17,17 +17,6 @@ var mountFolder = function (connect, dir) {
 
 module.exports = function (grunt) {
 
-//    var versionFilename = 'VERSION';
-//    if (grunt.file.exists(versionFilename)) {
-//        var buildVersion = grunt.file.readJSON(versionFilename).version;
-//        logger.info('build version', buildVersion);
-//        logger.info('setting version on package', buildVersion);
-//        var packageFile = grunt.file.readJSON('package.json');
-//        packageFile.version = buildVersion;
-//        grunt.file.write('package.json', JSON.stringify(packageFile, {}, 4));
-//    } else {
-//        logger.info('no ', versionFilename, 'file');
-//    }
 
     // load all grunt tasks
     require('matchdep').filterDev('grunt-*').forEach(grunt.loadNpmTasks);
@@ -544,6 +533,7 @@ module.exports = function (grunt) {
 
         var tasks = [
             'clean:dist',
+            'overrideBuildVersion',
             'useminPrepare',
             'concurrent:dist',
             'concat',
@@ -558,6 +548,35 @@ module.exports = function (grunt) {
         grunt.task.run(tasks);
     });
 
+    grunt.registerTask('overrideBuildVersion', function(){
+        var done = this.async();
+        var versionFilename = 'VERSION';
+        var buildVersion = null;
+        if (grunt.file.exists(versionFilename)) {
+            var fs = require('fs');
+            buildVersion = grunt.file.readJSON(versionFilename).version;
+            grunt.log.ok('build version is ', buildVersion );
+            var packageJson = grunt.file.readJSON('package.json');
+            packageJson.version = buildVersion;
+            try {
+                fs.writeFile('package.json', JSON.stringify(packageJson,{},4), function (err) {
+                    if ( !!err ){
+                        grunt.log.error('writing file failed',err);
+                        grunt.fail.fatal('writing version failed');
+                    }
+                    grunt.log.ok('version changed successfully');
+                    done();
+                });
+            }catch(e){
+                grunt.log.error('unable to write build version ',e);
+                grunt.fail.fatal('unable to write build version ');
+            }
+            grunt.log.ok('build version : ' +  buildVersion);
+        } else {
+            grunt.log.ok( versionFilename + ' does not exist. skipping version manipulation');
+        }
+    });
+
     grunt.registerTask('backend', function() {
         grunt.config.set('jshint.options.jshintrc', 'backend/.jshintrc');
         grunt.task.run('jshint:backend');
@@ -566,8 +585,8 @@ module.exports = function (grunt) {
     grunt.registerTask('default', [
         'jshint',
         'jsdoc',
-        'test:all',
         'build',
+        'test:all',
         'backend'
     ]);
 

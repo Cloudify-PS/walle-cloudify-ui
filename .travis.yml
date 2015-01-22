@@ -17,7 +17,5 @@ notifications:
     recipients:
       - guym@gigaspaces.com
       - erez@gigaspaces.com
-      - itsik@gigaspaces.com
-      - barakme@gigaspaces.com
     on_success: never
     on_failure: always
