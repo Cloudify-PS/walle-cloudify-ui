@@ -13,10 +13,11 @@ var log4js = require('log4js');
 log4js.configure(conf.log4js); // todo: no need for this here..
 var logger = log4js.getLogger('cloudify4node');
 var path = require('path');  // todo: this class should not refer to FS paths.. lets remove it
-var targz = require('tar.gz'); // todo: this class should have nothing todo with tar.gz files directly.
+//var targz = require('tar.gz'); // todo: this class should have nothing todo with tar.gz files directly.
 var browseBlueprint = require('./services/BrowseBlueprintService'); // todo: no need for this here.. this is a ui feature, not cloudify client related.
 var monitoring = require('./services/MonitoringService');  // todo: what does this have anything to do with cloudify4node?
 var querystring = require('querystring');
+var compressSrv = require('./services/CompressService');
 
 /**
  * @typedef Cloudify4node
@@ -306,7 +307,7 @@ Cloudify4node.deleteBlueprint = function(blueprint_id, callback) {
 
 // todo - Cloudify4node should be an instance.. why are we using static function declaration?
 // todo - cloudify rest API does not include anything about archiving, why is this here?
-Cloudify4node.archiveBlueprint = function(blueprint_id, callback) {
+Cloudify4node.archiveBlueprint = function(blueprint_id, last_update, callback) {
     var requestData = {
         hostname: conf.cosmoServer,
         port: conf.cosmoPort,
@@ -329,7 +330,7 @@ Cloudify4node.archiveBlueprint = function(blueprint_id, callback) {
                 fs.mkdir(pathToCreate, alreadyExists(pathParts[i]));
             }
         }
-        var filepath = path.join(conf.browseBlueprint.path, blueprint_id + '.tar.gz');
+        var filepath = path.join(conf.browseBlueprint.path, blueprint_id + '.archive');
         var file = fs.createWriteStream(filepath);
 
         var req = ajax.get(requestData, function(response) {
@@ -339,22 +340,14 @@ Cloudify4node.archiveBlueprint = function(blueprint_id, callback) {
                 })
                 .on('end', function () {
                     file.on('close', function(){
-                        new targz().extract(filepath, path.join(conf.browseBlueprint.path, blueprint_id), function(err){
-                            if(err) {
-                                console.log('problem with extract: ' + err);
-                            }
-                            else {
-                                console.log('The extraction has ended!');
-                                callback(null, null);
-                            }
-                        });
+                        compressSrv.extract(blueprint_id, last_update, callback);
                     });
                     file.end();
                 });
         });
 
         req.on('error', function(e) {
-            console.log('problem with request: ' + e.message);
+            logger.info('problem with request: ' + e.message);
             callback(e.message, null);
         });
     });
@@ -362,18 +355,18 @@ Cloudify4node.archiveBlueprint = function(blueprint_id, callback) {
 
 // todo - Cloudify4node should be an instance.. why are we using static function declaration?
 // todo - cloudify rest api has nothing to do with "browse" on blueprint. why is this here?
-Cloudify4node.browseBlueprint = function(blueprint_id, callback) {
+Cloudify4node.browseBlueprint = function(blueprint_id, last_update, callback) {
     browseBlueprint.isBlueprintExist(blueprint_id, function(err, isExist){
         if(!isExist) {
-            Cloudify4node.archiveBlueprint(blueprint_id, function(err){
+            Cloudify4node.archiveBlueprint(blueprint_id, last_update, function(err){
                 if(err) {
-                    console.log('Error!', err);
+                    callback({e: err, errCode: 'browseError'}, null);
+                } else {
+                    browseBlueprint.browseBlueprint(blueprint_id, last_update, callback);
                 }
-                browseBlueprint.browseBlueprint(blueprint_id, callback);
             });
-        }
-        else {
-            browseBlueprint.browseBlueprint(blueprint_id, callback);
+        } else {
+            browseBlueprint.browseBlueprint(blueprint_id, last_update, callback);
         }
     });
 };
@@ -623,7 +616,24 @@ Cloudify4node.getManagerVersion = function(callback) {
 // todo: we can "writeHead" outside, and then declare we get "streamWriter" here.. which is an API, which is good.
 Cloudify4node.getLogsExportFile = function(response, callback) {
     var filePath = path.join(conf.logs.folder, conf.logs.file);
-    new targz().compress(conf.logs.folder, filePath, function(err){
+//    new targz().compress(conf.logs.folder, filePath, function(err){
+//        fs.exists(filePath, function (exists) {
+//            if (exists) {
+//                var stat = fs.statSync(filePath);
+//                response.writeHead(200, {
+//                    'Content-Type': 'application/x-gzip',
+//                    'Content-Length': stat.size
+//                });
+//                var readStream = fs.createReadStream(filePath);
+//                readStream.pipe(response);
+//            }
+//            else {
+//                callback(err, null);
+//            }
+//        });
+//    });
+
+    compressSrv.pack(conf.logs.file, conf.logs.folder, function(err) {
         fs.exists(filePath, function (exists) {
             if (exists) {
                 var stat = fs.statSync(filePath);
@@ -633,8 +643,7 @@ Cloudify4node.getLogsExportFile = function(response, callback) {
                 });
                 var readStream = fs.createReadStream(filePath);
                 readStream.pipe(response);
-            }
-            else {
+            } else {
                 callback(err, null);
             }
         });

@@ -111,7 +111,7 @@ app.get('/backend/blueprints/delete', function(request, response) {
 });
 
 app.get('/backend/blueprints/browse', function(request, response) {
-    cloudify4node.browseBlueprint(request.query.id ,function(err, data) {
+    cloudify4node.browseBlueprint(request.query.id, request.query.last_update, function(err, data) {
         response.send(err !== null ? err : data);
     });
 });
