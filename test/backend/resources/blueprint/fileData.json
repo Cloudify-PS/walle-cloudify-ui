@@ -1,4 +1,5 @@
 {
+    "description" : "This is what we get when we do 'browse' for file",
     "fieldName": "application_archive",
     "originalFilename": "blueprint.archive",
     "path": "./test/backend/resources/blueprint/blueprint.archive",
