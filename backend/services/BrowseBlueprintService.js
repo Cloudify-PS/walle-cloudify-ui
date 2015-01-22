@@ -105,7 +105,7 @@ module.exports.Walker = function() {
 
     function doFinalCallback(err) {
         if (err) {
-            _finalCallback({message: 'Error browsing blueprint files'}, null);
+            _finalCallback({message: 'Error browsing blueprint files', errCode: 'browseError'}, null);
         }
         if (counter === 0) {
             _finalCallback(null, root);

@@ -13,11 +13,11 @@ var log4js = require('log4js');
 log4js.configure(conf.log4js); // todo: no need for this here..
 var logger = log4js.getLogger('cloudify4node');
 var path = require('path');  // todo: this class should not refer to FS paths.. lets remove it
-var targz = require('tar.gz'); // todo: this class should have nothing todo with tar.gz files directly.
+//var targz = require('tar.gz'); // todo: this class should have nothing todo with tar.gz files directly.
 var browseBlueprint = require('./services/BrowseBlueprintService'); // todo: no need for this here.. this is a ui feature, not cloudify client related.
 var monitoring = require('./services/MonitoringService');  // todo: what does this have anything to do with cloudify4node?
 var querystring = require('querystring');
-var zlib = require('./services/ZlibService');
+var compressSrv = require('./services/CompressService');
 
 /**
  * @typedef Cloudify4node
@@ -340,7 +340,7 @@ Cloudify4node.archiveBlueprint = function(blueprint_id, last_update, callback) {
                 })
                 .on('end', function () {
                     file.on('close', function(){
-                        zlib.extract(blueprint_id, last_update, callback);
+                        compressSrv.extract(blueprint_id, last_update, callback);
                     });
                     file.end();
                 });
@@ -360,7 +360,7 @@ Cloudify4node.browseBlueprint = function(blueprint_id, last_update, callback) {
         if(!isExist) {
             Cloudify4node.archiveBlueprint(blueprint_id, last_update, function(err){
                 if(err) {
-                    callback(err, null);
+                    callback({e: err, errCode: 'browseError'}, null);
                 } else {
                     browseBlueprint.browseBlueprint(blueprint_id, last_update, callback);
                 }
@@ -616,7 +616,24 @@ Cloudify4node.getManagerVersion = function(callback) {
 // todo: we can "writeHead" outside, and then declare we get "streamWriter" here.. which is an API, which is good.
 Cloudify4node.getLogsExportFile = function(response, callback) {
     var filePath = path.join(conf.logs.folder, conf.logs.file);
-    new targz().compress(conf.logs.folder, filePath, function(err){
+//    new targz().compress(conf.logs.folder, filePath, function(err){
+//        fs.exists(filePath, function (exists) {
+//            if (exists) {
+//                var stat = fs.statSync(filePath);
+//                response.writeHead(200, {
+//                    'Content-Type': 'application/x-gzip',
+//                    'Content-Length': stat.size
+//                });
+//                var readStream = fs.createReadStream(filePath);
+//                readStream.pipe(response);
+//            }
+//            else {
+//                callback(err, null);
+//            }
+//        });
+//    });
+
+    compressSrv.pack(conf.logs.file, conf.logs.folder, function(err) {
         fs.exists(filePath, function (exists) {
             if (exists) {
                 var stat = fs.statSync(filePath);
@@ -626,8 +643,7 @@ Cloudify4node.getLogsExportFile = function(response, callback) {
                 });
                 var readStream = fs.createReadStream(filePath);
                 readStream.pipe(response);
-            }
-            else {
+            } else {
                 callback(err, null);
             }
         });

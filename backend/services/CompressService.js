@@ -27,6 +27,15 @@ module.exports.extract = function(blueprint_id, last_update, callback) {
 
     gunzipWriter.on('error', function(e){
         logger.info('gunzip error', e);
-        callback({e: e, message: e.message}, null);
+        callback({e: e, message: e.message, errCode: e.errCode}, null);
     });
+};
+
+module.exports.pack = function(blueprint_id, path, callback) {
+    fs.createReadStream(path + '/' + blueprint_id + '.tar.gz')
+        .pipe(tar.Pack())
+        .pipe(zlib.createGzip())
+        .on('end', function() {
+            callback(null, null);
+        });
 };
