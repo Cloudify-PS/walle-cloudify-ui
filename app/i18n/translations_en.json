@@ -42,6 +42,11 @@
         "deleteDialog": {
             "cancelBtn": "Cancel",
             "confirmBtn": "Delete"
+        },
+        "source": {
+            "chooseFile": "Please choose file to preview.",
+            "noPreview": "No preview available",
+            "browseError": "Error browsing blueprint files"
         }
     },
     "config": {

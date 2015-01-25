@@ -1,9 +1,10 @@
 {
+    "description" : "This is what we get when we do 'browse' for file",
     "fieldName": "application_archive",
-    "originalFilename": "blueprint.tar.gz",
-    "path": "./test/backend/resources/blueprint/blueprint.tar.gz",
+    "originalFilename": "blueprint.archive",
+    "path": "./test/backend/resources/blueprint/blueprint.archive",
     "headers": {
-        "content-disposition": "form-data; name='application_archive'; filename='blueprint.tar.gz'",
+        "content-disposition": "form-data; name='application_archive'; filename='blueprint.archive'",
         "content-type": "application/x-gzip"
     },
     "ws": {
@@ -36,7 +37,7 @@
             "open": "undefined"
         },
         "_maxListeners": 10,
-        "path": "./test/backend/resources/blueprint/blueprint.tar.gz",
+        "path": "./test/backend/resources/blueprint/blueprint.archive",
         "fd": null,
         "flags": "w",
         "mode": 438,
@@ -62,6 +63,6 @@
         "listeners": ["Function"]
     },
     "size": 9141,
-    "name": "blueprint.tar.gz",
+    "name": "blueprint.archive",
     "type": "application/x-gzip"
 }
