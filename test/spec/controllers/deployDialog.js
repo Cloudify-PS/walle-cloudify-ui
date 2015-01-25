@@ -118,9 +118,16 @@ describe('Controller: DeploydialogCtrl', function () {
         }]
     };
 
-    var _error = {
-        'message': 'Required input \'image_name\' was not specified - expected inputs: [u\'webserver_port\', u\'image_name\', u\'flavor_name\', u\'agent_user\']',
-        'error_code': 'missing_required_deployment_input_error'
+    var errType = '';
+    var _errors = {
+        'missingInputs': {
+            'message': 'Required input \'image_name\' was not specified - expected inputs: [u\'webserver_port\', u\'image_name\', u\'flavor_name\', u\'agent_user\']',
+            'error_code': 'missing_required_deployment_input_error'
+        },
+        'depName': {
+            'message': '"Error browsing blueprint files',
+            'errCode': 'browseError'
+        }
     };
 
     beforeEach(module('cosmoUiApp', 'ngMock', 'templates-main'));
@@ -134,10 +141,17 @@ describe('Controller: DeploydialogCtrl', function () {
 
             scope = $rootScope.$new();
 
-            CloudifyService.blueprints.deploy = function(params) {
+            CloudifyService.blueprints.deploy = function() {
                 var deferred = $q.defer();
+                var result;
+                console.log('errType', errType);
+                if (errType !== '') {
+                    result = _errors[errType];
+                } else {
+                    result = _deployment;
+                }
 
-                deferred.resolve(params.inputs.image_name === undefined ? _error : _deployment);
+                deferred.resolve(result);
 
                 return deferred.promise;
             };
@@ -231,6 +245,24 @@ describe('Controller: DeploydialogCtrl', function () {
             runs(function() {
                 expect(scope.redirectToDeployment).toHaveBeenCalledWith(scope.deployment_id);
             });
+        });
+
+        it('should set showError flag to true once the deployment name already exists', function() {
+            scope.deployment_id = 'deployment1';
+            errType = 'depName';
+
+            scope.deployBlueprint('blueprint1');
+
+            waitsFor(function() {
+                return scope.showError === true;
+            });
+            runs(function() {
+                expect(scope.deployErrorMessage).toBe(_errors.depName.message);
+            });
+        });
+
+        it('should set showError flag to false once the deployment name is changed', function() {
+
         });
     });
 });
