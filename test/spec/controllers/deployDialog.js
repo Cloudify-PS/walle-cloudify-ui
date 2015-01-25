@@ -125,7 +125,7 @@ describe('Controller: DeploydialogCtrl', function () {
             'error_code': 'missing_required_deployment_input_error'
         },
         'depName': {
-            'message': '"Error browsing blueprint files',
+            'message': 'Error browsing blueprint files',
             'errCode': 'browseError'
         }
     };
@@ -144,7 +144,6 @@ describe('Controller: DeploydialogCtrl', function () {
             CloudifyService.blueprints.deploy = function() {
                 var deferred = $q.defer();
                 var result;
-                console.log('errType', errType);
                 if (errType !== '') {
                     result = _errors[errType];
                 } else {
@@ -163,7 +162,7 @@ describe('Controller: DeploydialogCtrl', function () {
                 CloudifyService: CloudifyService
             });
 
-            scope.$digest();
+//            scope.$digest();
         }));
     });
 
@@ -252,9 +251,10 @@ describe('Controller: DeploydialogCtrl', function () {
             errType = 'depName';
 
             scope.deployBlueprint('blueprint1');
+            scope.$apply();
 
             waitsFor(function() {
-                return scope.showError === true;
+                return scope.inProcess === false;
             });
             runs(function() {
                 expect(scope.deployErrorMessage).toBe(_errors.depName.message);
@@ -262,7 +262,13 @@ describe('Controller: DeploydialogCtrl', function () {
         });
 
         it('should set showError flag to false once the deployment name is changed', function() {
+            scope.deployment_id = 'deployment1';
+            scope.showError = true;
 
+            scope.deployment_id = 'deployment2';
+            scope.$apply();
+
+            expect(scope.showError).toBe(false);
         });
     });
 });

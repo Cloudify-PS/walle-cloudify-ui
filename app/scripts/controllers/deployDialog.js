@@ -85,8 +85,6 @@ angular.module('cosmoUiApp')
                     .then(function (data) {
                         $scope.inProcess = false;
                         if (data.hasOwnProperty('message')) {
-                            console.log('#########', data.message);
-
                             $scope.deployErrorMessage = data.message;
                             $scope.showError = true;
                         }
