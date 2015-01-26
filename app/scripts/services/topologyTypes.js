@@ -56,6 +56,9 @@ angular.module('cosmoUiApp')
             },
             'cloudify.nodes.MessageBusServer': {
                 icon: 'cloudify-nodes-Root cloudify-nodes-MessageBusServer'
+            },
+            'cloudify.nodes.Volume': {
+                icon: 'cloudify-nodes-Root cloudify-nodes-Volume'
             }
         };
 
