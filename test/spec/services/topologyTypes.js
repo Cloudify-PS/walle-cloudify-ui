@@ -29,8 +29,8 @@ describe('Service: topologyTypes', function () {
             typesList = mtopologyTypes.getList();
         });
 
-        it('should have list of 17 topology types', function () {
-            expect(Object.keys(typesList).length).toBe(17);
+        it('should have list of 20 topology types', function () {
+            expect(Object.keys(typesList).length).toBe(20);
         });
 
     });
