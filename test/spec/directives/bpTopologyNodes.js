@@ -275,6 +275,20 @@ describe('Directive: bpTopologyNodes', function () {
         }],
         'isContained': false,
         'dataType': 'compute'
+    }, {
+        'declared_type': 'cloudify.nodes.Volume',
+        'name': 'volume_node',
+        'type_hierarchy': ['cloudify-nodes-Root', 'cloudify-nodes-Volume'],
+        'id': 'volume_node',
+        'instances': {
+            'deploy': 1
+        },
+        'plugins': [],
+        'type': 'cloudify.nodes.Volume',
+        'class': 'cloudify-nodes-Root cloudify-nodes-Volume',
+        'isApp': false,
+        'isHost': false,
+        'dataType': 'compute'
     }];
 
     var element, scope;
@@ -323,6 +337,14 @@ describe('Directive: bpTopologyNodes', function () {
             compileDirective({scope: _scope});
 
             expect(element.find('i.icon').hasClass('cloudify-nodes-Root')).toBe(true);
+        }));
+
+        it('volume node type have a cloudify-nodes-Volume class', inject(function($rootScope) {
+            var _scope = $rootScope.$new();
+            _scope.map = _nodesTree;
+            compileDirective({scope: _scope});
+
+            expect(element.find('i.icon.topology-glyph.cloudify-nodes-Root.cloudify-nodes-Volume').length).toBe(1);
         }));
     });
 });
