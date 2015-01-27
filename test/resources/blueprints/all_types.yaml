@@ -39,7 +39,7 @@ node_templates:
   floating_ip:
     type: cloudify.openstack.nodes.FloatingIP
 
-  server:
+  openstack_server:
     type: cloudify.openstack.nodes.Server
     properties:
       server: 'foo'
@@ -68,7 +68,7 @@ node_templates:
   volumne:
     type: cloudify.nodes.Volume
     relationships:
-      - target: server
+      - target: openstack_server
         type: cloudify.openstack.volume_attached_to_server
 
   file_system:
