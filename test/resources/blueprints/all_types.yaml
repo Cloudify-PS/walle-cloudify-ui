@@ -1,0 +1,117 @@
+tosca_definitions_version: cloudify_dsl_1_0
+
+imports:
+  - http://www.getcloudify.org/spec/cloudify/3.2m3/types.yaml
+  - http://www.getcloudify.org/spec/openstack-plugin/1.2m3/plugin.yaml
+  - http://www.getcloudify.org/spec/fabric-plugin/1.2m3/plugin.yaml
+
+
+
+node_templates:
+  key_pair:
+    type: cloudify.openstack.nodes.KeyPair
+    properties:
+      private_key_path: 'foo'
+
+  virtual_ip:
+    type: cloudify.nodes.VirtualIP
+
+  subnet:
+    type: cloudify.openstack.nodes.Subnet
+    properties:
+      subnet: 'foo'
+    relationships:
+      - target: router
+        type: cloudify.openstack.subnet_connected_to_router
+
+
+  router:
+    type: cloudify.openstack.nodes.Router
+
+  network:
+    type: cloudify.openstack.nodes.Network
+
+
+
+  security_group:
+    type: cloudify.openstack.nodes.SecurityGroup
+
+  floating_ip:
+    type: cloudify.openstack.nodes.FloatingIP
+
+  server:
+    type: cloudify.openstack.nodes.Server
+    properties:
+      server: 'foo'
+    relationships:
+      - target: floating_ip
+        type: cloudify.openstack.server_connected_to_floating_ip
+      - target: security_group
+        type: cloudify.openstack.server_connected_to_security_group
+      - target: port
+        type: cloudify.openstack.server_connected_to_port
+      - target: key_pair
+        type: cloudify.openstack.server_connected_to_keypair
+
+  root:
+    type: cloudify.nodes.Root
+
+  tier:
+    type: cloudify.nodes.Tier
+
+  compute:
+    type: cloudify.nodes.Compute
+
+  container:
+    type: cloudify.nodes.Container
+
+  volumne:
+    type: cloudify.nodes.Volume
+    relationships:
+      - target: server
+        type: cloudify.openstack.volume_attached_to_server
+
+  file_system:
+    type: cloudify.nodes.FileSystem
+    properties:
+      fs_type: 'foo'
+      fs_mount_path: 'foo'
+    relationships:
+      - target: compute
+        type: cloudify.relationships.contained_in
+
+
+  object_storage:
+    type: cloudify.nodes.ObjectStorage
+
+  port:
+    type: cloudify.nodes.Port
+    relationships:
+      - target: security_group
+        type: cloudify.openstack.port_connected_to_security_group
+
+  load_balancer:
+    type: cloudify.nodes.LoadBalancer
+
+  software_component:
+    type: cloudify.nodes.SoftwareComponent
+
+  dbms:
+    type: cloudify.nodes.DBMS
+
+  database:
+    type: cloudify.nodes.Database
+
+  web_server:
+    type: cloudify.nodes.WebServer
+
+  application_server:
+    type: cloudify.nodes.ApplicationServer
+
+  message_bus_server:
+    type: cloudify.nodes.MessageBusServer
+
+  application_module:
+    type: cloudify.nodes.ApplicationModule
+
+
