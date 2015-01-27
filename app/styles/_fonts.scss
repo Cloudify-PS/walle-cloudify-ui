@@ -228,8 +228,14 @@ $gs-icon-prefix: 'gs-icon';
         &:after {
             font-size: 15px !important;
             top: 4px !important;
-            left: 4px!important;
+            left: 4px !important;
             content: 's';
+        }
+    }
+
+    &.cloudify-nodes-Volume {
+        &:after {
+            content: 'j';
         }
     }
 

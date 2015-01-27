@@ -61,6 +61,9 @@ angular.module('cosmoUiApp')
             },
             'cloudify.nodes.FileSystem': {
                 icon: 'cloudify-nodes-Root cloudify-nodes-FileSystem'
+            },
+            'cloudify.nodes.Volume': {
+                icon: 'cloudify-nodes-Root cloudify-nodes-Volume'
             }
         };
 
