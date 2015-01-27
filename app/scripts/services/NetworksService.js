@@ -71,7 +71,7 @@ angular.module('cosmoUiApp')
             var networks = [];
 
             nodes.forEach(function (node) {
-                if (node.type.indexOf('network') > -1) {
+                if (node.type.toLowerCase().indexOf('network') > -1) {
                     networks.push({
                         'id': node.id,
                         'name': node.id,
@@ -90,7 +90,7 @@ angular.module('cosmoUiApp')
             nodes.forEach(function (node) {
 
                 /* Subnets */
-                if (node.type.indexOf('subnet') > -1) {
+                if (node.type.toLowerCase().indexOf('subnet') > -1) {
                     var relationships = _getRelationshipByType(node, 'contained');
                     relationships.forEach(function (relationship) {
                         if (network.id === relationship.target_id) {
@@ -126,7 +126,7 @@ angular.module('cosmoUiApp')
             var devices = [];
 
             nodes.forEach(function (node) {
-                if (node.type.indexOf('host') > -1) {
+                if (node.type.toLowerCase().indexOf('host') > -1) {
                     var device = {
                         'id': node.id,
                         'name': node.name,
@@ -161,7 +161,7 @@ angular.module('cosmoUiApp')
                     });
 
                     externalNetworks.forEach(function (extNetwork) {
-                        if (extNetwork.type === 'subnet') {
+                        if (extNetwork.type.toLowerCase() === 'subnet') {
                             _addRelation({
                                 source: extNetwork.id,
                                 target: node.id
@@ -183,7 +183,7 @@ angular.module('cosmoUiApp')
                 if (node.type.indexOf('port') > -1) {
                     var relationships = _getRelationshipByType(node, 'depends_on');
                     relationships.forEach(function (relationship) {
-                        if (relationship.type.indexOf('depends_on') > -1) {
+                        if (relationship.type.toLowerCase().indexOf('depends_on') > -1) {
                             ports.push({
                                 'id': node.id,
                                 'name': node.name,
