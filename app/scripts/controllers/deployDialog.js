@@ -59,6 +59,10 @@ angular.module('cosmoUiApp')
         };
 
         $scope.deployBlueprint = function (blueprintId) {
+            if (!$scope.isDeployEnabled()) {
+                return;
+            }
+
             // parse inputs so "true" string will become boolean etc.
             _parseInputs();
             $scope.showError = false;
@@ -115,9 +119,20 @@ angular.module('cosmoUiApp')
             }
         }, true);
 
+        $scope.$watch('deployment_id', function() {
+            if ($scope.showError) {
+                $scope.showError = false;
+                if ($scope.inputsState === RAW && !_validateJSON()) {
+                    $scope.showError = true;
+                }
+            }
+        });
+
         function _formToRaw() {
             // if error message is shown & json is invalid, stop raw JSON update process until JSON is fixed & valid
             if ($scope.showError && !_validateJSON()) {
+                return;
+            } else if ($scope.showError) {
                 return;
             } else {
                 $scope.showError = false;
@@ -135,6 +150,12 @@ angular.module('cosmoUiApp')
         }
 
         function _rawToForm() {
+            if ($scope.showError) {
+                return;
+            } else {
+                $scope.showError = false;
+            }
+
             try {
                 $scope.inputs = JSON.parse($scope.rawString);
                 for (var _parsedInput in $scope.inputs) {
