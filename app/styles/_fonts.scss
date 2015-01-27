@@ -215,4 +215,16 @@ $gs-icon-prefix: 'gs-icon';
         }
     }
 
+    &.cloudify-nodes-Keypair {
+        &:after {
+            content: 'p';
+        }
+    }
+
+    &.cloudify-nodes-FileSystem {
+        &:after {
+            content: 's';
+        }
+    }
+
 }
