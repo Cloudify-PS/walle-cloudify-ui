@@ -33,6 +33,7 @@ angular.module('cosmoUiApp')
             _extNetworks.push(externalNetwork);
 
             var subNetwork = providerData.context.resources.subnet;
+            subNetwork.devices = _getDevices(nodes, _extNetworks);
             subNetwork.color = _getNetworkColor();
             _addRelation({
                 source: subNetwork.id,
@@ -53,7 +54,7 @@ angular.module('cosmoUiApp')
             /* Networks */
             networkModel.networks = _getNetworks(nodes);
             networkModel.networks.forEach(function (network) {
-                network.devices = _getDevices(nodes, networkModel.external);
+//                network.devices = _getDevices(nodes, networkModel.external);
                 network.subnets = _getSubnets(network, nodes);
             });
             networkModel.relations = relations;
@@ -125,7 +126,7 @@ angular.module('cosmoUiApp')
                         'id': node.id,
                         'name': node.name,
                         'type': node.type.substr(node.type.lastIndexOf('.') + 1).toLowerCase(),
-                        'icon': node.type.substr(node.type.lastIndexOf('.') + 1).toLowerCase(),
+                        'icon': 'device',
                         'state': {
                             'total': node.number_of_instances,
                             'completed': 0
@@ -254,19 +255,19 @@ angular.module('cosmoUiApp')
 
         function isDevice(node) {
             var validDevices = [
-                'router',
-                'server'
+                'router'//,
+//                'server'
             ];
-            var isDevice = false;
+            var result = false;
             node.type_hierarchy.forEach(function(type) {
                 validDevices.forEach(function(deviceType) {
                     if (type.substr(type.lastIndexOf('.') + 1).toLowerCase().indexOf(deviceType) > -1) {
-                        isDevice = true;
+                        result = true;
                     }
                 });
             });
 
-            return isDevice;
+            return result;
         }
 
         this.createNetworkTree = _createNetworkTree;
