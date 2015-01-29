@@ -11,38 +11,32 @@ angular.module('cosmoUiApp')
     .service('NetworksService', function Networksservice() {
 
         var relations = [];
+        var routers = [];
+        var extNetId;
         var _colors = ['#1F77B4', '#FF7F0E', '#2CA02C', '#D62728', '#9467BD', '#8C564B', '#4b6c8b', '#550000', '#dc322f', '#FF6600', '#cce80b', '#003300', '#805e00'];
         var _colorIdx = 0;
 
         function _createNetworkTree(providerData, nodes) {
             _resetNetworkColors();
             var _extNetworks = [];
+            extNetId = providerData.context.resources.ext_network.id;
             var externalNetwork = {
-                'id': providerData.context.resources.ext_network.id,
+                'id': extNetId,
                 'name': providerData.context.resources.ext_network.name,
                 'color': _getNetworkColor(),
                 'type': providerData.context.resources.ext_network.type
             };
             externalNetwork.color = _getNetworkColor();
-            externalNetwork.devices = [
-                {
-                    'id': providerData.context.resources.router.id,
-                    'name': providerData.context.resources.router.name,
-                    'type': providerData.context.resources.router.type,
-                    'icon': 'router'
-                }
-            ];
-            _addRelation({
-                source: externalNetwork.id,
-                target: externalNetwork.devices[0].id
-            });
+            _addRouter(providerData.context.resources.router);
+
+            externalNetwork.routers = routers;
             _extNetworks.push(externalNetwork);
 
             var subNetwork = providerData.context.resources.subnet;
             subNetwork.color = _getNetworkColor();
             _addRelation({
                 source: subNetwork.id,
-                target: externalNetwork.devices[0].id
+                target: routers[0].id
             });
             _extNetworks.push(subNetwork);
 
@@ -59,8 +53,8 @@ angular.module('cosmoUiApp')
             /* Networks */
             networkModel.networks = _getNetworks(nodes);
             networkModel.networks.forEach(function (network) {
-                network.subnets = _getSubnets(network, nodes);
                 network.devices = _getDevices(nodes, networkModel.external);
+                network.subnets = _getSubnets(network, nodes);
             });
             networkModel.relations = relations;
 
@@ -92,6 +86,7 @@ angular.module('cosmoUiApp')
                 /* Subnets */
                 if (node.type.toLowerCase().indexOf('subnet') > -1) {
                     var relationships = _getRelationshipByType(node, 'contained');
+                    relationships = relationships.concat(_getRelationshipByType(node, 'connected'));
                     relationships.forEach(function (relationship) {
                         if (network.id === relationship.target_id) {
                             subnets.push({
@@ -105,14 +100,13 @@ angular.module('cosmoUiApp')
                                     'completed': 0
                                 }
                             });
-
-                            _addRelation({
-                                source: node.id,
-                                target: network.id,
-                                type: relationship.type,
-                                typeHierarchy: relationship.type_hierarchy
-                            });
                         }
+                        _addRelation({
+                            source: node.id,
+                            target: relationship.target_id,
+                            type: relationship.type,
+                            typeHierarchy: relationship.type_hierarchy
+                        });
                     });
                 }
             });
@@ -126,12 +120,12 @@ angular.module('cosmoUiApp')
             var devices = [];
 
             nodes.forEach(function (node) {
-                if (node.type.toLowerCase().indexOf('host') > -1) {
+                if (isDevice(node)) {
                     var device = {
                         'id': node.id,
                         'name': node.name,
-                        'type': 'device',
-                        'icon': 'host',
+                        'type': node.type.substr(node.type.lastIndexOf('.') + 1).toLowerCase(),
+                        'icon': node.type.substr(node.type.lastIndexOf('.') + 1).toLowerCase(),
                         'state': {
                             'total': node.number_of_instances,
                             'completed': 0
@@ -169,7 +163,11 @@ angular.module('cosmoUiApp')
                         }
                     });
 
-                    devices.push(device);
+                    if (device.type === 'router') {
+                        _addRouter(device);
+                    } else {
+                        devices.push(device);
+                    }
                 }
             });
 
@@ -231,6 +229,34 @@ angular.module('cosmoUiApp')
                 }
             }
             relations.push(relation);
+        }
+
+        function _addRouter(device) {
+            routers.push({
+                'id': device.id,
+                'name': device.name,
+                'type': device.type,
+                'icon': 'router'
+            });
+
+            _addRelation({
+                source: extNetId,
+                target: device.id
+            });
+        }
+
+        function isDevice(node) {
+            var validDevices = [
+                'router',
+                'server'
+            ];
+            var isDevice = true;
+            node.type_hierarchy.forEach(type, function() {
+                return;
+            });
+            return validDevices.indexOf(node.type.substr(node.type.lastIndexOf('.') + 1).toLowerCase()) > -1;
+
+            return isDevice;
         }
 
 

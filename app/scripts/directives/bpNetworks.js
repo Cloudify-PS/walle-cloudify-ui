@@ -151,11 +151,13 @@ angular.module('cosmoUiApp')
                 Coords.push({
                     source: {
                         x: getAttachPoint(from.x, to.x, from.element),
-                        y: to.y + (height / 2)
+                        y: to.y + (height / 2),
+                        id: relation.source
                     },
                     target: {
                         x: getAttachPoint(to.x, from.x, to.element),
-                        y: to.y + (height / 2)
+                        y: to.y + (height / 2),
+                        id: relation.target
                     },
                     color: from.color !== undefined ? from.color : to.color
                 });
