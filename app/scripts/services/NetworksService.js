@@ -133,25 +133,32 @@ angular.module('cosmoUiApp')
                         'ports': []
                     };
 
-                    var relationships = _getRelationshipByType(node, 'connected_to').concat(_getRelationshipByType(node, 'depends_on'));
+                    var relationships = _getRelationshipByType(node, 'connected_to');//.concat(_getRelationshipByType(node, 'depends_on'));
                     relationships.forEach(function (relationship) {
-                        ports.forEach(function (port) {
-                            if (relationship.target_id === port.id) {
-                                var _alreadyExists = false;
-                                device.ports.forEach(function (item) {
-                                    if (item.id === port.id) {
-                                        _alreadyExists = true;
-                                    }
-                                });
-                                if (!_alreadyExists) {
-                                    device.ports.push(port);
-                                    _addRelation({
-                                        source: port.subnet,
-                                        target: port.id
+                        if (ports.length > 0) {
+                            ports.forEach(function (port) {
+                                if (relationship.target_id === port.id) {
+                                    var _alreadyExists = false;
+                                    device.ports.forEach(function (item) {
+                                        if (item.id === port.id) {
+                                            _alreadyExists = true;
+                                        }
                                     });
+                                    if (!_alreadyExists) {
+                                        device.ports.push(port);
+                                        _addRelation({
+                                            source: port.subnet,
+                                            target: port.id
+                                        });
+                                    }
                                 }
-                            }
-                        });
+                            });
+                        } else {
+                            _addRelation({
+                                source: node.id,
+                                target: relationship.target_id
+                            });
+                        }
                     });
 
                     externalNetworks.forEach(function (extNetwork) {
@@ -250,15 +257,17 @@ angular.module('cosmoUiApp')
                 'router',
                 'server'
             ];
-            var isDevice = true;
-            node.type_hierarchy.forEach(type, function() {
-                return;
+            var isDevice = false;
+            node.type_hierarchy.forEach(function(type) {
+                validDevices.forEach(function(deviceType) {
+                    if (type.substr(type.lastIndexOf('.') + 1).toLowerCase().indexOf(deviceType) > -1) {
+                        isDevice = true;
+                    }
+                });
             });
-            return validDevices.indexOf(node.type.substr(node.type.lastIndexOf('.') + 1).toLowerCase()) > -1;
 
             return isDevice;
         }
-
 
         this.createNetworkTree = _createNetworkTree;
         this.resetNetworkColors = _resetNetworkColors;
