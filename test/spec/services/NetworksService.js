@@ -269,6 +269,23 @@ describe('Service: NetworksService', function () {
                 'use_external_resource': false,
                 'cloudify_runtime': {}
             }
+        },
+        {
+            'declared_type': 'cloudify.openstack.nodes.Network',
+            'name': 'management_network',
+            'type_hierarchy': ['cloudify.nodes.Root', 'cloudify.nodes.Network', 'cloudify.openstack.nodes.Network'],
+            'id': 'management_network',
+            'instances': {
+                'deploy': 1
+            },
+            'type': 'cloudify.openstack.nodes.Network',
+            'properties': {
+                'openstack_config': {},
+                'resource_id': 'management-network',
+                'default_to_managers_external_network': true,
+                'use_external_resource': false,
+                'cloudify_runtime': {}
+            }
         }
     ];
     var results;
@@ -285,15 +302,21 @@ describe('Service: NetworksService', function () {
             });
 
             colorsList = mNetworksService.getNetworkColors();
+
+            results = mNetworksService.createNetworkTree(providerData, nodes);
         });
     });
 
-    describe('Network routers', function() {
+    describe('Networks model', function() {
+
         it('should add router to routers array in external network model', function() {
-            results = mNetworksService.createNetworkTree(providerData, nodes);
             expect(results.external[0].routers.length).toBe(2);
             expect(results.external[0].routers[0].name).toBe('ui-cloudify-router');
             expect(results.external[0].routers[1].name).toBe('management_router');
+        });
+
+        it('should add a network to networks array in networks model', function() {
+            expect(results.networks[0].id).toBe('management_network');
         });
     });
 
@@ -301,10 +324,6 @@ describe('Service: NetworksService', function () {
 
         it('should create a new mNetworksService instance', function() {
             expect(mNetworksService).not.toBeUndefined();
-        });
-
-        beforeEach(function(){
-            results = mNetworksService.createNetworkTree(providerData, nodes);
         });
 
         it('should have external network', function(){
