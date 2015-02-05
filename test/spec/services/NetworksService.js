@@ -307,19 +307,6 @@ describe('Service: NetworksService', function () {
         });
     });
 
-    describe('Networks model', function() {
-
-        it('should add router to routers array in external network model', function() {
-            expect(results.external[0].routers.length).toBe(2);
-            expect(results.external[0].routers[0].name).toBe('ui-cloudify-router');
-            expect(results.external[0].routers[1].name).toBe('management_router');
-        });
-
-        it('should add a network to networks array in networks model', function() {
-            expect(results.networks[0].id).toBe('management_network');
-        });
-    });
-
     describe('Unit tests', function() {
 
         it('should create a new mNetworksService instance', function() {
@@ -370,7 +357,18 @@ describe('Service: NetworksService', function () {
             });
         });
 
+        describe('Networks model', function() {
 
+            it('should add router to routers array in external network model', function() {
+                expect(results.external[0].routers.length).toBe(2);
+                expect(results.external[0].routers[0].name).toBe('ui-cloudify-router');
+                expect(results.external[0].routers[1].name).toBe('management_router');
+            });
+
+            it('should add a network to networks array in networks model', function() {
+                expect(results.networks[0].id).toBe('management_network');
+            });
+        });
     });
 
 });
