@@ -9,7 +9,7 @@
  */
 angular.module('cosmoUiApp')
     .service('NetworksService', function Networksservice() {
-
+        // todo: need to remove variables from service. service should not be stateful
         var relations = [];
         var routers = [];
         var extNetId;
