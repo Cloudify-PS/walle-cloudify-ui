@@ -107,6 +107,27 @@ angular.module('cosmoUiApp')
 
                         _loadExecutions();
 
+//                        CloudifyService.deployments.getDeploymentNodes({deployment_id : dataDeployment.id, state: true})
+//                            .then(function(dataNodes){
+//                                var nodes = [];
+//                                dataNodes.forEach(function(node) {
+//                                    if (node.deployment_id === dataDeployment.id) {
+//                                        node.name = node.id;
+//                                        nodes.push(node);
+//                                    }
+//                                });
+//                                nodesList = nodes;
+//
+//                                _setDeploymentModel(nodesList);
+//                                _updateDeploymentModel(nodesList);
+//
+//                                // Emit nodes data
+//                                $scope.$emit('nodesList', nodesList);
+//
+//                                // Emit deployment process data
+//                                $scope.$emit('deploymentProcess', deploymentModel);
+//                            });
+
                         // Get Nodes
                         CloudifyService.getNodes({deployment_id: dataDeployment.id})
                             .then(function(dataNodes) {
@@ -196,8 +217,14 @@ angular.module('cosmoUiApp')
                     var IndexedNodes = {};
                     for (var i in nodes) {
                         var node = nodes[i];
-                        if(node.hasOwnProperty('node_id')) {
-                            IndexedNodes[node.node_id] = {
+                        var id;
+                        if (node.hasOwnProperty('node_id')) {
+                            id = node.node_id;
+                        } else if (node.hasOwnProperty('id')) {
+                            id = node.id;
+                        }
+                        if (id) {
+                            IndexedNodes[id] = {
                                 state: node.state
                             };
                         }
