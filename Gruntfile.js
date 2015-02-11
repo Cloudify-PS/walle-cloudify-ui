@@ -489,6 +489,20 @@ module.exports = function (grunt) {
                 src: ['app/views/**/*.html'],
                 dest: '.tmp/viewTemplates/templates.js'
             }
+        },
+        jscpd:{
+            all: {
+                path: '.',
+                output: 'dev/jscpd.output.txt',
+                exclude: [ 'app/bower_components/**', 'node_modules/**', 'dist/**','dev/**','app/styles/SyntaxHighlighter/**','test/jasmine-standalone-1.3.1/**'],
+                threshold: 1
+            }
+        },
+        'jscpdreporter': {
+            options: {
+                sourcefile: 'dev/jscpd.output.txt',
+                outputDir: 'dev/jscpd-report/'
+            }
         }
     });
 
@@ -506,6 +520,8 @@ module.exports = function (grunt) {
             'watch'
         ]);
     });
+
+    grunt.registerTask('analyze', [ 'jscpd', 'grunt-jscpd-reporter']);
 
     grunt.registerTask('test', function(testBackend) {
         var tasks  = [];
@@ -585,8 +601,8 @@ module.exports = function (grunt) {
     grunt.registerTask('default', [
         'jshint',
         'jsdoc',
-        'build',
         'test:all',
+        'build',
         'backend'
     ]);
 
