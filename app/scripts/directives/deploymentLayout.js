@@ -107,52 +107,7 @@ angular.module('cosmoUiApp')
 
                         _loadExecutions();
 
-//                        CloudifyService.deployments.getDeploymentNodes({deployment_id : dataDeployment.id, state: true})
-//                            .then(function(dataNodes){
-//                                var nodes = [];
-//                                dataNodes.forEach(function(node) {
-//                                    if (node.deployment_id === dataDeployment.id) {
-//                                        node.name = node.id;
-//                                        nodes.push(node);
-//                                    }
-//                                });
-//                                nodesList = nodes;
-//
-//                                _setDeploymentModel(nodesList);
-//                                _updateDeploymentModel(nodesList);
-//
-//                                // Emit nodes data
-//                                $scope.$emit('nodesList', nodesList);
-//
-//                                // Emit deployment process data
-//                                $scope.$emit('deploymentProcess', deploymentModel);
-//                            });
-
-                        // Get Nodes
-                        CloudifyService.getNodes({deployment_id: dataDeployment.id})
-                            .then(function(dataNodes) {
-
-                                var nodes = [];
-                                dataNodes.forEach(function(node) {
-                                    if (node.deployment_id === dataDeployment.id) {
-                                        node.name = node.id;
-                                        nodes.push(node);
-                                    }
-                                });
-                                nodesList = nodes;
-
-                                // Set Deployment Model
-                                _setDeploymentModel(nodesList);
-                                _updateDeploymentModel(nodesList);
-
-                                // Emit nodes data
-                                $scope.$emit('nodesList', nodesList);
-
-                                // Emit deployment process data
-                                $scope.$emit('deploymentProcess', deploymentModel);
-
-                            });
-
+                        _getNodes(dataDeployment.id);
                     });
 
                 $scope.$watch('breadcrumb', function (breadcrumbs) {
@@ -193,25 +148,55 @@ angular.module('cosmoUiApp')
                     $location.path('/deployment/' + $scope.id + section.href);
                 };
 
-                // Workflows & Execution
-                CloudifyService.autoPull('getDeploymentExecutions', $scope.id, CloudifyService.deployments.getDeploymentExecutions)
-                    .then(null, null, function (dataExec) {
-                        $scope.currentExecution = _getCurrentExecution(dataExec);
-                        if (!$scope.currentExecution && $scope.deploymentInProgress) {
-                            $scope.deploymentInProgress = false;
-                        }
-                        else if ($scope.deploymentInProgress === null && $scope.currentExecution !== false) {
-                            $scope.deploymentInProgress = true;
-                        }
-                        CloudifyService.deployments.getDeploymentNodes({deployment_id : $scope.id, state: true}).then(function(dataNodes){
-                            _updateDeploymentModel(dataNodes);
+                function _getNodes(deployment_id) {
+                    // Get Nodes
+                    CloudifyService.getNodes({deployment_id: deployment_id})
+                        .then(function(dataNodes) {
+
+                            var nodes = [];
+                            dataNodes.forEach(function(node) {
+                                if (node.deployment_id === deployment_id) {
+                                    node.name = node.id;
+                                    nodes.push(node);
+                                }
+                            });
+                            nodesList = nodes;
+
+                            // Set Deployment Model
+                            _setDeploymentModel(nodesList);
+                            _updateDeploymentModel(nodesList);
+
+                            // Emit nodes data
+                            $scope.$emit('nodesList', nodesList);
+
+                            // Emit deployment process data
+                            $scope.$emit('deploymentProcess', deploymentModel);
+
+                            _startDeploymentExecutionsAutopull();
                         });
-                        $scope.$emit('deploymentExecution', {
-                            currentExecution: $scope.currentExecution,
-                            deploymentInProgress: $scope.deploymentInProgress,
-                            executionsList: dataExec
+                }
+
+                function _startDeploymentExecutionsAutopull() {
+                    // Workflows & Execution
+                    CloudifyService.autoPull('getDeploymentExecutions', $scope.id, CloudifyService.deployments.getDeploymentExecutions)
+                        .then(null, null, function (dataExec) {
+                            $scope.currentExecution = _getCurrentExecution(dataExec);
+                            if (!$scope.currentExecution && $scope.deploymentInProgress) {
+                                $scope.deploymentInProgress = false;
+                            }
+                            else if ($scope.deploymentInProgress === null && $scope.currentExecution !== false) {
+                                $scope.deploymentInProgress = true;
+                            }
+                            CloudifyService.deployments.getDeploymentNodes({deployment_id : $scope.id, state: true}).then(function(dataNodes){
+                                _updateDeploymentModel(dataNodes);
+                            });
+                            $scope.$emit('deploymentExecution', {
+                                currentExecution: $scope.currentExecution,
+                                deploymentInProgress: $scope.deploymentInProgress,
+                                executionsList: dataExec
+                            });
                         });
-                    });
+                }
 
                 function _orderNodesById( nodes ) {
                     var IndexedNodes = {};
