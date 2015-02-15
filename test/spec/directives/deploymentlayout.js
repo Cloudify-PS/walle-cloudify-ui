@@ -2,54 +2,105 @@
 
 describe('Directive: deploymentLayout', function () {
 
-    var element, scope;
+    var element, scope, _cloudifyService;
 
-    beforeEach(module('cosmoUiApp', 'ngMock', 'templates-main'));
+    var _getNodesCalled = false;
+    var _getDeploymentExecutionsCalled = false;
 
-    describe('Test setup', function() {
-        it ('', inject(function ($compile, $rootScope, $httpBackend, $q, CloudifyService) {
+    var _executions = [{
+        'status': 'terminated',
+        'created_at': '2015-02-12 12:13:01.977384',
+        'workflow_id': 'create_deployment_environment',
+        'blueprint_id': 'hw1',
+        'deployment_id': 'hw1dep2',
+        'error': '',
+        'id': 'd6447e77-2c64-4487-9c34-07d3fef7191c'
+    }, {
+        'status': 'terminated',
+        'created_at': '2015-02-12 12:14:06.965051',
+        'workflow_id': 'install',
+        'blueprint_id': 'hw1',
+        'deployment_id': 'hw1dep2',
+        'error': '',
+        'id': 'be0a1a73-db4b-4565-a857-86fee33b18b7'
+    }];
+
+    var _deployment = {
+        'inputs': {
+            'webserver_port': 8080,
+            'image_name': 'image_name',
+            'agent_user': 'agent_user',
+            'flavor_name': 'flavor_name'
+        },
+        'blueprint_id': 'blueprint1',
+        'id': 'deployment1',
+        'outputs': {
+            'http_endpoint': {
+                'description': 'HTTP web server endpoint.',
+                'value': {
+                    'get_attribute': ['vm', 'ip']
+                }
+            }
+        }
+    };
+
+    var _nodes = [{
+        'deploy_number_of_instances': '1',
+        'type_hierarchy': ['cloudify.nodes.Root', 'cloudify.nodes.SoftwareComponent', 'cloudify.nodes.WebServer'],
+        'blueprint_id': 'hw1',
+        'host_id': 'vm',
+        'id': 'http_web_server',
+        'number_of_instances': '1',
+        'deployment_id': 'hw1dep2',
+        'type': 'cloudify.nodes.WebServer'
+    }, {
+        'deploy_number_of_instances': '1',
+        'type_hierarchy': ['cloudify.nodes.Root', 'cloudify.nodes.Compute', 'cloudify.openstack.nodes.Server'],
+        'blueprint_id': 'hw1',
+        'host_id': 'vm',
+        'id': 'vm',
+        'number_of_instances': '1',
+        'deployment_id': 'hw1dep2',
+        'type': 'cloudify.openstack.nodes.Server'
+    }];
+
+    function compileDirective(opts) {
+        inject(function($compile, $rootScope, $httpBackend, $q, CloudifyService) {
             $httpBackend.whenGET('/backend/configuration?access=all').respond(200);
             $httpBackend.whenGET('/backend/versions/ui').respond(200);
             $httpBackend.whenGET('/backend/versions/manager').respond(200);
             $httpBackend.whenGET('/backend/version/latest?version=00').respond('300');
             $httpBackend.whenGET('/backend/deployments/executions/get').respond(200);
             $httpBackend.whenPOST('/backend/deployments/get').respond(200);
+            $httpBackend.whenPOST('/backend/deployments/nodes').respond(200);
             $httpBackend.whenPOST('/backend/nodes').respond(200);
 
-            scope = $rootScope.$new();
+            if (!opts || !opts.scope) {
+                scope = $rootScope.$new();
+            } else {
+                scope = opts.scope;
+            }
             element = $compile(angular.element('<div deployment-layout></div>'))(scope);
 
-            CloudifyService.deployments.getDeploymentById = function() {
+            _cloudifyService = CloudifyService;
+
+            _cloudifyService.deployments.getDeploymentById = function() {
                 var deferred = $q.defer();
-                var deployment = {
-                    'inputs': {
-                        'webserver_port': 8080,
-                        'image_name': 'image_name',
-                        'agent_user': 'agent_user',
-                        'flavor_name': 'flavor_name'
-                    },
-                    'blueprint_id': 'blueprint1',
-                    'id': 'deployment1',
-                    'outputs': {
-                        'http_endpoint': {
-                            'description': 'HTTP web server endpoint.',
-                            'value': {
-                                'get_attribute': ['vm', 'ip']
-                            }
-                        }
-                    }
-                };
-
-                deferred.resolve(deployment);
-
+                deferred.resolve(_deployment);
                 return deferred.promise;
             };
 
             scope.$digest();
-        }));
-    });
+        });
+    }
+
+    beforeEach(module('cosmoUiApp', 'ngMock', 'templates-main'));
 
     describe('Directive tests', function() {
+        beforeEach(function() {
+            compileDirective();
+        });
+
         afterEach(function() {
             $('#deployment').remove();
         });
@@ -70,7 +121,6 @@ describe('Directive: deploymentLayout', function () {
         });
 
         it('should not set a hover effect on the execute button', function() {
-            scope.$apply();
             var _playBtn = element.find('.deployment-play')[0];
             $('body').append('<div id="deployment">' +
                     '<div id="deployment-header">' +
@@ -85,6 +135,37 @@ describe('Directive: deploymentLayout', function () {
 
             expect($('.deployment-play').css('background-image').indexOf('images/play_disabled.png')).not.toBe(-1);
         });
-    });
 
+        it('should not call getDeploymentExecutions autopull before getNodes', inject(function($compile, $rootScope, $q, CloudifyService) {
+            _getNodesCalled = false;
+            _getDeploymentExecutionsCalled = false;
+            var _scope = $rootScope.$new();
+            spyOn(_cloudifyService.deployments, 'getDeploymentExecutions').andCallThrough();
+
+            CloudifyService.deployments.getDeploymentExecutions = function() {
+                var deferred = $q.defer();
+                deferred.resolve(_executions);
+                return deferred.promise;
+            };
+
+            CloudifyService.getNodes = function() {
+
+                var deferred = $q.defer();
+                _getNodesCalled = true;
+
+                deferred.resolve(_nodes);
+                return deferred.promise;
+            };
+
+            compileDirective({scope: _scope});
+            scope.$apply();
+
+            waitsFor(function() {
+                return _getNodesCalled;
+            });
+            runs(function() {
+                expect(_getDeploymentExecutionsCalled).toBe(false);
+            });
+        }));
+    });
 });
