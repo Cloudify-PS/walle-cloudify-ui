@@ -22,6 +22,7 @@ angular.module('cosmoUiApp')
         };
 
         function _createNetworkTree(providerData, nodes) {
+            _resetNetworkModel();
             _resetNetworkColors();
 
             var extNetwork = providerData.context.resources.ext_network;
@@ -66,6 +67,14 @@ angular.module('cosmoUiApp')
             _setNetworkTree(nodes);
 
             return networkModel;
+        }
+
+        function _resetNetworkModel() {
+            networkModel = {
+                external: [],
+                networks: [],
+                relations: []
+            };
         }
 
         function _setNetworkTree(nodes) {
