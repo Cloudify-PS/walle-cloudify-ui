@@ -11,7 +11,6 @@ angular.module('cosmoUiApp')
     .service('NetworksService', function Networksservice() {
         // todo: need to remove variables from service. service should not be stateful
         var relations = [];
-        var routers = [];
         var extNetId;
         var _colors = ['#1F77B4', '#FF7F0E', '#2CA02C', '#D62728', '#9467BD', '#8C564B', '#4b6c8b', '#550000', '#dc322f', '#FF6600', '#cce80b', '#003300', '#805e00'];
         var _colorIdx = 0;
@@ -27,9 +26,19 @@ angular.module('cosmoUiApp')
                 'type': providerData.context.resources.ext_network.type
             };
             externalNetwork.color = _getNetworkColor();
-            _addRouter(providerData.context.resources.router);
 
-            externalNetwork.routers = routers;
+            var extRouter = providerData.context.resources.router;
+            externalNetwork.routers = [{
+                'id': extRouter.id,
+                'name': extRouter.name,
+                'type': extRouter.type,
+                'icon': 'router'
+            }];
+            _addRelation({
+                source: extNetId,
+                target: extRouter.id
+            });
+
             _extNetworks.push(externalNetwork);
 
             var subNetwork = providerData.context.resources.subnet;
@@ -37,7 +46,7 @@ angular.module('cosmoUiApp')
             subNetwork.color = _getNetworkColor();
             _addRelation({
                 source: subNetwork.id,
-                target: routers[0].id
+                target: extRouter.id
             });
             _extNetworks.push(subNetwork);
 
@@ -172,7 +181,16 @@ angular.module('cosmoUiApp')
                     });
 
                     if (device.type === 'router') {
-                        _addRouter(device);
+                        externalNetworks[0].routers.push({
+                            'id': device.id,
+                            'name': device.name,
+                            'type': device.type,
+                            'icon': 'router'
+                        });
+                        _addRelation({
+                            source: externalNetworks[0].id,
+                            target: device.id
+                        });
                     } else {
                         devices.push(device);
                     }
@@ -237,20 +255,6 @@ angular.module('cosmoUiApp')
                 }
             }
             relations.push(relation);
-        }
-
-        function _addRouter(device) {
-            routers.push({
-                'id': device.id,
-                'name': device.name,
-                'type': device.type,
-                'icon': 'router'
-            });
-
-            _addRelation({
-                source: extNetId,
-                target: device.id
-            });
         }
 
         function isDevice(node) {
