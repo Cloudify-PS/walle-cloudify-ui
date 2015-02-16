@@ -10,7 +10,7 @@
         </div>
         <div class="dragBtn" data-ng-mousedown="dragIt($event)"></div>
     </div>
-    <div class="containList" perfect-scrollbar wheel-propagation="true">
+    <div class="containList" wheel-propagation="true">
         <table class="eventsList">
             <tr class="animate-repeat" data-ng-class="{true: 'openRow'}[isOpen]" ng-repeat="event in events" data-ng-click="isOpen=!isOpen" ng-init="isOpen=false">
                 <td class="icon">
