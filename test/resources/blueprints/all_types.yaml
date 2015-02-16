@@ -16,7 +16,7 @@ node_templates:
   virtual_ip:
     type: cloudify.nodes.VirtualIP
 
-  network:
+  my_network:
     type: cloudify.openstack.nodes.Network
     properties:
       use_external_resource: false
