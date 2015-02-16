@@ -9,66 +9,65 @@
  */
 angular.module('cosmoUiApp')
     .service('NetworksService', function Networksservice() {
-        // todo: need to remove variables from service. service should not be stateful
-        var relations = [];
-        var extNetId;
+
+        var networkModel = {
+            external: [],
+            networks: [],
+            relations: []
+        };
+
         var _colors = ['#1F77B4', '#FF7F0E', '#2CA02C', '#D62728', '#9467BD', '#8C564B', '#4b6c8b', '#550000', '#dc322f', '#FF6600', '#cce80b', '#003300', '#805e00'];
         var _colorIdx = 0;
 
         function _createNetworkTree(providerData, nodes) {
             _resetNetworkColors();
-            var _extNetworks = [];
-            extNetId = providerData.context.resources.ext_network.id;
-            var externalNetwork = {
-                'id': extNetId,
-                'name': providerData.context.resources.ext_network.name,
-                'color': _getNetworkColor(),
-                'type': providerData.context.resources.ext_network.type
-            };
-            externalNetwork.color = _getNetworkColor();
 
-            var extRouter = providerData.context.resources.router;
-            externalNetwork.routers = [{
-                'id': extRouter.id,
-                'name': extRouter.name,
-                'type': extRouter.type,
+            var extNetwork = providerData.context.resources.ext_network;
+            var extSubnet = providerData.context.resources.subnet;
+            var extRouter = {
+                'id': providerData.context.resources.router.id,
+                'name': providerData.context.resources.router.name,
+                'type': providerData.context.resources.router.type,
                 'icon': 'router'
-            }];
-            _addRelation({
-                source: extNetId,
+            };
+            var externalNetwork = {
+                'id': extNetwork.id,
+                'name': extNetwork.name,
+                'color': _getNetworkColor(),
+                'type': extNetwork.type,
+                'routers': [extRouter]
+            };
+            networkModel.relations.push({
+                source: externalNetwork.id,
                 target: extRouter.id
             });
+            networkModel.external.push(externalNetwork);
 
-            _extNetworks.push(externalNetwork);
-
-            var subNetwork = providerData.context.resources.subnet;
-            subNetwork.devices = _getDevices(nodes, _extNetworks);
-            subNetwork.color = _getNetworkColor();
-            _addRelation({
-                source: subNetwork.id,
+            var externalSubnet = {
+                'id': extSubnet.id,
+                'name': extSubnet.name,
+                'color': _getNetworkColor(),
+                'type': extSubnet.type,
+                'devices': _getDevices(nodes, networkModel.external)
+            };
+            networkModel.relations.push({
+                source: extSubnet.id,
                 target: extRouter.id
             });
-            _extNetworks.push(subNetwork);
+            networkModel.external.push(externalSubnet);
 
-            return _setNetworkTree(nodes, _extNetworks);
+            _setNetworkTree(nodes);
+
+            return networkModel;
         }
 
-        function _setNetworkTree(nodes, externalNetworks) {
-            var networkModel = {
-                'external': externalNetworks || [],
-                'networks': [],
-                'relations': []
-            };
-
+        function _setNetworkTree(nodes) {
             /* Networks */
             networkModel.networks = _getNetworks(nodes);
             networkModel.networks.forEach(function (network) {
 //                network.devices = _getDevices(nodes, networkModel.external);
                 network.subnets = _getSubnets(network, nodes);
             });
-            networkModel.relations = relations;
-
-            return networkModel;
         }
 
         function _getNetworks(nodes) {
@@ -124,7 +123,7 @@ angular.module('cosmoUiApp')
             return subnets;
         }
 
-        function _getDevices(nodes, externalNetworks) {
+        function _getDevices(nodes) {
             /* Ports */
             var ports = _getPorts(nodes);
             var devices = [];
@@ -171,7 +170,7 @@ angular.module('cosmoUiApp')
                         }
                     });
 
-                    externalNetworks.forEach(function (extNetwork) {
+                    networkModel.external.forEach(function (extNetwork) {
                         if (extNetwork.type.toLowerCase() === 'subnet') {
                             _addRelation({
                                 source: extNetwork.id,
@@ -181,14 +180,14 @@ angular.module('cosmoUiApp')
                     });
 
                     if (device.type === 'router') {
-                        externalNetworks[0].routers.push({
+                        networkModel.external[0].routers.push({
                             'id': device.id,
                             'name': device.name,
                             'type': device.type,
                             'icon': 'router'
                         });
                         _addRelation({
-                            source: externalNetworks[0].id,
+                            source: networkModel.external[0].id,
                             target: device.id
                         });
                     } else {
@@ -249,12 +248,12 @@ angular.module('cosmoUiApp')
         }
 
         function _addRelation(relation) {
-            for(var i in relations) {
-                if((relation.source + relation.target) === (relations[i].source + relations[i].target)) {
+            for(var i in networkModel.relations) {
+                if((relation.source + relation.target) === (networkModel.relations[i].source + networkModel.relations[i].target)) {
                     return;
                 }
             }
-            relations.push(relation);
+            networkModel.relations.push(relation);
         }
 
         function isDevice(node) {
