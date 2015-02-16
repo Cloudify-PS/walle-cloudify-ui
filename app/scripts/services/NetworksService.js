@@ -16,8 +16,10 @@ angular.module('cosmoUiApp')
             relations: []
         };
 
-        var _colors = ['#1F77B4', '#FF7F0E', '#2CA02C', '#D62728', '#9467BD', '#8C564B', '#4b6c8b', '#550000', '#dc322f', '#FF6600', '#cce80b', '#003300', '#805e00'];
-        var _colorIdx = 0;
+        var _colors = {
+            idx: 0,
+            colors:['#1F77B4', '#FF7F0E', '#2CA02C', '#D62728', '#9467BD', '#8C564B', '#4b6c8b', '#550000', '#dc322f', '#FF6600', '#cce80b', '#003300', '#805e00']
+        };
 
         function _createNetworkTree(providerData, nodes) {
             _resetNetworkColors();
@@ -228,16 +230,16 @@ angular.module('cosmoUiApp')
         }
 
         function _resetNetworkColors() {
-            _colorIdx = 0;
+            _colors.idx = 0;
         }
 
         function _getNetworkColors() {
-            return _colors;
+            return _colors.colors;
         }
 
         function _getNetworkColor() {
-            _colorIdx = _colorIdx < _colors.length ? _colorIdx + 1 : 0;
-            return _colors[_colorIdx];
+            _colors.idx = _colors.idx < _colors.colors.length ? _colors.idx + 1 : 0;
+            return _colors.colors[_colors.idx];
         }
 
         function _getRelationshipByType(node, type) {
