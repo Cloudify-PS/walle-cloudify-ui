@@ -25,6 +25,21 @@ angular.module('cosmoUiApp')
             _resetNetworkModel();
             _resetNetworkColors();
 
+            _setExternalNetworks(providerData, nodes);
+            _setNetworkTree(nodes);
+
+            return networkModel;
+        }
+
+        function _resetNetworkModel() {
+            networkModel = {
+                external: [],
+                networks: [],
+                relations: []
+            };
+        }
+
+        function _setExternalNetworks(providerData, nodes) {
             var extNetwork = providerData.context.resources.ext_network;
             var extSubnet = providerData.context.resources.subnet;
 
@@ -63,18 +78,6 @@ angular.module('cosmoUiApp')
                 target: extRouter.id
             });
             networkModel.external.push(externalSubnet);
-
-            _setNetworkTree(nodes);
-
-            return networkModel;
-        }
-
-        function _resetNetworkModel() {
-            networkModel = {
-                external: [],
-                networks: [],
-                relations: []
-            };
         }
 
         function _setNetworkTree(nodes) {
