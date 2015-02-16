@@ -343,7 +343,7 @@ describe('Service: NetworksService', function () {
 
         it('should contain the 5th color', function(){
             color = mNetworksService.getNetworkColor();
-            expect(color).toContain(colorsList[4]);
+            expect(color).toContain(colorsList[3]);
         });
 
         describe('Reset Colors', function() {

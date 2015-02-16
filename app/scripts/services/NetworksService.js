@@ -24,12 +24,16 @@ angular.module('cosmoUiApp')
 
             var extNetwork = providerData.context.resources.ext_network;
             var extSubnet = providerData.context.resources.subnet;
+
+            /* external router */
             var extRouter = {
                 'id': providerData.context.resources.router.id,
                 'name': providerData.context.resources.router.name,
                 'type': providerData.context.resources.router.type,
                 'icon': 'router'
             };
+
+            /* external network */
             var externalNetwork = {
                 'id': extNetwork.id,
                 'name': extNetwork.name,
@@ -43,6 +47,7 @@ angular.module('cosmoUiApp')
             });
             networkModel.external.push(externalNetwork);
 
+            /* external subnet */
             var externalSubnet = {
                 'id': extSubnet.id,
                 'name': extSubnet.name,
