@@ -65,7 +65,7 @@ node_templates:
   container:
     type: cloudify.nodes.Container
 
-  volumne:
+  volume:
     type: cloudify.nodes.Volume
     relationships:
       - target: openstack_server
