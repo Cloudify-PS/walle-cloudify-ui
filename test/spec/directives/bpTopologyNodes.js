@@ -328,7 +328,7 @@ describe('Directive: bpTopologyNodes', function () {
         });
 
         it('should not have cloudify-types-base class', function() {
-            expect(element.find('i.icon').hasClass('cloudify-types-base')).toBe(false);
+            expect(element.find('i.gs-node-icon').hasClass('cloudify-types-base')).toBe(false);
         });
 
         it('have a cloudify-nodes-Root class', inject(function($rootScope) {
@@ -336,7 +336,7 @@ describe('Directive: bpTopologyNodes', function () {
             _scope.map = _nodesTree;
             compileDirective({scope: _scope});
 
-            expect(element.find('i.icon').hasClass('cloudify-nodes-Root')).toBe(true);
+            expect(element.find('i.gs-node-icon').hasClass('cloudify-nodes-Root')).toBe(true);
         }));
 
         it('volume node type have a cloudify-nodes-Volume class', inject(function($rootScope) {
@@ -344,7 +344,7 @@ describe('Directive: bpTopologyNodes', function () {
             _scope.map = _nodesTree;
             compileDirective({scope: _scope});
 
-            expect(element.find('i.icon.topology-glyph.cloudify-nodes-Root.cloudify-nodes-Volume').length).toBe(1);
+            expect(element.find('i.gs-node-icon.topology-glyph.cloudify-nodes-Root.cloudify-nodes-Volume').length).toBe(1);
         }));
     });
 });
