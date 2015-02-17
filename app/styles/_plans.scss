@@ -198,7 +198,7 @@
                 pointer-events: none;
             }
         }
-        i.icon {
+        i.gs-node-icon {
             width: 36px;
             height: 36px;
             border-radius: 19px;
@@ -209,6 +209,17 @@
                 top: 21px;
                 left: 8px;
                 font-size: 48px;
+            }
+            &.small {
+              width: 25px;
+              height: 25px;
+              border-radius: 15px;
+
+              &:after {
+                top: -2px;
+                left: 5px;
+                font-size: 30px;
+              }
             }
             &.fa {
                 display: inline-block;
@@ -257,15 +268,6 @@
                     text-align: center;
                     margin-top: 8px;
                 }
-                > i.icon {
-                    position: absolute;
-                    background: #3aaeda;
-                    border-width: 2px;
-                    border-style: solid;
-                    border-color: white;
-                    top: 0px;
-                    left: -20px;
-                }
                 .hoverup {
                     z-index: 101;
 
@@ -273,15 +275,6 @@
                         left: 37px;
                     }
                 }
-            }
-            > i.icon {
-                position: absolute;
-                background: #136e9d;
-                border-width: 2px;
-                border-style: solid;
-                border-color: white;
-                top: 0px;
-                left: -20px;
             }
             .piProgress {
                 position: absolute;
@@ -394,7 +387,7 @@
                         width: 10px;
                         height: 10px;
                         cursor: pointer;
-                        &.icon {
+                        &.gs-node-icon {
                             &:after {
                                 position: relative;
                                 top: 10px;
@@ -486,57 +479,6 @@
                 margin: 0px;
                 color: #555869;
                 font-size: 15px;
-            }
-            i.icon {
-                display: inline-block;
-                &:after {
-                    position: absolute;
-                    top: 19px;
-                    left: 8px;
-                }
-            }
-        }
-        .disableBox {
-            $disableBoxColor: "#eee";
-            border-color: #eee;
-            > .head {
-                background-color: #eee;
-            }
-            > .piProgress {
-                .circle {
-                    background-color: #eee;
-                    > .icon {
-                        background-color: #eee;
-                        > .badge {
-                            background-color: #eee;
-                        }
-                    }
-                }
-                svg {
-                    path {
-                        fill: #eee;
-                    }
-                }
-            }
-        }
-        &.disableCompute {
-            [data-type="compute"].box {
-                @extend .disableBox;
-            }
-        }
-        &.disableMiddleware {
-            [data-type="middleware"].box {
-                @extend .disableBox;
-            }
-        }
-        &.disableModules {
-            [data-type="modules"].app {
-                @extend .disableBox;
-            }
-        }
-        &.disableConnections {
-            .coordinates > svg {
-                display: none;
             }
         }
     }
@@ -643,18 +585,19 @@
                         margin: 5px;
                     }
                     i.topology-glyph {
-                        display: inline-block;
-                        color: inherit;
-                        width: 21px;
-                        height: 30px;
-                        font-size: 60px;
-                        line-height: 5px;
-                    }
-                    i.topology-glyph:before {
+                      display: inline-block;
+                      color: inherit;
+                      width: 21px;
+                      height: 30px;
+                      font-size: 60px;
+                      line-height: 5px;
+
+                      &:before {
                         font-size: 60px;
                         position: absolute;
                         top: -26px;
                         left: 0px;
+                      }
                     }
                     .portarea {
                         position: relative;

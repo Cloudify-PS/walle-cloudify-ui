@@ -113,5 +113,8 @@ node_templates:
 
   application_module:
     type: cloudify.nodes.ApplicationModule
+    relationships:
+      - target: application_server
+        type: cloudify.relationships.contained_in
 
 
