@@ -19,4 +19,8 @@ angular.module('cosmoUiApp')
         this.getStatus = function(status_id) {
             return statuses[status_id] || statuses[0];
         };
+
+        this.getStatuses = function() {
+            return statuses;
+        };
     });
