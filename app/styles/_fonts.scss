@@ -233,18 +233,12 @@ i.gs-node-icon {
 
     &.cloudify-openstack-nodes-KeyPair {
       &:after {
-//        font-size: 17px !important;
-//        top: 4px !important;
-//        left: 3px!important;
         content: 'p';
       }
     }
 
     &.cloudify-nodes-FileSystem {
       &:after {
-//        font-size: 15px !important;
-//        top: 4px !important;
-//        left: 4px !important;
         content: 's';
       }
     }
