@@ -300,7 +300,7 @@ angular.module('cosmoUiApp')
                         deployment.status = 2;
                     }
                     else if(process === 0) {
-                        deployment.status = 3;
+                        deployment.status = 0;
                     }
                 }
 
