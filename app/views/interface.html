@@ -7,20 +7,23 @@
     <div class="content-section">
 
         <h4>Types Icons</h4>
-        <p>Basic using element to display type icons must be in the pattern <code>&lt;i class=&quot;icon topology-glyph { icon_type }&quot;&gt;&lt;/i&gt;</code></p>
+        <p>Basic using element to display type icons must be in the pattern <code>&lt;i class=&quot;gs-node-icon topology-glyph { icon_type }&quot;&gt;&lt;/i&gt;</code></p>
+        <p>For small sized icons (connected nodes), the 'small' class can be used <code>&lt;i class=&quot;gs-node-icon topology-glyph small { icon_type }&quot;&gt;&lt;/i&gt;</code></p>
         <table class="table table-striped">
             <thead>
                 <tr>
                     <td>Type</td>
-                    <td class="col-sm-1 text-center info">Preview</td>
-                    <td>Element</td>
+                    <td class="col-sm-1 text-center info">Default</td>
+                    <td class="col-sm-1 text-center info">Small</td>
+                    <td>Implementation</td>
                 </tr>
             </thead>
             <tbody>
                 <tr data-ng-repeat="(type, data) in typesList">
                     <td>{{ type }}</td>
-                    <td class="active text-center"><i class="icon topology-glyph {{ data.icon }}"></i></td>
-                    <td><code>&lt;i class=&quot;icon topology-glyph {{ data.icon }}&quot;&gt;&lt;/i&gt;</code></td>
+                    <td class="active text-center"><i class="gs-node-icon topology-glyph {{ data.icon }}"></i></td>
+                    <td class="active text-center"><i class="gs-node-icon topology-glyph small {{ data.icon }}"></i></td>
+                    <td><code>&lt;i class=&quot;gs-node-icon topology-glyph {{ data.icon }}&quot;&gt;&lt;/i&gt;</code></td>
                 </tr>
             </tbody>
         </table>

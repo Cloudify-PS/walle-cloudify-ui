@@ -704,7 +704,7 @@
                 pointer-events: none;
             }
         }
-        i.icon {
+        i.gs-node-icon {
             width: 36px;
             height: 36px;
             border-radius: 19px;
@@ -715,6 +715,17 @@
                 top: 21px;
                 left: 8px;
                 font-size: 48px;
+            }
+            &.small {
+              width: 25px;
+              height: 25px;
+              border-radius: 15px;
+
+              &:after {
+                top: -2px;
+                left: 5px;
+                font-size: 30px;
+              }
             }
             &.fa {
                 display: inline-block;
@@ -762,15 +773,6 @@
                     text-align: center;
                     margin-top: 8px;
                 }
-                > i.icon {
-                    position: absolute;
-                    background: #3aaeda;
-                    border-width: 2px;
-                    border-style: solid;
-                    border-color: white;
-                    top: 0px;
-                    left: -20px;
-                }
                 .hoverup {
                     z-index: 101;
 
@@ -778,15 +780,6 @@
                         left: 37px;
                     }
                 }
-            }
-            > i.icon {
-                position: absolute;
-                background: #136e9d;
-                border-width: 2px;
-                border-style: solid;
-                border-color: white;
-                top: 0px;
-                left: -20px;
             }
             .piProgress {
                 position: absolute;
@@ -900,7 +893,7 @@
                         height: 10px;
                         cursor: pointer;
 
-                        &.icon {
+                        &.gs-node-icon {
                             &:after {
                                 position: relative;
                                 top: 10px;
@@ -915,7 +908,7 @@
             .holder {
                 display: block;
                 background-color: white;
-                padding: 5px 15px;
+                padding: 5px 25px;
             }
             .hoverup {
                 position: absolute;
@@ -989,57 +982,6 @@
                 margin: 0px;
                 color: #555869;
                 font-size: 15px;
-            }
-            i.icon {
-                display: inline-block;
-                &:after {
-                    position: absolute;
-                    top: 21px;
-                    left: 8px;
-                }
-            }
-        }
-        .disableBox {
-            $disableBoxColor: "#eee";
-            border-color: #eee;
-            > .head {
-                background-color: #eee;
-            }
-            > .piProgress {
-                .circle {
-                    background-color: #eee;
-                    > .icon {
-                        background-color: #eee;
-                        > .badge {
-                            background-color: #eee;
-                        }
-                    }
-                }
-                svg {
-                    path {
-                        fill: #eee;
-                    }
-                }
-            }
-        }
-        &.disableCompute {
-            [data-type="compute"].box {
-                @extend .disableBox;
-            }
-        }
-        &.disableMiddleware {
-            [data-type="middleware"].box {
-                @extend .disableBox;
-            }
-        }
-        &.disableModules {
-            [data-type="modules"].app {
-                @extend .disableBox;
-            }
-        }
-        &.disableConnections {
-            .coordinates > svg {
-                display: none;
             }
         }
     }

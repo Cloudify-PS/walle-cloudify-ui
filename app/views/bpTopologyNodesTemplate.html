@@ -1,14 +1,7 @@
 <div data-ng-repeat="node in map track by node.name" data-type="{{node.dataType}}" ng-class="{box: !node.isApp, app: node.isApp, boxHover: headerHover == node.name}" blueprint:coordinate="{{node.id}}">
-    <!--<div class="hoverup" ng-class="{appHoverup: node.isApp}">-->
-        <!--<div class="buttons no-embed">-->
-            <!--<ul>-->
-                <!--<li data-ng-click="onNodeSelected(node)" class="topology-glyph node-details"></li>-->
-            <!--</ul>-->
-        <!--</div>-->
-    <!--</div>-->
     <div progress:pie="piProgress2" class="piProgress" size="55">
         <div class="circle">
-            <i class="icon topology-glyph" ng-class="node.class"></i>
+            <i class="gs-node-icon topology-glyph" ng-class="node.class"></i>
             <div class="badge" ng-show="node.state == undefined && node.instances.deploy != undefined">{{ node.instances.deploy }}</div>
             <div class="badge" data-ng-class="getBadgeStatus(node.state.status)" ng-show="node.state != undefined && node.state.completed != undefined">
                 {{ node.state.completed }}/{{ node.state.total }}
@@ -18,7 +11,7 @@
 
     <div class="connections" ng-show="node.isHost == true">
         <div class="connection" ng-class="relationship.target_id" data-ng-show="isConnectedTo(relationship)" data-ng-repeat="relationship in node.relationships">
-            <i class="icon topology-glyph cloudify-nodes-Root" ng-class="relationship.node.class" ng-click="onRelationshipSelected(relationship)"></i>
+            <i class="gs-node-icon topology-glyph small cloudify-nodes-Root" ng-class="relationship.node.class" ng-click="onRelationshipSelected(relationship)"></i>
         </div>
     </div>
 
