@@ -21,6 +21,13 @@ angular.module('cosmoUiApp')
             colors:['#1F77B4', '#FF7F0E', '#2CA02C', '#D62728', '#9467BD', '#8C564B', '#4b6c8b', '#550000', '#dc322f', '#FF6600', '#cce80b', '#003300', '#805e00']
         };
 
+        var _relationshipTypes = {
+            CONNECTED_TO: 'connected_to',
+            CONNECTED: 'connected',
+            CONTAINED: 'contained',
+            DEPENDS_ON: 'depends_on'
+        };
+
         function _createNetworkTree(providerData, nodes) {
             _resetNetworkModel();
             _resetNetworkColors();
@@ -113,8 +120,8 @@ angular.module('cosmoUiApp')
 
                 /* Subnets */
                 if (node.type.toLowerCase().indexOf('subnet') > -1) {
-                    var relationships = _getRelationshipByType(node, 'contained');
-                    relationships = relationships.concat(_getRelationshipByType(node, 'connected'));
+                    var relationships = _getRelationshipByType(node, _relationshipTypes.CONTAINED);
+                    relationships = relationships.concat(_getRelationshipByType(node, _relationshipTypes.CONNECTED));
                     relationships.forEach(function (relationship) {
                         if (network.id === relationship.target_id) {
                             subnets.push({
@@ -161,7 +168,7 @@ angular.module('cosmoUiApp')
                         'ports': []
                     };
 
-                    var relationships = _getRelationshipByType(node, 'connected_to');//.concat(_getRelationshipByType(node, 'depends_on'));
+                    var relationships = _getRelationshipByType(node, _relationshipTypes.CONNECTED_TO);//.concat(_getRelationshipByType(node, _relationshipTypes.DEPENDS_ON));
                     relationships.forEach(function (relationship) {
                         if (ports.length > 0) {
                             ports.forEach(function (port) {
@@ -223,7 +230,7 @@ angular.module('cosmoUiApp')
 
             nodes.forEach(function (node) {
                 if (node.type.indexOf('port') > -1) {
-                    var relationships = _getRelationshipByType(node, 'depends_on');
+                    var relationships = _getRelationshipByType(node, _relationshipTypes.DEPENDS_ON);
                     relationships.forEach(function (relationship) {
                         if (relationship.type.toLowerCase().indexOf('depends_on') > -1) {
                             ports.push({
