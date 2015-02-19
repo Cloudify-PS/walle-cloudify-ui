@@ -28,6 +28,13 @@ angular.module('cosmoUiApp')
             DEPENDS_ON: 'depends_on'
         };
 
+        var _nodeTypes = {
+            NETWORK: 'network',
+            SUBNET: 'subnet',
+            ROUTER: 'router',
+            PORT: 'port'
+        };
+
         function _createNetworkTree(providerData, nodes) {
             _resetNetworkModel();
             _resetNetworkColors();
@@ -100,7 +107,7 @@ angular.module('cosmoUiApp')
             var networks = [];
 
             nodes.forEach(function (node) {
-                if (node.type.toLowerCase().indexOf('network') > -1) {
+                if (node.type.toLowerCase().indexOf(_nodeTypes.NETWORK) > -1) {
                     networks.push({
                         'id': node.id,
                         'name': node.id,
@@ -119,7 +126,7 @@ angular.module('cosmoUiApp')
             nodes.forEach(function (node) {
 
                 /* Subnets */
-                if (node.type.toLowerCase().indexOf('subnet') > -1) {
+                if (node.type.toLowerCase().indexOf(_nodeTypes.SUBNET) > -1) {
                     var relationships = _getRelationshipByType(node, _relationshipTypes.CONTAINED);
                     relationships = relationships.concat(_getRelationshipByType(node, _relationshipTypes.CONNECTED));
                     relationships.forEach(function (relationship) {
@@ -197,7 +204,7 @@ angular.module('cosmoUiApp')
                     });
 
                     networkModel.external.forEach(function (extNetwork) {
-                        if (extNetwork.type.toLowerCase() === 'subnet') {
+                        if (extNetwork.type.toLowerCase() === _nodeTypes.SUBNET) {
                             _addRelation({
                                 source: extNetwork.id,
                                 target: node.id
@@ -205,7 +212,7 @@ angular.module('cosmoUiApp')
                         }
                     });
 
-                    if (device.type === 'router') {
+                    if (device.type === _nodeTypes.ROUTER) {
                         networkModel.external[0].routers.push({
                             'id': device.id,
                             'name': device.name,
@@ -229,10 +236,10 @@ angular.module('cosmoUiApp')
             var ports = [];
 
             nodes.forEach(function (node) {
-                if (node.type.indexOf('port') > -1) {
+                if (node.type.indexOf(_nodeTypes.PORT) > -1) {
                     var relationships = _getRelationshipByType(node, _relationshipTypes.DEPENDS_ON);
                     relationships.forEach(function (relationship) {
-                        if (relationship.type.toLowerCase().indexOf('depends_on') > -1) {
+                        if (relationship.type.toLowerCase().indexOf(_relationshipTypes.DEPENDS_ON) > -1) {
                             ports.push({
                                 'id': node.id,
                                 'name': node.name,
