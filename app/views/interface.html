@@ -49,6 +49,25 @@
             </tbody>
         </table>
 
+        <h4>Node Statuses</h4>
+        <p>Basic using element to display node status must be in the pattern <code>&lt;div class=&quot;badge { node_status }&quot;&gt;&lt;/div&gt;</code></p>
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <td>Status</td>
+                <td class="col-sm-1 text-center info">Preview</td>
+                <td>Element</td>
+            </tr>
+            </thead>
+            <tbody>
+            <tr data-ng-repeat="(status, data) in nodeStatusList">
+                <td>{{ data }}</td>
+                <td class="active text-center"><div class="badge {{ data }}">1/2</div></td>
+                <td><code>&lt;div class=&quot;badge {{ data }}&quot;&gt;1/2&lt;/div&gt;</code></td>
+            </tr>
+            </tbody>
+        </table>
+
     </div>
 
 </div>

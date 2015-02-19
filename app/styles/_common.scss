@@ -262,3 +262,41 @@ table.table {
         font-size: 55px;
     }
 }
+
+$install: #2f3334;
+$done: #8eaf26;
+$alerts: #feb300;
+$failed: #d54931;
+
+.badge {
+  position: relative;
+  display: inline-block;
+  z-index: 1;
+  min-width: 20px;
+  border-radius: 10px;
+  padding: 3px 7px;
+  vertical-align: baseline;
+  white-space: nowrap;
+  text-align: center;
+  background-color: $install;
+  text-decoration: none;
+  font-family: "OpenSansBold";
+  font-size: 14px;
+  color: #fff;
+  line-height: 15px;
+  font-style: normal;
+  font-weight: normal;
+  opacity: 1;
+  &.install {
+    background-color: $install;
+  }
+  &.done {
+    background-color: $done;
+  }
+  &.alerts {
+    background-color: $alerts;
+  }
+  &.failed {
+    background-color: $failed;
+  }
+}

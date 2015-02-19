@@ -1,10 +1,5 @@
 #deployment {
 
-    $install: #2f3334;
-    $done: #8eaf26;
-    $alerts: #feb300;
-    $failed: #d54931;
-
     #main-content-panel {
         position: relative;
     }
@@ -792,38 +787,8 @@
                     border: 2px solid $clr-base-12;
                     box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.4);
                     > .badge {
-                        position: absolute;
-                        display: inline-block;
-                        z-index: 1;
-                        top: -8px;
-                        left: 20px;
-                        min-width: 20px;
-                        border-radius: 10px;
-                        padding: 3px 7px;
-                        vertical-align: baseline;
-                        white-space: nowrap;
-                        text-align: center;
-                        background-color: $install;
-                        text-decoration: none;
-                        font-family: "OpenSansBold";
-                        font-size: 14px;
-                        color: #fff;
-                        line-height: 15px;
-                        font-style: normal;
-                        font-weight: normal;
-                        opacity: 1;
-                        &.install {
-                            background-color: $install;
-                        }
-                        &.done {
-                            background-color: $done;
-                        }
-                        &.alerts {
-                            background-color: $alerts;
-                        }
-                        &.failed {
-                            background-color: $failed;
-                        }
+                      left: 20px;
+                      top: -8px;
                     }
                 }
                 .shadow {
@@ -832,16 +797,16 @@
                     left: -6px;
                 }
                 path.install {
-                    fill: $install;
+                    fill: #2f3334;
                 }
                 path.done {
-                    fill: $done;
+                    fill: #8eaf26;
                 }
                 path.alerts {
-                    fill: $alerts;
+                    fill: #feb300;
                 }
                 path.failed {
-                    fill: $failed;
+                    fill: #d54931;
                 }
             }
             .piProgress:not([status='0']) {
@@ -1176,34 +1141,6 @@
         }
         .network:nth-child(even) .devices .device {
             margin: 92px auto 47px;
-        }
-        .badge {
-            border-radius: 10px;
-            padding: 3px 7px;
-            vertical-align: baseline;
-            white-space: nowrap;
-            text-align: center;
-            background-color: $install;
-            text-decoration: none;
-            font-family: "OpenSansBold";
-            font-size: 14px;
-            color: #fff;
-            line-height: 15px;
-            font-style: normal;
-            font-weight: normal;
-            opacity: 1;
-            &.install {
-                background-color: $install;
-            }
-            &.done {
-                background-color: $done;
-            }
-            &.alerts {
-                background-color: $alerts;
-            }
-            &.failed {
-                background-color: $failed;
-            }
         }
     }
 

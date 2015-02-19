@@ -107,31 +107,7 @@ angular.module('cosmoUiApp')
 
                         _loadExecutions();
 
-                        // Get Nodes
-                        CloudifyService.getNodes({deployment_id: dataDeployment.id})
-                            .then(function(dataNodes) {
-
-                                var nodes = [];
-                                dataNodes.forEach(function(node) {
-                                    if (node.deployment_id === dataDeployment.id) {
-                                        node.name = node.id;
-                                        nodes.push(node);
-                                    }
-                                });
-                                nodesList = nodes;
-
-                                // Set Deployment Model
-                                _setDeploymentModel(nodesList);
-                                _updateDeploymentModel(nodesList);
-
-                                // Emit nodes data
-                                $scope.$emit('nodesList', nodesList);
-
-                                // Emit deployment process data
-                                $scope.$emit('deploymentProcess', deploymentModel);
-
-                            });
-
+                        _getNodes(dataDeployment.id);
                     });
 
                 $scope.$watch('breadcrumb', function (breadcrumbs) {
@@ -172,32 +148,68 @@ angular.module('cosmoUiApp')
                     $location.path('/deployment/' + $scope.id + section.href);
                 };
 
-                // Workflows & Execution
-                CloudifyService.autoPull('getDeploymentExecutions', $scope.id, CloudifyService.deployments.getDeploymentExecutions)
-                    .then(null, null, function (dataExec) {
-                        $scope.currentExecution = _getCurrentExecution(dataExec);
-                        if (!$scope.currentExecution && $scope.deploymentInProgress) {
-                            $scope.deploymentInProgress = false;
-                        }
-                        else if ($scope.deploymentInProgress === null && $scope.currentExecution !== false) {
-                            $scope.deploymentInProgress = true;
-                        }
-                        CloudifyService.deployments.getDeploymentNodes({deployment_id : $scope.id, state: true}).then(function(dataNodes){
-                            _updateDeploymentModel(dataNodes);
+                function _getNodes(deployment_id) {
+                    // Get Nodes
+                    CloudifyService.getNodes({deployment_id: deployment_id})
+                        .then(function(dataNodes) {
+
+                            var nodes = [];
+                            dataNodes.forEach(function(node) {
+                                if (node.deployment_id === deployment_id) {
+                                    node.name = node.id;
+                                    nodes.push(node);
+                                }
+                            });
+                            nodesList = nodes;
+
+                            // Set Deployment Model
+                            _setDeploymentModel(nodesList);
+                            _updateDeploymentModel(nodesList);
+
+                            // Emit nodes data
+                            $scope.$emit('nodesList', nodesList);
+
+                            // Emit deployment process data
+                            $scope.$emit('deploymentProcess', deploymentModel);
+
+                            _startDeploymentExecutionsAutopull();
                         });
-                        $scope.$emit('deploymentExecution', {
-                            currentExecution: $scope.currentExecution,
-                            deploymentInProgress: $scope.deploymentInProgress,
-                            executionsList: dataExec
+                }
+
+                function _startDeploymentExecutionsAutopull() {
+                    // Workflows & Execution
+                    CloudifyService.autoPull('getDeploymentExecutions', $scope.id, CloudifyService.deployments.getDeploymentExecutions)
+                        .then(null, null, function (dataExec) {
+                            $scope.currentExecution = _getCurrentExecution(dataExec);
+                            if (!$scope.currentExecution && $scope.deploymentInProgress) {
+                                $scope.deploymentInProgress = false;
+                            }
+                            else if ($scope.deploymentInProgress === null && $scope.currentExecution !== false) {
+                                $scope.deploymentInProgress = true;
+                            }
+                            CloudifyService.deployments.getDeploymentNodes({deployment_id : $scope.id, state: true}).then(function(dataNodes){
+                                _updateDeploymentModel(dataNodes);
+                            });
+                            $scope.$emit('deploymentExecution', {
+                                currentExecution: $scope.currentExecution,
+                                deploymentInProgress: $scope.deploymentInProgress,
+                                executionsList: dataExec
+                            });
                         });
-                    });
+                }
 
                 function _orderNodesById( nodes ) {
                     var IndexedNodes = {};
                     for (var i in nodes) {
                         var node = nodes[i];
-                        if(node.hasOwnProperty('node_id')) {
-                            IndexedNodes[node.node_id] = {
+                        var id;
+                        if (node.hasOwnProperty('node_id')) {
+                            id = node.node_id;
+                        } else if (node.hasOwnProperty('id')) {
+                            id = node.id;
+                        }
+                        if (id) {
+                            IndexedNodes[id] = {
                                 state: node.state
                             };
                         }
@@ -288,7 +300,7 @@ angular.module('cosmoUiApp')
                         deployment.status = 2;
                     }
                     else if(process === 0) {
-                        deployment.status = 3;
+                        deployment.status = 0;
                     }
                 }
 
