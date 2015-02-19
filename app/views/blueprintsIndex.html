@@ -44,7 +44,7 @@
             <div class="dialogClose dialogButton" ng-click="closeDialog()"></div>
             <form id="uploadForm" name="uploadForm">
                 <div id="browse">
-                    <div id="browseBtn" class="dialogButton">{{ 'blueprints.uploadPopup.browseBtn' | i18n }}</div>
+                    <div id="browseBtn" class="dialogButton"><i class="browse-button topology-glyph"></i></div>
                     <input type="text" spellcheck="false" id="browseTxt" ng-model="selectedFile.name" placeholder="{{ 'blueprints.uploadPopup.browseText' | i18n }}">
                     <input type="file" name="fileInput" id="fileInput" accept=".tar,.gz,.archive" ng-file-select="onFileSelect($files)">
                 </div>

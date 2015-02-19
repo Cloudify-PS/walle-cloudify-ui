@@ -25,7 +25,6 @@
             "title": "Upload Blueprint",
             "description": "Select blueprint file to upload, and click 'Save'",
             "browseText": "Select blueprint archive",
-            "browseBtn": "+",
             "fileLabel": "Application file: ",
             "uploadBtn": "Save",
             "blueprintName": "Blueprint name",
