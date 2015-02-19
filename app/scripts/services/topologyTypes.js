@@ -2,7 +2,6 @@
 
 angular.module('cosmoUiApp')
     .service('topologyTypes', function topologyTypes() {
-
         // TODO: 3.2 - Add method to check if specific node should be ignored in topology (instead of _isIgnoreNode in NodeService)
         // TODO: 3.2 - Add method to check if specific node is app node (instead of _isAppNode in NodeService)
         var types = {
@@ -56,6 +55,12 @@ angular.module('cosmoUiApp')
             },
             'cloudify.nodes.MessageBusServer': {
                 icon: 'cloudify-nodes-Root cloudify-nodes-MessageBusServer'
+            },
+            'cloudify.nodes.KeyPair': {
+                icon: 'cloudify-nodes-Root cloudify-openstack-nodes-KeyPair'
+            },
+            'cloudify.nodes.FileSystem': {
+                icon: 'cloudify-nodes-Root cloudify-nodes-FileSystem'
             },
             'cloudify.nodes.Volume': {
                 icon: 'cloudify-nodes-Root cloudify-nodes-Volume'

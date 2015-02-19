@@ -99,126 +99,155 @@ $gs-icon-prefix: 'gs-icon';
     content: "l";
 }
 
-.cloudify-nodes-Root {
+i.gs-node-icon {
+
+  &.topology-glyph {
     &:after {
-        content: 'a';
+      font-size: 40px;
+      font-family: Topology;
+      font-style: normal;
+    }
+
+    &.small {
+      &:after {
+        font-size: 30px;
+      }
+    }
+  }
+
+  &.cloudify-nodes-Root {
+    &:after {
+      content: 'a';
     }
 
     &.cloudify-nodes-SoftwareComponent {
 
+      &:after {
+        content: 'h';
+      }
+
+      &.cloudify-nodes-WebServer {
         &:after {
-            content: 'h';
+          content: 'l';
         }
+      }
 
-        &.cloudify-nodes-WebServer {
-            &:after {
-                content: 'l';
-            }
+      &.cloudify-nodes-ApplicationServer {
+        &:after {
+          content: 'h';
         }
+      }
 
-        &.cloudify-nodes-ApplicationServer {
-            &:after {
-                content: 'h';
-            }
+      &.cloudify-nodes-DBMS {
+        &:after {
+          content: 'c';
         }
-
-        &.cloudify-nodes-DBMS {
-            &:after {
-                content: 'c';
-            }
-        }
+      }
     }
 
     &.cloudify-nodes-ApplicationModule {
-        &:after {
-            content: 'a';
-        }
+      &:after {
+        content: 'a';
+      }
     }
 
     &.cloudify-types-floatingip,
     &.cloudify-nodes-VirtualIP {
-        &:after {
-            content: 'd';
-        }
+      &:after {
+        content: 'd';
+      }
     }
 
     &.cloudify-nodes-Port {
-        &:after {
-            content: 'd';
-        }
+      &:after {
+        content: 'd';
+      }
     }
 
     &.cloudify-nodes-Network {
-        &:after {
-            font-family: routerregular;
-            content: 'a';
-        }
+      &:after {
+        font-family: routerregular;
+        content: 'a';
+      }
     }
 
     &.cloudify-nodes-Subnet {
-        &:after {
-            content: 'g';
-        }
+      &:after {
+        content: 'g';
+      }
     }
 
     &.cloudify-types-server, &.cloudify-nodes-Compute {
+      &:after {
+        content: 'e';
+      }
+      &.vm-host {
         &:after {
-            content: 'e';
+          content: 'e';
         }
-        &.vm-host {
-            &:after {
-                content: 'e';
-            }
-        }
+      }
     }
 
     &.cloudify-nodes-Router {
-        &:after {
-            font-family: routerregular;
-            content: 'b';
-        }
+      &:after {
+        font-family: routerregular;
+        content: 'b';
+      }
     }
 
     &.cloudify-nodes-LoadBalancer {
-        &:after {
-            content: 'b';
-        }
+      &:after {
+        content: 'b';
+      }
     }
 
     &.cloudify-nodes-SecurityGroup {
-        &:after {
-            content: 'i';
-        }
+      &:after {
+        content: 'i';
+      }
     }
 
     &.cloudify-types-server {
-        &:after {
-            content: 'e';
-        }
+      &:after {
+        content: 'e';
+      }
     }
 
     &.cloudify-nodes-MessageBusServer {
-        &:after {
-            content: 'f';
-        }
+      &:after {
+        content: 'f';
+      }
     }
 
     &.cloudify-nodes-ObjectStorage {
-        &:after {
-            content: 'o';
-        }
+      &:after {
+        content: 'o';
+      }
     }
 
     &.cloudify-nodes-Tier {
-        &:after {
-            content: 'k';
-        }
+      &:after {
+        content: 'k';
+      }
+    }
+
+    &.cloudify-openstack-nodes-KeyPair {
+      &:after {
+        content: 'p';
+      }
+    }
+
+    &.cloudify-nodes-FileSystem {
+      &:after {
+        content: 's';
+      }
     }
 
     &.cloudify-nodes-Volume {
-        &:after {
-            content: 'j';
-        }
+      &:after {
+        content: 'j';
+      }
     }
-
+  }
 }
+
