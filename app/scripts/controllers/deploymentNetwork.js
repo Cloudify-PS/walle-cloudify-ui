@@ -13,22 +13,20 @@ angular.module('cosmoUiApp')
         $scope.deploymentId = $routeParams.deploymentId;
         $scope.page = {};
 
-        var nodes = [];
-
         $scope.$on('nodesList', function(e, nodesList){
-            nodes = nodesList;
+            CloudifyService.getProviderContext()
+                .then(function(providerData) {
+                    $scope.networks = NetworksService.createNetworkTree(providerData, nodesList);
+
+                    bpNetworkService.setMap($scope.networks.relations);
+                    $timeout(function(){
+                        $scope.networkcoords = bpNetworkService.getCoordinates();
+                        bpNetworkService.render();
+                    }, 100);
+                });
         });
 
-        CloudifyService.getProviderContext()
-            .then(function(providerData) {
-                $scope.networks = NetworksService.createNetworkTree(providerData, nodes);
 
-                bpNetworkService.setMap($scope.networks.relations);
-                $timeout(function(){
-                    $scope.networkcoords = bpNetworkService.getCoordinates();
-                    bpNetworkService.render();
-                }, 100);
-            });
 
         $scope.viewNodeDetails = function (viewNode) {
             $scope.page.viewNode = viewNode;

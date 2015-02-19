@@ -16,22 +16,57 @@ node_templates:
   virtual_ip:
     type: cloudify.nodes.VirtualIP
 
-  subnet:
+  my_network:
+    type: cloudify.openstack.nodes.Network
+    properties:
+      use_external_resource: false
+      resource_id: my_network
+
+  my_subnet:
     type: cloudify.openstack.nodes.Subnet
     properties:
-      subnet: 'foo'
+      resource_id: my_subnet
+      use_external_resource: false
+      subnet:
+        ip_version: 4
+        cidr: 10.0.1.0/24
     relationships:
-      - target: router
+      - target: my_network
+        type: cloudify.relationships.contained_in
+      - target: my_router
         type: cloudify.openstack.subnet_connected_to_router
 
-
-  router:
+  my_router:
     type: cloudify.openstack.nodes.Router
+    properties:
+      use_external_resource: false
+      resource_id: my-router
+      router:
+        external_gateway_info:
+          network_name: public
 
-  network:
-    type: cloudify.openstack.nodes.Network
+  my_subnet2:
+    type: cloudify.openstack.nodes.Subnet
+    properties:
+      resource_id: my_subnet2
+      use_external_resource: false
+      subnet:
+        ip_version: 4
+        cidr: 10.0.1.0/24
+    relationships:
+      - target: my_network
+        type: cloudify.relationships.contained_in
+      - target: my_router2
+        type: cloudify.openstack.subnet_connected_to_router
 
-
+  my_router2:
+    type: cloudify.openstack.nodes.Router
+    properties:
+        use_external_resource: false
+        resource_id: my-router2
+        router:
+          external_gateway_info:
+            network_name: public
 
   security_group:
     type: cloudify.openstack.nodes.SecurityGroup

@@ -10,68 +10,104 @@
 angular.module('cosmoUiApp')
     .service('NetworksService', function Networksservice() {
 
-        var relations = [];
-        var _colors = ['#1F77B4', '#FF7F0E', '#2CA02C', '#D62728', '#9467BD', '#8C564B', '#4b6c8b', '#550000', '#dc322f', '#FF6600', '#cce80b', '#003300', '#805e00'];
-        var _colorIdx = 0;
+        var networkModel = {
+            external: [],
+            networks: [],
+            relations: []
+        };
+
+        var _colors = {
+            idx: 0,
+            colors:['#1F77B4', '#FF7F0E', '#2CA02C', '#D62728', '#9467BD', '#8C564B', '#4b6c8b', '#550000', '#dc322f', '#FF6600', '#cce80b', '#003300', '#805e00']
+        };
+
+        var _relationshipTypes = {
+            CONNECTED_TO: 'connected_to',
+            CONNECTED: 'connected',
+            CONTAINED: 'contained',
+            DEPENDS_ON: 'depends_on'
+        };
+
+        var _nodeTypes = {
+            NETWORK: 'network',
+            SUBNET: 'subnet',
+            ROUTER: 'router',
+            PORT: 'port'
+        };
 
         function _createNetworkTree(providerData, nodes) {
+            _resetNetworkModel();
             _resetNetworkColors();
-            var _extNetworks = [];
-            var externalNetwork = {
-                'id': providerData.context.resources.ext_network.id,
-                'name': providerData.context.resources.ext_network.name,
-                'color': _getNetworkColor(),
-                'type': providerData.context.resources.ext_network.type
-            };
-            externalNetwork.color = _getNetworkColor();
-            externalNetwork.devices = [
-                {
-                    'id': providerData.context.resources.router.id,
-                    'name': providerData.context.resources.router.name,
-                    'type': providerData.context.resources.router.type,
-                    'icon': 'router'
-                }
-            ];
-            _addRelation({
-                source: externalNetwork.id,
-                target: externalNetwork.devices[0].id
-            });
-            _extNetworks.push(externalNetwork);
 
-            var subNetwork = providerData.context.resources.subnet;
-            subNetwork.color = _getNetworkColor();
-            _addRelation({
-                source: subNetwork.id,
-                target: externalNetwork.devices[0].id
-            });
-            _extNetworks.push(subNetwork);
+            _setExternalNetworks(providerData, nodes);
+            _setNetworkTree(nodes);
 
-            return _setNetworkTree(nodes, _extNetworks);
+            return networkModel;
         }
 
-        function _setNetworkTree(nodes, externalNetworks) {
-            var networkModel = {
-                'external': externalNetworks || [],
-                'networks': [],
-                'relations': []
+        function _resetNetworkModel() {
+            networkModel = {
+                external: [],
+                networks: [],
+                relations: []
+            };
+        }
+
+        function _setExternalNetworks(providerData, nodes) {
+            var extNetwork = providerData.context.resources.ext_network;
+            var extSubnet = providerData.context.resources.subnet;
+
+            /* external router */
+            var extRouter = {
+                'id': providerData.context.resources.router.id,
+                'name': providerData.context.resources.router.name,
+                'type': providerData.context.resources.router.type,
+                'icon': 'router'
             };
 
+            /* external network */
+            var externalNetwork = {
+                'id': extNetwork.id,
+                'name': extNetwork.name,
+                'color': _getNetworkColor(),
+                'type': extNetwork.type,
+                'routers': [extRouter]
+            };
+            networkModel.relations.push({
+                source: externalNetwork.id,
+                target: extRouter.id
+            });
+            networkModel.external.push(externalNetwork);
+
+            /* external subnet */
+            var externalSubnet = {
+                'id': extSubnet.id,
+                'name': extSubnet.name,
+                'color': _getNetworkColor(),
+                'type': extSubnet.type,
+                'devices': _getDevices(nodes, networkModel.external)
+            };
+            networkModel.relations.push({
+                source: extSubnet.id,
+                target: extRouter.id
+            });
+            networkModel.external.push(externalSubnet);
+        }
+
+        function _setNetworkTree(nodes) {
             /* Networks */
             networkModel.networks = _getNetworks(nodes);
             networkModel.networks.forEach(function (network) {
+//                network.devices = _getDevices(nodes, networkModel.external);
                 network.subnets = _getSubnets(network, nodes);
-                network.devices = _getDevices(nodes, networkModel.external);
             });
-            networkModel.relations = relations;
-
-            return networkModel;
         }
 
         function _getNetworks(nodes) {
             var networks = [];
 
             nodes.forEach(function (node) {
-                if (node.type.indexOf('network') > -1) {
+                if (node.type.toLowerCase().indexOf(_nodeTypes.NETWORK) > -1) {
                     networks.push({
                         'id': node.id,
                         'name': node.id,
@@ -90,8 +126,9 @@ angular.module('cosmoUiApp')
             nodes.forEach(function (node) {
 
                 /* Subnets */
-                if (node.type.indexOf('subnet') > -1) {
-                    var relationships = _getRelationshipByType(node, 'contained');
+                if (node.type.toLowerCase().indexOf(_nodeTypes.SUBNET) > -1) {
+                    var relationships = _getRelationshipByType(node, _relationshipTypes.CONTAINED);
+                    relationships = relationships.concat(_getRelationshipByType(node, _relationshipTypes.CONNECTED));
                     relationships.forEach(function (relationship) {
                         if (network.id === relationship.target_id) {
                             subnets.push({
@@ -105,14 +142,13 @@ angular.module('cosmoUiApp')
                                     'completed': 0
                                 }
                             });
-
-                            _addRelation({
-                                source: node.id,
-                                target: network.id,
-                                type: relationship.type,
-                                typeHierarchy: relationship.type_hierarchy
-                            });
                         }
+                        _addRelation({
+                            source: node.id,
+                            target: relationship.target_id,
+                            type: relationship.type,
+                            typeHierarchy: relationship.type_hierarchy
+                        });
                     });
                 }
             });
@@ -120,18 +156,18 @@ angular.module('cosmoUiApp')
             return subnets;
         }
 
-        function _getDevices(nodes, externalNetworks) {
+        function _getDevices(nodes) {
             /* Ports */
             var ports = _getPorts(nodes);
             var devices = [];
 
             nodes.forEach(function (node) {
-                if (node.type.indexOf('host') > -1) {
+                if (isDevice(node)) {
                     var device = {
                         'id': node.id,
                         'name': node.name,
-                        'type': 'device',
-                        'icon': 'host',
+                        'type': node.type.substr(node.type.lastIndexOf('.') + 1).toLowerCase(),
+                        'icon': 'device',
                         'state': {
                             'total': node.number_of_instances,
                             'completed': 0
@@ -139,29 +175,36 @@ angular.module('cosmoUiApp')
                         'ports': []
                     };
 
-                    var relationships = _getRelationshipByType(node, 'connected_to').concat(_getRelationshipByType(node, 'depends_on'));
+                    var relationships = _getRelationshipByType(node, _relationshipTypes.CONNECTED_TO);//.concat(_getRelationshipByType(node, _relationshipTypes.DEPENDS_ON));
                     relationships.forEach(function (relationship) {
-                        ports.forEach(function (port) {
-                            if (relationship.target_id === port.id) {
-                                var _alreadyExists = false;
-                                device.ports.forEach(function (item) {
-                                    if (item.id === port.id) {
-                                        _alreadyExists = true;
-                                    }
-                                });
-                                if (!_alreadyExists) {
-                                    device.ports.push(port);
-                                    _addRelation({
-                                        source: port.subnet,
-                                        target: port.id
+                        if (ports.length > 0) {
+                            ports.forEach(function (port) {
+                                if (relationship.target_id === port.id) {
+                                    var _alreadyExists = false;
+                                    device.ports.forEach(function (item) {
+                                        if (item.id === port.id) {
+                                            _alreadyExists = true;
+                                        }
                                     });
+                                    if (!_alreadyExists) {
+                                        device.ports.push(port);
+                                        _addRelation({
+                                            source: port.subnet,
+                                            target: port.id
+                                        });
+                                    }
                                 }
-                            }
-                        });
+                            });
+                        } else {
+                            _addRelation({
+                                source: node.id,
+                                target: relationship.target_id
+                            });
+                        }
                     });
 
-                    externalNetworks.forEach(function (extNetwork) {
-                        if (extNetwork.type === 'subnet') {
+                    networkModel.external.forEach(function (extNetwork) {
+                        if (extNetwork.type.toLowerCase() === _nodeTypes.SUBNET) {
                             _addRelation({
                                 source: extNetwork.id,
                                 target: node.id
@@ -169,7 +212,20 @@ angular.module('cosmoUiApp')
                         }
                     });
 
-                    devices.push(device);
+                    if (device.type === _nodeTypes.ROUTER) {
+                        networkModel.external[0].routers.push({
+                            'id': device.id,
+                            'name': device.name,
+                            'type': device.type,
+                            'icon': 'router'
+                        });
+                        _addRelation({
+                            source: networkModel.external[0].id,
+                            target: device.id
+                        });
+                    } else {
+                        devices.push(device);
+                    }
                 }
             });
 
@@ -180,10 +236,10 @@ angular.module('cosmoUiApp')
             var ports = [];
 
             nodes.forEach(function (node) {
-                if (node.type.indexOf('port') > -1) {
-                    var relationships = _getRelationshipByType(node, 'depends_on');
+                if (node.type.indexOf(_nodeTypes.PORT) > -1) {
+                    var relationships = _getRelationshipByType(node, _relationshipTypes.DEPENDS_ON);
                     relationships.forEach(function (relationship) {
-                        if (relationship.type.indexOf('depends_on') > -1) {
+                        if (relationship.type.toLowerCase().indexOf(_relationshipTypes.DEPENDS_ON) > -1) {
                             ports.push({
                                 'id': node.id,
                                 'name': node.name,
@@ -200,16 +256,16 @@ angular.module('cosmoUiApp')
         }
 
         function _resetNetworkColors() {
-            _colorIdx = 0;
+            _colors.idx = 0;
         }
 
         function _getNetworkColors() {
-            return _colors;
+            return _colors.colors;
         }
 
         function _getNetworkColor() {
-            _colorIdx = _colorIdx < _colors.length ? _colorIdx + 1 : 0;
-            return _colors[_colorIdx];
+            _colors.idx = _colors.idx < _colors.colors.length ? _colors.idx + 1 : 0;
+            return _colors.colors[_colors.idx];
         }
 
         function _getRelationshipByType(node, type) {
@@ -225,14 +281,30 @@ angular.module('cosmoUiApp')
         }
 
         function _addRelation(relation) {
-            for(var i in relations) {
-                if((relation.source + relation.target) === (relations[i].source + relations[i].target)) {
+            for(var i in networkModel.relations) {
+                if((relation.source + relation.target) === (networkModel.relations[i].source + networkModel.relations[i].target)) {
                     return;
                 }
             }
-            relations.push(relation);
+            networkModel.relations.push(relation);
         }
 
+        function isDevice(node) {
+            var validDevices = [
+                'router'//,
+//                'server'
+            ];
+            var result = false;
+            node.type_hierarchy.forEach(function(type) {
+                validDevices.forEach(function(deviceType) {
+                    if (type.substr(type.lastIndexOf('.') + 1).toLowerCase().indexOf(deviceType) > -1) {
+                        result = true;
+                    }
+                });
+            });
+
+            return result;
+        }
 
         this.createNetworkTree = _createNetworkTree;
         this.resetNetworkColors = _resetNetworkColors;
