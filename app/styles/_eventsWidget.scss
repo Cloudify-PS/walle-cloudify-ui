@@ -69,7 +69,7 @@
     .containList {
         position: relative;
         z-index: 10;
-        overflow-y: hidden;
+        overflow-y: scroll;
         height: 263px;
 
         .ps-scrollbar-y-rail {
