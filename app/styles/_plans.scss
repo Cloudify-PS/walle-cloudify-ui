@@ -672,6 +672,9 @@
     .gs-table {
         tr {
             cursor: default;
+          td i {
+            margin-top: 9px;
+          }
         }
         .node-details {
             cursor: pointer;
