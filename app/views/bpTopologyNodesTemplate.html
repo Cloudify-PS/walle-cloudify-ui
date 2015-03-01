@@ -11,16 +11,16 @@
 
     <div class="connections" ng-show="node.isHost == true">
         <div class="connection" ng-class="relationship.target_id" data-ng-show="isConnectedTo(relationship)" data-ng-repeat="relationship in node.relationships">
-            <i class="gs-node-icon topology-glyph small cloudify-nodes-Root" ng-class="relationship.node.class" ng-click="onRelationshipSelected(relationship)"></i>
+            <i class="gs-node-icon topology-glyph small cloudify-nodes-Root" ng-class="relationship.node.class" ng-click="onRelationshipSelected(relationship)" ng-attr-title="{{relationship.target_id}}"></i>
         </div>
     </div>
 
-    <div class="head" ng-show="node.isApp == false" ng-mouseover="setHeaderHover(node.name)" ng-mouseleave="setHeaderHover(null)" ng-click="onNodeSelected(node)">
+    <div class="head" ng-show="node.isApp == false" ng-mouseover="setHeaderHover(node.name)" ng-mouseleave="setHeaderHover(null)" ng-click="onNodeSelected(node)" ng-attr-title="{{node.name}}">
         {{ node.name }}
     </div>
     <div class="holder" ng-show="node.isApp == false" data-ng-if="node.isApp == false" ng-class="{boxHover: headerHover == node.name}">
         <div bp-topology-nodes map="node.children"></div>
     </div>
 
-    <p ng-show="node.isApp == true">{{ node.name }}</p>
+    <p ng-show="node.isApp == true" ng-attr-title="{{node.name}}">{{ node.name }}</p>
 </div>
