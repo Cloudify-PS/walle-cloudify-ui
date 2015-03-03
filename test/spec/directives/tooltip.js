@@ -2,19 +2,31 @@
 
 describe('Directive: tooltip', function () {
 
-  // load the directive's module
-//  beforeEach(module('cosmoUiApp'));
-//
-//  var element,
-//    scope;
-//
-//  beforeEach(inject(function ($rootScope) {
-//    scope = $rootScope.$new();
-//  }));
-//
-//  it('should make hidden element visible', inject(function ($compile) {
-//    element = angular.element('<tooltip></tooltip>');
-//    element = $compile(element)(scope);
-//    expect(element.text()).toBe('this is the tooltip directive');
-//  }));
+    var element, scope;
+    beforeEach(module('cosmoUiApp', 'ngMock', 'templates-main'));
+
+    function compileDirective(opts) {
+        inject(function($compile, $rootScope, $httpBackend) {
+            $httpBackend.whenGET('/backend/configuration?access=all').respond(200);
+            $httpBackend.whenGET('/backend/versions/ui').respond(200);
+            $httpBackend.whenGET('/backend/versions/manager').respond(200);
+            $httpBackend.whenGET('/backend/version/latest?version=00').respond('300');
+
+            if (!opts || !opts.scope) {
+                scope = $rootScope.$new();
+            } else {
+                scope = opts.scope;
+            }
+            element = $compile(angular.element('<div tooltip>my-text</div>'))(scope);
+
+            scope.$digest();
+        });
+    }
+
+    describe('Directive tests', function() {
+        it('should add title attribute to element with the element text', function() {
+            compileDirective();
+            expect(element.attr('title')).toBe(element.text());
+        });
+    });
 });
