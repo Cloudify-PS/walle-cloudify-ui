@@ -17,7 +17,7 @@ describe('Directive: tooltip', function () {
             } else {
                 scope = opts.scope;
             }
-            element = $compile(angular.element('<div tooltip>my-text</div>'))(scope);
+            element = $compile(angular.element('<div tooltip>my text</div>'))(scope);
 
             scope.$digest();
         });

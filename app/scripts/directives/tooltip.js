@@ -8,7 +8,7 @@ angular.module('cosmoUiApp')
                 scope.$watch(function () {
                     return element.text();
                 }, function (val) {
-                    element.attr('title', val.replace(/\s/g, ''));
+                    element.attr('title', val.trim());
                 });
             }
         };
