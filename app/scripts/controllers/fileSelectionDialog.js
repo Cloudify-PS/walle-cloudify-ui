@@ -6,6 +6,7 @@ angular.module('cosmoUiApp')
         $scope.uploadEnabled = false;
         $scope.uploadInProcess = false;
         $scope.selectedFile = '';
+        $scope.blueprintName = '';
         $scope.uploadError = false;
         $scope.errorMessage = 'Error uploading blueprint';
         $scope.blueprintUploadOpts = {
@@ -45,12 +46,14 @@ angular.module('cosmoUiApp')
 
             CloudifyService.blueprints.add(blueprintUploadForm,
                 function(data) {
-                    var blueprintName = data.id;
+                    if ($scope.blueprintName === undefined || $scope.blueprintName === '') {
+                        $scope.blueprintName = data.id;
+                    }
                     $scope.$apply(function() {
                         $scope.uploadError = false;
-                        $scope.uploadDone(blueprintName);
+                        $scope.uploadDone($scope.blueprintName);
                     });
-                    $scope.uploadDone(blueprintName);
+                    $scope.uploadDone($scope.blueprintName);
                 },
                 function(e) {
                     var responseText = null;
