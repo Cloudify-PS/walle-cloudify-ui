@@ -6,7 +6,6 @@ angular.module('cosmoUiApp')
         $scope.uploadEnabled = false;
         $scope.uploadInProcess = false;
         $scope.selectedFile = '';
-        $scope.blueprintName = '';
         $scope.uploadError = false;
         $scope.errorMessage = 'Error uploading blueprint';
         $scope.blueprintUploadOpts = {
@@ -46,14 +45,12 @@ angular.module('cosmoUiApp')
 
             CloudifyService.blueprints.add(blueprintUploadForm,
                 function(data) {
-                    if ($scope.blueprintName === undefined || $scope.blueprintName === '') {
-                        $scope.blueprintName = data.id;
-                    }
+                    var blueprintName = data.id;
                     $scope.$apply(function() {
                         $scope.uploadError = false;
-                        $scope.uploadDone($scope.blueprintName);
+                        $scope.uploadDone(blueprintName);
                     });
-                    $scope.uploadDone($scope.blueprintName);
+                    $scope.uploadDone(blueprintName);
                 },
                 function(e) {
                     var responseText = null;
@@ -79,7 +76,10 @@ angular.module('cosmoUiApp')
         };
 
         $scope.isUploadEnabled = function() {
-            return ($scope.selectedFile !== '' && !$scope.uploadInProcess);
+            return ($scope.selectedFile !== '' &&
+                !$scope.uploadInProcess &&
+                $scope.blueprintUploadOpts.blueprint_id !== undefined &&
+                $scope.blueprintUploadOpts.blueprint_id.length > 0);
         };
 
         $scope.isUploadError = function() {

@@ -27,8 +27,9 @@
             "browseText": "Select blueprint archive",
             "fileLabel": "Application file: ",
             "uploadBtn": "Save",
-            "blueprintName": "Blueprint name",
-            "blueprintFilename": "Blueprint filename (e.g blueprint.yaml)"
+            "blueprintName": "Blueprint ID",
+            "blueprintFilename": "Blueprint filename (e.g blueprint.yaml)",
+            "required": "* Required field"
         },
         "deployDialog": {
             "title": "Deploy",
