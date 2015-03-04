@@ -332,3 +332,8 @@ $failed: #d54931;
     background-color: $failed;
   }
 }
+
+p[tooltip], div[tooltip] {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
