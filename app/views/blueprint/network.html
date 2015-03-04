@@ -12,8 +12,8 @@
         <!-- External networks -->
         <div data-ng-repeat="network in networks.external" class="network">
             <div class="line">
-                <div class="name">{{ network.name }}</div>
-                <div class="subnet" bp:network:coordinate ng-model="network">
+                <div class="name" tooltip>{{ network.name }}</div>
+                <div class="subnet" bp:network:coordinate ng-model="network" tooltip>
                     <p>{{ network.name }}</p>
                     <p class="cidr">{{ network.type }}</p>
                 </div>
@@ -38,7 +38,7 @@
         <div data-ng-repeat="network in networks.networks" class="network">
             <div class="line">
                 <div class="name">{{ network.name }}</div>
-                <div data-ng-repeat="subnet in network.subnets" class="subnet" bp:network:coordinate ng-model="subnet">
+                <div data-ng-repeat="subnet in network.subnets" class="subnet" bp:network:coordinate ng-model="subnet" tooltip>
                     <p>{{ subnet.name }}</p>
                     <p class="cidr">{{ subnet.cidr }}</p>
                 </div>
