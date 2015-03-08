@@ -20,6 +20,8 @@ angular.module('cosmoUiApp')
         $scope.onFileSelect = function ($files) {
             $scope.selectedFile = $files[0];
             $log.info(['files were selected', $files]);
+
+            $scope.blueprintUploadOpts.url = '';
         };
 
         $scope.$watch('blueprintUploadOpts.params.application_file_name', function(filename) {
@@ -33,9 +35,8 @@ angular.module('cosmoUiApp')
         });
 
         $scope.$watch('blueprintUploadOpts.url', function(url) {
-            $scope.selectedFile = '';
-
             if (url) {
+                $scope.selectedFile = '';
                 $scope.blueprintUploadOpts.url = url;
             }
         });
