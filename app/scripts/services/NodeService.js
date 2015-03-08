@@ -96,6 +96,7 @@ angular.module('cosmoUiApp')
         function _isIgnoreNode(node) {
             var networkNodes = [
                 'FloatingIp',
+                'VirtualIp',
                 'Network',
                 'Port',
                 'Subnet',
