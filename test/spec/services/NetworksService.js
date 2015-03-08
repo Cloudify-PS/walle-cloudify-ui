@@ -8,22 +8,6 @@ describe('Service: NetworksService', function () {
     var providerData = {
         'name': 'cloudify_openstack',
         'context': {
-            'cloudify': {
-                'cloudify_agent': {
-                    'remote_execution_port': 22,
-                    'max_workers': 5,
-                    'min_workers': 2,
-                    'agent_key_path': '~/.ssh/ui-agents-kp.pem'
-                },
-                'policy_engine': {
-                    'start_timeout': 30
-                },
-                'resources_prefix': '',
-                'workflows': {
-                    'task_retries': -1,
-                    'task_retry_interval': 30
-                }
-            },
             'resources': {
                 'subnet': {
                     'id': 'f54ccdbd-b2eb-405a-abaf-8e5d967c361c',
@@ -84,6 +68,12 @@ describe('Service: NetworksService', function () {
                     'type': 'keypair',
                     'external_resource': true,
                     'name': 'ui-manager-kp'
+                },
+                'my_server': {
+                    'id': 'my_server',
+                    'type': 'device',
+                    'external_resource': true,
+                    'name': 'my_server'
                 }
             }
         }
@@ -226,48 +216,21 @@ describe('Service: NetworksService', function () {
             'host_id': 'vm',
             'type': 'cloudify.openstack.nodes.Server',
             'properties': {
-                'cloudify_agent': {
-                    'user': {
-                        'get_input': 'agent_user'
-                    }
-                },
-                'openstack_config': {},
-                'resource_id': '',
-                'ip': '',
-                'management_network_name': '',
-                'server': {
-                    'image_name': {
-                        'get_input': 'image_name'
-                    },
-                    'flavor_name': {
-                        'get_input': 'flavor_name'
-                    }
-                },
-                'use_external_resource': false,
-                'cloudify_runtime': {}
+                'resource_id': ''
             }
         },
         {
             'declared_type': 'cloudify.openstack.nodes.Router',
             'name': 'management_router',
-            'type_hierarchy': ['cloudify.nodes.Root', 'cloudify.nodes.Router', 'cloudify.openstack.nodes.Router'],
+            'type_hierarchy': [
+                'cloudify.nodes.Root',
+                'cloudify.nodes.Router',
+                'cloudify.openstack.nodes.Router'
+            ],
             'id': 'management_router',
-            'instances': {
-                'deploy': 1
-            },
             'type': 'cloudify.openstack.nodes.Router',
             'properties': {
-                'openstack_config': {},
-                'resource_id': 'management-router',
-                'default_to_managers_external_network': true,
-                'router': {
-                    'external_gateway_info': {
-                        'network_name': 'public'
-                    }
-                },
-                'external_network': '',
-                'use_external_resource': false,
-                'cloudify_runtime': {}
+                'resource_id': 'management-router'
             }
         },
         {
@@ -285,6 +248,53 @@ describe('Service: NetworksService', function () {
                 'default_to_managers_external_network': true,
                 'use_external_resource': false,
                 'cloudify_runtime': {}
+            }
+        },
+        {
+            'relationships': [{
+                'type_hierarchy': ['cloudify.relationships.depends_on', 'cloudify.relationships.contained_in'],
+                'target_id': 'management_network',
+                'state': 'reachable',
+                'base': 'contained',
+                'type': 'cloudify.relationships.contained_in'
+            }],
+            'declared_type': 'cloudify.openstack.nodes.Subnet',
+            'name': 'management_subnet',
+            'type_hierarchy': ['cloudify.nodes.Root', 'cloudify.nodes.Subnet', 'cloudify.openstack.nodes.Subnet'],
+            'id': 'management_subnet',
+            'type': 'cloudify.openstack.nodes.Subnet',
+            'properties': {
+                'subnet': {
+                    'ip_version': 4,
+                    'cidr': '10.0.1.0/24'
+                },
+                'resource_id': 'management_subnet'
+            }
+        },
+        {
+            'relationships': [{
+                'type_hierarchy': [
+                    'cloudify.relationships.depends_on',
+                    'cloudify.relationships.connected_to'
+                ],
+                'target_id': 'management_network',
+                'type': 'cloudify.relationships.connected_to',
+                'properties': {
+                    'connection_type': 'all_to_all'
+                }
+            }],
+            'declared_type': 'cloudify.openstack.nodes.Server',
+            'name': 'my_server',
+            'type_hierarchy': [
+                'cloudify.nodes.Root',
+                'cloudify.nodes.Compute',
+                'cloudify.openstack.nodes.Server'
+            ],
+            'id': 'my_server',
+            'host_id': 'my_server',
+            'type': 'cloudify.openstack.nodes.Server',
+            'properties': {
+                'resource_id': 'my_server'
             }
         }
     ];
@@ -330,7 +340,7 @@ describe('Service: NetworksService', function () {
         });
 
         it('should have 2 relations', function(){
-            expect(results.relations.length).toEqual(3);
+            expect(results.relations.length).toEqual(5);
         });
 
         it('should have subnet', function(){
@@ -343,7 +353,7 @@ describe('Service: NetworksService', function () {
 
         it('should contain the 5th color', function(){
             color = mNetworksService.getNetworkColor();
-            expect(color).toContain(colorsList[3]);
+            expect(color).toContain(colorsList[4]);
         });
 
         describe('Reset Colors', function() {
@@ -367,6 +377,10 @@ describe('Service: NetworksService', function () {
 
             it('should add a network to networks array in networks model', function() {
                 expect(results.networks[0].id).toBe('management_network');
+            });
+
+            it('should set the network device as target in relations array', function() {
+                expect(results.relations[results.relations.length - 1].target).toBe('my_server');
             });
         });
     });
