@@ -584,6 +584,10 @@
                     > p {
                         margin: 5px;
                     }
+                    i.gs-node-icon:after {
+                      position: relative;
+                      top: 6px;
+                    }
                     i.topology-glyph {
                       display: inline-block;
                       color: inherit;
@@ -672,8 +676,6 @@
 
                 > .device {
                   margin: 52px auto 47px;
-                  top: 6px;
-                  position: relative;
                 }
             }
         }
