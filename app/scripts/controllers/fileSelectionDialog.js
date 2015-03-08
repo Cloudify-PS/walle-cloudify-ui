@@ -88,7 +88,10 @@ angular.module('cosmoUiApp')
         };
 
         $scope.isUploadEnabled = function() {
-            return (($scope.selectedFile !== '' || $scope.blueprintUploadOpts.url !== '') && !$scope.uploadInProcess);
+            return (($scope.selectedFile !== '' || $scope.blueprintUploadOpts.url !== '') &&
+                !$scope.uploadInProcess &&
+                $scope.blueprintUploadOpts.blueprint_id !== undefined &&
+                $scope.blueprintUploadOpts.blueprint_id.length > 0);
         };
 
         $scope.isUploadError = function() {
