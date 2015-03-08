@@ -227,47 +227,54 @@
         display: block;
 
         .archiveSelectBox {
-          background: red;
           margin-right: 10px;
           margin-left: 10px;
+          padding-top: 10px;
+          padding-bottom: 1px;
+          background: $clr-base-23;
+        }
 
-          #browse {
-            display: block;
-            height: 33px;
+        .browse {
+          display: block;
+          height: 33px;
+          margin-bottom: 10px;
 
-            #fileInput {
-              top: 0px;
-              position: absolute;
-              opacity: 0;
-              left: 20px;
-              z-index: 9998;
-              width: 390px;
-              height: 35px;
-              cursor: pointer;
-            }
+          #fileInput {
+            position: absolute;
+            opacity: 0;
+            left: 20px;
+            z-index: 9998;
+            width: 390px;
+            height: 35px;
+            cursor: pointer;
+          }
 
-            #browseBtn {
-              position: absolute;
-              top: 0px;
-              right: 12px;
-              height: 32px;
-              font-size: 30px;
-              padding: 0px 8px 0px 9px;
-              line-height: 33px;
-              cursor: pointer;
-            }
+          #browseBtn {
+            position: absolute;
+            right: 12px;
+            height: 32px;
+            font-size: 30px;
+            padding: 0px 8px 0px 9px;
+            line-height: 33px;
+            cursor: pointer;
+          }
 
-            #browseTxt {
-              position: absolute;
-              top: 0px;
-              left: 20px;
-              width: 340px;
-              height: 32px;
-              border-radius: 3px;
-              padding-left: 10px;
-              background-clip: padding-box;
-              background-color: $clr-base-10;
-              border: 0;
+          .browseTxt {
+            position: absolute;
+            left: 20px;
+            width: 340px;
+            height: 32px;
+            border-radius: 3px;
+            padding-left: 10px;
+            background-clip: padding-box;
+            background-color: $clr-base-10;
+            border: 0;
+
+            &.url {
+              width: 385px;
+              &.disabled {
+                color: red;
+              }
             }
           }
         }
@@ -287,6 +294,10 @@
                 background-clip: padding-box;
                 background-color: $clr-base-10;
                 border: 0;
+            }
+
+            &.browseUrl {
+              left: 10px;
             }
         }
 
