@@ -100,7 +100,8 @@ angular.module('cosmoUiApp')
                 'Port',
                 'Subnet',
                 'SecurityGroup',
-                'KeyPair'
+                'KeyPair',
+                'Router'
             ];
 
             var searchExp = new RegExp(networkNodes.join('|'), 'gi');
