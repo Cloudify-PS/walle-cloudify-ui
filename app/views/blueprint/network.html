@@ -54,7 +54,7 @@
                                     <li data-ng-click="viewNodeDetails(device)" class="topology-glyph node-details"></li>
                                 </ul>
                             </div>
-                            <i class="topology-glyph router {{ device.icon }}" bp:network:coordinate ng-model="device"></i>
+                            <i class="gs-node-icon topology-glyph {{ device.icon }}" bp:network:coordinate ng-model="device"></i>
                         </div>
                         <div class="ports" data-ng-repeat="port in device.ports">
                             <div class="buttons no-embed">

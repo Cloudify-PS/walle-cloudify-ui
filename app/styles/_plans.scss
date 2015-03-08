@@ -671,7 +671,9 @@
                 }
 
                 > .device {
-                  margin: 52px auto 47px
+                  margin: 52px auto 47px;
+                  top: 6px;
+                  position: relative;
                 }
             }
         }

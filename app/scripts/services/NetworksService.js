@@ -165,7 +165,7 @@ angular.module('cosmoUiApp')
                         'id': node.id,
                         'name': node.name,
                         'type': node.type.substr(node.type.lastIndexOf('.') + 1).toLowerCase(),
-                        'icon': 'device',
+                        'icon': node.type_hierarchy.join(' ').replace(/\./g, '-'),
                         'state': {
                             'total': node.number_of_instances,
                             'completed': 0
@@ -178,8 +178,8 @@ angular.module('cosmoUiApp')
                             devices.push(device);
 
                             _addRelation({
-                                source: device.id,
-                                target: _getSubnetByNetwork(relationship.target_id).id
+                                source: _getSubnetByNetwork(relationship.target_id).id,
+                                target: device.id
                             });
                         }
                     });
