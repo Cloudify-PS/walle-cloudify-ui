@@ -327,8 +327,8 @@ describe('Service: NetworksService', function () {
             expect(results.external).not.toBeUndefined();
         });
 
-        it('should have 2 external networks', function(){
-            expect(results.external.length).toEqual(2);
+        it('should have external network object', function(){
+            expect(results.external.name).toBe('public');
         });
 
         it('should have networks', function(){
@@ -344,7 +344,7 @@ describe('Service: NetworksService', function () {
         });
 
         it('should have subnet', function(){
-            expect(results.external[1].type).toBe('subnet');
+            expect(results.external.subnets.length).toEqual(1);
         });
 
         it('should have 13 kind of colors', function(){
@@ -370,9 +370,9 @@ describe('Service: NetworksService', function () {
         describe('Networks model', function() {
 
             it('should add router to routers array in external network model', function() {
-                expect(results.external[0].routers.length).toBe(2);
-                expect(results.external[0].routers[0].name).toBe('ui-cloudify-router');
-                expect(results.external[0].routers[1].name).toBe('management_router');
+                expect(results.external.routers.length).toBe(2);
+                expect(results.external.routers[0].name).toBe('ui-cloudify-router');
+                expect(results.external.routers[1].name).toBe('management_router');
             });
 
             it('should add a network to networks array in networks model', function() {
