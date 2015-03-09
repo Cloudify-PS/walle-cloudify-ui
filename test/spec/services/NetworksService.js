@@ -382,6 +382,11 @@ describe('Service: NetworksService', function () {
             it('should set the network device as target in relations array', function() {
                 expect(results.relations[results.relations.length - 1].target).toBe('my_server');
             });
+
+            it('should add devices to network model', function() {
+                expect(results.networks[0].devices.length).toEqual(1);
+                expect(results.networks[0].devices[0].name).toBe('my_server');
+            });
         });
     });
 
