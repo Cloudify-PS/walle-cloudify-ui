@@ -158,7 +158,6 @@ describe('Controller: FileSelectionDialogCtrl', function () {
             runs(function() {
                 var formData = _cloudifyService.blueprints.add.mostRecentCall.args[0];
 
-                console.log(formData);
                 expect(formData.url).toBe('http://some.kind/of/url.tar.gz');
             });
         });
