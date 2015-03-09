@@ -1004,6 +1004,9 @@
                     &.orange {
                         background-color: #f89406;
                     }
+                    &.external {
+                      height: 533px;
+                    }
                 }
                 .subnet:last-child {
                     margin: 0;
