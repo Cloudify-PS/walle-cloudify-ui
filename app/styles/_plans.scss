@@ -475,9 +475,9 @@
             p {
                 position: relative;
                 top: 50px;
-                left: -50%;
                 margin: 0px;
                 color: #555869;
+                text-align: center;
                 font-size: 15px;
             }
         }
@@ -681,9 +681,12 @@
         }
     }
 
-    .table {
+    .gs-table {
         tr {
             cursor: default;
+          td i {
+            margin-top: 9px;
+          }
         }
         .node-details {
             cursor: pointer;

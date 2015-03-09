@@ -15,12 +15,12 @@
         </div>
     </div>
 
-    <div class="head" ng-show="node.isApp == false" ng-mouseover="setHeaderHover(node.name)" ng-mouseleave="setHeaderHover(null)" ng-click="onNodeSelected(node)">
+    <div class="head" ng-show="node.isApp == false" ng-mouseover="setHeaderHover(node.name)" ng-mouseleave="setHeaderHover(null)" ng-click="onNodeSelected(node)" tooltip>
         {{ node.name }}
     </div>
     <div class="holder" ng-show="node.isApp == false" data-ng-if="node.isApp == false" ng-class="{boxHover: headerHover == node.name}">
         <div bp-topology-nodes map="node.children"></div>
     </div>
 
-    <p ng-show="node.isApp == true">{{ node.name }}</p>
+    <p ng-show="node.isApp == true" tooltip>{{ node.name }}</p>
 </div>

@@ -32,6 +32,7 @@ describe('Controller: FileSelectionDialogCtrl', function () {
 
         it('should show error message when error returns from backend', function() {
             scope.selectedFile = {};
+            scope.blueprintUploadOpts.blueprint_id = 'blueprint1';
             _cloudifyService.blueprints.add = function(data, successCallback, errorCallback) {
                 var e = {
                     'responseText': 'Error uploading blueprint'   // todo: verify with erez

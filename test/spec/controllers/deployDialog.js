@@ -130,7 +130,7 @@ describe('Controller: DeploydialogCtrl', function () {
         }
     };
 
-    beforeEach(module('cosmoUiApp', 'ngMock', 'templates-main'));
+    beforeEach(module('cosmoUiApp', 'ngMock'));
 
     describe('Test setup', function() {
         it ('', inject(function ($controller, $rootScope, $httpBackend, $q, CloudifyService) {

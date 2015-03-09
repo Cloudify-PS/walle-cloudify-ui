@@ -1,4 +1,4 @@
-table.table {
+.gs-table {
     width: $COSMOUI_LIST_WIDTH;
     margin: 10px 20px 0px;
 
@@ -79,6 +79,30 @@ table.table {
                 }
             }
 
+          &.details {
+            background-color: #f5f5f5;
+            border-bottom: 1px solid #ccc;
+            padding: 10px;
+
+            .group {
+              display: inline-block;
+              border-right: 1px dotted #ccc;
+              min-width: 250px;
+              height: 100%;
+              font-size: 13px;
+              vertical-align: top;
+              > span {
+                display: block;
+                padding: 5px 0;
+                margin: 0 10px;
+                line-height: 18px;
+              }
+              &:last-child {
+                border: 0px;
+              }
+            }
+          }
+
             &:hover {
 //                background-color: $COSMOUI_LIST_HOVER_BACKGROUND;
                 cursor: $COSMOUI_DIALOG_CURSOR;
@@ -93,6 +117,14 @@ table.table {
     i {
         color: $COSMOUI_EVENTS_LIST_ITEM_COLOR;
     }
+
+  &.gs-table-align-top {
+    tr {
+      td {
+        vertical-align: top;
+      }
+    }
+  }
 }
 
 .gs-btn {
@@ -299,4 +331,9 @@ $failed: #d54931;
   &.failed {
     background-color: $failed;
   }
+}
+
+p[tooltip], div[tooltip] {
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
