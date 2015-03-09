@@ -62,31 +62,6 @@
                 </div>
             </div>
         </div>
-
-
-        <!--<div data-ng-repeat="network in networks.external" class="network">-->
-            <!--<div class="line">-->
-                <!--<div class="name" tooltip>{{ network.name }}</div>-->
-                <!--<div class="subnet" bp:network:coordinate ng-model="network" tooltip>-->
-                    <!--<p>{{ network.name }}</p>-->
-                    <!--<p class="cidr">{{ network.type }}</p>-->
-                <!--</div>-->
-            <!--</div>-->
-            <!--<div class="devices">-->
-                <!--<div data-ng-repeat="device in network.routers" class="router">-->
-                    <!--<div data-ng-class="{'true': 'portarea'}[device.ports.length > 0]">-->
-                        <!--<div class="inner">-->
-                            <!--<div class="buttons no-embed">-->
-                                <!--<ul>-->
-                                    <!--<li data-ng-click="viewNodeDetails(device)" class="topology-glyph node-details"></li>-->
-                                <!--</ul>-->
-                            <!--</div>-->
-                            <!--<i class="topology-glyph {{ device.icon }}" bp:network:coordinate ng-model="device"></i>-->
-                        <!--</div>-->
-                    <!--</div>-->
-                <!--</div>-->
-            <!--</div>-->
-        <!--</div>-->
         <div data-ng-repeat="network in networks.networks" class="network">
             <div class="line">
                 <div class="name">{{ network.name }}</div>
