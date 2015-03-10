@@ -177,7 +177,7 @@ i.gs-node-icon {
       }
     }
 
-    &.cloudify-types-server, &.cloudify-nodes-Compute {
+    &.cloudify-types-server, &.cloudify-nodes-Compute, &.cloudify-openstack-nodes-Server {
       &:after {
         content: 'e';
       }

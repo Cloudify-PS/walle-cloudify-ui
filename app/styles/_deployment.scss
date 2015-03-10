@@ -1004,6 +1004,9 @@
                     &.orange {
                         background-color: #f89406;
                     }
+                    &.external {
+                      height: 533px;
+                    }
                 }
                 .subnet:last-child {
                     margin: 0;
@@ -1014,7 +1017,7 @@
                 width: 160px;
                 height: 500px;
                 vertical-align: top;
-                > .device {
+                > .device, > .router {
                     position: relative;
                     display: block;
                     color: #797B86;
@@ -1067,7 +1070,7 @@
                         left: 20px;
                     }
                 }
-                > .device:last-child {
+                > .router:last-child {
                     margin-bottom: 0px;
                 }
                 .buttons {
@@ -1115,8 +1118,15 @@
                 }
             }
         }
-        .network:nth-child(even) .devices .device {
-            margin: 92px auto 47px;
+        .network {
+          .devices {
+              > .router {
+                margin: 92px auto 47px;
+              }
+              > .device {
+                margin: 52px auto 47px;
+              }
+          }
         }
     }
 

@@ -96,11 +96,13 @@ angular.module('cosmoUiApp')
         function _isIgnoreNode(node) {
             var networkNodes = [
                 'FloatingIp',
+                'VirtualIp',
                 'Network',
                 'Port',
                 'Subnet',
                 'SecurityGroup',
-                'KeyPair'
+                'KeyPair',
+                'Router'
             ];
 
             var searchExp = new RegExp(networkNodes.join('|'), 'gi');
