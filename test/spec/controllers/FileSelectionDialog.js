@@ -72,6 +72,7 @@ describe('Controller: FileSelectionDialogCtrl', function () {
             var expected = new FormData();
             expected.append('application_archive', scope.selectedFile);
             expected.append('opts', '{"blueprint_id":"blueprint1","params":{"application_file_name":"filename1"}}');
+            expected.append('type', 'file');
 
             spyOn(_cloudifyService.blueprints, 'add').andCallThrough();
 
@@ -81,9 +82,9 @@ describe('Controller: FileSelectionDialogCtrl', function () {
                 return scope.uploadInProcess === false;
             });
             runs(function() {
-                var formdata = _cloudifyService.blueprints.add.mostRecentCall.args[0];
+                var formData = _cloudifyService.blueprints.add.mostRecentCall.args[0];
 
-                expect(JSON.stringify(formdata)).toBe(JSON.stringify(expected));
+                expect(JSON.stringify(formData)).toBe(JSON.stringify(expected));
             });
         });
 
@@ -105,6 +106,60 @@ describe('Controller: FileSelectionDialogCtrl', function () {
             });
             runs(function() {
                 expect(scope.uploadDone).toHaveBeenCalledWith(scope.blueprintName);
+            });
+        });
+
+        it('should reset the url when a file selected by browsing', function () {
+            scope.archiveUrl = 'http://some.kind/of/url.tar.gz';
+            scope.uploadType = 'url';
+
+            scope.onFileSelect('somefile.tar.gz');
+
+            waitsFor(function() {
+                return scope.uploadType === 'file';
+            });
+            runs(function() {
+                expect(scope.archiveUrl).toBe('');
+            });
+        });
+
+        it('should reset the selected file when a file selected by url', function () {
+            scope.selectedFile = 'somefile.tar.gz';
+            scope.uploadType = 'file';
+
+            scope.archiveUrl = 'http://some.kind/of/url.tar.gz';
+
+            waitsFor(function() {
+                return scope.uploadType === 'url';
+            });
+            runs(function() {
+                expect(scope.selectedFile).toBe('');
+            });
+        });
+
+        it('should get a blueprint archive file from a url', function() {
+            scope.archiveUrl = 'http://some.kind/of/url.tar.gz';
+            scope.uploadType = 'url';
+            scope.uploadDone = function() {
+                scope.uploadInProcess = false;
+            };
+            _cloudifyService.blueprints.add = function(data, successCallback) {
+                successCallback();
+            };
+            FormData.prototype.append = function(name, data) {
+                this.url = data;
+            };
+            spyOn(_cloudifyService.blueprints, 'add').andCallThrough();
+
+            scope.uploadFile();
+
+            waitsFor(function() {
+                return scope.uploadInProcess === false;
+            });
+            runs(function() {
+                var formData = _cloudifyService.blueprints.add.mostRecentCall.args[0];
+
+                expect(formData.url).toBe('http://some.kind/of/url.tar.gz');
             });
         });
     });
