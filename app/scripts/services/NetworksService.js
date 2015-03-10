@@ -56,6 +56,7 @@ angular.module('cosmoUiApp')
         function _setExternalNetworks(providerData, nodes) {
             var extNetwork = providerData.context.resources.ext_network;
             var extSubnet = providerData.context.resources.subnet;
+            providerData.context.resources.router.icon = 'router';
 
             /* public network */
             networkModel.external = {
@@ -63,12 +64,9 @@ angular.module('cosmoUiApp')
                 'name': extNetwork.name,
                 'color': _getNetworkColor(),
                 'type': extNetwork.type,
-                'routers': [{
-                    'id': providerData.context.resources.router.id,
-                    'name': providerData.context.resources.router.name,
-                    'type': providerData.context.resources.router.type,
-                    'icon': 'router'
-                }],
+                'routers': [
+                    providerData.context.resources.router
+                ],
                 'subnets': []
             };
 
