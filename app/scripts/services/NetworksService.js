@@ -83,7 +83,7 @@ angular.module('cosmoUiApp')
                 'name': extSubnet.name,
                 'color': _getNetworkColor(),
                 'type': extSubnet.type,
-                'routers': _getRouters(nodes, networkModel.external[0])
+                'routers': _getRouters(nodes)
             };
             networkModel.relations.push({
                 source: extSubnet.id,
