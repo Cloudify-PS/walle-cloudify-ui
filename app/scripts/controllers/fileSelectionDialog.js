@@ -53,8 +53,8 @@ angular.module('cosmoUiApp')
             var blueprintUploadForm = new FormData();
             blueprintUploadForm.append('application_archive', $scope.selectedFile);
             blueprintUploadForm.append('opts', JSON.stringify($scope.blueprintUploadOpts));
+            blueprintUploadForm.append('type', $scope.uploadType);
             if ($scope.uploadType === 'url') {
-                blueprintUploadForm.append('type', $scope.uploadType);
                 blueprintUploadForm.append('url', $scope.archiveUrl);
             }
 
