@@ -72,6 +72,7 @@ describe('Controller: FileSelectionDialogCtrl', function () {
             var expected = new FormData();
             expected.append('application_archive', scope.selectedFile);
             expected.append('opts', '{"blueprint_id":"blueprint1","params":{"application_file_name":"filename1"}}');
+            expected.append('type', 'file');
 
             spyOn(_cloudifyService.blueprints, 'add').andCallThrough();
 
@@ -81,9 +82,9 @@ describe('Controller: FileSelectionDialogCtrl', function () {
                 return scope.uploadInProcess === false;
             });
             runs(function() {
-                var formdata = _cloudifyService.blueprints.add.mostRecentCall.args[0];
+                var formData = _cloudifyService.blueprints.add.mostRecentCall.args[0];
 
-                expect(JSON.stringify(formdata)).toBe(JSON.stringify(expected));
+                expect(JSON.stringify(formData)).toBe(JSON.stringify(expected));
             });
         });
 
