@@ -63,8 +63,8 @@ describe('Service: EventsService', function () {
         return new Date(fromTime.setTime(time));
     }
 
-    describe('Test setup', function() {
-        it('Injecting required data & initializing a new instance', function() {
+    describe('Test setup', function () {
+        it('Injecting required data & initializing a new instance', function () {
 
             // load the service's module, mocking ejsResource dependency
             module('cosmoUiApp', 'ngMock', 'gsUiHelper', 'elasticjs.service');
@@ -82,22 +82,21 @@ describe('Service: EventsService', function () {
 
                 events = eventsService.newInstance('/backend/events');
 
-                _callback = function() {
+                _callback = function () {
                     isExecuted = true;
                 };
             });
         });
     });
 
-    describe('Unit tests', function() {
-
-        it('should create a new EventsService instance', function() {
+    describe('Generic Unit tests', function () {
+        it('should create a new EventsService instance', function () {
             expect(!!eventsService).toBe(true);
         });
 
-        it('should use defined autopull time provided by controller', inject(function($q, $timeout) {
+        it('should use defined autopull time provided by controller', inject(function ($q, $timeout) {
             var client = events.getClient();
-            client.doSearch = function(){
+            client.doSearch = function () {
                 var deferred = $q.defer();
                 deferred.resolve({});
                 return deferred.promise;
@@ -108,18 +107,46 @@ describe('Service: EventsService', function () {
             events.execute(_callback, true, 1000);
             $timeout.flush();
 
+            waitsFor(function () {
+                return isExecuted;
+            });
+
+            runs(function () {
+                expect(events.autoPull).toHaveBeenCalledWith(_callback, 1000);
+                isExecuted = false;
+            });
+        }));
+
+        it('should return the last 50 backward filter (CFY-1983)', inject(function ($q, $timeout) {
+            var client = events.getClient();
+
+            client.doSearch = function () {
+                query = this._self();
+                var deferred = $q.defer();
+                deferred.resolve({});
+                return deferred.promise;
+            };
+
+            events.execute(_callback, false, false, events.getExecuteLastFiftyOptions());
+            $timeout.flush();
+
             waitsFor(function() {
                 return isExecuted;
             });
 
             runs(function() {
-                expect(events.autoPull).toHaveBeenCalledWith(_callback, 1000);
+                isExecuted = false;
+                expect(query.size).toBe(50);
             });
+
         }));
 
-        beforeEach(inject(function($q){
-            var client= events.getClient();
-            client.doSearch = function(){
+    });
+
+    describe('Unit tests for specific query', function () {
+        beforeEach(inject(function ($q) {
+            var client = events.getClient();
+            client.doSearch = function () {
                 query = this._self();
                 var deferred = $q.defer();
                 deferred.resolve({});
@@ -139,30 +166,30 @@ describe('Service: EventsService', function () {
 
         /*jshint camelcase: false */
 
-        it('should create query with 3 filters', function(){
+        it('should create query with 3 filters', function () {
             expect(query.filter.and.filters.length).toBe(3);
         });
 
-        it('should create query with blueprint ID filter', function(){
+        it('should create query with blueprint ID filter', function () {
             expect(query.filter.and.filters[0].terms.blueprint_id[0]).toEqual('monitoringbp');
         });
 
-        it('should create query with two deployments ID filter', function(){
+        it('should create query with two deployments ID filter', function () {
             expect(query.filter.and.filters[1].terms.deployment_id[0]).toEqual('monitoringdep');
             expect(query.filter.and.filters[1].terms.deployment_id[1]).toEqual('MonitoringBpTest');
         });
 
-        it('should create query with @timestamp range 15 min backward filter', function(){
+        it('should create query with @timestamp range 15 min backward filter', function () {
             var startTime = new Date().getTime();
             expect(query.filter.and.filters[2].range['@timestamp'].from.toString()).toEqual(_rangeTime(startTime - timeRangeBackward).toString());
         });
 
-        it('should create query with @timestamp range 5 min forward filter', function(){
+        it('should create query with @timestamp range 5 min forward filter', function () {
             var startTime = new Date().getTime();
             expect(query.filter.and.filters[2].range['@timestamp'].to.toString()).toEqual(_rangeTime(startTime + timeRangeForward).toString());
         });
 
-        it('should return the second deployment id as camel case (CFY-1675)', function(){
+        it('should return the second deployment id as camel case (CFY-1675)', function () {
             /*jshint camelcase: false */
             expect(query.filter.and.filters[1].terms.deployment_id[1]).toEqual('MonitoringBpTest');
         });

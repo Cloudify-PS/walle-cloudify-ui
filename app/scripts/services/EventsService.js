@@ -183,8 +183,10 @@ angular.module('cosmoUiApp')
                 var options = _getExecuteDefaultOptions();
 
                 options.sort = ejs.Sort('@timestamp').order('desc');
-                options.filters = false;
+                options.filters = ejs.AndFilter([]);
                 options.clientTo = 50;
+
+                return options;
             }
 
             /**
