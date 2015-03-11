@@ -282,7 +282,7 @@ angular.module('cosmoUiApp')
             return EventsMap.getEventText(event);
         };
 
-        //executeLogs(false, $scope.events.getExecuteLastFiftyOptions());
+        executeLogs(false, $scope.events.getExecuteLastFiftyOptions());
     });
 
 angular.module('cosmoUiApp')
