@@ -206,8 +206,7 @@ angular.module('cosmoUiApp')
                     options = _getExecuteDefaultOptions();
                 }
 
-                client = ejs.Request()
-                    .from(options.clientFrom)
+                client.from(options.clientFrom)
                     .size(options.clientTo);
 
                 results = client
