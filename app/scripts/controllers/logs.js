@@ -55,7 +55,7 @@ angular.module('cosmoUiApp')
         $scope.isSearchDisabled = true;
 
         var lastAmount = 0;
-        function executeLogs(autoPull) {
+        function executeLogs(autoPull, executeOptions) {
             $scope.filterLoading = true;
             $scope.newLogs = 0;
             $scope.logsHits = [];
@@ -114,7 +114,7 @@ angular.module('cosmoUiApp')
                     if(troubleShoot === executeRetry) {
                         $scope.events.stopAutoPull();
                     }
-                }, autoPull);
+                }, autoPull, false, executeOptions);
         }
 
         if($routeParams.filter) {
@@ -282,6 +282,7 @@ angular.module('cosmoUiApp')
             return EventsMap.getEventText(event);
         };
 
+        //executeLogs(false, $scope.events.getExecuteLastFiftyOptions());
     });
 
 angular.module('cosmoUiApp')

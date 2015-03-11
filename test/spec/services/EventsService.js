@@ -97,7 +97,6 @@ describe('Service: EventsService', function () {
 
         it('should use defined autopull time provided by controller', inject(function($q, $timeout) {
             var client = events.getClient();
-
             client.doSearch = function(){
                 var deferred = $q.defer();
                 deferred.resolve({});
