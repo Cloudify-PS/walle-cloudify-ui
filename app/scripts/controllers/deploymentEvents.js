@@ -21,13 +21,13 @@ angular.module('cosmoUiApp')
             'nodes': null
         };
 
-        $scope.$on('workflowsData', function(event, workflows){
+        $scope.$on('workflowsData', function (event, workflows) {
             $scope.workflowsList = workflows;
         });
 
         (function eventListForMenu() {
             var eventTypeList = [{'value': null, 'label': 'All'}];
-            for(var eventType in EventsMap.getEventsList()) {
+            for (var eventType in EventsMap.getEventsList()) {
                 eventTypeList.push({'value': eventType, 'label': EventsMap.getEventText(eventType)});
             }
             $scope.eventTypeList = eventTypeList;
@@ -45,6 +45,7 @@ angular.module('cosmoUiApp')
         };
 
         var lastAmount = 0;
+
         function executeEvents(autoPull) {
             $scope.filterLoading = true;
             $scope.newEvents = 0;
@@ -55,7 +56,7 @@ angular.module('cosmoUiApp')
                 lastData = [];
 
             function _convertDates(data) {
-                for(var i in data) {
+                for (var i in data) {
                     data[i]._source.timestamp = $filter('dateFormat')(data[i]._source.timestamp, 'yyyy-MM-dd HH:mm:ss');
                 }
                 return data;
@@ -67,50 +68,49 @@ angular.module('cosmoUiApp')
                 lastData = data;
             }
 
-            events
-                .execute(function(data){
-                    if(data && data.hasOwnProperty('hits')) {
-                        var dataHits = _convertDates(data.hits.hits);
-                        if (dataHits.length > 0) {
-                            if(dataHits.length !== lastAmount) {
-                                if(document.body.scrollTop === 0 || $scope.eventHits.length === 0) {
-                                    pushLogs(dataHits);
-                                }
-                                else {
-                                    eventsCollect = dataHits;
-                                    $scope.newEvents = eventsCollect.length - $scope.eventHits.length;
-                                }
-                                lastAmount = dataHits.length;
-                            }
-                            else {
+            events.execute(function (data) {
+                if (data && data.hasOwnProperty('hits')) {
+                    var dataHits = _convertDates(data.hits.hits);
+                    if (dataHits.length > 0) {
+                        if (dataHits.length !== lastAmount) {
+                            if (document.body.scrollTop === 0 || $scope.eventHits.length === 0) {
                                 pushLogs(dataHits);
                             }
+                            else {
+                                eventsCollect = dataHits;
+                                $scope.newEvents = eventsCollect.length - $scope.eventHits.length;
+                            }
+                            lastAmount = dataHits.length;
+                        }
+                        else {
+                            pushLogs(dataHits);
                         }
                     }
-                    else {
-                        $log.info('Cant load events, undefined data.');
-                        troubleShoot++;
-                    }
-                    $scope.filterLoading = false;
+                }
+                else {
+                    $log.info('Cant load events, undefined data.');
+                    troubleShoot++;
+                }
+                $scope.filterLoading = false;
 
-                    // Stop AutoPull after 10 failures
-                    if(troubleShoot === executeRetry) {
-                        events.stopAutoPull();
-                    }
-                }, autoPull, true);
+                // Stop AutoPull after 10 failures
+                if (troubleShoot === executeRetry) {
+                    events.stopAutoPull();
+                }
+            }, autoPull, true);
         }
 
         function filterEvents(field, newValue, oldValue, execute) {
-            if(newValue === null) {
+            if (newValue === null) {
                 return;
             }
-            if(oldValue !== null && oldValue.value !== null) {
+            if (oldValue !== null && oldValue.value !== null) {
                 events.filter(field, oldValue.value);
             }
-            if(newValue.value !== null) {
+            if (newValue.value !== null) {
                 events.filter(field, newValue.value);
             }
-            if(execute === true) {
+            if (execute === true) {
                 executeEvents();
             }
         }
@@ -121,31 +121,31 @@ angular.module('cosmoUiApp')
             executeEvents(true);
         })();
 
-        $scope.scrollToTop = function(){
+        $scope.scrollToTop = function () {
             $anchorScroll();
         };
 
-        $scope.$watch('eventsFilter.type', function(newValue, oldValue){
-            if(newValue !== null && oldValue !== null) {
+        $scope.$watch('eventsFilter.type', function (newValue, oldValue) {
+            if (newValue !== null && oldValue !== null) {
                 filterEvents('event_type', newValue, oldValue, true);
             }
         });
 
-        $scope.$watch('eventsFilter.workflow', function(newValue, oldValue){
-            if(newValue !== null && oldValue !== null) {
+        $scope.$watch('eventsFilter.workflow', function (newValue, oldValue) {
+            if (newValue !== null && oldValue !== null) {
                 filterEvents('context.workflow_id', newValue, oldValue, true);
             }
         });
 
-        $scope.eventFindNodes = function() {
-            if($scope.eventsFilter.nodes === '') {
+        $scope.eventFindNodes = function () {
+            if ($scope.eventsFilter.nodes === '') {
                 $scope.eventsFilter.nodes = null;
             }
             filterEvents('context.node_name', {value: $scope.eventsFilter.nodes}, {value: lastNodeSearch}, true);
             lastNodeSearch = $scope.eventsFilter.nodes;
         };
 
-        $scope.clearFindNode = function() {
+        $scope.clearFindNode = function () {
             $scope.eventsFilter.nodes = '';
             $scope.eventFindNodes();
         };
@@ -177,10 +177,10 @@ angular.module('cosmoUiApp')
             executeEvents();
         };
 
-        $scope.isSortActive = function() {
-            if($scope.eventSortList.hasOwnProperty('current')) {
-                if($scope.eventSortList.hasOwnProperty($scope.eventSortList.current)) {
-                    if($scope.eventSortList[$scope.eventSortList.current] !== false) {
+        $scope.isSortActive = function () {
+            if ($scope.eventSortList.hasOwnProperty('current')) {
+                if ($scope.eventSortList.hasOwnProperty($scope.eventSortList.current)) {
+                    if ($scope.eventSortList[$scope.eventSortList.current] !== false) {
                         return false;
                     }
                 }
@@ -188,11 +188,11 @@ angular.module('cosmoUiApp')
             return true;
         };
 
-        $scope.$watch('eventSortList', function(data){
-            if(!data.hasOwnProperty('current')) {
+        $scope.$watch('eventSortList', function (data) {
+            if (!data.hasOwnProperty('current')) {
                 return;
             }
-            if($scope.isSortActive()) {
+            if ($scope.isSortActive()) {
                 executeEvents(true);
             }
             else {
@@ -206,15 +206,15 @@ angular.module('cosmoUiApp')
             }
         };
 
-        $scope.getEventIcon = function(event) {
+        $scope.getEventIcon = function (event) {
             return EventsMap.getEventIcon(event);
         };
 
-        $scope.getEventText = function(event) {
+        $scope.getEventText = function (event) {
             return EventsMap.getEventText(event);
         };
 
-        $scope.viewLogsByEvent = function(event) {
+        $scope.viewLogsByEvent = function (event) {
             var logsFilter = {
                 'blueprints': [
                     event._source.context.blueprint_id
@@ -231,15 +231,15 @@ angular.module('cosmoUiApp')
             $location.url('logs').search('filter', JSON.stringify(logsFilter));
         };
 
-        $scope.viewAllLogs = function() {
-            if($scope.eventHits.length > 0) {
+        $scope.viewAllLogs = function () {
+            if ($scope.eventHits.length > 0) {
                 $scope.viewLogsByEvent($scope.eventHits[0]);
             }
         };
 
-        $scope.getNodeById = function(node_id) {
+        $scope.getNodeById = function (node_id) {
             var _node = {};
-            $scope.dataTable.forEach(function(node) {
+            $scope.dataTable.forEach(function (node) {
                 if (node.id === node_id) {
                     _node = node;
                 }

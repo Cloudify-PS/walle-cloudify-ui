@@ -12,11 +12,10 @@ angular.module('cosmoUiApp')
             /*jshint validthis: true */
             var _this = this;
             var ejs = ejsResource(server);
-            var query = ejs.MatchAllQuery();
+            var activeFilters = {};
             var client = ejs.Request()
                 .from(0)
                 .size(1000);
-            var activeFilters = {};
             var rangeFilter = {};
             var rangePrefix = 'range';
             var isAutoPull = false;
@@ -170,14 +169,52 @@ angular.module('cosmoUiApp')
                 return data;
             }
 
-            function execute(callbackFn, autoPull, customPullTime) {
-                var results,
-                    sort = sortField ? sortField : ejs.Sort('@timestamp').order('desc');
+            function _getExecuteDefaultOptions() {
+                return {
+                    query: ejs.MatchAllQuery(),
+                    sort: sortField ? sortField : ejs.Sort('@timestamp').order('desc'),
+                    filters: _applyFilters(),
+                    clientFrom: 0,
+                    clientTo: 1000
+                };
+            }
+
+            function _getExecuteLastFiftyOptions() {
+                var options = _getExecuteDefaultOptions();
+
+                options.sort = ejs.Sort('@timestamp').order('desc');
+                options.filters = ejs.AndFilter([]);
+                options.clientTo = 50;
+
+                return options;
+            }
+
+            /**
+             * options = {
+                    query: ejs query obj,
+                    sort: ejs sort obj,
+                    filters: ejs filters obj,
+                    clientFrom: ejs client request from,
+                    clientTo: ejs client request to
+                };
+             *
+             * @param callbackFn
+             * @param options
+             */
+            function execute(callbackFn, autoPull, customPullTime, options) {
+                var results;
+
+                if (!options) {
+                    options = _getExecuteDefaultOptions();
+                }
+
+                client.from(options.clientFrom)
+                    .size(options.clientTo);
 
                 results = client
-                    .query(query)
-                    .filter(_applyFilters())
-                    .sort([sort])
+                    .query(options.query)
+                    .filter(options.filters)
+                    .sort([options.sort])
                     .doSearch();
 
                 results.then(function(data){
@@ -205,6 +242,7 @@ angular.module('cosmoUiApp')
             _this.stopAutoPull = stopAutoPull;
             _this.autoPull = _autoPull;
             _this.execute = execute;
+            _this.getExecuteLastFiftyOptions = _getExecuteLastFiftyOptions;
             _this.getClient = function(){ return client; }; // for tests..
         }
 
