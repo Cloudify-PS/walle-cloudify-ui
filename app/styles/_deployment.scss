@@ -1018,7 +1018,7 @@
                 height: 500px;
                 vertical-align: top;
                 > .device, > .router {
-                    position: relative;
+//                    position: relative;
                     display: block;
                     color: #797B86;
                     border-radius: 20px;
@@ -1038,6 +1038,10 @@
                     > p {
                         margin: 5px;
                     }
+                    i.gs-node-icon:after {
+                      position: relative;
+                      top: 6px;
+                    }
                     i.topology-glyph {
                         display: inline-block;
                         color: inherit;
@@ -1045,12 +1049,13 @@
                         height: 30px;
                         font-size: 60px;
                         line-height: 5px;
-                    }
-                    i.topology-glyph:before {
+
+                      &:before {
                         font-size: 60px;
                         position: absolute;
                         top: -26px;
                         left: 0px;
+                      }
                     }
                     .portarea {
                         display: inline-block;

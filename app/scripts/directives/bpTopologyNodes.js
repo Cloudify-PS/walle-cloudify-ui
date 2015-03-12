@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('cosmoUiApp')
-    .directive('bpTopologyNodes', ['RecursionHelper', function (RecursionHelper) {
+    .directive('bpTopologyNodes', ['RecursionHelper', 'topologyTypes', function (RecursionHelper, topologyTypes) {
         return {
             templateUrl: 'views/bpTopologyNodesTemplate.html',
             restrict: 'EA',
@@ -28,7 +28,7 @@ angular.module('cosmoUiApp')
                 };
 
                 $scope.isConnectedTo = function(relationship) {
-                    return relationship.type_hierarchy.join(',').indexOf('connected_to') > -1;
+                    return relationship.type_hierarchy.join(',').indexOf('connected_to') && topologyTypes.isValidConnection(relationship.node);
                 };
 
                 // TODO: 3.2 - Check if function still needed

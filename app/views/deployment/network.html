@@ -82,7 +82,7 @@
                                     <li data-ng-click="viewNodeDetails(device)" class="topology-glyph node-details"></li>
                                 </ul>
                             </div>
-                            <i class="topology-glyph {{ device.icon }}" bp:network:coordinate ng-model="device"></i>
+                            <i class="gs-node-icon topology-glyph {{ device.icon }}" bp:network:coordinate ng-model="device"></i>
                             <div class="badge">
                                 {{ device.state.completed }}/{{ device.state.total }}
                             </div>

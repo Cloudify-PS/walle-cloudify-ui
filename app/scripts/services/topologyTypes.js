@@ -71,4 +71,40 @@ angular.module('cosmoUiApp')
             return types;
         };
 
+        this.isNetworkNode = function(node) {
+            if (!node) return;
+            var networkNodes = [
+                'FloatingIp',
+                'VirtualIp',
+                'Network',
+                'Port',
+                'Subnet',
+                'Router'
+            ];
+
+            var searchExp = new RegExp(networkNodes.join('|'), 'gi');
+            return searchExp.test(node.type);
+        };
+
+        this.isValidConnection = function(node) {
+            if (!node) return;
+            var validConnections = [
+                'FloatingIp',
+                'VirtualIp',
+                'KeyPair',
+                'SecurityGroup'
+            ];
+
+            var searchExp = new RegExp(validConnections.join('|'), 'gi');
+            return searchExp.test(node.type);
+        };
+
+        this.isHostNode = function(typeHierarchy) {
+            return typeHierarchy.indexOf('cloudify-nodes-Compute') > 0;
+        };
+
+        this.isAppNode = function(typeHierarchy) {
+            return typeHierarchy.indexOf('cloudify-nodes-ApplicationModule') > 0;
+        };
+
     });
