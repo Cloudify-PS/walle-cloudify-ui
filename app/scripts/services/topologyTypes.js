@@ -72,7 +72,9 @@ angular.module('cosmoUiApp')
         };
 
         this.isNetworkNode = function(node) {
-            if (!node) return;
+            if (!node) {
+                return;
+            }
             var networkNodes = [
                 'FloatingIp',
                 'VirtualIp',
@@ -87,7 +89,9 @@ angular.module('cosmoUiApp')
         };
 
         this.isValidConnection = function(node) {
-            if (!node) return;
+            if (!node) {
+                return;
+            }
             var validConnections = [
                 'FloatingIp',
                 'VirtualIp',
