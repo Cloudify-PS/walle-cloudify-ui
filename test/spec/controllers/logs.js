@@ -20,6 +20,7 @@ describe('Controller: LogsCtrl', function () {
                 return {
                     filterRange: function() {},
                     filterRemove: function() {},
+                    getExecuteLastFiftyOptions: function() {},
                     filter: function() {},
                     execute: function() {}
                 };
