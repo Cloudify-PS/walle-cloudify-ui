@@ -13,6 +13,7 @@ if ( isLocalhost() ){
 }
 
 var express = require('express');
+require('./backend/middlewares/CloudifyMiddleware');
 require('express-params');
 /*jshint -W079 */
 var _ = require('lodash');
@@ -56,7 +57,6 @@ app.use(express.cookieParser(/* 'some secret key to sign cookies' */ 'keyboardca
 app.use(express.bodyParser());
 app.use(express.compress());
 app.use(express.methodOverride());
-
 /*
  * Set app settings depending on environment mode.
  * Express automatically sets the environment to 'development'
@@ -453,9 +453,9 @@ app.get('/500', function(req, res, next){
 });
 
 // todo: do we need this?
-app.get('/', function(/*req, res, next*/){
-
-});
+//app.get('/', function(/*req, res, next*/){
+//
+//});
 
 
 app.listen(port, ip);
