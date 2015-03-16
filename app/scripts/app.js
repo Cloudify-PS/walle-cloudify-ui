@@ -103,6 +103,10 @@ angular.module('cosmoUiApp', [
                 templateUrl: 'views/config.html',
                 controller: 'ConfigCtrl'
             })
+            .when('/login', {
+                templateUrl: 'views/login.html',
+                controller: 'LoginCtrl'
+            })
             .otherwise({
 //                redirectTo: isSettingsExists ? '/blueprints' : '/config'
                 redirectTo: '/blueprints'

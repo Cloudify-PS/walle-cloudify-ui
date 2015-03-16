@@ -1,0 +1,30 @@
+<div style="height:100%;">
+    <div class="layout">
+
+            <div id="loginView">
+                <div class="logo"></div>
+
+                <div id="loginForm" class="dialogBox">
+                    <div class="dialogTitle">{{ 'login.loginTitle' | i18n }}</div>
+                    <form>
+                        <input type="text" spellcheck="false" ng-model="username" placeholder="{{ 'login.userLabel' | i18n }}" required>
+
+                        <input type="text" spellcheck="false" placeholder="{{ 'login.passLabel' | i18n }}" ng-model="password" required>
+
+                        <div class="remember">
+                            <input type="checkbox" ng-model="cosmoLogs">
+                            <label>{{ 'login.rememberLabel' | i18n }}</label>
+                        </div>
+
+                        <ul id="errMsgList">
+                            <li class="errMsg" ng-repeat="err in errList">
+                                {{err}}
+                            </li>
+                        </ul>
+
+                        <button type="button" class="gs-btn" ng-click="login()">{{ 'login.loginBtn' | i18n }}</button>
+                    </form>
+                </div>
+            </div>
+    </div>
+</div>

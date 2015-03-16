@@ -337,3 +337,12 @@ p[tooltip], div[tooltip] {
   overflow: hidden;
   text-overflow: ellipsis;
 }
+
+input {
+  height: 32px;
+  border-radius: 3px;
+  padding-left: 10px;
+  background-clip: padding-box;
+  background-color: #f4fbff;
+  border: 0;
+}
