@@ -14,12 +14,13 @@ angular.module('cosmoUiApp')
             return RestLoader.load(rest, params);
         }
 
-        function _login() {
+        function _login(data) {
             var callParams = {
-                url: '/backend/login/check',
-                method: 'GET'
+                url: '/backend/login',
+                method: 'POST',
+                data: data
             };
-            return _load('login/check', callParams);
+            return _load('login', callParams);
         }
 
         this.login = _login;
