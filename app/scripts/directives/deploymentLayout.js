@@ -202,14 +202,11 @@ angular.module('cosmoUiApp')
                     var IndexedNodes = {};
                     for (var i in nodes) {
                         var node = nodes[i];
-                        var id;
-                        if (node.hasOwnProperty('node_id')) {
-                            id = node.node_id;
-                        } else if (node.hasOwnProperty('id')) {
-                            id = node.id;
-                        }
-                        if (id) {
-                            IndexedNodes[id] = {
+                        if (node.hasOwnProperty('id') && node.hasOwnProperty('node_id')) {
+                            if (IndexedNodes[node.node_id] === undefined) {
+                                IndexedNodes[node.node_id] = {};
+                            }
+                            IndexedNodes[node.node_id][node.id] = {
                                 state: node.state
                             };
                         }
@@ -232,27 +229,29 @@ angular.module('cosmoUiApp')
                             var nodeId = deployment.instancesIds[n];
 
                             if(IndexedNodes.hasOwnProperty(nodeId)) {
-                                var nodeInstance = IndexedNodes[nodeId];
-                                var stateNum = statesIndex.indexOf(nodeInstance.state);
+                                for (var inst in IndexedNodes[nodeId]) {
+                                    var instance = IndexedNodes[nodeId][inst];
+                                    var stateNum = statesIndex.indexOf(instance.state);
 
-                                // Count how many instances are reachable
-                                if(nodeInstance.state === 'started') {
-                                    _reachable++;
-                                }
-
-                                // instance state between 'initializing' to 'starting'
-                                if(stateNum > 0 && stateNum <= 7) {
-                                    _states += stateNum;
-
-                                    // instance 'started'
-                                    if(stateNum === 7) {
-                                        _completed++;
+                                    // Count how many instances are reachable
+                                    if(instance.state === 'started') {
+                                        _reachable++;
                                     }
-                                }
 
-                                // instance 'uninitialized' or 'deleted'
-                                if(stateNum === 0 || stateNum > 7) {
-                                    _uninitialized++;
+                                    // instance state between 'initializing' to 'starting'
+                                    if(stateNum > 0 && stateNum <= 7) {
+                                        _states += stateNum;
+
+                                        // instance 'started'
+                                        if(stateNum === 7) {
+                                            _completed++;
+                                        }
+                                    }
+
+                                    // instance 'uninitialized' or 'deleted'
+                                    if(stateNum === 0 || stateNum > 7) {
+                                        _uninitialized++;
+                                    }
                                 }
                             }
                         }
