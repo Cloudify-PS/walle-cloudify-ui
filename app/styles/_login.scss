@@ -45,6 +45,14 @@
         position: absolute;
         right: 10px;
         bottom: 5px;
+
+        &.disabled {
+          background: $COSMOUI_BUTTON_DISABLED_BACKGROUND;
+          border-bottom: 1px solid $COSMOUI_BUTTON_DISABLED_BORDER_COLOR;
+          border-right: 1px solid $COSMOUI_BUTTON_DISABLED_BORDER_COLOR;
+          color: $clr-base-24;
+          cursor: default;
+        }
       }
 
       ul {

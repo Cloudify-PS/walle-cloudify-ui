@@ -12,7 +12,7 @@
                         <input type="text" spellcheck="false" placeholder="{{ 'login.passLabel' | i18n }}" ng-model="password" required>
 
                         <div class="remember">
-                            <input type="checkbox" ng-model="cosmoLogs">
+                            <input type="checkbox" ng-model="remember">
                             <label>{{ 'login.rememberLabel' | i18n }}</label>
                         </div>
 
@@ -22,7 +22,7 @@
                             </li>
                         </ul>
 
-                        <button type="button" class="gs-btn" ng-click="login()">{{ 'login.loginBtn' | i18n }}</button>
+                        <button type="button" class="gs-btn" ng-class="{'disabled': !isLoginEnabled()}" ng-click="login()">{{ 'login.loginBtn' | i18n }}</button>
                     </form>
                 </div>
             </div>
