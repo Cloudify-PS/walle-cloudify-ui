@@ -203,24 +203,27 @@ angular.module('cosmoUiApp')
                 function _orderNodesById( nodes ) {
                     var instancesByNodeId =  _.groupBy(nodes, 'node_id');
                     _.each(instancesByNodeId, function(instances, node_id) {
-                        instancesByNodeId[node_id] = _.indexBy(instances,'id')
+                        instancesByNodeId[node_id] = _.indexBy(instances,'id');
                     });
                     return instancesByNodeId;
                 }
 
+                /*
+                Updating the model. Grouping node instances by their node id to collect their statuses & update the node statuses in the model.
+                 */
                 function _updateDeploymentModel( nodes ) {
                     var IndexedNodes = _orderNodesById(nodes);
 
                     for (var i in deploymentModel) {
-                        var deployment = deploymentModel[i];
+                        var _nodeInstanceStatus = deploymentModel[i];   // Node instance status in the model
                         var _reachable = 0;
                         var _states = 0;
                         var _completed = 0;
                         var _uninitialized = 0;
 
                         // go over all the instances
-                        for (var n in deployment.instancesIds) {
-                            var nodeId = deployment.instancesIds[n];
+                        for (var n in _nodeInstanceStatus.instancesIds) {
+                            var nodeId = _nodeInstanceStatus.instancesIds[n];
 
                             if(IndexedNodes.hasOwnProperty(nodeId)) {
                                 for (var inst in IndexedNodes[nodeId]) {
@@ -252,28 +255,28 @@ angular.module('cosmoUiApp')
 
                         // * results of all the instances of the node * //
                         // completed instances
-                        deployment.completed = _completed;
+                        _nodeInstanceStatus.completed = _completed;
 
                         // reachable instances
-                        deployment.reachables = _reachable;
+                        _nodeInstanceStatus.reachables = _reachable;
 
                         // average process
-                        deployment.state = Math.round(_states / deployment.total);
+                        _nodeInstanceStatus.state = Math.round(_states / _nodeInstanceStatus.total);
 
                         // average process in percents
-                        deployment.states = calcState(_states, deployment.total);
+                        _nodeInstanceStatus.states = calcState(_states, _nodeInstanceStatus.total);
 
                         // Set Status by Workflow Execution Progress
-                        var processDone = (deployment.states < 100 ? deployment.states : calcProgress(deployment.reachables, deployment.total));
-                        deployment.process = {
-                            'done': processDone
+                        var _processDone = (_nodeInstanceStatus.states < 100 ? _nodeInstanceStatus.states : calcProgress(_nodeInstanceStatus.reachables, _nodeInstanceStatus.total));
+                        _nodeInstanceStatus.process = {
+                            'done': _processDone
                         };
 
-                        if(_uninitialized === deployment.total) {
-                            setDeploymentStatus(deployment, false);
+                        if(_uninitialized === _nodeInstanceStatus.total) {
+                            setDeploymentStatus(_nodeInstanceStatus, false);
                         }
                         else {
-                            setDeploymentStatus(deployment, processDone);
+                            setDeploymentStatus(_nodeInstanceStatus, _processDone);
                         }
                     }
 
