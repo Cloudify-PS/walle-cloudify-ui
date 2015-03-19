@@ -49,6 +49,7 @@ angular.module('cosmoUiApp')
                     data: null
                 };
                 $scope.deployments = deploymentModel;
+                $scope.isInitilizingLoader = false;
 
                 // Set Breadcrumb
                 BreadcrumbsService.push('deployments', {
@@ -187,9 +188,10 @@ angular.module('cosmoUiApp')
                             else if ($scope.deploymentInProgress === null && $scope.currentExecution !== false) {
                                 $scope.deploymentInProgress = true;
                             }
-                            CloudifyService.deployments.getDeploymentNodes({deployment_id : $scope.id, state: true}).then(function(dataNodes){
-                                _updateDeploymentModel(dataNodes);
-                            });
+                            CloudifyService.deployments.getDeploymentNodes({deployment_id : $scope.id, state: true})
+                                .then(function(dataNodes){
+                                    _updateDeploymentModel(dataNodes);
+                                });
                             $scope.$emit('deploymentExecution', {
                                 currentExecution: $scope.currentExecution,
                                 deploymentInProgress: $scope.deploymentInProgress,
@@ -199,19 +201,11 @@ angular.module('cosmoUiApp')
                 }
 
                 function _orderNodesById( nodes ) {
-                    var IndexedNodes = {};
-                    for (var i in nodes) {
-                        var node = nodes[i];
-                        if (node.hasOwnProperty('id') && node.hasOwnProperty('node_id')) {
-                            if (IndexedNodes[node.node_id] === undefined) {
-                                IndexedNodes[node.node_id] = {};
-                            }
-                            IndexedNodes[node.node_id][node.id] = {
-                                state: node.state
-                            };
-                        }
-                    }
-                    return IndexedNodes;
+                    var instancesByNodeId =  _.groupBy(nodes, 'node_id');
+                    _.each(instancesByNodeId, function(instances, node_id) {
+                        instancesByNodeId[node_id] = _.indexBy(instances,'id')
+                    });
+                    return instancesByNodeId;
                 }
 
                 function _updateDeploymentModel( nodes ) {
@@ -368,7 +362,6 @@ angular.module('cosmoUiApp')
                     $scope.$emit('toggleChange', toggleBar);
                 });
 
-                $scope.isInitilizingLoader = false;
                 $scope.isInitilizing = function() {
                     if($scope.currentExecution === null) {
                         return true;
