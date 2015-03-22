@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('cosmoUiApp')
-    .service('NodeService', function NodeService() {
+    .service('NodeService', function NodeService(topologyTypes) {
 
         function _createNodesTree(nodes) {
             var roots = [];
@@ -10,7 +10,7 @@ angular.module('cosmoUiApp')
             for (var nodeId in nodesList) {
                 var node = nodesList[nodeId];
 
-                if (node.relationships !== undefined && !_isIgnoreNode(node)) {
+                if (node.relationships !== undefined && !_isIgnoreNode(node) && !_isNetworkNode(node)) {
                     for (var i = 0; i < node.relationships.length; i++) {
                         if (node.relationships[i].type_hierarchy.join(',').indexOf('contained_in') > -1) {
                             node.isContained = true;
@@ -31,15 +31,15 @@ angular.module('cosmoUiApp')
                     node.dataType = _getNodeDataType(node);
 
                     if (!node.isContained) {
-                        if(node.hasOwnProperty('childern')) {
-                            node.childern.sort(_sortBy('id'));
+                        if(node.hasOwnProperty('children')) {
+                            node.children.sort(_sortBy('id'));
                         }
                         roots.push(node);
                     }
-                } else if(!_isIgnoreNode(node) && !node.isContained){
+                } else if(!_isIgnoreNode(node) && !_isNetworkNode(node) && !node.isContained){
                     node.dataType = _getNodeDataType(node);
-                    if(node.hasOwnProperty('childern')) {
-                        node.childern.sort(_sortBy('id'));
+                    if(node.hasOwnProperty('children')) {
+                        node.children.sort(_sortBy('id'));
                     }
                     roots.push(node);
                 }
@@ -83,29 +83,25 @@ angular.module('cosmoUiApp')
             return typeHierarchy.join(' ');
         }
 
-        // TODO: 3.2 - Move method to topologyTypes and use the service instead of local function
         function _isAppNode(typeHierarchy) {
-            return typeHierarchy.indexOf('cloudify-nodes-ApplicationModule') > 0;
+            return topologyTypes.isAppNode(typeHierarchy);
         }
 
         function _isHostNode(typeHierarchy) {
-            return typeHierarchy.indexOf('cloudify-nodes-Compute') > 0;
+            return topologyTypes.isHostNode(typeHierarchy);
         }
 
-        // TODO: 3.2 - Move method to topologyTypes and use the service instead of local function
+        function _isNetworkNode(node) {
+            return topologyTypes.isNetworkNode(node);
+        }
+
         function _isIgnoreNode(node) {
-            var networkNodes = [
-                'FloatingIp',
-                'VirtualIp',
-                'Network',
-                'Port',
-                'Subnet',
+            var ignoredNodes = [
                 'SecurityGroup',
-                'KeyPair',
-                'Router'
+                'KeyPair'
             ];
 
-            var searchExp = new RegExp(networkNodes.join('|'), 'gi');
+            var searchExp = new RegExp(ignoredNodes.join('|'), 'gi');
             return searchExp.test(node.type);
         }
 
