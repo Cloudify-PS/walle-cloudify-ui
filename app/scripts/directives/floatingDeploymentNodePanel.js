@@ -108,7 +108,7 @@ angular.module('cosmoUiApp')
                             general: {
                                 'name': node.id,
                                 'type': node.type,
-                                'state': node.runtime_properties !== null ? node.runtime_properties.state : '',
+                                'state': node.state !== null ? node.state : '',
                                 'ip': node.runtime_properties !== null ? node.runtime_properties.ip : '',
                                 'ip_addresses': node.runtime_properties !== null && node.runtime_properties.hasOwnProperty('ip_addresses') ? node.runtime_properties.ip_addresses.join(', ') : ''
                             }

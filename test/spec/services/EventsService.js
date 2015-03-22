@@ -130,16 +130,24 @@ describe('Service: EventsService', function () {
             events.execute(_callback, false, false, events.getExecuteLastFiftyOptions());
             $timeout.flush();
 
-            waitsFor(function() {
+            waitsFor(function () {
                 return isExecuted;
             });
 
-            runs(function() {
+            runs(function () {
                 isExecuted = false;
                 expect(query.size).toBe(50);
             });
 
         }));
+
+        it('should verify elastic search query sort ignores unmapped fields (CFY-2204)', function () {
+            var defaultOptions = events.getExecuteDefaultOptions();
+            expect(defaultOptions.sort.ignoreUnmapped()).toBe(true);
+
+            var last50Options = events.getExecuteLastFiftyOptions();
+            expect(last50Options.sort.ignoreUnmapped()).toBe(true);
+        });
 
     });
 

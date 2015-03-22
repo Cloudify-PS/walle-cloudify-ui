@@ -124,7 +124,7 @@ angular.module('cosmoUiApp')
                 switch(order) {
                 case 'desc':
                 case 'asc':
-                    sortField = ejs.Sort(_innerField).order(order);
+                    sortField = ejs.Sort(_innerField).order(order).ignoreUnmapped(true);
                     break;
                 default:
                     sortField = false;
@@ -172,7 +172,7 @@ angular.module('cosmoUiApp')
             function _getExecuteDefaultOptions() {
                 return {
                     query: ejs.MatchAllQuery(),
-                    sort: sortField ? sortField : ejs.Sort('@timestamp').order('desc'),
+                    sort: sortField ? sortField : ejs.Sort('@timestamp').order('desc').ignoreUnmapped(true),
                     filters: _applyFilters(),
                     clientFrom: 0,
                     clientTo: 1000
@@ -182,7 +182,7 @@ angular.module('cosmoUiApp')
             function _getExecuteLastFiftyOptions() {
                 var options = _getExecuteDefaultOptions();
 
-                options.sort = ejs.Sort('@timestamp').order('desc');
+                options.sort = ejs.Sort('@timestamp').order('desc').ignoreUnmapped(true);
                 options.filters = ejs.AndFilter([]);
                 options.clientTo = 50;
 
@@ -243,6 +243,7 @@ angular.module('cosmoUiApp')
             _this.autoPull = _autoPull;
             _this.execute = execute;
             _this.getExecuteLastFiftyOptions = _getExecuteLastFiftyOptions;
+            _this.getExecuteDefaultOptions = _getExecuteDefaultOptions;
             _this.getClient = function(){ return client; }; // for tests..
         }
 

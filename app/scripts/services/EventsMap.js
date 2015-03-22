@@ -69,6 +69,11 @@ angular.module('cosmoUiApp')
                 icon: 'task-failed',
                 class: 'event-text-red'
             },
+            'task_rescheduled': {
+                text: 'Task rescheduled',
+                icon: 'task-retried',
+                class: 'event-text-red'
+            },
             'task_retried': {
                 text: 'Task retried',
                 icon: 'task-retried',

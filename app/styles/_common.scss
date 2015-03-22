@@ -333,7 +333,7 @@ $failed: #d54931;
   }
 }
 
-p[tooltip], div[tooltip] {
+p[tooltip], div[tooltip], td {
   overflow: hidden;
   text-overflow: ellipsis;
 }

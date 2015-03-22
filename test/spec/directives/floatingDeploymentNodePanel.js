@@ -23,6 +23,7 @@ describe('Directive: floatingDeploymentNodePanel', function () {
         },
         'host_id': 'nodejs_vm',
         'type': 'vm_host',
+        'state': 'started',
         'runtime_properties': {
             'cloudify_agent': {
                 'user': 'ubuntu'
@@ -77,8 +78,8 @@ describe('Directive: floatingDeploymentNodePanel', function () {
             runs(function() {
                 expect(scope.showProperties.properties).toBeDefined();
                 expect(scope.showProperties.properties.ip).toBe('1.1.1.1');
+                expect(scope.showProperties.general.state).toBe('started');
             });
-
         });
 
         it('should show panel when node is set', function() {
