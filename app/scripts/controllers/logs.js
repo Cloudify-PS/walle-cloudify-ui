@@ -196,7 +196,7 @@ angular.module('cosmoUiApp')
                 $scope.events.filterRange(field, newValue);
             }
             if (execute === true) {
-                executeLogs(executeOptions);
+                executeLogs(false, executeOptions);
             }
         }
 
