@@ -1,3 +1,5 @@
+'use strict';
+
 var CloudifyClient = require('cloudify-js');
 var express = require('express');
 var app = express();

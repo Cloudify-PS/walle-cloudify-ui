@@ -8,7 +8,7 @@
  * Controller of the cosmoUiApp
  */
 angular.module('cosmoUiApp')
-  .controller('LoginCtrl', function ($scope, LoginService) {
+    .controller('LoginCtrl', function ($scope, LoginService) {
 
         $scope.login = function() {
             if (!$scope.isLoginEnabled()) {
@@ -23,11 +23,11 @@ angular.module('cosmoUiApp')
 
             LoginService.login(loginData)
                 .then(function(result) {
-
+                    console.log(result);
                 });
         };
 
         $scope.isLoginEnabled = function() {
             return $scope.username !== undefined && $scope.password !== undefined;
-        }
-  });
+        };
+    });
