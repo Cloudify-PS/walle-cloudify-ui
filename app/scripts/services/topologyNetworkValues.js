@@ -2,13 +2,13 @@
 
 /**
  * @ngdoc service
- * @name cosmoUiApp.topologyNetworkValues
+ * @name cosmoUiApp.TopologyNetworkValues
  * @description
- * # topologyNetworkValues
+ * # TopologyNetworkValues
  * Constant in the cosmoUiApp.
  */
 angular.module('cosmoUiApp')
-    .constant('topologyNetworkValues', [
+    .constant('TopologyNetworkValues', [
         'FloatingIp',
         'VirtualIp',
         'Network',

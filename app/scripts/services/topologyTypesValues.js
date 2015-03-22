@@ -2,13 +2,13 @@
 
 /**
  * @ngdoc service
- * @name cosmoUiApp.topologyTypesValues
+ * @name cosmoUiApp.TopologyTypesValues
  * @description
- * # topologyTypesValues
+ * # TopologyTypesValues
  * Constant in the cosmoUiApp.
  */
 angular.module('cosmoUiApp')
-  .constant('topologyTypesValues', {
+  .constant('TopologyTypesValues', {
         'cloudify.nodes.Root': {
             icon: 'cloudify-nodes-Root'
         },

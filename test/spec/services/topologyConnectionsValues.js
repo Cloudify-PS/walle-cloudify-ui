@@ -1,14 +1,14 @@
 'use strict';
 
-describe('Service: topologyConnectionsValues', function () {
+describe('Service: TopologyConnectionsValues', function () {
 
     // load the service's module
     beforeEach(module('cosmoUiApp', 'ngMock', 'gsUiHelper'));
 
     // instantiate service
     var topologyConnectionsValues;
-    beforeEach(inject(function (_topologyConnectionsValues_) {
-        topologyConnectionsValues = _topologyConnectionsValues_;
+    beforeEach(inject(function (_TopologyConnectionsValues_) {
+        topologyConnectionsValues = _TopologyConnectionsValues_;
     }));
 
     it('should create topologyConnectionsValues variable', function () {

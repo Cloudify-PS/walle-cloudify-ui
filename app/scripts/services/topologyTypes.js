@@ -1,10 +1,10 @@
 'use strict';
 
 angular.module('cosmoUiApp')
-    .service('topologyTypes', ['topologyTypesValues', 'topologyNetworkValues', 'topologyConnectionsValues', function topologyTypes(topologyTypesValues, topologyNetworkValues, topologyConnectionsValues) {
+    .service('TopologyTypes', ['TopologyTypesValues', 'TopologyNetworkValues', 'TopologyConnectionsValues', function TopologyTypes(TopologyTypesValues, TopologyNetworkValues, TopologyConnectionsValues) {
 
         this.getList = function() {
-            return topologyTypesValues;
+            return TopologyTypesValues;
         };
 
         this.isNetworkNode = function(node) {
@@ -12,7 +12,7 @@ angular.module('cosmoUiApp')
                 return;
             }
 
-            var searchExp = new RegExp(topologyNetworkValues.join('|'), 'gi');
+            var searchExp = new RegExp(TopologyNetworkValues.join('|'), 'gi');
             return searchExp.test(node.type);
         };
 
@@ -21,7 +21,7 @@ angular.module('cosmoUiApp')
                 return;
             }
 
-            var searchExp = new RegExp(topologyConnectionsValues.join('|'), 'gi');
+            var searchExp = new RegExp(TopologyConnectionsValues.join('|'), 'gi');
             return searchExp.test(node.type);
         };
 
