@@ -7,29 +7,31 @@
     <div class="content-section">
         <div class="filters">
 
-            <div class="filter">
+            <div class="filter gs-selection-button">
                 Blueprints:<br>
                 <div multi:select:menu
+                     class="gs-select"
                      data-multiple="false"
                      data-options="blueprintsList"
                      data-ng-model="eventsFilter.blueprints"
                      data-init="{{ filterModel.blueprints }}"
-                     data-text="Choose Blueprints"
                      data-listener="true"
-                     name="blueprints"></div>
+                     name="blueprints"
+                     data-text="Choose Blueprints"></div>
             </div>
 
-            <div class="filter" data-ng-show="deploymentsList.length">
+            <div class="filter gs-selection-button" ng-show="deploymentsList.length">
                 Deployments:<br>
                 <div multi:select:menu
+                     class="gs-select"
                      data-multiple="true"
                      data-options="deploymentsList"
                      data-ng-model="eventsFilter.deployments"
                      data-filter="eventsFilter.blueprints"
                      data-init="{{ filterModel.deployments }}"
-                     data-text="Choose Deployments"
                      data-listener="true"
-                     name="deployments"></div>
+                     name="deployments"
+                     data-text="Choose Deployments"></div>
             </div>
 
             <button class="gs-btn" data-ng-click="execute()" ng-class="{gsBtnDisabled: isSearchDisabled() == true}">Show</button>
