@@ -38,11 +38,7 @@
                           data-ng-repeat="connection in getRelationshipByType(row, 'connected')">{{ connection.target_id }}{{$last ? '' : ', '}}</span>
                     <span data-ng-if="getRelationshipByType(row, 'connected').length == 0">--</span>
                 </td>
-                <td>
-                    <ul>
-                        <li data-ng-click="viewNodeDetails(getNodeById(row.id))" class="topology-glyph node-details"></li>
-                    </ul>
-                </td>
+                <td><i class="topology-glyph node-details" ng-click="viewNodeDetails(getNodeById(row.id))"></i></td>
             </tr>
             </tbody>
         </table>
