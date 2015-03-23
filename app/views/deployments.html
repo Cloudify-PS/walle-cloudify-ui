@@ -52,8 +52,6 @@
     <div ng-show="isConfirmationDialogVisible" ng-controller="ExecuteDialogCtrl">
         <div class="dialogBoxBg"></div>
         <div id="confirmationDialogContainer" class="dialogBox">
-            <div class="dialogTitle">Execute Workflow</div>
-            <div class="dialogClose dialogButton" ng-click="closeDialog()"></div>
             <div class="dialogDescription" ng-show="confirmationType == 'execute'">{{ 'deployments.confirmationPopup.descriptionExecute' | i18n }} {{getSelectedWorkflow()}}?</div>
             <div class="dialogDescription" ng-show="confirmationType == 'cancel'">{{ 'deployments.confirmationPopup.descriptionCancel' | i18n }} {{getSelectedWorkflow()}}?</div>
             <div class="dialogInputs executeInputs" ng-show="isParamsVisible()">
