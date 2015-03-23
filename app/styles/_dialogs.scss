@@ -403,7 +403,7 @@ input[required] {
 }
 
 #confirmationDialogContainer {
-    position: absolute;
+    position: fixed;
     top: 50px;
     left: 0;
     right: 0;
@@ -412,6 +412,7 @@ input[required] {
     margin-top: 100px;
     line-height: 40px;
     z-index: 10001;
+
 
     .dialogDescription {
         font-size: 20px;
