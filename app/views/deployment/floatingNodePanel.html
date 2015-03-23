@@ -5,11 +5,12 @@
     </div>
 
     <div class="content">
-
-        <select ng-model="selectedNode" ng-change="nodeSelected(selectedNode)" ng-options="node.id for node in selectNodesArr">
-            <option value="">{{ 'plans.all' | i18n }}</option>
-        </select>
-        <div class="selectbox-arrow"></div>
+        <div class="gs-selection-button">
+            <select class="gs-select" ng-model="selectedNode" ng-change="nodeSelected(selectedNode)" ng-options="node.id for node in selectNodesArr">
+                <option value="">{{ 'plans.all' | i18n }}</option>
+            </select>
+            <div class="select-list-arrow"></div>
+        </div>
 
         <div class="buttons-group no-embed" checkbox-toggle value="propSection" ng-show="selectedNode != null">
             <button ng-repeat="(key, value) in showProperties" type="button" class="btn btn-default" ng-class="{active: key == propSection}" value="{{key}}">{{ 'plans.' + key | i18n }}</button>

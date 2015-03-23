@@ -155,11 +155,11 @@
 
     .gs-select {
         min-width: 0px;
-        width: 160px;
+        width: 170px;
         color: $clr-base-11;
         background-color: $clr-base-01;
         font-weight: normal;
-        padding: 5px 10px 5px 10px;
+        padding: 5px 40px 5px 10px;
         border-radius: 5px;
         border: 2px solid $clr-base-04;
         float: left;
@@ -189,22 +189,24 @@
     }
 
     .select-list-arrow {
-        background-color: $clr-base-01;
-        width: 24px;
-        height: 29px;
         position: relative;
-        left: 122px;
-        top: 2px;
-        border-left: 2px solid $clr-base-09;
+        width: 30px;
+        height: 33px;
+        top: 0px;
+        right: 30px;
+        border-left: 1px solid #cccccc;
+        cursor: pointer;
+        float: left;
+        pointer-events: none;
 
         &:after {
             content: "";
             position: relative;
             left: 7px;
-            bottom: 15px;
+            top: 20px;
             border-left: 5px solid transparent;
             border-right: 5px solid transparent;
-            border-top: 5px solid $clr-base-20;
+            border-top: 5px solid #cccccc;
         }
     }
 }
