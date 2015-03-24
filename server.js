@@ -13,7 +13,7 @@ if ( isLocalhost() ){
 }
 
 var express = require('express');
-//require('./backend/middlewares/CloudifyMiddleware');
+require('./backend/middlewares/CloudifyMiddleware');
 require('express-params');
 /*jshint -W079 */
 var _ = require('lodash');
