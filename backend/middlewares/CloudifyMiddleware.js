@@ -1,9 +1,20 @@
 'use strict';
 
-var CloudifyClient = require('cloudify-js');
-var express = require('express');
-var app = express();
+/**
+ * @module CloudifyMiddleware
+ * @description
+ * responsible for initializing a cloudify client and put it on request
+ * @type {function(): Client|exports}
+ */
 
-app.use('/', new CloudifyClient(), function (req, res, next) {
+var CloudifyClient = require('cloudify-js');
+var services = require('../services');
+
+
+
+
+module.exports = function (req, res, next) {
+    req.cloudifyClient = new CloudifyClient({ endpoint : services.conf.cloudifyManagerEndpoint});
     next();
-});
+
+};

@@ -52,6 +52,7 @@ var publicConfiguration = {
 var privateConfiguration = {
     cosmoServer: undefined,
     cosmoPort: 80,
+    cloudifyManagerEndpoint: 'http://localhost:80',
     cloudifyLicense: 'tempLicense',
     log4js: {
         appenders: [

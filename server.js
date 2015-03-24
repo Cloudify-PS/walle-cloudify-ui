@@ -13,7 +13,7 @@ if ( isLocalhost() ){
 }
 
 var express = require('express');
-require('./backend/middlewares/CloudifyMiddleware');
+var CloudifyMiddleware = require('./backend/middlewares/CloudifyMiddleware');
 require('express-params');
 /*jshint -W079 */
 var _ = require('lodash');
@@ -78,8 +78,8 @@ if (process.env.NODE_ENV === 'production' || process.argv[2] === 'production') {
 
 // cosmo REST APIs
 
-app.get('/backend/blueprints', function(request, response/*, next*/) {
-    cloudify4node.getBlueprints(function(err, data) {
+app.get('/backend/blueprints', CloudifyMiddleware, function(request, response/*, next*/) {
+    request.cloudifyClient.blueprints.list(null, function(err, data) {
         response.send(err !== null ? err : data);
     });
 });
