@@ -8,26 +8,25 @@
  * Controller of the cosmoUiApp
  */
 angular.module('cosmoUiApp')
-    .controller('LoginCtrl', function ($scope, LoginService) {
+    .controller('LoginCtrl', function ($scope, LoginService, $log, $location ) {
 
-        $scope.login = function() {
-            if (!$scope.isLoginEnabled()) {
-                return;
+        $scope.loginPage = {};
+
+        $scope.login = function () {
+            $log.debug('login...');
+            if ($scope.isLoginEnabled()) {
+                LoginService.login($scope.loginPage)
+                    .then(function success(result) {
+                        $log.info('login result', result);
+                        $location.path('/');
+                    }, function error(result){
+                        $log.error('could not log in', result);
+                        // todo: display error to user
+                    });
             }
-
-            var loginData = {
-                username: $scope.username,
-                password: $scope.password,
-                remember: $scope.remember
-            };
-
-            LoginService.login(loginData)
-                .then(function(result) {
-                    console.log(result);
-                });
         };
 
         $scope.isLoginEnabled = function() {
-            return $scope.username !== undefined && $scope.password !== undefined;
+            return $scope.loginPage.username !== undefined && $scope.loginPage.password !== undefined;
         };
     });

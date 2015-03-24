@@ -53,7 +53,9 @@ if (conf.cloudifyLicense !== 'tempLicense') {
 app.enable('jsonp callback');
 
 // app.use(express.favicon());
-app.use(express.cookieParser(/* 'some secret key to sign cookies' */ 'keyboardcat' ));
+app.use(express.cookieParser(/* 'some secret key to sign cookies' */ conf.secretValue ));
+app.use(express.cookieSession());
+
 app.use(express.bodyParser());
 app.use(express.compress());
 app.use(express.methodOverride());
@@ -76,12 +78,54 @@ if (process.env.NODE_ENV === 'production' || process.argv[2] === 'production') {
  * Config
  */
 
+function cloudifyCallback( res ){
+    return function( err, data ){
+        if ( !!err ){
+            res.status(500).send({ 'info' : err });
+            return;
+        }
+        if ( typeof(data.body) === 'string'){
+            try{
+                data.body = JSON.parse(data.body);
+            }catch(e){
+                logger.error('cloudify returns non json body ',data.body, e);
+            }
+        }
+        res.status(data.statusCode).send(data.body);
+    }
+}
+
 // cosmo REST APIs
 
+app.post('/backend/login', function(request, response){
+    try{
+    var loginData = request.body;
+    if ( loginData.remember ){
+        request.session.cookie.maxAge = 315360000;
+    }
+    request.session.cloudifyCredentials = loginData;
+    response.send({'message' : 'ok'});
+        return;
+    }catch(e){
+        logger.error('error while login',e);
+        response.status(500).send({'details' : e});
+    }
+
+});
+
+app.post('/backend/logout', function(req, res){
+    try {
+        req.session.destroy();
+    }catch(e){
+        logger.error('this is not how you destroy a session',e);
+    }
+    req.session = null;
+    res.send({'message': 'ok'});
+});
+
+
 app.get('/backend/blueprints', CloudifyMiddleware, function(request, response/*, next*/) {
-    request.cloudifyClient.blueprints.list(null, function(err, data) {
-        response.send(err !== null ? err : data);
-    });
+    request.cloudifyClient.blueprints.list(null, cloudifyCallback(response));
 });
 
 app.post('/backend/blueprints/add', function(request, response){

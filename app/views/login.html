@@ -6,13 +6,13 @@
 
                 <div id="loginForm" class="dialogBox">
                     <div class="dialogTitle">{{ 'login.loginTitle' | i18n }}</div>
-                    <form>
-                        <input type="text" spellcheck="false" ng-model="username" placeholder="{{ 'login.userLabel' | i18n }}" required>
+                    <form ng-submit="login()">
+                        <input type="text" spellcheck="false" ng-model="loginPage.username" placeholder="{{ 'login.userLabel' | i18n }}" required>
 
-                        <input type="text" spellcheck="false" placeholder="{{ 'login.passLabel' | i18n }}" ng-model="password" required>
+                        <input type="password" spellcheck="false" placeholder="{{ 'login.passLabel' | i18n }}" ng-model="loginPage.password" required>
 
                         <div class="remember">
-                            <input type="checkbox" ng-model="remember">
+                            <input type="checkbox" ng-model="loginPage.remember">
                             <label>{{ 'login.rememberLabel' | i18n }}</label>
                         </div>
 
@@ -22,6 +22,7 @@
                             </li>
                         </ul>
 
+                        <input type="submit" class="hidden-thing"/>
                         <button type="button" class="gs-btn" ng-class="{'disabled': !isLoginEnabled()}" ng-click="login()">{{ 'login.loginBtn' | i18n }}</button>
                     </form>
                 </div>

@@ -392,3 +392,10 @@ input {
   background-color: #f4fbff;
   border: 0;
 }
+
+.hidden-thing{
+    width:0;
+    height:0;
+    display:none;
+    font-size:0;
+}

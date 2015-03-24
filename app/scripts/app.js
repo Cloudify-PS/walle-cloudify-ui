@@ -15,7 +15,7 @@ angular.module('cosmoUiApp', [
     'datePicker',
     'timer'
 
-]).config(['$routeProvider', function ($routeProvider) {
+]).config( function ($routeProvider, $httpProvider) {
 
         //var isSettingsExists = window.isSettingsExists();
 
@@ -111,7 +111,9 @@ angular.module('cosmoUiApp', [
 //                redirectTo: isSettingsExists ? '/blueprints' : '/config'
                 redirectTo: '/blueprints'
             });
-    }])
+
+        $httpProvider.interceptors.push('cloudifyLoginInterceptor');
+    })
     .value('appConfig', {
         versions: {
             ui: '0.0',

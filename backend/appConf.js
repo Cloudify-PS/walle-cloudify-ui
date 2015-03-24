@@ -54,6 +54,7 @@ var privateConfiguration = {
     cosmoPort: 80,
     cloudifyManagerEndpoint: 'http://localhost:80',
     cloudifyLicense: 'tempLicense',
+    secretValue: 'WmLaL99qM95260zZE460d5t2BM4B34yo370447J3f8456F57wrq1Qd653g6s',
     log4js: {
         appenders: [
             { 'type': 'console' },
