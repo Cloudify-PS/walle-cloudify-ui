@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('cosmoUiApp')
-    .directive('bpTopologyNodes', ['RecursionHelper', 'topologyTypes', function (RecursionHelper, topologyTypes) {
+    .directive('bpTopologyNodes',  function (RecursionHelper, topologyTypes) {
         return {
             templateUrl: 'views/bpTopologyNodesTemplate.html',
             restrict: 'EA',
@@ -41,4 +41,4 @@ angular.module('cosmoUiApp')
                 };
             }
         };
-    }]);
+    });
