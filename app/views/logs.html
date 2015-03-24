@@ -7,54 +7,45 @@
     <div class="content-section">
         <div class="filters">
 
-            <div class="filter">
+            <div class="filter gs-selection-button" ng-show="blueprintsList.length">
                 Blueprints:<br>
                 <div multi:select:menu
+                     class="gs-select"
                      data-multiple="true"
                      data-options="blueprintsList"
                      data-ng-model="eventsFilter.blueprints"
+                     data-filter="eventsFilter.blueprints"
                      data-init="{{ filterModel.blueprints }}"
-                     data-text="Choose Blueprints"
                      data-listener="true"
-                     name="blueprints"></div>
+                     name="blueprints"
+                     data-text="Choose Blueprints"></div>
             </div>
 
-            <div class="filter" data-ng-show="deploymentsList.length">
+            <div class="filter gs-selection-button" ng-show="deploymentsList.length">
                 Deployments:<br>
                 <div multi:select:menu
+                     class="gs-select"
                      data-multiple="true"
                      data-options="deploymentsList"
                      data-ng-model="eventsFilter.deployments"
                      data-filter="eventsFilter.blueprints"
                      data-init="{{ filterModel.deployments }}"
-                     data-text="Choose Deployments"
                      data-listener="true"
-                     name="deployments"></div>
+                     name="deployments"
+                     data-text="Choose Deployments"></div>
             </div>
 
-            <!--<div class="filter" data-ng-show="executionList.length">-->
-                <!--Executions:<br>-->
-                <!--<div multi:select:menu-->
-                     <!--data-multiple="true"-->
-                     <!--data-options="executionList"-->
-                     <!--data-ng-model="eventsFilter.executions"-->
-                     <!--data-init="{{ filterModel.executions }}"-->
-                     <!--data-text="Choose Execution"-->
-                     <!--data-listener="true"-->
-                     <!--name="executions"></div>-->
-            <!--</div>-->
-
-            <div class="filter">
+            <div class="filter gs-selection-button">
                 Timeframe (from {{ timeframeFrom }}):<br>
                 <div multi:select:menu
+                     class="gs-select"
+                     data-multiple="true"
                      data-options="timeframeList"
                      data-ng-model="eventsFilter.timeframe"
                      data-init="{{ filterModel.timeframe }}"
-                     data-text="Choose timeframe"
-                     data-onchange="filterEventsByTimeframe(filter)"
                      data-listener="true"
-                     name="timeframe"></div>
-
+                     name="timeframe"
+                     data-text="Choose Timeframe"></div>
             </div>
 
             <button class="gs-btn" data-ng-click="execute()" ng-class="{gsBtnDisabled: !!isSearchDisabled}">Show</button>
@@ -117,7 +108,7 @@
             <div class="dialogDescription">{{ 'logs.errorPopup.description' | i18n }}</div>
            <div class="error-message" data-ng-show="errorMsg">{{ errorMsg }}</div>
             <div class="buttonsContainer confirmationButtons">
-                <button id="confirmBtn" class="dialogButton" ng-click="closeErrorDialog()">{{ 'logs.errorPopup.close' | i18n }}</button>
+                <button id="confirmBtn" class="gs-btn" ng-click="closeErrorDialog()">{{ 'logs.errorPopup.close' | i18n }}</button>
             </div>
         </div>
     </div>

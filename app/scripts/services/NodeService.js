@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('cosmoUiApp')
-    .service('NodeService', function NodeService(topologyTypes) {
+    .service('NodeService', function NodeService(TopologyTypes) {
 
         function _createNodesTree(nodes) {
             var roots = [];
@@ -84,15 +84,15 @@ angular.module('cosmoUiApp')
         }
 
         function _isAppNode(typeHierarchy) {
-            return topologyTypes.isAppNode(typeHierarchy);
+            return TopologyTypes.isAppNode(typeHierarchy);
         }
 
         function _isHostNode(typeHierarchy) {
-            return topologyTypes.isHostNode(typeHierarchy);
+            return TopologyTypes.isHostNode(typeHierarchy);
         }
 
         function _isNetworkNode(node) {
-            return topologyTypes.isNetworkNode(node);
+            return TopologyTypes.isNetworkNode(node);
         }
 
         function _isIgnoreNode(node) {

@@ -5,11 +5,12 @@
     </div>
 
     <div class="content">
-
-        <select ng-model="selectedNode" ng-change="nodeSelected(selectedNode)" ng-options="node.id for node in selectNodesArr">
-            <option value="">{{ 'plans.all' | i18n }}</option>
-        </select>
-        <div class="selectbox-arrow"></div>
+        <div class="gs-selection-button">
+            <select class="gs-select" ng-model="selectedNode" ng-change="nodeSelected(selectedNode)" ng-options="node.id for node in selectNodesArr">
+                <option value="">{{ 'plans.all' | i18n }}</option>
+            </select>
+            <div class="select-list-arrow"></div>
+        </div>
 
         <div class="buttons-group no-embed" checkbox-toggle value="propSection" ng-show="selectedNode != null">
             <button ng-repeat="(key, value) in showProperties" type="button" class="btn btn-default" ng-class="{active: key == propSection}" value="{{key}}">{{ 'plans.' + key | i18n }}</button>
@@ -53,28 +54,11 @@
                             <td colspan="3">
                                 <table class="interfaces-table">
                                     <tr ng-click="showRelationship(relationship)">
-                                        <td class="relationships-target"><div class="relationship-arrow right" ng-class="{'down': selectedRelationship == relationship, 'right': selectedRelationship != relationship}"></div>{{relationship.target_id}}</td>
+                                        <td class="relationships-target">
+                                            {{relationship.target_id}}
+                                        </td>
                                         <td class="relationships-type">{{relationship.type}}</td>
                                         <td class="relationships-source">{{showProperties.general.name}}</td>
-                                    </tr>
-                                    <tr ng-show="selectedRelationship.target_id == relationship.target_id && selectedRelationship.type == relationship.type">
-                                        <td colspan="3">
-                                            <table>
-                                                <tr>
-                                                    <td>{{ 'plans.details.interface' | i18n }}</td>
-                                                    <td>{{ 'plans.details.methods' | i18n }}</td>
-                                                </tr>
-                                                <tr ng-repeat="(key, value) in relationship.target_interfaces">
-                                                    <td>{{key}}</td>
-                                                    <td>
-                                                        <ul ng-repeat="val in value">
-                                                            <li>{{val}}</li>
-                                                        </ul>
-                                                    </td>
-                                                </tr>
-                                            </table>
-
-                                        </td>
                                     </tr>
                                 </table>
 

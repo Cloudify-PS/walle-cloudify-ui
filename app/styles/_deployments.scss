@@ -34,6 +34,7 @@
                 &.actions {
                     width: $COSMOUI_LIST_HOVER_ACTION_WIDTH;
                     font-size: $COSMOUI_LIST_HOVER_ACTION_FONT_SIZE;
+                    overflow: initial;
 
                     i {
                         color: $COSMOUI_LIST_HOVER_ACTION_TEXT_COLOR;

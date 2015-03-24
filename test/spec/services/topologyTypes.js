@@ -1,6 +1,6 @@
 'use strict';
 
-describe('Service: topologyTypes', function () {
+describe('Service: TopologyTypes', function () {
 
     var mtopologyTypes;
     var typesList = [];
@@ -12,8 +12,8 @@ describe('Service: topologyTypes', function () {
             module('cosmoUiApp', 'gsUiHelper');
 
             // Initialize a new instance of NodeSearchService
-            inject(function (topologyTypes) {
-                mtopologyTypes = topologyTypes;
+            inject(function (TopologyTypes) {
+                mtopologyTypes = TopologyTypes;
             });
 
         });

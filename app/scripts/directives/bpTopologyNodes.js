@@ -28,7 +28,7 @@ angular.module('cosmoUiApp')
                 };
 
                 $scope.isConnectedTo = function(relationship) {
-                    return relationship.type_hierarchy.join(',').indexOf('connected_to') && topologyTypes.isValidConnection(relationship.node);
+                    return relationship.type_hierarchy.join(',').indexOf('connected_to') && TopologyTypes.isValidConnection(relationship.node);
                 };
 
                 // TODO: 3.2 - Check if function still needed
