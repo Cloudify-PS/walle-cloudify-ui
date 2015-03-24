@@ -18,7 +18,7 @@ angular.module('cosmoUiApp')
             var loginData = {
                 username: $scope.username,
                 password: $scope.password,
-                remember: $scope.remember
+                rememberMe: $scope.rememberMe
             };
 
             LoginService.login(loginData)
