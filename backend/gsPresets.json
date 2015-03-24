@@ -4,6 +4,7 @@
         "bindPort" : 9001,
         "cosmoServer": "::1",
         "cosmoPort": 80,
+        "cloudifyManagerEndpoint": "http://::80",
         "log4js": {
             "appenders": [
                 { "type":"console" },
@@ -21,6 +22,7 @@
         "bindPort" : 9001,
         "cosmoServer": "localhost",
         "cosmoPort": 80,
+        "cloudifyManagerEndpoint": "http://localhost:80",
         "log4js": {
             "appenders": [
                 { "type":"console" },
@@ -36,6 +38,7 @@
     "staging": {
         "cosmoServer": "192.168.15.13",
         "cosmoPort": 80,
+        "cloudifyManagerEndpoint": "http://192.168.15.13:80",
         "log4js": {
             "appenders": [
                 { "type":"console" },

@@ -51,11 +51,18 @@
         }
     },
     "config": {
-        "title": "Welcome to Cosmo UI server configuration",
+        "title": "Welcome to Cloudify UI server configuration",
         "mainMessage": "Please fill in the required information:",
         "addressLabel": "Cosmo server IP:",
         "portLabel": "Cosmo server port:",
         "saveBtn": "Save configuration"
+    },
+    "login": {
+        "loginTitle": "Log in",
+        "userLabel": "Username",
+        "passLabel": "Password",
+        "loginBtn": "Login",
+        "rememberLabel": "Remember me?"
     },
     "deployment": {
         "title": {
