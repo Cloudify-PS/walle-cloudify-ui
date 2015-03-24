@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('cosmoUiApp')
-    .service('TopologyTypes', ['TopologyTypesValues', 'TopologyNetworkValues', 'TopologyConnectionsValues', function TopologyTypes(TopologyTypesValues, TopologyNetworkValues, TopologyConnectionsValues) {
+    .service('TopologyTypes', function (TopologyTypesValues, TopologyNetworkValues, TopologyConnectionsValues) {
 
         this.getList = function() {
             return TopologyTypesValues;
@@ -33,4 +33,4 @@ angular.module('cosmoUiApp')
             return typeHierarchy.indexOf('cloudify-nodes-ApplicationModule') > 0;
         };
 
-    }]);
+    });
