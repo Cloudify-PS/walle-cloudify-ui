@@ -59,8 +59,8 @@
     },
     "login": {
         "loginTitle": "Log in",
-        "userLabel": "Username:",
-        "passLabel": "Password:",
+        "userLabel": "Username",
+        "passLabel": "Password",
         "loginBtn": "Login",
         "rememberLabel": "Remember me?"
     },
