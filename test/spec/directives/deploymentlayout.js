@@ -47,21 +47,61 @@ describe('Directive: deploymentLayout', function () {
     var _nodes = [{
         'deploy_number_of_instances': '1',
         'type_hierarchy': ['cloudify.nodes.Root', 'cloudify.nodes.SoftwareComponent', 'cloudify.nodes.WebServer'],
-        'blueprint_id': 'hw1',
+        'blueprint_id': 'blueprint1',
         'host_id': 'vm',
+        'plugins_to_install': null,
+        'type': 'cloudify.nodes.WebServer',
         'id': 'http_web_server',
         'number_of_instances': '1',
-        'deployment_id': 'hw1dep2',
-        'type': 'cloudify.nodes.WebServer'
+        'deployment_id': 'deployment1',
+        'planned_number_of_instances': '1'
     }, {
-        'deploy_number_of_instances': '1',
+        'deploy_number_of_instances': '5',
         'type_hierarchy': ['cloudify.nodes.Root', 'cloudify.nodes.Compute', 'cloudify.openstack.nodes.Server'],
-        'blueprint_id': 'hw1',
+        'blueprint_id': 'blueprint1',
         'host_id': 'vm',
+        'type': 'cloudify.openstack.nodes.Server',
         'id': 'vm',
-        'number_of_instances': '1',
-        'deployment_id': 'hw1dep2',
-        'type': 'cloudify.openstack.nodes.Server'
+        'number_of_instances': '5',
+        'deployment_id': 'deployment1',
+        'planned_number_of_instances': '5'
+    }];
+
+    var _deploymentNodes = [{
+        'runtime_properties': {},
+        'node_id': 'vm',
+        'state': 'started',
+        'host_id': 'vm_5874f',
+        'deployment_id': 'deployment1',
+        'id': 'vm_75312'
+    }, {
+        'runtime_properties': {},
+        'node_id': 'vm',
+        'state': 'started',
+        'host_id': 'vm_c813d',
+        'deployment_id': 'deployment1',
+        'id': 'vm_c370a'
+    }, {
+        'runtime_properties': {},
+        'node_id': 'vm',
+        'state': 'started',
+        'host_id': 'vm_c813d',
+        'deployment_id': 'deployment1',
+        'id': 'vm_c813d'
+    }, {
+        'runtime_properties': {},
+        'node_id': 'vm',
+        'state': 'started',
+        'host_id': 'vm_70947',
+        'deployment_id': 'deployment1',
+        'id': 'vm_a67a4'
+    }, {
+        'runtime_properties': {},
+        'node_id': 'vm',
+        'state': 'started',
+        'host_id': 'vm_f3e59',
+        'deployment_id': 'deployment1',
+        'id': 'vm_0ecfe'
     }];
 
     function compileDirective(opts) {
@@ -165,6 +205,44 @@ describe('Directive: deploymentLayout', function () {
             });
             runs(function() {
                 expect(_getDeploymentExecutionsCalled).toBe(false);
+            });
+        }));
+
+        it('should check all node instances states (CFY-2368)', inject(function($compile, $rootScope, $q, CloudifyService) {
+            var _scope = $rootScope.$new();
+            var _nodeList;
+
+            CloudifyService.deployments.getDeploymentExecutions = function() {
+                var deferred = $q.defer();
+                deferred.resolve(_executions);
+                return deferred.promise;
+            };
+
+            CloudifyService.getNodes = function() {
+                var deferred = $q.defer();
+                deferred.resolve(_nodes);
+                return deferred.promise;
+            };
+
+            CloudifyService.deployments.getDeploymentNodes = function() {
+                var deferred = $q.defer();
+                deferred.resolve(_deploymentNodes);
+                return deferred.promise;
+            };
+
+            $rootScope.$on('nodesList', function(event, data) {
+                _nodeList = data;
+            });
+
+            compileDirective({scope: _scope});
+
+            scope.$apply();
+
+            waitsFor(function() {
+                return _nodeList;
+            });
+            runs(function() {
+                expect(_nodeList[1].state.completed).toEqual(5);
             });
         }));
     });
