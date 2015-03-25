@@ -84,6 +84,7 @@
     },
     "bundledDependencies": [
         "express",
+        "cloudify-js",
         "js-yaml",
         "jade",
         "log4js",
