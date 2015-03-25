@@ -52,65 +52,6 @@ input[required] {
     background: $COSMOUI_DIALOG_BACKGROUND;
     overflow-x: hidden;
 
-    .dialogButton {
-        color: white;
-        font-weight: bold;
-        padding: 5px 10px 5px 10px;
-        margin: 0px 10px 0px 10px;
-        background-color: $COSMOUI_BUTTON_BACKGROUND;
-        border-radius: 3px;
-        border-bottom: 1px solid $COSMOUI_BUTTON_BOTTOM_BORDER_COLOR;
-        border-right: 1px solid $COSMOUI_BUTTON_RIGHT_BORDER_COLOR;
-        border-top: none;
-        border-left: none;
-
-        &.disabled {
-            background: $COSMOUI_BUTTON_DISABLED_BACKGROUND;
-            border-bottom: 1px solid $COSMOUI_BUTTON_DISABLED_BORDER_COLOR;
-            border-right: 1px solid $COSMOUI_BUTTON_DISABLED_BORDER_COLOR;
-            color: $COSMOUI_BUTTON_DISABLED_BORDER_COLOR;
-            cursor: default;
-        }
-
-        &.enabled {
-            background: $COSMOUI_BUTTON_BACKGROUND;
-            cursor: pointer;
-        }
-
-        &.loader {
-            color: transparent;
-            background-image: url($img-loading-button);
-            background-repeat: no-repeat;
-            background-position: center center;
-        }
-
-        &.dialogClose {
-            float: right;
-            position: absolute;
-            right: 0px;
-            top: 11px;
-            background: url("/images/x_idle.png") no-repeat center center;
-            width: 32px;
-            height: 32px;
-            cursor: pointer;
-            background-color: transparent;
-            border: none;
-            padding-right: 0px;
-
-            &:hover {
-                background: url("/images/x_hover.png") no-repeat center center;
-            }
-
-            &:active {
-                background: url("/images/x_pressed.png") no-repeat center center;
-            }
-
-            &.disabled {
-                background: url("/images/x_idle.png") no-repeat center center;
-            }
-        }
-    }
-
     .dialogTitle {
         display: block;
         width: 100%;
@@ -403,7 +344,7 @@ input[required] {
 }
 
 #confirmationDialogContainer {
-    position: absolute;
+    position: fixed;
     top: 50px;
     left: 0;
     right: 0;
@@ -484,7 +425,7 @@ input[required] {
     .confirmationButtons {
         display: block;
         text-align: right;
-        margin: 10px 0;
+        margin: 10px 10px;
 
         #cancelBtnDelDep {
             display: inline-block;

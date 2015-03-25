@@ -139,7 +139,51 @@
     border-left: none;
     vertical-align: middle;
 
+    &.disabled {
+      background: $COSMOUI_BUTTON_DISABLED_BACKGROUND;
+      border-bottom: 1px solid $COSMOUI_BUTTON_DISABLED_BORDER_COLOR;
+      border-right: 1px solid $COSMOUI_BUTTON_DISABLED_BORDER_COLOR;
+      color: $COSMOUI_BUTTON_DISABLED_BORDER_COLOR;
+      cursor: default;
+    }
 
+    &.enabled {
+      background: $COSMOUI_BUTTON_BACKGROUND;
+      cursor: pointer;
+    }
+
+    &.loader {
+      color: transparent;
+      background-image: url($img-loading-button);
+      background-repeat: no-repeat;
+      background-position: center center;
+    }
+
+    &.close {
+      float: right;
+      position: absolute;
+      right: 0px;
+      top: 11px;
+      background: url("/images/x_idle.png") no-repeat center center;
+      width: 32px;
+      height: 32px;
+      cursor: pointer;
+      background-color: transparent;
+      border: none;
+      padding-right: 0px;
+
+      &:hover {
+        background: url("/images/x_hover.png") no-repeat center center;
+      }
+
+      &:active {
+        background: url("/images/x_pressed.png") no-repeat center center;
+      }
+
+      &.disabled {
+        background: url("/images/x_idle.png") no-repeat center center;
+      }
+    }
 }
 
 .gsBtnDisabled {
@@ -155,11 +199,11 @@
 
     .gs-select {
         min-width: 0px;
-        width: 160px;
+        width: 190px;
         color: $clr-base-11;
         background-color: $clr-base-01;
         font-weight: normal;
-        padding: 5px 10px 5px 10px;
+        padding: 5px 40px 5px 10px;
         border-radius: 5px;
         border: 2px solid $clr-base-04;
         float: left;
@@ -189,22 +233,24 @@
     }
 
     .select-list-arrow {
-        background-color: $clr-base-01;
-        width: 24px;
-        height: 29px;
         position: relative;
-        left: 122px;
-        top: 2px;
-        border-left: 2px solid $clr-base-09;
+        width: 30px;
+        height: 33px;
+        top: 0px;
+        right: 30px;
+        border-left: 1px solid #cccccc;
+        cursor: pointer;
+        float: left;
+        pointer-events: none;
 
         &:after {
             content: "";
             position: relative;
             left: 7px;
-            bottom: 15px;
+            top: 20px;
             border-left: 5px solid transparent;
             border-right: 5px solid transparent;
-            border-top: 5px solid $clr-base-20;
+            border-top: 5px solid #cccccc;
         }
     }
 }
@@ -336,4 +382,20 @@ $failed: #d54931;
 p[tooltip], div[tooltip], td {
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+input {
+  height: 32px;
+  border-radius: 3px;
+  padding-left: 10px;
+  background-clip: padding-box;
+  background-color: #f4fbff;
+  border: 0;
+}
+
+.hidden-thing{
+    width:0;
+    height:0;
+    display:none;
+    font-size:0;
 }

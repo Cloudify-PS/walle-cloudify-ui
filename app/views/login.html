@@ -1,0 +1,31 @@
+<div style="height:100%;">
+    <div class="layout">
+
+            <div id="loginView">
+                <div class="logo"></div>
+
+                <div id="loginForm" class="dialogBox">
+                    <div class="dialogTitle">{{ 'login.loginTitle' | i18n }}</div>
+                    <form ng-submit="login()">
+                        <input type="text" spellcheck="false" ng-model="loginPage.username" placeholder="{{ 'login.userLabel' | i18n }}" required>
+
+                        <input type="password" spellcheck="false" placeholder="{{ 'login.passLabel' | i18n }}" ng-model="loginPage.password" required>
+
+                        <div class="remember">
+                            <input type="checkbox" ng-model="loginPage.remember">
+                            <label>{{ 'login.rememberLabel' | i18n }}</label>
+                        </div>
+
+                        <ul id="errMsgList">
+                            <li class="errMsg" ng-repeat="err in errList">
+                                {{err}}
+                            </li>
+                        </ul>
+
+                        <input type="submit" class="hidden-thing"/>
+                        <button type="button" class="gs-btn" ng-class="{'disabled': !isLoginEnabled()}" ng-click="login()">{{ 'login.loginBtn' | i18n }}</button>
+                    </form>
+                </div>
+            </div>
+    </div>
+</div>

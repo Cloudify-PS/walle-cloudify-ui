@@ -1,6 +1,6 @@
 {
     "name": "cosmo-ui",
-    "version": "3.2.0-m6",
+    "version": "3.2.0-m7",
     "private": true,
     "man": [
         "./man/cosmoui.1"
@@ -20,6 +20,7 @@
         "cosmoui": "cosmoui.js"
     },
     "dependencies": {
+        "cloudify-js": "git://github.com/cloudify-cosmo/cloudify-js.git",
         "express": "~3.4.2",
         "express-params": "0.0.3",
         "fs.extra": "^1.2.1",

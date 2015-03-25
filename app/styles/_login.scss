@@ -1,0 +1,67 @@
+#loginView {
+
+  .logo {
+    margin-left: auto;
+    margin-right: auto;
+    top: 40px;
+    left: 0px;
+  }
+
+  #loginForm {
+    position: relative;
+    top: 70px;
+    margin-left: auto;
+    margin-right: auto;
+    width: 400px;
+    height: 240px;
+
+    form {
+      position: relative;
+      height: 160px;
+      margin-right: 10px;
+      margin-left: 10px;
+      margin-top: 20px;
+
+      .remember {
+        display: inline-block;
+        position: absolute;
+        bottom: 0px;
+        left: 10px;
+
+        label {
+          margin-left: 5px;
+          vertical-align: top;
+          padding-top: 10px;
+        }
+      }
+
+      input[type='text'],input[type='password'] {
+        position: relative;
+        width: 350px;
+        margin-bottom: 10px;
+      }
+
+      .gs-btn {
+        position: absolute;
+        right: 10px;
+        bottom: 5px;
+
+        &.disabled {
+          background: $COSMOUI_BUTTON_DISABLED_BACKGROUND;
+          border-bottom: 1px solid $COSMOUI_BUTTON_DISABLED_BORDER_COLOR;
+          border-right: 1px solid $COSMOUI_BUTTON_DISABLED_BORDER_COLOR;
+          color: $clr-base-24;
+          cursor: default;
+        }
+      }
+
+      ul {
+        width: 200px;
+        color: red;
+        float: left;
+      }
+    }
+
+  }
+}
+
