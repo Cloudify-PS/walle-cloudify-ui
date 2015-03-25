@@ -10,18 +10,17 @@
 var CloudifyClient = require('cloudify-js');
 var services = require('../services');
 
-
-
-
 module.exports = function (req, res, next) {
     var creds = req.session.cloudifyCredentials;
-    req.cloudifyClient = new CloudifyClient({
-        endpoint : services.conf.cloudifyManagerEndpoint,
-        cloudifyAuth: {
+    var clientConf = {
+        endpoint : services.conf.cloudifyManagerEndpoint
+    };
+    if (creds) {
+        clientConf.cloudifyAuth= {
             'user' : creds.username,
             'pass' : creds.password
-        }
-    });
+        };
+    }
+    req.cloudifyClient = new CloudifyClient(clientConf);
     next();
-
 };
