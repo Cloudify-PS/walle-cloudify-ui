@@ -133,15 +133,15 @@ app.get('/backend/blueprints', CloudifyMiddleware, function(request, response) {
 });
 
 app.get('/backend/blueprints/get', CloudifyMiddleware, function(request, response) {
-    request.cloudifyClient.blueprints.get(request.query.id, cloudifyCallback(response));
+    request.cloudifyClient.blueprints.get(request.query.id, null, cloudifyCallback(response));
 });
 
 app.get('/backend/blueprints/validate', CloudifyMiddleware, function(request, response) {
-    request.cloudifyClient.blueprints.validate(request.body.id, cloudifyCallback(response));
+    request.cloudifyClient.blueprints.validate(request.body.id, null, cloudifyCallback(response));
 });
 
 app.get('/backend/blueprints/delete', CloudifyMiddleware, function(request, response) {
-    request.cloudifyClient.blueprints.delete(request.query.id, cloudifyCallback(response));
+    request.cloudifyClient.blueprints.delete(request.query.id, null, cloudifyCallback(response));
 });
 
 app.get('/backend/blueprints/browse', CloudifyMiddleware, function(request, response) {
