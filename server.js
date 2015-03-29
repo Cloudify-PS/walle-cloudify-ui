@@ -267,11 +267,11 @@ app.post('/backend/events/_search', function(request, response) {
 /* manager */
 
 app.get('/backend/provider/context', CloudifyMiddleware, function(request, response/*, next*/) {
-    request.cloudifyClient.manager.get_context(null, cloudifyCallback(response));
+    request.cloudifyClient.manager.get_context(cloudifyCallback(response));
 });
 
 app.get('/backend/versions/manager', CloudifyMiddleware, function(request, response/*, next*/) {
-    request.cloudifyClient.manager.get_version(null, cloudifyCallback(response));
+    request.cloudifyClient.manager.get_version(cloudifyCallback(response));
 });
 
 
