@@ -164,7 +164,7 @@ app.post('/backend/blueprints/upload', controllers.blueprints.upload);
 /* deployments */
 
 app.get('/backend/deployments', CloudifyMiddleware, function(request, response/*, next*/) {
-    request.cloudifyClient.executions.list(null, cloudifyCallback(response));
+    request.cloudifyClient.deployments.list(null, cloudifyCallback(response));
 });
 
 app.post('/backend/deployments/create', function(request, response) {
