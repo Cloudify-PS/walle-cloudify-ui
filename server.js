@@ -207,7 +207,7 @@ app.get('/backend/executions', CloudifyMiddleware, function(request, response) {
     request.cloudifyClient.executions.list(request.query.deployment_id, null,cloudifyCallback(response));
 });
 
-app.get('/backend/deployments/executions/get', CloudifyMiddleware, function(request, response) {
+app.get('/backend/executions/get', CloudifyMiddleware, function(request, response) {
     request.cloudifyClient.executions.get(request.query.executionId, null, cloudifyCallback(response));
 });
 
@@ -215,8 +215,8 @@ app.post('/backend/executions/update', CloudifyMiddleware, function(request, res
     request.cloudifyClient.executions.update(request.body.execution_id, request.body.state, null, cloudifyCallback(response));;
 });
 
-app.post('/backend/deployments/execute', CloudifyMiddleware, function(request, response) {
-    request.cloudifyClient.executions.start(request.body.deployment_id, request.body.workflow_id, request.body.parameters, request.body.allow_custom_parameters, request.body.force, cloudifyCallback(response));;
+app.post('/backend/executions/start', CloudifyMiddleware, function(request, response) {
+    request.cloudifyClient.executions.start(request.body.deployment_id, request.body.workflow_id, request.body.parameters, request.body.allow_custom_parameters, request.body.force, cloudifyCallback(response));
 });
 
 /* nodes */
