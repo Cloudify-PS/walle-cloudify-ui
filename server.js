@@ -167,14 +167,12 @@ app.get('/backend/deployments', CloudifyMiddleware, function(request, response/*
     request.cloudifyClient.deployments.list(null, cloudifyCallback(response));
 });
 
-app.post('/backend/deployments/create', function(request, response) {
-    cloudify4node.addDeployment(request.body, function(err, data) {
-        response.send(err !== null ? err : data);
-    });
+app.get('/backend/deployments/get', CloudifyMiddleware, function(request, response) {
+    request.cloudifyClient.deployments.get(request.query.deployment_id, null, cloudifyCallback(response));
 });
 
-app.post('/backend/deployments/get', function(request, response) {
-    cloudify4node.getDeploymentById(request.body.deployment_id, function(err, data) {
+app.post('/backend/deployments/create', function(request, response) {
+    cloudify4node.addDeployment(request.body, function(err, data) {
         response.send(err !== null ? err : data);
     });
 });
@@ -185,7 +183,8 @@ app.post('/backend/deployments/delete', function(request, response) {
     });
 });
 
-app.post('/backend/deployments/nodes', function(request, response) {
+app.get('/backend/deployments/nodes', CloudifyMiddleware, function(request, response) {
+//    request.cloudifyClient.deployments.nodes(request.query.deployment_id, null, cloudifyCallback(response));
     cloudify4node.getDeploymentNodes(request.body.deployment_id, request.body.state, function(err, data) {
         response.send(err !== null ? err : data);
     });
@@ -200,22 +199,22 @@ app.post('/backend/deployments/workflows/get', function(request, response) {
 
 /* node instances */
 
-app.get('/backend/node-instances', CloudifyMiddleware, function(request, response/*, next*/) {
-    request.cloudifyClient.nodeInstances.list(null, cloudifyCallback(response));
+app.get('/backend/node-instances', CloudifyMiddleware, function(request, response) {
+    request.cloudifyClient.nodeInstances.list(request.query.deployment_id, null, cloudifyCallback(response));
 });
 
-app.get('/backend/node-instances/get', CloudifyMiddleware, function(request, response/*, next*/) {
-    request.cloudifyClient.nodeInstances.get(request.query.deployment_id, cloudifyCallback(response));
+app.get('/backend/node-instances/get', CloudifyMiddleware, function(request, response) {
+    request.cloudifyClient.nodeInstances.get(request.query.deployment_id, null, cloudifyCallback(response));
 });
 
 /* executions */
 
-app.get('/backend/executions', CloudifyMiddleware, function(request, response/*, next*/) {
-    request.cloudifyClient.executions.get(request.query.executionId, cloudifyCallback(response));
+app.get('/backend/executions', CloudifyMiddleware, function(request, response) {
+    request.cloudifyClient.executions.list(request.query.deployment_id, null,cloudifyCallback(response));
 });
 
-app.get('/backend/deployments/executions/get', CloudifyMiddleware, function(request, response/*, next*/) {
-    request.cloudifyClient.executions.list(request.param('deployment_id'), cloudifyCallback(response));
+app.get('/backend/deployments/executions/get', CloudifyMiddleware, function(request, response) {
+    request.cloudifyClient.executions.get(request.query.executionId, null, cloudifyCallback(response));
 });
 
 app.post('/backend/executions/update', function(request, response) {
@@ -232,29 +231,25 @@ app.post('/backend/deployments/execute', function(request, response) {
 
 /* nodes */
 
-app.post('/backend/node/get', function(request, response) {
+app.get('/backend/nodes/get', CloudifyMiddleware, function(request, response) {
     var queryParams = {};
-    if (request.body.state !== undefined) {
-        queryParams.state = request.body.state;
+    if (request.query.state !== undefined) {
+        queryParams.state = request.query.state;
     }
-    if (request.body.state !== undefined) {
-        queryParams.runtime = request.body.runtime;
+    if (request.query.runtime !== undefined) {
+        queryParams.runtime = request.query.runtime;
     }
-    cloudify4node.getNode(request.body.nodeId, queryParams, function(err, data) {
-        response.send(err !== null ? err : data);
-    });
+    request.cloudifyClient.nodes.get(request.query.deployment_id, request.query.nodeId, queryParams, cloudifyCallback(response));
 });
 
-app.post('/backend/nodes', function(request, response) {
+app.get('/backend/nodes', CloudifyMiddleware, function(request, response) {
     var queryParams = {};
-    if (request.body.deployment_id !== undefined) {
-        queryParams.deployment_id = request.body.deployment_id;
+    if (request.query.deployment_id !== undefined) {
+        queryParams.deployment_id = request.query.deployment_id;
     } else {
         response.send(500, 'deployment id is undefined');
     }
-    cloudify4node.getNodes(queryParams, function(err, data) {
-        response.send(err !== null ? err : data);
-    });
+    request.cloudifyClient.nodes.list(request.query.deployment_id, queryParams, cloudifyCallback(response));
 });
 
 app.post('/backend/events/_search', function(request, response) {
@@ -266,8 +261,8 @@ app.post('/backend/events/_search', function(request, response) {
 
 /* manager */
 
-app.get('/backend/provider/context', CloudifyMiddleware, function(request, response/*, next*/) {
-    request.cloudifyClient.manager.get_context(cloudifyCallback(response));
+app.get('/backend/provider/context', CloudifyMiddleware, function(request, response) {
+    request.cloudifyClient.manager.get_context(null, cloudifyCallback(response));
 });
 
 app.get('/backend/versions/manager', CloudifyMiddleware, function(request, response/*, next*/) {

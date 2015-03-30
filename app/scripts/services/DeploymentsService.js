@@ -34,18 +34,18 @@ angular.module('cosmoUiApp')
 
         function _getDeploymentExecutions(params) {
             var callParams = {
-                url: '/backend/deployments/executions/get',
+                url: '/backend/executions',
                 method: 'GET',
                 params: {'deployment_id': params}
             };
-            return _load('deployments/executions/get', callParams);
+            return _load('executions', callParams);
         }
 
         function _getDeploymentById(params) {
             var callParams = {
                 url: '/backend/deployments/get',
-                method: 'POST',
-                data: params
+                method: 'GET',
+                params: {'deployment_id': params}
             };
             return _load('deployments/get', callParams);
         }
@@ -61,11 +61,11 @@ angular.module('cosmoUiApp')
 
         function _getDeploymentNodes(params) {
             var callParams = {
-                url: '/backend/deployments/nodes',
-                method: 'POST',
-                data: params
+                url: '/backend/node-instances/get',
+                method: 'GET',
+                params: {'deployment_id': params}
             };
-            return _load('nodes', callParams);
+            return _load('node-instances/get', callParams);
         }
 
 

@@ -62,7 +62,7 @@ angular.module('cosmoUiApp')
                 $scope.$emit('selectedWorkflow', $scope.selectedWorkflow);
 
                 // Get Deployment Data
-                CloudifyService.deployments.getDeploymentById({deployment_id: $scope.id})
+                CloudifyService.deployments.getDeploymentById($scope.id)
                     .then(function (dataDeployment) {
 
                         // Verify it's valid page, if not redirect to deployments page
@@ -151,7 +151,7 @@ angular.module('cosmoUiApp')
 
                 function _getNodes(deployment_id) {
                     // Get Nodes
-                    CloudifyService.getNodes({deployment_id: deployment_id})
+                    CloudifyService.getNodes(deployment_id)
                         .then(function(dataNodes) {
 
                             var nodes = [];
