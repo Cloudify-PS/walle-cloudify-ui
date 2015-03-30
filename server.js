@@ -239,7 +239,7 @@ app.get('/backend/nodes', CloudifyMiddleware, function(request, response) {
     } else {
         response.send(500, 'deployment id is undefined');
     }
-    request.cloudifyClient.nodes.list(request.query.deployment_id, queryParams, cloudifyCallback(response));
+    request.cloudifyClient.nodes.list(request.query.deployment_id, null, queryParams, cloudifyCallback(response));
 });
 
 app.post('/backend/events/_search', function(request, response) {
