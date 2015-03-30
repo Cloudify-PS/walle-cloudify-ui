@@ -175,8 +175,8 @@ app.post('/backend/deployments/create', CloudifyMiddleware, function(request, re
     request.cloudifyClient.deployments.create(request.body.blueprint_id, request.body.deployment_id, request.body.inputs, cloudifyCallback(response));
 });
 
-app.post('/backend/deployments/delete', CloudifyMiddleware, function(request, response) {
-    request.cloudifyClient.deployments.create(request.body.deployment_id, request.body.ignoreLiveNodes, request.body.inputs, cloudifyCallback(response));
+app.post('/backend/deployments/delete', CloudifyMiddleware, function (request, response) {
+    request.cloudifyClient.deployments.delete(request.body.deployment_id, request.body.ignoreLiveNodes, cloudifyCallback(response));
 });
 
 app.get('/backend/deployments/nodes', CloudifyMiddleware, function(request, response) {
