@@ -163,7 +163,7 @@ app.post('/backend/blueprints/upload', controllers.blueprints.upload);
 
 /* deployments */
 
-app.get('/backend/deployments', CloudifyMiddleware, function(request, response/*, next*/) {
+app.get('/backend/deployments', CloudifyMiddleware, function(request, response) {
     request.cloudifyClient.deployments.list(null, cloudifyCallback(response));
 });
 
@@ -171,16 +171,12 @@ app.get('/backend/deployments/get', CloudifyMiddleware, function(request, respon
     request.cloudifyClient.deployments.get(request.query.deployment_id, null, cloudifyCallback(response));
 });
 
-app.post('/backend/deployments/create', function(request, response) {
-    cloudify4node.addDeployment(request.body, function(err, data) {
-        response.send(err !== null ? err : data);
-    });
+app.post('/backend/deployments/create', CloudifyMiddleware, function(request, response) {
+    request.cloudifyClient.deployments.create(request.body.blueprint_id, request.body.deployment_id, request.body.inputs, cloudifyCallback(response));
 });
 
-app.post('/backend/deployments/delete', function(request, response) {
-    cloudify4node.deleteDeploymentById(request.body.deployment_id, request.body.ignoreLiveNodes, function(err, data) {
-        response.send(err !== null ? err : data);
-    });
+app.post('/backend/deployments/delete', CloudifyMiddleware, function(request, response) {
+    request.cloudifyClient.deployments.create(request.body.deployment_id, request.body.ignoreLiveNodes, request.body.inputs, cloudifyCallback(response));
 });
 
 app.get('/backend/deployments/nodes', CloudifyMiddleware, function(request, response) {
@@ -190,10 +186,8 @@ app.get('/backend/deployments/nodes', CloudifyMiddleware, function(request, resp
     });
 });
 
-app.post('/backend/deployments/workflows/get', function(request, response) {
-    cloudify4node.getWorkflows(request.body.deployment_id, function(err, data) {
-        response.send(err !== null ? err : data);
-    });
+app.post('/backend/deployments/workflows/get', CloudifyMiddleware, function(request, response) {
+    request.cloudifyClient.deployments.get_workflows(request.body.deployment_id, null, cloudifyCallback(response));
 });
 
 
@@ -217,16 +211,12 @@ app.get('/backend/deployments/executions/get', CloudifyMiddleware, function(requ
     request.cloudifyClient.executions.get(request.query.executionId, null, cloudifyCallback(response));
 });
 
-app.post('/backend/executions/update', function(request, response) {
-    cloudify4node.updateExecutionState(request.body.executionId, request.body.state, function(err, data) {
-        response.send(err !== null ? err : data);
-    });
+app.post('/backend/executions/update', CloudifyMiddleware, function(request, response) {
+    request.cloudifyClient.executions.update(request.body.execution_id, request.body.state, null, cloudifyCallback(response));;
 });
 
-app.post('/backend/deployments/execute', function(request, response) {
-    cloudify4node.executeDeployment(request.body, function(err, data) {
-        response.send(err !== null ? err : data);
-    });
+app.post('/backend/deployments/execute', CloudifyMiddleware, function(request, response) {
+    request.cloudifyClient.executions.start(request.body.deployment_id, request.body.workflow_id, request.body.parameters, request.body.allow_custom_parameters, request.body.force, cloudifyCallback(response));;
 });
 
 /* nodes */
