@@ -60,7 +60,7 @@ angular.module('cosmoUiApp')
 
         $scope.getSelectedWorkflow = function() {
             if ($scope.selectedDeployment !== undefined && selectedWorkflows[$scope.selectedDeployment] !== null) {
-                return selectedWorkflows[$scope.selectedDeployment];
+                return selectedWorkflows[$scope.selectedDeployment.id];
             }
         };
 
