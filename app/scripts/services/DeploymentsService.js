@@ -23,9 +23,10 @@ angular.module('cosmoUiApp')
             return _load('executions/start', callParams);
         }
 
-        function _updateExecutionState(params) {
+        // todo : need to change params to ones that suite "cancel". currently the format suites "update" by mistake.
+        function _cancelExecutionState(params) {
             var callParams = {
-                url: '/backend/executions/update',
+                url: '/backend/executions/cancel',
                 method: 'POST',
                 data: {'executionId': params.execution_id, 'state': params.state}
             };
@@ -70,7 +71,8 @@ angular.module('cosmoUiApp')
 
 
         this.execute = _execute;
-        this.updateExecutionState = _updateExecutionState;
+        // todo : change update function to cancel
+        this.updateExecutionState = _cancelExecutionState;
         this.getDeploymentExecutions = _getDeploymentExecutions;
         this.getDeploymentById = _getDeploymentById;
         this.deleteDeploymentById = _deleteDeploymentById;

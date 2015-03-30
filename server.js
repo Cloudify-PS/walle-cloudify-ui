@@ -211,8 +211,9 @@ app.get('/backend/executions/get', CloudifyMiddleware, function(request, respons
     request.cloudifyClient.executions.get(request.query.executionId, null, cloudifyCallback(response));
 });
 
-app.post('/backend/executions/update', CloudifyMiddleware, function(request, response) {
-    request.cloudifyClient.executions.update(request.body.execution_id, request.body.state, null, cloudifyCallback(response));;
+app.post('/backend/executions/cancel', CloudifyMiddleware, function(request, response) {
+    // todo : make "force" an input on request
+    request.cloudifyClient.executions.cancel(request.body.execution_id, false, cloudifyCallback(response));
 });
 
 app.post('/backend/executions/start', CloudifyMiddleware, function(request, response) {
