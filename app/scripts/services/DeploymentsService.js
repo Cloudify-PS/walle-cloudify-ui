@@ -28,7 +28,7 @@ angular.module('cosmoUiApp')
             var callParams = {
                 url: '/backend/executions/cancel',
                 method: 'POST',
-                data: {'executionId': params.execution_id, 'state': params.state}
+                data: {'execution_id': params.execution_id, 'state': params.state}
             };
             return _load('executions/update', callParams);
         }
