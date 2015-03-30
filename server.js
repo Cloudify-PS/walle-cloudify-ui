@@ -81,7 +81,7 @@ if (process.env.NODE_ENV === 'production' || process.argv[2] === 'production') {
 function cloudifyCallback( res ){
     return function( err, data ){
         if ( !!err ){
-            res.status(500).send({ 'info' : err });
+            res.status(500).send({ 'info' : err.toString() });
             return;
         }
         if ( typeof(data.body) === 'string'){
