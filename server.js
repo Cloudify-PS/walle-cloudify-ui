@@ -243,10 +243,8 @@ app.get('/backend/nodes', CloudifyMiddleware, function(request, response) {
     request.cloudifyClient.nodes.list(request.query.deployment_id, null, queryParams, cloudifyCallback(response));
 });
 
-app.post('/backend/events/_search', function(request, response) {
-    cloudify4node.getEvents(request.body, function(err, data) {
-        response.send(err !== null ? err : data);
-    });
+app.post('/backend/events/_search', CloudifyMiddleware, function(request, response) {
+    request.cloudifyClient.events.query( request.body , cloudifyCallback(response));
 });
 
 

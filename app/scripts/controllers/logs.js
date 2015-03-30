@@ -65,6 +65,7 @@ angular.module('cosmoUiApp')
                 eventsCollect = [],
                 lastData = [];
 
+            // todo: OMG this function is duplicated several times in the code!!!!!!! need to be reused.
             function _convertDates(data) {
                 for (var i in data) {
                     data[i]._source.timestamp = $filter('dateFormat')(data[i]._source.timestamp, 'yyyy-MM-dd HH:mm:ss');
