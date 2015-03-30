@@ -102,22 +102,30 @@ angular.module('cosmoUiApp')
             return cosmoError;
         };
 
-        function _loadExecutions(blueprint_id, deployment_id) {
-            CloudifyService.deployments.getDeploymentExecutions(deployment_id)
+        function _loadExecutions() {
+            CloudifyService.deployments.getDeploymentExecutions()
                 .then(function(data) {
                     if (data.length > 0) {
-                        if (_executedDeployments[blueprint_id] === undefined) {
-                            _executedDeployments[blueprint_id] = [];
-                        }
-                        for (var i = 0; i < data.length; i++) {
-                            if (data[i].status !== null && data[i].status !== 'failed' && data[i].status !== 'terminated' && data[i].status !== 'cancelled') {
-                                selectedWorkflows[deployment_id] = data[i].workflow_id;
-                                _executedDeployments[blueprint_id][deployment_id] = data[i];
-                            } else if (_executedDeployments[blueprint_id][deployment_id] !== undefined && (data[i].status === 'failed' || data[i].status === 'terminated' || data[i].status === 'cancelled') ){
-                                var currentCreatedDate = new Date(_executedDeployments[blueprint_id][deployment_id].created_at).getTime();
-                                var dataCreatedDate = new Date(data[i].created_at).getTime();
-                                if (currentCreatedDate < dataCreatedDate) {
-                                    _executedDeployments[blueprint_id][deployment_id] = null;
+                        for (var k = 0; k < $scope.deployments.length; k++) {   // running over deployments list
+                            var blueprint_id = $scope.deployments[k].blueprint_id;
+                            var deployment_id = $scope.deployments[k].id;
+
+                            if (_executedDeployments[blueprint_id] === undefined) { // creating executions array by blueprint name
+                                _executedDeployments[blueprint_id] = [];
+                            }
+
+                            for (var i = 0; i < data.length; i++) {
+                                if (data[i].blueprint_id === blueprint_id && data[i].id === deployment_id && data[i].status !== null && data[i].status !== 'failed' && data[i].status !== 'terminated' && data[i].status !== 'cancelled') {
+                                    selectedWorkflows[deployment_id] = data[i].workflow_id;
+                                    _executedDeployments[blueprint_id][deployment_id] = data[i];    // adding execution data by blueprint/deployment id's in executions array
+
+                                } else if (data[i].blueprint_id === blueprint_id && data[i].id === deployment_id && _executedDeployments[blueprint_id][deployment_id] !== undefined && (data[i].status === 'failed' || data[i].status === 'terminated' || data[i].status === 'cancelled') ){
+                                    var currentCreatedDate = new Date(_executedDeployments[blueprint_id][deployment_id].created_at).getTime();
+                                    var dataCreatedDate = new Date(data[i].created_at).getTime();
+
+                                    if (currentCreatedDate < dataCreatedDate) {
+                                        _executedDeployments[blueprint_id][deployment_id] = null;
+                                    }
                                 }
                             }
                         }
@@ -126,8 +134,8 @@ angular.module('cosmoUiApp')
 
             if ($location.path() === '/deployments') {
                 $timeout(function(){
-                    _loadExecutions(blueprint_id, deployment_id);
-                }, 60000);
+                    _loadExecutions();
+                }, 30000);
             }
         }
 
@@ -156,7 +164,6 @@ angular.module('cosmoUiApp')
                         var deployments = data[j].deployments;
                         $scope.deployments = $scope.deployments.concat(data[j].deployments);
                         for (var i = 0; i < deployments.length; i++) {
-                            _loadExecutions(deployments[i].blueprint_id, deployments[i].id);
                             workflows[deployments[i].id] = [];
                             for (var w in deployments[i].workflows) {
                                 var workflow = deployments[i].workflows[w];
@@ -169,6 +176,7 @@ angular.module('cosmoUiApp')
                             }
                         }
                     }
+                    _loadExecutions();
                 },
                 function() {
                     cosmoError = true;
