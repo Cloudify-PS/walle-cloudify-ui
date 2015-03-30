@@ -62,7 +62,7 @@
         "userLabel": "Username",
         "passLabel": "Password",
         "loginBtn": "Login",
-        "rememberLabel": "Remember me?"
+        "rememberLabel": "Remember me"
     },
     "deployment": {
         "title": {
