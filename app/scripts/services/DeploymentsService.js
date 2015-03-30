@@ -61,11 +61,11 @@ angular.module('cosmoUiApp')
 
         function _getDeploymentNodes(params) {
             var callParams = {
-                url: '/backend/node-instances/get',
+                url: '/backend/node-instances',
                 method: 'GET',
                 params: {'deployment_id': params}
             };
-            return _load('node-instances/get', callParams);
+            return _load('node-instances', callParams);
         }
 
 

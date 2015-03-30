@@ -188,7 +188,7 @@ angular.module('cosmoUiApp')
                             else if ($scope.deploymentInProgress === null && $scope.currentExecution !== false) {
                                 $scope.deploymentInProgress = true;
                             }
-                            CloudifyService.deployments.getDeploymentNodes({deployment_id : $scope.id, state: true})
+                            CloudifyService.deployments.getDeploymentNodes($scope.id)
                                 .then(function(dataNodes){
                                     _updateDeploymentModel(dataNodes);
                                 });
