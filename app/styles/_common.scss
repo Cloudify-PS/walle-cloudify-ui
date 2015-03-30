@@ -384,7 +384,7 @@ p[tooltip], div[tooltip], td {
   text-overflow: ellipsis;
 }
 
-input {
+input[type=text], input[type=password]{
   height: 32px;
   border-radius: 3px;
   padding-left: 10px;
