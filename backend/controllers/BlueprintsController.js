@@ -114,7 +114,7 @@ exports.upload = function( req, res ){
                 services.cloudify4node.uploadBlueprint( cloudifyConf, response, blueprintUploadData.opts, uploadCallback);
             });
         } catch(e) {
-            logger.error('unable to send request to url [', url ,'] reason:', e.message);
+            logger.error('unable to send request to url [', url ,'] reason:', e);
             res.status(500).send({'message' : e.message});
             return;
         }

@@ -40,7 +40,7 @@
 
 var log4js = require('log4js');
 var request = require('request');
-var logger = log4js.getLogger('server');
+var logger = log4js.getLogger('appConf');
 var os = require('os');
 
 var publicConfiguration = {
