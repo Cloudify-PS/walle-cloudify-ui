@@ -1,7 +1,7 @@
 'use strict';
 
 describe('Controller: DeploymentsCtrl', function () {
-    var DeploymentsCtrl, scope, _cloudifyService, _timeout;
+    var DeploymentsCtrl, scope, _cloudifyService, _timeout, _depExecSpy;
 
     var _execution = {
 
@@ -118,6 +118,12 @@ describe('Controller: DeploymentsCtrl', function () {
 
             scope = $rootScope.$new();
             _cloudifyService = CloudifyService;
+            _depExecSpy = spyOn(CloudifyService.deployments, 'getDeploymentExecutions').andCallFake(function(){
+                var deferred = $q.defer();
+                deferred.resolve(_executions);
+                return deferred.promise;
+            });
+
             _timeout = $timeout;
 
             $location.path('/deployments');
@@ -130,14 +136,7 @@ describe('Controller: DeploymentsCtrl', function () {
                 return deferred.promise;
             };
 
-            _cloudifyService.deployments.getDeploymentExecutions = function () {
-                var deferred = $q.defer();
 
-                console.log('getDeploymentExecutions called');
-                deferred.resolve(_executions);
-
-                return deferred.promise;
-            };
 
             _cloudifyService.blueprints.list = function () {
                 var deferred = $q.defer();
@@ -157,33 +156,31 @@ describe('Controller: DeploymentsCtrl', function () {
         });
     }
 
-    describe('Test setup', function () {
-        it('', function () {
-            _testSetup(true);
-        });
-    });
 
     describe('Controller tests', function () {
         it('should create a controller', function () {
+            _testSetup();
             expect(DeploymentsCtrl).not.toBeUndefined();
         });
 
         it('should return selected workflow id', function () {
+            _testSetup();
+
             scope.selectedDeployment = _deployment;
 
             expect(scope.getExecutionAttr(scope.selectedDeployment, 'id')).toBe(_executions[1].id);
         });
 
-        it('should load deployment executions every 10000 milliseconds', function() {
-            var depExecSpy = spyOn(_cloudifyService.deployments, 'getDeploymentExecutions').andCallThrough();
+        it('should load deployment executions every 10000 milliseconds', inject(function($httpBackend) {
+            _testSetup();
 
-            scope.$apply();
+            //scope.$apply();
+            $httpBackend.whenGET('/backend/executions').respond({});
+            $httpBackend.whenGET('/backend/configuration?access=all').respond({});
 
-            expect(depExecSpy.callCount).toEqual(1);
-
+            expect(_depExecSpy.callCount).toEqual(1);
             _timeout.flush();
-
-            expect(depExecSpy.callCount).toEqual(2);
-        });
+            expect(_depExecSpy.callCount).toEqual(2);
+        }));
     });
 });

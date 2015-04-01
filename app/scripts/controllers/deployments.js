@@ -103,6 +103,7 @@ angular.module('cosmoUiApp')
         };
 
         function _loadExecutions() {
+
             CloudifyService.deployments.getDeploymentExecutions()
                 .then(function(data) {
                     if (data.length > 0) {
