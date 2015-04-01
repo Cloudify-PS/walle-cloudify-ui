@@ -130,10 +130,10 @@ angular.module('cosmoUiApp')
                 $scope.getPropertyKeyName = function(key) {
                     var name = key;
                     if (key === 'ip') {
-                        name = 'private ip';
+                        name = 'private IP';
                     }
                     if (key === 'ip_addresses') {
-                        name = 'public ip\'s';
+                        name = 'public IPs';
                     }
                     return name;
                 };
