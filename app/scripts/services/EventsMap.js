@@ -6,87 +6,87 @@ angular.module('cosmoUiApp')
         var eventsMap = {
             'workflow_received': {
                 text: 'Workflow received',
-                icon: 'workflow-stage',
+                icon: 'icon-gs-workflow-stage',
                 class: 'event-text-green'
             },
             'workflow_started': {
                 text: 'Workflow started',
-                icon: 'workflow-started',
+                icon: 'icon-gs-workflow-started',
                 class: 'event-text-green'
             },
             'workflow_initializing_policies': {
                 text: 'Workflow initializing policies',
-                icon: 'workflow-stage',
+                icon: 'icon-gs-workflow-stage',
                 class: 'event-text-green'
             },
             'workflow_initializing_node': {
                 text: 'Workflow initializing node',
-                icon: 'workflow-stage',
+                icon: 'icon-gs-workflow-stage',
                 class: 'event-text-green'
             },
             'workflow_succeeded': {
                 text: 'Workflow ended successfully',
-                icon: 'workflow-end-successfully',
+                icon: 'icon-gs-workflow-success',
                 class: 'event-text-green'
             },
             'workflow_failed': {
                 text: 'Workflow failed',
-                icon: 'workflow-failed',
+                icon: 'icon-gs-workflow-failed',
                 class: 'event-text-red'
             },
             'workflow_cancelled': {
                 text: 'Workflow Cancelled',
-                icon: 'workflow-cancelled',
+                icon: 'icon-gs-workflow-cancelled',
                 class: 'event-text-red'
             },
             'workflow_stage': {
                 text: 'Workflow staged',
-                icon: 'workflow-stage',
+                icon: 'icon-gs-workflow-stage',
                 class: 'event-text-green'
             },
             'task_started': {
                 text: 'Task started',
-                icon: 'task-started',
+                icon: 'icon-gs-task-started',
                 class: 'event-text-green'
             },
             'sending_task': {
                 text: 'Task sent',
-                icon: 'task-sent',
+                icon: 'icon-gs-task-sent',
                 class: 'event-text-green'
             },
             'task_received': {
                 text: 'Task received',
-                icon: 'task-sent',
+                icon: 'icon-gs-task-sent',
                 class: 'event-text-green'
             },
             'task_succeeded': {
                 text: 'Task ended successfully',
-                icon: 'task-success',
+                icon: 'icon-gs-task-success',
                 class: 'event-text-green'
             },
             'task_failed': {
                 text: 'Task failed',
-                icon: 'task-failed',
+                icon: 'icon-gs-task-failed',
                 class: 'event-text-red'
             },
             'task_rescheduled': {
                 text: 'Task rescheduled',
-                icon: 'task-retried',
+                icon: 'icon-gs-task-retried',
                 class: 'event-text-red'
             },
             'task_retried': {
                 text: 'Task retried',
-                icon: 'task-retried',
+                icon: 'icon-gs-task-retried',
                 class: 'event-text-red'
             },
             'policy_success': {
                 text: 'Policy end successfully started',
-                icon: 'policy-success',
+                icon: 'icon-gs-policy-success',
                 class: 'event-text-green'
             },
             'policy_failed': {
                 text: 'Policy failed',
-                icon: 'policy-failed',
+                icon: 'icon-gs-policy-failed',
                 class: 'event-text-red'
             }
         };
