@@ -585,8 +585,8 @@ module.exports = function (grunt) {
     grunt.registerTask('default', [
         'jshint',
         'jsdoc',
-        'build',
         'test:all',
+        'build',
         'backend'
     ]);
 

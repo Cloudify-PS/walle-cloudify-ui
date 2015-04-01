@@ -1,5 +1,9 @@
 'use strict';
 
+// allow self signed certificates
+// https://github.com/request/request/issues/418
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
+
 /*
  * Express Dependencies
  */
@@ -176,6 +180,10 @@ app.post('/backend/blueprints/upload', CloudifyMiddleware, controllers.blueprint
 
 
 /* deployments */
+
+app.get('/backend/guy', function(req, res){
+    res.status(401).send('invalid!');
+});
 
 app.get('/backend/deployments', CloudifyMiddleware, function(request, response) {
     request.cloudifyClient.deployments.list(null, cloudifyCallback(response));

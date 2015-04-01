@@ -78,7 +78,7 @@ describe('BlueprintsController', function(){
             req.body.opts = '{}';
             req.files = { application_archive: 'guy.blueprint.archive' };
 
-            sandbox.stub(services.cloudify4node,'uploadBlueprint', sinon.spy( function( stream, opts, callback ){
+            sandbox.stub(services.cloudify4node,'uploadBlueprint', sinon.spy( function( cloudifyConf, stream, opts, callback ){
                 callback(null, 'data');
             }));
 
