@@ -172,7 +172,7 @@ app.post('/backend/blueprints/add', function(request, response){
     } );
 });
 
-app.post('/backend/blueprints/upload', controllers.blueprints.upload);
+app.post('/backend/blueprints/upload', CloudifyMiddleware, controllers.blueprints.upload);
 
 
 /* deployments */

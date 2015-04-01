@@ -61,9 +61,11 @@ var uploadTypes = new UploadTypes();
  * @param {string} req.body.opts.blueprint_id the blueprint's ID. cloudify also uses this as name.
  * @param {object} req.body.opts.params query params to put on request.
  * @param {string} req.body.opts.params.application_file_name the yaml filename to look for in the tar.
+ * @param {object} req.cloudifyClientConf - see CloudifyMiddleware
  * @param {object} res response
  */
 exports.upload = function( req, res ){
+    var cloudifyConf = req.cloudifyClientConf;
     var blueprintUploadData = req.body;
 
     if ( !blueprintUploadData ){
@@ -94,7 +96,7 @@ exports.upload = function( req, res ){
     if ( type === uploadTypes.ids.FILE ){
         var readStream = fs.createReadStream( req.files.application_archive.path, { bufferSize: 64 * 1024 });
 
-        services.cloudify4node.uploadBlueprint(readStream, blueprintUploadData.opts , uploadCallback);
+        services.cloudify4node.uploadBlueprint( cloudifyConf, readStream, blueprintUploadData.opts , uploadCallback);
     } else { // url
         var url = blueprintUploadData.url;
         if ( !url ){
@@ -109,7 +111,7 @@ exports.upload = function( req, res ){
                     return;
                 }
                 logger.debug('got response when fetching upload url');
-                services.cloudify4node.uploadBlueprint(response, blueprintUploadData.opts, uploadCallback);
+                services.cloudify4node.uploadBlueprint( cloudifyConf, response, blueprintUploadData.opts, uploadCallback);
             });
         } catch(e) {
             logger.error('unable to send request to url [', url ,'] reason:', e.message);

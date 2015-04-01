@@ -6,29 +6,13 @@
  * implements cloudify REST client in nodejs
  */
 
-var ajax = require('http'); // todo - what will happen if we get https instead? support https required.
+
 var conf = require('../backend/appConf'); // todo: this class should not read directly from configuration
 var log4js = require('log4js');
 log4js.configure(conf.log4js); // todo: no need for this here..
 var logger = log4js.getLogger('cloudify4node');
 var querystring = require('querystring');
 
-/**
- * @typedef Cloudify4node
- * @name Cloudify4node
- * @class Cloudify4node
- * @namespace Cloudify4node
- * @constructor
- */
-function Cloudify4node() {}
-module.exports = Cloudify4node;
-
-// Enable/Disable logs
-if(conf.cosmoLogs === true) {
-    logger.setLevel('ALL');
-} else {
-    logger.setLevel('OFF');
-}
 
 /**
  *
@@ -47,7 +31,12 @@ if(conf.cosmoLogs === true) {
  * @param {function} callback function(err,data)
  */
 // todo - Cloudify4node should be an instance.. why are we using static function declaration?
-Cloudify4node.uploadBlueprint = function(streamReader, opts, callback) {
+exports.uploadBlueprint = function( cloudifyConf, streamReader, opts, callback) {
+    var ajax = require('http');
+    if ( cloudifyConf.endpoint.indexOf('https')>=0){
+        ajax = require('https');
+    }
+
     opts = JSON.parse(opts);    // must parse opts from string to JSON, the FormData does not pass JSON objects, only as string
     logger.debug('uploading blueprint', opts);
 
@@ -81,6 +70,8 @@ Cloudify4node.uploadBlueprint = function(streamReader, opts, callback) {
         });
     }
 
+
+
     var requestOptions = {
         hostname: conf.cosmoServer, // todo: remove this.. get configuration as parameter to constructor
         port: conf.cosmoPort, // todo:remove this.. get configuration as parameter to constructor
@@ -91,6 +82,14 @@ Cloudify4node.uploadBlueprint = function(streamReader, opts, callback) {
             'Transfer-Encoding': 'chunked'
         }
     };
+
+
+    if ( cloudifyConf.cloudifyAuth ){
+        var user = cloudifyConf.cloudifyAuth.user;
+        var pass = cloudifyConf.cloudifyAuth.pass;
+        requestOptions.headers.Authorization = 'Basic ' + new Buffer(user + ':' + pass).toString('base64');
+    }
+
     logger.info('sending request', requestOptions);
     var req = ajax.request(requestOptions, handleResponse);
 
