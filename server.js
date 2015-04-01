@@ -144,18 +144,32 @@ app.get('/backend/blueprints/delete', CloudifyMiddleware, function(request, resp
     request.cloudifyClient.blueprints.delete(request.query.id, null, cloudifyCallback(response));
 });
 
+var defaultResponseCallback = function(response){
+    return function(err, data ){
+        if ( !!err ){
+            response.status(500).send({'error' : err.toString()});
+            return;
+        }
+        response.send(data);
+    }
+};
+
 app.get('/backend/blueprints/browse', CloudifyMiddleware, function(request, response) {
-    request.cloudifyClient.blueprints.browse(request.query.id, request.query.last_update, cloudifyCallback(response));
+   services.browseBlueprint.browseBlueprint( request.cloudifyClientConf, request.query.id,request.query.last_update, defaultResponseCallback(response) );
 });
 
 app.get('/backend/blueprints/browse/file', CloudifyMiddleware, function(request, response) {
-    request.cloudifyClient.blueprints.browse(request.query.id, request.query.path, cloudifyCallback(response));
+    services.browseBlueprint.browseBlueprintFile( request.query.id,request.query.path, defaultResponseCallback(response) );
 });
 
 app.post('/backend/blueprints/add', function(request, response){
-    cloudify4node.addBlueprint(request.files.application_archive, request.body.blueprint_id, function(err, data) {
-        response.send(err !== null ? err : data, err !== null ? data : 200);
-    });
+    services.browseBlueprint.browseBlueprintFile( request.query.id, request.query.path, function(err, data){
+        if ( !!err ){
+            response.status(500).send({'error' : err.toString()});
+            return;
+        }
+        response.send(data);
+    } );
 });
 
 app.post('/backend/blueprints/upload', controllers.blueprints.upload);
@@ -177,13 +191,6 @@ app.post('/backend/deployments/create', CloudifyMiddleware, function(request, re
 
 app.post('/backend/deployments/delete', CloudifyMiddleware, function (request, response) {
     request.cloudifyClient.deployments.delete(request.body.deployment_id, request.body.ignoreLiveNodes, cloudifyCallback(response));
-});
-
-app.get('/backend/deployments/nodes', CloudifyMiddleware, function(request, response) {
-//    request.cloudifyClient.deployments.nodes(request.query.deployment_id, null, cloudifyCallback(response));
-    cloudify4node.getDeploymentNodes(request.body.deployment_id, request.body.state, function(err, data) {
-        response.send(err !== null ? err : data);
-    });
 });
 
 app.post('/backend/deployments/workflows/get', CloudifyMiddleware, function(request, response) {
@@ -275,19 +282,19 @@ app.post('/backend/influx', function(request, response) {
 });
 
 app.get('/backend/grafana/series', function(request, response){
-    cloudify4node.getDashboardSeries(request.query, function(err, data){
+    services.monitoring.getDashboardSeries(request.query, function(err, data){
         response.send(err !== null ? err : data);
     });
 });
 
 app.get('/backend/grafana/series/list', function(request, response){
-    cloudify4node.getDashboardSeriesList(request.query, function(err, data){
+    services.monitoring.getDashboardSeriesList(request.query, function(err, data){
         response.send(err !== null ? err : data);
     });
 });
 
 app.get('/backend/grafana/dashboards/:dashboardId', function(request, response){
-    cloudify4node.getDeploymentDashboards(request.params, function(err, data) {
+    services.monitoring.getDeploymentDashboards(request.params, function(err, data) {
         response.send(err !== null ? err : data);
     });
 });
@@ -298,9 +305,11 @@ app.get('/backend/apidocs', function(request, response) {
 });
 
 app.get('/backend/versions/ui', function(request, response) {
-    cloudify4node.getPackageJson(function(err, data) {
-        response.send(err !== null ? err : data);
-    });
+    try {
+        response.send(require('./package.json'));
+    }catch(e){
+        response.status(500).send({'error':e.toString()});
+    }
 });
 
 app.get('/backend/logsfile', function(request, response) {
