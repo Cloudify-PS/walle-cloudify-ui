@@ -110,7 +110,9 @@ describe('Directive: deploymentLayout', function () {
             $httpBackend.whenGET('/backend/versions/ui').respond(200);
             $httpBackend.whenGET('/backend/versions/manager').respond(200);
             $httpBackend.whenGET('/backend/version/latest?version=00').respond('300');
-            $httpBackend.whenGET('/backend/deployments/executions/get').respond(200);
+            $httpBackend.whenGET('/backend/executions').respond(200);
+            $httpBackend.whenGET('/backend/nodes?deployment_id=deployment1').respond(200);
+            $httpBackend.whenGET('/backend/node-instances').respond(200);
             $httpBackend.whenPOST('/backend/deployments/get').respond(200);
             $httpBackend.whenPOST('/backend/deployments/nodes').respond(200);
             $httpBackend.whenPOST('/backend/nodes').respond(200);

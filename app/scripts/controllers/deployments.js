@@ -115,11 +115,11 @@ angular.module('cosmoUiApp')
                             }
 
                             for (var i = 0; i < data.length; i++) {
-                                if (data[i].blueprint_id === blueprint_id && data[i].id === deployment_id && data[i].status !== null && data[i].status !== 'failed' && data[i].status !== 'terminated' && data[i].status !== 'cancelled') {
+                                if (data[i].blueprint_id === blueprint_id && data[i].deployment_id === deployment_id && data[i].status !== null && data[i].status !== 'failed' && data[i].status !== 'terminated' && data[i].status !== 'cancelled') {
                                     selectedWorkflows[deployment_id] = data[i].workflow_id;
                                     _executedDeployments[blueprint_id][deployment_id] = data[i];    // adding execution data by blueprint/deployment id's in executions array
 
-                                } else if (data[i].blueprint_id === blueprint_id && data[i].id === deployment_id && _executedDeployments[blueprint_id][deployment_id] !== undefined && (data[i].status === 'failed' || data[i].status === 'terminated' || data[i].status === 'cancelled') ){
+                                } else if (data[i].blueprint_id === blueprint_id && data[i].deployment_id === deployment_id && _executedDeployments[blueprint_id][deployment_id] !== undefined && (data[i].status === 'failed' || data[i].status === 'terminated' || data[i].status === 'cancelled') ){
                                     var currentCreatedDate = new Date(_executedDeployments[blueprint_id][deployment_id].created_at).getTime();
                                     var dataCreatedDate = new Date(data[i].created_at).getTime();
 
@@ -135,7 +135,7 @@ angular.module('cosmoUiApp')
             if ($location.path() === '/deployments') {
                 $timeout(function(){
                     _loadExecutions();
-                }, 30000);
+                }, 10000);
             }
         }
 
