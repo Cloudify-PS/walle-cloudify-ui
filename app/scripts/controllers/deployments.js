@@ -132,6 +132,7 @@ angular.module('cosmoUiApp')
                     }
                 });
 
+            // location path check to prevent timeout from keep running after path was changed to different page
             if ($location.path() === '/deployments') {
                 $timeout(function(){
                     _loadExecutions();
