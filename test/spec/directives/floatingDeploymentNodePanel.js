@@ -105,7 +105,6 @@ describe('Directive: floatingDeploymentNodePanel', function () {
                 return scope.showProperties !== undefined;
             });
             runs(function() {
-                console.log(scope.showProperties.general);
                 expect(scope.showProperties.general.type).toBe('vm_host');
             });
         });
