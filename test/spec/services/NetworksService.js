@@ -387,6 +387,11 @@ describe('Service: NetworksService', function () {
                 expect(results.networks[0].devices.length).toEqual(1);
                 expect(results.networks[0].devices[0].name).toBe('my_server');
             });
+
+            it('should add an internal network with internal subnet inside it', function() {
+                expect(results.external.subnets[0].name).toBe('ui-management-net');
+                expect(results.external.subnets[0].subnet.name).toBe('ui-management-subnet');
+            });
         });
     });
 
