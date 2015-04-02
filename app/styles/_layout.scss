@@ -31,6 +31,27 @@ html, body, .layout {
     background: $COSMOUI_BACKGROUND;
 
     display: table-cell;
+
+    .logout-panel{
+        position:absolute;
+        top:34px;
+        right:22px;
+        * {
+            color: #CADBEC;
+            font-family:"OpenSansCondLight", Helvetica, Arial, sans-serif;
+
+        }
+        .username {
+            border-right:1px solid #CADBEC;
+            padding-right:6px;
+            margin-right:15px;
+        }
+
+        .logout_icon{
+            cursor:pointer;
+            margin-top:-3px;
+        }
+    }
 }
 
 #footer {

@@ -9,6 +9,7 @@ describe('Directive: header', function () {
         inject(function($compile, $rootScope, $httpBackend) {
             $httpBackend.whenGET('/backend/configuration?access=all').respond(200);
             $httpBackend.whenGET('/backend/versions/ui').respond(200);
+            $httpBackend.expectGET('/backend/isLoggedIn').respond(200);
             $httpBackend.whenGET('/backend/versions/manager').respond(200);
             $httpBackend.whenGET('/backend/version/latest?version=00').respond('300');
 
@@ -70,6 +71,31 @@ describe('Directive: header', function () {
                 expect(_scope.updateVersion).toBe(false);
             });
         }));
+
+        describe('logout', function(){
+            it('should exist', function(){
+                compileDirective();
+                expect(element.find('.logout-panel').length).toBe(1);
+            });
+
+            it('should not show logout if user is logged in', inject(function(){
+                compileDirective();
+                expect(element.find('.logout-panel').is('.ng-hide')).toBe(true);
+            }));
+
+            it('should show logout if user is logged in', inject(function( $rootScope ){
+                var _scope = $rootScope.$new();
+                _scope.username = 'foo';
+                _scope.isLoggedIn = true;
+                compileDirective( {  scope:_scope } );
+                expect(element.find('.logout-panel').is('.ng-hide')).toBe(false);
+                expect(element.find('.username').text()).toBe('foo');
+            }));
+
+
+        });
+
+
 
         it('should not show update message when invalid version result returns', inject(function($rootScope, CloudifyService, $q) {
             var _scope = $rootScope.$new();

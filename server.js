@@ -119,12 +119,14 @@ app.post('/backend/login', function(request, response){
 
 });
 
+/**
+ * An action that sends back whether a user is logged in or not.
+ */
+app.get('/backend/isLoggedIn', function( req, res ){
+   res.send({'result' : !!req.session.cloudifyCredentials, 'username' : !req.session.cloudifyCredentials ? '' : req.session.cloudifyCredentials.username });
+});
+
 app.post('/backend/logout', function(req, res){
-    try {
-        req.session.destroy();
-    }catch(e){
-        logger.error('this is not how you destroy a session',e);
-    }
     req.session = null;
     res.send({'message': 'ok'});
 });
