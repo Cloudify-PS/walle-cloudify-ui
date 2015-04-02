@@ -269,13 +269,6 @@
 }
 
 .icon-events {
-    font-family: 'cloudify-events';
-    speak: none;
-    font-style: normal;
-    font-weight: normal;
-    font-variant: normal;
-    text-transform: none;
-    line-height: 1;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     width: 36px;
@@ -283,53 +276,39 @@
     font-size: 32px;
     color: #2C4B68;
 
-    &.policy-failed:before {
-        content: "\21";
+    &.icon-gs-policy-failed:before {
         color: #d64b34;
     }
-    &.policy-success:before {
-        content: "\22";
+    &.icon-gs-policy-success:before {
         color: #9ABC2E;
     }
-    &.task-canceled:before {
-        content: "\23";
+    &.icon-gs-task-failed:before {
         color: #d64b34;
     }
-    &.task-failed:before {
-        content: "\24";
-        color: #d64b34;
-    }
-    &.task-retried:before {
-        content: "\25";
+    &.icon-gs-task-retried:before {
         color: #F9B71B;
     }
-    &.task-sent:before {
-        content: "\26";
+    &.icon-gs-task-sent:before {
     }
-    &.task-started:before {
-        content: "\27";
+    &.icon-gs-task-started:before {
     }
-    &.task-success:before {
-        content: "\28";
+    &.icon-gs-task-success:before {
         color: #9ABC2E;
     }
-    &.workflow-stage:before {
-        content: "\29";
+    &.icon-gs-workflow-stage:before {
     }
-    &.workflow-cancelled:before {
-        content: "\2a";
+    &.icon-gs-workflow-cancelled:before {
         color: #d64b34;
     }
-    &.workflow-failed:before {
-        content: "\2b";
+    &.icon-gs-workflow-failed:before {
         color: #d64b34;
     }
-    &.workflow-started:before {
-        content: "\2c";
+    &.icon-gs-workflow-started:before {
     }
-    &.workflow-end-successfully:before {
-        content: "\2d";
+    &.icon-gs-workflow-success:before {
         color: #9ABC2E;
+    }
+    &.icon-gs-task-sent:before {
     }
 
     &.gs-icon-logs {
