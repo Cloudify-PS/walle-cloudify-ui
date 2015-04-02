@@ -115,6 +115,7 @@ module.exports.Walker = function() {
     }
 
     function walkFolder(rootFolder, _list) {
+        logger.trace('walkFolder', rootFolder);
         counter++;
         fs.readdir(rootFolder, function (err, files) {
             if (files.length === 0) {
