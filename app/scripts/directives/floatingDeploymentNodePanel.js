@@ -29,16 +29,6 @@ angular.module('cosmoUiApp')
                     $scope.node = null;
                 };
 
-                $scope.$watch('node', function(newValue) {
-                    // todo - guy - why are we not usgin ng-show instead?? and then here it would be $scope.showPanel = !!newValue. boom, 4 lines less..
-                    $scope.showPanel = !!newValue; // adding this for tests.
-                    if (!!newValue) {
-                        element.show();
-                    } else {
-                        element.hide();
-                    }
-                });
-
                 function _viewNode(node) {
                     $scope.showProperties = {
                         properties: node.properties,
@@ -54,6 +44,7 @@ angular.module('cosmoUiApp')
                 }
 
                 function _viewRelationship(relationship) {
+                    $scope.selectNodesArr = [];
                     $scope.propSection = 'general';
                     $scope.showProperties = {
                         properties: relationship.properties,
@@ -74,6 +65,7 @@ angular.module('cosmoUiApp')
                             instances.forEach(function (instance) {
                                 if (instance.deployment_id === $scope.id) {
                                     if(instance.node_id === nodeId) {
+                                        instance.type = $scope.showProperties.general.type;
                                         $scope.selectNodesArr.push(instance);
                                     }
                                 }
@@ -82,6 +74,13 @@ angular.module('cosmoUiApp')
                 }
 
                 $scope.$watch('node', function(node){
+                    $scope.showPanel = !!node;
+                    if (!!node) {
+                        element.show();
+                    } else {
+                        element.hide();
+                    }
+
                     if(node) {
                         $scope.selectedNode = null;
                         $scope.propSection = 'general';

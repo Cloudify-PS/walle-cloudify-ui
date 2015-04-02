@@ -97,5 +97,17 @@ describe('Directive: floatingDeploymentNodePanel', function () {
         it('should return public IPs instead of public ip\'s', function() {
             expect(scope.getPropertyKeyName('ip_addresses')).toBe('public IPs');
         });
+
+        it('should create showProperties object with node type (CFY-2428)', function() {
+            scope.nodeSelected(_node);
+
+            waitsFor(function() {
+                return scope.showProperties !== undefined;
+            });
+            runs(function() {
+                console.log(scope.showProperties.general);
+                expect(scope.showProperties.general.type).toBe('vm_host');
+            });
+        });
     });
 });
