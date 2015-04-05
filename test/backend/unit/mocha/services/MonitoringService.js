@@ -1,10 +1,8 @@
 'use strict';
 var expect = require('expect.js');
-var conf = require('../../../../../backend/appConf');
 var path = require('path');
 var fse = require('fs-extra');
-var fs = require('fs');
-var MonitoringService = require('../../../../../backend/services/MonitoringService');
+//var MonitoringService = require('../../../../../backend/services/MonitoringService');
 
 describe('MonitoringService', function() {
 
