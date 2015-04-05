@@ -7,7 +7,7 @@
  * # deploymentLayout
  */
 angular.module('cosmoUiApp')
-    .directive('deploymentLayout', function ($location, BreadcrumbsService, CloudifyService) {
+    .directive('deploymentLayout', function ($location, BreadcrumbsService, CloudifyService, nodeStatus) {
         return {
             templateUrl: 'views/deployment/layout.html',
             restrict: 'EA',
@@ -37,7 +37,7 @@ angular.module('cosmoUiApp')
                 };
                 var deploymentModel = {};
                 var nodesList = [];
-                var statesIndex = ['uninitialized', 'initializing', 'creating', 'created', 'configuring', 'configured', 'starting', 'started', 'deleted'];
+                var statesIndex = nodeStatus.getStatesIndex();
 
                 $scope.breadcrumb = [];
                 $scope.workflowsList = [];

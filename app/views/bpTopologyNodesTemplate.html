@@ -1,10 +1,10 @@
 <div data-ng-repeat="node in map track by node.name" data-type="{{node.dataType}}" ng-class="{box: !node.isApp, app: node.isApp, boxHover: headerHover == node.name}" blueprint:coordinate="{{node.id}}">
     <div progress:pie="piProgress2" class="piProgress" size="55">
-        <div class="badge-title" ng-class="getBadgeStatus(node.state.status)" ng-show="node.state != undefined && node.state.completed != undefined && !node.isContained" >{{ node.state.completed }}/{{ node.state.total }}</div>
+        <div class="badge-title" ng-class="getBadgeStatus(node.state.status)" ng-show="shouldShowBadgeTitle(node)" >{{ node.state.completed }}/{{ node.state.total }}</div>
         <div class="circle">
             <i class="gs-node-icon topology-glyph" ng-class="node.class"></i>
             <div class="badge" ng-show="node.state == undefined && node.instances.deploy != undefined">{{ node.instances.deploy }}</div>
-            <div class="badge" data-ng-class="getBadgeStatusAndIcon(node.state.status)" ng-show="node.state != undefined && node.state.completed != undefined">
+            <div class="badge" data-ng-class="getBadgeStatusAndIcon(node.state.status)" ng-show="shouldShowBadge(node)">
             </div>
         </div>
     </div>
@@ -19,7 +19,7 @@
         {{ node.name }}
     </div>
     <div class="holder" ng-show="node.isApp == false" data-ng-if="node.isApp == false" ng-class="{boxHover: headerHover == node.name}">
-        <div bp-topology-nodes map="node.children"></div>
+        <div bp-topology-nodes deployment-in-progress="deploymentInProgress" map="node.children"></div>
     </div>
 
     <p ng-show="node.isApp == true" tooltip>{{ node.name }}</p>

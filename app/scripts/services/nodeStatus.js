@@ -9,26 +9,36 @@
  */
 angular.module('cosmoUiApp')
     .service('nodeStatus', function () {
+        var statesIndex = ['uninitialized', 'initializing', 'creating', 'created', 'configuring', 'configured', 'starting', 'started', 'deleted'];
+
         var statuses = {
             0: 'install',
             1: 'done',
-            2: 'alerts',
+            2: 'install',
             3: 'failed'
         };
 
         var statusIcons = {
             0: ' icon-gs-node-status-loading',
             1: ' icon-gs-node-status-success',
-            2: ' icon-gs-node-status-alert',
+            2: ' icon-gs-node-status-loading',
             3: ' icon-gs-node-status-fail'
         };
 
+        this.getStatesIndex = function() {
+            return statesIndex;
+        };
+
+        this.getStateByIndex = function(index) {
+            return statesIndex[index];
+        };
+
         this.getStatus = function(status_id) {
-            return statuses[status_id] || statuses[0];
+            return statuses[status_id] || '';
         };
 
         this.getIcon = function(status_id) {
-            return statusIcons[status_id] || statusIcons[0];
+            return statusIcons[status_id] || '';
         };
 
         this.getStatuses = function() {
