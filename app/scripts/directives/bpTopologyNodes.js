@@ -23,6 +23,10 @@ angular.module('cosmoUiApp')
             controller: function($scope, nodeStatus) {
                 $scope.headerHover = null;
 
+                $scope.getBadgeStatusAndIcon = function(status) {
+                    return nodeStatus.getStatus(status) + " " + nodeStatus.getIcon(status);
+                };
+
                 $scope.getBadgeStatus = function(status) {
                     return nodeStatus.getStatus(status);
                 };
