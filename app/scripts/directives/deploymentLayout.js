@@ -307,6 +307,10 @@ angular.module('cosmoUiApp')
                     else if(process === 100) {
                         deployment.status = 1;
                     }
+                    // todo: pass "hasExecution" and "instances" here
+                    // the logic should be if process > 0 && process < 100 === which means we tried to install
+                    // AND if there's no current execution
+                    // we should look at each node instance. if all failed - show error, if some - show alert
                     else if(process > 0 && process < 100) {
                         deployment.status = 2;
                     }
