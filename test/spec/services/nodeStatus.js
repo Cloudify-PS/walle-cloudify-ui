@@ -14,6 +14,25 @@ describe('Service: nodeStatus', function () {
         expect(!!nodeStatus).toBe(true);
     });
 
+    it('should return the states index', function () {
+        var statesIndex = nodeStatus.getStatesIndex();
+
+        expect(statesIndex).not.toBe(undefined);
+        expect(statesIndex.length).toEqual(9);
+    });
+
+    it('should return the state by index', function () {
+        expect(nodeStatus.getStateByIndex(0)).toBe('uninitialized');
+        expect(nodeStatus.getStateByIndex(1)).toBe('initializing');
+        expect(nodeStatus.getStateByIndex(2)).toBe('creating');
+        expect(nodeStatus.getStateByIndex(3)).toBe('created');
+        expect(nodeStatus.getStateByIndex(4)).toBe('configuring');
+        expect(nodeStatus.getStateByIndex(5)).toBe('configured');
+        expect(nodeStatus.getStateByIndex(6)).toBe('starting');
+        expect(nodeStatus.getStateByIndex(7)).toBe('started');
+        expect(nodeStatus.getStateByIndex(8)).toBe('deleted');
+    });
+
     it('should have install status in status id 0', function () {
         expect(nodeStatus.getStatus(0)).toBe('install');
     });
