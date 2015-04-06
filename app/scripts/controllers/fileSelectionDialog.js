@@ -6,6 +6,7 @@ angular.module('cosmoUiApp')
         $scope.uploadEnabled = false;
         $scope.uploadInProcess = false;
         $scope.selectedFile = '';
+        $scope.inputText = '';
         $scope.uploadType = 'file';
         $scope.blueprintName = '';
         $scope.uploadError = false;
@@ -20,6 +21,7 @@ angular.module('cosmoUiApp')
         $scope.onFileSelect = function ($files) {
             $scope.selectedFile = $files[0];
             $scope.uploadType = 'file';
+            $scope.inputText = $scope.selectedFile.name;
 
             $log.info(['files were selected', $files]);
         };
@@ -34,10 +36,6 @@ angular.module('cosmoUiApp')
             }
         });
 
-        $scope.$watch('selectedFile', function(filePath) {
-
-        });
-
         $scope.uploadFile = function() {
             $log.info(['upload: ', selectedFile]);
 
@@ -45,7 +43,7 @@ angular.module('cosmoUiApp')
                 return;
             }
 
-            if ($scope.selectedFile.name.indexOf('http') > -1) {
+            if ($scope.inputText.indexOf('http') > -1) {
                 $scope.uploadType = 'url';
             } else {
                 $scope.uploadType = 'file';
@@ -56,7 +54,7 @@ angular.module('cosmoUiApp')
             blueprintUploadForm.append('opts', JSON.stringify($scope.blueprintUploadOpts));
             blueprintUploadForm.append('type', $scope.uploadType);
             if ($scope.uploadType === 'url') {
-                blueprintUploadForm.append('url', $scope.selectedFile.name);
+                blueprintUploadForm.append('url', $scope.inputText);
             }
 
             $scope.uploadInProcess = true;
