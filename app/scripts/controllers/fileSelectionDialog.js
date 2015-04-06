@@ -6,7 +6,6 @@ angular.module('cosmoUiApp')
         $scope.uploadEnabled = false;
         $scope.uploadInProcess = false;
         $scope.selectedFile = '';
-        $scope.archiveUrl = '';
         $scope.uploadType = 'file';
         $scope.blueprintName = '';
         $scope.uploadError = false;
@@ -20,7 +19,6 @@ angular.module('cosmoUiApp')
 
         $scope.onFileSelect = function ($files) {
             $scope.selectedFile = $files[0];
-            $scope.archiveUrl = '';
             $scope.uploadType = 'file';
 
             $log.info(['files were selected', $files]);
@@ -36,12 +34,8 @@ angular.module('cosmoUiApp')
             }
         });
 
-        $scope.$watch('archiveUrl', function(url) {
-            if (url) {
-                $scope.selectedFile = '';
-                $scope.uploadType = 'url';
-                $scope.archiveUrl = url;
-            }
+        $scope.$watch('selectedFile', function(filePath) {
+
         });
 
         $scope.uploadFile = function() {
@@ -50,12 +44,19 @@ angular.module('cosmoUiApp')
             if (!$scope.isUploadEnabled()) {
                 return;
             }
+
+            if ($scope.selectedFile.name.indexOf('http') > -1) {
+                $scope.uploadType = 'url';
+            } else {
+                $scope.uploadType = 'file';
+            }
+
             var blueprintUploadForm = new FormData();
             blueprintUploadForm.append('application_archive', $scope.selectedFile);
             blueprintUploadForm.append('opts', JSON.stringify($scope.blueprintUploadOpts));
             blueprintUploadForm.append('type', $scope.uploadType);
             if ($scope.uploadType === 'url') {
-                blueprintUploadForm.append('url', $scope.archiveUrl);
+                blueprintUploadForm.append('url', $scope.selectedFile.name);
             }
 
             $scope.uploadInProcess = true;
@@ -96,7 +97,7 @@ angular.module('cosmoUiApp')
         };
 
         $scope.isUploadEnabled = function() {
-            return (($scope.selectedFile !== '' || $scope.archiveUrl !== '') &&
+            return (($scope.selectedFile !== '') &&
                 !$scope.uploadInProcess &&
                 $scope.blueprintUploadOpts.blueprint_id !== undefined &&
                 $scope.blueprintUploadOpts.blueprint_id.length > 0);
