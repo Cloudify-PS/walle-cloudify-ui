@@ -22,15 +22,15 @@ describe('Service: nodeStatus', function () {
         expect(nodeStatus.getStatus(1)).toBe('done');
     });
 
-    it('should have alerts status in status id 2', function() {
-        expect(nodeStatus.getStatus(2)).toBe('alerts');
+    it('should have install status in status id 2', function() {
+        expect(nodeStatus.getStatus(2)).toBe('install');
     });
 
     it('should have failed status in status id 3', function() {
         expect(nodeStatus.getStatus(3)).toBe('failed');
     });
 
-    it('should return install status as default', function() {
-        expect(nodeStatus.getStatus()).toBe('install');
+    it('should return empty status as default', function() {
+        expect(nodeStatus.getStatus()).toBe('');
     });
 });
