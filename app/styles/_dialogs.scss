@@ -184,6 +184,19 @@ input[required] {
     right: 0;
     margin: auto;
     margin-top: 100px;
+    min-height:300px;
+
+   &.dialogBox{
+        .dialogDescription{
+            margin:0;
+            line-height:56px;
+        }
+    }
+
+    .dialogDescription.dragover{
+
+        font-weight:bold;
+    }
 
     #uploadForm {
         position: relative;

@@ -36,11 +36,11 @@
 
     <div class="no-blueprints-message" ng-show="blueprints.length == 0">{{ 'blueprints.emptyMessage' | i18n }}</div>
 
-    <div ng-show="isAddDialogVisible" ng-controller="FileSelectionDialogCtrl">
+    <div ng-show="isAddDialogVisible" ng-file-drop ng-model="myFile" ng-controller="FileSelectionDialogCtrl">
         <div class="dialogBoxBg"></div>
         <div id="uploadDialogContainer" class="dialogBox">
             <div class="dialogTitle">{{ 'blueprints.uploadPopup.title' | i18n }}</div>
-            <div class="dialogDescription">{{ 'blueprints.uploadPopup.description' | i18n }}</div>
+            <div class="dialogDescription"  ng-file-drop ng-model="myFile"  drag-over-class="dragover" >{{ 'blueprints.uploadPopup.description' | i18n }}</div>
             <div class="gs-btn close" ng-click="closeDialog()"></div>
             <form id="uploadForm" name="uploadForm">
                 <div class="archiveSelectBox">

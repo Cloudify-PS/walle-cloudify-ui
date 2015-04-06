@@ -8,22 +8,23 @@ describe('Controller: FileSelectionDialogCtrl', function () {
     beforeEach(module('cosmoUiApp', 'ngMock'));
 
     // Initialize the controller and a mock scope
-    describe('Test setup', function() {
-        it ('', inject(function ($controller, $rootScope, $httpBackend, $q, CloudifyService) {
-            $httpBackend.whenGET('/backend/configuration?access=all').respond(200);
-            $httpBackend.whenGET('/backend/versions/ui').respond(200);
-            $httpBackend.whenGET('/backend/versions/manager').respond(200);
-            $httpBackend.whenGET('/backend/version/latest?version=00').respond('300');
+    beforeEach(inject(function ($controller, $rootScope, $httpBackend, $q, CloudifyService) {
+        $httpBackend.whenGET('/backend/configuration?access=all').respond(200);
+        $httpBackend.whenGET('/backend/versions/ui').respond(200);
+        $httpBackend.whenGET('/backend/versions/manager').respond(200);
+        $httpBackend.whenGET('/backend/version/latest?version=00').respond('300');
 
-            scope = $rootScope.$new();
-            _cloudifyService = CloudifyService;
+        scope = $rootScope.$new();
 
-            FileSelectionDialogCtrl = $controller('FileSelectionDialogCtrl', {
-                $scope: scope,
-                CloudifyService: _cloudifyService
-            });
-        }));
-    });
+        _cloudifyService = CloudifyService;
+
+        FileSelectionDialogCtrl = $controller('FileSelectionDialogCtrl', {
+            $scope: scope,
+            CloudifyService: _cloudifyService
+        });
+
+
+    }));
 
     describe('Controller tests', function() {
         it('should create a controller', function () {
@@ -47,6 +48,30 @@ describe('Controller: FileSelectionDialogCtrl', function () {
             });
             runs(function() {
                 expect(scope.errorMessage).toBe('Error uploading blueprint'); // todo: verify with erez
+            });
+        });
+
+        describe('$scope.$watch myFile', function(){
+            it('should trigger a watch on myFile', function(){
+                spyOn(scope, 'onFileSelect').andCallFake(function(){});
+
+                // trigger watch
+                scope.$digest();
+                scope.myFile = 'foo';
+                scope.$digest();
+
+                expect(scope.onFileSelect).toHaveBeenCalledWith('foo');
+            });
+        });
+
+
+        describe('onFileSelect', function(){
+            it('should support both array and single items', function(){
+                scope.onFileSelect('foo');
+                expect(scope.selectedFile).toBe('foo');
+
+                scope.onFileSelect(['bar']);
+                expect(scope.selectedFile).toBe('bar');
             });
         });
 
@@ -88,12 +113,18 @@ describe('Controller: FileSelectionDialogCtrl', function () {
             });
         });
 
-        it('should not validate blueprint name', function() {
+        it('should not validate blueprint name', function($httpBackend) {
             scope.blueprintName = '~~~!!!@@@';
             scope.selectedFile = {};
+            // expected to be on scope from parent.. todo: turn to directive. bind event callback.
+
             scope.uploadDone = function() {
                 scope.uploadInProcess = false;
             };
+
+            spyOn(scope, 'isUploadEnabled').andCallFake(function(){
+               return true;
+            });
             _cloudifyService.blueprints.add = function(data, successCallback) {
                 successCallback();
             };
@@ -123,23 +154,28 @@ describe('Controller: FileSelectionDialogCtrl', function () {
             });
         });
 
-        it('should reset the selected file when a file selected by url', function () {
+        it('should reset the selected file when a file selected by url', inject(function ( $timeout ) {
             scope.selectedFile = 'somefile.tar.gz';
             scope.uploadType = 'file';
 
+            // trigger watch event
+            scope.$digest();
             scope.archiveUrl = 'http://some.kind/of/url.tar.gz';
+            scope.$digest();
 
             waitsFor(function() {
                 return scope.uploadType === 'url';
-            });
+            }, 100);
             runs(function() {
                 expect(scope.selectedFile).toBe('');
             });
-        });
+        }));
 
         it('should get a blueprint archive file from a url', function() {
             scope.archiveUrl = 'http://some.kind/of/url.tar.gz';
             scope.uploadType = 'url';
+            scope.blueprintName = 'foo';
+            var formDataUrl = null;
             scope.uploadDone = function() {
                 scope.uploadInProcess = false;
             };
@@ -147,9 +183,13 @@ describe('Controller: FileSelectionDialogCtrl', function () {
                 successCallback();
             };
             FormData.prototype.append = function(name, data) {
+                formDataUrl = data;
                 this.url = data;
             };
             spyOn(_cloudifyService.blueprints, 'add').andCallThrough();
+            spyOn(scope, 'isUploadEnabled').andCallFake(function(){
+                return true;
+            });
 
             scope.uploadFile();
 
@@ -158,7 +198,6 @@ describe('Controller: FileSelectionDialogCtrl', function () {
             });
             runs(function() {
                 var formData = _cloudifyService.blueprints.add.mostRecentCall.args[0];
-
                 expect(formData.url).toBe('http://some.kind/of/url.tar.gz');
             });
         });

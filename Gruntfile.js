@@ -394,6 +394,11 @@ module.exports = function (grunt) {
                 configFile: 'karma.conf.js',
                 singleRun: true
             },
+            develop: {
+                reporters: ['failed'],
+                singleRun: true,
+                configFile: 'karma.conf.js'
+            },
             debug: {
                 browsers: ['Chrome'],
                 reporters: ['spec'],
