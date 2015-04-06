@@ -165,7 +165,8 @@ angular.module('cosmoUiApp')
 
                             // Set Deployment Model
                             _setDeploymentModel(nodesList);
-                            _updateDeploymentModel(nodesList);
+                            // todo - not sure if we need this..
+                            //_updateDeploymentModel(nodesList);
 
                             // Emit nodes data
                             $scope.$emit('nodesList', nodesList);
@@ -190,6 +191,21 @@ angular.module('cosmoUiApp')
                             }
                             CloudifyService.deployments.getDeploymentNodes({deployment_id : $scope.id, state: true})
                                 .then(function(dataNodes){
+                                    // now that we have the instances, we can count how many instances we have per node
+                                    // we cannot use "number_of_instances" or "deploy" field, because it does not
+                                    // consider parent nodes with multiple instances.
+                                    // host A with 2 instances that contains App B with 2 instances will actually
+                                    // spawn 4 instances of App B (2 per host).
+                                    _.each(deploymentModel, function(value, key){
+                                        value.total = 0; // reset count..
+                                    });
+
+                                    _.each(dataNodes, function( instance ){
+                                        deploymentModel[instance.node_id].total ++;
+                                        deploymentModel['*'].total ++;
+                                    });
+
+
                                     _updateDeploymentModel(dataNodes);
                                 });
                             $scope.$emit('deploymentExecution', {
@@ -213,7 +229,6 @@ angular.module('cosmoUiApp')
                  */
                 function _updateDeploymentModel( nodes ) {
                     var IndexedNodes = _orderNodesById(nodes);
-
                     for (var i in deploymentModel) {
                         var _nodeInstanceStatus = deploymentModel[i];   // Node instance status in the model
                         var _reachable = 0;
@@ -263,7 +278,7 @@ angular.module('cosmoUiApp')
                         // average process
                         _nodeInstanceStatus.state = Math.round(_states / _nodeInstanceStatus.total);
 
-                        // average process in percents
+                        // average process in percentage
                         _nodeInstanceStatus.states = calcState(_states, _nodeInstanceStatus.total);
 
                         // Set Status by Workflow Execution Progress
@@ -355,9 +370,8 @@ angular.module('cosmoUiApp')
                             deploymentModel[node.id] = angular.copy(deploymentDataModel);
                         }
                         deploymentModel['*'].instancesIds.push(node.id);
-                        deploymentModel['*'].total += parseInt(node.number_of_instances, 10);
                         deploymentModel[node.id].instancesIds.push(node.id);
-                        deploymentModel[node.id].total += parseInt(node.number_of_instances, 10);
+
                     }
                 }
 
