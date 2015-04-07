@@ -82,7 +82,7 @@ angular.module('cosmoUiApp')
                 'type': intNetwork.type,
                 'color': _getNetworkColor(),
                 'subnet': {
-                    'id': intNetwork.id,
+                    'id': intNetwork.id,    // The router is connecting by network id and not subnet id, so subnet must have the network id
                     'name': intSubnet.name,
                     'type': intSubnet.type,
                     'routers': _getRouters(nodes)
