@@ -14,14 +14,14 @@ angular.module('cosmoUiApp')
         var statuses = {
             0: 'install',
             1: 'done',
-            2: 'install',
+            2: 'alerts',
             3: 'failed'
         };
 
         var statusIcons = {
             0: ' icon-gs-node-status-loading',
             1: ' icon-gs-node-status-success',
-            2: ' icon-gs-node-status-loading',
+            2: ' icon-gs-node-status-alert',
             3: ' icon-gs-node-status-fail'
         };
 
@@ -44,4 +44,31 @@ angular.module('cosmoUiApp')
         this.getStatuses = function() {
             return statuses;
         };
+
+        this.getDeploymentStatus = function(deployment, deploymentInProgress, process) {
+            if(process === false) {
+                return 0;
+            }
+            else if(process === 100) {
+                return 1;
+            }
+            else if(process > 0 && process < 100) {
+                // we tried to install
+                if (deploymentInProgress) {
+                    // execution in progress, set progress status
+                    return 0;
+                } else if(deployment.completed === 0) {
+                    // no execution in progress and none completed - set error status
+                    return 3;
+                } else {
+                    // no execution in progress and some completed - set warning status
+                    return 2;
+                }
+
+            }
+            else if(process === 0) {
+                return 0;
+            }
+        };
+
     });

@@ -342,7 +342,7 @@ describe('Directive: bpTopologyNodes', function () {
             compileDirective();
             expect(element.isolateScope().getBadgeStatus(0)).toBe('install');
             expect(element.isolateScope().getBadgeStatus(1)).toBe('done');
-            expect(element.isolateScope().getBadgeStatus(2)).toBe('install');
+            expect(element.isolateScope().getBadgeStatus(2)).toBe('alerts');
             expect(element.isolateScope().getBadgeStatus(3)).toBe('failed');
             expect(element.isolateScope().getBadgeStatus()).toBe('');
         });

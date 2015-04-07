@@ -41,8 +41,8 @@ describe('Service: nodeStatus', function () {
         expect(nodeStatus.getStatus(1)).toBe('done');
     });
 
-    it('should have install status in status id 2', function () {
-        expect(nodeStatus.getStatus(2)).toBe('install');
+    it('should have alerts status in status id 2', function () {
+        expect(nodeStatus.getStatus(2)).toBe('alerts');
     });
 
     it('should have failed status in status id 3', function () {
@@ -61,8 +61,8 @@ describe('Service: nodeStatus', function () {
         expect(nodeStatus.getIcon(1)).toBe(' icon-gs-node-status-success');
     });
 
-    it('should return loading icon in status id 2', function () {
-        expect(nodeStatus.getIcon(2)).toBe(' icon-gs-node-status-loading');
+    it('should return alerts icon in status id 2', function () {
+        expect(nodeStatus.getIcon(2)).toBe(' icon-gs-node-status-alert');
     });
 
     it('should return failed icon in status id 3', function () {
@@ -71,5 +71,21 @@ describe('Service: nodeStatus', function () {
 
     it('should return no icon in status as default', function () {
         expect(nodeStatus.getIcon()).toBe('');
+    });
+
+    it('should test getDeploymentStatus', function () {
+        var deployment = {
+            completed: 0
+        };
+
+        expect(nodeStatus.getDeploymentStatus(deployment, undefined, false)).toBe(0);
+        expect(nodeStatus.getDeploymentStatus(deployment, undefined, 100)).toBe(1);
+        expect(nodeStatus.getDeploymentStatus(deployment, {}, 55)).toBe(0);
+        expect(nodeStatus.getDeploymentStatus(deployment, undefined, 55)).toBe(3);
+
+        deployment.completed = 2;
+        expect(nodeStatus.getDeploymentStatus(deployment, undefined, 55)).toBe(2);
+        expect(nodeStatus.getDeploymentStatus(deployment, undefined, 0)).toBe(0);
+
     });
 });
