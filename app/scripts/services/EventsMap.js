@@ -56,7 +56,7 @@ angular.module('cosmoUiApp')
             },
             'task_received': {
                 text: 'Task received',
-                icon: 'icon-gs-task-sent',
+                icon: 'icon-gs-task-recieved',
                 class: 'event-text-green'
             },
             'task_succeeded': {
@@ -71,7 +71,7 @@ angular.module('cosmoUiApp')
             },
             'task_rescheduled': {
                 text: 'Task rescheduled',
-                icon: 'icon-gs-task-retried',
+                icon: 'icon-gs-task-retry',
                 class: 'event-text-red'
             },
             'task_retried': {

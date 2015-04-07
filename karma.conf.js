@@ -29,6 +29,7 @@ module.exports = function(config) {
             'app/bower_components/elastic.js/dist/elastic.js',
             'app/bower_components/elastic.js/dist/elastic-angular-client.js',
             'app/bower_components/lodash/dist/lodash.js',
+            'app/bower_components/jquery-simulate/jquery.simulate.js',
             'app/scripts/*.js',
             'app/scripts/**/*.js',
             '.tmp/styles/main.css',
@@ -40,7 +41,10 @@ module.exports = function(config) {
 
         // list of files to exclude
         exclude: [],
-
+        proxies: {
+            '/i18n/translations_en.json' : 'http://localhost:8080/test/spec/mocks/translations_en.json',
+            '/images/' : 'http://localhost:8080/app/images'
+        },
         preprocessors: {
             'app/scripts/**/*.js' : ['coverage']
         },
