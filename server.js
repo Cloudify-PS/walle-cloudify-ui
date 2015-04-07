@@ -211,7 +211,8 @@ app.post('/backend/deployments/workflows/get', CloudifyMiddleware, function(requ
 /* node instances */
 
 app.get('/backend/node-instances', CloudifyMiddleware, function(request, response) {
-    request.cloudifyClient.nodeInstances.list(request.query.deployment_id, null, cloudifyCallback(response));
+    //request.cloudifyClient.nodeInstances.list(request.query.deployment_id, null, cloudifyCallback(response));
+    response.send(require("./conf/dev/deploymentNodes.json"));
 });
 
 app.get('/backend/node-instances/get', CloudifyMiddleware, function(request, response) {

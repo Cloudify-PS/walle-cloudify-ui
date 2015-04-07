@@ -288,10 +288,10 @@ angular.module('cosmoUiApp')
                         };
 
                         if(_uninitialized === _nodeInstanceStatus.total) {
-                            _nodeInstanceStatus.status = nodeStatus.getDeploymentStatus(_nodeInstanceStatus, $scope.currentExecution, false);
+                            _nodeInstanceStatus.status = nodeStatus.getStatus(_nodeInstanceStatus, $scope.currentExecution, false);
                         }
                         else {
-                            _nodeInstanceStatus.status = nodeStatus.getDeploymentStatus(_nodeInstanceStatus, $scope.currentExecution, _processDone);
+                            _nodeInstanceStatus.status = nodeStatus.getStatus(_nodeInstanceStatus, $scope.currentExecution, _processDone);
                         }
 
                     }

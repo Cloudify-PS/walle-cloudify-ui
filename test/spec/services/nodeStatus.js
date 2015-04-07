@@ -73,19 +73,19 @@ describe('Service: nodeStatus', function () {
         expect(nodeStatus.getIcon()).toBe('');
     });
 
-    it('should test getDeploymentStatus', function () {
+    it('should test getStatus', function () {
         var deployment = {
             completed: 0
         };
 
-        expect(nodeStatus.getDeploymentStatus(deployment, undefined, false)).toBe(0);
-        expect(nodeStatus.getDeploymentStatus(deployment, undefined, 100)).toBe(1);
-        expect(nodeStatus.getDeploymentStatus(deployment, {}, 55)).toBe(0);
-        expect(nodeStatus.getDeploymentStatus(deployment, undefined, 55)).toBe(3);
+        expect(nodeStatus.getStatus(deployment, undefined, false)).toBe(0);
+        expect(nodeStatus.getStatus(deployment, undefined, 100)).toBe(1);
+        expect(nodeStatus.getStatus(deployment, {}, 55)).toBe(0);
+        expect(nodeStatus.getStatus(deployment, undefined, 55)).toBe(3);
 
         deployment.completed = 2;
-        expect(nodeStatus.getDeploymentStatus(deployment, undefined, 55)).toBe(2);
-        expect(nodeStatus.getDeploymentStatus(deployment, undefined, 0)).toBe(0);
+        expect(nodeStatus.getStatus(deployment, undefined, 55)).toBe(2);
+        expect(nodeStatus.getStatus(deployment, undefined, 0)).toBe(0);
 
     });
 });
