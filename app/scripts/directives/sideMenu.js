@@ -13,7 +13,7 @@ angular.module('cosmoUiApp')
             link:function( scope ){
                 scope.items = [
                     { 'route' : ['#blueprints', '#blueprint'] ,         reload: true,  'icon': 'plans',        'label':'Blueprints'                         },
-                    { 'route' : ['#deployments', '#deployment'] ,       reload: true,  'icon': 'deployments',  'label':'Deployments'                        },
+                    { 'route' : ['#deployments', '#deployment'] ,       reload: false,  'icon': 'deployments',  'label':'Deployments'                        },
 //                    { 'route' : ['#monitoring'] ,                       reload: false, 'icon': 'monitoring',   'label':'Monitoring',       isDisabled: true },
                     { 'route' : ['#logs'] ,                             reload: false, 'icon': 'logs',         'label':'Logs & Events'                      },
                     { 'route' : ['#hosts'] ,                            reload: false, 'icon': 'hosts',        'label':'Hosts'                              },

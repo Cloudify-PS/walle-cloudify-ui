@@ -57,12 +57,15 @@
         "portLabel": "Cosmo server port:",
         "saveBtn": "Save configuration"
     },
+    "header" : {
+        "logout" : "Logout"
+    },
     "login": {
         "loginTitle": "Log in",
         "userLabel": "Username",
         "passLabel": "Password",
         "loginBtn": "Login",
-        "rememberLabel": "Remember me?"
+        "rememberLabel": "Remember me"
     },
     "deployment": {
         "title": {

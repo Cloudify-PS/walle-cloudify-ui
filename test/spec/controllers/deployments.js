@@ -1,10 +1,12 @@
 'use strict';
 
 describe('Controller: DeploymentsCtrl', function () {
-    var DeploymentsCtrl, scope;
+    var DeploymentsCtrl, scope, _cloudifyService, _timeout, _depExecSpy;
+
     var _execution = {
 
     };
+
     var _deployment = {
         'inputs': {},
         'blueprint_id': 'blueprint1',
@@ -107,7 +109,7 @@ describe('Controller: DeploymentsCtrl', function () {
     beforeEach(module('cosmoUiApp', 'ngMock'));
 
     function _testSetup() {
-        inject(function ($controller, $rootScope, $httpBackend, $q, CloudifyService) {
+        inject(function ($controller, $rootScope, $httpBackend, $q, CloudifyService, $location, $timeout) {
             $httpBackend.whenGET('/backend/configuration?access=all').respond(200);
             $httpBackend.whenGET('/backend/versions/ui').respond(200);
             $httpBackend.whenGET('/backend/versions/manager').respond(200);
@@ -115,8 +117,18 @@ describe('Controller: DeploymentsCtrl', function () {
             $httpBackend.whenGET('/backend/blueprints').respond(200);
 
             scope = $rootScope.$new();
+            _cloudifyService = CloudifyService;
+            _depExecSpy = spyOn(CloudifyService.deployments, 'getDeploymentExecutions').andCallFake(function(){
+                var deferred = $q.defer();
+                deferred.resolve(_executions);
+                return deferred.promise;
+            });
 
-            CloudifyService.deployments.updateExecutionState = function () {
+            _timeout = $timeout;
+
+            $location.path('/deployments');
+
+            _cloudifyService.deployments.updateExecutionState = function () {
                 var deferred = $q.defer();
 
                 deferred.resolve(_execution);
@@ -124,15 +136,9 @@ describe('Controller: DeploymentsCtrl', function () {
                 return deferred.promise;
             };
 
-            CloudifyService.deployments.getDeploymentExecutions = function () {
-                var deferred = $q.defer();
 
-                deferred.resolve(_executions);
 
-                return deferred.promise;
-            };
-
-            CloudifyService.blueprints.list = function () {
+            _cloudifyService.blueprints.list = function () {
                 var deferred = $q.defer();
 
                 deferred.resolve(_blueprints);
@@ -142,30 +148,39 @@ describe('Controller: DeploymentsCtrl', function () {
 
             DeploymentsCtrl = $controller('DeploymentsCtrl', {
                 $scope: scope,
-                CloudifyService: CloudifyService
+                CloudifyService: _cloudifyService,
+                $timeout: _timeout
             });
 
             scope.$digest();
         });
     }
 
-    describe('Test setup', function () {
-        it('', function () {
-            _testSetup(true);
-        });
-    });
 
     describe('Controller tests', function () {
         it('should create a controller', function () {
+            _testSetup();
             expect(DeploymentsCtrl).not.toBeUndefined();
         });
 
         it('should return selected workflow id', function () {
+            _testSetup();
+
             scope.selectedDeployment = _deployment;
 
             expect(scope.getExecutionAttr(scope.selectedDeployment, 'id')).toBe(_executions[1].id);
         });
 
+        it('should load deployment executions every 10000 milliseconds', inject(function($httpBackend) {
+            _testSetup();
 
+            //scope.$apply();
+            $httpBackend.whenGET('/backend/executions').respond({});
+            $httpBackend.whenGET('/backend/configuration?access=all').respond({});
+
+            expect(_depExecSpy.callCount).toEqual(1);
+            _timeout.flush();
+            expect(_depExecSpy.callCount).toEqual(2);
+        }));
     });
 });

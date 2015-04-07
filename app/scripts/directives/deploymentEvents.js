@@ -19,8 +19,10 @@ angular.module('cosmoUiApp')
                 $scope.events = [];
                 $scope.minimizeMode = false;
 
-                var height = 0,
-                    minHeight = 70;
+
+                var dragFromY = 0, // indicates which Y value drag started
+                    dragFromHeight = 0,
+                    minHeight = 40;
                 var events = EventsService.newInstance('/backend/events'),
                     troubleShoot = 0,
                     executeRetry = 10,
@@ -100,16 +102,19 @@ angular.module('cosmoUiApp')
                 };
 
                 $scope.dragIt = function (event) {
+
                     event.preventDefault();
                     $scope.minimizeMode = false;
+                    dragFromY = event.clientY;
+                    dragFromHeight = $element.find('.containList').height();
                     $document.on('mousemove', mousemove);
                     $document.on('mouseup', mouseup);
                 };
 
                 function toggleIt() {
-                    if (height <= minHeight) {
+                    if ($element.find('.containList').height() <= minHeight) {
+                        $log.debug('minimizeMode is on');
                         $scope.minimizeMode = true;
-                        height = 0;
                     }
                     else {
                         $scope.minimizeMode = false;
@@ -117,18 +122,19 @@ angular.module('cosmoUiApp')
                 }
 
                 function mousemove(event) {
-                    var y = window.innerHeight - event.pageY;
+                    var currentY = event.clientY; // clientY increases if mouse is lower on screen.
+
+                    var newHeight = dragFromHeight + dragFromY - currentY;
+
                     var c = $element.find('.containList');
                     var maxHeight = angular.element(document.querySelector('#main-content')).height() - angular.element(document.querySelector('.bpContainer')).position().top - 50;
 
-                    height = y - 60;
-
-                    if (height >= maxHeight) {
-                        height = maxHeight;
+                    if (newHeight >= maxHeight) {
+                        newHeight = maxHeight;
                     }
 
                     c.css({
-                        height: height + 'px'
+                        height: newHeight + 'px'
                     });
 
 

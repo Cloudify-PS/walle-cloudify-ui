@@ -16,36 +16,37 @@ angular.module('cosmoUiApp')
 
         function _execute(params) {
             var callParams = {
-                url: '/backend/deployments/execute',
+                url: '/backend/executions/start',
                 method: 'POST',
                 data: {'deployment_id': params.deployment_id, 'workflow_id': params.workflow_id, parameters: params.inputs}
             };
-            return _load('deployments/execute', callParams);
+            return _load('executions/start', callParams);
         }
 
-        function _updateExecutionState(params) {
+        // todo : need to change params to ones that suite "cancel". currently the format suites "update" by mistake.
+        function _cancelExecutionState(params) {
             var callParams = {
-                url: '/backend/executions/update',
+                url: '/backend/executions/cancel',
                 method: 'POST',
-                data: {'executionId': params.execution_id, 'state': params.state}
+                data: {'execution_id': params.execution_id, 'state': params.state}
             };
             return _load('executions/update', callParams);
         }
 
         function _getDeploymentExecutions(params) {
             var callParams = {
-                url: '/backend/deployments/executions/get',
+                url: '/backend/executions',
                 method: 'GET',
                 params: {'deployment_id': params}
             };
-            return _load('deployments/executions/get', callParams);
+            return _load('executions', callParams);
         }
 
         function _getDeploymentById(params) {
             var callParams = {
                 url: '/backend/deployments/get',
-                method: 'POST',
-                data: params
+                method: 'GET',
+                params: {'deployment_id': params}
             };
             return _load('deployments/get', callParams);
         }
@@ -61,16 +62,17 @@ angular.module('cosmoUiApp')
 
         function _getDeploymentNodes(params) {
             var callParams = {
-                url: '/backend/deployments/nodes',
-                method: 'POST',
-                data: params
+                url: '/backend/node-instances',
+                method: 'GET',
+                params: {'deployment_id': params}
             };
-            return _load('nodes', callParams);
+            return _load('node-instances', callParams);
         }
 
 
         this.execute = _execute;
-        this.updateExecutionState = _updateExecutionState;
+        // todo : change update function to cancel
+        this.updateExecutionState = _cancelExecutionState;
         this.getDeploymentExecutions = _getDeploymentExecutions;
         this.getDeploymentById = _getDeploymentById;
         this.deleteDeploymentById = _deleteDeploymentById;

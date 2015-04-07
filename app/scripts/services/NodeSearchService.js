@@ -55,7 +55,7 @@ angular.module('cosmoUiApp')
             var count = 0;
 
             function getNodes(deploymentId) {
-                CloudifyService.getNodes({deployment_id: deploymentId})
+                CloudifyService.getNodes(deploymentId)
                     .then(function(nodes){
                         count++;
                         result = result.concat(nodes);
@@ -78,7 +78,7 @@ angular.module('cosmoUiApp')
             var count = 0;
 
             function getDeploymentNodes(deploymentId) {
-                CloudifyService.deployments.getDeploymentNodes({deployment_id: deploymentId})
+                CloudifyService.deployments.getDeploymentNodes(deploymentId)
                     .then(function(nodes){
                         count++;
                         result = result.concat(nodes);

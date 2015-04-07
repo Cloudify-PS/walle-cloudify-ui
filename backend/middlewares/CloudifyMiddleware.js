@@ -16,11 +16,12 @@ module.exports = function (req, res, next) {
         endpoint : services.conf.cloudifyManagerEndpoint
     };
     if (creds) {
-        clientConf.cloudifyAuth= {
+        clientConf.cloudifyAuth = {
             'user' : creds.username,
             'pass' : creds.password
         };
     }
     req.cloudifyClient = new CloudifyClient(clientConf);
+    req.cloudifyClientConf = clientConf;
     next();
 };

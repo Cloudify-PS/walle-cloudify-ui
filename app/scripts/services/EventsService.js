@@ -221,7 +221,16 @@ angular.module('cosmoUiApp')
                     if(data.hasOwnProperty('error')) {
                         $log.error(data.error);
                     }
+
                     else if(angular.isFunction(callbackFn)) {
+                        // hack - the js rest client returns a result in different format. we reverse its change.
+                        // todo: we should align to the js client format.
+                        data = {
+                            hits : {
+                                hits: data.events
+                            },
+                            total : data.total_events
+                        };
                         if(mergeData === true) {
                             mergeLastDataWith(data);
                         }

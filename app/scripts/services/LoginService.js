@@ -8,7 +8,7 @@
  * Service in the cosmoUiApp.
  */
 angular.module('cosmoUiApp')
-    .service('LoginService', function LoginService(RestLoader) {
+    .service('LoginService', function LoginService(RestLoader, $http, $location) {
 
         function _load(rest, params){
             return RestLoader.load(rest, params);
@@ -22,6 +22,18 @@ angular.module('cosmoUiApp')
             };
             return _load('login', callParams);
         }
+
+        this.isLoggedIn = function(){
+            return $http.get('/backend/isLoggedIn');
+        };
+
+        this.logout = function( redirect ){
+            return $http.post('/backend/logout').then(function(){
+                if ( redirect ) {
+                    $location.path('/login');
+                }
+            }); //todo : handle failure!
+        };
 
         this.login = _login;
     });

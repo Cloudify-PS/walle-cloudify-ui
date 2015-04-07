@@ -47,18 +47,18 @@ angular.module('cosmoUiApp')
 
         function _getNode(params) {
             var callParams = {
-                url: '/backend/node/get',
+                url: '/backend/nodes/get',
                 method: 'POST',
                 data: params
             };
-            return _load('node/get', callParams);
+            return _load('nodes/get', callParams);
         }
 
         function _getNodes(params) {
             var callParams = {
                 url: '/backend/nodes',
-                method: 'POST',
-                data: params
+                method: 'GET',
+                params: {'deployment_id': params}
             };
             return _load('/backend/nodes', callParams);
         }
