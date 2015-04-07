@@ -77,6 +77,7 @@ describe('Directive: deploymentEvents', function () {
             expect(firstHeight - lastHeight).toBe(10);
             $('body').removeClass('bpContainer');
             $('body').attr('id',null);
+            element.remove();
         });
 
     });
