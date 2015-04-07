@@ -27,7 +27,8 @@
   },
   "devDependencies": {
     "angular-mocks": "~1.2.21",
-    "angular-scenario": "~1.2.14"
+    "angular-scenario": "~1.2.14",
+    "jquery-simulate": "~1.0.1"
   },
   "resolutions": {
     "angular-sanitize": "~1.2.14",

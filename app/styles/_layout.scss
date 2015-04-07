@@ -35,16 +35,50 @@ html, body, .layout {
     .logout-panel{
         position:absolute;
         top:34px;
-        right:22px;
+        right:21px;
+        overflow:hidden;
+        padding-top:1px;
         * {
             color: #CADBEC;
             font-family:"OpenSansCondLight", Helvetica, Arial, sans-serif;
 
         }
+
+        .user-icon{
+            background:url('/images/user_icon.jpg');
+            width:23px;
+            height:24px;
+            display:inline-block;
+            vertical-align: middle;
+        }
+
+        .logout_icon{
+            background:url('/images/logout_icon.jpg');
+            width:19px;
+            height:23px;
+            display:inline-block;
+            vertical-align:middle;
+        }
+
         .username {
-            border-right:1px solid #CADBEC;
+
             padding-right:6px;
             margin-right:15px;
+            font-family: "OpenSansRegular";
+            position:relative;
+            display:inline-block;
+            top:2px;
+
+            &:after{
+                display:inline-block;
+                height:20px;
+                width:1px;
+                background:#CADBEC;
+                content:"";
+                position:absolute;
+                top:-2px;
+                right:0;
+            }
         }
 
         .logout_icon{

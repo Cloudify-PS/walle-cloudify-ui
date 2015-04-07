@@ -305,7 +305,7 @@ app.get('/backend/grafana/series/list', function(request, response){
 });
 
 app.get('/backend/grafana/dashboards/:dashboardId', function(request, response){
-    services.monitoring.getDeploymentDashboards(request.params, function(err, data) {
+    services.monitoring.getDeploymentDashboard(request.params, function(err, data) {
         response.send(err !== null ? err : data);
     });
 });
