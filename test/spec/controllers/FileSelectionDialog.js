@@ -109,36 +109,36 @@ describe('Controller: FileSelectionDialogCtrl', function () {
             });
         });
 
-        it('should reset the url when a file selected by browsing', function () {
-            scope.archiveUrl = 'http://some.kind/of/url.tar.gz';
+        it('should update upload type to file when file is browsed', function () {
+            scope.inputText = 'http://some.kind/of/url.tar.gz';
             scope.uploadType = 'url';
 
             scope.onFileSelect('somefile.tar.gz');
 
             waitsFor(function() {
-                return scope.uploadType === 'file';
+                return scope.uploadType !== 'url';
             });
             runs(function() {
-                expect(scope.archiveUrl).toBe('');
+                expect(scope.uploadType).toBe('file');
             });
         });
 
-        it('should reset the selected file when a file selected by url', function () {
-            scope.selectedFile = 'somefile.tar.gz';
+        it('should update upload type to url when url is entered', function () {
+            scope.inputText = 'http://some.kind/of/url.tar.gz';
             scope.uploadType = 'file';
 
-            scope.archiveUrl = 'http://some.kind/of/url.tar.gz';
+            scope.uploadFile();
 
             waitsFor(function() {
-                return scope.uploadType === 'url';
+                return scope.uploadType !== 'file';
             });
             runs(function() {
-                expect(scope.selectedFile).toBe('');
+                expect(scope.uploadType).toBe('url');
             });
         });
 
         it('should get a blueprint archive file from a url', function() {
-            scope.archiveUrl = 'http://some.kind/of/url.tar.gz';
+            scope.inputText = 'http://some.kind/of/url.tar.gz';
             scope.uploadType = 'url';
             scope.uploadDone = function() {
                 scope.uploadInProcess = false;
