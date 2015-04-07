@@ -7,7 +7,8 @@ angular.module('cosmoUiApp')
             restrict: 'EA',
             transclude: true,
             scope: {
-                map: '='
+                map: '=',
+                deploymentInProgress: '='
             },
             compile: function(element) {
                 return RecursionHelper.compile(element, function(scope) {
@@ -23,8 +24,12 @@ angular.module('cosmoUiApp')
             controller: function($scope, nodeStatus) {
                 $scope.headerHover = null;
 
+                $scope.getBadgeStatusAndIcon = function(status) {
+                    return nodeStatus.getStatusClass(status) + ' ' + nodeStatus.getIconClass(status);
+                };
+
                 $scope.getBadgeStatus = function(status) {
-                    return nodeStatus.getStatus(status);
+                    return nodeStatus.getStatusClass(status);
                 };
 
                 $scope.isConnectedTo = function(relationship) {
@@ -38,6 +43,22 @@ angular.module('cosmoUiApp')
 
                 $scope.setHeaderHover = function(nodeName) {
                     $scope.headerHover = nodeName;
+                };
+
+                $scope.shouldShowBadge = function(node) {
+                    if (node.state === undefined || node.state.completed === undefined) {
+                        return false;
+                    }
+
+                    if (node.state.status === 0 && !$scope.deploymentInProgress) {
+                        return false;
+                    }
+
+                    return true;
+                };
+
+                $scope.shouldShowBadgeTitle = function(node) {
+                    return node.state !== undefined && node.state.completed !== undefined && !node.isContained;
                 };
             }
         };
