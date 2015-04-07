@@ -113,29 +113,29 @@ describe('Directive: floatingDeploymentNodePanel', function () {
 
         it('should show panel when node is set', function() {
             scope.node = _nodeInstance;
-//            scope.$apply();
-//            expect(isolateScope.showPanel).toBe(true);
+            scope.$apply();
+            expect(isolateScope.showPanel).toBe(true);
         });
 
         it('should hide panel when node is set to null', function() {
             scope.node = null;
-//            scope.$apply();
-//            expect(isolateScope.showPanel).toBe(false);
+            scope.$apply();
+            expect(isolateScope.showPanel).toBe(false);
         });
 
         it('should return public IPs instead of public ip\'s', function() {
             expect(scope.getPropertyKeyName('ip_addresses')).toBe('public IPs');
         });
 
-//        it('should create showProperties object with node type (CFY-2428)', function() {
-//            scope.nodeSelected(_nodeInstance);
-//
-//            waitsFor(function() {
-//                return scope.showProperties !== undefined;
-//            });
-//            runs(function() {
-//                expect(scope.showProperties.general.type).toBe('nodecellar.nodes.MonitoredServer');
-//            });
-//        });
+        it('should create showProperties object with node type (CFY-2428)', function() {
+            scope.nodeSelected(_nodeInstance);
+
+            waitsFor(function() {
+                return scope.showProperties !== undefined;
+            });
+            runs(function() {
+                expect(scope.showProperties.general.type).toBe('nodecellar.nodes.MonitoredServer');
+            });
+        });
     });
 });
