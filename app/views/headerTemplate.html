@@ -5,18 +5,14 @@
 </div>
 
 <div class="logout-panel" ng-show="!!isLoggedIn">
-    <div  class="user-icon"></div> <span class="username">{{ username }}</span>
-    <div class="logout_icon" ng-click="logout()" title="logout"></div>
+    <div  class="user-icon"></div>
+    <div class="username">{{ username }}</div>
+    <div class="logout_icon" ng-click="logout()" title="{{ 'header.logout' | i18n }}"></div>
 </div>
 
 
 
 <!--
-<div class="current-user">
-    <div id="user-icon"></div>
-    <div id="user-name">{{loggedUser.name}}</div>
-    <div id="logout-button" ng-click="logout()"></div>
-</div>
 <div class="search-box">
     <input type="text" id="search-field" placeholder="{{ 'searchPlaceholder' | i18n }}">
     <input type="button" id="search-submit" ng-click="searchCloudify()">
