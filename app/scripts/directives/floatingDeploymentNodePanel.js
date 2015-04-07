@@ -65,6 +65,7 @@ angular.module('cosmoUiApp')
                             instances.forEach(function (instance) {
                                 if (instance.deployment_id === $scope.id) {
                                     if(instance.node_id === nodeId) {
+                                        // TODO: instead of changing the instance model, add a method on the instance that will find the type from the nodes list
                                         instance.type = $scope.showProperties.general.type;
                                         $scope.selectNodesArr.push(instance);
                                     }
