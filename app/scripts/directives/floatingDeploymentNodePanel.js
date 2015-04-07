@@ -7,7 +7,7 @@
  * # floatingNodePanel
  */
 angular.module('cosmoUiApp')
-    .directive('floatingDeploymentNodePanel', function (CloudifyService, UpdateNodes) {
+    .directive('floatingDeploymentNodePanel', function (CloudifyService, NodeService, UpdateNodes) {
         return {
             templateUrl: 'views/deployment/floatingNodePanel.html',
             restrict: 'EA',
@@ -44,7 +44,7 @@ angular.module('cosmoUiApp')
                 }
 
                 function _viewRelationship(relationship) {
-                    $scope.selectNodesArr = [];
+                    //$scope.selectNodesArr = [];
                     $scope.propSection = 'general';
                     $scope.showProperties = {
                         properties: relationship.properties,
@@ -65,8 +65,6 @@ angular.module('cosmoUiApp')
                             instances.forEach(function (instance) {
                                 if (instance.deployment_id === $scope.id) {
                                     if(instance.node_id === nodeId) {
-                                        // TODO: instead of changing the instance model, add a method on the instance that will find the type from the nodes list
-                                        instance.type = $scope.showProperties.general.type;
                                         $scope.selectNodesArr.push(instance);
                                     }
                                 }
@@ -108,7 +106,7 @@ angular.module('cosmoUiApp')
                             relationships: node.relationships,
                             general: {
                                 'name': node.id,
-                                'type': node.type,//NodeService.getInstanceType(node, $scope.nodesList),
+                                'type': NodeService.getInstanceType(node, $scope.nodesList),
                                 'state': node.state !== null ? node.state : '',
                                 'ip': node.runtime_properties !== null ? node.runtime_properties.ip : '',
                                 'ip_addresses': node.runtime_properties !== null && node.runtime_properties.hasOwnProperty('ip_addresses') ? node.runtime_properties.ip_addresses.join(', ') : ''
