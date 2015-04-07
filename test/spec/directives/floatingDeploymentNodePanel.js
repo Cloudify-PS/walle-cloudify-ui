@@ -93,5 +93,9 @@ describe('Directive: floatingDeploymentNodePanel', function () {
             scope.$apply();
             expect(isolateScope.showPanel).toBe(false);
         });
+
+        it('should return public IPs instead of public ip\'s', function() {
+            expect(scope.getPropertyKeyName('ip_addresses')).toBe('public IPs');
+        });
     });
 });

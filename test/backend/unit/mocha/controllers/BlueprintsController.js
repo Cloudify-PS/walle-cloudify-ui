@@ -53,6 +53,7 @@ describe('BlueprintsController', function(){
 
         it('should open file stream if uploading file', function(){
             req.body = {};
+            req.cloudifyClientConf = { 'endpoint' : 'http://localhost'};
             req.body.opts = '{}';
             req.files = { application_archive: 'guy.blueprint.archive', path: '/mock/path' };
 
@@ -64,7 +65,7 @@ describe('BlueprintsController', function(){
             req.body = { };
             req.body.opts = '{}';
             req.files = { application_archive: 'guy.blueprint.archive' };
-            sandbox.stub(services.cloudify4node, 'uploadBlueprint', sinon.spy( function( stream, opts, callback ){
+            sandbox.stub(services.cloudify4node, 'uploadBlueprint', sinon.spy( function( cloudifyConf, stream, opts, callback ){
                 callback('error');
             }));
 
@@ -78,7 +79,7 @@ describe('BlueprintsController', function(){
             req.body.opts = '{}';
             req.files = { application_archive: 'guy.blueprint.archive' };
 
-            sandbox.stub(services.cloudify4node,'uploadBlueprint', sinon.spy( function( stream, opts, callback ){
+            sandbox.stub(services.cloudify4node,'uploadBlueprint', sinon.spy( function( cloudifyConf, stream, opts, callback ){
                 callback(null, 'data');
             }));
 
@@ -135,7 +136,7 @@ describe('BlueprintsController', function(){
             sandbox.stub(services.httpUtils,'getUrl', function( url, callback ){
                 callback(null, {});
             });
-            sandbox.stub(services.cloudify4node, 'uploadBlueprint', sinon.spy( function( stream, opts, callback ){
+            sandbox.stub(services.cloudify4node, 'uploadBlueprint', sinon.spy( function( cloudifyConf, stream, opts, callback ){
                 callback(null, 'data');
             }));
             req.body = { 'type' : 'url' , 'url' : 'http://www.demo.com'};

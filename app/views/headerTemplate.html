@@ -4,6 +4,13 @@
     <div id="needUpdate" ng-show="!!updateVersion">{{ 'version.updateAvailable' | i18n }} <a href="http://getcloudify.org/downloads/get_cloudify_3x.html">{{ 'version.download' | i18n }}</a></div>
 </div>
 
+<div class="logout-panel" ng-show="!!isLoggedIn">
+    <img src="images/user_icon.jpg" class="user-icon"> <span class="username">{{ username }}</span>
+    <img src="images/logout_icon.jpg" class="logout_icon" ng-click="logout()" title="logout">
+</div>
+
+
+
 <!--
 <div class="current-user">
     <div id="user-icon"></div>
