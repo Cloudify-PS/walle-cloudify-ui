@@ -45,7 +45,7 @@ angular.module('cosmoUiApp')
             return statuses;
         };
 
-        this.getStatus = function(deployment, deploymentInProgress, process) {
+        this.getNodeStatus = function(deployment, deploymentInProgress, process) {
             if(process === false || process === 0) {
                 return 0;
             }
