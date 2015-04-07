@@ -25,11 +25,11 @@ angular.module('cosmoUiApp')
                 $scope.headerHover = null;
 
                 $scope.getBadgeStatusAndIcon = function(status) {
-                    return nodeStatus.getStatus(status) + ' ' + nodeStatus.getIcon(status);
+                    return nodeStatus.getStatusClass(status) + ' ' + nodeStatus.getIconClass(status);
                 };
 
                 $scope.getBadgeStatus = function(status) {
-                    return nodeStatus.getStatus(status);
+                    return nodeStatus.getStatusClass(status);
                 };
 
                 $scope.isConnectedTo = function(relationship) {

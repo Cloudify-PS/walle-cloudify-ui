@@ -33,11 +33,11 @@ angular.module('cosmoUiApp')
             return statesIndex[index];
         };
 
-        this.getStatus = function(status_id) {
+        this.getStatusClass = function(status_id) {
             return statuses[status_id] || '';
         };
 
-        this.getIcon = function(status_id) {
+        this.getIconClass = function(status_id) {
             return statusIcons[status_id] || '';
         };
 
