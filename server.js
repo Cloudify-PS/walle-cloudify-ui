@@ -190,6 +190,7 @@ app.post('/backend/deployments/create', function(request, response) {
     });
 });
 
+//todo: should be get
 app.post('/backend/deployments/get', function(request, response) {
     cloudify4node.getDeploymentById(request.body.deployment_id, function(err, data) {
         response.send(err !== null ? err : data);
@@ -202,10 +203,12 @@ app.post('/backend/deployments/delete', function(request, response) {
     });
 });
 
+//todo: should be get
 app.post('/backend/deployments/nodes', function(request, response) {
-    cloudify4node.getDeploymentNodes(request.body.deployment_id, request.body.state, function(err, data) {
-        response.send(err !== null ? err : data);
-    });
+    //cloudify4node.getDeploymentNodes(request.body.deployment_id, request.body.state, function(err, data) {
+    //    response.send(err !== null ? err : data);
+    //});
+    response.send(require("./conf/dev/deploymentNodes.json"))
 });
 
 app.get('/backend/node-instances', function(request, response) {

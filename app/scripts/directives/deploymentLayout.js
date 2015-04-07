@@ -201,8 +201,8 @@ angular.module('cosmoUiApp')
                                     });
 
                                     _.each(dataNodes, function( instance ){
-                                        deploymentModel[instance.node_id].total ++;
-                                        deploymentModel['*'].total ++;
+                                        deploymentModel[instance.node_id].total++;
+                                        deploymentModel['*'].total++;
                                     });
 
 
@@ -287,12 +287,20 @@ angular.module('cosmoUiApp')
                             'done': _processDone
                         };
 
+                        var deploymentStatusOptions = {
+                            deployment: _nodeInstanceStatus,
+                            instances: nodes,
+                            deploymentInProgress: $scope.deploymentInProgress
+                        };
+
                         if(_uninitialized === _nodeInstanceStatus.total) {
-                            setDeploymentStatus(_nodeInstanceStatus, false);
+                            deploymentStatusOptions.process = false;
                         }
                         else {
-                            setDeploymentStatus(_nodeInstanceStatus, _processDone);
+                            deploymentStatusOptions.process = _processDone;
                         }
+
+                        setDeploymentStatus(deploymentStatusOptions);
                     }
 
                     nodesList.forEach(function(node) {
@@ -300,22 +308,33 @@ angular.module('cosmoUiApp')
                     });
                 }
 
-                function setDeploymentStatus(deployment, process) {
-                    if(process === false) {
-                        deployment.status = 0;
+                /**
+                 * @param options: {
+                 *      deployment: the deployment,
+                 *      instances: the instances collection (not the nodes),
+                 *      deploymentInProgress: true | false,
+                 *      process: false | _processDone
+                 *
+                 * }
+                 */
+                function setDeploymentStatus(options) {
+                    if(options.process === false) {
+                        options.deployment.status = 0;
                     }
-                    else if(process === 100) {
-                        deployment.status = 1;
+                    else if(options.process === 100) {
+                        options.deployment.status = 1;
                     }
                     // todo: pass "hasExecution" and "instances" here
                     // the logic should be if process > 0 && process < 100 === which means we tried to install
                     // AND if there's no current execution
                     // we should look at each node instance. if all failed - show error, if some - show alert
-                    else if(process > 0 && process < 100) {
-                        deployment.status = 2;
+                    // if there is an execution, should show in progress.
+                    else if(options.process > 0 && options.process < 100) {
+
+                        options.deployment.status = 2;
                     }
-                    else if(process === 0) {
-                        deployment.status = 0;
+                    else if(options.process === 0) {
+                        options.deployment.status = 0;
                     }
                 }
 
