@@ -196,7 +196,7 @@ angular.module('cosmoUiApp')
                                     // consider parent nodes with multiple instances.
                                     // host A with 2 instances that contains App B with 2 instances will actually
                                     // spawn 4 instances of App B (2 per host).
-                                    _.each(deploymentModel, function(value, key){
+                                    _.each(deploymentModel, function(value/*, key*/){
                                         value.total = 0; // reset count..
                                     });
 
