@@ -207,7 +207,7 @@ angular.module('cosmoUiApp')
                         if(e.data.hasOwnProperty('message')) {
                             $scope.delDeployError = e.data.message;
                         } else {
-                            $scope.delDeployError = 'An error occured';
+                            $scope.delDeployError = 'An error occurred';
                         }
                     });
             }
