@@ -48,7 +48,7 @@
                         <i class="browse-button topology-glyph"></i>
                         <input type="file" name="fileInput" id="fileInput" accept=".tar,.gz,.archive" ng-file-select="onFileSelect($files)">
                     </div>
-                    <input type="text" spellcheck="false" class="browseTxt" ng-change="updatePath()" ng-model="inputText" placeholder="{{ 'blueprints.uploadPopup.browseText' | i18n }}">
+                    <input type="text" spellcheck="false" class="browseTxt" ng-change="updatePath()" ng-model="inputText" placeholder="{{ 'blueprints.uploadPopup.browseText' | i18n }}" required>
                 </div>
 
                 <div class="name">
