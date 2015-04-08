@@ -36,14 +36,15 @@ module.exports = function(config) {
             'test/mock/**/*.js',
             'test/spec/*.js',
             'test/spec/**/*.js',
+            'test/spec/mocks/mock_translations_en.json',
             '.tmp/viewTemplates/templates.js'
         ],
 
         // list of files to exclude
         exclude: [],
         proxies: {
-            '/i18n/translations_en.json' : 'http://localhost:8080/test/spec/mocks/translations_en.json',
-            '/images/' : 'http://localhost:8080/app/images'
+            '/i18n/translations_en.json' : 'http://localhost:8080/base/test/spec/mocks/mock_translations_en.json',
+            '/images/' : 'http://localhost:8080/base/app/images'
         },
         preprocessors: {
             'app/scripts/**/*.js' : ['coverage']

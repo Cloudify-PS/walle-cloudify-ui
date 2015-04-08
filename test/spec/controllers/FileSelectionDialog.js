@@ -25,11 +25,11 @@ describe('Controller: FileSelectionDialogCtrl', function () {
     }));
 
     describe('Controller tests', function() {
-        xit('should create a controller', function () {
+        it('should create a controller', function () {
             expect(FileSelectionDialogCtrl).not.toBeUndefined();
         });
 
-        xit('should show error message when error returns from backend', function() {
+        it('should show error message when error returns from backend', function() {
             scope.selectedFile = {};
             scope.blueprintUploadOpts.blueprint_id = 'blueprint1';
             _cloudifyService.blueprints.add = function(data, successCallback, errorCallback) {
@@ -40,13 +40,8 @@ describe('Controller: FileSelectionDialogCtrl', function () {
             };
 
             scope.uploadFile();
+            expect(scope.errorMessage).toBe('Error uploading blueprint'); // todo: verify with erez
 
-            waitsFor(function() {
-                return scope.uploadError === true;
-            });
-            runs(function() {
-                expect(scope.errorMessage).toBe('Error uploading blueprint'); // todo: verify with erez
-            });
         });
 
         xit('should pass blueprint name to the blueprint add method', function() {
