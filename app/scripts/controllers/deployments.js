@@ -202,6 +202,11 @@ angular.module('cosmoUiApp')
                                 _loadDeployments();
                             }, 500);
                         }
+                    }, function(e) {
+                        $scope.deleteInProcess = false;
+                        if(e.data.hasOwnProperty('message')) {
+                            $scope.delDeployError = e.data.message;
+                        }
                     });
             }
         }
