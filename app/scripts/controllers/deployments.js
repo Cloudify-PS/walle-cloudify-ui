@@ -42,7 +42,7 @@ angular.module('cosmoUiApp')
                     controller: 'DeploymentDetailsCtrl',
                     scope: dialogScope
                 }
-            )
+            );
         };
 
         $scope.executeDeployment = function(deployment) {
