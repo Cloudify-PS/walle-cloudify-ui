@@ -70,25 +70,25 @@ describe('Directive: floatingDeploymentNodePanel', function () {
 
     beforeEach(module('cosmoUiApp', 'ngMock', 'templates-main'));
 
-    describe('Test setup', function() {
-        it ('', inject(function ($compile, $rootScope, $httpBackend) {
-            $httpBackend.whenGET('/backend/configuration?access=all').respond(200);
-            $httpBackend.whenGET('/backend/versions/ui').respond(200);
-            $httpBackend.whenGET('/backend/versions/manager').respond(200);
-            $httpBackend.whenGET('/backend/version/latest?version=00').respond('300');
+    beforeEach(inject(function ($compile, $rootScope, $httpBackend) {
+        $httpBackend.whenGET('/backend/configuration?access=all').respond(200);
+        $httpBackend.whenGET('/backend/versions/ui').respond(200);
+        $httpBackend.whenGET('/backend/versions/manager').respond(200);
+        $httpBackend.whenGET('/backend/version/latest?version=00').respond('300');
 
-            scope = $rootScope.$new();
-            element = $compile(angular.element('<div floating-deployment-node-panel node="node" depid="deploymentId"></div>'))(scope);
+        scope = $rootScope.$new();
+        scope.node = _nodeInstance;
+        scope.deploymentId = 'foo';
+        element = $compile(angular.element('<div floating-deployment-node-panel node="node" depid="deploymentId"></div>'))(scope);
 
-            $rootScope.$apply();
+        $rootScope.$apply();
 
-            scope = element.isolateScope();
-            isolateScope = element.children().scope();
-            scope.$apply();
-        }));
-    });
+        scope = element.isolateScope();
+        isolateScope = element.children().scope();
+        scope.$apply();
+    }));
 
-    describe('Directive tests', function() {
+    describe('the directive', function() {
         beforeEach(function() {
             scope.nodesList = _nodes;
             scope.showProperties = undefined;
