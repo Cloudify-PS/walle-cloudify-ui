@@ -483,6 +483,24 @@ module.exports = function (grunt) {
                 'src' : 'test/backend/unit/mocha/**/*'
             }
         },
+        shell: {
+            npmPack: {
+                command: 'npm pack',
+                options: {
+                    execOptions: {
+                        cwd : '<%= yeoman.dist %>'
+                    }
+                }
+            },
+            npmInstallDist : {
+                command: 'npm install --production',
+                options: {
+                    execOptions: {
+                        cwd: '<%= yeoman.dist %>'
+                    }
+                }
+            }
+        },
         jasmine_node: {
             options: {
                 jUnit: {
@@ -549,7 +567,6 @@ module.exports = function (grunt) {
 
         var tasks = [
             'clean:dist',
-
             'useminPrepare',
             'concurrent:dist',
             'concat',
@@ -565,6 +582,12 @@ module.exports = function (grunt) {
 
         grunt.task.run(tasks);
     });
+
+    grunt.registerTask('pack', [
+        'build',
+        'shell:npmInstallDist',
+        'shell:npmPack'
+    ]);
 
     grunt.registerTask('bundle', 'A task that bundles all dependencies.', function () {
         // "package" is a reserved word so it's abbreviated to "pkg"
