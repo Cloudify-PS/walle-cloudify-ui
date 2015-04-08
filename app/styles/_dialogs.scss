@@ -44,13 +44,25 @@ input[required] {
     z-index: 9995;
 }
 
-.dialogBox {
+.ngdialog.ngdialog-theme-default  .ngdialog-content, .dialogBox {
     z-index: 9996;
     border: 2px solid $COSMOUI_DIALOG_BORDER_COLOR;
     border-radius: 4px;
+    padding:0;
     box-shadow: 0px 0px 5px $COSMOUI_DIALOG_SHADOW_COLOR;
     background: $COSMOUI_DIALOG_BACKGROUND;
     overflow-x: hidden;
+
+    .ngdialog-close{
+        top:10px;
+        &:before{
+           right:15px;
+        }
+    }
+
+    .body{
+        padding:20px;
+    }
 
     .dialogTitle {
         display: block;

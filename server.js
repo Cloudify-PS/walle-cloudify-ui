@@ -203,6 +203,10 @@ app.post('/backend/deployments/delete', CloudifyMiddleware, function (request, r
     request.cloudifyClient.deployments.delete(request.body.deployment_id, request.body.ignoreLiveNodes, cloudifyCallback(response));
 });
 
+app.get('/backend/deployments/:deploymentId/outputs', CloudifyMiddleware, function(req, res){
+    req.cloudifyClient.deployments.outputs.get( req.params.deploymentId, cloudifyCallback(res));
+});
+
 app.post('/backend/deployments/workflows/get', CloudifyMiddleware, function(request, response) {
     request.cloudifyClient.deployments.get_workflows(request.body.deployment_id, null, cloudifyCallback(response));
 });

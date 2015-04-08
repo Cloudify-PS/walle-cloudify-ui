@@ -8,7 +8,7 @@
  * Service in the cosmoUiApp.
  */
 angular.module('cosmoUiApp')
-    .service('DeploymentsService', function Deploymentsservice(RestLoader) {
+    .service('DeploymentsService', function Deploymentsservice(RestLoader, $http ) {
 
         function _load(rest, params){
             return RestLoader.load(rest, params);
@@ -32,6 +32,10 @@ angular.module('cosmoUiApp')
             };
             return _load('executions/update', callParams);
         }
+
+        this.getOutputs = function( deploymentId ){
+            return $http.get('/backend/deployments/' + deploymentId + '/outputs');
+        };
 
         function _getDeploymentExecutions(params) {
             var callParams = {

@@ -35,10 +35,11 @@ angular.module('cosmoUiApp')
         $scope.showInputs = function(deployment){
             $log.info('showing inputs');
             var dialogScope = $scope.$new();
-            dialogScope.inputs = deployment.inputs;
+            dialogScope.deployment = deployment;
             ngDialog.open(
                 {
-                    template: 'views/dialogs/inputs.html' ,
+                    template: 'views/dialogs/deploymentDetails.html' ,
+                    controller: 'DeploymentDetailsCtrl',
                     scope: dialogScope
                 }
             )
