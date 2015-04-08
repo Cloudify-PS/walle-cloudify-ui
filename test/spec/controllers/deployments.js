@@ -159,11 +159,13 @@ describe('Controller: DeploymentsCtrl', function () {
             };
 
             _cloudifyService.deployments.deleteDeploymentById = function () {
-                var deferred = $q.defer();
 
-                deferred.reject(_deleteErr);
+                return {
+                    then: function(success, error){
+                        error( _deleteErr );
+                    }
+                };
 
-                return deferred.promise;
             };
 
             _cloudifyService.blueprints.list = function () {
@@ -211,19 +213,13 @@ describe('Controller: DeploymentsCtrl', function () {
             _timeout.flush();
             expect(_depExecSpy.callCount).toEqual(2);
         }));
-        
+
         it('should show error message if deployment delete fails', function() {
             _testSetup();
             scope.deleteDeployment(_deployment);
 
             scope.confirmDeleteDeployment();
-
-            waitsFor(function() {
-                return scope.deleteInProcess === false;
-            });
-            runs(function() {
-                expect(scope.delDeployError).toBe(_deleteErr.data.message);
-            });
+            expect(scope.delDeployError).toBe(_deleteErr.data.message);
         });
 
         it('should show general error message if error returns with no message', function() {
@@ -232,13 +228,7 @@ describe('Controller: DeploymentsCtrl', function () {
             scope.deleteDeployment(_deployment);
 
             scope.confirmDeleteDeployment();
-
-            waitsFor(function() {
-                return scope.deleteInProcess === false;
-            });
-            runs(function() {
-                expect(scope.delDeployError).toBe('An error occurred');
-            });
+            expect(scope.delDeployError).toBe('An error occurred');
         });
     });
 });
