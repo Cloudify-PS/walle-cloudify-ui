@@ -561,10 +561,10 @@ module.exports = function (grunt) {
             var fs = require('fs');
             buildVersion = grunt.file.readJSON(versionFilename).version;
             grunt.log.ok('build version is ', buildVersion );
-            var packageJson = grunt.file.readJSON('package.json');
+            var packageJson = grunt.file.readJSON('dist/package.json');
             packageJson.version = buildVersion;
             try {
-                fs.writeFile('package.json', JSON.stringify(packageJson,{},4), function (err) {
+                fs.writeFile('dist/package.json', JSON.stringify(packageJson,{},4), function (err) {
                     if ( !!err ){
                         grunt.log.error('writing file failed',err);
                         grunt.fail.fatal('writing version failed');
