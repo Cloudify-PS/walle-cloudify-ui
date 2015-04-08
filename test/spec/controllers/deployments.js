@@ -7,6 +7,28 @@ describe('Controller: DeploymentsCtrl', function () {
 
     };
 
+    var _deleteErr = {
+        'data': {
+            'message': 'Can\'t delete deployment',
+            'error_code': 'dependent_exists_error',
+            'server_traceback': 'Traceback'
+        },
+        'status': 400,
+        'config': {
+            'method': 'POST',
+            'url': '/backend/deployments/delete',
+            'data': {
+                'deployment_id': 'deployment1',
+                'ignoreLiveNodes': false
+            },
+            'headers': {
+                'Accept': 'application/json, text/plain, */*',
+                'Content-Type': 'application/json;charset=utf-8'
+            }
+        },
+        'statusText': 'Bad Request'
+    };
+
     var _deployment = {
         'inputs': {},
         'blueprint_id': 'blueprint1',
@@ -136,7 +158,15 @@ describe('Controller: DeploymentsCtrl', function () {
                 return deferred.promise;
             };
 
+            _cloudifyService.deployments.deleteDeploymentById = function () {
 
+                return {
+                    then: function(success, error){
+                        error( _deleteErr );
+                    }
+                };
+
+            };
 
             _cloudifyService.blueprints.list = function () {
                 var deferred = $q.defer();
@@ -158,6 +188,7 @@ describe('Controller: DeploymentsCtrl', function () {
 
 
     describe('Controller tests', function () {
+
         it('should create a controller', function () {
             _testSetup();
             expect(DeploymentsCtrl).not.toBeUndefined();
@@ -182,5 +213,22 @@ describe('Controller: DeploymentsCtrl', function () {
             _timeout.flush();
             expect(_depExecSpy.callCount).toEqual(2);
         }));
+
+        it('should show error message if deployment delete fails', function() {
+            _testSetup();
+            scope.deleteDeployment(_deployment);
+
+            scope.confirmDeleteDeployment();
+            expect(scope.delDeployError).toBe(_deleteErr.data.message);
+        });
+
+        it('should show general error message if error returns with no message', function() {
+            _testSetup();
+            _deleteErr.data = {};
+            scope.deleteDeployment(_deployment);
+
+            scope.confirmDeleteDeployment();
+            expect(scope.delDeployError).toBe('An error occurred');
+        });
     });
 });
