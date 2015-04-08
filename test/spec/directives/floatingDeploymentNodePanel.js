@@ -80,9 +80,10 @@ describe('Directive: floatingDeploymentNodePanel', function () {
         scope = $rootScope.$new();
         scope.node = _nodeInstance;
         scope.deploymentId = 'deployment1';
-        element = $compile(angular.element('<div floating-deployment-node-panel node="node" depid="deploymentId"></div>'))(scope);
+        scope.nodesList = _nodes;
+        element = $compile(angular.element('<div floating-deployment-node-panel node="node" depid="deploymentId" nodes-list="nodesList"></div>'))(scope);
 
-        $rootScope.$apply();
+        $rootScope.$digest();
 
         scope = element.isolateScope();
         isolateScope = element.children().scope();
@@ -130,13 +131,8 @@ describe('Directive: floatingDeploymentNodePanel', function () {
 
         it('should create showProperties object with node type (CFY-2428)', function() {
             scope.nodeSelected(_nodeInstance);
-
-            waitsFor(function() {
-                return scope.showProperties !== undefined;
-            });
-            runs(function() {
-                expect(scope.showProperties.general.type).toBe('nodecellar.nodes.MonitoredServer');
-            });
+            expect(scope.showProperties).not.toBe(undefined);
+            expect(scope.showProperties.general.type).toBe('nodecellar.nodes.MonitoredServer');
         });
     });
 });
