@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('cosmoUiApp')
-    .controller('DeploymentsCtrl', function ($scope, $cookieStore, $location, $routeParams, BreadcrumbsService, $timeout, $log, CloudifyService) {
+    .controller('DeploymentsCtrl', function ($scope, $cookieStore, $location, $routeParams, BreadcrumbsService, $timeout, $log, ngDialog, CloudifyService) {
 
         $scope.blueprints = null;
         $scope.deployments = [];
@@ -29,6 +29,20 @@ angular.module('cosmoUiApp')
                 i18nKey: 'breadcrumb.deployments',
                 id: 'deployments'
             });
+
+
+
+        $scope.showInputs = function(deployment){
+            $log.info('showing inputs');
+            var dialogScope = $scope.$new();
+            dialogScope.inputs = deployment.inputs;
+            ngDialog.open(
+                {
+                    template: 'views/dialogs/inputs.html' ,
+                    scope: dialogScope
+                }
+            )
+        };
 
         $scope.executeDeployment = function(deployment) {
             if ($scope.isExecuteEnabled(deployment.id)) {

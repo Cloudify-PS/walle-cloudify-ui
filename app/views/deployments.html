@@ -33,7 +33,7 @@
                         <div class="deploymentExecute" ng-show="isExecuting(deployment.blueprint_id, deployment.id)"></div>
                         {{ 'deployments.process.' + getExecutionAttr(deployment, 'workflow_id') | i18n }}
                     </div>
-                    <i class="deployment-play" ng-class="{play: isExecuteEnabled(deployment.id), playDisabled: !isExecuteEnabled(deployment.id)}" ng-click="toggleConfirmationDialog(deployment, 'execute')" ng-show="!isExecuting(deployment.blueprint_id, deployment.id)"></i>
+                    <i class="deployment-play" ng-class="{play: isExecuteEnabled(deployment.id), playDisabled: !isExecuteEnabled(deployment.id)}"  ng-dblclick="showInputs(deployment)" ng-click="toggleConfirmationDialog(deployment, 'execute')" ng-show="!isExecuting(deployment.blueprint_id, deployment.id)"></i>
                     <i class="deployment-pause fa fa-times-circle" ng-show="isExecuting(deployment.blueprint_id, deployment.id, getExecutionAttr(deployment, 'workflow_id'))" ng-click="toggleConfirmationDialog(deployment, 'cancel')"></i>
                 </td>
                 <td class="delete" ng-click="layerRedirectTo(deployment, $event, 'td.delete')">
