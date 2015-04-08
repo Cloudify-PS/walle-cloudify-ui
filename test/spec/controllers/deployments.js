@@ -225,5 +225,20 @@ describe('Controller: DeploymentsCtrl', function () {
                 expect(scope.delDeployError).toBe(_deleteErr.data.message);
             });
         });
+
+        it('should show general error message if error returns with no message', function() {
+            _testSetup();
+            _deleteErr.data = {};
+            scope.deleteDeployment(_deployment);
+
+            scope.confirmDeleteDeployment();
+
+            waitsFor(function() {
+                return scope.deleteInProcess === false;
+            });
+            runs(function() {
+                expect(scope.delDeployError).toBe('An error occurred');
+            });
+        });
     });
 });
