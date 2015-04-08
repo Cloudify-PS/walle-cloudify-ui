@@ -30,7 +30,7 @@ describe('Directive: floatingDeploymentNodePanel', function () {
         'version': null,
         'state': 'started',
         'host_id': 'nodejs_host_b86e1',
-        'deployment_id': 'nc1_dep1',
+        'deployment_id': 'deployment1',
         'id': 'nodejs_host_b86e1'
     };
 
@@ -42,7 +42,7 @@ describe('Directive: floatingDeploymentNodePanel', function () {
         'type': 'nodecellar.nodes.MongoDatabase',
         'id': 'mongod',
         'number_of_instances': '1',
-        'deployment_id': 'nc1_dep1',
+        'deployment_id': 'deployment1',
         'planned_number_of_instances': '1',
         'name': 'mongod',
         'class': 'cloudify-nodes-Root cloudify-nodes-SoftwareComponent cloudify-nodes-DBMS nodecellar-nodes-MongoDatabase',
@@ -58,7 +58,7 @@ describe('Directive: floatingDeploymentNodePanel', function () {
         'type': 'nodecellar.nodes.MonitoredServer',
         'id': 'nodejs_host',
         'number_of_instances': '1',
-        'deployment_id': 'nc1_dep1',
+        'deployment_id': 'deployment1',
         'planned_number_of_instances': '1',
         'name': 'nodejs_host',
         'class': 'cloudify-nodes-Root cloudify-nodes-Compute cloudify-openstack-nodes-Server nodecellar-nodes-MonitoredServer',
@@ -75,10 +75,11 @@ describe('Directive: floatingDeploymentNodePanel', function () {
         $httpBackend.whenGET('/backend/versions/ui').respond(200);
         $httpBackend.whenGET('/backend/versions/manager').respond(200);
         $httpBackend.whenGET('/backend/version/latest?version=00').respond('300');
+        $httpBackend.whenGET('/backend/node-instances').respond(200);
 
         scope = $rootScope.$new();
         scope.node = _nodeInstance;
-        scope.deploymentId = 'foo';
+        scope.deploymentId = 'deployment1';
         element = $compile(angular.element('<div floating-deployment-node-panel node="node" depid="deploymentId"></div>'))(scope);
 
         $rootScope.$apply();
