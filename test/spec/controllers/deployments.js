@@ -158,10 +158,10 @@ describe('Controller: DeploymentsCtrl', function () {
                 return deferred.promise;
             };
 
-            _cloudifyService.deployments.delete = function () {
+            _cloudifyService.deployments.deleteDeploymentById = function () {
                 var deferred = $q.defer();
 
-                deferred.resolve(_deleteErr);
+                deferred.reject(_deleteErr);
 
                 return deferred.promise;
             };
@@ -212,13 +212,18 @@ describe('Controller: DeploymentsCtrl', function () {
             expect(_depExecSpy.callCount).toEqual(2);
         }));
         
-//        it('should show error message if deployment delete fails', function() {
-//            _testSetup();
-//
-//            scope.confirmDeleteDeployment();
-//
-//            expect(scope.deleteInProcess).toBeFalsy();
-//            expect(scope.delDeployError).toBe(_deleteErr.data.message);
-//        });
+        it('should show error message if deployment delete fails', function() {
+            _testSetup();
+            scope.deleteDeployment(_deployment);
+
+            scope.confirmDeleteDeployment();
+
+            waitsFor(function() {
+                return scope.deleteInProcess === false;
+            });
+            runs(function() {
+                expect(scope.delDeployError).toBe(_deleteErr.data.message);
+            });
+        });
     });
 });
