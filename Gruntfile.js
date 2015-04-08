@@ -549,11 +549,13 @@ module.exports = function (grunt) {
 
         var tasks = [
             'clean:dist',
-            'overrideBuildVersion',
+
             'useminPrepare',
             'concurrent:dist',
             'concat',
             'copy:dist',
+            'overrideBuildVersion',
+            'bundle',
             'ngmin',
             'cssmin',
             'uglify',
@@ -562,6 +564,15 @@ module.exports = function (grunt) {
         ];
 
         grunt.task.run(tasks);
+    });
+
+    grunt.registerTask('bundle', 'A task that bundles all dependencies.', function () {
+        // "package" is a reserved word so it's abbreviated to "pkg"
+        var pkg = grunt.file.readJSON('dist/package.json');
+        // set the bundled dependencies to the keys of the dependencies property
+        pkg.bundledDependencies = Object.keys(pkg.dependencies);
+        // write back to package.json and indent with two spaces
+        grunt.file.write('dist/package.json', JSON.stringify(pkg, undefined, '  '));
     });
 
     grunt.registerTask('overrideBuildVersion', function(){

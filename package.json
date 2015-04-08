@@ -82,20 +82,6 @@
         "sinon": "^1.12.2",
         "xunit-file": "0.0.6"
     },
-    "bundledDependencies": [
-        "express",
-        "cloudify-js",
-        "js-yaml",
-        "jade",
-        "log4js",
-        "restler",
-        "lodash",
-        "fs.extra",
-        "influx",
-        "express-params",
-        "tar",
-        "request"
-    ],
     "engines": {
         "node": ">=0.8.0"
     }
