@@ -5,7 +5,7 @@
     </div>
 
     <div class="content">
-        <div class="gs-selection-button">
+        <div class="gs-selection-button" ng-show="selectNodesArr.length > 0">
             <select class="gs-select" ng-model="selectedNode" ng-change="nodeSelected(selectedNode)" ng-options="node.id for node in selectNodesArr">
                 <option value="">{{ 'plans.all' | i18n }}</option>
             </select>
