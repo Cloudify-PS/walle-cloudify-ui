@@ -393,7 +393,7 @@ input[type=text], input[type=password]{
   border-radius: 3px;
   padding-left: 10px;
   background-clip: padding-box;
-  background-color: #f4fbff;
+  background-color: $COSMOUI_INPUT_BACKGROUND;
   border: 0;
 }
 

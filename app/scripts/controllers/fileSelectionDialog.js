@@ -95,7 +95,7 @@ angular.module('cosmoUiApp')
         };
 
         $scope.isUploadEnabled = function() {
-            return (($scope.selectedFile !== '') &&
+            return (($scope.inputText !== '' && $scope.inputText !== undefined) &&
                 !$scope.uploadInProcess &&
                 $scope.blueprintUploadOpts.blueprint_id !== undefined &&
                 $scope.blueprintUploadOpts.blueprint_id.length > 0);

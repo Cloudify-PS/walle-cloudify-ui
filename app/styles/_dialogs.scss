@@ -84,7 +84,7 @@ input[required] {
             border-radius: 3px;
             padding-left: 10px;
             background-clip: padding-box;
-            background-color: $clr-base-30;
+            background-color: $COSMOUI_INPUT_BACKGROUND;
             border: 0;
             padding: 5px 10px;
             line-height: 22px;
@@ -223,7 +223,7 @@ input[required] {
             border-radius: 3px;
             padding-left: 10px;
             background-clip: padding-box;
-            background-color: $clr-base-10;
+            background-color: $COSMOUI_INPUT_BACKGROUND;
             border: 0;
 
             &.url {
@@ -248,7 +248,7 @@ input[required] {
                 border-radius: 3px;
                 padding-left: 10px;
                 background-clip: padding-box;
-                background-color: $clr-base-10;
+                background-color: $COSMOUI_INPUT_BACKGROUND;
                 border: 0;
             }
 
