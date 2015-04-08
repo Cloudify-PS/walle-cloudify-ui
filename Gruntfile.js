@@ -364,6 +364,17 @@ module.exports = function (grunt) {
                         src: [
                             'generated/*'
                         ]
+                    },
+                    {
+                        expand: true,
+                        flatten:true,
+                        nonull:true,
+                        dot: true,
+                        cwd: '<%= yeoman.app %>/bower_components/gs-ui-infra/assets',
+                        dest: '<%= yeoman.dist %>/styles/fonts',
+                        src: [
+                            '**/*.{ttf,woff,eot,svg}'
+                        ]
                     }
                 ]
             },
