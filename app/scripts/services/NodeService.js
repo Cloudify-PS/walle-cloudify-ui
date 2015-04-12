@@ -115,5 +115,16 @@ angular.module('cosmoUiApp')
             }
         }
 
+        function _getInstanceType(instance, nodes) {
+            var id = instance.node_id;
+            for (var i = 0; i < nodes.length; i++) {
+                if (nodes[i].id === id) {
+                    return nodes[i].type;
+                }
+            }
+            return 'N/A';
+        }
+
         this.createNodesTree = _createNodesTree;
+        this.getInstanceType = _getInstanceType;
     });

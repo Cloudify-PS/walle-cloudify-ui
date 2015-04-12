@@ -84,7 +84,7 @@ input[required] {
             border-radius: 3px;
             padding-left: 10px;
             background-clip: padding-box;
-            background-color: $clr-base-30;
+            background-color: $COSMOUI_INPUT_BACKGROUND;
             border: 0;
             padding: 5px 10px;
             line-height: 22px;
@@ -202,14 +202,6 @@ input[required] {
         position: relative;
         display: block;
 
-        .archiveSelectBox {
-          margin-right: 10px;
-          margin-left: 10px;
-          padding-top: 10px;
-          padding-bottom: 1px;
-          background: $clr-base-23;
-        }
-
         .browse {
           display: block;
           height: 33px;
@@ -218,16 +210,17 @@ input[required] {
           #fileInput {
             position: absolute;
             opacity: 0;
-            left: 20px;
+            left: 0px;
             z-index: 9998;
-            width: 390px;
+            top: 0px;
+            width: 35px;
             height: 35px;
             cursor: pointer;
           }
 
           #browseBtn {
             position: absolute;
-            right: 12px;
+            right: 22px;
             height: 32px;
             font-size: 30px;
             padding: 0px 8px 0px 9px;
@@ -243,7 +236,7 @@ input[required] {
             border-radius: 3px;
             padding-left: 10px;
             background-clip: padding-box;
-            background-color: $clr-base-10;
+            background-color: $COSMOUI_INPUT_BACKGROUND;
             border: 0;
 
             &.url {
@@ -268,7 +261,7 @@ input[required] {
                 border-radius: 3px;
                 padding-left: 10px;
                 background-clip: padding-box;
-                background-color: $clr-base-10;
+                background-color: $COSMOUI_INPUT_BACKGROUND;
                 border: 0;
             }
 

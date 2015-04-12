@@ -15,16 +15,14 @@ describe('Controller: FileSelectionDialogCtrl', function () {
         $httpBackend.whenGET('/backend/version/latest?version=00').respond('300');
 
         scope = $rootScope.$new();
-
         _cloudifyService = CloudifyService;
 
-        FileSelectionDialogCtrl = $controller('FileSelectionDialogCtrl', {
-            $scope: scope,
-            CloudifyService: _cloudifyService
-        });
-
-
-    }));
+            FileSelectionDialogCtrl = $controller('FileSelectionDialogCtrl', {
+                $scope: scope,
+                CloudifyService: _cloudifyService
+            });
+        }));
+    });
 
     describe('Controller tests', function() {
         it('should create a controller', function () {
@@ -42,13 +40,7 @@ describe('Controller: FileSelectionDialogCtrl', function () {
             };
 
             scope.uploadFile();
-
-            waitsFor(function() {
-                return scope.uploadError === true;
-            });
-            runs(function() {
-                expect(scope.errorMessage).toBe('Error uploading blueprint'); // todo: verify with erez
-            });
+            expect(scope.errorMessage).toBe('Error uploading blueprint'); // todo: verify with erez
         });
 
         describe('$scope.$watch myFile', function(){
@@ -77,6 +69,9 @@ describe('Controller: FileSelectionDialogCtrl', function () {
 
         it('should pass blueprint name to the blueprint add method', function() {
             scope.selectedFile = {};
+            spyOn(scope, 'isUploadEnabled').andCallFake(function(){
+                return true;
+            });
             scope.uploadDone = function() {
                 scope.uploadInProcess = false;
             };
@@ -113,7 +108,7 @@ describe('Controller: FileSelectionDialogCtrl', function () {
             });
         });
 
-        it('should not validate blueprint name', function($httpBackend) {
+        it('should not validate blueprint name', function() {
             scope.blueprintName = '~~~!!!@@@';
             scope.selectedFile = {};
             // expected to be on scope from parent.. todo: turn to directive. bind event callback.
@@ -123,7 +118,7 @@ describe('Controller: FileSelectionDialogCtrl', function () {
             };
 
             spyOn(scope, 'isUploadEnabled').andCallFake(function(){
-               return true;
+                return true;
             });
             _cloudifyService.blueprints.add = function(data, successCallback) {
                 successCallback();
@@ -140,39 +135,27 @@ describe('Controller: FileSelectionDialogCtrl', function () {
             });
         });
 
-        it('should reset the url when a file selected by browsing', function () {
-            scope.archiveUrl = 'http://some.kind/of/url.tar.gz';
+        it('should update upload type to file when file is browsed', function () {
+            scope.inputText = 'http://some.kind/of/url.tar.gz';
             scope.uploadType = 'url';
-
             scope.onFileSelect('somefile.tar.gz');
+            expect(scope.uploadType).toBe('file');
 
-            waitsFor(function() {
-                return scope.uploadType === 'file';
-            });
-            runs(function() {
-                expect(scope.archiveUrl).toBe('');
-            });
         });
 
-        it('should reset the selected file when a file selected by url', inject(function ( $timeout ) {
-            scope.selectedFile = 'somefile.tar.gz';
+        it('should update upload type to url when url is entered', function () {
+            scope.inputText = 'http://some.kind/of/url.tar.gz';
             scope.uploadType = 'file';
-
-            // trigger watch event
-            scope.$digest();
-            scope.archiveUrl = 'http://some.kind/of/url.tar.gz';
-            scope.$digest();
-
-            waitsFor(function() {
-                return scope.uploadType === 'url';
-            }, 100);
-            runs(function() {
-                expect(scope.selectedFile).toBe('');
+            spyOn(scope, 'isUploadEnabled').andCallFake(function(){
+                return true;
             });
-        }));
+            scope.uploadFile();
+            expect(scope.uploadType).toBe('url');
+
+        });
 
         it('should get a blueprint archive file from a url', function() {
-            scope.archiveUrl = 'http://some.kind/of/url.tar.gz';
+            scope.inputText = 'http://some.kind/of/url.tar.gz';
             scope.uploadType = 'url';
             scope.blueprintName = 'foo';
             var formDataUrl = null;

@@ -4,8 +4,25 @@ describe('Controller: BlueprintsIndexCtrl', function () {
 
     var BlueprintsIndexCtrl, scope, cloudifyService;
     var errorDeleteJSON = {
-        'message': 'Can\'t delete blueprint nc1 - There exist deployments for this blueprint; Deployments ids: nc1_dep3,b2',
-        'error_code': 'dependent_exists_error'
+        'data': {
+            'message': 'Can\'t delete blueprint blueprint1 - There exist deployments for this blueprint; Deployments ids: deployment1',
+            'error_code': 'dependent_exists_error',
+            'server_traceback': 'Traceback'
+        },
+        'status': 400,
+        'config': {
+            'method': 'GET',
+            'transformRequest': [null],
+            'transformResponse': [null],
+            'url': '/backend/blueprints/delete',
+            'params': {
+                'id': 'blueprint1'
+            },
+            'headers': {
+                'Accept': 'application/json, text/plain, */*'
+            }
+        },
+        'statusText': 'Bad Request'
     };
     var successDeleteJSON = {
         'id': 'blueprint1'
@@ -66,12 +83,16 @@ describe('Controller: BlueprintsIndexCtrl', function () {
             };
 
             cloudifyService.blueprints.delete = function () {
-                var deferred = $q.defer();
-                var result = !deleteSuccess ? errorDeleteJSON : successDeleteJSON;
+                return {
+                    then: function(success, error){
+                        if (!deleteSuccess) {
+                            error( errorDeleteJSON );
+                        } else {
+                            success( successDeleteJSON );
+                        }
 
-                deferred.resolve(result);
-
-                return deferred.promise;
+                    }
+                };
             };
 
             BlueprintsIndexCtrl = $controller('BlueprintsIndexCtrl', {
@@ -135,13 +156,17 @@ describe('Controller: BlueprintsIndexCtrl', function () {
             scope.deleteBlueprint(blueprintToDelete);
             scope.confirmDeleteBlueprint();
 
-            waitsFor(function () {
-                return scope.delBlueprintError === true;
-            });
+            expect(scope.delErrorMessage).toBe(errorDeleteJSON.data.message);
+        });
 
-            runs(function () {
-                expect(scope.delErrorMessage).toBe(errorDeleteJSON.message);
-            });
+        it('should show general error message if error returns with no message', function() {
+            _testSetup(false);
+            var blueprintToDelete = scope.blueprints[0];
+            errorDeleteJSON.data = {};
+            scope.deleteBlueprint(blueprintToDelete);
+            scope.confirmDeleteBlueprint();
+
+            expect(scope.delErrorMessage).toBe('An error occurred');
         });
     });
 });

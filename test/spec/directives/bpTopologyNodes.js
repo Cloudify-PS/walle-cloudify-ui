@@ -344,7 +344,7 @@ describe('Directive: bpTopologyNodes', function () {
             expect(element.isolateScope().getBadgeStatus(1)).toBe('done');
             expect(element.isolateScope().getBadgeStatus(2)).toBe('alerts');
             expect(element.isolateScope().getBadgeStatus(3)).toBe('failed');
-            expect(element.isolateScope().getBadgeStatus()).toBe('install');
+            expect(element.isolateScope().getBadgeStatus()).toBe('');
         });
 
         it('should return type class using the getTypeClass method', function() {

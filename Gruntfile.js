@@ -364,6 +364,17 @@ module.exports = function (grunt) {
                         src: [
                             'generated/*'
                         ]
+                    },
+                    {
+                        expand: true,
+                        flatten:true,
+                        nonull:true,
+                        dot: true,
+                        cwd: '<%= yeoman.app %>/bower_components/gs-ui-infra/assets',
+                        dest: '<%= yeoman.dist %>/styles/fonts',
+                        src: [
+                            '**/*.{ttf,woff,eot,svg}'
+                        ]
                     }
                 ]
             },
@@ -405,6 +416,11 @@ module.exports = function (grunt) {
                 configFile: 'karma.conf.js',
                 singleRun: false /** TODO : find how to : 1) tell karma to use chrome from here.. override conf file**/
                                                          /** 2) tell karma to run a single test from here... override conf file **/
+            },
+            develop: {
+                configFile: 'karma.conf.js',
+                singleRun: true,
+                browsers: ['PhantomJS']
             }
         },
         ngmin: {
@@ -470,6 +486,24 @@ module.exports = function (grunt) {
         mocha_istanbul: {
             coverage: {
                 'src' : 'test/backend/unit/mocha/**/*'
+            }
+        },
+        shell: {
+            npmPack: {
+                command: 'npm pack',
+                options: {
+                    execOptions: {
+                        cwd : '<%= yeoman.dist %>'
+                    }
+                }
+            },
+            npmInstallDist : {
+                command: 'npm install --production',
+                options: {
+                    execOptions: {
+                        cwd: '<%= yeoman.dist %>'
+                    }
+                }
             }
         },
         jasmine_node: {
@@ -538,11 +572,12 @@ module.exports = function (grunt) {
 
         var tasks = [
             'clean:dist',
-            'overrideBuildVersion',
             'useminPrepare',
             'concurrent:dist',
             'concat',
             'copy:dist',
+            'overrideBuildVersion',
+            'bundle',
             'ngmin',
             'cssmin',
             'uglify',
@@ -553,6 +588,21 @@ module.exports = function (grunt) {
         grunt.task.run(tasks);
     });
 
+    grunt.registerTask('pack', [
+        'build',
+        'shell:npmInstallDist',
+        'shell:npmPack'
+    ]);
+
+    grunt.registerTask('bundle', 'A task that bundles all dependencies.', function () {
+        // "package" is a reserved word so it's abbreviated to "pkg"
+        var pkg = grunt.file.readJSON('dist/package.json');
+        // set the bundled dependencies to the keys of the dependencies property
+        pkg.bundledDependencies = Object.keys(pkg.dependencies);
+        // write back to package.json and indent with two spaces
+        grunt.file.write('dist/package.json', JSON.stringify(pkg, undefined, '  '));
+    });
+
     grunt.registerTask('overrideBuildVersion', function(){
         var done = this.async();
         var versionFilename = 'VERSION';
@@ -561,10 +611,10 @@ module.exports = function (grunt) {
             var fs = require('fs');
             buildVersion = grunt.file.readJSON(versionFilename).version;
             grunt.log.ok('build version is ', buildVersion );
-            var packageJson = grunt.file.readJSON('package.json');
+            var packageJson = grunt.file.readJSON('dist/package.json');
             packageJson.version = buildVersion;
             try {
-                fs.writeFile('package.json', JSON.stringify(packageJson,{},4), function (err) {
+                fs.writeFile('dist/package.json', JSON.stringify(packageJson,{},4), function (err) {
                     if ( !!err ){
                         grunt.log.error('writing file failed',err);
                         grunt.fail.fatal('writing version failed');

@@ -1,5 +1,5 @@
 'use strict';
-
+// todo-quickwin : remove this class
 angular.module('cosmoUiApp')
     .controller('DeploymentProgressPanelCtrl', function ($scope, $routeParams, EventsService) {
         var deployment_id = $routeParams.id || $routeParams.deploymentId;

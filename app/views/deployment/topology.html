@@ -7,12 +7,7 @@
 
     <div floating-deployment-node-panel node="page.viewNode" nodes-list="nodesList" depid="deploymentId" class="floating-panel" id="right-side-menu"></div>
 
-    <div class="bpContainer" blueprint:resize data-ng-class="{
-        disableCompute: !toggleBar.compute,
-        disableMiddleware: !toggleBar.middleware,
-        disableModules: !toggleBar.modules,
-        disableConnections: !toggleBar.connections
-        }">
+    <div class="bpContainer" blueprint:resize>
         <div bp-topology-nodes map="nodesTree" selected="viewNode(getNodeById(node_id))"></div>
         <div class="coordinates" blueprint:arrows="coordinates" arrow="true" color="#7A7A7A"></div>
     </div>
