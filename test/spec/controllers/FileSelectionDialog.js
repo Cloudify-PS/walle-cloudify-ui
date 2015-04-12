@@ -17,22 +17,22 @@ describe('Controller: FileSelectionDialogCtrl', function () {
         scope = $rootScope.$new();
         _cloudifyService = CloudifyService;
 
-            FileSelectionDialogCtrl = $controller('FileSelectionDialogCtrl', {
-                $scope: scope,
-                CloudifyService: _cloudifyService
-            });
-        }));
+        FileSelectionDialogCtrl = $controller('FileSelectionDialogCtrl', {
+            $scope: scope,
+            CloudifyService: _cloudifyService
+        });
+    }));
 
 
-    describe('Controller tests', function() {
+    describe('Controller tests', function () {
         it('should create a controller', function () {
             expect(FileSelectionDialogCtrl).not.toBeUndefined();
         });
 
-        it('should show error message when error returns from backend', function() {
+        it('should show error message when error returns from backend', function () {
             scope.selectedFile = {};
             scope.blueprintUploadOpts.blueprint_id = 'blueprint1';
-            _cloudifyService.blueprints.add = function(data, successCallback, errorCallback) {
+            _cloudifyService.blueprints.add = function (data, successCallback, errorCallback) {
                 var e = {
                     'responseText': 'Error uploading blueprint'   // todo: verify with erez
                 };
@@ -43,9 +43,10 @@ describe('Controller: FileSelectionDialogCtrl', function () {
             expect(scope.errorMessage).toBe('Error uploading blueprint'); // todo: verify with erez
         });
 
-        describe('$scope.$watch myFile', function(){
-            it('should trigger a watch on myFile', function(){
-                spyOn(scope, 'onFileSelect').andCallFake(function(){});
+        describe('$scope.$watch myFile', function () {
+            it('should trigger a watch on myFile', function () {
+                spyOn(scope, 'onFileSelect').andCallFake(function () {
+                });
 
                 // trigger watch
                 scope.$digest();
@@ -57,8 +58,8 @@ describe('Controller: FileSelectionDialogCtrl', function () {
         });
 
 
-        describe('onFileSelect', function(){
-            it('should support both array and single items', function(){
+        describe('onFileSelect', function () {
+            it('should support both array and single items', function () {
                 scope.onFileSelect('foo');
                 expect(scope.selectedFile).toBe('foo');
 
@@ -67,18 +68,18 @@ describe('Controller: FileSelectionDialogCtrl', function () {
             });
         });
 
-        it('should pass blueprint name to the blueprint add method', function() {
+        it('should pass blueprint name to the blueprint add method', function () {
             scope.selectedFile = {};
-            spyOn(scope, 'isUploadEnabled').andCallFake(function(){
+            spyOn(scope, 'isUploadEnabled').andCallFake(function () {
                 return true;
             });
-            scope.uploadDone = function() {
+            scope.uploadDone = function () {
                 scope.uploadInProcess = false;
             };
-            _cloudifyService.blueprints.add = function(data, successCallback) {
+            _cloudifyService.blueprints.add = function (data, successCallback) {
                 successCallback();
             };
-            FormData.prototype.append = function(name, data) {
+            FormData.prototype.append = function (name, data) {
                 this.name = data;
             };
             scope.blueprintName = 'blueprint1';
@@ -98,39 +99,39 @@ describe('Controller: FileSelectionDialogCtrl', function () {
 
             scope.uploadFile();
 
-            waitsFor(function() {
+            waitsFor(function () {
                 return scope.uploadInProcess === false;
             });
-            runs(function() {
+            runs(function () {
                 var formData = _cloudifyService.blueprints.add.mostRecentCall.args[0];
 
                 expect(JSON.stringify(formData)).toBe(JSON.stringify(expected));
             });
         });
 
-        it('should not validate blueprint name', function() {
+        it('should not validate blueprint name', function () {
             scope.blueprintName = '~~~!!!@@@';
             scope.selectedFile = {};
             // expected to be on scope from parent.. todo: turn to directive. bind event callback.
 
-            scope.uploadDone = function() {
+            scope.uploadDone = function () {
                 scope.uploadInProcess = false;
             };
 
-            spyOn(scope, 'isUploadEnabled').andCallFake(function(){
+            spyOn(scope, 'isUploadEnabled').andCallFake(function () {
                 return true;
             });
-            _cloudifyService.blueprints.add = function(data, successCallback) {
+            _cloudifyService.blueprints.add = function (data, successCallback) {
                 successCallback();
             };
             spyOn(scope, 'uploadDone').andCallThrough();
 
             scope.uploadFile();
 
-            waitsFor(function() {
+            waitsFor(function () {
                 return scope.uploadInProcess === false;
             });
-            runs(function() {
+            runs(function () {
                 expect(scope.uploadDone).toHaveBeenCalledWith(scope.blueprintName);
             });
         });
@@ -146,7 +147,7 @@ describe('Controller: FileSelectionDialogCtrl', function () {
         it('should update upload type to url when url is entered', function () {
             scope.inputText = 'http://some.kind/of/url.tar.gz';
             scope.uploadType = 'file';
-            spyOn(scope, 'isUploadEnabled').andCallFake(function(){
+            spyOn(scope, 'isUploadEnabled').andCallFake(function () {
                 return true;
             });
             scope.uploadFile();
@@ -154,32 +155,32 @@ describe('Controller: FileSelectionDialogCtrl', function () {
 
         });
 
-        it('should get a blueprint archive file from a url', function() {
+        it('should get a blueprint archive file from a url', function () {
             scope.inputText = 'http://some.kind/of/url.tar.gz';
             scope.uploadType = 'url';
             scope.blueprintName = 'foo';
             var formDataUrl = null;
-            scope.uploadDone = function() {
+            scope.uploadDone = function () {
                 scope.uploadInProcess = false;
             };
-            _cloudifyService.blueprints.add = function(data, successCallback) {
+            _cloudifyService.blueprints.add = function (data, successCallback) {
                 successCallback();
             };
-            FormData.prototype.append = function(name, data) {
+            FormData.prototype.append = function (name, data) {
                 formDataUrl = data;
                 this.url = data;
             };
             spyOn(_cloudifyService.blueprints, 'add').andCallThrough();
-            spyOn(scope, 'isUploadEnabled').andCallFake(function(){
+            spyOn(scope, 'isUploadEnabled').andCallFake(function () {
                 return true;
             });
 
             scope.uploadFile();
 
-            waitsFor(function() {
+            waitsFor(function () {
                 return scope.uploadInProcess === false;
             });
-            runs(function() {
+            runs(function () {
                 var formData = _cloudifyService.blueprints.add.mostRecentCall.args[0];
                 expect(formData.url).toBe('http://some.kind/of/url.tar.gz');
             });

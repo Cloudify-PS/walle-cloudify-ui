@@ -33,8 +33,10 @@ angular.module('cosmoUiApp')
             $log.info(['files were selected', $files]);
         };
 
-        $scope.$watch('myFile', function(newValue){
-            $scope.onFileSelect(newValue);
+        $scope.$watch('myFile', function(newValue, oldValue){
+            if ( !!newValue && newValue !== oldValue ) {
+                $scope.onFileSelect(newValue);
+            }
         });
 
         $scope.$watch('blueprintUploadOpts.params.application_file_name', function(filename) {
