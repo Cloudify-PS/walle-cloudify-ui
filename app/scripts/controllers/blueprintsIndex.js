@@ -131,6 +131,14 @@ angular.module('cosmoUiApp')
                                 $scope.deleteInProcess = false;
                             }, 1000);
                         }
+                    }, function(e) {
+                        $scope.deleteInProcess = false;
+                        $scope.delBlueprintError = true;
+                        if(e.data.hasOwnProperty('message')) {
+                            $scope.delErrorMessage = e.data.message;
+                        } else {
+                            $scope.delErrorMessage = 'An error occurred';
+                        }
                     });
             }
         }

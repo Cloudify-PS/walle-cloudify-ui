@@ -4,8 +4,25 @@ describe('Controller: BlueprintsIndexCtrl', function () {
 
     var BlueprintsIndexCtrl, scope, cloudifyService;
     var errorDeleteJSON = {
-        'message': 'Can\'t delete blueprint nc1 - There exist deployments for this blueprint; Deployments ids: nc1_dep3,b2',
-        'error_code': 'dependent_exists_error'
+        'data': {
+            'message': 'Can\'t delete blueprint blueprint1 - There exist deployments for this blueprint; Deployments ids: deployment1',
+            'error_code': 'dependent_exists_error',
+            'server_traceback': 'Traceback'
+        },
+        'status': 400,
+        'config': {
+            'method': 'GET',
+            'transformRequest': [null],
+            'transformResponse': [null],
+            'url': '/backend/blueprints/delete',
+            'params': {
+                'id': 'blueprint1'
+            },
+            'headers': {
+                'Accept': 'application/json, text/plain, */*'
+            }
+        },
+        'statusText': 'Bad Request'
     };
     var successDeleteJSON = {
         'id': 'blueprint1'
@@ -67,9 +84,12 @@ describe('Controller: BlueprintsIndexCtrl', function () {
 
             cloudifyService.blueprints.delete = function () {
                 var deferred = $q.defer();
-                var result = !deleteSuccess ? errorDeleteJSON : successDeleteJSON;
 
-                deferred.resolve(result);
+                if (!deleteSuccess) {
+                    deferred.reject(errorDeleteJSON);
+                } else {
+                    deferred.resolve(successDeleteJSON);
+                }
 
                 return deferred.promise;
             };
@@ -140,7 +160,7 @@ describe('Controller: BlueprintsIndexCtrl', function () {
             });
 
             runs(function () {
-                expect(scope.delErrorMessage).toBe(errorDeleteJSON.message);
+                expect(scope.delErrorMessage).toBe(errorDeleteJSON.data.message);
             });
         });
     });
