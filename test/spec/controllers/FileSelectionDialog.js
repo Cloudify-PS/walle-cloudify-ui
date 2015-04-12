@@ -22,7 +22,7 @@ describe('Controller: FileSelectionDialogCtrl', function () {
                 CloudifyService: _cloudifyService
             });
         }));
-    });
+
 
     describe('Controller tests', function() {
         it('should create a controller', function () {
