@@ -83,15 +83,16 @@ describe('Controller: BlueprintsIndexCtrl', function () {
             };
 
             cloudifyService.blueprints.delete = function () {
-                var deferred = $q.defer();
+                return {
+                    then: function(success, error){
+                        if (!deleteSuccess) {
+                            error( errorDeleteJSON );
+                        } else {
+                            success( successDeleteJSON );
+                        }
 
-                if (!deleteSuccess) {
-                    deferred.reject(errorDeleteJSON);
-                } else {
-                    deferred.resolve(successDeleteJSON);
-                }
-
-                return deferred.promise;
+                    }
+                };
             };
 
             BlueprintsIndexCtrl = $controller('BlueprintsIndexCtrl', {
@@ -155,13 +156,17 @@ describe('Controller: BlueprintsIndexCtrl', function () {
             scope.deleteBlueprint(blueprintToDelete);
             scope.confirmDeleteBlueprint();
 
-            waitsFor(function () {
-                return scope.delBlueprintError === true;
-            });
+            expect(scope.delErrorMessage).toBe(errorDeleteJSON.data.message);
+        });
 
-            runs(function () {
-                expect(scope.delErrorMessage).toBe(errorDeleteJSON.data.message);
-            });
+        it('should show general error message if error returns with no message', function() {
+            _testSetup(false);
+            var blueprintToDelete = scope.blueprints[0];
+            errorDeleteJSON.data = {};
+            scope.deleteBlueprint(blueprintToDelete);
+            scope.confirmDeleteBlueprint();
+
+            expect(scope.delErrorMessage).toBe('An error occurred');
         });
     });
 });
