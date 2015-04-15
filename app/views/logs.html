@@ -72,7 +72,7 @@
             </thead>
             <tbody class="animate-repeat" ng-repeat="log in logsHits" ng-init="isOpen=false">
             <tr data-ng-click="isOpen=!isOpen">
-                <td class="icon-events" ng-class="getEventIcon(log._source.event_type)"></td>
+                <td class="icon-events" ng-class="getEventIcon(log)"></td>
                 <td class="date">{{log._source.timestamp == undefined && '-' || log._source.timestamp}}</td>
                 <td class="type">{{getEventText(log._source.event_type) == undefined && '-' || getEventText(log._source.event_type)}}</td>
                 <td class="node">{{log._source.level == undefined && '-' || log._source.level | uppercase}}</td>
