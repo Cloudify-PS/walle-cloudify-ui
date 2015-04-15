@@ -1,6 +1,6 @@
 {
     "name": "cosmo-ui",
-    "version": "3.2.0-m8",
+    "version": "3.2.0-development",
     "private": true,
     "man": [
         "./man/cosmoui.1"
