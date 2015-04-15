@@ -81,9 +81,14 @@ describe('Service: EventsMap', function () {
         });
 
         it('should test fallbacks if properties are missing', function () {
+            eventsMock._source.message.text = 'Task failed "worker_installer.tasks.install" -> NonRecoverableError("NetworkError: Low level socket error connecting to host 10.67.79.24 on port 22: No route to host (tried 1 time)",) [attempt 3]';
             eventsMock._source.context.task_current_retries = undefined;
             eventsMock._source.context.task_total_retries = undefined;
             expect(EventsMap.getEventIcon(eventsMock)).toBe('icon-gs-task-failed');
+
+            eventsMock._source.message.text = 'Task failed "worker_installer.tasks.install" -> RecoverableError("NetworkError: Low level socket error connecting to host 10.67.79.24 on port 22: No route to host (tried 1 time)",) [attempt 3]';
+            expect(EventsMap.getEventIcon(eventsMock)).toBe('icon-gs-task-failed');
+
         });
 
     });
