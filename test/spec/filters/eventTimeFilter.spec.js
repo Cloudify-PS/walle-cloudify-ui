@@ -37,5 +37,11 @@ describe('Filter: eventTimeFilter', function () {
 
             expect(result).toBe('24/2 10:30:50');
         });
+
+        it('should add a weekday if timerange is less than a week', function(){
+            var result = eventTimeFilter(new Date().getTime()-86400002);
+            var dow = result.split(' ')[0];
+            expect(['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].indexOf(dow) >= 0).toBe(true);
+        });
     });
 });
