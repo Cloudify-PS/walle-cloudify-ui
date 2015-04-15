@@ -4,26 +4,11 @@ describe('Service: CloudifyService', function () {
 
     var mCloudifyService;
 
-    describe('Test setup', function() {
-        it('Injecting required data & initializing a new instance', function() {
+    beforeEach(module('cosmoUiApp','backend-mock'));
+    beforeEach(inject(function (CloudifyService) {
 
-            // Load the app module
-            module('cosmoUiApp', 'gsUiHelper');
-
-            // Initialize a new instance of CloudifyService
-            inject(function (CloudifyService, $helper) {
-                $helper.addInjects([
-                    {
-                        method: 'POST',
-                        url: '/backend/node/get',
-                        respond: 200
-                    }
-                ]);
-                mCloudifyService = CloudifyService;
-            });
-
-        });
-    });
+        mCloudifyService = CloudifyService;
+    }));
 
     describe('Unit tests', function() {
 

@@ -26,7 +26,6 @@ Date.fromISO = (function () {
             rx = /^(\d{4}\-\d\d\-\d\d([tT][\d:\.]*)?)([zZ]|([+\-])(\d\d):?(\d\d))?$/,
 
             p = rx.exec(s) || [];
-        debugger;
         if (p[1]) {
             day = p[1].split(/\D/).map(function (itm) {
                 return parseInt(itm, 10) || 0;

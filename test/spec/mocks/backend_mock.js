@@ -1,3 +1,4 @@
+'use strict';
 /**
  * Used for common backend calls we need to mock
  */

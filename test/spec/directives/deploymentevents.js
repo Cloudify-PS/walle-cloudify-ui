@@ -4,9 +4,9 @@ describe('Directive: deploymentEvents', function () {
 
     var element, scope;
 
-    beforeEach(module('cosmoUiApp', 'ngMock', 'gsUiHelper', 'templates-main'));
+    beforeEach(module('cosmoUiApp', 'ngMock','backend-mock', 'templates-main'));
 
-    beforeEach(inject(function ($compile, $rootScope, $helper, $httpBackend) {
+    beforeEach(inject(function ($compile, $rootScope, $httpBackend) {
         $httpBackend.whenPOST('/backend/events/_search').respond(200);
 
         scope = $rootScope.$new();

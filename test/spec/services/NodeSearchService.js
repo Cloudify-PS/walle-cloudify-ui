@@ -6,52 +6,39 @@ describe('Service: NodeSearchService', function () {
         nodeSearchData,
         nodeSearchDataSec;
 
-    describe('Test setup', function() {
-        it('Injecting required data & initializing a new instance', function() {
+    beforeEach(module('cosmoUiApp', 'backend-mock'));
 
-            // Load the app module
-            module('cosmoUiApp', 'gsUiHelper');
+    // Initialize a new instance of mNodeSearchService
+    beforeEach(inject(function (NodeSearchService, CloudifyService, $q) {
 
-            // Initialize a new instance of mNodeSearchService
-            inject(function (NodeSearchService, $helper, CloudifyService, $q) {
-                $helper.addInjects([
-                    {
-                        url: '/backend/blueprints',
-                        respond: 200
-                    }
-                ]);
+        mNodeSearchService = NodeSearchService;
 
-                mNodeSearchService = NodeSearchService;
-
-                CloudifyService.blueprints.list = function() {
-                    var deferred = $q.defer();
-                    var resolve = [
+        CloudifyService.blueprints.list = function () {
+            var deferred = $q.defer();
+            var resolve = [
+                {
+                    'id': 'nodecellar',
+                    'deployments': [
                         {
-                            'id': 'nodecellar',
-                            'deployments': [
-                                {
-                                    'blueprint_id': 'nodecellar',
-                                    'id': 'nodecellarDep'
-                                }
-                            ]
-                        },
-                        {
-                            'id': 'monitoring',
-                            'deployments': [
-                                {
-                                    'blueprint_id': 'monitoring',
-                                    'id': 'monitoringDep'
-                                }
-                            ]
+                            'blueprint_id': 'nodecellar',
+                            'id': 'nodecellarDep'
                         }
-                    ];
-                    deferred.resolve(resolve);
-                    return deferred.promise;
-                };
-            });
-
-        });
-    });
+                    ]
+                },
+                {
+                    'id': 'monitoring',
+                    'deployments': [
+                        {
+                            'blueprint_id': 'monitoring',
+                            'id': 'monitoringDep'
+                        }
+                    ]
+                }
+            ];
+            deferred.resolve(resolve);
+            return deferred.promise;
+        };
+    }));
 
     describe('Unit tests', function() {
 
@@ -95,7 +82,6 @@ describe('Service: NodeSearchService', function () {
                 });
             });
         });
-
     });
 
 });
