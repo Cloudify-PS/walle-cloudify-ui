@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('cosmoUiApp')
-    .controller('FileSelectionDialogCtrl', function ($scope, $log, CloudifyService) {
+    .controller('FileSelectionDialogCtrl', function ($scope, $log, $upload, ngProgress) {
         var selectedFile = null;
         $scope.uploadEnabled = false;
         $scope.uploadInProcess = false;
@@ -28,7 +28,7 @@ angular.module('cosmoUiApp')
 
             $scope.archiveUrl = '';
             $scope.uploadType = 'file';
-            $scope.inputText = $scope.selectedFile.name;
+            $scope.inputText = $scope.selectedFile ? $scope.selectedFile.name : null;
 
             $log.info(['files were selected', $files]);
         };
@@ -49,6 +49,11 @@ angular.module('cosmoUiApp')
             }
         });
 
+        $scope.$watch('uploadInProcess', function( newValue ){
+            if ( !!newValue ){
+                ngProgress.reset();
+        }});
+
         $scope.uploadFile = function() {
             $log.info(['upload: ', selectedFile]);
 
@@ -62,44 +67,48 @@ angular.module('cosmoUiApp')
                 $scope.uploadType = 'file';
             }
 
-            var blueprintUploadForm = new FormData();
-            blueprintUploadForm.append('application_archive', $scope.selectedFile);
-            blueprintUploadForm.append('opts', JSON.stringify($scope.blueprintUploadOpts));
-            blueprintUploadForm.append('type', $scope.uploadType);
-            if ($scope.uploadType === 'url') {
-                blueprintUploadForm.append('url', $scope.inputText);
-            }
+            var uploadData = {
+                url: '/backend/blueprints/upload',
+                file: $scope.selectedFile,
+                fileFormDataName: 'application_archive',
+                fields: { opts : JSON.stringify($scope.blueprintUploadOpts) , type: $scope.uploadType, url : $scope.inputText }
+            };
 
             $scope.uploadInProcess = true;
+
             $scope.uploadError = false;
-
-            CloudifyService.blueprints.add(blueprintUploadForm,
-                function(data) {
-                    if ($scope.blueprintName === undefined || $scope.blueprintName === '') {
-                        $scope.blueprintName = data.id;
-                    }
-                    $scope.$apply(function() {
-                        $scope.uploadError = false;
-                        $scope.uploadDone($scope.blueprintName);
-                    });
+            $upload.upload(uploadData).progress(function(evt){
+                $log.debug('loaded ', evt.loaded, ' out of total', evt.total)
+            }).success(function(data){
+                if ($scope.blueprintName === undefined || $scope.blueprintName === '') {
+                    $scope.blueprintName = data.id;
+                }
+                $scope.$apply(function() {
+                    $scope.uploadError = false;
                     $scope.uploadDone($scope.blueprintName);
-                },
-                function(e) {
-                    var responseText = null;
-                    try {
-                        responseText = e.responseJSON;
-                    } catch (e) {}
-
-                    if (responseText && responseText.hasOwnProperty('message')) {
-                        $scope.errorMessage = responseText.message;
-                    } else if(e.hasOwnProperty('statusText')) {
-                        $scope.errorMessage = e.statusText;
-                    }
-                    $scope.$apply(function() {
-                        $scope.uploadError = true;
-                        $scope.uploadInProcess = false;
-                    });
                 });
+                $scope.uploadDone($scope.blueprintName);
+            }).error( function(e) {
+                var responseText = e;
+
+                if ( typeof(responseText) === 'string' && responseText.indexOf('Too Large')){
+                    responseText = { 'message' : 'Blueprint is too big' };
+                }
+
+                if (responseText && responseText.hasOwnProperty('message')) {
+                    $scope.errorMessage = responseText.message;
+                } else if(e.hasOwnProperty('statusText')) {
+                    $scope.errorMessage = e.statusText;
+                }
+                $scope.uploadError = true;
+                $scope.uploadInProcess = false;
+            }).progress(function(evt){
+                try {
+                    var percentage= Math.min(100,parseInt(100.0 * evt.loaded / evt.total)); //normalize;
+                    $log.info('setting', percentage);
+                    ngProgress.set(percentage);
+                }catch(e){ $log.error(e); }
+            });
         };
 
         $scope.closeDialog = function() {

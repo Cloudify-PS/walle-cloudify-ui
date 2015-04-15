@@ -13,7 +13,9 @@ angular.module('cosmoUiApp', [
     'nvd3ChartDirectives',
     'ngStorage',
     'datePicker',
-    'timer'
+    'timer',
+    'ngProgress',
+    'angular-loading-bar'
 
 ]).config( function ($routeProvider, $httpProvider) {
 
