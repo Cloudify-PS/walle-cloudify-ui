@@ -353,6 +353,7 @@ module.exports = function (grunt) {
                             'cosmoui.js',
                             'cosmoui.1',
                             'LICENSE',
+                            'VERSION',
                             'logs/*'
 
                         ]
