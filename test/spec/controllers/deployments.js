@@ -128,7 +128,7 @@ describe('Controller: DeploymentsCtrl', function () {
         }
     ];
 
-    beforeEach(module('cosmoUiApp', 'ngMock'));
+    beforeEach(module('cosmoUiApp', 'ngMock', 'backend-mock'));
 
     function _testSetup() {
         inject(function ($controller, $rootScope, $httpBackend, $q, CloudifyService, $location, $timeout) {
@@ -185,6 +185,76 @@ describe('Controller: DeploymentsCtrl', function () {
             scope.$digest();
         });
     }
+
+    describe('toggle ignore live nodes', function(){
+        it('should toggle value on scope', function(){
+            _testSetup();
+            scope.ignoreLiveNodes = true;
+            scope.toggleIgnoreLiveNodes();
+            expect(scope.ignoreLiveNodes).toBe(false);
+            scope.toggleIgnoreLiveNodes();
+            expect(scope.ignoreLiveNodes).toBe(true);
+        });
+    });
+
+    describe('cosmoConnectionError', function(){
+        it('should be initialized to true', function(){
+            _testSetup();
+            expect(scope.cosmoConnectionError()).toBe(false);
+        });
+    });
+
+    describe('isExecuting', function(){
+        it('should return true if something is executing', function(){
+            _testSetup();
+            expect(scope.isExecuting()).toBe(false);
+        });
+    });
+
+    describe('getWorkflows', function(){
+        it('should return workflows by deployment id', function(){
+            _testSetup();
+            expect(scope.getWorkflows({})).toBe(undefined);
+        });
+    });
+
+    describe('toggleConfirmationDialog', function(){
+        it('should toggle items on scope', function(){
+            _testSetup();
+            scope.toggleConfirmationDialog();
+        });
+    });
+
+    describe('#executeDeployment', function(){
+        it('should run execute on deployments if enabled', inject(function( CloudifyService ){
+            _testSetup();
+            var executeResponse = {};
+            var isExecuteEnabled = false;
+            scope.isExecuteEnabled = jasmine.createSpy().andCallFake(function(){return isExecuteEnabled;});
+            scope.selectedDeployment = {};
+            scope.selectedWorkflow = { data : { parameters : '' } };
+            spyOn(scope,'redirectTo');
+
+            scope.executeDeployment({});
+            expect(scope.redirectTo).not.toHaveBeenCalled();
+
+            isExecuteEnabled = true;
+
+            spyOn( CloudifyService.deployments, 'execute').andCallFake(function(){ return { then:function( success ){ success( executeResponse );}};});
+            scope.executeDeployment({});
+            expect(scope.redirectTo).toHaveBeenCalled();
+
+            executeResponse = { 'error_code' : 'yes', 'message' : 'foo'};
+            scope.executeDeployment ({});
+            expect(scope.executedErr).toBe('foo');
+
+
+
+
+
+        }));
+
+    });
 
 
     describe('Controller tests', function () {

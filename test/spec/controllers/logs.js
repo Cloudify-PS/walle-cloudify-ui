@@ -2,17 +2,11 @@
 
 describe('Controller: LogsCtrl', function () {
     var LogsCtrl, scope;
+    var anchorScroll = null;
 
-    beforeEach(module('cosmoUiApp', 'ngMock'));
+    beforeEach(module('cosmoUiApp', 'ngMock','backend-mock'));
 
 
-    function mockBackend( $httpBackend ){
-        $httpBackend.whenGET('/backend/configuration?access=all').respond(200);
-        $httpBackend.whenGET('/backend/versions/ui').respond(200);
-        $httpBackend.whenGET('/backend/versions/manager').respond(200);
-        $httpBackend.whenGET('/backend/version/latest?version=00').respond('300');
-        $httpBackend.whenGET('/backend/blueprints').respond(200);
-    }
 
     function mockEventsService (){
         return {
@@ -78,16 +72,17 @@ describe('Controller: LogsCtrl', function () {
     }
 
     var initializeController = inject(function( $controller, $q, CloudifyService ){
+        anchorScroll = jasmine.createSpy();
         LogsCtrl = $controller('LogsCtrl', {
             $scope: scope,
+            $anchorScroll : anchorScroll,
             EventsService: mockEventsService(),
             CloudifyService: mockCloudifyService( $q, CloudifyService)
         });
     });
 
     function setup() {
-        inject(function ($controller, $rootScope, $httpBackend) {
-            mockBackend($httpBackend);
+        inject(function ($controller, $rootScope) {
             scope = $rootScope.$new();
             initializeController( );
         });
@@ -133,6 +128,35 @@ describe('Controller: LogsCtrl', function () {
             }];
             scope.$apply();
             expect(scope.isSearchDisabled).toBe(false);
+        });
+    });
+
+    describe('closeErrorDialog', function(){
+        it('should update variables on scope', function(){
+            scope.isDialogVisible = 'foo';
+            scope.errorMsg = 'bar';
+            scope.closeErrorDialog();
+            expect(scope.isDialogVisible).toBe(false);
+            expect(scope.errorMsg).toBe(null);
+        });
+    });
+
+    describe('scrollToTop', function(){
+        it('should call anchorScroll', function(){
+            scope.scrollToTop();
+            expect(anchorScroll).toHaveBeenCalled();
+        });
+    });
+
+    describe('execute', function(){
+        it('should execute logs if search is disabled', function(){
+            scope.filterLoading = false;
+            scope.execute();
+            expect(scope.filterLoading).toBe(false); // logs was not called
+
+            scope.isSearchDisabled = false;
+            scope.execute();
+            expect(scope.filterLoading).toBe(true); // logs was not called
         });
     });
 

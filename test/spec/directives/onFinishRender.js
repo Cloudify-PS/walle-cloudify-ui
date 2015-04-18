@@ -1,13 +1,16 @@
 'use strict';
 
 describe('Directive: onFinishRender', function () {
-//  beforeEach(module('cosmoUiApp'));
-//
-//  var element;
-//
-//  it('should make hidden element visible', inject(function ($rootScope, $compile) {
-//    element = angular.element('<on-finish-render></on-finish-render>');
-//    element = $compile(element)($rootScope);
-//    expect(element.text()).toBe('this is the onFinishRender directive');
-//  }));
+
+
+    beforeEach(module('cosmoUiApp','backend-mock'));
+
+    var element;
+
+    it('should call scope emit when render finished', inject(function ($rootScope, $compile, $timeout) {
+        element = angular.element('<div on-finish-render></div>');
+        $rootScope.$last = true;
+        element = $compile(element)($rootScope);
+        $timeout.flush();
+    }));
 });

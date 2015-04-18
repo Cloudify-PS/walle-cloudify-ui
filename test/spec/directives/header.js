@@ -78,6 +78,12 @@ describe('Directive: header', function () {
                 expect(element.find('.logout-panel').length).toBe(1);
             });
 
+            it('should call logout on service', inject(function(LoginService){
+                compileDirective();
+                spyOn(LoginService,'logout');
+                scope.logout();
+            }));
+
             it('should not show logout if user is logged in', inject(function(){
                 compileDirective();
                 expect(element.find('.logout-panel').is('.ng-hide')).toBe(true);

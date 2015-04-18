@@ -1,4 +1,4 @@
-module.exports = function(config) {
+module.exports = function (config) {
     var configuration = {
         // base path, that will be used to resolve files and exclude
         basePath: '',
@@ -30,6 +30,15 @@ module.exports = function(config) {
             'app/bower_components/elastic.js/dist/elastic-angular-client.js',
             'app/bower_components/lodash/dist/lodash.js',
             'app/bower_components/jquery-simulate/jquery.simulate.js',
+            'app/bower_components/SyntaxHighlighter/scripts/XRegExp.js',
+            'app/bower_components/SyntaxHighlighter/scripts/shCore.js',
+            'app/bower_components/SyntaxHighlighter/scripts/shLegacy.js',
+            'app/bower_components/SyntaxHighlighter/scripts/shAutoloader.js',
+            'app/bower_components/SyntaxHighlighter/scripts/shBrushPython.js',
+            'app/bower_components/SyntaxHighlighter/scripts/shBrushBash.js',
+            'app/bower_components/SyntaxHighlighter/scripts/shBrushPlain.js',
+            'app/styles/SyntaxHighlighter/shBrushYaml.js',
+
             'app/scripts/*.js',
             'app/scripts/**/*.js',
             '.tmp/styles/main.css',
@@ -38,16 +47,17 @@ module.exports = function(config) {
             'test/spec/**/*.js',
             'test/spec/mocks/mock_translations_en.json',
             '.tmp/viewTemplates/templates.js'
+
         ],
 
         // list of files to exclude
         exclude: [],
         proxies: {
-            '/i18n/translations_en.json' : 'http://localhost:8080/base/test/spec/mocks/mock_translations_en.json',
-            '/images/' : 'http://localhost:8080/base/app/images'
+            '/i18n/translations_en.json': 'http://localhost:8080/base/test/spec/mocks/mock_translations_en.json',
+            '/images/': 'http://localhost:8080/base/app/images'
         },
         preprocessors: {
-            'app/scripts/**/*.js' : ['coverage']
+            'app/scripts/**/*.js': ['coverage']
         },
 
         // use dots reporter, as travis terminal does not support escaping sequences
@@ -110,11 +120,11 @@ module.exports = function(config) {
         // CLI --report-slower-than 500
         reportSlowerThan: 500,
         coverageReporter: {
-            type : 'html',
-            dir : 'coverage/',
-            subdir: function(browser){
+            type: 'html',
+            dir: 'coverage/',
+            subdir: function (browser) {
                 var result = browser.toLowerCase().split(/[ /-]/)[0];
-                console.log('this is browser',result);
+                console.log('this is browser', result);
                 return result;
             }
         },
