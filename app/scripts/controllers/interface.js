@@ -22,6 +22,6 @@ angular.module('cosmoUiApp')
 
         $scope.getBadgeStatusAndIcon = function(status, data) {
             return data + ' ' + nodeStatus.getIconClass(status);
-        }
+        };
 
     });
