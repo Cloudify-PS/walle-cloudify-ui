@@ -21,8 +21,10 @@ describe('Controller: ExecuteDialogCtrl', function () {
         }
     };
     var _executionError = {
-        'error_code': '1',
-        'message': 'Error'
+        'data': {
+            'error_code': '1',
+            'message': 'Error'
+        }
     };
     var _execution = {};
 
@@ -41,7 +43,11 @@ describe('Controller: ExecuteDialogCtrl', function () {
             _cloudifyService.deployments.execute = function (executionData) {
                 var deferred = $q.defer();
 
-                deferred.resolve(executionData.inputs === undefined || JSON.stringify(executionData.inputs) === '{}' ? _executionError : _execution);
+                if (executionData.inputs === undefined || JSON.stringify(executionData.inputs) === '{}') {
+                    deferred.reject(_executionError);
+                } else {
+                    deferred.resolve(_execution);
+                }
 
                 return deferred.promise;
             };
@@ -116,7 +122,7 @@ describe('Controller: ExecuteDialogCtrl', function () {
                 return scope.executeErrorMessage !== false;
             });
             runs(function () {
-                expect(scope.executeErrorMessage).toBe(_executionError.message);
+                expect(scope.executeErrorMessage).toBe(_executionError.data.message);
             });
         });
 
