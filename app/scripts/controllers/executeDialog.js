@@ -88,6 +88,9 @@ angular.module('cosmoUiApp')
                             $scope.$emit('executionStarted', data);
                             $scope.closeDialog();
                         }
+                    }, function(e) {
+                        $scope.executeErrorMessage = e.data.message;
+                        $scope.showError = true;
                     });
             }
         };
@@ -108,6 +111,7 @@ angular.module('cosmoUiApp')
             }, function(e) {
                 $scope.showError = true;
                 $scope.executeErrorMessage = e.data.message;
+
             });
         };
 

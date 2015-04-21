@@ -55,7 +55,11 @@ describe('Controller: ExecuteDialogCtrl', function () {
             _cloudifyService.deployments.updateExecutionState = function (execution_id) {
                 var deferred = $q.defer();
 
-                deferred.resolve(execution_id);
+                if (execution_id) {
+                    deferred.reject(_executionError);
+                } else {
+                    deferred.resolve(execution_id);
+                }
 
                 return deferred.promise;
             };
@@ -109,8 +113,8 @@ describe('Controller: ExecuteDialogCtrl', function () {
         it('should show error message if required parameters are not provided', function () {
             scope.rawString = '{}';
             scope.inputs = {};
-            scope.toggleConfirmationDialog = function () {
-            };
+            scope.executeErrorMessage = '';
+            scope.toggleConfirmationDialog = function () {};
             scope.isExecuteEnabled = function () {
                 return true;
             };
@@ -119,7 +123,7 @@ describe('Controller: ExecuteDialogCtrl', function () {
             scope.$apply();
 
             waitsFor(function () {
-                return scope.executeErrorMessage !== false;
+                return scope.executeErrorMessage !== '';
             });
             runs(function () {
                 expect(scope.executeErrorMessage).toBe(_executionError.data.message);
@@ -132,6 +136,19 @@ describe('Controller: ExecuteDialogCtrl', function () {
             scope.cancelWorkflow('123');
 
             expect(_cloudifyService.deployments.updateExecutionState).toHaveBeenCalledWith({ execution_id: '123', state: 'cancel' });
+        });
+
+        it('should show error message if cancel execution fails', function () {
+            scope.executeErrorMessage = '';
+
+            scope.cancelWorkflow();
+
+            waitsFor(function () {
+                return scope.executeErrorMessage !== '';
+            });
+            runs(function () {
+                expect(scope.executeErrorMessage).toBe(_executionError.data.message);
+            });
         });
     });
 });
