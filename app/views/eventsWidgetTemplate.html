@@ -11,7 +11,7 @@
             <table id="events-widget-events-list">
                 <tr class="animate-repeat" ng-repeat="event in eventsData">
                     <td>
-                        <div class="icon event-icon" ng-class="getEventIcon(event._source.event_type)"></div>
+                        <div class="icon event-icon" ng-class="getEventIcon(event)"></div>
                         <div class="event-type">{{ getEventText(event._source.event_type) }} {{ event._source.context.node_name ? ' - ' + event._source.context.node_name : '' }}</div>
                         <div class="event-time">{{ event._source.timestamp }}</div>
                         <div class="event-message">{{ event._source.message.text }}</div>

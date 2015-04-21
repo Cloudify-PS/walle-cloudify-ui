@@ -18,4 +18,10 @@ angular.module('cosmoUiApp')
 
         $scope.nodeStatusList = nodeStatus.getStatuses();
 
+        $scope.getIconClass = nodeStatus.getIconClass;
+
+        $scope.getBadgeStatusAndIcon = function(status, data) {
+            return data + ' ' + nodeStatus.getIconClass(status);
+        };
+
     });
