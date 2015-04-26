@@ -2,34 +2,52 @@
 
 /**
  * @ngdoc function
- * @name cosmoUiAppApp.controller:BlueprintSourceCtrl
+ * @name cosmoUiApp.controller:SourceCtrl
  * @description
- * # BlueprintsourceCtrl
+ * # SourceCtrl
  * Controller of the cosmoUiApp
  */
 angular.module('cosmoUiApp')
-    .controller('BlueprintSourceCtrl', function ($scope, $routeParams, CloudifyService) {
+    .controller('SourceCtrl', function ($scope, $routeParams, CloudifyService) {
 
         $scope.blueprintId = $routeParams.blueprintId;
+        $scope.deploymentId = $routeParams.deploymentId;
         $scope.errorMessage = 'noPreview';
         var selectedBlueprint;
 
-        $scope.$on('blueprintData', function(event, data){
-            selectedBlueprint = data;
+        CloudifyService.blueprints.getBlueprintById({id: $scope.blueprintId})
+            .then(function(blueprintData) {
 
-            CloudifyService.blueprints.browse({id: $scope.blueprintId, last_update: new Date(selectedBlueprint.updated_at).getTime()})
-                .then(function(browseData) {
-                    if (browseData.errCode) {
-                        $scope.errorMessage = browseData.errCode;
-                        return;
+                // Verify it's valid page, if not redirect to blueprints page
+                if (blueprintData.hasOwnProperty('error_code')) {
+                    $location.path('/blueprints');
+                }
+
+                selectedBlueprint = blueprintData;
+
+                // Add breadcrumbs for the current deployment
+                $scope.breadcrumb = [
+                    {
+                        href: false,
+                        label: blueprintData.id,
+                        id: 'blueprint'
                     }
-                    $scope.browseData = [browseData];
-                    $scope.browseData[0].show = true;
-                    $scope.browseData[0].children[0].show = true;
-                    locateFilesInBrowseTree(browseData.children);
-                    autoOpenSourceFile();
-                });
-        });
+                ];
+
+                // Emit deployment data
+                CloudifyService.blueprints.browse({id: $scope.blueprintId, last_update: new Date(selectedBlueprint.updated_at).getTime()})
+                    .then(function(browseData) {
+                        if (browseData.errCode) {
+                            $scope.errorMessage = browseData.errCode;
+                            return;
+                        }
+                        $scope.browseData = [browseData];
+                        $scope.browseData[0].show = true;
+                        $scope.browseData[0].children[0].show = true;
+                        locateFilesInBrowseTree(browseData.children);
+                        autoOpenSourceFile();
+                    });
+            });
 
         var autoFilesList = ['blueprint.yaml', 'README.md'];
         var selectedAutoFile = null;
