@@ -2,8 +2,8 @@
 'use strict';
 // var logger = require('log4js').getLogger('Gruntfile');
 var LIVERELOAD_PORT = 35729;
-var lrSnippet = require('connect-livereload')({ port: LIVERELOAD_PORT });
-var proxySnippet = require('grunt-connect-proxy/lib/utils').proxyRequest;
+var lrSnippet = null;
+var proxySnippet = null;
 var mountFolder = function (connect, dir) {
     return connect.static(require('path').resolve(dir));
 };
@@ -527,10 +527,15 @@ module.exports = function (grunt) {
         }
     });
 
+
     grunt.registerTask('server', function (target) {
         if (target === 'dist') {
             return grunt.task.run(['build', 'open', 'connect:dist:keepalive']);
         }
+        // guy - moving lines here after build broke.
+        // this way : 1) build will not break 2) it will be clearer what broke where
+        proxySnippet = require('grunt-connect-proxy/lib/utils').proxyRequest;
+        lrSnippet = require('connect-livereload')({ port: LIVERELOAD_PORT });
 
         grunt.task.run([
             'clean:server',
