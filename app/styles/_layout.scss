@@ -265,8 +265,9 @@ html, body, .layout {
 
     .breadcrumbs {
         color: $COSMOUI_BREADCRUMB_ITEM_COLOR;
-        font-size: 28px;
+        font-size: 20px;
         display: inline-block;
+        margin-top: 1px;
 
         ul, li {
             list-style: none;
@@ -302,20 +303,6 @@ html, body, .layout {
             padding-left: 5px;
             color: $COSMOUI_BREADCRUMB_LAST_ITEM_COLOR;
         }
-        //li:last-child:not(:first-child):after{
-        //  content: "\f057";
-        //  display: inline-block;
-        //  font-family: FontAwesome;
-        //  font-style: normal;
-        //  font-weight: normal;
-        //  line-height: 1;
-        //  -webkit-font-smoothing: antialiased;
-        //  -moz-osx-font-smoothing: grayscale;
-        //  cursor: pointer;
-        //  color: $COSMOUI_BREADCRUMB_LAST_ITEM_COLOR;
-        //  top: 2px;
-        //  position: relative;
-        //}
     }
     .right {
         float: right;
@@ -330,7 +317,6 @@ html, body, .layout {
             border-right: 1px solid $COSMOUI_BUTTON_RIGHT_BORDER_COLOR;
             border-top: none;
             border-left: none;
-            margin-top: 9px;
         }
     }
 }
