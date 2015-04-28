@@ -13,7 +13,8 @@ angular.module('cosmoUiApp')
         $scope.blueprintId = $routeParams.blueprintId;
         $scope.deploymentId = $routeParams.deploymentId;
         $scope.errorMessage = 'noPreview';
-        var selectedBlueprint;
+        $scope.selectedBlueprint = {};
+        $scope.browseData = {};
 
         CloudifyService.blueprints.getBlueprintById({id: $scope.blueprintId})
             .then(function(blueprintData) {
@@ -23,7 +24,7 @@ angular.module('cosmoUiApp')
                     $location.path('/blueprints');
                 }
 
-                selectedBlueprint = blueprintData;
+                $scope.selectedBlueprint = blueprintData;
 
                 // Add breadcrumbs for the current deployment
                 $scope.breadcrumb = [
@@ -35,7 +36,7 @@ angular.module('cosmoUiApp')
                 ];
 
                 // Emit deployment data
-                CloudifyService.blueprints.browse({id: $scope.blueprintId, last_update: new Date(selectedBlueprint.updated_at).getTime()})
+                CloudifyService.blueprints.browse({id: $scope.blueprintId, last_update: new Date($scope.selectedBlueprint.updated_at).getTime()})
                     .then(function(browseData) {
                         if (browseData.errCode) {
                             $scope.errorMessage = browseData.errCode;
@@ -138,7 +139,7 @@ angular.module('cosmoUiApp')
         };
 
         $scope.openSourceFile = function(data) {
-            CloudifyService.blueprints.browseFile({id: $scope.blueprintId, path: new Date(selectedBlueprint.updated_at).getTime() + '/' + data.relativePath})
+            CloudifyService.blueprints.browseFile({id: $scope.blueprintId, path: new Date($scope.selectedBlueprint.updated_at).getTime() + '/' + data.relativePath})
                 .then(function(fileContent) {
                     $scope.dataCode = {
                         data: fileContent,
