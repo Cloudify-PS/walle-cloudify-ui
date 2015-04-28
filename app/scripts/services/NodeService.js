@@ -66,7 +66,7 @@ angular.module('cosmoUiApp')
         function _orderTheNodes(nodes) {
             nodes.sort(_sortBy('id'));
 
-            var orderedNodes = [];
+            var orderedNodes = {};
             nodes.forEach(function(node) {
                 node.class = _getNodeClass(node.type_hierarchy);
                 node.isApp = _isAppNode(node.type_hierarchy);
@@ -97,12 +97,12 @@ angular.module('cosmoUiApp')
 
         function _isIgnoreNode(node) {
             var ignoredNodes = [
-                'SecurityGroup',
-                'KeyPair'
+                'cloudify-nodes-SecurityGroup',
+                'cloudify-nodes-KeyPair'
             ];
 
             var searchExp = new RegExp(ignoredNodes.join('|'), 'gi');
-            return searchExp.test(node.type);
+            return searchExp.test(node.type_hierarchy);
         }
 
         function _getNodeDataType(node) {
