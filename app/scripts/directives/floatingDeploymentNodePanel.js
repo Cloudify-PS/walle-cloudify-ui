@@ -65,6 +65,8 @@ angular.module('cosmoUiApp')
                             instances.forEach(function (instance) {
                                 if (instance.deployment_id === $scope.id) {
                                     if(instance.node_id === nodeId) {
+                                        instance.value = instance.id;
+                                        instance.label = instance.id;
                                         $scope.selectNodesArr.push(instance);
                                     }
                                 }
