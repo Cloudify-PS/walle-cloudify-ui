@@ -65,6 +65,7 @@ angular.module('cosmoUiApp')
                             instances.forEach(function (instance) {
                                 if (instance.deployment_id === $scope.id) {
                                     if(instance.node_id === nodeId) {
+                                        // adding value and label properties so the selectNodesArr can be used in the multiSelectMenu.
                                         instance.value = instance.id;
                                         instance.label = instance.id;
                                         $scope.selectNodesArr.push(instance);
