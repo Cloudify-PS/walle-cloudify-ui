@@ -8,52 +8,37 @@
  * Controller of the cosmoUiApp
  */
 angular.module('cosmoUiApp')
-    .controller('SourceCtrl', function ($scope, $routeParams, $location, CloudifyService) {
+    .controller('SourceCtrl', function ($scope, $routeParams, $location, CloudifyService, DeploymentSourceService, BlueprintSourceService) {
 
-        $scope.blueprintId = $routeParams.blueprintId;
-        $scope.deploymentId = $routeParams.deploymentId;
+        $scope.id = $routeParams.id;
         $scope.errorMessage = 'noPreview';
         $scope.selectedBlueprint = {};
         $scope.browseData = {};
 
-        CloudifyService.blueprints.getBlueprintById({id: $scope.blueprintId})
-            .then(function(blueprintData) {
-
-                // Verify it's valid page, if not redirect to blueprints page
-                if (blueprintData.hasOwnProperty('error_code')) {
-                    $location.path('/blueprints');
-                }
-
-                $scope.selectedBlueprint = blueprintData;
-
-                // Add breadcrumbs for the current deployment
-                $scope.breadcrumb = [
-                    {
-                        href: false,
-                        label: blueprintData.id,
-                        id: 'blueprint'
-                    }
-                ];
-
-                // Emit deployment data
-                CloudifyService.blueprints.browse({id: $scope.blueprintId, last_update: new Date($scope.selectedBlueprint.updated_at).getTime()})
-                    .then(function(browseData) {
-                        if (browseData.errCode) {
-                            $scope.errorMessage = browseData.errCode;
-                            return;
-                        }
-                        $scope.browseData = [browseData];
-                        $scope.browseData[0].show = true;
-                        $scope.browseData[0].children[0].show = true;
-                        locateFilesInBrowseTree(browseData.children);
-                        autoOpenSourceFile();
-                    });
-            });
-
+        var VIEW_CONTEXT = {
+            DEPLOYMENT: 'deployment',
+            BLUEPRINT: 'blueprint'
+        };
+        var context = getViewContext();
+        var sourceService = BlueprintSourceService;
         var autoFilesList = ['blueprint.yaml', 'README.md'];
         var selectedAutoFile = null;
         var firstDefaultFile = null;
         var autoKeepLooking = true;
+
+        switch(context) {
+            case VIEW_CONTEXT.DEPLOYMENT:
+                sourceService = DeploymentSourceService;
+                break;
+            case VIEW_CONTEXT.BLUEPRINT:
+                sourceService = BlueprintSourceService;
+                break;
+        }
+
+        sourceService.get($scope.id)
+            .then(function(blueprint) {
+                setData(blueprint);
+            });
 
         function locateFilesInBrowseTree(data) {
             for(var i in data) {
@@ -109,6 +94,40 @@ angular.module('cosmoUiApp')
             }
         }
 
+        function setData(blueprint) {
+            if (blueprint.hasOwnProperty('error_code')) {
+                $location.path('/blueprints');
+            }
+
+            $scope.selectedBlueprint = blueprint;
+
+            // Add breadcrumbs for the current deployment
+            $scope.breadcrumb = [
+                {
+                    href: false,
+                    label: blueprint.id,
+                    id: 'blueprint'
+                }
+            ];
+
+            // Emit deployment data
+            BlueprintSourceService.getBrowseData(blueprint.id, blueprint.updated_at)
+                .then(function(browseData) {
+                    if (browseData.errCode) {
+                        $scope.errorMessage = browseData.errCode;
+                    }
+                    $scope.browseData = browseData;
+
+                    locateFilesInBrowseTree(browseData[0].children);
+                    autoOpenSourceFile();
+                });
+        }
+
+        function getViewContext() {
+            var isDeploymentView = $location.url().indexOf('deployment') > -1;
+            return isDeploymentView ? VIEW_CONTEXT.DEPLOYMENT : VIEW_CONTEXT.BLUEPRINT;
+        }
+
         $scope.openTreeFolder = function(data) {
             if(!data.hasOwnProperty('show')) {
                 data.show = true;
@@ -139,7 +158,7 @@ angular.module('cosmoUiApp')
         };
 
         $scope.openSourceFile = function(data) {
-            CloudifyService.blueprints.browseFile({id: $scope.blueprintId, path: new Date($scope.selectedBlueprint.updated_at).getTime() + '/' + data.relativePath})
+            CloudifyService.blueprints.browseFile({id: $scope.id, path: new Date($scope.selectedBlueprint.updated_at).getTime() + '/' + data.relativePath})
                 .then(function(fileContent) {
                     $scope.dataCode = {
                         data: fileContent,

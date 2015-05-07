@@ -72,7 +72,6 @@ angular.module('cosmoUiApp')
 
                         // Set Deployment ID on Scope
                         $scope.deploymentId = dataDeployment.id;
-                        $scope.blueprintId = dataDeployment.blueprint_id;
 
                         // Set Navigation Menu - Need to set only after blueprint id available for source page href
                         $scope.navMenu = [
@@ -94,7 +93,7 @@ angular.module('cosmoUiApp')
                             },
                             {
                                 'name': 'Source',
-                                'href': '/' + $scope.blueprintId + '/source'
+                                'href': '/source'
                             },
                             {
                                 'name': 'Monitoring',
