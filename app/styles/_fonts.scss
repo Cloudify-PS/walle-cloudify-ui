@@ -251,6 +251,8 @@ i.gs-node-icon {
 
 .browse-button {
     &:after {
-      content: 'm';
+      content: '\e623';
+      position: relative;
+      top: -2px;
     }
 }
