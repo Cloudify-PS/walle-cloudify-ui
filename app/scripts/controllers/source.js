@@ -158,7 +158,7 @@ angular.module('cosmoUiApp')
         };
 
         $scope.openSourceFile = function(data) {
-            CloudifyService.blueprints.browseFile({id: $scope.id, path: new Date($scope.selectedBlueprint.updated_at).getTime() + '/' + data.relativePath})
+            CloudifyService.blueprints.browseFile({id: $scope.selectedBlueprint.id, path: new Date($scope.selectedBlueprint.updated_at).getTime() + '/' + data.relativePath})
                 .then(function(fileContent) {
                     $scope.dataCode = {
                         data: fileContent,
