@@ -8,7 +8,7 @@
  * Controller of the cosmoUiApp
  */
 angular.module('cosmoUiApp')
-    .controller('SourceCtrl', function ($scope, $routeParams, $location, CloudifyService, DeploymentSourceService, BlueprintSourceService) {
+    .controller('SourceCtrl', function ($scope, $routeParams, $location, CloudifyService, SourceService, BlueprintSourceService) {
 
         $scope.id = $routeParams.id;
         $scope.errorMessage = 'noPreview';
@@ -20,22 +20,12 @@ angular.module('cosmoUiApp')
             BLUEPRINT: 'blueprint'
         };
         var context = getViewContext();
-        var sourceService = BlueprintSourceService;
         var autoFilesList = ['blueprint.yaml', 'README.md'];
         var selectedAutoFile = null;
         var firstDefaultFile = null;
         var autoKeepLooking = true;
 
-        switch(context) {
-            case VIEW_CONTEXT.DEPLOYMENT:
-                sourceService = DeploymentSourceService;
-                break;
-            case VIEW_CONTEXT.BLUEPRINT:
-                sourceService = BlueprintSourceService;
-                break;
-        }
-
-        sourceService.get($scope.id)
+        SourceService.get($scope.id, context)
             .then(function(blueprint) {
                 setData(blueprint);
             });
