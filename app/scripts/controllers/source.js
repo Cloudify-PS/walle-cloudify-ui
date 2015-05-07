@@ -19,7 +19,7 @@ angular.module('cosmoUiApp')
             DEPLOYMENT: 'deployment',
             BLUEPRINT: 'blueprint'
         };
-        var context = getViewContext();
+        var context = $location.url().indexOf('deployment') > -1 ? VIEW_CONTEXT.DEPLOYMENT : VIEW_CONTEXT.BLUEPRINT;
         var autoFilesList = ['blueprint.yaml', 'README.md'];
         var selectedAutoFile = null;
         var firstDefaultFile = null;
@@ -111,11 +111,6 @@ angular.module('cosmoUiApp')
                     locateFilesInBrowseTree(browseData[0].children);
                     autoOpenSourceFile();
                 });
-        }
-
-        function getViewContext() {
-            var isDeploymentView = $location.url().indexOf('deployment') > -1;
-            return isDeploymentView ? VIEW_CONTEXT.DEPLOYMENT : VIEW_CONTEXT.BLUEPRINT;
         }
 
         $scope.openTreeFolder = function(data) {

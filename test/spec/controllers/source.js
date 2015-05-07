@@ -4,7 +4,7 @@ describe('Controller: SourceCtrl', function () {
     // load the controller's module
     beforeEach(module('cosmoUiApp', 'ngMock'));
 
-    var SourceCtrl, scope, cloudifyService;
+    var SourceCtrl, scope, cloudifyService, sourceService, blueprintSourceService;
 
     var _blueprint = {
         created_at: 1429617893844,
@@ -32,7 +32,7 @@ describe('Controller: SourceCtrl', function () {
 //    var _fileContent = 'Some file content';
 
     // Initialize the controller and a mock scope
-    beforeEach(inject(function ($controller, $rootScope, $httpBackend, CloudifyService) {
+    beforeEach(inject(function ($controller, $rootScope, $httpBackend, CloudifyService, SourceService, BlueprintSourceService) {
         $httpBackend.whenGET('/backend/configuration?access=all').respond(200);
         $httpBackend.whenGET('/backend/versions/ui').respond(200);
         $httpBackend.whenGET('/backend/versions/manager').respond(200);
@@ -42,12 +42,13 @@ describe('Controller: SourceCtrl', function () {
 
         scope = $rootScope.$new();
         cloudifyService = CloudifyService;
+        sourceService = SourceService;
+        blueprintSourceService = BlueprintSourceService;
 
-        scope.blueprintId = 'blueprint1';
-        scope.deploymentId = 'deployment1';
+        scope.id = 'blueprint1';
         scope.errorMessage = 'noPreview';
 
-        cloudifyService.blueprints.getBlueprintById = function() {
+        sourceService.get = function() {
             return {
                 then: function(success){
                     success(_blueprint);
@@ -56,6 +57,15 @@ describe('Controller: SourceCtrl', function () {
         };
 
         cloudifyService.blueprints.browse = function() {
+            return {
+                then: function(){
+                    scope.browseData = _browseData;
+//                    success(_browseData);
+                }
+            };
+        };
+
+        blueprintSourceService.getBrowseData = function() {
             return {
                 then: function(){
                     scope.browseData = _browseData;
@@ -74,7 +84,9 @@ describe('Controller: SourceCtrl', function () {
 
         SourceCtrl = $controller('SourceCtrl', {
             $scope: scope,
-            CloudifyService: cloudifyService
+            CloudifyService: cloudifyService,
+            SourceService: sourceService,
+            BlueprintSourceService: blueprintSourceService
         });
     }));
 

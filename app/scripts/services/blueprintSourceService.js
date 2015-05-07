@@ -8,7 +8,7 @@
  * Service in the cosmoUiApp.
  */
 angular.module('cosmoUiApp')
-    .service('BlueprintSourceService', function BlueprintSourceService($location, CloudifyService) {
+    .service('BlueprintSourceService', function BlueprintSourceService(CloudifyService) {
         function _get(id) {
             return CloudifyService.blueprints.getBlueprintById({id: id})
                 .then(function(blueprintData) {
