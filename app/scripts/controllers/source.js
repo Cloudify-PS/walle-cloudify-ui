@@ -15,7 +15,7 @@ angular.module('cosmoUiApp')
         $scope.selectedBlueprint = {};
         $scope.browseData = {};
 
-        var context = $location.url().indexOf('deployment') > -1 ? VIEW_CONTEXT.DEPLOYMENT : VIEW_CONTEXT.BLUEPRINT;
+        var context = $location.url().indexOf(VIEW_CONTEXT.DEPLOYMENT) > -1 ? VIEW_CONTEXT.DEPLOYMENT : VIEW_CONTEXT.BLUEPRINT;
         var autoFilesList = ['blueprint.yaml', 'README.md'];
         var selectedAutoFile = null;
         var firstDefaultFile = null;
