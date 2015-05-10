@@ -1,30 +1,7 @@
 'use strict';
 
 describe('Service: BlueprintSourceService', function() {
-    var blueprintSourceService;
-
-    var _blueprint = {
-        created_at: 1429617893844,
-        id: 'blueprint1',
-        plan: {},
-        updated_at: 1429617893844
-    };
-
-//    var _browseData = {
-//        'name': 'root',
-//        'children': [{
-//            'name': 'cloudify-hello-world-example',
-//            'children': [{
-//                'name': 'images',
-//                'children': [{
-//                    'name': 'cloudify-logo.png',
-//                    'relativePath': '/images/cloudify-logo.png',
-//                    'path': '/images/cloudify-logo.png',
-//                    'encoding': 'BINARY'
-//                }]
-//            }]
-//        }]
-//    };
+    var blueprintSourceService, cloudifyService;
 
     describe('Test setup', function() {
         it('Injecting required data & initializing a new instance', function() {
@@ -33,14 +10,13 @@ describe('Service: BlueprintSourceService', function() {
             module('cosmoUiApp', 'gsUiHelper');
 
             // Initialize a new instance of BlueprintSourceService
-            inject(function ($q, BlueprintSourceService, CloudifyService) {
+            inject(function ($httpBackend, BlueprintSourceService, CloudifyService) {
+                $httpBackend.whenGET('/backend/blueprints/get?id=blueprint1').respond(200);
+                $httpBackend.whenGET('/backend/blueprints/browse?id=blueprint1&last_update=123').respond(200);
+
                 blueprintSourceService = BlueprintSourceService;
-
-                CloudifyService.blueprints.getBlueprintById = function() {
-                    return _blueprint;
-                };
+                cloudifyService = CloudifyService;
             });
-
         });
     });
 
@@ -50,20 +26,21 @@ describe('Service: BlueprintSourceService', function() {
             expect(blueprintSourceService).not.toBeUndefined();
         });
 
-//        it('should return a blueprint', function() {
-//            var result = {};
-//            blueprintSourceService.get('blueprint1')
-//                .then(function(blueprint) {
-//                    result = blueprint;
-//                });
-//
-//            waitsFor(function() {
-//                return result !== {};
-//            });
-//            runs(function() {
-//                expect(result).toBe(_blueprint);
-//            });
-//        });
+        it('should return a blueprint', function() {
+            spyOn(cloudifyService.blueprints, 'getBlueprintById').andCallThrough();
+
+            blueprintSourceService.get('blueprint1');
+
+            expect(cloudifyService.blueprints.getBlueprintById).toHaveBeenCalledWith({id: 'blueprint1'});
+        });
+
+        it('should return a browse data', function() {
+            spyOn(cloudifyService.blueprints, 'browse').andCallThrough();
+
+            blueprintSourceService.getBrowseData('blueprint1', 123);
+
+            expect(cloudifyService.blueprints.browse).toHaveBeenCalledWith({id: 'blueprint1', last_update: 123});
+        });
 
     });
 });
