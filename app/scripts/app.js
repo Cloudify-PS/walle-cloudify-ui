@@ -40,9 +40,9 @@ angular.module('cosmoUiApp', [
                 templateUrl: 'views/blueprint/nodes.html',
                 controller: 'BlueprintNodesCtrl'
             })
-            .when('/blueprint/:blueprintId/source', {
+            .when('/blueprint/:id/source', {
                 templateUrl: 'views/blueprint/source.html',
-                controller: 'BlueprintSourceCtrl'
+                controller: 'SourceCtrl'
             })
             .when('/deployments',{
                 templateUrl: 'views/deployments.html',
@@ -71,6 +71,10 @@ angular.module('cosmoUiApp', [
             .when('/deployment/:deploymentId/events', {
                 templateUrl: 'views/deployment/events.html',
                 controller: 'DeploymentEventsCtrl'
+            })
+            .when('/deployment/:id/source', {
+                templateUrl: 'views/deployment/source.html',
+                controller: 'SourceCtrl'
             })
             .when('/monitoring',{
                 templateUrl: 'views/blueprintsIndex.html'
