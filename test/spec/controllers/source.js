@@ -29,8 +29,6 @@ describe('Controller: SourceCtrl', function () {
         }]
     };
 
-//    var _fileContent = 'Some file content';
-
     // Initialize the controller and a mock scope
     beforeEach(inject(function ($controller, $rootScope, $httpBackend, CloudifyService, SourceService, BlueprintSourceService) {
         $httpBackend.whenGET('/backend/configuration?access=all').respond(200);
@@ -60,7 +58,6 @@ describe('Controller: SourceCtrl', function () {
             return {
                 then: function(){
                     scope.browseData = _browseData;
-//                    success(_browseData);
                 }
             };
         };
@@ -69,18 +66,9 @@ describe('Controller: SourceCtrl', function () {
             return {
                 then: function(){
                     scope.browseData = _browseData;
-//                    success(_browseData);
                 }
             };
         };
-
-//        cloudifyService.blueprints.browseFile = function() {
-//            return {
-//                then: function(success){
-//                    success(_fileContent);
-//                }
-//            };
-//        };
 
         SourceCtrl = $controller('SourceCtrl', {
             $scope: scope,
