@@ -8,17 +8,13 @@
  * Controller of the cosmoUiApp
  */
 angular.module('cosmoUiApp')
-    .controller('SourceCtrl', function ($scope, $routeParams, $location, CloudifyService, SourceService, BlueprintSourceService) {
+    .controller('SourceCtrl', function ($scope, $routeParams, $location, CloudifyService, SourceService, VIEW_CONTEXT) {
 
         $scope.id = $routeParams.id;
         $scope.errorMessage = 'noPreview';
         $scope.selectedBlueprint = {};
         $scope.browseData = {};
 
-        var VIEW_CONTEXT = {
-            DEPLOYMENT: 'deployment',
-            BLUEPRINT: 'blueprint'
-        };
         var context = $location.url().indexOf('deployment') > -1 ? VIEW_CONTEXT.DEPLOYMENT : VIEW_CONTEXT.BLUEPRINT;
         var autoFilesList = ['blueprint.yaml', 'README.md'];
         var selectedAutoFile = null;
@@ -101,7 +97,7 @@ angular.module('cosmoUiApp')
             ];
 
             // Emit deployment data
-            BlueprintSourceService.getBrowseData(blueprint.id, blueprint.updated_at)
+            SourceService.getBrowseData(blueprint.id, blueprint.updated_at)
                 .then(function(browseData) {
                     if (browseData.errCode) {
                         $scope.errorMessage = browseData.errCode;
@@ -164,4 +160,10 @@ angular.module('cosmoUiApp')
 
         };
 
+    });
+
+angular.module('cosmoUiApp')
+    .constant('VIEW_CONTEXT', {
+        DEPLOYMENT: 'deployment',
+        BLUEPRINT: 'blueprint'
     });
