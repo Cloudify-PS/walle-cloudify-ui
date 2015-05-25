@@ -6,10 +6,11 @@
 
     <div class="content">
         <div class="gs-selection-button" ng-show="selectNodesArr.length > 0">
-            <select class="gs-select" ng-model="selectedNode" ng-change="nodeSelected(selectedNode)" ng-options="node.id for node in selectNodesArr">
-                <option value="">{{ 'plans.all' | i18n }}</option>
-            </select>
-            <div class="select-list-arrow"></div>
+            <div multi-select-menu
+                 class="gs-select"
+                 options="selectNodesArr"
+                 ng-model="selectedNode"
+                 onchange="nodeSelected(selectedNode)"></div>
         </div>
 
         <div class="buttons-group no-embed" checkbox-toggle value="propSection" ng-show="selectedNode != null">

@@ -55,12 +55,12 @@ input[required] {
     .dialogTitle {
         display: block;
         width: 100%;
-        height: 51px;
+        height: 40px;
         color: $COSMOUI_DIALOG_TITLE_COLOR;
         line-height: 31px;
-        font-size: 26px;
+        font-size: 18px;
         padding-left: 20px;
-        padding-top: 10px;
+        padding-top: 5px;
         background-color: $clr-base-00;
 
         label {
@@ -97,7 +97,7 @@ input[required] {
         text-align: center;
         font-size: 16px;
         font-family: 'OpenSansRegular';
-        margin: 15px 0;
+        margin: 11px 0;
     }
 
     .dialogInputs {
@@ -192,7 +192,6 @@ input[required] {
         .browse {
           display: block;
           height: 33px;
-          margin-bottom: 10px;
 
           #fileInput {
             position: absolute;
@@ -239,7 +238,7 @@ input[required] {
             display: block;
             position: relative;
             top: 15px;
-            height: 50px;
+            height: 48px;
             input {
                 position: relative;
                 left: 20px;

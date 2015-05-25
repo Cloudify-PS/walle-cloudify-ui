@@ -365,6 +365,10 @@ angular.module('cosmoUiApp')
                     $scope.$emit('toggleChange', toggleBar);
                 });
 
+                $scope.$on('executionStarted', function(e, data) {
+                    $scope.executedData = data;
+                });
+
                 $scope.isInitilizing = function() {
                     if($scope.currentExecution === null) {
                         return true;

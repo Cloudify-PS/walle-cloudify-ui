@@ -24,8 +24,7 @@
         "uploadPopup": {
             "title": "Upload Blueprint",
             "description": "Select blueprint file to upload, and click 'Save'",
-            "browseText": "Select blueprint archive",
-            "browseUrl": "or select blueprint archive url",
+            "browseText": "Select blueprint file or url",
             "fileLabel": "Application file: ",
             "uploadBtn": "Save",
             "blueprintName": "Blueprint ID",
