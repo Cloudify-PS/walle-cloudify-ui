@@ -36,6 +36,14 @@ module.exports = function (grunt) {
 
     grunt.initConfig({
         yeoman: yeomanConfig,
+        availabletasks: {
+            help: {
+                options: {
+                    filter: 'include',
+                    tasks: ['default', 'build','blueprint','buildArtifacts','uploadArtifacts']
+                }
+            }
+        },
         watch: {
             coffee: {
                 files: ['<%= yeoman.app %>/scripts/{,*/}*.coffee'],
@@ -574,6 +582,24 @@ module.exports = function (grunt) {
                 src: ['app/views/**/*.html'],
                 dest: '.tmp/viewTemplates/templates.js'
             }
+        },
+        aws_s3: {
+            options: {
+                accessKeyId: '<%= aws.accessKey %>', // Use the variables
+                secretAccessKey: '<%= aws.secretKey %>', // You can also use env variables
+                region: '<%= aws.region %>',
+                access: 'public-read',
+                uploadConcurrency: 5, // 5 simultaneous uploads
+                downloadConcurrency: 5 // 5 simultaneous downloads
+            },
+            uploadArtifacts: {
+                options: {
+                    bucket: '<%= aws.bucket %>'
+                },
+                files: [
+                    {dest: '<%= aws.folder %>', cwd: './artifacts' , expand:true, src:['**'],action: 'upload'}
+                ]
+            }
         }
     });
 
@@ -619,7 +645,7 @@ module.exports = function (grunt) {
         grunt.task.run(tasks);
     });
 
-    grunt.registerTask('build', function () {
+    grunt.registerTask('build', 'builds the project', function () {
 
         var tasks = [
             'clean:dist',
@@ -639,7 +665,7 @@ module.exports = function (grunt) {
         grunt.task.run(tasks);
     });
 
-    grunt.registerTask('pack', [
+    grunt.registerTask('pack', 'after `build` will run npm pack on dist folder',[
         'shell:npmInstallDist',
         'shell:npmPack'
     ]);
@@ -692,27 +718,42 @@ module.exports = function (grunt) {
      * run it by running `npm pack blueprint`
      * or if you already ran `npm pack` just run `npm blueprint`
      */
-    grunt.registerTask('blueprint', [
+    grunt.registerTask('blueprint', 'a task to run after npm pack in order to construct the blueprint',[
         'copy:blueprint',
         'compress:blueprint'
+    ]);
+
+
+    grunt.registerTask('uploadArtifacts', 'assumes `buildArtifacts` execution. uploads artifacts to amazon and tarzan',[
+        'readS3Keys',
+        'aws_s3:uploadArtifacts'
     ]);
 
     /**
      * will output all artifacts : cosmo-ui.tar.gz and blueprint.tgz to folder named artifacts
      */
-    grunt.registerTask('buildArtifacts', [
+    grunt.registerTask('buildArtifacts', 'runs build from scratch. outputs ui.tar.gz and blueprint.tar.gz to folder `artifacts`', [
         'default',
         'pack',
         'blueprint',
         'copy:artifacts'
     ]);
 
-    grunt.registerTask('default', [
+    grunt.registerTask('readS3Keys', function(){
+        var s3KeysFile = process.env.AWS_JSON || './dev/aws-keys.json';
+        grunt.log.ok('reading s3 keys from [' + s3KeysFile  + ']' );
+        grunt.config.data.aws =  grunt.file.readJSON( s3KeysFile ); // Read the file
+    });
+
+    grunt.registerTask('default', 'compiles the project' ,[
         'jshint',
         'jsdoc',
         'test:all',
         'build',
         'backend'
     ]);
+
+
+    grunt.registerTask('help', ['availabletasks:help']);
 
 };
