@@ -27,6 +27,24 @@
           </hudson.plugins.git.extensions.impl.RelativeTargetDirectory>
         </extensions>
       </hudson.plugins.git.GitSCM>
+      <hudson.scm.SubversionSCM plugin="subversion@1.54">
+        <locations>
+          <hudson.scm.SubversionSCM_-ModuleLocation>
+            <remote>svn://svn-srv/SVN/ui/builds/cloudify-ui-build</remote>
+            <local>cloudify-ui-build-configuration</local>
+            <depthOption>infinity</depthOption>
+            <ignoreExternalsOption>false</ignoreExternalsOption>
+          </hudson.scm.SubversionSCM_-ModuleLocation>
+        </locations>
+        <excludedRegions></excludedRegions>
+        <includedRegions></includedRegions>
+        <excludedUsers></excludedUsers>
+        <excludedRevprop></excludedRevprop>
+        <excludedCommitMessages></excludedCommitMessages>
+        <workspaceUpdater class="hudson.scm.subversion.UpdateUpdater"/>
+        <ignoreDirPropChanges>false</ignoreDirPropChanges>
+        <filterChangelog>false</filterChangelog>
+      </hudson.scm.SubversionSCM>
     </scms>
   </scm>
   <canRoam>true</canRoam>
@@ -37,8 +55,9 @@
   <concurrentBuild>false</concurrentBuild>
   <builders>
     <hudson.tasks.Shell>
-      <command>cd cloudify-ui
-npm run build_linux</command>
+      <command>export AWS_JSON=&quot;`pwd`/cloudify-ui-build-configuration/upload-artifacts.json&quot;
+cd cloudify-ui
+npm run build_and_publish</command>
     </hudson.tasks.Shell>
   </builders>
   <publishers>
