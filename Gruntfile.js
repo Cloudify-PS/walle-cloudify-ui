@@ -24,7 +24,9 @@ module.exports = function (grunt) {
     // configurable paths
     var yeomanConfig = {
         app: 'app',
-        dist: 'dist'
+        dist: 'dist',
+        distBlueprint: 'dist-blueprint',
+        artifacts: 'artifacts'
     };
 
     try {
@@ -129,6 +131,7 @@ module.exports = function (grunt) {
                         src: [
                             '.tmp',
                             '<%= yeoman.dist %>/*',
+                            '<%= yeoman.distBlueprint %>/*',
                             '!<%= yeoman.dist %>/.git*'
                         ]
                     }
@@ -221,6 +224,21 @@ module.exports = function (grunt) {
                     }
                 ]
             }
+        },
+        compress:{
+            blueprint:{
+                options: { archive: '<%=yeoman.dist%>/blueprint.tar.gz' },
+                files: [
+                    {
+                        cwd: '<%=yeoman.distBlueprint%>/blueprint',
+                        src: ['node-application/**'],
+                        expand:true
+
+                    }
+                ]
+
+            }
+
         },
         compass: {
             options: {
@@ -324,6 +342,38 @@ module.exports = function (grunt) {
         },
         // Put files not handled in other tasks here
         copy: {
+            artifacts:{
+                files:[
+                    {
+                        expand:true,
+                        dot: true,
+                        cwd: '<%= yeoman.dist %>',
+                        dest: '<%= yeoman.artifacts %>',
+                        src: [ 'cosmo-ui-*.tgz', 'blueprint.tar.gz']
+                    }
+                ]
+            },
+            blueprint:{
+                files:[
+                    {
+                        expand:true,
+                        dot: true,
+                        cwd: 'build',
+                        dest: '<%= yeoman.distBlueprint %>',
+                        src: [ 'blueprint/**']
+                    },
+                    {
+                        expand: true,
+                        dot: true,
+                        cwd: '<%= yeoman.dist %>',
+                        dest: '<%= yeoman.distBlueprint%>',
+                        src: [ 'cosmo-ui*.tgz'],
+                        rename: function( dest /*, src*/ ){
+                            return dest + 'app.tgz';
+                        }
+                    }
+                ]
+            },
             dist: {
                 files: [
                     {
@@ -585,7 +635,6 @@ module.exports = function (grunt) {
     });
 
     grunt.registerTask('pack', [
-        'build',
         'shell:npmInstallDist',
         'shell:npmPack'
     ]);
@@ -632,6 +681,26 @@ module.exports = function (grunt) {
         grunt.config.set('jshint.options.jshintrc', 'backend/.jshintrc');
         grunt.task.run('jshint:backend');
     });
+
+    /**
+     * This task assumes we have a packed artifact
+     * run it by running `npm pack blueprint`
+     * or if you already ran `npm pack` just run `npm blueprint`
+     */
+    grunt.registerTask('blueprint', [
+        'copy:blueprint',
+        'compress:blueprint'
+    ]);
+
+    /**
+     * will output all artifacts : cosmo-ui.tar.gz and blueprint.tgz to folder named artifacts
+     */
+    grunt.registerTask('buildArtifacts', [
+        'default',
+        'pack',
+        'blueprint',
+        'copy:artifacts'
+    ]);
 
     grunt.registerTask('default', [
         'jshint',

@@ -1,0 +1,43 @@
+
+node_types:
+  gs.nodes.NodeJSServer:
+    derived_from: cloudify.nodes.ApplicationServer
+    interfaces:
+      cloudify.interfaces.lifecycle:
+        create: scripts/install-node.sh
+
+###
+#
+#
+#
+###
+
+  gs.nodes.NodeOfflineApplicationModule:
+    derived_from: cloudify.nodes.ApplicationModule
+    properties:
+      port:
+        description: Web application port
+        type: integer
+        default: 8080
+      application_url:
+        description: >
+          URL to an archive containing the application source.
+          The archive must contain one top level directory.
+        default: http://localhost.tgz
+      application_file:
+        description: >
+          relative path from blueprint yaml file to a tar.gz containing the application
+          use this instead of application_url if it is easier to simply add the archive to the blueprint
+        default: app.tar.gz
+      startup_script:
+        description: >
+          This script will be used to start the nodejs application.
+          The path is relative to the top level single directory inside
+          the archive
+        type: string
+        default: server.js
+    interfaces:
+      cloudify.interfaces.lifecycle:
+        configure: scripts/install-app.sh
+#        start: scripts/nodecellar/start-app.sh
+#        stop: scripts/nodecellar/stop-app.sh
