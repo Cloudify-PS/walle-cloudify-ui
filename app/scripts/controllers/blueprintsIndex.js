@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('cosmoUiApp')
-    .controller('BlueprintsIndexCtrl', function ($scope, $location, $cookieStore, BreadcrumbsService, $timeout, $log, CloudifyService) {
+    .controller('BlueprintsIndexCtrl', function ($scope, $location, $cookieStore, BreadcrumbsService, $timeout, $log, CloudifyService, ngDialog) {
         $scope.isAddDialogVisible = false;
         $scope.isDeployDialogVisible = false;
         $scope.isDeleteBlueprintVisible = false;
@@ -30,7 +30,13 @@ angular.module('cosmoUiApp')
 
         $scope.toggleDeployDialog = function(blueprint) {
             $scope.selectedBlueprint = blueprint || null;
-            $scope.isDeployDialogVisible = $scope.isDeployDialogVisible === false;
+//            $scope.isDeployDialogVisible = $scope.isDeployDialogVisible === false;
+            ngDialog.open({
+                template: 'views/dialogs/dialogBlueprintDeploy.html',
+                controller: 'DeployDialogCtrl',
+                scope: $scope,
+                className: 'deploy-dialog'
+            });
         };
 
         $scope.toggleDeleteDialog = function() {
