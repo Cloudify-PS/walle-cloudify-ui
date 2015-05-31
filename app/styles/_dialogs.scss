@@ -36,15 +36,21 @@ input[required] {
   padding-top: 125px;
   padding-bottom: 125px;
 
-  .deploy-dialog {
+  &.deploy-dialog {
     .ngdialog-content {
       width: 350px;
     }
   }
 
-  .upload-dialog {
+  &.upload-dialog {
     .ngdialog-content {
       width: 430px;
+    }
+  }
+
+  &.delete-dialog {
+    .ngdialog-content {
+      width: 450px;
     }
   }
 
@@ -60,7 +66,6 @@ input[required] {
     position: relative;
     margin: 0 auto;
     line-height: 40px;
-    width: 350px;
 
     .ngdialog-close {
       float: right;
@@ -220,13 +225,6 @@ input[required] {
 
 
 #uploadDialogContainer {
-    width: 430px;
-    position: fixed;
-    top: 80px;
-    left: 0;
-    right: 0;
-    margin: auto;
-    margin-top: 100px;
 
     #uploadForm {
         position: relative;
@@ -353,13 +351,6 @@ input[required] {
 }
 
 #deployDialogContainer {
-//    width: 350px;
-//    position: fixed;
-//    top: 80px;
-//    left: 0;
-//    right: 0;
-//    margin: auto;
-//    margin-top: 100px;
 
     #deploy-error-message {
         display: block;
@@ -413,17 +404,6 @@ input[required] {
 }
 
 #deleteDeploymentDialog, #deleteBlueprintDialog {
-    width: 450px;
-    position: fixed;
-    top: 80px;
-    left: 0;
-    right: 0;
-    margin: auto;
-    margin-top: 100px;
-
-    .dialogClose {
-        top: 11px;
-    }
 
     .dialogDescription {
         display: block;

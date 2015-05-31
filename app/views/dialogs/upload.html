@@ -1,0 +1,25 @@
+<div id="uploadDialogContainer" class="dialogBox">
+    <div class="dialogTitle">{{ 'blueprints.uploadPopup.title' | i18n }}</div>
+    <div class="dialogDescription">{{ 'blueprints.uploadPopup.description' | i18n }}</div>
+    <form id="uploadForm" name="uploadForm">
+        <div class="browse">
+            <div id="browseBtn" class="gs-btn">
+                <i class="browse-button topology-glyph"></i>
+                <input type="file" name="fileInput" id="fileInput" accept=".tar,.gz,.archive" ng-file-select="onFileSelect($files)">
+            </div>
+            <input type="text" spellcheck="false" class="browseTxt" ng-change="updatePath()" ng-model="inputText" placeholder="{{ 'blueprints.uploadPopup.browseText' | i18n }}" required>
+        </div>
+
+        <div class="name">
+            <input type="text" spellcheck="false" ng-model="blueprintUploadOpts.blueprint_id" placeholder="{{ 'blueprints.uploadPopup.blueprintName' | i18n }}" required>
+        </div>
+        <div class="name">
+            <input type="text" spellcheck="false" ng-model="blueprintUploadOpts.params.application_file_name" placeholder="{{ 'blueprints.uploadPopup.blueprintFilename' | i18n }}">
+        </div>
+        <div id="mainFile" style="display:none">Application file: <input type="text" ng-model="mainFileName"></div>
+        <div id="upload-error-message" ng-show="isUploadError()">{{errorMessage}}</div>
+        <div id="required-message">{{ 'blueprints.uploadPopup.required' | i18n }}</div>
+        <div class="upload-process-anim" ng-show="uploadInProcess == true"></div>
+        <button id="uploadBtn" class="gs-btn" ng-class="{disabled: !isUploadEnabled(), enabled: isUploadEnabled()}" ng-click="uploadFile()">{{ 'blueprints.uploadPopup.uploadBtn' | i18n }}</button>
+    </form>
+</div>
