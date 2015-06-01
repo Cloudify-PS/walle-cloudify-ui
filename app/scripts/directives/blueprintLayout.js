@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('cosmoUiApp')
-    .directive('blueprintLayout', function ($location, BreadcrumbsService, CloudifyService) {
+    .directive('blueprintLayout', function ($location, BreadcrumbsService, CloudifyService, ngDialog) {
         return {
             templateUrl: 'views/blueprint/layout.html',
             restrict: 'EA',
@@ -94,11 +94,21 @@ angular.module('cosmoUiApp')
                 };
 
                 $scope.toggleDeployDialog = function() {
-                    $scope.isDeployDialogVisible = $scope.isDeployDialogVisible === false;
+                    ngDialog.open({
+                        template: 'views/dialogs/deploy.html',
+                        controller: 'DeployDialogCtrl',
+                        scope: $scope,
+                        className: 'deploy-dialog'
+                    });
                 };
 
                 $scope.redirectToDeployment = function(deployment_id) {
+                    $scope.closeDialog();
                     $location.path('/deployment/' + deployment_id + '/topology');
+                };
+
+                $scope.closeDialog = function() {
+                    ngDialog.closeAll();
                 };
             }
         };

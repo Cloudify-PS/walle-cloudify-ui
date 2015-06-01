@@ -11,7 +11,7 @@ angular.module('cosmoUiApp')
         $scope.delErrorMessage = '';
         var _blueprintsArr = [];
         var cosmoError = false;
-        var currentBlueprintToDelete = null;
+        $scope.currentBlueprintToDelete = null;
 
         BreadcrumbsService.push('blueprints',
             {
@@ -46,21 +46,17 @@ angular.module('cosmoUiApp')
         $scope.toggleDeleteDialog = function() {
             ngDialog.open({
                 template: 'views/dialogs/delete.html',
-                controller: 'DeployDialogCtrl',
+                controller: 'DeleteDialogCtrl',
                 scope: $scope,
                 className: 'delete-dialog'
             });
         };
 
         $scope.deleteBlueprint = function(blueprint) {
-            currentBlueprintToDelete = blueprint;
+            $scope.currentBlueprintToDelete = blueprint;
             $scope.delBlueprintName = blueprint.id;
             $scope.delBlueprintError = false;
             $scope.toggleDeleteDialog();
-        };
-
-        $scope.confirmDeleteBlueprint = function() {
-            _deleteBlueprint();
         };
 
         $scope.loadBlueprints = function() {
@@ -87,6 +83,7 @@ angular.module('cosmoUiApp')
         };
 
         $scope.uploadDone = function(blueprint_id) {
+            $scope.closeDialog();
             $scope.redirectTo({
                 id: blueprint_id
             });
@@ -97,8 +94,12 @@ angular.module('cosmoUiApp')
         };
 
         $scope.redirectToDeployment = function(deployment_id) {
-            ngDialog.closeAll();
+            $scope.closeDialog();
             $location.path('/deployment/' + deployment_id + '/topology');
+        };
+
+        $scope.closeDialog = function() {
+            ngDialog.closeAll();
         };
 
         $scope.cosmoConnectionError = function() {
@@ -129,34 +130,6 @@ angular.module('cosmoUiApp')
             }
 
             return nextIndex;
-        }
-
-        function _deleteBlueprint() {
-            if(currentBlueprintToDelete !== null && !$scope.deleteInProcess) {
-                $scope.deleteInProcess = true;
-                CloudifyService.blueprints.delete({id: currentBlueprintToDelete.id})
-                    .then(function(data) {
-                        if (data.error_code !== undefined) {
-                            $scope.deleteInProcess = false;
-                            $scope.delBlueprintError = true;
-                            $scope.delErrorMessage = data.message;
-                        } else {
-                            $timeout(function() {
-                                $scope.toggleDeleteDialog();
-                                $scope.loadBlueprints();
-                                $scope.deleteInProcess = false;
-                            }, 1000);
-                        }
-                    }, function(e) {
-                        $scope.deleteInProcess = false;
-                        $scope.delBlueprintError = true;
-                        if(e.data.hasOwnProperty('message')) {
-                            $scope.delErrorMessage = e.data.message;
-                        } else {
-                            $scope.delErrorMessage = 'An error occurred';
-                        }
-                    });
-            }
         }
 
         $scope.loadBlueprints();
