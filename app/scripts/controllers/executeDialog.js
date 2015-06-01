@@ -115,10 +115,6 @@ angular.module('cosmoUiApp')
             });
         };
 
-        $scope.closeDialog = function() {
-            $scope.toggleConfirmationDialog();
-        };
-
         $scope.toggleInputsState = function(state) {
             $scope.inputsState = state;
         };

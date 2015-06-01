@@ -159,7 +159,7 @@ angular.module('cosmoUiApp')
             }
         };
 
-        function _loadDeployments() {
+        $scope.loadDeployments = function() {
             $scope.blueprints = null;
             $scope.deployments = [];
             CloudifyService.blueprints.list()
@@ -189,9 +189,9 @@ angular.module('cosmoUiApp')
                 function() {
                     managerError = true;
                 });
-        }
+        };
 
-        _loadDeployments();
+        $scope.loadDeployments();
 
         $scope.deleteDeployment = function(deployment) {
             $scope.currentDeployToDelete = deployment;

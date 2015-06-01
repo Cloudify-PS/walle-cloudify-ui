@@ -12,13 +12,13 @@ angular.module('cosmoUiApp')
         $scope.confirmDelete = function() {
             $scope.deleteInProcess = true;
 
-            if($scope.currentBlueprintToDelete !== null) {
+            if(!!$scope.currentBlueprintToDelete) {
                 $scope.deleteType = 'blueprint';
                 CloudifyService.blueprints.delete({id: $scope.currentBlueprintToDelete.id})
                     .then(function(data) {
                         if (data.error_code !== undefined) {
                             $scope.deleteInProcess = false;
-                            $scope.delBlueprintError = true;
+                            $scope.delError = true;
                             $scope.delErrorMessage = data.message;
                         } else {
                             $timeout(function() {
@@ -36,18 +36,18 @@ angular.module('cosmoUiApp')
                             $scope.delErrorMessage = 'An error occurred';
                         }
                     });
-            } else if($scope.currentDeployToDelete !== null) {
+            } else if(!!$scope.currentDeployToDelete) {
                 $scope.deleteType = 'deployment';
                 CloudifyService.deployments.deleteDeploymentById({deployment_id: $scope.currentDeployToDelete.id, ignoreLiveNodes: $scope.ignoreLiveNodes})
                     .then(function(data){
                         $scope.deleteInProcess = false;
                         if(data.hasOwnProperty('message')) {
-                            $scope.delDeployError = data.message;
+                            $scope.delError = data.message;
                         }
                         else {
                             $scope.closeDialog();
                             $timeout(function(){
-                                _loadDeployments();
+                                $scope.loadDeployments();
                             }, 500);
                         }
                     }, function(e) {
