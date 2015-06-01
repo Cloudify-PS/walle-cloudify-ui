@@ -25,7 +25,6 @@ angular.module('cosmoUiApp')
         };
 
         $scope.toggleAddDialog = function() {
-            $scope.isAddDialogVisible = $scope.isAddDialogVisible === false;
             ngDialog.open({
                 template: 'views/dialogs/upload.html',
                 controller: 'FileSelectionDialogCtrl',
@@ -45,7 +44,6 @@ angular.module('cosmoUiApp')
         };
 
         $scope.toggleDeleteDialog = function() {
-            $scope.isDeleteBlueprintVisible = $scope.isDeleteBlueprintVisible === false;
             ngDialog.open({
                 template: 'views/dialogs/delete.html',
                 controller: 'DeployDialogCtrl',
@@ -99,6 +97,7 @@ angular.module('cosmoUiApp')
         };
 
         $scope.redirectToDeployment = function(deployment_id) {
+            ngDialog.closeAll();
             $location.path('/deployment/' + deployment_id + '/topology');
         };
 

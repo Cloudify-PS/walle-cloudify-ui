@@ -3,7 +3,6 @@
         <label>{{ 'blueprints.deployDialog.title' | i18n }} {{selectedBlueprint.id}}</label>
     </div>
     <div class="dialogDescription">{{ 'blueprints.deployDialog.description' | i18n }}</div>
-    <!--<div class="gs-btn close" ng-click="closeDialog()"></div>-->
     <div class="dialogDeploymentName">
         <input type="text" spellcheck="false" ng-model="deployment_id" ng-enter="deployBlueprint(selectedBlueprint.id)" placeholder="{{ 'blueprints.deployDialog.deployName' | i18n }}">
     </div>

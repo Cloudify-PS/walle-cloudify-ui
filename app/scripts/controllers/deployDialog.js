@@ -9,7 +9,6 @@ angular.module('cosmoUiApp')
         $scope.inputsState = 'params';
         var RAW = 'raw';
 
-
         $scope.isDeployEnabled = function () {
             // if error message is shown, deploy button should be disabled
             if (!$scope.selectedBlueprint || !$scope.deployment_id || $scope.showError) {
@@ -95,11 +94,6 @@ angular.module('cosmoUiApp')
             }
         };
 
-        $scope.closeDialog = function () {
-            _resetDialog();
-            $scope.toggleDeployDialog();
-        };
-
         $scope.toggleInputsState = function (state) {
             $scope.inputsState = state;
         };
@@ -116,6 +110,7 @@ angular.module('cosmoUiApp')
                     }
                 }
                 $scope.rawString = JSON.stringify($scope.inputs, null, 2);
+                $scope.inputsState = 'params';
             }
         }, true);
 
@@ -211,12 +206,4 @@ angular.module('cosmoUiApp')
             }
         }
 
-        function _resetDialog() {
-            $scope.deployment_id = null;
-            $scope.showError = false;
-            $scope.inputs = {};
-            $scope.inputsState = 'params';
-        }
-
-        _resetDialog();
     });
