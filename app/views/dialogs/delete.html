@@ -1,5 +1,5 @@
 <div id="deleteDialog" class="dialogBox">
-    <div class="dialogTitle">Delete Blueprint</div>
+    <div class="dialogTitle">Delete {{ 'dialogs.' + deleteType | i18n }}</div>
     <div class="dialogDescription">Are you sure you want to delete '{{ delName }}'?</div>
     <div class="error-message" data-ng-show="delError">{{ delErrorMessage }}</div>
     <div class="buttonsContainer confirmationButtons">

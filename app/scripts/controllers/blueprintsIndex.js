@@ -54,8 +54,8 @@ angular.module('cosmoUiApp')
 
         $scope.deleteBlueprint = function(blueprint) {
             $scope.currentBlueprintToDelete = blueprint;
-            $scope.delBlueprintName = blueprint.id;
-            $scope.delBlueprintError = false;
+            $scope.delName = blueprint.id;
+            $scope.delError = false;
             $scope.toggleDeleteDialog();
         };
 

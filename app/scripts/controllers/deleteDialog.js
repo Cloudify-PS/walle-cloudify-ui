@@ -3,8 +3,11 @@
 angular.module('cosmoUiApp')
     .controller('DeleteDialogCtrl', function ($scope, $timeout, CloudifyService) {
 
-        $scope.deleteType = 'blueprint';
-        $scope.delName = '';
+        if (!!$scope.currentBlueprintToDelete) {
+            $scope.deleteType = 'blueprint';
+        } else if (!!$scope.currentDeployToDelete) {
+            $scope.deleteType = 'deployment';
+        }
 
         $scope.confirmDelete = function() {
             $scope.deleteInProcess = true;

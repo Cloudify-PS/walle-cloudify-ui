@@ -194,6 +194,10 @@
         "logs": "Logs & Events",
         "hosts": "Hosts",
         "interface": "Interface Elements"
+    },
+    "dialogs": {
+        "blueprint": "Blueprint",
+        "deployment": "Deployment"
     }
 }
 

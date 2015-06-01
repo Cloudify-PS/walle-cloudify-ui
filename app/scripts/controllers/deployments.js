@@ -195,13 +195,13 @@ angular.module('cosmoUiApp')
 
         $scope.deleteDeployment = function(deployment) {
             $scope.currentDeployToDelete = deployment;
-            $scope.delDeployError = false;
+            $scope.delError = false;
             $scope.ignoreLiveNodes = false;
-            $scope.delDeployName = deployment.id;
+            $scope.delName = deployment.id;
 
             ngDialog.open({
                 template: 'views/dialogs/delete.html',
-                controller: 'DeployDialogCtrl',
+                controller: 'DeleteDialogCtrl',
                 scope: $scope,
                 className: 'delete-dialog'
             });
