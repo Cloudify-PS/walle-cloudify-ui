@@ -21,28 +21,6 @@
             "deployBtn": "Create Deployment"
         },
         "emptyMessage": "No Blueprints",
-        "uploadPopup": {
-            "title": "Upload Blueprint",
-            "description": "Select blueprint file to upload, and click 'Save'",
-            "browseText": "Select blueprint file or url",
-            "fileLabel": "Application file: ",
-            "uploadBtn": "Save",
-            "blueprintName": "Blueprint ID",
-            "blueprintFilename": "Blueprint filename (e.g blueprint.yaml)",
-            "required": "* Required field"
-        },
-        "deployDialog": {
-            "title": "Deploy",
-            "description": "Please enter deployment name",
-            "cancelBtn": "Cancel",
-            "deployBtn": "Create",
-            "deployName": "Deployment name",
-            "enterValue": "Enter Value"
-        },
-        "deleteDialog": {
-            "cancelBtn": "Cancel",
-            "confirmBtn": "Delete"
-        },
         "source": {
             "chooseFile": "Please choose file to preview.",
             "noPreview": "No preview available",
@@ -115,13 +93,6 @@
                 "delete": ""
             },
             "workflowSelect": "-- Select workflow --"
-        },
-        "confirmationPopup": {
-            "title": "Confirm",
-            "descriptionExecute": "Are you sure you want to execute",
-            "descriptionCancel": "Cancel",
-            "confirmBtn": "Confirm",
-            "cancelBtn": "Cancel"
         },
         "process": {
             "create_deployment_environment": "Initializing",
@@ -196,10 +167,40 @@
         "interface": "Interface Elements"
     },
     "dialogs": {
-        "blueprint": "Blueprint",
-        "deployment": "Deployment",
-        "close": "Close",
-        "messageTitle": "Message"
+        "delete": {
+            "blueprint": "Blueprint",
+            "deployment": "Deployment",
+            "cancel": "Cancel",
+            "delete": "Delete"
+        },
+        "upload": {
+            "title": "Upload Blueprint",
+            "description": "Select blueprint file to upload, and click 'Save'",
+            "browseText": "Select blueprint file or url",
+            "save": "Save",
+            "name": "Blueprint ID",
+            "filename": "Blueprint filename (e.g blueprint.yaml)",
+            "required": "* Required field"
+        },
+        "message": {
+            "close": "Close",
+            "title": "Message"
+        },
+        "deploy": {
+            "title": "Deploy",
+            "description": "Please enter deployment name",
+            "create": "Create",
+            "name": "Deployment name",
+            "value": "Enter Value"
+        },
+        "confirm": {
+            "title": "Confirm",
+            "descriptionExecute": "Are you sure you want to execute",
+            "descriptionCancel": "Cancel",
+            "confirm": "Confirm",
+            "cancel": "Cancel",
+            "value": "Enter Value"
+        }
     }
 }
 

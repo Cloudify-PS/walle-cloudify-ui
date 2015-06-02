@@ -1,10 +1,10 @@
 <div id="deleteDialog" class="dialogBox">
-    <div class="dialogTitle">Delete {{ 'dialogs.' + deleteType | i18n }}</div>
+    <div class="dialogTitle">Delete {{ 'dialogs.delete.' + deleteType | i18n }}</div>
     <div class="dialogDescription">Are you sure you want to delete '{{ delName }}'?</div>
     <div class="error-message" data-ng-show="delError">{{ delErrorMessage }}</div>
     <div class="buttonsContainer confirmationButtons">
         <div class="dialogCheckbox" ng-show="deleteType == 'deployment'"><label><input type="checkbox" ng-disabled="deleteInProcess" data-ng-model="ignoreLiveNodes" ng-click="toggleIgnoreLiveNodes()"> Force Delete</label></div>
-        <button id="cancelBtnDelDep" class="gs-btn" ng-click="closeDialog()">{{ 'blueprints.deleteDialog.cancelBtn' | i18n }}</button>
-        <button class="gs-btn" ng-class="{loader: deleteInProcess}" ng-click="confirmDelete()">{{ 'blueprints.deleteDialog.confirmBtn' | i18n }}</button>
+        <button id="cancelBtnDelDep" class="gs-btn" ng-click="closeDialog()">{{ 'dialogs.delete.cancel' | i18n }}</button>
+        <button class="gs-btn" ng-class="{loader: deleteInProcess}" ng-click="confirmDelete()">{{ 'dialogs.delete.delete' | i18n }}</button>
     </div>
 </div>

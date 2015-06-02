@@ -1,10 +1,10 @@
 <div id="deployDialogContainer" class="dialogBox">
     <div class="dialogTitle">
-        <label>{{ 'blueprints.deployDialog.title' | i18n }} {{selectedBlueprint.id}}</label>
+        <label>{{ 'dialogs.deploy.title' | i18n }} {{selectedBlueprint.id}}</label>
     </div>
-    <div class="dialogDescription">{{ 'blueprints.deployDialog.description' | i18n }}</div>
+    <div class="dialogDescription">{{ 'dialogs.deploy.description' | i18n }}</div>
     <div class="dialogDeploymentName">
-        <input type="text" spellcheck="false" ng-model="deployment_id" ng-enter="deployBlueprint(selectedBlueprint.id)" placeholder="{{ 'blueprints.deployDialog.deployName' | i18n }}">
+        <input type="text" spellcheck="false" ng-model="deployment_id" ng-enter="deployBlueprint(selectedBlueprint.id)" placeholder="{{ 'dialogs.deploy.name' | i18n }}">
     </div>
     <div class="dialogInputs deployInputs" ng-show="isParamsVisible()">
         <div class="buttons-group deployBtns">
@@ -13,7 +13,7 @@
         </div>
         <div class="inputsParameters" ng-show="inputsState == 'params'">
             <ul>
-                <li ng-repeat="(name, value) in selectedBlueprint.plan.inputs">{{name}}: <input type="text" spellcheck="false" ng-trim="false" ng-model="inputs[name]" placeholder="{{ 'blueprints.deployDialog.enterValue' | i18n }}"></li>
+                <li ng-repeat="(name, value) in selectedBlueprint.plan.inputs">{{name}}: <input type="text" spellcheck="false" ng-trim="false" ng-model="inputs[name]" placeholder="{{ 'dialogs.deploy.value' | i18n }}"></li>
             </ul>
         </div>
         <div class="inputsRaw" ng-show="inputsState == 'raw'">
@@ -22,6 +22,6 @@
     </div>
     <div class="error-message" ng-show="showError">{{deployErrorMessage}}</div>
     <div class="buttonsContainer deployButtons">
-        <button id="deployBtn" class="gs-btn" ng-class="{disabled: !isDeployEnabled(), enabled: isDeployEnabled(), loader: inProcess}" ng-click="deployBlueprint(selectedBlueprint.id)">{{ 'blueprints.deployDialog.deployBtn' | i18n }}</button>
+        <button id="deployBtn" class="gs-btn" ng-class="{disabled: !isDeployEnabled(), enabled: isDeployEnabled(), loader: inProcess}" ng-click="deployBlueprint(selectedBlueprint.id)">{{ 'dialogs.deploy.create' | i18n }}</button>
     </div>
 </div>
