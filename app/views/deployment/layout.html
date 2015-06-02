@@ -35,7 +35,7 @@
                 </div>
                 <div class="executingWorkflow" ng-show="deploymentInProgress">
                     <div class="deploymentExecute" ng-show="deploymentInProgress"></div>
-                    {{ currentExecution.workflow_id != null ? 'deployment.process.' + currentExecution.workflow_id : 'deployment.process.wait' | i18n }}
+                    {{ currentExecution.workflow_id != null ? 'deployment.process.' + currentExecution.workflow_id : 'deployment.process.wait' | translate }}
                 </div>
                 <i class="deployment-play" ng-class="{play: isExecuteEnabled(), disabled: !isExecuteEnabled()}" ng-click="toggleConfirmationDialog('execute')" ng-show="!deploymentInProgress"></i>
 
@@ -47,8 +47,8 @@
                 <div id="confirmationDialogContainer" class="dialogBox">
                     <div class="dialogTitle">Execute Workflow</div>
                     <div class="dialogClose dialogButton" ng-click="closeDialog()"></div>
-                    <div class="dialogDescription" ng-show="confirmationType == 'execute'">{{ 'deployments.confirmationPopup.descriptionExecute' | i18n }} {{selectedWorkflow.data.value}}?</div>
-                    <div class="dialogDescription" ng-show="confirmationType == 'cancel'">{{ 'deployments.confirmationPopup.descriptionCancel' | i18n }} {{executedData.workflow_id}}?</div>
+                    <div class="dialogDescription" ng-show="confirmationType == 'execute'">{{ 'deployments.confirmationPopup.descriptionExecute' | translate }} {{selectedWorkflow.data.value}}?</div>
+                    <div class="dialogDescription" ng-show="confirmationType == 'cancel'">{{ 'deployments.confirmationPopup.descriptionCancel' | translate }} {{executedData.workflow_id}}?</div>
                     <div class="dialogInputs executeInputs" ng-show="isParamsVisible()">
                         <div class="buttons-group executeBtns">
                             <button data-ng-class="{'active': inputsState == 'params'}" class="btn btn-default" data-ng-click="toggleInputsState('params')">Parameters</button>
@@ -56,7 +56,7 @@
                         </div>
                         <div class="inputsParameters" ng-show="inputsState == 'params'">
                             <ul>
-                                <li ng-repeat="(name, value) in selectedWorkflow.data.parameters">{{name}}: <input type="text" spellcheck="false" ng-trim="false" ng-model="inputs[name]" placeholder="{{ 'blueprints.deployDialog.enterValue' | i18n }}" /></li>
+                                <li ng-repeat="(name, value) in selectedWorkflow.data.parameters">{{name}}: <input type="text" spellcheck="false" ng-trim="false" ng-model="inputs[name]" placeholder="{{ 'blueprints.deployDialog.enterValue' | translate }}" /></li>
                             </ul>
                         </div>
                         <div class="inputsRaw" ng-show="inputsState == 'raw'">
@@ -65,12 +65,12 @@
                     </div>
                     <div class="error-message" data-ng-show="showError">{{ executeErrorMessage }}</div>
                     <div class="buttonsContainer confirmationButtons" ng-show="confirmationType == 'execute'">
-                        <button id="cancelBtn" class="gs-btn" ng-click="closeDialog()">{{ 'deployments.confirmationPopup.cancelBtn' | i18n }}</button>
-                        <button id="confirmBtn" class="gs-btn" ng-class="{disabled: !isExecuteEnabled(), enabled: isExecuteEnabled(), loader: inProcess}" ng-click="executeWorkflow()">{{ 'deployments.confirmationPopup.confirmBtn' | i18n }}</button>
+                        <button id="cancelBtn" class="gs-btn" ng-click="closeDialog()">{{ 'deployments.confirmationPopup.cancelBtn' | translate }}</button>
+                        <button id="confirmBtn" class="gs-btn" ng-class="{disabled: !isExecuteEnabled(), enabled: isExecuteEnabled(), loader: inProcess}" ng-click="executeWorkflow()">{{ 'deployments.confirmationPopup.confirmBtn' | translate }}</button>
                     </div>
                     <div class="buttonsContainer confirmationButtons" ng-show="confirmationType == 'cancel'">
-                        <button id="cancelBtn" class="gs-btn" ng-click="toggleConfirmationDialog()">{{ 'deployments.confirmationPopup.cancelBtn' | i18n }}</button>
-                        <button id="confirmBtn" class="gs-btn" ng-click="cancelWorkflow(executedData.id)">{{ 'deployments.confirmationPopup.confirmBtn' | i18n }}</button>
+                        <button id="cancelBtn" class="gs-btn" ng-click="toggleConfirmationDialog()">{{ 'deployments.confirmationPopup.cancelBtn' | translate }}</button>
+                        <button id="confirmBtn" class="gs-btn" ng-click="cancelWorkflow(executedData.id)">{{ 'deployments.confirmationPopup.confirmBtn' | translate }}</button>
                     </div>
                 </div>
             </div>
