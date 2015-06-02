@@ -50,7 +50,6 @@ angular.module('cosmoUiApp')
         ];
         $scope.eventTypeList = [];
         $scope.filterLoading = false;
-//        $scope.isDialogVisible = false;
         $scope.message = null;
         $scope.isSearchDisabled = true;
 
@@ -86,14 +85,6 @@ angular.module('cosmoUiApp')
 
             $scope.events.execute(function (data) {
                 if (data && data.hasOwnProperty('hits')) {
-                    $scope.message = data.hits.hits;
-                    ngDialog.open({
-                        template: 'views/dialogs/message.html',
-                        controller: 'MessageDialogCtrl',
-                        scope: $scope,
-                        className: 'message-dialog'
-                    });
-
                     lastData = _convertDates(data.hits.hits);
                     if (lastData.length !== lastAmount) {
                         if (document.body.scrollTop === 0 || $scope.logsHits) {

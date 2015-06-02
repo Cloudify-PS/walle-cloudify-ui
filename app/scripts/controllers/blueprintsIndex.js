@@ -2,9 +2,6 @@
 
 angular.module('cosmoUiApp')
     .controller('BlueprintsIndexCtrl', function ($scope, $location, $cookieStore, BreadcrumbsService, $timeout, $log, CloudifyService, ngDialog) {
-        $scope.isAddDialogVisible = false;
-        $scope.isDeployDialogVisible = false;
-        $scope.isDeleteBlueprintVisible = false;
         $scope.lastExecutedPlan = null;
         $scope.selectedBlueprint = null;
         $scope.deleteInProcess = false;
@@ -69,12 +66,7 @@ angular.module('cosmoUiApp')
                     } else {
                         $scope.blueprints = data;
                         updateDeployments();
-
-                        if ($scope.isAddDialogVisible) {
-                            $timeout(function() {
-                                $scope.toggleAddDialog();
-                            }, 100);
-                        }
+                        $scope.closeDialog();
                     }
 
                 }, function() {

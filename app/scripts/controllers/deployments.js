@@ -6,8 +6,6 @@ angular.module('cosmoUiApp')
         $scope.blueprints = null;
         $scope.deployments = [];
         $scope.selectedBlueprint = '';
-        $scope.isConfirmationDialogVisible = false;
-        $scope.isDeleteDeploymentVisible = false;
         $scope.delDeployError = false;
         $scope.deleteInProcess = false;
         $scope.executedErr = false;
