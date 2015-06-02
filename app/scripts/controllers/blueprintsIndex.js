@@ -10,7 +10,7 @@ angular.module('cosmoUiApp')
         $scope.deleteInProcess = false;
         $scope.delErrorMessage = '';
         var _blueprintsArr = [];
-        var cosmoError = false;
+        var managerError = false;
         $scope.currentBlueprintToDelete = null;
 
         BreadcrumbsService.push('blueprints',
@@ -63,7 +63,7 @@ angular.module('cosmoUiApp')
             $scope.blueprints = null;
             CloudifyService.blueprints.list()
                 .then(function(data) {
-                    cosmoError = false;
+                    managerError = false;
                     if (data.length < 1) {
                         $scope.blueprints = [];
                     } else {
@@ -78,7 +78,7 @@ angular.module('cosmoUiApp')
                     }
 
                 }, function() {
-                    cosmoError = true;
+                    managerError = true;
                 });
         };
 
@@ -102,8 +102,8 @@ angular.module('cosmoUiApp')
             ngDialog.closeAll();
         };
 
-        $scope.cosmoConnectionError = function() {
-            return cosmoError;
+        $scope.managerConnectionError = function() {
+            return managerError;
         };
 
         function updateDeployments() {

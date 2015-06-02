@@ -52,10 +52,11 @@ angular.module('cosmoUiApp')
                         }
                     }, function(e) {
                         $scope.deleteInProcess = false;
+                        $scope.delError = true;
                         if(e.data.hasOwnProperty('message')) {
-                            $scope.delError = e.data.message;
+                            $scope.delErrorMessage = e.data.message;
                         } else {
-                            $scope.delError = 'An error occurred';
+                            $scope.delErrorMessage = 'An error occurred';
                         }
                     });
             }

@@ -104,7 +104,7 @@ angular.module('cosmoUiApp')
             }
         };
 
-        $scope.cosmoConnectionError = function() {
+        $scope.managerConnectionError = function() {
             return managerError;
         };
 
@@ -214,4 +214,8 @@ angular.module('cosmoUiApp')
         $scope.toggleIgnoreLiveNodes = function() {
             $scope.ignoreLiveNodes = !$scope.ignoreLiveNodes;
         };
+
+        $scope.$on('executionStarted', function(e, data) {
+            $scope.loadDeployments();
+        });
     });

@@ -5,7 +5,7 @@
         <button class="gs-btn" ng-click="toggleAddDialog()">{{ 'blueprints.uploadBtn' | i18n }}</button>
         </div>
     </div>
-    <table class="gs-table" ng-show="!cosmoConnectionError()">
+    <table class="gs-table" ng-show="!managerConnectionError()">
         <thead>
             <tr>
                 <th class="name">{{ 'blueprints.table.heading.name' | i18n }}</th>
@@ -30,9 +30,9 @@
         </tbody>
     </table>
 
-    <div class="connect-error-message" ng-show="cosmoConnectionError()">{{ 'connectError' | i18n }}</div>
+    <div class="connect-error-message" ng-show="managerConnectionError()">{{ 'connectError' | i18n }}</div>
 
-    <div class="loading" ng-show="blueprints == null && !cosmoConnectionError()"></div>
+    <div class="loading" ng-show="blueprints == null && !managerConnectionError()"></div>
 
     <div class="no-blueprints-message" ng-show="blueprints.length == 0">{{ 'blueprints.emptyMessage' | i18n }}</div>
 </div>

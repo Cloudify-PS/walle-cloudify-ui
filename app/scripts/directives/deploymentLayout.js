@@ -7,7 +7,7 @@
  * # deploymentLayout
  */
 angular.module('cosmoUiApp')
-    .directive('deploymentLayout', function ($location, BreadcrumbsService, CloudifyService, nodeStatus) {
+    .directive('deploymentLayout', function ($location, BreadcrumbsService, CloudifyService, nodeStatus, ngDialog) {
         return {
             templateUrl: 'views/deployment/layout.html',
             restrict: 'EA',
@@ -336,17 +336,22 @@ angular.module('cosmoUiApp')
                         });
                 }
 
-                function _toggleConfirmationDialog(confirmationType) {
+                $scope.toggleConfirmationDialog = function(confirmationType) {
                     if (confirmationType === 'execute' && $scope.selectedWorkflow.data === null) {
                         return;
                     }
                     $scope.confirmationType = confirmationType;
-                    $scope.isConfirmationDialogVisible = !$scope.isConfirmationDialogVisible;
                     $scope.executedErr = false;
-                }
+
+                    ngDialog.open({
+                        template: 'views/dialogs/confirm.html',
+                        controller: 'ExecuteDialogCtrl',
+                        scope: $scope,
+                        className: 'confirm-dialog'
+                    });
+                };
 
                 $scope.isExecuteEnabled = _isExecuteEnabled;
-                $scope.toggleConfirmationDialog = _toggleConfirmationDialog;
 
                 function _setDeploymentModel( data ) {
                     deploymentModel['*'] = angular.copy(deploymentDataModel);
@@ -380,6 +385,15 @@ angular.module('cosmoUiApp')
                     $scope.isInitilizingLoader = false;
                     return false;
                 };
+
+                $scope.closeDialog = function() {
+                    ngDialog.closeAll();
+                };
+
+                $scope.getSelectedWorkflow = function() {
+                    return $scope.selectedWorkflow.data.value;
+                };
+
             }
         };
     });
