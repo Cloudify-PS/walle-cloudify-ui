@@ -11,12 +11,7 @@ angular.module('cosmoUiApp')
         $scope.blueprintName = '';
         $scope.uploadError = false;
         $scope.errorMessage = 'Error uploading blueprint';
-        $scope.blueprintUploadOpts = {
-            blueprint_id: '',
-            params: {
-                application_file_name: ''
-            }
-        };
+        $scope.blueprintUploadOpts = {};
 
         $scope.onFileSelect = function ($files) {
             $scope.selectedFile = $files[0];
@@ -90,6 +85,7 @@ angular.module('cosmoUiApp')
         };
 
         $scope.closeDialog = function() {
+            resetDialog();
             $scope.toggleAddDialog();
             $scope.uploadError = false;
         };
@@ -104,4 +100,17 @@ angular.module('cosmoUiApp')
         $scope.isUploadError = function() {
             return $scope.uploadError;
         };
+
+        function resetDialog() {
+            $scope.selectedFile = '';
+            $scope.inputText = '';
+            $scope.blueprintUploadOpts = {
+                blueprint_id: '',
+                params: {
+                    application_file_name: ''
+                }
+            };
+        }
+
+        resetDialog();
     });

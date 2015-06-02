@@ -73,6 +73,34 @@ angular.module('cosmoUiApp')
                         // Set Deployment ID on Scope
                         $scope.deploymentId = dataDeployment.id;
 
+                        // Set Navigation Menu - Need to set only after blueprint id available for source page href
+                        $scope.navMenu = [
+                            {
+                                'name': 'Topology',
+                                'href': '/topology'
+                            },
+                            {
+                                'name': 'Network',
+                                'href': '/network'
+                            },
+                            {
+                                'name': 'Nodes',
+                                'href': '/nodes'
+                            },
+                            {
+                                'name': 'Executions',
+                                'href': '/executions'
+                            },
+                            {
+                                'name': 'Source',
+                                'href': '/source'
+                            },
+                            {
+                                'name': 'Monitoring',
+                                'href': '/monitoring'
+                            }
+                        ];
+
                         // Emit deployment data
                         $scope.$emit('deploymentData', dataDeployment);
 
@@ -116,30 +144,6 @@ angular.module('cosmoUiApp')
                         BreadcrumbsService.push('deployments', breadcrumb);
                     });
                 }, true);
-
-                // Set Navigation Menu
-                $scope.navMenu = [
-                    {
-                        'name': 'Topology',
-                        'href': '/topology'
-                    },
-                    {
-                        'name': 'Network',
-                        'href': '/network'
-                    },
-                    {
-                        'name': 'Nodes',
-                        'href': '/nodes'
-                    },
-                    {
-                        'name': 'Executions',
-                        'href': '/executions'
-                    },
-                    {
-                        'name': 'Monitoring',
-                        'href': '/monitoring'
-                    }
-                ];
 
                 $scope.isSectionActive = function (section) {
                     return section.name === $scope.section ? 'active' : '';

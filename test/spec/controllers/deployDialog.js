@@ -161,8 +161,6 @@ describe('Controller: DeploydialogCtrl', function () {
                 $scope: scope,
                 CloudifyService: CloudifyService
             });
-
-//            scope.$digest();
         }));
     });
 
