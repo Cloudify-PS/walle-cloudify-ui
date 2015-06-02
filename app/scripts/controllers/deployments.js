@@ -213,7 +213,7 @@ angular.module('cosmoUiApp')
             $scope.ignoreLiveNodes = !$scope.ignoreLiveNodes;
         };
 
-        $scope.$on('executionStarted', function(e, data) {
+        $scope.$on('executionStarted', function() {
             $scope.loadDeployments();
         });
     });

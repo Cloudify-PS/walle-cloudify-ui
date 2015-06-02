@@ -60,5 +60,5 @@ angular.module('cosmoUiApp')
                         }
                     });
             }
-        }
+        };
     });
