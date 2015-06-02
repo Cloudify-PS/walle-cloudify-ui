@@ -60,6 +60,12 @@ input[required] {
     }
   }
 
+  &.message-dialog {
+    .ngdialog-content {
+      width: 430px;
+    }
+  }
+
   .ngdialog-overlay {
     background: $COSMOUI_DIALOG_OVERLAY;
   }

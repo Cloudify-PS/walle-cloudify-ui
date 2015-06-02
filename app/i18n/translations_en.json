@@ -197,7 +197,9 @@
     },
     "dialogs": {
         "blueprint": "Blueprint",
-        "deployment": "Deployment"
+        "deployment": "Deployment",
+        "close": "Close",
+        "messageTitle": "Message"
     }
 }
 

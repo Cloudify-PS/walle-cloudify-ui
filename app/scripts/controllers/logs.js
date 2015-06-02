@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('cosmoUiApp')
-    .controller('LogsCtrl', function ($scope, BreadcrumbsService, EventsService, $location, $anchorScroll, $filter, $routeParams, LogsModel, $window, EventsMap, $log, CloudifyService) {
+    .controller('LogsCtrl', function ($scope, BreadcrumbsService, EventsService, $location, $anchorScroll, $filter, $routeParams, LogsModel, $window, EventsMap, $log, CloudifyService, ngDialog) {
 
         /**
          * Breadcrumbs
@@ -50,8 +50,8 @@ angular.module('cosmoUiApp')
         ];
         $scope.eventTypeList = [];
         $scope.filterLoading = false;
-        $scope.isDialogVisible = false;
-        $scope.errorMsg = null;
+//        $scope.isDialogVisible = false;
+        $scope.message = null;
         $scope.isSearchDisabled = true;
 
         var lastAmount = 0;
@@ -86,6 +86,14 @@ angular.module('cosmoUiApp')
 
             $scope.events.execute(function (data) {
                 if (data && data.hasOwnProperty('hits')) {
+                    $scope.message = data.hits.hits;
+                    ngDialog.open({
+                        template: 'views/dialogs/message.html',
+                        controller: 'MessageDialogCtrl',
+                        scope: $scope,
+                        className: 'message-dialog'
+                    });
+
                     lastData = _convertDates(data.hits.hits);
                     if (lastData.length !== lastAmount) {
                         if (document.body.scrollTop === 0 || $scope.logsHits) {
@@ -103,8 +111,13 @@ angular.module('cosmoUiApp')
                 }
                 else {
                     if (data.hasOwnProperty('error_code')) {
-                        $scope.isDialogVisible = true;
-                        $scope.errorMsg = data.message;
+                        $scope.message = data.message;
+                        ngDialog.open({
+                            template: 'views/dialogs/message.html',
+                            controller: 'MessageDialogCtrl',
+                            scope: $scope,
+                            className: 'message-dialog'
+                        });
                     }
                     $log.warn('Cant load events, undefined data.');
                     troubleShoot++;
@@ -133,9 +146,9 @@ angular.module('cosmoUiApp')
         $scope.filterModel = LogsModel.get();
         $scope.timeframeFrom = LogsModel.getFromTimeText();
 
-        $scope.closeErrorDialog = function () {
-            $scope.isDialogVisible = false;
-            $scope.errorMsg = null;
+        $scope.closeDialog = function () {
+            $scope.message = null;
+            ngDialog.closeAll();
         };
 
         CloudifyService.blueprints.list()
@@ -287,6 +300,10 @@ angular.module('cosmoUiApp')
 
         $scope.getEventText = function (event) {
             return EventsMap.getEventText(event);
+        };
+
+        $scope.closeDialog = function() {
+            ngDialog.closeAll();
         };
 
         var longetPeriod = $scope.timeframeList[$scope.timeframeList.length - 1];
