@@ -9,7 +9,9 @@ describe('Service: VersionService', function () {
 
     beforeEach(function() {
         // load the filter's module
-        module('cosmoUiApp', 'ngMock');
+        module('cosmoUiApp', 'ngMock', function ($translateProvider) {
+            $translateProvider.translations('en', {});
+        });
 
         // initialize a new instance of the filter
         inject(function (VersionService, $httpBackend) {

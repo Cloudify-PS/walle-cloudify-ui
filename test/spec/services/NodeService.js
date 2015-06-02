@@ -42,7 +42,9 @@ describe('Service: NodeService', function () {
         it('Injecting required data & initializing a new instance', function() {
 
             // load the filter's module
-            module('cosmoUiApp', 'ngMock', 'gsUiHelper');
+            module('cosmoUiApp', 'ngMock', 'gsUiHelper', function ($translateProvider) {
+                $translateProvider.translations('en', {});
+            });
 
             // initialize a new instance of the filter
             inject(function (NodeService) {

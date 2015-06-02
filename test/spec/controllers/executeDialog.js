@@ -28,7 +28,9 @@ describe('Controller: ExecuteDialogCtrl', function () {
     };
     var _execution = {};
 
-    beforeEach(module('cosmoUiApp', 'ngMock', 'templates-main'));
+    beforeEach(module('cosmoUiApp', 'ngMock', 'templates-main', function ($translateProvider) {
+        $translateProvider.translations('en', {});
+    }));
 
     describe('Test setup', function () {
         it('', inject(function ($controller, $rootScope, $httpBackend, $q, CloudifyService) {
