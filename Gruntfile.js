@@ -2,8 +2,8 @@
 'use strict';
 // var logger = require('log4js').getLogger('Gruntfile');
 var LIVERELOAD_PORT = 35729;
-var lrSnippet = require('connect-livereload')({ port: LIVERELOAD_PORT });
-var proxySnippet = require('grunt-connect-proxy/lib/utils').proxyRequest;
+var lrSnippet = null;
+var proxySnippet = null;
 var mountFolder = function (connect, dir) {
     return connect.static(require('path').resolve(dir));
 };
@@ -24,7 +24,9 @@ module.exports = function (grunt) {
     // configurable paths
     var yeomanConfig = {
         app: 'app',
-        dist: 'dist'
+        dist: 'dist',
+        distBlueprint: 'dist-blueprint',
+        artifacts: 'artifacts'
     };
 
     try {
@@ -34,6 +36,14 @@ module.exports = function (grunt) {
 
     grunt.initConfig({
         yeoman: yeomanConfig,
+        availabletasks: {
+            help: {
+                options: {
+                    filter: 'include',
+                    tasks: ['default', 'build','blueprint','buildArtifacts','uploadArtifacts']
+                }
+            }
+        },
         watch: {
             coffee: {
                 files: ['<%= yeoman.app %>/scripts/{,*/}*.coffee'],
@@ -129,6 +139,7 @@ module.exports = function (grunt) {
                         src: [
                             '.tmp',
                             '<%= yeoman.dist %>/*',
+                            '<%= yeoman.distBlueprint %>/*',
                             '!<%= yeoman.dist %>/.git*'
                         ]
                     }
@@ -221,6 +232,21 @@ module.exports = function (grunt) {
                     }
                 ]
             }
+        },
+        compress:{
+            blueprint:{
+                options: { archive: '<%=yeoman.dist%>/blueprint.tar.gz' },
+                files: [
+                    {
+                        cwd: '<%=yeoman.distBlueprint%>/blueprint',
+                        src: ['node-application/**'],
+                        expand:true
+
+                    }
+                ]
+
+            }
+
         },
         compass: {
             options: {
@@ -324,6 +350,38 @@ module.exports = function (grunt) {
         },
         // Put files not handled in other tasks here
         copy: {
+            artifacts:{
+                files:[
+                    {
+                        expand:true,
+                        dot: true,
+                        cwd: '<%= yeoman.dist %>',
+                        dest: '<%= yeoman.artifacts %>',
+                        src: [ 'cosmo-ui-*.tgz', 'blueprint.tar.gz']
+                    }
+                ]
+            },
+            blueprint:{
+                files:[
+                    {
+                        expand:true,
+                        dot: true,
+                        cwd: 'build',
+                        dest: '<%= yeoman.distBlueprint %>',
+                        src: [ 'blueprint/**']
+                    },
+                    {
+                        expand: true,
+                        dot: true,
+                        cwd: '<%= yeoman.dist %>',
+                        dest: '<%= yeoman.distBlueprint%>',
+                        src: [ 'cosmo-ui*.tgz'],
+                        rename: function( dest /*, src*/ ){
+                            return dest + 'app.tgz';
+                        }
+                    }
+                ]
+            },
             dist: {
                 files: [
                     {
@@ -353,6 +411,7 @@ module.exports = function (grunt) {
                             'cosmoui.js',
                             'cosmoui.1',
                             'LICENSE',
+                            'VERSION',
                             'logs/*'
 
                         ]
@@ -523,13 +582,36 @@ module.exports = function (grunt) {
                 src: ['app/views/**/*.html'],
                 dest: '.tmp/viewTemplates/templates.js'
             }
+        },
+        aws_s3: {
+            options: {
+                accessKeyId: '<%= aws.accessKey %>', // Use the variables
+                secretAccessKey: '<%= aws.secretKey %>', // You can also use env variables
+                region: '<%= aws.region %>',
+                access: 'public-read',
+                uploadConcurrency: 5, // 5 simultaneous uploads
+                downloadConcurrency: 5 // 5 simultaneous downloads
+            },
+            uploadArtifacts: {
+                options: {
+                    bucket: '<%= aws.bucket %>'
+                },
+                files: [
+                    {dest: '<%= aws.folder %>', cwd: './artifacts' , expand:true, src:['**'],action: 'upload'}
+                ]
+            }
         }
     });
+
 
     grunt.registerTask('server', function (target) {
         if (target === 'dist') {
             return grunt.task.run(['build', 'open', 'connect:dist:keepalive']);
         }
+        // guy - moving lines here after build broke.
+        // this way : 1) build will not break 2) it will be clearer what broke where
+        proxySnippet = require('grunt-connect-proxy/lib/utils').proxyRequest;
+        lrSnippet = require('connect-livereload')({ port: LIVERELOAD_PORT });
 
         grunt.task.run([
             'clean:server',
@@ -563,7 +645,7 @@ module.exports = function (grunt) {
         grunt.task.run(tasks);
     });
 
-    grunt.registerTask('build', function () {
+    grunt.registerTask('build', 'builds the project', function () {
 
         var tasks = [
             'clean:dist',
@@ -583,8 +665,7 @@ module.exports = function (grunt) {
         grunt.task.run(tasks);
     });
 
-    grunt.registerTask('pack', [
-        'build',
+    grunt.registerTask('pack', 'after `build` will run npm pack on dist folder',[
         'shell:npmInstallDist',
         'shell:npmPack'
     ]);
@@ -632,12 +713,47 @@ module.exports = function (grunt) {
         grunt.task.run('jshint:backend');
     });
 
-    grunt.registerTask('default', [
+    /**
+     * This task assumes we have a packed artifact
+     * run it by running `npm pack blueprint`
+     * or if you already ran `npm pack` just run `npm blueprint`
+     */
+    grunt.registerTask('blueprint', 'a task to run after npm pack in order to construct the blueprint',[
+        'copy:blueprint',
+        'compress:blueprint'
+    ]);
+
+
+    grunt.registerTask('uploadArtifacts', 'assumes `buildArtifacts` execution. uploads artifacts to amazon and tarzan',[
+        'readS3Keys',
+        'aws_s3:uploadArtifacts'
+    ]);
+
+    /**
+     * will output all artifacts : cosmo-ui.tar.gz and blueprint.tgz to folder named artifacts
+     */
+    grunt.registerTask('buildArtifacts', 'runs build from scratch. outputs ui.tar.gz and blueprint.tar.gz to folder `artifacts`', [
+        'default',
+        'pack',
+        'blueprint',
+        'copy:artifacts'
+    ]);
+
+    grunt.registerTask('readS3Keys', function(){
+        var s3KeysFile = process.env.AWS_JSON || './dev/aws-keys.json';
+        grunt.log.ok('reading s3 keys from [' + s3KeysFile  + ']' );
+        grunt.config.data.aws =  grunt.file.readJSON( s3KeysFile ); // Read the file
+    });
+
+    grunt.registerTask('default', 'compiles the project' ,[
         'jshint',
         'jsdoc',
         'test:all',
         'build',
         'backend'
     ]);
+
+
+    grunt.registerTask('help', ['availabletasks:help']);
 
 };

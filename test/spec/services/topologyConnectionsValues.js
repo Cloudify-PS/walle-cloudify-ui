@@ -16,7 +16,7 @@ describe('Service: TopologyConnectionsValues', function () {
     });
 
     it('should include FloatingIp in array', function() {
-        expect(topologyConnectionsValues.indexOf('FloatingIp')).toEqual(0);
+        expect(topologyConnectionsValues.indexOf('cloudify-nodes-FloatingIp')).toEqual(0);
     });
 
 });
