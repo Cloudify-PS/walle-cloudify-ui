@@ -228,8 +228,9 @@ input[required] {
       word-break: normal;
       background-color: #f5f5f5;
       max-height: 300px;
-      overflow-y: auto;
       line-height: 20px;
+      word-wrap: break-word;
+      overflow-x: scroll;
     }
 
     .buttonsContainer {
