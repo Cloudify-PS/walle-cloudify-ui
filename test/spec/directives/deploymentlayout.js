@@ -178,7 +178,7 @@ describe('Directive: deploymentLayout', function () {
             expect($('.deployment-play').css('background-image').indexOf('images/play_disabled.png')).not.toBe(-1);
         });
 
-        it('should not call getDeploymentExecutions autopull before getNodes', inject(function($compile, $rootScope, $q, CloudifyService) {
+        it('should not call getDeploymentExecutions autopull before getNodes', inject(function($rootScope, $q, CloudifyService) {
             _getNodesCalled = false;
             _getDeploymentExecutionsCalled = false;
             var _scope = $rootScope.$new();
@@ -191,7 +191,6 @@ describe('Directive: deploymentLayout', function () {
             };
 
             CloudifyService.getNodes = function() {
-
                 var deferred = $q.defer();
                 _getNodesCalled = true;
 
@@ -208,6 +207,65 @@ describe('Directive: deploymentLayout', function () {
             runs(function() {
                 expect(_getDeploymentExecutionsCalled).toBe(false);
             });
+        }));
+
+        it('should redirect to deployments if deployment deleted from CLI', inject(function($httpBackend, $rootScope, $compile, $q, $location, CloudifyService){
+            var _getNodesCalled = false;
+
+            $httpBackend.whenGET('/backend/configuration?access=all').respond(200);
+            $httpBackend.whenGET('/backend/versions/ui').respond(200);
+            $httpBackend.whenGET('/backend/versions/manager').respond(200);
+            $httpBackend.whenGET('/backend/version/latest?version=00').respond('300');
+            $httpBackend.whenGET('/backend/executions').respond(200);
+            $httpBackend.whenGET('/backend/nodes?deployment_id=deployment1').respond(200);
+            $httpBackend.whenGET('/backend/node-instances').respond(200);
+            $httpBackend.whenPOST('/backend/deployments/get').respond(200);
+            $httpBackend.whenPOST('/backend/deployments/nodes').respond(200);
+            $httpBackend.whenPOST('/backend/nodes').respond(200);
+
+            $location.path('/deployment/' + _deployment.id + '/topology');
+
+            spyOn(CloudifyService, 'autoPull').andCallFake(function() {
+                var deferred = $q.defer();
+                deferred.reject({});
+                return deferred.promise;
+            });
+
+            spyOn(CloudifyService, 'getNodes').andCallFake(function() {
+                var deferred = $q.defer();
+                _getNodesCalled = true;
+
+                deferred.resolve(_nodes);
+                return deferred.promise;
+            });
+
+            spyOn(CloudifyService.deployments, 'getDeploymentExecutions').andCallFake(function() {
+                var deferred = $q.defer();
+                deferred.resolve(_executions);
+                return deferred.promise;
+            });
+
+            spyOn(CloudifyService.deployments, 'getDeploymentById').andCallFake(function() {
+                var deferred = $q.defer();
+                deferred.resolve(_deployment);
+                return deferred.promise;
+            });
+
+            var scope = $rootScope.$new();
+            var isolateScope;
+
+            element = $compile(angular.element('<div deployment-layout></div>'))(scope);
+            scope.$digest();
+
+            waitsFor(function() {
+                return _getNodesCalled;
+            });
+            runs(function() {
+                isolateScope = element.isolateScope();
+                expect(isolateScope.deploymentInProgress).toBe(false);
+                expect($location.path()).toBe('/deployments');
+            });
+
         }));
 
         it('should check all node instances states (CFY-2368)', inject(function($compile, $rootScope, $q, CloudifyService) {
