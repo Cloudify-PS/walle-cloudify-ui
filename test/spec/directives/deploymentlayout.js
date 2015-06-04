@@ -209,7 +209,7 @@ describe('Directive: deploymentLayout', function () {
             });
         }));
 
-        it('should redirect to deployments if deployment deleted from CLI', inject(function($httpBackend, $rootScope, $compile, $q, $location, CloudifyService){
+        it('should redirect to deployments if deployment deleted from CLI (CFY-1745)', inject(function($httpBackend, $rootScope, $compile, $q, $location, CloudifyService){
             var _getNodesCalled = false;
 
             $location.path('/deployment/' + _deployment.id + '/topology');
