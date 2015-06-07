@@ -3,7 +3,9 @@
 describe('Service: cloudifyLoginInterceptor', function () {
 
     // load the service's module
-    beforeEach(module('cosmoUiApp','gsUiHelper'));
+    beforeEach(module('cosmoUiApp','gsUiHelper', function ($translateProvider) {
+        $translateProvider.translations('en', {});
+    }));
 
     // instantiate service
     var cloudifyLoginInterceptor;

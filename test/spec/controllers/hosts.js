@@ -6,7 +6,9 @@ describe('Controller: HostsCtrl', function () {
     var HostsCtrl, scope;
 
     // load the controller's module
-    beforeEach(module('cosmoUiApp', 'ngMock'));
+    beforeEach(module('cosmoUiApp', 'ngMock', function ($translateProvider) {
+        $translateProvider.translations('en', {});
+    }));
 
     // Initialize the controller and a mock scope
     describe('Test setup', function() {

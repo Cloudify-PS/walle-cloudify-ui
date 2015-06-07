@@ -1,18 +1,18 @@
 <div class="properties-panel">
     <div class="title">
-        {{showProperties.general.name}} {{'plans.details.details' | i18n }}
+        {{showProperties.general.name}} {{'plans.details.details' | translate }}
         <i ng-click="hideProperties()" class="fa fa-times-circle right close-properties-button"></i>
     </div>
     <div class="content">
         <div class="buttons-group no-embed" checkbox-toggle value="propSection">
-            <button ng-repeat="(key, value) in showProperties" type="button" class="btn btn-default" ng-class="{active: key == propSection}" value="{{key}}">{{ 'plans.' + key | i18n }}</button>
+            <button ng-repeat="(key, value) in showProperties" type="button" class="btn btn-default" ng-class="{active: key == propSection}" value="{{key}}">{{ 'plans.' + key | translate }}</button>
         </div>
         <div ng-switch="propSection" class="content-section">
             <div ng-switch-default="general">
                 <table>
                     <tr>
-                        <td>{{ 'plans.details.key' | i18n }}</td>
-                        <td>{{ 'plans.details.value' | i18n }}</td>
+                        <td>{{ 'plans.details.key' | translate }}</td>
+                        <td>{{ 'plans.details.value' | translate }}</td>
                     </tr>
                     <tr ng-repeat="(key, value) in showProperties.general">
                         <td>{{key}}</td><td>{{value}}</td>
@@ -22,8 +22,8 @@
             <div ng-switch-when="properties">
                 <table>
                     <tr>
-                        <td>{{ 'plans.details.key' | i18n }}</td>
-                        <td>{{ 'plans.details.value' | i18n }}</td>
+                        <td>{{ 'plans.details.key' | translate }}</td>
+                        <td>{{ 'plans.details.value' | translate }}</td>
                     </tr>
                     <tr ng-repeat="(key, value) in showProperties.properties">
                         <td>{{key}}</td><td>{{value}}</td>
@@ -31,12 +31,12 @@
                 </table>
             </div>
             <div ng-switch-when="relationships">
-                <div class="no-relationships" ng-show="showProperties.relationships.length == undefined">{{ 'plans.details.noRelationships' | i18n }}</div>
+                <div class="no-relationships" ng-show="showProperties.relationships.length == undefined">{{ 'plans.details.noRelationships' | translate }}</div>
                 <table ng-show="showProperties.relationships.length != undefined">
                     <tr>
-                        <td>{{ 'plans.details.target' | i18n }}</td>
-                        <td>{{ 'plans.details.type' | i18n }}</td>
-                        <td>{{ 'plans.details.interface' | i18n }}</td>
+                        <td>{{ 'plans.details.target' | translate }}</td>
+                        <td>{{ 'plans.details.type' | translate }}</td>
+                        <td>{{ 'plans.details.interface' | translate }}</td>
                     </tr>
                     <tr ng-repeat="relationship in showProperties.relationships">
                         <td ng-click="viewNode(getNodeById(relationship.target_id))">{{relationship.target_id}}</td>

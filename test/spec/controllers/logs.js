@@ -3,7 +3,9 @@
 describe('Controller: LogsCtrl', function () {
     var LogsCtrl, scope;
 
-    beforeEach(module('cosmoUiApp', 'ngMock'));
+    beforeEach(module('cosmoUiApp', 'ngMock', function ($translateProvider) {
+        $translateProvider.translations('en', {});
+    }));
 
 
     function mockBackend( $httpBackend ){

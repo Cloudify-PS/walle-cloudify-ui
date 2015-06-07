@@ -8,7 +8,9 @@ describe('Service: CloudifyService', function () {
         it('Injecting required data & initializing a new instance', function() {
 
             // Load the app module
-            module('cosmoUiApp', 'gsUiHelper');
+            module('cosmoUiApp', 'gsUiHelper', function ($translateProvider) {
+                $translateProvider.translations('en', {});
+            });
 
             // Initialize a new instance of CloudifyService
             inject(function (CloudifyService, $helper) {
