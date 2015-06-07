@@ -13,11 +13,11 @@
         <div class="sourcecode">
             <h4 data-ng-show="filename">{{ filename }}</h4>
             <div class="pre" ng-show="isSourceText(filename)">
-                <p class="empty" data-ng-hide="dataCode.data">{{ 'blueprints.source.chooseFile' | i18n }}</p>
+                <p class="empty" data-ng-hide="dataCode.data">{{ 'blueprints.source.chooseFile' | translate }}</p>
                 <div code-highlight="yml" ng-model="dataCode"></div>
             </div>
             <div class="noPreview" ng-show="!isSourceText(filename)">
-                <p class="empty">{{'blueprints.source.' + errorMessage | i18n}}</p>
+                <p class="empty">{{'blueprints.source.' + errorMessage | translate}}</p>
             </div>
         </div>
     </div>

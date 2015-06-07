@@ -1,8 +1,8 @@
 <ul>
     <li ng-repeat='bc in breadcrumbs' ng-class="{'active': {{$last}} }">
         <span ng-switch on="bc.href">
-            <span ng-switch-when="false">{{ bc.label || bc.i18nKey | i18n }} <a ng-if="bc.brackets" ng-href="{{ bc.brackets.href }}">({{ bc.brackets.label }})</a> </span>
-            <a ng-switch-default ng-click="unregisterBreadCrumb($index)" ng-href="{{bc.href}}">{{ bc.label || bc.i18nKey | i18n }}</a>
+            <span ng-switch-when="false">{{ bc.label || bc.i18nKey | translate }} <a ng-if="bc.brackets" ng-href="{{ bc.brackets.href }}">({{ bc.brackets.label }})</a> </span>
+            <a ng-switch-default ng-click="unregisterBreadCrumb($index)" ng-href="{{bc.href}}">{{ bc.label || bc.i18nKey | translate }}</a>
         </span>
     </li>
 </ul>
