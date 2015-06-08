@@ -105,14 +105,8 @@ exports.upload = function( req, res ){
         }
         try {
             logger.debug('getting url', url);
-            services.httpUtils.getUrl(url, function(err, response){
-                if ( !!err ){
-                    res.status(500).send('unable to read url [', err.message , ']');
-                    return;
-                }
-                logger.debug('got response when fetching upload url');
-                services.cloudify4node.uploadBlueprint( cloudifyConf, response, blueprintUploadData.opts, uploadCallback);
-            });
+            blueprintUploadData.blueprint_archive_url = url;
+            services.cloudify4node.uploadBlueprint( cloudifyConf, res, blueprintUploadData.opts, uploadCallback);
         } catch(e) {
             logger.error('unable to send request to url [', url ,'] reason:', e);
             res.status(500).send({'message' : e.message});
