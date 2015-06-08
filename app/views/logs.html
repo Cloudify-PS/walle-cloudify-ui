@@ -98,19 +98,4 @@
         </table>
         <div class="emptyTable" data-ng-hide="logsHits.length">There are no events at this moment...</div>
     </div>
-
-    <div ng-show="isDialogVisible">
-        <div class="dialogBoxBg"></div>
-        <div id="confirmationDialogContainer" class="dialogBox">
-            <div class="dialogTitle">
-                <label>{{ 'logs.errorPopup.title' | i18n }} {{blueprint.id}}</label>
-            </div>
-            <div class="dialogDescription">{{ 'logs.errorPopup.description' | i18n }}</div>
-           <div class="error-message" data-ng-show="errorMsg">{{ errorMsg }}</div>
-            <div class="buttonsContainer confirmationButtons">
-                <button id="confirmBtn" class="gs-btn" ng-click="closeErrorDialog()">{{ 'logs.errorPopup.close' | i18n }}</button>
-            </div>
-        </div>
-    </div>
-
 </div>

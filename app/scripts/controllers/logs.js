@@ -20,6 +20,7 @@ angular.module('cosmoUiApp')
             _executionList = [];
 
         var defaultForwardTime = 1000 * 60 * 5;
+        var _dialog = null;
 
         $scope.blueprintsList = [];
         $scope.deploymentsList = [];
@@ -102,8 +103,11 @@ angular.module('cosmoUiApp')
                 }
                 else {
                     if (data.hasOwnProperty('error_code')) {
+                        if (_isDialogOpen()) {
+                            return;
+                        }
                         $scope.message = data.message;
-                        ngDialog.open({
+                        _dialog = ngDialog.open({
                             template: 'views/dialogs/message.html',
                             controller: 'MessageDialogCtrl',
                             scope: $scope,
@@ -138,8 +142,11 @@ angular.module('cosmoUiApp')
         $scope.timeframeFrom = LogsModel.getFromTimeText();
 
         $scope.closeDialog = function () {
+            if (_dialog !== null) {
+                ngDialog.close(_dialog.id);
+            }
             $scope.message = null;
-            ngDialog.closeAll();
+            _dialog = null;
         };
 
         CloudifyService.blueprints.list()
@@ -293,9 +300,9 @@ angular.module('cosmoUiApp')
             return EventsMap.getEventText(event);
         };
 
-        $scope.closeDialog = function() {
-            ngDialog.closeAll();
-        };
+        function _isDialogOpen() {
+            return _dialog !== null && ngDialog.isOpen(_dialog.id);
+        }
 
         var longetPeriod = $scope.timeframeList[$scope.timeframeList.length - 1];
         filterLogsByRange('@timestamp', _filterByTimeframe(longetPeriod.value), true, $scope.events.getExecuteLastFiftyOptions());

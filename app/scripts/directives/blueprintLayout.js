@@ -14,8 +14,8 @@ angular.module('cosmoUiApp')
             },
             link: function postLink($scope) {
 
+                var _dialog = null;
                 $scope.nodesTree = [];
-                $scope.isDeployDialogVisible = false;
                 $scope.toggleBar = {
                     'compute': true,
                     'middleware': true,
@@ -93,8 +93,11 @@ angular.module('cosmoUiApp')
                     $location.path('/blueprint/' + $scope.id + section.href);
                 };
 
-                $scope.toggleDeployDialog = function() {
-                    ngDialog.open({
+                $scope.openDeployDialog = function() {
+                    if(_isDialogOpen()) {
+                        return;
+                    }
+                    _dialog = ngDialog.open({
                         template: 'views/dialogs/deploy.html',
                         controller: 'DeployDialogCtrl',
                         scope: $scope,
@@ -108,8 +111,15 @@ angular.module('cosmoUiApp')
                 };
 
                 $scope.closeDialog = function() {
-                    ngDialog.closeAll();
+                    if (_dialog !== null) {
+                        ngDialog.close(_dialog.id);
+                    }
+                    _dialog = null;
                 };
+
+                function _isDialogOpen() {
+                    return _dialog !== null && ngDialog.isOpen(_dialog.id);
+                }
             }
         };
     });

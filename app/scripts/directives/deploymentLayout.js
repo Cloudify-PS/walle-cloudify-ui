@@ -38,10 +38,10 @@ angular.module('cosmoUiApp')
                 var deploymentModel = {};
                 var nodesList = [];
                 var statesIndex = nodeStatus.getStatesIndex();
+                var _dialog = null;
 
                 $scope.breadcrumb = [];
                 $scope.workflowsList = [];
-                $scope.isConfirmationDialogVisible = false;
                 $scope.deploymentInProgress = null;
                 $scope.currentExecution = null;
                 $scope.executedData = null;
@@ -340,14 +340,17 @@ angular.module('cosmoUiApp')
                         });
                 }
 
-                $scope.toggleConfirmationDialog = function(confirmationType) {
+                $scope.openConfirmationDialog = function(confirmationType) {
+                    if(_isDialogOpen()) {
+                        return;
+                    }
                     if (confirmationType === 'execute' && $scope.selectedWorkflow.data === null) {
                         return;
                     }
                     $scope.confirmationType = confirmationType;
                     $scope.executedErr = false;
 
-                    ngDialog.open({
+                    _dialog = ngDialog.open({
                         template: 'views/dialogs/confirm.html',
                         controller: 'ExecuteDialogCtrl',
                         scope: $scope,
@@ -391,12 +394,19 @@ angular.module('cosmoUiApp')
                 };
 
                 $scope.closeDialog = function() {
-                    ngDialog.closeAll();
+                    if (_dialog !== null) {
+                        ngDialog.close(_dialog.id);
+                    }
+                    _dialog = null;
                 };
 
                 $scope.getSelectedWorkflow = function() {
                     return $scope.selectedWorkflow.data.value;
                 };
+
+                function _isDialogOpen() {
+                    return _dialog !== null && ngDialog.isOpen(_dialog.id);
+                }
 
             }
         };

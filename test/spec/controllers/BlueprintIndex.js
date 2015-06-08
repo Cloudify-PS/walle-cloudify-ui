@@ -127,13 +127,13 @@ describe('Controller: BlueprintsIndexCtrl', function () {
             });
         });
 
-        it('should toggle delete confirmation dialog when deleteBlueprint function is triggered', function () {
+        it('should open delete confirmation dialog when deleteBlueprint function is triggered', function () {
             var blueprintToDelete = scope.blueprints[0];
             spyOn(_ngDialog, 'open').andCallThrough();
 
             scope.deleteBlueprint(blueprintToDelete);
 
-            expect(scope.delName).toBe(blueprintToDelete.id);
+            expect(scope.itemToDelete.id).toBe(blueprintToDelete.id);
             expect(_ngDialog.open).toHaveBeenCalled();
         });
     });

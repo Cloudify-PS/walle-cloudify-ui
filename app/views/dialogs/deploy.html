@@ -8,8 +8,8 @@
     </div>
     <div class="dialogInputs deployInputs" ng-show="isParamsVisible()">
         <div class="buttons-group deployBtns">
-            <button data-ng-class="{'active': inputsState == 'params'}" class="btn btn-default" data-ng-click="toggleInputsState('params')">Parameters</button>
-            <button data-ng-class="{'active': inputsState == 'raw'}" class="btn btn-default" data-ng-click="toggleInputsState('raw')">Raw</button>
+            <button data-ng-class="{'active': inputsState == 'params'}" class="btn btn-default" data-ng-click="toggleInputsState('PARAMS')">Parameters</button>
+            <button data-ng-class="{'active': inputsState == 'raw'}" class="btn btn-default" data-ng-click="toggleInputsState('RAW')">Raw</button>
         </div>
         <div class="inputsParameters" ng-show="inputsState == 'params'">
             <ul>

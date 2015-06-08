@@ -221,7 +221,7 @@ describe('Controller: DeploymentsCtrl', function () {
 
             scope.deleteDeployment(_deployment);
 
-            expect(scope.delName).toBe(_deployment.id);
+            expect(scope.itemToDelete.id).toBe(_deployment.id);
             expect(_ngDialog.open).toHaveBeenCalled();
         });
     });

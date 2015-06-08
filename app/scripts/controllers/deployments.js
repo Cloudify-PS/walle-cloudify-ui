@@ -6,20 +6,18 @@ angular.module('cosmoUiApp')
         $scope.blueprints = null;
         $scope.deployments = [];
         $scope.selectedBlueprint = '';
-        $scope.delDeployError = false;
-        $scope.deleteInProcess = false;
         $scope.executedErr = false;
-        $scope.ignoreLiveNodes = false;
         $scope.confirmationType = '';
         var _executedDeployments = [];
         $scope.selectedWorkflow = {
             data: null
         };
         $scope.inputs = {};
+        $scope.managerError = false;
         var selectedWorkflows = [];
         var workflows = [];
-        var managerError = false;
-        $scope.currentDeployToDelete = null;
+        var _dialog = null;
+        $scope.itemToDelete = null;
 
         BreadcrumbsService.push('deployments',
             {
@@ -77,14 +75,17 @@ angular.module('cosmoUiApp')
             return selectedWorkflows[deployment_id] !== undefined;
         };
 
-        $scope.toggleConfirmationDialog = function(deployment, confirmationType) {
+        $scope.openConfirmationDialog = function(deployment, confirmationType) {
+            if (_isDialogOpen()) {
+                return;
+            }
             if (confirmationType === 'execute' && selectedWorkflows[deployment.id] === undefined) {
                 return;
             }
             $scope.selectedDeployment = deployment;
             $scope.confirmationType = confirmationType;
 
-            ngDialog.open({
+            _dialog = ngDialog.open({
                 template: 'views/dialogs/confirm.html',
                 controller: 'ExecuteDialogCtrl',
                 scope: $scope,
@@ -100,10 +101,6 @@ angular.module('cosmoUiApp')
             if(event.target.tagName.toLowerCase() + '.' + event.target.className === matchElement) {
                 $scope.redirectTo(deployment);
             }
-        };
-
-        $scope.managerConnectionError = function() {
-            return managerError;
         };
 
         function _loadExecutions() {
@@ -162,7 +159,7 @@ angular.module('cosmoUiApp')
             $scope.deployments = [];
             CloudifyService.blueprints.list()
                 .then(function(data) {
-                    managerError = false;
+                    $scope.managerError = false;
                     $scope.blueprints = data;
                     $scope.deployments = [];
 
@@ -185,19 +182,20 @@ angular.module('cosmoUiApp')
                     _loadExecutions();
                 },
                 function() {
-                    managerError = true;
+                    $scope.managerError = true;
                 });
         };
 
         $scope.loadDeployments();
 
         $scope.deleteDeployment = function(deployment) {
-            $scope.currentDeployToDelete = deployment;
-            $scope.delError = false;
-            $scope.ignoreLiveNodes = false;
-            $scope.delName = deployment.id;
+            if (_isDialogOpen()) {
+                return;
+            }
 
-            ngDialog.open({
+            $scope.itemToDelete = deployment;
+
+            _dialog = ngDialog.open({
                 template: 'views/dialogs/delete.html',
                 controller: 'DeleteDialogCtrl',
                 scope: $scope,
@@ -206,14 +204,17 @@ angular.module('cosmoUiApp')
         };
 
         $scope.closeDialog = function() {
-            ngDialog.closeAll();
-        };
-
-        $scope.toggleIgnoreLiveNodes = function() {
-            $scope.ignoreLiveNodes = !$scope.ignoreLiveNodes;
+            if (_dialog !== null) {
+                ngDialog.close(_dialog.id);
+            }
+            _dialog = null;
         };
 
         $scope.$on('executionStarted', function() {
             $scope.loadDeployments();
         });
+
+        function _isDialogOpen() {
+            return _dialog !== null && ngDialog.isOpen(_dialog.id);
+        }
     });
