@@ -128,7 +128,7 @@ describe('Controller: DeploymentsCtrl', function () {
         }
     ];
 
-    beforeEach(module('cosmoUiApp', 'ngMock', 'templates-main' function ($translateProvider) {
+    beforeEach(module('cosmoUiApp', 'ngMock', 'templates-main', function ($translateProvider) {
         $translateProvider.translations('en', {});
     }));
 
