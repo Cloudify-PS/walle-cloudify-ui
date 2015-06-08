@@ -35,7 +35,7 @@
                 </div>
                 <div class="executingWorkflow" ng-show="deploymentInProgress">
                     <div class="deploymentExecute" ng-show="deploymentInProgress"></div>
-                    {{ currentExecution.workflow_id != null ? 'deployment.process.' + currentExecution.workflow_id : 'deployment.process.wait' | i18n }}
+                    {{ currentExecution.workflow_id != null ? 'deployment.process.' + currentExecution.workflow_id : 'deployment.process.wait' | translate }}
                 </div>
                 <i class="deployment-play" ng-class="{play: isExecuteEnabled(), disabled: !isExecuteEnabled()}" ng-click="openConfirmationDialog('execute')" ng-show="!deploymentInProgress"></i>
 
