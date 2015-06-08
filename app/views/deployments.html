@@ -7,12 +7,12 @@
     <table ng-show="!managerError" id="deploymentTable" class="gs-table">
         <thead>
             <tr>
-                <th class="id">{{ 'deployments.table.heading.id' | i18n }}</th>
-                <th class="blueprint">{{ 'deployments.table.heading.blueprint' | i18n }}</th>
-                <th class="create">{{ 'deployments.table.heading.createDate' | i18n }}</th>
-                <th class="update">{{ 'deployments.table.heading.updated' | i18n }}</th>
-                <th class="actions">{{ 'deployments.table.heading.action' | i18n }}</th>
-                <th class="delete">{{ 'deployments.table.heading.delete' | i18n }}</th>
+                <th class="id">{{ 'deployments.table.heading.id' | translate }}</th>
+                <th class="blueprint">{{ 'deployments.table.heading.blueprint' | translate }}</th>
+                <th class="create">{{ 'deployments.table.heading.createDate' | translate }}</th>
+                <th class="update">{{ 'deployments.table.heading.updated' | translate }}</th>
+                <th class="actions">{{ 'deployments.table.heading.action' | translate }}</th>
+                <th class="delete">{{ 'deployments.table.heading.delete' | translate }}</th>
             </tr>
         </thead>
         <tbody ng-repeat="deployment in deployments">
@@ -43,7 +43,7 @@
         </tbody>
     </table>
 
-    <div class="no-blueprints-message" ng-show="deployments.length == 0">{{ 'deployments.emptyMessage' | i18n }}</div>
+    <div class="no-blueprints-message" ng-show="deployments.length == 0">{{ 'deployments.emptyMessage' | translate }}</div>
 
     <div class="loading" ng-show="blueprints == null && !managerError"></div>
 

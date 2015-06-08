@@ -304,7 +304,9 @@ describe('Service: NetworksService', function () {
         it('Injecting required data & initializing a new instance', function() {
 
             // Load the app module
-            module('cosmoUiApp', 'gsUiHelper');
+            module('cosmoUiApp', 'gsUiHelper', function ($translateProvider) {
+                $translateProvider.translations('en', {});
+            });
 
             // Initialize a new instance of mNetworksService
             inject(function (NetworksService) {

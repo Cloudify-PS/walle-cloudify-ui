@@ -1,12 +1,12 @@
-<h1>{{ 'main.title.json' | i18n }}</h1>
+<h1>{{ 'main.title.json' | translate }}</h1>
 <pre>{{asString()}}</pre>
-<h1>{{ 'main.title.yaml' | i18n }}</h1>
+<h1>{{ 'main.title.yaml' | translate }}</h1>
 <pre>{{yaml}}</pre>
-<h1>{{ 'main.title.types' | i18n }}</h1>
+<h1>{{ 'main.title.types' | translate }}</h1>
 <div>
     {{dataContainer.getTypes()}}
 </div>
-<h1>{{ 'main.title.info' | i18n }}</h1>
+<h1>{{ 'main.title.info' | translate }}</h1>
 
 <dl ng-repeat="node in dataContainer.getNodes()" class="dl-horizontal">
     <dt>{{node.name}}</dt>

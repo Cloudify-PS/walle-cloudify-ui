@@ -67,7 +67,9 @@ describe('Service: EventsService', function () {
         it('Injecting required data & initializing a new instance', function () {
 
             // load the service's module, mocking ejsResource dependency
-            module('cosmoUiApp', 'ngMock', 'gsUiHelper', 'elasticjs.service');
+            module('cosmoUiApp', 'ngMock', 'gsUiHelper', 'elasticjs.service', function ($translateProvider) {
+                $translateProvider.translations('en', {});
+            });
 
             // initialize a new instance of the filter
             inject(function (EventsService, $helper) {
