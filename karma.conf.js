@@ -41,10 +41,10 @@ module.exports = function(config) {
             'app/scripts/*.js',
             'app/scripts/**/*.js',
             '.tmp/styles/main.css',
-            'test/mock/**/*.js',
-            'test/spec/*.js',
-            'test/spec/**/*.js',
-            'test/spec/mocks/mock_translations_en.json',
+            'test/spec/mocks/**/*.js',
+            //'test/spec/*.js',
+            //'test/spec/**/*.js',
+            'test/spec/controllers/deployDialog.js',
             '.tmp/viewTemplates/templates.js'
         ],
 
