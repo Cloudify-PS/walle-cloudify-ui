@@ -7,7 +7,9 @@ describe('Service: SourceService', function() {
         it('Injecting required data & initializing a new instance', function() {
 
             // Load the app module
-            module('cosmoUiApp','backend-mock');
+            module('cosmoUiApp','backend-mock', function ($translateProvider) {
+                $translateProvider.translations('en', {});
+            });
 
             // Initialize a new instance of BlueprintSourceService
             inject(function ($httpBackend, SourceService, CloudifyService, BlueprintSourceService, DeploymentSourceService, VIEW_CONTEXT) {

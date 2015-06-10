@@ -2,7 +2,9 @@
 
 describe('Filter: dateFormat', function () {
     var dateFormat;
-    beforeEach(module('cosmoUiApp', 'ngMock', 'backend-mock'));
+    beforeEach(module('cosmoUiApp', 'ngMock', 'backend-mock', function ($translateProvider) {
+        $translateProvider.translations('en', {});
+    }));
 
     beforeEach(inject(function ($filter) {
         dateFormat = $filter('dateFormat');

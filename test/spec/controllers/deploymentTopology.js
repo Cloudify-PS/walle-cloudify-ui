@@ -29,7 +29,9 @@ describe('Controller: DeploymentTopologyCtrl', function () {
     };
 
     // load the controller's module
-    beforeEach(module('cosmoUiApp', 'ngMock','backend-mock'));
+    beforeEach(module('cosmoUiApp', 'ngMock','backend-mock', function ($translateProvider) {
+        $translateProvider.translations('en', {});
+    }));
 
     beforeEach(inject(function ($controller, $rootScope) {
             scope = $rootScope.$new();

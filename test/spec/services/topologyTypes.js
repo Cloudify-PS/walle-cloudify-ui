@@ -5,7 +5,9 @@ describe('Service: TopologyTypes', function () {
     var mtopologyTypes;
     var typesList = [];
 
-    beforeEach(module('cosmoUiApp', 'backend-mock'));
+    beforeEach(module('cosmoUiApp', 'backend-mock', function ($translateProvider) {
+        $translateProvider.translations('en', {});
+    }));
     beforeEach(inject(function (TopologyTypes) {
         mtopologyTypes = TopologyTypes;
     }));

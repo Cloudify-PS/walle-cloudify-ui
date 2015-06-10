@@ -248,7 +248,24 @@ module.exports = function (grunt) {
             }
 
         },
-        compass: {
+
+
+// Compiles Sass to CSS and generates necessary files if requested
+        sass: {
+
+            dist: {
+                files: {
+                    '.tmp/styles/main.css' : '<%= yeoman.app %>/styles/main.scss'
+                }
+            },
+            server: {
+                files: {
+                    '.tmp/styles/main.css' : '<%= yeoman.app %>/styles/main.scss'
+                }
+
+            }
+        },
+       /* compass: {
             options: {
                 sassDir: '<%= yeoman.app %>/styles',
                 cssDir: '.tmp/styles',
@@ -268,7 +285,7 @@ module.exports = function (grunt) {
                     debugInfo: true
                 }
             }
-        },
+        },*/
         // not used since Uglify task does concat,
         // but still available if needed
         /*concat: {
@@ -752,6 +769,9 @@ module.exports = function (grunt) {
         'build',
         'backend'
     ]);
+
+
+    grunt.registerTask('compass', ['sass']);
 
 
     grunt.registerTask('help', ['availabletasks:help']);

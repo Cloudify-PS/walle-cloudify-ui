@@ -300,7 +300,9 @@ describe('Service: NetworksService', function () {
     ];
     var results;
 
-    beforeEach(module('cosmoUiApp', 'backend-mock'));
+    beforeEach(module('cosmoUiApp', 'backend-mock', function ($translateProvider) {
+        $translateProvider.translations('en', {});
+    }));
 
     // Initialize a new instance of mNetworksService
     beforeEach(inject(function (NetworksService) {

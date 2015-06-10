@@ -1,4 +1,4 @@
-module.exports = function (config) {
+module.exports = function(config) {
     var configuration = {
         // base path, that will be used to resolve files and exclude
         basePath: '',
@@ -22,12 +22,13 @@ module.exports = function (config) {
             'app/bower_components/angularjs-nvd3-directives/dist/angularjs-nvd3-directives.js',
             'app/bower_components/elastic.js/dist/elastic-angular-client.js',
             'app/bower_components/gs-ui-infra/app/scripts/**/*.js',
-            'app/bower_components/i18next/i18next.js',
             'app/bower_components/d3/d3.js',
             'app/bower_components/elastic.js/dist/elastic.js',
             'app/bower_components/elastic.js/dist/elastic-angular-client.js',
             'app/bower_components/lodash/dist/lodash.js',
             'app/bower_components/jquery-simulate/jquery.simulate.js',
+            'app/bower_components/angular-translate/angular-translate.min.js',
+            'app/bower_components/angular-translate-loader-static-files/angular-translate-loader-static-files.min.js',
             'app/bower_components/SyntaxHighlighter/scripts/XRegExp.js',
             'app/bower_components/SyntaxHighlighter/scripts/shCore.js',
             'app/bower_components/SyntaxHighlighter/scripts/shLegacy.js',
@@ -45,13 +46,11 @@ module.exports = function (config) {
             'test/spec/**/*.js',
             'test/spec/mocks/mock_translations_en.json',
             '.tmp/viewTemplates/templates.js'
-
         ],
 
         // list of files to exclude
         exclude: [],
         proxies: {
-            '/i18n/translations_en.json': 'http://localhost:8080/base/test/spec/mocks/mock_translations_en.json',
             '/images/': 'http://localhost:8080/base/app/images'
         },
         preprocessors: {

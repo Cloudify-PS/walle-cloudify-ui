@@ -89,7 +89,8 @@
         "grunt-shell": "~1.1.2",
         "grunt-contrib-compress": "~0.13.0",
         "grunt-aws-s3": "~0.11.1",
-        "grunt-available-tasks": "~0.5.7"
+        "grunt-available-tasks": "~0.5.7",
+        "grunt-sass": "~1.0.0"
     },
     "engines": {
         "node": ">=0.8.0"

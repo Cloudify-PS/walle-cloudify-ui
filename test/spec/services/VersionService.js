@@ -7,7 +7,9 @@ describe('Service: VersionService', function () {
     var uiUrl = '/backend/versions/ui';
     var ver = '310';
 
-    beforeEach(module('cosmoUiApp', 'ngMock','backend-mock'));
+    beforeEach(module('cosmoUiApp', 'ngMock','backend-mock', function ($translateProvider) {
+        $translateProvider.translations('en', {});
+    }));
     beforeEach(function() {
         // load the filter's module
 
