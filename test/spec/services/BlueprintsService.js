@@ -5,9 +5,7 @@ describe('Service: BlueprintsService', function () {
     var mBlueprintsService;
 
     // Load the app module
-    beforeEach(module('cosmoUiApp', 'backend-mock', function ($translateProvider) {
-        $translateProvider.translations('en', {});
-    }));
+    beforeEach(module('cosmoUiApp', 'backend-mock'));
     beforeEach(
         inject(function (BlueprintsService, RestLoader) {
             mBlueprintsService = BlueprintsService;

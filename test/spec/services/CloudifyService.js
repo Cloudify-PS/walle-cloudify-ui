@@ -4,9 +4,7 @@ describe('Service: CloudifyService', function () {
 
     var mCloudifyService;
 
-    beforeEach(module('cosmoUiApp','backend-mock', function ($translateProvider) {
-        $translateProvider.translations('en', {});
-    }));
+    beforeEach(module('cosmoUiApp','backend-mock'));
     beforeEach(inject(function (CloudifyService) {
 
         mCloudifyService = CloudifyService;

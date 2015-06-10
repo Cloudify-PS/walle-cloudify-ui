@@ -3,9 +3,7 @@
 describe('Directive: onFinishRender', function () {
 
 
-    beforeEach(module('cosmoUiApp','backend-mock' , function ($translateProvider) {
-        $translateProvider.translations('en', {});
-    }));
+    beforeEach(module('cosmoUiApp','backend-mock' ));
 
     var element;
 

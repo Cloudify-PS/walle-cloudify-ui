@@ -2,9 +2,7 @@
 
 describe('Controller: SourceCtrl', function () {
     // load the controller's module
-    beforeEach(module('cosmoUiApp', 'ngMock', function ($translateProvider) {
-        $translateProvider.translations('en', {});
-    }));
+    beforeEach(module('cosmoUiApp', 'ngMock', 'backend-mock'));
 
     var SourceCtrl, scope, cloudifyService, sourceService, blueprintSourceService;
 

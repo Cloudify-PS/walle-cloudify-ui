@@ -3,9 +3,7 @@
 describe('Service: cloudifyLoginInterceptor', function () {
 
     // load the service's module
-    beforeEach(module('cosmoUiApp', 'backend-mock', function ($translateProvider) {
-        $translateProvider.translations('en', {});
-    }));
+    beforeEach(module('cosmoUiApp', 'backend-mock'));
 
     // instantiate service
     var cloudifyLoginInterceptor;

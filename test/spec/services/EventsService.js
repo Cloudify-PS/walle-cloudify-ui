@@ -14,9 +14,7 @@ describe('Service: EventsService', function () {
         return new Date(fromTime.setTime(time));
     }
 
-    beforeEach(module('cosmoUiApp', 'ngMock', 'backend-mock', 'elasticjs.service', 'elasticjs.service', function ($translateProvider) {
-        $translateProvider.translations('en', {});
-    }));
+    beforeEach(module('cosmoUiApp', 'ngMock', 'backend-mock', 'elasticjs.service', 'elasticjs.service'));
     beforeEach(
         // initialize a new instance of the filter
         inject(function (EventsService) {

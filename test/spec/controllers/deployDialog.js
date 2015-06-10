@@ -130,9 +130,7 @@ describe('Controller: DeploydialogCtrl', function () {
         }
     };
 
-    beforeEach(module('cosmoUiApp', 'ngMock', function ($translateProvider) {
-        $translateProvider.translations('en', {});
-    }));
+    beforeEach(module('cosmoUiApp', 'ngMock', 'backend-mock'));
 
     describe('Test setup', function() {
         it ('', inject(function ($controller, $rootScope, $httpBackend, $q, CloudifyService) {

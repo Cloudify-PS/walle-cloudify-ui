@@ -68,9 +68,7 @@ describe('Directive: floatingDeploymentNodePanel', function () {
         'dataType': 'compute'
     }];
 
-    beforeEach(module('cosmoUiApp', 'ngMock', 'templates-main', function ($translateProvider) {
-        $translateProvider.translations('en', {});
-    }));
+    beforeEach(module('cosmoUiApp', 'ngMock', 'templates-main', 'backend-mock'));
 
     beforeEach(inject(function ($compile, $rootScope, $httpBackend) {
         $httpBackend.whenGET('/backend/configuration?access=all').respond(200);

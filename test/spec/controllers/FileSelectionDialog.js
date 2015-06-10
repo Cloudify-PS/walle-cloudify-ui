@@ -5,9 +5,7 @@ describe('Controller: FileSelectionDialogCtrl', function () {
     var FileSelectionDialogCtrl, _cloudifyService, scope;
 
     // load the controller's module
-    beforeEach(module('cosmoUiApp', 'ngMock', function ($translateProvider) {
-        $translateProvider.translations('en', {});
-    }));
+    beforeEach(module('cosmoUiApp', 'ngMock', 'backend-mock'));
 
     // Initialize the controller and a mock scope
     beforeEach(inject(function ($controller, $rootScope, $httpBackend, $q, CloudifyService) {

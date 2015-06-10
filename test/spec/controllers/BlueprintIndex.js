@@ -29,9 +29,7 @@ describe('Controller: BlueprintsIndexCtrl', function () {
     };
 
     // load the controller's module
-    beforeEach(module('cosmoUiApp', 'ngMock', function ($translateProvider) {
-        $translateProvider.translations('en', {});
-    }));
+    beforeEach(module('cosmoUiApp', 'ngMock', 'backend-mock'));
 
     function _testSetup(deleteSuccess) {
         inject(function ($controller, $rootScope, $httpBackend, $q, CloudifyService) {

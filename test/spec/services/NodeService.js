@@ -38,9 +38,7 @@ describe('Service: NodeService', function () {
         }
     ];
 
-    beforeEach(module('cosmoUiApp', 'ngMock', 'backend-mock', function ($translateProvider) {
-        $translateProvider.translations('en', {});
-    }));
+    beforeEach(module('cosmoUiApp', 'ngMock', 'backend-mock'));
 
     beforeEach(
         inject(function (NodeService) {

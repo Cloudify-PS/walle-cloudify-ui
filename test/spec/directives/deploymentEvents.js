@@ -4,9 +4,7 @@ describe('Directive: deploymentEvents', function () {
 
     var element, scope;
 
-    beforeEach(module('cosmoUiApp', 'ngMock','backend-mock', 'templates-main', function ($translateProvider) {
-        $translateProvider.translations('en', {});
-    }));
+    beforeEach(module('cosmoUiApp', 'ngMock','backend-mock', 'templates-main'));
 
     beforeEach(inject(function ($compile, $rootScope, $httpBackend) {
         $httpBackend.whenPOST('/backend/events/_search').respond(200);

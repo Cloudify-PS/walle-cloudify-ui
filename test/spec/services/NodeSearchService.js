@@ -6,9 +6,7 @@ describe('Service: NodeSearchService', function () {
         nodeSearchData,
         nodeSearchDataSec;
 
-    beforeEach(module('cosmoUiApp', 'backend-mock', function ($translateProvider) {
-        $translateProvider.translations('en', {});
-    }));
+    beforeEach(module('cosmoUiApp', 'backend-mock'));
 
 
     // Initialize a new instance of mNodeSearchService

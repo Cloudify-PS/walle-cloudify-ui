@@ -128,9 +128,7 @@ describe('Controller: DeploymentsCtrl', function () {
         }
     ];
 
-    beforeEach(module('cosmoUiApp', 'ngMock', 'backend-mock', function ($translateProvider) {
-        $translateProvider.translations('en', {});
-    }));
+    beforeEach(module('cosmoUiApp', 'ngMock', 'backend-mock'));
 
     function _testSetup() {
         inject(function ($controller, $rootScope, $httpBackend, $q, CloudifyService, $location, $timeout) {

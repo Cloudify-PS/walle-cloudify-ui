@@ -5,9 +5,7 @@ describe('Service: DeploymentsService', function () {
     var mDeploymentsService;
 
 
-    beforeEach(module('cosmoUiApp', 'backend-mock', function ($translateProvider) {
-        $translateProvider.translations('en', {});
-    }));
+    beforeEach(module('cosmoUiApp', 'backend-mock'));
 
     // Initialize a new instance of DeploymentsService
     beforeEach(inject(function (DeploymentsService) {

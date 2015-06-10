@@ -4,9 +4,7 @@ describe('Service: RestLoader', function () {
 
     var mRestLoader;
 
-    beforeEach(module('cosmoUiApp', 'backend-mock', function ($translateProvider) {
-        $translateProvider.translations('en', {});
-    }));
+    beforeEach(module('cosmoUiApp', 'backend-mock'));
 
     // Initialize a new instance of mRestLoader
     beforeEach(inject(function (RestLoader) {

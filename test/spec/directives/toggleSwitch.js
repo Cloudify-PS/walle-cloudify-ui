@@ -3,9 +3,7 @@
 describe('Directive: toggleSwitch', function () {
 
     // load the directive's module
-    beforeEach(module('cosmoUiApp','backend-mock','templates-main' , function ($translateProvider) {
-        $translateProvider.translations('en', {});
-    }));
+    beforeEach(module('cosmoUiApp','backend-mock','templates-main' ));
 
     var element,
         scope;
