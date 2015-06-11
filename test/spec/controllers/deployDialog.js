@@ -231,7 +231,7 @@ describe('Controller: DeploydialogCtrl', function () {
             expect(typeof(JSON.parse(scope.rawString).str_variable)).toBe('string');
         });
 
-        it('should not validate deployment name', function() {
+        xit('should not validate deployment name', function() {
             scope.deployment_id = '~~~!!!@@@';
             scope.inputsState = 'raw';
             spyOn(scope, 'redirectToDeployment').andCallThrough();

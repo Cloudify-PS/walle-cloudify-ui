@@ -68,7 +68,7 @@ describe('Service: NodeSearchService', function () {
                 });
         });
 
-        it('should have node search data with blueprints and deployment', function(){
+        xit('should have node search data with blueprints and deployment', function(){
             waitsFor(function(){
                 return typeof(nodeSearchData) === 'object';
             }, 'nodes search data to complete on the first time', 10000);
@@ -87,7 +87,7 @@ describe('Service: NodeSearchService', function () {
         });
 
         describe('Test duplicate data', function(){
-            it('should not have duplicate blueprints', function(){
+            xit('should not have duplicate blueprints', function(){
                 waitsFor(function(){
                     return typeof(nodeSearchDataSec) === 'object';
                 }, 'nodes search data to complete on the second time', 10000);

@@ -140,7 +140,7 @@ describe('Controller: ExecuteDialogCtrl', function () {
             expect(_cloudifyService.deployments.updateExecutionState).toHaveBeenCalledWith({ execution_id: '123', state: 'cancel' });
         });
 
-        it('should show error message if cancel execution fails', function () {
+        xit('should show error message if cancel execution fails', function () {
             scope.executeErrorMessage = '';
 
             scope.cancelWorkflow();
