@@ -1,7 +1,7 @@
 'use strict';
 
 describe('Controller: DeploymentsCtrl', function () {
-    var DeploymentsCtrl, scope, _cloudifyService, _timeout, _depExecSpy;
+    var DeploymentsCtrl, scope, _cloudifyService, _timeout, _depExecSpy, _ngDialog;
 
     var _execution = {
 
@@ -128,12 +128,12 @@ describe('Controller: DeploymentsCtrl', function () {
         }
     ];
 
-    beforeEach(module('cosmoUiApp', 'ngMock', function ($translateProvider) {
+    beforeEach(module('cosmoUiApp', 'ngMock', 'templates-main', function ($translateProvider) {
         $translateProvider.translations('en', {});
     }));
 
     function _testSetup() {
-        inject(function ($controller, $rootScope, $httpBackend, $q, CloudifyService, $location, $timeout) {
+        inject(function ($controller, $rootScope, $httpBackend, $q, CloudifyService, $location, $timeout, ngDialog) {
             $httpBackend.whenGET('/backend/configuration?access=all').respond(200);
             $httpBackend.whenGET('/backend/versions/ui').respond(200);
             $httpBackend.whenGET('/backend/versions/manager').respond(200);
@@ -142,6 +142,8 @@ describe('Controller: DeploymentsCtrl', function () {
 
             scope = $rootScope.$new();
             _cloudifyService = CloudifyService;
+            _ngDialog = ngDialog;
+
             _depExecSpy = spyOn(CloudifyService.deployments, 'getDeploymentExecutions').andCallFake(function(){
                 var deferred = $q.defer();
                 deferred.resolve(_executions);
@@ -181,7 +183,8 @@ describe('Controller: DeploymentsCtrl', function () {
             DeploymentsCtrl = $controller('DeploymentsCtrl', {
                 $scope: scope,
                 CloudifyService: _cloudifyService,
-                $timeout: _timeout
+                $timeout: _timeout,
+                ngDialog: _ngDialog
             });
 
             scope.$digest();
@@ -207,7 +210,6 @@ describe('Controller: DeploymentsCtrl', function () {
         it('should load deployment executions every 10000 milliseconds', inject(function($httpBackend) {
             _testSetup();
 
-            //scope.$apply();
             $httpBackend.whenGET('/backend/executions').respond({});
             $httpBackend.whenGET('/backend/configuration?access=all').respond({});
 
@@ -216,21 +218,13 @@ describe('Controller: DeploymentsCtrl', function () {
             expect(_depExecSpy.callCount).toEqual(2);
         }));
 
-        it('should show error message if deployment delete fails', function() {
-            _testSetup();
+        it('should toggle delete confirmation dialog when deleteBlueprint function is triggered', function () {
+            spyOn(_ngDialog, 'open').andCallThrough();
+
             scope.deleteDeployment(_deployment);
 
-            scope.confirmDeleteDeployment();
-            expect(scope.delDeployError).toBe(_deleteErr.data.message);
-        });
-
-        it('should show general error message if error returns with no message', function() {
-            _testSetup();
-            _deleteErr.data = {};
-            scope.deleteDeployment(_deployment);
-
-            scope.confirmDeleteDeployment();
-            expect(scope.delDeployError).toBe('An error occurred');
+            expect(scope.itemToDelete.id).toBe(_deployment.id);
+            expect(_ngDialog.open).toHaveBeenCalled();
         });
     });
 });

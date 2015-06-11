@@ -29,6 +29,7 @@ module.exports = function(config) {
             'app/bower_components/jquery-simulate/jquery.simulate.js',
             'app/bower_components/angular-translate/angular-translate.min.js',
             'app/bower_components/angular-translate-loader-static-files/angular-translate-loader-static-files.min.js',
+            'app/bower_components/ngDialog/js/ngDialog.min.js',
             'app/scripts/*.js',
             'app/scripts/**/*.js',
             '.tmp/styles/main.css',
