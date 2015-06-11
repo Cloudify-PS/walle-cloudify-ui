@@ -140,7 +140,7 @@ describe('Controller: LogsCtrl', function () {
 
     describe('logs controller', function () {
         describe('#first load', function () {
-            it('should not execute logs if no deployments were selected in filter', inject(function ($httpBackend) {
+//            it('should not execute logs if no deployments were selected in filter', inject(function ($httpBackend) {
 //                scope.eventsFilter.deployments = [];
 //                spyOn(scope.events, 'execute').andCallThrough();
 //
@@ -149,9 +149,9 @@ describe('Controller: LogsCtrl', function () {
 //
 //
 //                expect(scope.events.execute).not.toHaveBeenCalled();
-            }));
+//            }));
 
-            it('should execute logs if deployments were selected in filter', inject(function ($httpBackend) {
+//            it('should execute logs if deployments were selected in filter', inject(function ($httpBackend) {
 //                scope.eventsFilter.deployments = [
 //                    {
 //                        name: 'deployment1'
@@ -160,7 +160,7 @@ describe('Controller: LogsCtrl', function () {
 //                spyOn(scope.events, 'execute').andCallThrough();
 //                $httpBackend.flush();
 //                expect(scope.events.execute).toHaveBeenCalled();
-            }));
+//            }));
         });
     });
 
