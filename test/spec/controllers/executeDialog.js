@@ -112,13 +112,6 @@ describe('Controller: ExecuteDialogCtrl', function () {
                 };
             });
 
-            spyOn(CloudifyService.deployments, 'updateExecutionState').andCallFake(function () {
-                return {
-                    then: function() {
-                    }
-                };
-            });
-
             scope.toggleConfirmationDialog = function () {
             };
 
@@ -138,6 +131,7 @@ describe('Controller: ExecuteDialogCtrl', function () {
             scope.executeWorkflow();
 
             expect(scope.executeErrorMessage).toBe('foo');
+            expect(scope.showError).toBe(true);
         }));
 
         it('should cancel execution by its id', inject(function (CloudifyService) {
@@ -151,17 +145,30 @@ describe('Controller: ExecuteDialogCtrl', function () {
             });
         }));
 
-        it('should show error message if cancel execution fails', function () {
+        it('should show error message if cancel execution fails', inject(function (CloudifyService) {
+            var executeParams = null;
+            spyOn(CloudifyService.deployments, 'updateExecutionState').andCallFake(function (params) {
+                executeParams = params;
+                return {
+                    then: function(success, error) {
+                        error({'data': {'message': 'foo'}});
+                    }
+                };
+            });
+
+            scope.toggleConfirmationDialog = function () {
+            };
+
+            spyOn(scope, 'isExecuteEnabled').andCallFake(function () {
+                return true;
+            });
+
             scope.executeErrorMessage = '';
 
             scope.cancelWorkflow();
 
-            waitsFor(function () {
-                return scope.executeErrorMessage !== '';
-            });
-            runs(function () {
-                expect(scope.executeErrorMessage).toBe(_executionError.data.message);
-            });
-        });
+            expect(scope.executeErrorMessage).toBe('foo');
+            expect(scope.showError).toBe(true);
+        }));
     });
 });
