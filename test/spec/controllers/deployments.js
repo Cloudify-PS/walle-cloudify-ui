@@ -3,9 +3,7 @@
 describe('Controller: DeploymentsCtrl', function () {
     var DeploymentsCtrl, scope, _cloudifyService, _timeout, _depExecSpy;
 
-    var _execution = {
-
-    };
+    var _execution = {};
 
     var _deleteErr = {
         'data': {
@@ -140,7 +138,7 @@ describe('Controller: DeploymentsCtrl', function () {
 
             scope = $rootScope.$new();
             _cloudifyService = CloudifyService;
-            _depExecSpy = spyOn(CloudifyService.deployments, 'getDeploymentExecutions').andCallFake(function(){
+            _depExecSpy = spyOn(CloudifyService.deployments, 'getDeploymentExecutions').andCallFake(function () {
                 var deferred = $q.defer();
                 deferred.resolve(_executions);
                 return deferred.promise;
@@ -161,8 +159,8 @@ describe('Controller: DeploymentsCtrl', function () {
             _cloudifyService.deployments.deleteDeploymentById = function () {
 
                 return {
-                    then: function(success, error){
-                        error( _deleteErr );
+                    then: function (success, error) {
+                        error(_deleteErr);
                     }
                 };
 
@@ -186,8 +184,8 @@ describe('Controller: DeploymentsCtrl', function () {
         });
     }
 
-    describe('toggle ignore live nodes', function(){
-        it('should toggle value on scope', function(){
+    describe('toggle ignore live nodes', function () {
+        it('should toggle value on scope', function () {
             _testSetup();
             scope.ignoreLiveNodes = true;
             scope.toggleIgnoreLiveNodes();
@@ -197,59 +195,64 @@ describe('Controller: DeploymentsCtrl', function () {
         });
     });
 
-    describe('cosmoConnectionError', function(){
-        it('should be initialized to true', function(){
+    describe('cosmoConnectionError', function () {
+        it('should be initialized to true', function () {
             _testSetup();
             expect(scope.cosmoConnectionError()).toBe(false);
         });
     });
 
-    describe('isExecuting', function(){
-        it('should return true if something is executing', function(){
+    describe('isExecuting', function () {
+        it('should return true if something is executing', function () {
             _testSetup();
             expect(scope.isExecuting()).toBe(false);
         });
     });
 
-    describe('getWorkflows', function(){
-        it('should return workflows by deployment id', function(){
+    describe('getWorkflows', function () {
+        it('should return workflows by deployment id', function () {
             _testSetup();
             expect(scope.getWorkflows({})).toBe(undefined);
         });
     });
 
-    describe('toggleConfirmationDialog', function(){
-        it('should toggle items on scope', function(){
+    describe('toggleConfirmationDialog', function () {
+        it('should toggle items on scope', function () {
             _testSetup();
             scope.toggleConfirmationDialog();
         });
     });
 
-    describe('#executeDeployment', function(){
-        it('should run execute on deployments if enabled', inject(function( CloudifyService ){
+    describe('#executeDeployment', function () {
+        it('should run execute on deployments if enabled', inject(function (CloudifyService) {
             _testSetup();
             var executeResponse = {};
             var isExecuteEnabled = false;
-            scope.isExecuteEnabled = jasmine.createSpy().andCallFake(function(){return isExecuteEnabled;});
+            scope.isExecuteEnabled = jasmine.createSpy().andCallFake(function () {
+                return isExecuteEnabled;
+            });
             scope.selectedDeployment = {};
-            scope.selectedWorkflow = { data : { parameters : '' } };
-            spyOn(scope,'redirectTo');
+            scope.selectedWorkflow = {data: {parameters: ''}};
+            spyOn(scope, 'redirectTo');
 
             scope.executeDeployment({});
             expect(scope.redirectTo).not.toHaveBeenCalled();
 
             isExecuteEnabled = true;
 
-            spyOn( CloudifyService.deployments, 'execute').andCallFake(function(){ return { then:function( success ){ success( executeResponse );}};});
+            spyOn(CloudifyService.deployments, 'execute').andCallFake(function () {
+                return {
+                    then: function (success) {
+                        success(executeResponse);
+                    }
+                };
+            });
             scope.executeDeployment({});
             expect(scope.redirectTo).toHaveBeenCalled();
 
-            executeResponse = { 'error_code' : 'yes', 'message' : 'foo'};
-            scope.executeDeployment ({});
+            executeResponse = {'error_code': 'yes', 'message': 'foo'};
+            scope.executeDeployment({});
             expect(scope.executedErr).toBe('foo');
-
-
-
 
 
         }));
@@ -272,7 +275,7 @@ describe('Controller: DeploymentsCtrl', function () {
             expect(scope.getExecutionAttr(scope.selectedDeployment, 'id')).toBe(_executions[1].id);
         });
 
-        it('should load deployment executions every 10000 milliseconds', inject(function($httpBackend) {
+        it('should load deployment executions every 10000 milliseconds', inject(function ($httpBackend) {
             _testSetup();
 
             //scope.$apply();
@@ -284,7 +287,7 @@ describe('Controller: DeploymentsCtrl', function () {
             expect(_depExecSpy.callCount).toEqual(2);
         }));
 
-        it('should show error message if deployment delete fails', function() {
+        it('should show error message if deployment delete fails', function () {
             _testSetup();
             scope.deleteDeployment(_deployment);
 
@@ -292,7 +295,7 @@ describe('Controller: DeploymentsCtrl', function () {
             expect(scope.delDeployError).toBe(_deleteErr.data.message);
         });
 
-        it('should show general error message if error returns with no message', function() {
+        it('should show general error message if error returns with no message', function () {
             _testSetup();
             _deleteErr.data = {};
             scope.deleteDeployment(_deployment);

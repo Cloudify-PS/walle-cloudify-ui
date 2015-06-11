@@ -149,6 +149,8 @@ describe('Controller: DeploydialogCtrl', function () {
         scope.redirectToDeployment = function () {
         };
 
+        spyOn(scope, 'redirectToDeployment').andCallThrough();
+
         DeployDialogCtrl = $controller('DeployDialogCtrl', {
             $scope: scope,
             CloudifyService: CloudifyService
@@ -185,19 +187,27 @@ describe('Controller: DeploydialogCtrl', function () {
             expect(scope.isDeployEnabled()).toBe(true);
         });
 
-        it('should pass all params provided to CloudifyService on deployment creation', function () {
-            spyOn(scope, 'redirectToDeployment').andCallThrough();
+        it('should pass all params provided to CloudifyService on deployment creation', inject(function (CloudifyService) {
+            var deployParams = null;
+            spyOn(CloudifyService.blueprints, 'deploy').andCallFake(function (params) {
+                deployParams = params;
+                return {
+                    then: function() {
 
+                    }
+                };
+            });
+
+            spyOn(scope, 'isDeployEnabled').andCallFake(function () {
+                return true;
+            });
+
+            scope.deployment_id = 'deployment1';
             scope.deployBlueprint('blueprint1');
-            scope.$apply();
 
-            waitsFor(function () {
-                return scope.inProcess === false;
-            });
-            runs(function () {
-                expect(scope.redirectToDeployment).toHaveBeenCalledWith('deployment1');
-            });
-        });
+            expect(deployParams).not.toBe(null);
+            expect(CloudifyService.blueprints.deploy).toHaveBeenCalledWith(deployParams);
+        }));
 
         it('should update input JSON object when one of the inputs is updated', function () {
             scope.inputs.image_name = 'new value';
@@ -220,13 +230,15 @@ describe('Controller: DeploydialogCtrl', function () {
             expect(typeof(JSON.parse(scope.rawString).str_variable)).toBe('string');
         });
 
-        it('should not validate deployment name', inject(function ($q, CloudifyService) {
+        it('should not validate deployment name', inject(function (CloudifyService) {
             spyOn(CloudifyService.blueprints, 'deploy').andCallFake(function () {
-                var deferred = $q.defer();
                 scope.inProcess = false;
                 scope.redirectToDeployment(scope.deployment_id);
-                deferred.resolve(_deployment);
-                return deferred.promise;
+                return {
+                    then: function() {
+
+                    }
+                };
             });
 
             scope.deployment_id = '~~~!!!@@@';
@@ -236,32 +248,30 @@ describe('Controller: DeploydialogCtrl', function () {
                 return true;
             });
 
-            spyOn(scope, 'redirectToDeployment').andCallThrough();
-
             scope.deployBlueprint('blueprint1');
 
-            waitsFor(function () {
-                return scope.inProcess === false;
-            });
-            runs(function () {
-                expect(scope.redirectToDeployment).toHaveBeenCalledWith(scope.deployment_id);
-            });
+            expect(scope.redirectToDeployment).toHaveBeenCalledWith(scope.deployment_id);
         }));
 
-        it('should set showError flag to true once the deployment name already exists', function () {
+        it('should set showError flag to true once the deployment name already exists', inject(function (CloudifyService) {
+            spyOn(CloudifyService.blueprints, 'deploy').andCallFake(function () {
+                return {
+                    then: function(success, error) {
+                        success({'message': 'foo'});
+                    }
+                };
+            });
+
+            spyOn(scope, 'isDeployEnabled').andCallFake(function () {
+                return true;
+            });
+
             scope.deployment_id = 'deployment1';
-            errType = 'depName';
-
             scope.deployBlueprint('blueprint1');
-            scope.$apply();
 
-            waitsFor(function () {
-                return scope.inProcess === false;
-            });
-            runs(function () {
-                expect(scope.deployErrorMessage).toBe(_errors.depName.message);
-            });
-        });
+            expect(scope.deployErrorMessage).toBe('foo');
+            expect(scope.showError).toBe(true);
+        }));
 
         it('should set showError flag to false once the deployment name is changed', function () {
             scope.deployment_id = 'deployment1';
