@@ -129,12 +129,7 @@ describe('Controller: DeploydialogCtrl', function () {
 
     beforeEach(module('cosmoUiApp', 'ngMock', 'backend-mock'));
 
-    beforeEach(inject(function ($controller, $rootScope, $httpBackend, $q, CloudifyService) {
-        $httpBackend.whenGET('/backend/configuration?access=all').respond(200);
-        $httpBackend.whenGET('/backend/versions/ui').respond(200);
-        $httpBackend.whenGET('/backend/versions/manager').respond(200);
-        $httpBackend.whenGET('/backend/version/latest?version=00').respond('300');
-
+    beforeEach(inject(function ($controller, $rootScope, $q, CloudifyService) {
         scope = $rootScope.$new();
 
         CloudifyService.blueprints.deploy = function () {
@@ -246,11 +241,9 @@ describe('Controller: DeploydialogCtrl', function () {
             scope.deployBlueprint('blueprint1');
 
             waitsFor(function () {
-                scope.state = 'test-inWaitsFor';
                 return scope.inProcess === false;
             });
             runs(function () {
-                scope.state = 'test-afterWaitsFor';
                 expect(scope.redirectToDeployment).toHaveBeenCalledWith(scope.deployment_id);
             });
         }));

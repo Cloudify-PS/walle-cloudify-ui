@@ -42,9 +42,9 @@ module.exports = function(config) {
             'app/scripts/**/*.js',
             '.tmp/styles/main.css',
             'test/spec/mocks/**/*.js',
-            //'test/spec/*.js',
-            //'test/spec/**/*.js',
-            'test/spec/controllers/deployDialog.js',
+            'test/spec/*.js',
+            'test/spec/**/*.js',
+            //'test/spec/controllers/deployDialog.js',
             '.tmp/viewTemplates/templates.js'
         ],
 
