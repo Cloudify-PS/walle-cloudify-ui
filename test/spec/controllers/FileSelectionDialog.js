@@ -5,7 +5,7 @@ describe('Controller: FileSelectionDialogCtrl', function () {
     var FileSelectionDialogCtrl, _cloudifyService, scope;
 
     // load the controller's module
-    beforeEach(module('cosmoUiApp', 'ngMock'));
+    beforeEach(module('cosmoUiApp', 'ngMock', 'backend-mock'));
 
     // Initialize the controller and a mock scope
     beforeEach(inject(function ($controller, $rootScope, $httpBackend, $q, CloudifyService) {
@@ -158,6 +158,29 @@ describe('Controller: FileSelectionDialogCtrl', function () {
                 var formData = _cloudifyService.blueprints.add.mostRecentCall.args[0];
                 expect(formData.url).toBe('http://some.kind/of/url.tar.gz');
             });
+        });
+
+        it('should reset the dialog variables on dialog close (CFY-2583)', function() {
+            scope.inputText = 'http://some.kind/of/url.tar.gz';
+            scope.selectedFile = {data: 'fake data'};
+            scope.blueprintUploadOpts = {
+                blueprint_id: 'blueprint1',
+                params: {
+                    application_file_name: 'filename1'
+                }
+            };
+            scope.toggleAddDialog = function() {};
+
+            scope.closeDialog();
+
+            expect(scope.inputText).toBe('');
+            expect(scope.selectedFile).toBe('');
+            expect(JSON.stringify(scope.blueprintUploadOpts)).toBe(JSON.stringify({
+                blueprint_id: '',
+                params: {
+                    application_file_name: ''
+                }
+            }));
         });
     });
 });

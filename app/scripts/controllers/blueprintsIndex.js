@@ -1,17 +1,13 @@
 'use strict';
 
 angular.module('cosmoUiApp')
-    .controller('BlueprintsIndexCtrl', function ($scope, $location, $cookieStore, BreadcrumbsService, $timeout, $log, CloudifyService) {
-        $scope.isAddDialogVisible = false;
-        $scope.isDeployDialogVisible = false;
-        $scope.isDeleteBlueprintVisible = false;
+    .controller('BlueprintsIndexCtrl', function ($scope, $location, $cookieStore, BreadcrumbsService, $timeout, $log, CloudifyService, ngDialog) {
         $scope.lastExecutedPlan = null;
         $scope.selectedBlueprint = null;
-        $scope.deleteInProcess = false;
-        $scope.delErrorMessage = '';
+        $scope.managerError = false;
         var _blueprintsArr = [];
-        var cosmoError = false;
-        var currentBlueprintToDelete = null;
+        var _dialog = null;
+        $scope.itemToDelete = null;
 
         BreadcrumbsService.push('blueprints',
             {
@@ -24,54 +20,68 @@ angular.module('cosmoUiApp')
             $location.path('/blueprint/' + blueprint.id + '/topology');
         };
 
-        $scope.toggleAddDialog = function() {
-            $scope.isAddDialogVisible = $scope.isAddDialogVisible === false;
+        $scope.openAddDialog = function() {
+            if (_isDialogOpen()) {
+                return;
+            }
+            _dialog = ngDialog.open({
+                template: 'views/dialogs/upload.html',
+                controller: 'FileSelectionDialogCtrl',
+                scope: $scope,
+                className: 'upload-dialog'
+            });
         };
 
-        $scope.toggleDeployDialog = function(blueprint) {
+        $scope.openDeployDialog = function(blueprint) {
+            if (_isDialogOpen()) {
+                return;
+            }
             $scope.selectedBlueprint = blueprint || null;
-            $scope.isDeployDialogVisible = $scope.isDeployDialogVisible === false;
+            _dialog = ngDialog.open({
+                template: 'views/dialogs/deploy.html',
+                controller: 'DeployDialogCtrl',
+                scope: $scope,
+                className: 'deploy-dialog'
+            });
         };
 
-        $scope.toggleDeleteDialog = function() {
-            $scope.isDeleteBlueprintVisible = $scope.isDeleteBlueprintVisible === false;
+        $scope.openDeleteDialog = function() {
+            if (_isDialogOpen()) {
+                return;
+            }
+            _dialog = ngDialog.open({
+                template: 'views/dialogs/delete.html',
+                controller: 'DeleteDialogCtrl',
+                scope: $scope,
+                className: 'delete-dialog'
+            });
         };
 
         $scope.deleteBlueprint = function(blueprint) {
-            currentBlueprintToDelete = blueprint;
-            $scope.delBlueprintName = blueprint.id;
-            $scope.delBlueprintError = false;
-            $scope.toggleDeleteDialog();
-        };
-
-        $scope.confirmDeleteBlueprint = function() {
-            _deleteBlueprint();
+            $scope.itemToDelete = blueprint;
+            $scope.openDeleteDialog();
         };
 
         $scope.loadBlueprints = function() {
             $scope.blueprints = null;
             CloudifyService.blueprints.list()
                 .then(function(data) {
-                    cosmoError = false;
+                    $scope.managerError = false;
                     if (data.length < 1) {
                         $scope.blueprints = [];
                     } else {
                         $scope.blueprints = data;
                         updateDeployments();
-
-                        if ($scope.isAddDialogVisible) {
-                            $timeout(function() {
-                                $scope.toggleAddDialog();
-                            }, 100);
-                        }
+                        $scope.closeDialog();
                     }
 
                 }, function() {
-                    cosmoError = true;
+                    $scope.managerError = true;
                 });
         };
 
         $scope.uploadDone = function(blueprint_id) {
+            $scope.closeDialog();
             $scope.redirectTo({
                 id: blueprint_id
             });
@@ -82,11 +92,15 @@ angular.module('cosmoUiApp')
         };
 
         $scope.redirectToDeployment = function(deployment_id) {
+            $scope.closeDialog();
             $location.path('/deployment/' + deployment_id + '/topology');
         };
 
-        $scope.cosmoConnectionError = function() {
-            return cosmoError;
+        $scope.closeDialog = function() {
+            if (_dialog !== null) {
+                ngDialog.close(_dialog.id);
+            }
+            _dialog = null;
         };
 
         function updateDeployments() {
@@ -115,32 +129,8 @@ angular.module('cosmoUiApp')
             return nextIndex;
         }
 
-        function _deleteBlueprint() {
-            if(currentBlueprintToDelete !== null && !$scope.deleteInProcess) {
-                $scope.deleteInProcess = true;
-                CloudifyService.blueprints.delete({id: currentBlueprintToDelete.id})
-                    .then(function(data) {
-                        if (data.error_code !== undefined) {
-                            $scope.deleteInProcess = false;
-                            $scope.delBlueprintError = true;
-                            $scope.delErrorMessage = data.message;
-                        } else {
-                            $timeout(function() {
-                                $scope.toggleDeleteDialog();
-                                $scope.loadBlueprints();
-                                $scope.deleteInProcess = false;
-                            }, 1000);
-                        }
-                    }, function(e) {
-                        $scope.deleteInProcess = false;
-                        $scope.delBlueprintError = true;
-                        if(e.data.hasOwnProperty('message')) {
-                            $scope.delErrorMessage = e.data.message;
-                        } else {
-                            $scope.delErrorMessage = 'An error occurred';
-                        }
-                    });
-            }
+        function _isDialogOpen() {
+            return _dialog !== null && ngDialog.isOpen(_dialog.id);
         }
 
         $scope.loadBlueprints();

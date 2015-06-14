@@ -207,8 +207,8 @@
             &:after {
                 position: absolute;
                 top: 21px;
-                left: 8px;
-                font-size: 48px;
+                left: 7px;
+                font-size: 26px;
             }
             &.small {
               width: 25px;
@@ -390,9 +390,9 @@
                         &.gs-node-icon {
                             &:after {
                                 position: relative;
-                                top: 10px;
+                                top: 4px;
                                 left: 5px;
-                                font-size: 28px;
+                                font-size: 15px;
                             }
                         }
                     }
@@ -650,9 +650,9 @@
                             position: relative;
                             &:after {
                                 position: absolute;
-                                top: -8px;
-                                left: 9px;
-                                font-size: 30px;
+                                top: -2px;
+                                left: 6px;
+                                font-size: 20px;
                             }
                         }
                         li:first-child {

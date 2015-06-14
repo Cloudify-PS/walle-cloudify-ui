@@ -300,95 +300,88 @@ describe('Service: NetworksService', function () {
     ];
     var results;
 
-    describe('Test setup', function() {
-        it('Injecting required data & initializing a new instance', function() {
+    beforeEach(module('cosmoUiApp', 'backend-mock'));
 
-            // Load the app module
-            module('cosmoUiApp', 'gsUiHelper');
+    // Initialize a new instance of mNetworksService
+    beforeEach(inject(function (NetworksService) {
+        mNetworksService = NetworksService;
+        colorsList = mNetworksService.getNetworkColors();
+        results = mNetworksService.createNetworkTree(providerData, nodes);
+    }));
 
-            // Initialize a new instance of mNetworksService
-            inject(function (NetworksService) {
-                mNetworksService = NetworksService;
-            });
 
-            colorsList = mNetworksService.getNetworkColors();
+    describe('Unit tests', function () {
 
-            results = mNetworksService.createNetworkTree(providerData, nodes);
-        });
-    });
-
-    describe('Unit tests', function() {
-
-        it('should create a new mNetworksService instance', function() {
+        it('should create a new mNetworksService instance', function () {
             expect(mNetworksService).not.toBeUndefined();
         });
 
-        it('should have external network', function(){
+        it('should have external network', function () {
             expect(results.external).not.toBeUndefined();
         });
 
-        it('should have external network object', function(){
+        it('should have external network object', function () {
             expect(results.external.name).toBe('public');
         });
 
-        it('should have networks', function(){
+        it('should have networks', function () {
             expect(results.networks).not.toBeUndefined();
         });
 
-        it('should have relations', function(){
+        it('should have relations', function () {
             expect(results.relations).not.toBeUndefined();
         });
 
-        it('should have 2 relations', function(){
+        it('should have 2 relations', function () {
             expect(results.relations.length).toEqual(5);
         });
 
-        it('should have subnet', function(){
+        it('should have subnet', function () {
             expect(results.external.subnets.length).toEqual(1);
         });
 
-        it('should have 13 kind of colors', function(){
+        it('should have 13 kind of colors', function () {
             expect(colorsList.length).toBe(13);
         });
 
-        it('should contain the 5th color', function(){
+        it('should contain the 5th color', function () {
             color = mNetworksService.getNetworkColor();
             expect(color).toContain(colorsList[4]);
         });
 
-        describe('Reset Colors', function() {
-            beforeEach(function(){
+        describe('Reset Colors', function () {
+            beforeEach(function () {
                 mNetworksService.resetNetworkColors();
             });
 
-            it('should contain the 2st color', function(){
+            it('should contain the 2st color', function () {
                 color = mNetworksService.getNetworkColor();
                 expect(color).toContain(colorsList[1]);
             });
         });
 
-        describe('Networks model', function() {
+        describe('Networks model', function () {
 
-            it('should add router to routers array in external network model', function() {
+            it('should add router to routers array in external network model', function () {
                 expect(results.external.routers.length).toBe(2);
                 expect(results.external.routers[0].name).toBe('ui-cloudify-router');
                 expect(results.external.routers[1].name).toBe('management_router');
             });
 
-            it('should add a network to networks array in networks model', function() {
+            it('should add a network to networks array in networks model', function () {
                 expect(results.networks[0].id).toBe('management_network');
             });
 
-            it('should set the network device as target in relations array', function() {
+            it('should set the network device as target in relations array', function () {
                 expect(results.relations[results.relations.length - 1].target).toBe('my_server');
             });
 
-            it('should add devices to network model', function() {
+            it('should add devices to network model', function () {
                 expect(results.networks[0].devices.length).toEqual(1);
                 expect(results.networks[0].devices[0].name).toBe('my_server');
             });
 
-            it('should add an internal network with internal subnet inside it', function() {
+            it('should add an internal network with internal subnet inside it', function () {
                 expect(results.external.subnets[0].name).toBe('ui-management-net');
                 expect(results.external.subnets[0].subnet.name).toBe('ui-management-subnet');
             });

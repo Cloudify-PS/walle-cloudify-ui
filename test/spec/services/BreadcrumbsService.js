@@ -8,7 +8,9 @@ describe('Service: BreadcrumbsService', function () {
         it('Injecting required data & initializing a new instance', function() {
 
             // Load the app module
-            module('cosmoUiApp', 'gsUiHelper');
+            module('cosmoUiApp','backend-mock', function ($translateProvider) {
+                $translateProvider.translations('en', {});
+            });
 
             // Initialize a new instance of BreadcrumbsService
             inject(function (BreadcrumbsService) {
