@@ -185,7 +185,13 @@ angular.module('cosmoUiApp')
                 function _startDeploymentExecutionsAutopull() {
                     // Workflows & Execution
                     CloudifyService.autoPull('getDeploymentExecutions', $scope.id, CloudifyService.deployments.getDeploymentExecutions)
-                        .then(null, null, function (dataExec) {
+                        .then(null,
+                        function(/*reason*/) {
+                            // getDeploymentExecutions failed. Redirect to deployments screen.
+                            $scope.deploymentInProgress = false;
+                            $location.path('/deployments');
+
+                        }, function (dataExec) {
                             $scope.currentExecution = _getCurrentExecution(dataExec);
                             if (!$scope.currentExecution && $scope.deploymentInProgress) {
                                 $scope.deploymentInProgress = false;
