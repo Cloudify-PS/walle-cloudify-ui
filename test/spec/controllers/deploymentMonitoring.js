@@ -1,22 +1,24 @@
 'use strict';
 
-describe('Controller: InterfaceCtrl', function () {
+describe('Controller: DeploymentmonitoringCtrl', function () {
 
     // load the controller's module
     beforeEach(module('cosmoUiApp', 'backend-mock'));
 
-    var InterfaceCtrl,
+    var DeploymentMonitoringCtrl,
         scope;
 
     // Initialize the controller and a mock scope
     beforeEach(inject(function ($controller, $rootScope) {
         scope = $rootScope.$new();
-        InterfaceCtrl = $controller('InterfaceCtrl', {
+        DeploymentMonitoringCtrl = $controller('DeploymentMonitoringCtrl', {
             $scope: scope
         });
     }));
 
     it('should attach a list of awesomeThings to the scope', function () {
-        expect(!!scope).toBe(true);
+        expect(scope.showGrafanaLoader).toBe(true);
+        scope.grafanaLoad();
+        expect(scope.showGrafanaLoader).toBe(false);
     });
 });

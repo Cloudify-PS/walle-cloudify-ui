@@ -6,9 +6,7 @@ describe('Filter: eventTimeFilter', function () {
     describe('Test setup', function() {
         it('Injecting required data & initializing a new instance', function() {
             // load the filter's module
-            module('cosmoUiApp', 'ngMock', function ($translateProvider) {
-                $translateProvider.translations('en', {});
-            });
+            module('cosmoUiApp', 'ngMock', 'backend-mock');
 
             // initialize a new instance of the filter
             inject(function ($filter, $httpBackend) {
@@ -38,6 +36,12 @@ describe('Filter: eventTimeFilter', function () {
             var result = eventTimeFilter(timestamp);
 
             expect(result).toBe('24/2 10:30:50');
+        });
+
+        it('should add a weekday if timerange is less than a week', function(){
+            var result = eventTimeFilter(new Date().getTime()-86400002);
+            var dow = result.split(' ')[0];
+            expect(['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].indexOf(dow) >= 0).toBe(true);
         });
     });
 });

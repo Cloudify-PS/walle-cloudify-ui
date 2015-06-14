@@ -2,9 +2,7 @@
 
 describe('Service: nodeStatus', function () {
     // load the service's module
-    beforeEach(module('cosmoUiApp', 'gsUiHelper', function ($translateProvider) {
-        $translateProvider.translations('en', {});
-    }));
+    beforeEach(module('cosmoUiApp','backend-mock'));
 
     // instantiate service
     var nodeStatus;

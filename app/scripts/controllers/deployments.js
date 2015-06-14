@@ -1,5 +1,6 @@
 'use strict';
 
+// TODO: this code should be much more testable
 angular.module('cosmoUiApp')
     .controller('DeploymentsCtrl', function ($scope, $cookieStore, $location, $routeParams, BreadcrumbsService, $timeout, $log, CloudifyService, ngDialog) {
 

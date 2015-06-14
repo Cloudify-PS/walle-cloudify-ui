@@ -130,9 +130,7 @@ describe('Controller: DeploymentProgressPanelCtrl', function () {
     };
 
     // load the controller's module
-    beforeEach(module('cosmoUiApp', 'ngMock', function ($translateProvider) {
-        $translateProvider.translations('en', {});
-    }));
+    beforeEach(module('cosmoUiApp', 'ngMock', 'backend-mock'));
 
     // Initialize the controller and a mock scope
     describe('Test setup', function () {

@@ -6,9 +6,7 @@ describe('Filter: limitRange', function () {
     describe('Test setup', function() {
         it('Injecting required data & initializing a new instance', function() {
             // load the filter's module
-            module('cosmoUiApp', 'ngMock', function ($translateProvider) {
-                $translateProvider.translations('en', {});
-            });
+            module('cosmoUiApp', 'ngMock', 'backend-mock');
 
             // initialize a new instance of the filter
             inject(function ($filter, $httpBackend) {

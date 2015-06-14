@@ -29,12 +29,9 @@ describe('Controller: DeploydialogCtrl', function () {
                 'webserver_port': {
                     'default': 8080
                 },
-                'flavor_name': {
-                },
-                'agent_user': {
-                },
-                'image_name': {
-                },
+                'flavor_name': {},
+                'agent_user': {},
+                'image_name': {},
                 'bool_variable': {
                     'default': false
                 },
@@ -130,44 +127,38 @@ describe('Controller: DeploydialogCtrl', function () {
         }
     };
 
-    beforeEach(module('cosmoUiApp', 'ngMock', function ($translateProvider) {
-        $translateProvider.translations('en', {});
+    beforeEach(module('cosmoUiApp', 'ngMock', 'backend-mock'));
+
+    beforeEach(inject(function ($controller, $rootScope, $q, CloudifyService) {
+        scope = $rootScope.$new();
+
+        CloudifyService.blueprints.deploy = function () {
+            var deferred = $q.defer();
+            var result;
+            if (errType !== '') {
+                result = _errors[errType];
+            } else {
+                result = _deployment;
+            }
+
+            deferred.resolve(result);
+
+            return deferred.promise;
+        };
+
+        scope.redirectToDeployment = function () {
+        };
+
+        spyOn(scope, 'redirectToDeployment').andCallThrough();
+
+        DeployDialogCtrl = $controller('DeployDialogCtrl', {
+            $scope: scope,
+            CloudifyService: CloudifyService
+        });
     }));
 
-    describe('Test setup', function() {
-        it ('', inject(function ($controller, $rootScope, $httpBackend, $q, CloudifyService) {
-            $httpBackend.whenGET('/backend/configuration?access=all').respond(200);
-            $httpBackend.whenGET('/backend/versions/ui').respond(200);
-            $httpBackend.whenGET('/backend/versions/manager').respond(200);
-            $httpBackend.whenGET('/backend/version/latest?version=00').respond('300');
-
-            scope = $rootScope.$new();
-
-            CloudifyService.blueprints.deploy = function() {
-                var deferred = $q.defer();
-                var result;
-                if (errType !== '') {
-                    result = _errors[errType];
-                } else {
-                    result = _deployment;
-                }
-
-                deferred.resolve(result);
-
-                return deferred.promise;
-            };
-
-            scope.redirectToDeployment = function() {};
-
-            DeployDialogCtrl = $controller('DeployDialogCtrl', {
-                $scope: scope,
-                CloudifyService: CloudifyService
-            });
-        }));
-    });
-
-    describe('Controller tests', function() {
-        beforeEach(function() {
+    describe('Controller tests', function () {
+        beforeEach(function () {
             scope.inputs = {
                 'webserver_port': 8080,
                 'image_name': 'image_name',
@@ -182,35 +173,43 @@ describe('Controller: DeploydialogCtrl', function () {
             expect(DeployDialogCtrl).not.toBeUndefined();
         });
 
-        it('should disable blueprint deploy option if deployment name is not provided', function() {
+        it('should disable blueprint deploy option if deployment name is not provided', function () {
             scope.selectedBlueprint = _blueprint;
             scope.deployment_id = null;
 
             expect(scope.isDeployEnabled()).toBe(false);
         });
 
-        it('should enable blueprint deploy option if deployment name is provided', function() {
+        it('should enable blueprint deploy option if deployment name is provided', function () {
             scope.selectedBlueprint = _blueprint;
             scope.deployment_id = 'deployment1';
 
             expect(scope.isDeployEnabled()).toBe(true);
         });
 
-        it('should pass all params provided to CloudifyService on deployment creation', function() {
-            spyOn(scope, 'redirectToDeployment').andCallThrough();
+        it('should pass all params provided to CloudifyService on deployment creation', inject(function (CloudifyService) {
+            var deployParams = null;
+            spyOn(CloudifyService.blueprints, 'deploy').andCallFake(function (params) {
+                deployParams = params;
+                return {
+                    then: function() {
 
+                    }
+                };
+            });
+
+            spyOn(scope, 'isDeployEnabled').andCallFake(function () {
+                return true;
+            });
+
+            scope.deployment_id = 'deployment1';
             scope.deployBlueprint('blueprint1');
-            scope.$apply();
 
-            waitsFor(function() {
-                return scope.inProcess === false;
-            });
-            runs(function() {
-                expect(scope.redirectToDeployment).toHaveBeenCalledWith('deployment1');
-            });
-        });
+            expect(deployParams).not.toBe(null);
+            expect(CloudifyService.blueprints.deploy).toHaveBeenCalledWith(deployParams);
+        }));
 
-        it('should update input JSON object when one of the inputs is updated', function() {
+        it('should update input JSON object when one of the inputs is updated', function () {
             scope.inputs.image_name = 'new value';
             scope.inputsState = 'raw';
 
@@ -219,7 +218,7 @@ describe('Controller: DeploydialogCtrl', function () {
             expect(JSON.parse(scope.rawString).image_name).toBe('new value');
         });
 
-        it('should save input type when converting inputs to JSON', function() {
+        it('should save input type when converting inputs to JSON', function () {
             scope.selectedBlueprint = _blueprint;
             scope.rawString = JSON.stringify(scope.inputs, null, 2);
             scope.inputsState = 'raw';
@@ -231,37 +230,51 @@ describe('Controller: DeploydialogCtrl', function () {
             expect(typeof(JSON.parse(scope.rawString).str_variable)).toBe('string');
         });
 
-        it('should not validate deployment name', function() {
-//            scope.deployment_id = '~~~!!!@@@';
-//            scope.inputsState = 'raw';
-//            spyOn(scope, 'redirectToDeployment').andCallThrough();
-//
-//            scope.deployBlueprint('blueprint1');
-//
-//            waitsFor(function() {
-//                return scope.inProcess === false;
-//            });
-//            runs(function() {
-//                expect(scope.redirectToDeployment).toHaveBeenCalledWith(scope.deployment_id);
-//            });
-        });
+        it('should not validate deployment name', inject(function (CloudifyService) {
+            spyOn(CloudifyService.blueprints, 'deploy').andCallFake(function () {
+                scope.inProcess = false;
+                scope.redirectToDeployment(scope.deployment_id);
+                return {
+                    then: function() {
 
-        it('should set showError flag to true once the deployment name already exists', function() {
-            scope.deployment_id = 'deployment1';
-            errType = 'depName';
+                    }
+                };
+            });
+
+            scope.deployment_id = '~~~!!!@@@';
+            scope.inputsState = 'raw';
+
+            spyOn(scope, 'isDeployEnabled').andCallFake(function () {
+                return true;
+            });
 
             scope.deployBlueprint('blueprint1');
-            scope.$apply();
 
-            waitsFor(function() {
-                return scope.inProcess === false;
-            });
-            runs(function() {
-                expect(scope.deployErrorMessage).toBe(_errors.depName.message);
-            });
-        });
+            expect(scope.redirectToDeployment).toHaveBeenCalledWith(scope.deployment_id);
+        }));
 
-        it('should set showError flag to false once the deployment name is changed', function() {
+
+        it('should set showError flag to true once the deployment name already exists', inject(function (CloudifyService) {
+            spyOn(CloudifyService.blueprints, 'deploy').andCallFake(function () {
+                return {
+                    then: function(success/*, error*/) {
+                        success({'message': 'foo'});
+                    }
+                };
+            });
+
+            spyOn(scope, 'isDeployEnabled').andCallFake(function () {
+                return true;
+            });
+
+            scope.deployment_id = 'deployment1';
+            scope.deployBlueprint('blueprint1');
+
+            expect(scope.deployErrorMessage).toBe('foo');
+            expect(scope.showError).toBe(true);
+        }));
+
+        it('should set showError flag to false once the deployment name is changed', function () {
             scope.deployment_id = 'deployment1';
             scope.showError = true;
 

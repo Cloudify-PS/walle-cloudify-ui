@@ -10,7 +10,7 @@
 angular.module('cosmoUiApp')
     .service('DeploymentsService', function Deploymentsservice(RestLoader) {
 
-        function _load(rest, params){
+        function _load(rest, params) {
             return RestLoader.load(rest, params);
         }
 
@@ -18,7 +18,11 @@ angular.module('cosmoUiApp')
             var callParams = {
                 url: '/backend/executions/start',
                 method: 'POST',
-                data: {'deployment_id': params.deployment_id, 'workflow_id': params.workflow_id, parameters: params.inputs}
+                data: {
+                    'deployment_id': params.deployment_id,
+                    'workflow_id': params.workflow_id,
+                    parameters: params.inputs
+                }
             };
             return _load('executions/start', callParams);
         }
@@ -51,7 +55,7 @@ angular.module('cosmoUiApp')
             return _load('deployments/get', callParams);
         }
 
-        function _deleteDeploymentById(params){
+        function _deleteDeploymentById(params) {
             var callParams = {
                 url: '/backend/deployments/delete',
                 method: 'POST',

@@ -119,9 +119,7 @@ describe('Controller: DeletedialogCtrl', function () {
         }]
     };
 
-    beforeEach(module('cosmoUiApp', 'ngMock', function ($translateProvider) {
-        $translateProvider.translations('en', {});
-    }));
+    beforeEach(module('cosmoUiApp', 'ngMock', 'backend-mock'));
 
     function _testSetup(type) {
         inject(function ($controller, $rootScope, $httpBackend, $q, CloudifyService) {
@@ -144,6 +142,17 @@ describe('Controller: DeletedialogCtrl', function () {
             scope.$digest();
         });
     }
+
+    describe('toggle ignore live nodes', function () {
+        it('should toggle value on scope', function () {
+            _testSetup();
+            scope.ignoreLiveNodes = true;
+            scope.toggleIgnoreLiveNodes();
+            expect(scope.ignoreLiveNodes).toBe(false);
+            scope.toggleIgnoreLiveNodes();
+            expect(scope.ignoreLiveNodes).toBe(true);
+        });
+    });
 
     describe('Controller tests', function() {
         it('should create a controller', function () {
