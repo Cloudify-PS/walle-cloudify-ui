@@ -90,7 +90,7 @@ describe('Service: NodeSearchService', function () {
         // todo: CFY2569 - this test does not pass because of timeout. The code needs to be refactored before thid test
         // can be properly implemented.
         // JIRA issue: CFY-2885
-        describe('execute', function(){
+        //describe('execute', function(){
             //it('should get node instances by type', function(  ){
             //    var result = null;
             //    mNodeSearchService.execute('foo', 'bar', [ { id :'bar'} ]).then(function( instances ){
@@ -105,7 +105,7 @@ describe('Service: NodeSearchService', function () {
             //    });
             //
             //});
-        });
+        //});
 
         describe('Test duplicate data', function(){
             it('should not have duplicate blueprints', function(){
