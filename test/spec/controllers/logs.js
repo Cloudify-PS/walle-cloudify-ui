@@ -130,16 +130,6 @@ describe('Controller: LogsCtrl', function () {
         });
     });
 
-    describe('closeErrorDialog', function(){
-        it('should update variables on scope', function(){
-            scope.isDialogVisible = 'foo';
-            scope.errorMsg = 'bar';
-            scope.closeErrorDialog();
-            expect(scope.isDialogVisible).toBe(false);
-            expect(scope.errorMsg).toBe(null);
-        });
-    });
-
     describe('scrollToTop', function(){
         it('should call anchorScroll', function(){
             scope.scrollToTop();

@@ -186,21 +186,12 @@ describe('Controller: DeploymentsCtrl', function () {
         });
     }
 
-    describe('toggle ignore live nodes', function () {
-        it('should toggle value on scope', function () {
-            _testSetup();
-            scope.ignoreLiveNodes = true;
-            scope.toggleIgnoreLiveNodes();
-            expect(scope.ignoreLiveNodes).toBe(false);
-            scope.toggleIgnoreLiveNodes();
-            expect(scope.ignoreLiveNodes).toBe(true);
-        });
-    });
 
-    describe('cosmoConnectionError', function () {
+
+    describe('managerError', function () {
         it('should be initialized to true', function () {
             _testSetup();
-            expect(scope.cosmoConnectionError()).toBe(false);
+            expect(scope.managerError).toBe(false);
         });
     });
 
@@ -218,12 +209,6 @@ describe('Controller: DeploymentsCtrl', function () {
         });
     });
 
-    describe('toggleConfirmationDialog', function () {
-        it('should toggle items on scope', function () {
-            _testSetup();
-            scope.toggleConfirmationDialog();
-        });
-    });
 
     describe('#executeDeployment', function () {
         it('should run execute on deployments if enabled', inject(function (CloudifyService) {
@@ -288,22 +273,6 @@ describe('Controller: DeploymentsCtrl', function () {
             expect(_depExecSpy.callCount).toEqual(2);
         }));
 
-        it('should show error message if deployment delete fails', function () {
-            _testSetup();
-            scope.deleteDeployment(_deployment);
-
-            scope.confirmDeleteDeployment();
-            expect(scope.delDeployError).toBe(_deleteErr.data.message);
-        });
-
-        it('should show general error message if error returns with no message', function () {
-            _testSetup();
-            _deleteErr.data = {};
-            scope.deleteDeployment(_deployment);
-
-            scope.confirmDeleteDeployment();
-            expect(scope.delDeployError).toBe('An error occurred');
-        });
 
         it('should toggle delete confirmation dialog when deleteBlueprint function is triggered', function () {
             spyOn(_ngDialog, 'open').andCallThrough();
