@@ -256,7 +256,7 @@ describe('Controller: DeploydialogCtrl', function () {
         it('should set showError flag to true once the deployment name already exists', inject(function (CloudifyService) {
             spyOn(CloudifyService.blueprints, 'deploy').andCallFake(function () {
                 return {
-                    then: function(success, error) {
+                    then: function(success/*, error*/) {
                         success({'message': 'foo'});
                     }
                 };
