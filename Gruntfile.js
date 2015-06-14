@@ -40,7 +40,7 @@ module.exports = function (grunt) {
             help: {
                 options: {
                     filter: 'include',
-                    tasks: ['default', 'build','blueprint','buildArtifacts','uploadArtifacts']
+                    tasks: ['default', 'build','blueprint','buildArtifacts','uploadArtifacts','analyze']
                 }
             }
         },
@@ -654,7 +654,7 @@ module.exports = function (grunt) {
         ]);
     });
 
-    grunt.registerTask('analyze', [ 'jscpd', 'grunt-jscpd-reporter']);
+    grunt.registerTask('analyze', 'analyzes the sources and reports quality problems such as copy-paste', [ 'jscpd', 'grunt-jscpd-reporter']);
 
     grunt.registerTask('test', function(testBackend) {
         var tasks  = [];
