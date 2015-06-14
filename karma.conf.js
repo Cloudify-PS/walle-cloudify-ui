@@ -38,6 +38,7 @@ module.exports = function(config) {
             'app/bower_components/SyntaxHighlighter/scripts/shBrushPlain.js',
             'app/styles/SyntaxHighlighter/shBrushYaml.js',
 
+            'app/bower_components/ngDialog/js/ngDialog.min.js',
             'app/scripts/*.js',
             'app/scripts/**/*.js',
             '.tmp/styles/main.css',

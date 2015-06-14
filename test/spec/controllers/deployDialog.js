@@ -253,6 +253,7 @@ describe('Controller: DeploydialogCtrl', function () {
             expect(scope.redirectToDeployment).toHaveBeenCalledWith(scope.deployment_id);
         }));
 
+
         it('should set showError flag to true once the deployment name already exists', inject(function (CloudifyService) {
             spyOn(CloudifyService.blueprints, 'deploy').andCallFake(function () {
                 return {

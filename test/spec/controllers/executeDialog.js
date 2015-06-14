@@ -170,5 +170,6 @@ describe('Controller: ExecuteDialogCtrl', function () {
             expect(scope.executeErrorMessage).toBe('foo');
             expect(scope.showError).toBe(true);
         }));
+
     });
 });

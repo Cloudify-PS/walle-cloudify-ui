@@ -2,10 +2,10 @@
     <div class="content-header">
         <div class="breadcrumbs"><ul id="blueprints" breadcrumbs></ul></div>
         <div class="right">
-        <button class="gs-btn" ng-click="toggleAddDialog()">{{ 'blueprints.uploadBtn' | translate }}</button>
+        <button class="gs-btn" ng-click="openAddDialog()">{{ 'blueprints.uploadBtn' | translate }}</button>
         </div>
     </div>
-    <table class="gs-table" ng-show="!cosmoConnectionError()">
+    <table class="gs-table" ng-show="!managerError">
         <thead>
             <tr>
                 <th class="name">{{ 'blueprints.table.heading.name' | translate }}</th>
@@ -22,7 +22,7 @@
                 <td class="updated"  ng-click="redirectTo(blueprint)">{{ blueprint.updated_at | dateFormat: 'yyyy-MM-dd HH:mm:ss' }}</td>
                 <td class="deployments"><div class="deployments-number" ng-click="redirectToDeployments(blueprint)">{{ blueprint.deployments.length }}</div></td>
                 <td class="actions">
-                    <button class="deploy-button" ng-click="toggleDeployDialog(blueprint)">{{ 'blueprints.table.deployBtn' | translate }}</button>
+                    <button class="deploy-button" ng-click="openDeployDialog(blueprint)">{{ 'blueprints.table.deployBtn' | translate }}</button>
                     <i class="delete-button fa fa-times-circle right close-properties-button" ng-click="deleteBlueprint(blueprint)"></i>
                     <!--i id="blueprint-down" class="fa  fa-chevron-circle-down"></i><i class="fa  fa-play-circle-o" ng-click="deployBlueprint(blueprint)"></i-->
                 </td>
@@ -30,85 +30,9 @@
         </tbody>
     </table>
 
-    <div class="connect-error-message" ng-show="cosmoConnectionError()">{{ 'connectError' | translate }}</div>
+    <div class="connect-error-message" ng-show="managerError">{{ 'connectError' | translate }}</div>
 
-    <div class="loading" ng-show="blueprints == null && !cosmoConnectionError()"></div>
+    <div class="loading" ng-show="blueprints == null && !managerError"></div>
 
     <div class="no-blueprints-message" ng-show="blueprints.length == 0">{{ 'blueprints.emptyMessage' | translate }}</div>
-
-    <div ng-show="isAddDialogVisible" ng-controller="FileSelectionDialogCtrl">
-        <div class="dialogBoxBg"></div>
-        <div id="uploadDialogContainer" class="dialogBox">
-            <div class="dialogTitle">{{ 'blueprints.uploadPopup.title' | translate }}</div>
-            <div class="dialogDescription">{{ 'blueprints.uploadPopup.description' | translate }}</div>
-            <div class="gs-btn close" ng-click="closeDialog()"></div>
-            <form id="uploadForm" name="uploadForm">
-                <div class="browse">
-                    <div id="browseBtn" class="gs-btn">
-                        <i class="browse-button topology-glyph"></i>
-                        <input type="file" name="fileInput" id="fileInput" accept=".tar,.gz,.archive" ng-file-select="onFileSelect($files)">
-                    </div>
-                    <input type="text" spellcheck="false" class="browseTxt" ng-change="updatePath()" ng-model="inputText" placeholder="{{ 'blueprints.uploadPopup.browseText' | translate }}" required>
-                </div>
-
-                <div class="name">
-                    <input type="text" spellcheck="false" ng-model="blueprintUploadOpts.blueprint_id" placeholder="{{ 'blueprints.uploadPopup.blueprintName' | translate }}" required>
-                </div>
-                <div class="name">
-                    <input type="text" spellcheck="false" ng-model="blueprintUploadOpts.params.application_file_name" placeholder="{{ 'blueprints.uploadPopup.blueprintFilename' | translate }}">
-                </div>
-                <div id="mainFile" style="display:none">Application file: <input type="text" ng-model="mainFileName"></div>
-                <div id="upload-error-message" ng-show="isUploadError()">{{errorMessage}}</div>
-                <div id="required-message">{{ 'blueprints.uploadPopup.required' | translate }}</div>
-                <div class="upload-process-anim" ng-show="uploadInProcess == true"></div>
-                <button id="uploadBtn" class="gs-btn" ng-class="{disabled: !isUploadEnabled(), enabled: isUploadEnabled()}" ng-click="uploadFile()">{{ 'blueprints.uploadPopup.uploadBtn' | translate }}</button>
-            </form>
-        </div>
-    </div>
-
-    <div ng-show="isDeployDialogVisible" ng-controller="DeployDialogCtrl">
-        <div class="dialogBoxBg"></div>
-        <div id="deployDialogContainer" class="dialogBox">
-            <div class="dialogTitle">
-                <label>{{ 'blueprints.deployDialog.title' | translate }} {{selectedBlueprint.id}}</label>
-            </div>
-            <div class="dialogDescription">{{ 'blueprints.deployDialog.description' | translate }}</div>
-            <div class="gs-btn close" ng-click="closeDialog()"></div>
-            <div class="dialogDeploymentName">
-                <input type="text" spellcheck="false" ng-model="deployment_id" ng-enter="deployBlueprint(selectedBlueprint.id)" placeholder="{{ 'blueprints.deployDialog.deployName' | translate }}">
-            </div>
-            <div class="dialogInputs deployInputs" ng-show="isParamsVisible()">
-                <div class="buttons-group deployBtns">
-                    <button data-ng-class="{'active': inputsState == 'params'}" class="btn btn-default" data-ng-click="toggleInputsState('params')">Parameters</button>
-                    <button data-ng-class="{'active': inputsState == 'raw'}" class="btn btn-default" data-ng-click="toggleInputsState('raw')">Raw</button>
-                </div>
-                <div class="inputsParameters" ng-show="inputsState == 'params'">
-                    <ul>
-                        <li ng-repeat="(name, value) in selectedBlueprint.plan.inputs">{{name}}: <input type="text" spellcheck="false" ng-trim="false" ng-model="inputs[name]" placeholder="{{ 'blueprints.deployDialog.enterValue' | translate }}"></li>
-                    </ul>
-                </div>
-                <div class="inputsRaw" ng-show="inputsState == 'raw'">
-                    <textarea ng-model="rawString" spellcheck="false"></textarea>
-                </div>
-            </div>
-            <div id="deploy-error-message" ng-show="showError">{{deployErrorMessage}}</div>
-            <div class="buttonsContainer deployButtons">
-                <button id="deployBtn" class="gs-btn" ng-class="{disabled: !isDeployEnabled(), enabled: isDeployEnabled(), loader: inProcess}" ng-click="deployBlueprint(selectedBlueprint.id)">{{ 'blueprints.deployDialog.deployBtn' | translate }}</button>
-            </div>
-        </div>
-    </div>
-
-    <div data-ng-show="isDeleteBlueprintVisible">
-        <div class="dialogBoxBg"></div>
-        <div id="deleteBlueprintDialog" class="dialogBox">
-            <div class="dialogTitle">Delete Blueprint</div>
-            <div class="gs-btn close" ng-click="toggleDeleteDialog()"></div>
-            <div class="dialogDescription">Are you sure you want to delete '{{ delBlueprintName }}'?</div>
-            <div class="errorMessage" data-ng-show="delBlueprintError">{{ delErrorMessage }}</div>
-            <div class="buttonsContainer confirmationButtons">
-                <button id="cancelBtnDelDep" class="gs-btn" ng-click="toggleDeleteDialog()">{{ 'blueprints.deleteDialog.cancelBtn' | translate }}</button>
-                <button class="gs-btn" ng-class="{loader: deleteInProcess}" ng-click="confirmDeleteBlueprint()">{{ 'blueprints.deleteDialog.confirmBtn' | translate }}</button>
-            </div>
-        </div>
-    </div>
 </div>

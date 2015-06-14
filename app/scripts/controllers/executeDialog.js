@@ -1,12 +1,11 @@
 'use strict';
 
 angular.module('cosmoUiApp')
-    .controller('ExecuteDialogCtrl', function ($scope, CloudifyService) {
+    .controller('ExecuteDialogCtrl', function ($scope, CloudifyService, INPUT_STATE) {
         $scope.showError = false;
         $scope.executeErrorMessage = 'Error executing workflow';
         $scope.inputs = {};
-        $scope.inputsState = 'params';
-        var RAW = 'raw';
+        $scope.inputsState = INPUT_STATE.PARAMS;
 
         $scope.isExecuteEnabled = function() {
             // if error message is shown, execute button should be disabled
@@ -15,7 +14,7 @@ angular.module('cosmoUiApp')
             }
             for (var input in $scope.inputs) {
                 // if any of the inputs value is null, the execute button should be disabled
-                if ($scope.inputs[input] === null || ($scope.inputsState !== RAW && $scope.inputs[input] === '')) {
+                if ($scope.inputs[input] === null || ($scope.inputsState !== INPUT_STATE.RAW && $scope.inputs[input] === '')) {
                     return false;
                 }
             }
@@ -23,7 +22,7 @@ angular.module('cosmoUiApp')
         };
 
         $scope.updateInputs = function() {
-            if ($scope.inputsState === RAW) {
+            if ($scope.inputsState === INPUT_STATE.RAW) {
                 _formToRaw();
             } else {
                 _rawToForm();
@@ -64,7 +63,7 @@ angular.module('cosmoUiApp')
             // parse inputs so "true" string will become boolean etc.
             _parseInputs();
             $scope.showError = false;
-            if ($scope.inputsState === RAW) {
+            if ($scope.inputsState === INPUT_STATE.RAW) {
                 try {
                     $scope.inputs = JSON.parse($scope.rawString);
                 } catch (e) {}
@@ -115,12 +114,8 @@ angular.module('cosmoUiApp')
             });
         };
 
-        $scope.closeDialog = function() {
-            $scope.toggleConfirmationDialog();
-        };
-
         $scope.toggleInputsState = function(state) {
-            $scope.inputsState = state;
+            $scope.inputsState = INPUT_STATE[state];
         };
 
         $scope.isInputText = function(node) {
@@ -194,7 +189,7 @@ angular.module('cosmoUiApp')
                     }
                 }
             } catch (e) {
-                $scope.inputsState = RAW;
+                $scope.inputsState = INPUT_STATE.RAW;
                 $scope.showError = true;
                 $scope.executeErrorMessage = 'Invalid JSON: ' + e.message;
             }
@@ -237,6 +232,6 @@ angular.module('cosmoUiApp')
             $scope.workflow_id = null;
             $scope.showError = false;
             $scope.inputs = {};
-            $scope.inputsState = 'params';
+            $scope.inputsState = INPUT_STATE.PARAMS;
         }
     });
