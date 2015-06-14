@@ -22,16 +22,6 @@ angular.module('cosmoUiApp')
                     $scope.node = null;
                 };
 
-                $scope.$watch('node', function(newValue) {
-                   // todo - guy - why are we not usgin ng-show instead?? and then here it would be $scope.showPanel = !!newValue. boom, 4 lines less..
-                    $scope.showPanel = !!newValue; // adding this for tests.
-                    if (!!newValue) {
-                        element.show();
-                    } else {
-                        element.hide();
-                    }
-                });
-
                 function _viewNode(node) {
                     $scope.propSection = 'general';
                     $scope.showProperties = {
@@ -56,6 +46,14 @@ angular.module('cosmoUiApp')
                 }
 
                 $scope.$watch('node', function(node){
+                    // todo - guy - why are we not usgin ng-show instead?? and then here it would be $scope.showPanel = !!newValue. boom, 4 lines less..
+                    $scope.showPanel = !!node;
+                    if (!!node) {
+                        element.show();
+                    } else {
+                        element.hide();
+                    }
+
                     if(node) {
                         switch(node.nodeType) {
                         case 'node':

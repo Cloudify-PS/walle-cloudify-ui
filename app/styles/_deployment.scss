@@ -1,10 +1,5 @@
 #deployment {
 
-    $install: #2f3334;
-    $done: #8eaf26;
-    $alerts: #feb300;
-    $failed: #d54931;
-
     #main-content-panel {
         position: relative;
     }
@@ -38,7 +33,7 @@
         background-color: $COSMOUI_BLUEPRINT_DETAILS_BACKGROUND;
         padding-left: 19px;
         padding-right: 13px;
-        padding-top: 20px;
+        padding-top: 5px;
         z-index: 10001;
 
         .title {
@@ -49,6 +44,7 @@
             border-bottom: 1px solid $COSMOUI_BLUEPRINT_DETAILS_TITLE_BOTTOM_BORDER_COLOR;
             i {
                 float: right;
+                margin-top: 8px;
             }
         }
 
@@ -82,7 +78,7 @@
                             min-width: 120px;
                             vertical-align: middle;
                             padding: 5px;
-                            word-break: break-all;
+//                            word-break: break-all;
                             vertical-align: top;
 
                             table {
@@ -114,7 +110,7 @@
                                         font-size: $COSMOUI_LIST_HOVER_ACTION_FONT_SIZE;
 
                                         select {
-                                            background: #cce4f6;
+                                            background: $COSMOUI_INPUT_BACKGROUND;
                                             height: 35px;
                                             width: 160px;
                                             float: left;
@@ -267,36 +263,6 @@
                 margin-left: 0px;
             }
 
-            select {
-                background: #FFFFFF;
-                height: 28px;
-                width: 230px;
-                float: left;
-                font-size: 14px;
-                box-shadow: none;
-                border-radius: 0px;
-                -webkit-appearance: none;
-                -moz-appearance: none;
-                appearance: none;
-                padding: 0px 5px 0px 5px;
-                border: 1px solid #d3dfe2;
-                cursor: pointer;
-                margin: 2px 4px 0px 0px;
-                padding-right: 17px;
-            }
-
-            .selectbox-arrow {
-                float: left;
-                top: 10px;
-                position: relative;
-                right: 20px;
-                margin-top: 7px;
-                margin-right: 5px;
-                border-left: 5px solid transparent;
-                border-right: 5px solid transparent;
-                border-top: 5px solid #333;
-            }
-
             .content-section {
                 position: relative;
                 padding-left: 0px;
@@ -346,7 +312,7 @@
                             padding-left: 0px;
 
                             &.relationships-target {
-                              width: 160px;
+                              width: 140px;
                             }
                             &.relationships-type {
                               width: 300px;
@@ -540,33 +506,9 @@
             padding: 20px;
         }
 
-        table.table {
+        .gs-table {
             width: 100%;
             margin: 0px;
-            tr.details {
-                background-color: #f5f5f5;
-                border-bottom: 1px solid #ccc;
-                padding: 10px;
-                td {
-                    height: auto;
-                }
-                .group {
-                    display: inline-block;
-                    border-right: 1px dotted #ccc;
-                    min-width: 250px;
-                    height: 100%;
-                    font-size: 13px;
-                    vertical-align: top;
-                    > span {
-                        display: block;
-                        padding: 5px 0;
-                        margin: 0 10px;
-                    }
-                    &:last-child {
-                        border: 0px;
-                    }
-                }
-            }
             tr {
                 td {
                     &.type {
@@ -704,7 +646,7 @@
                 pointer-events: none;
             }
         }
-        i.icon {
+        i.gs-node-icon {
             width: 36px;
             height: 36px;
             border-radius: 19px;
@@ -713,8 +655,19 @@
             &:after {
                 position: absolute;
                 top: 21px;
-                left: 8px;
-                font-size: 48px;
+                left: 7px;
+                font-size: 26px;
+            }
+            &.small {
+              width: 25px;
+              height: 25px;
+              border-radius: 15px;
+
+              &:after {
+                top: -2px;
+                left: 5px;
+                font-size: 30px;
+              }
             }
             &.fa {
                 display: inline-block;
@@ -762,15 +715,6 @@
                     text-align: center;
                     margin-top: 8px;
                 }
-                > i.icon {
-                    position: absolute;
-                    background: #3aaeda;
-                    border-width: 2px;
-                    border-style: solid;
-                    border-color: white;
-                    top: 0px;
-                    left: -20px;
-                }
                 .hoverup {
                     z-index: 101;
 
@@ -778,15 +722,6 @@
                         left: 37px;
                     }
                 }
-            }
-            > i.icon {
-                position: absolute;
-                background: #136e9d;
-                border-width: 2px;
-                border-style: solid;
-                border-color: white;
-                top: 0px;
-                left: -20px;
             }
             .piProgress {
                 position: absolute;
@@ -799,38 +734,8 @@
                     border: 2px solid $clr-base-12;
                     box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.4);
                     > .badge {
-                        position: absolute;
-                        display: inline-block;
-                        z-index: 1;
-                        top: -8px;
-                        left: 20px;
-                        min-width: 20px;
-                        border-radius: 10px;
-                        padding: 3px 7px;
-                        vertical-align: baseline;
-                        white-space: nowrap;
-                        text-align: center;
-                        background-color: $install;
-                        text-decoration: none;
-                        font-family: "OpenSansBold";
-                        font-size: 14px;
-                        color: #fff;
-                        line-height: 15px;
-                        font-style: normal;
-                        font-weight: normal;
-                        opacity: 1;
-                        &.install {
-                            background-color: $install;
-                        }
-                        &.done {
-                            background-color: $done;
-                        }
-                        &.alerts {
-                            background-color: $alerts;
-                        }
-                        &.failed {
-                            background-color: $failed;
-                        }
+                      left: 20px;
+                      top: -8px;
                     }
                 }
                 .shadow {
@@ -839,16 +744,16 @@
                     left: -6px;
                 }
                 path.install {
-                    fill: $install;
+                    fill: #2f3334;
                 }
                 path.done {
-                    fill: $done;
+                    fill: #8eaf26;
                 }
                 path.alerts {
-                    fill: $alerts;
+                    fill: #feb300;
                 }
                 path.failed {
-                    fill: $failed;
+                    fill: #d54931;
                 }
             }
             .piProgress:not([status='0']) {
@@ -900,12 +805,12 @@
                         height: 10px;
                         cursor: pointer;
 
-                        &.icon {
+                        &.gs-node-icon {
                             &:after {
                                 position: relative;
-                                top: 10px;
+                                top: 4px;
                                 left: 5px;
-                                font-size: 28px;
+                                font-size: 15px;
                             }
                         }
                     }
@@ -915,7 +820,7 @@
             .holder {
                 display: block;
                 background-color: white;
-                padding: 5px 15px;
+                padding: 5px 25px;
             }
             .hoverup {
                 position: absolute;
@@ -985,61 +890,10 @@
             p {
                 position: relative;
                 top: 50px;
-                left: -50%;
                 margin: 0px;
                 color: #555869;
+                text-align: center;
                 font-size: 15px;
-            }
-            i.icon {
-                display: inline-block;
-                &:after {
-                    position: absolute;
-                    top: 21px;
-                    left: 8px;
-                }
-            }
-        }
-        .disableBox {
-            $disableBoxColor: "#eee";
-            border-color: #eee;
-            > .head {
-                background-color: #eee;
-            }
-            > .piProgress {
-                .circle {
-                    background-color: #eee;
-                    > .icon {
-                        background-color: #eee;
-                        > .badge {
-                            background-color: #eee;
-                        }
-                    }
-                }
-                svg {
-                    path {
-                        fill: #eee;
-                    }
-                }
-            }
-        }
-        &.disableCompute {
-            [data-type="compute"].box {
-                @extend .disableBox;
-            }
-        }
-        &.disableMiddleware {
-            [data-type="middleware"].box {
-                @extend .disableBox;
-            }
-        }
-        &.disableModules {
-            [data-type="modules"].app {
-                @extend .disableBox;
-            }
-        }
-        &.disableConnections {
-            .coordinates > svg {
-                display: none;
             }
         }
     }
@@ -1113,12 +967,16 @@
                         position: absolute;
                         top: -5px;
                         left: 15px;
+                        z-index: 900;
                     }
                     &.red {
                         background-color: #d54931;
                     }
                     &.orange {
                         background-color: #f89406;
+                    }
+                    &.external {
+                      height: 533px;
                     }
                 }
                 .subnet:last-child {
@@ -1130,8 +988,8 @@
                 width: 160px;
                 height: 500px;
                 vertical-align: top;
-                > .device {
-                    position: relative;
+                > .device, > .router {
+//                    position: relative;
                     display: block;
                     color: #797B86;
                     border-radius: 20px;
@@ -1151,6 +1009,10 @@
                     > p {
                         margin: 5px;
                     }
+                    i.gs-node-icon:after {
+                      position: relative;
+                      top: 6px;
+                    }
                     i.topology-glyph {
                         display: inline-block;
                         color: inherit;
@@ -1158,12 +1020,13 @@
                         height: 30px;
                         font-size: 60px;
                         line-height: 5px;
-                    }
-                    i.topology-glyph:before {
+
+                      &:before {
                         font-size: 60px;
                         position: absolute;
                         top: -26px;
                         left: 0px;
+                      }
                     }
                     .portarea {
                         display: inline-block;
@@ -1183,7 +1046,7 @@
                         left: 20px;
                     }
                 }
-                > .device:last-child {
+                > .router:last-child {
                     margin-bottom: 0px;
                 }
                 .buttons {
@@ -1210,9 +1073,9 @@
                             position: relative;
                             &:after {
                                 position: absolute;
-                                top: -8px;
-                                left: 9px;
-                                font-size: 30px;
+                                top: -2px;
+                                left: 6px;
+                                font-size: 20px;
                             }
                         }
                         li:first-child {
@@ -1231,36 +1094,15 @@
                 }
             }
         }
-        .network:nth-child(even) .devices .device {
-            margin: 92px auto 47px;
-        }
-        .badge {
-            border-radius: 10px;
-            padding: 3px 7px;
-            vertical-align: baseline;
-            white-space: nowrap;
-            text-align: center;
-            background-color: $install;
-            text-decoration: none;
-            font-family: "OpenSansBold";
-            font-size: 14px;
-            color: #fff;
-            line-height: 15px;
-            font-style: normal;
-            font-weight: normal;
-            opacity: 1;
-            &.install {
-                background-color: $install;
-            }
-            &.done {
-                background-color: $done;
-            }
-            &.alerts {
-                background-color: $alerts;
-            }
-            &.failed {
-                background-color: $failed;
-            }
+        .network {
+          .devices {
+              > .router {
+                margin: 92px auto 47px;
+              }
+              > .device {
+                margin: 52px auto 47px;
+              }
+          }
         }
     }
 
@@ -1380,7 +1222,8 @@
         padding: 0 20px;
         margin: 10px 0 0;
         overflow: hidden;
-        table {
+
+        .gs-table {
             margin: 0px;
             tr {
                 cursor: default;
@@ -1400,10 +1243,6 @@
                   max-width: 210px !important;
                   overflow: hidden;
                 }
-
-              td {
-                vertical-align: top;
-              }
             }
         }
     }
@@ -1412,9 +1251,12 @@
         margin: 30px 0 0;
         padding: 0 20px 20px;
 
-        .table {
+        .gs-table {
             tr {
                 cursor: default;
+                td i {
+                  margin-top: 9px;
+                }
             }
             .node-details {
                 cursor: pointer;

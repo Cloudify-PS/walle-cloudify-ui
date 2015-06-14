@@ -12,11 +12,10 @@ angular.module('cosmoUiApp')
             /*jshint validthis: true */
             var _this = this;
             var ejs = ejsResource(server);
-            var query = ejs.MatchAllQuery();
+            var activeFilters = {};
             var client = ejs.Request()
                 .from(0)
                 .size(1000);
-            var activeFilters = {};
             var rangeFilter = {};
             var rangePrefix = 'range';
             var isAutoPull = false;
@@ -125,7 +124,7 @@ angular.module('cosmoUiApp')
                 switch(order) {
                 case 'desc':
                 case 'asc':
-                    sortField = ejs.Sort(_innerField).order(order);
+                    sortField = ejs.Sort(_innerField).order(order).ignoreUnmapped(true);
                     break;
                 default:
                     sortField = false;
@@ -170,21 +169,68 @@ angular.module('cosmoUiApp')
                 return data;
             }
 
-            function execute(callbackFn, autoPull, customPullTime) {
-                var results,
-                    sort = sortField ? sortField : ejs.Sort('@timestamp').order('desc');
+            function _getExecuteDefaultOptions() {
+                return {
+                    query: ejs.MatchAllQuery(),
+                    sort: sortField ? sortField : ejs.Sort('@timestamp').order('desc').ignoreUnmapped(true),
+                    filters: _applyFilters(),
+                    clientFrom: 0,
+                    clientTo: 1000
+                };
+            }
+
+            function _getExecuteLastFiftyOptions() {
+                var options = _getExecuteDefaultOptions();
+
+                options.sort = ejs.Sort('@timestamp').order('desc').ignoreUnmapped(true);
+                options.filters = ejs.AndFilter([]);
+                options.clientTo = 50;
+
+                return options;
+            }
+
+            /**
+             * options = {
+                    query: ejs query obj,
+                    sort: ejs sort obj,
+                    filters: ejs filters obj,
+                    clientFrom: ejs client request from,
+                    clientTo: ejs client request to
+                };
+             *
+             * @param callbackFn
+             * @param options
+             */
+            function execute(callbackFn, autoPull, customPullTime, options) {
+                var results;
+
+                if (!options) {
+                    options = _getExecuteDefaultOptions();
+                }
+
+                client.from(options.clientFrom)
+                    .size(options.clientTo);
 
                 results = client
-                    .query(query)
-                    .filter(_applyFilters())
-                    .sort([sort])
+                    .query(options.query)
+                    .filter(options.filters)
+                    .sort([options.sort])
                     .doSearch();
 
                 results.then(function(data){
                     if(data.hasOwnProperty('error')) {
                         $log.error(data.error);
                     }
+
                     else if(angular.isFunction(callbackFn)) {
+                        // hack - the js rest client returns a result in different format. we reverse its change.
+                        // todo: we should align to the js client format.
+                        data = {
+                            hits : {
+                                hits: data.events
+                            },
+                            total : data.total_events
+                        };
                         if(mergeData === true) {
                             mergeLastDataWith(data);
                         }
@@ -205,6 +251,8 @@ angular.module('cosmoUiApp')
             _this.stopAutoPull = stopAutoPull;
             _this.autoPull = _autoPull;
             _this.execute = execute;
+            _this.getExecuteLastFiftyOptions = _getExecuteLastFiftyOptions;
+            _this.getExecuteDefaultOptions = _getExecuteDefaultOptions;
             _this.getClient = function(){ return client; }; // for tests..
         }
 

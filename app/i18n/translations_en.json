@@ -21,28 +21,6 @@
             "deployBtn": "Create Deployment"
         },
         "emptyMessage": "No Blueprints",
-        "uploadPopup": {
-            "title": "Upload Blueprint",
-            "description": "Select blueprint file to upload, and click 'Save'",
-            "browseText": "Upload file",
-            "browseBtn": "+",
-            "fileLabel": "Application file: ",
-            "uploadBtn": "Save",
-            "blueprintName": "Blueprint name",
-            "blueprintFilename": "Blueprint filename (e.g blueprint.yaml)"
-        },
-        "deployDialog": {
-            "title": "Deploy",
-            "description": "Please enter deployment name",
-            "cancelBtn": "Cancel",
-            "deployBtn": "Create",
-            "deployName": "Deployment name",
-            "enterValue": "Enter Value"
-        },
-        "deleteDialog": {
-            "cancelBtn": "Cancel",
-            "confirmBtn": "Delete"
-        },
         "source": {
             "chooseFile": "Please choose file to preview.",
             "noPreview": "No preview available",
@@ -50,11 +28,21 @@
         }
     },
     "config": {
-        "title": "Welcome to Cosmo UI server configuration",
+        "title": "Welcome to Cloudify UI server configuration",
         "mainMessage": "Please fill in the required information:",
         "addressLabel": "Cosmo server IP:",
         "portLabel": "Cosmo server port:",
         "saveBtn": "Save configuration"
+    },
+    "header" : {
+        "logout" : "Logout"
+    },
+    "login": {
+        "loginTitle": "Log in",
+        "userLabel": "Username",
+        "passLabel": "Password",
+        "loginBtn": "Login",
+        "rememberLabel": "Remember me"
     },
     "deployment": {
         "title": {
@@ -105,13 +93,6 @@
                 "delete": ""
             },
             "workflowSelect": "-- Select workflow --"
-        },
-        "confirmationPopup": {
-            "title": "Confirm",
-            "descriptionExecute": "Are you sure you want to execute",
-            "descriptionCancel": "Cancel",
-            "confirmBtn": "Confirm",
-            "cancelBtn": "Cancel"
         },
         "process": {
             "create_deployment_environment": "Initializing",
@@ -184,6 +165,42 @@
         "logs": "Logs & Events",
         "hosts": "Hosts",
         "interface": "Interface Elements"
+    },
+    "dialogs": {
+        "delete": {
+            "blueprint": "Blueprint",
+            "deployment": "Deployment",
+            "cancel": "Cancel",
+            "delete": "Delete"
+        },
+        "upload": {
+            "title": "Upload Blueprint",
+            "description": "Select blueprint file to upload, and click 'Save'",
+            "browseText": "Select blueprint file or url",
+            "save": "Save",
+            "name": "Blueprint ID",
+            "filename": "Blueprint filename (e.g blueprint.yaml)",
+            "required": "* Required field"
+        },
+        "message": {
+            "close": "Close",
+            "title": "Message"
+        },
+        "deploy": {
+            "title": "Deploy",
+            "description": "Please enter deployment name",
+            "create": "Create",
+            "name": "Deployment name",
+            "value": "Enter Value"
+        },
+        "confirm": {
+            "title": "Confirm",
+            "descriptionExecute": "Are you sure you want to execute",
+            "descriptionCancel": "Cancel",
+            "confirm": "Confirm",
+            "cancel": "Cancel",
+            "value": "Enter Value"
+        }
     }
 }
 

@@ -8,22 +8,6 @@ describe('Service: NetworksService', function () {
     var providerData = {
         'name': 'cloudify_openstack',
         'context': {
-            'cloudify': {
-                'cloudify_agent': {
-                    'remote_execution_port': 22,
-                    'max_workers': 5,
-                    'min_workers': 2,
-                    'agent_key_path': '~/.ssh/ui-agents-kp.pem'
-                },
-                'policy_engine': {
-                    'start_timeout': 30
-                },
-                'resources_prefix': '',
-                'workflows': {
-                    'task_retries': -1,
-                    'task_retry_interval': 30
-                }
-            },
             'resources': {
                 'subnet': {
                     'id': 'f54ccdbd-b2eb-405a-abaf-8e5d967c361c',
@@ -84,38 +68,18 @@ describe('Service: NetworksService', function () {
                     'type': 'keypair',
                     'external_resource': true,
                     'name': 'ui-manager-kp'
+                },
+                'my_server': {
+                    'id': 'my_server',
+                    'type': 'device',
+                    'external_resource': true,
+                    'name': 'my_server'
                 }
             }
         }
     };
     var nodes = [
         {
-            'operations': {
-                'create': {
-                    'operation': 'neutron_plugin.security_group.create',
-                    'plugin': 'openstack'
-                },
-                'cloudify.interfaces.lifecycle.delete': {
-                    'operation': 'neutron_plugin.security_group.delete',
-                    'plugin': 'openstack'
-                },
-                'cloudify.interfaces.lifecycle.create': {
-                    'operation': 'neutron_plugin.security_group.create',
-                    'plugin': 'openstack'
-                },
-                'delete': {
-                    'operation': 'neutron_plugin.security_group.delete',
-                    'plugin': 'openstack'
-                }
-            },
-            'deployment_plugins_to_install': [
-                {
-                    'source': 'https://github.com/cloudify-cosmo/cloudify-openstack-plugin/archive/1.1m4.zip',
-                    'name': 'openstack',
-                    'install': true,
-                    'executor': 'central_deployment_agent'
-                }
-            ],
             'declared_type': 'cloudify.openstack.nodes.SecurityGroup',
             'name': 'security_group',
             'type_hierarchy': [
@@ -125,14 +89,6 @@ describe('Service: NetworksService', function () {
             'id': 'security_group',
             'instances': {
                 'deploy': 1
-            },
-            'plugins': {
-                'openstack': {
-                    'source': 'https://github.com/cloudify-cosmo/cloudify-openstack-plugin/archive/1.1m4.zip',
-                    'name': 'openstack',
-                    'install': true,
-                    'executor': 'central_deployment_agent'
-                }
             },
             'type': 'cloudify.openstack.nodes.SecurityGroup',
             'properties': {
@@ -158,50 +114,6 @@ describe('Service: NetworksService', function () {
             }
         },
         {
-            'operations': {
-                'cloudify.interfaces.lifecycle.configure': {
-                    'operation': 'script_runner.tasks.run',
-                    'properties': {
-                        'script_path': 'scripts/configure.sh'
-                    },
-                    'plugin': 'script'
-                },
-                'configure': {
-                    'operation': 'script_runner.tasks.run',
-                    'properties': {
-                        'script_path': 'scripts/configure.sh'
-                    },
-                    'plugin': 'script'
-                },
-                'cloudify.interfaces.lifecycle.stop': {
-                    'operation': 'script_runner.tasks.run',
-                    'properties': {
-                        'script_path': 'scripts/stop.sh'
-                    },
-                    'plugin': 'script'
-                },
-                'stop': {
-                    'operation': 'script_runner.tasks.run',
-                    'properties': {
-                        'script_path': 'scripts/stop.sh'
-                    },
-                    'plugin': 'script'
-                },
-                'start': {
-                    'operation': 'script_runner.tasks.run',
-                    'properties': {
-                        'script_path': 'scripts/start.sh'
-                    },
-                    'plugin': 'script'
-                },
-                'cloudify.interfaces.lifecycle.start': {
-                    'operation': 'script_runner.tasks.run',
-                    'properties': {
-                        'script_path': 'scripts/start.sh'
-                    },
-                    'plugin': 'script'
-                }
-            },
             'relationships': [
                 {
                     'source_operations': {},
@@ -210,25 +122,9 @@ describe('Service: NetworksService', function () {
                         'cloudify.relationships.depends_on',
                         'cloudify.relationships.contained_in'
                     ],
-                    'target_interfaces': {
-                        'cloudify.interfaces.relationship_lifecycle': [
-                            'preconfigure',
-                            'postconfigure',
-                            'establish',
-                            'unlink'
-                        ]
-                    },
                     'target_id': 'vm',
                     'state': 'reachable',
                     'base': 'contained',
-                    'source_interfaces': {
-                        'cloudify.interfaces.relationship_lifecycle': [
-                            'preconfigure',
-                            'postconfigure',
-                            'establish',
-                            'unlink'
-                        ]
-                    },
                     'type': 'cloudify.relationships.contained_in',
                     'properties': {
                         'connection_type': 'all_to_all'
@@ -242,18 +138,9 @@ describe('Service: NetworksService', function () {
                 'cloudify.nodes.SoftwareComponent',
                 'cloudify.nodes.WebServer'
             ],
-            'deployment_plugins_to_install': [],
             'id': 'http_web_server',
             'instances': {
                 'deploy': 1
-            },
-            'plugins': {
-                'script': {
-                    'source': null,
-                    'name': 'script',
-                    'install': false,
-                    'executor': 'host_agent'
-                }
             },
             'host_id': 'vm',
             'type': 'cloudify.nodes.WebServer',
@@ -265,32 +152,6 @@ describe('Service: NetworksService', function () {
             }
         },
         {
-            'operations': {
-                'create': {
-                    'operation': 'neutron_plugin.floatingip.create',
-                    'plugin': 'openstack'
-                },
-                'cloudify.interfaces.lifecycle.delete': {
-                    'operation': 'neutron_plugin.floatingip.delete',
-                    'plugin': 'openstack'
-                },
-                'cloudify.interfaces.lifecycle.create': {
-                    'operation': 'neutron_plugin.floatingip.create',
-                    'plugin': 'openstack'
-                },
-                'delete': {
-                    'operation': 'neutron_plugin.floatingip.delete',
-                    'plugin': 'openstack'
-                }
-            },
-            'deployment_plugins_to_install': [
-                {
-                    'source': 'https://github.com/cloudify-cosmo/cloudify-openstack-plugin/archive/1.1m4.zip',
-                    'name': 'openstack',
-                    'install': true,
-                    'executor': 'central_deployment_agent'
-                }
-            ],
             'declared_type': 'cloudify.openstack.nodes.FloatingIP',
             'name': 'virtual_ip',
             'type_hierarchy': [
@@ -300,14 +161,6 @@ describe('Service: NetworksService', function () {
             'id': 'virtual_ip',
             'instances': {
                 'deploy': 1
-            },
-            'plugins': {
-                'openstack': {
-                    'source': 'https://github.com/cloudify-cosmo/cloudify-openstack-plugin/archive/1.1m4.zip',
-                    'name': 'openstack',
-                    'install': true,
-                    'executor': 'central_deployment_agent'
-                }
             },
             'type': 'cloudify.openstack.nodes.FloatingIP',
             'properties': {
@@ -319,174 +172,30 @@ describe('Service: NetworksService', function () {
             }
         },
         {
-            'operations': {
-                'delete': {
-                    'operation': 'nova_plugin.server.delete',
-                    'plugin': 'openstack'
-                },
-                'cloudify.interfaces.worker_installer.uninstall': {
-                    'operation': 'worker_installer.tasks.uninstall',
-                    'plugin': 'agent_installer'
-                },
-                'cloudify.interfaces.lifecycle.stop': {
-                    'operation': 'nova_plugin.server.stop',
-                    'plugin': 'openstack'
-                },
-                'cloudify.interfaces.lifecycle.delete': {
-                    'operation': 'nova_plugin.server.delete',
-                    'plugin': 'openstack'
-                },
-                'cloudify.interfaces.lifecycle.create': {
-                    'operation': 'nova_plugin.server.create',
-                    'plugin': 'openstack'
-                },
-                'cloudify.interfaces.worker_installer.stop': {
-                    'operation': 'worker_installer.tasks.stop',
-                    'plugin': 'agent_installer'
-                },
-                'create': {
-                    'operation': 'nova_plugin.server.create',
-                    'plugin': 'openstack'
-                },
-                'cloudify.interfaces.worker_installer.restart': {
-                    'operation': 'worker_installer.tasks.restart',
-                    'plugin': 'agent_installer'
-                },
-                'cloudify.interfaces.lifecycle.start': {
-                    'operation': 'nova_plugin.server.start',
-                    'plugin': 'openstack'
-                },
-                'cloudify.interfaces.worker_installer.install': {
-                    'operation': 'worker_installer.tasks.install',
-                    'plugin': 'agent_installer'
-                },
-                'cloudify.interfaces.host.get_state': {
-                    'operation': 'nova_plugin.server.get_state',
-                    'plugin': 'openstack'
-                },
-                'cloudify.interfaces.plugin_installer.install': {
-                    'operation': 'plugin_installer.tasks.install',
-                    'plugin': 'plugin_installer'
-                },
-                'get_state': {
-                    'operation': 'nova_plugin.server.get_state',
-                    'plugin': 'openstack'
-                },
-                'cloudify.interfaces.worker_installer.start': {
-                    'operation': 'worker_installer.tasks.start',
-                    'plugin': 'agent_installer'
-                },
-                'restart': {
-                    'operation': 'worker_installer.tasks.restart',
-                    'plugin': 'agent_installer'
-                },
-                'uninstall': {
-                    'operation': 'worker_installer.tasks.uninstall',
-                    'plugin': 'agent_installer'
-                }
-            },
             'relationships': [
                 {
-                    'source_operations': {
-                        'unlink': {
-                            'operation': 'nova_plugin.server.disconnect_floatingip',
-                            'plugin': 'openstack'
-                        },
-                        'establish': {
-                            'operation': 'nova_plugin.server.connect_floatingip',
-                            'plugin': 'openstack'
-                        },
-                        'cloudify.interfaces.relationship_lifecycle.unlink': {
-                            'operation': 'nova_plugin.server.disconnect_floatingip',
-                            'plugin': 'openstack'
-                        },
-                        'cloudify.interfaces.relationship_lifecycle.establish': {
-                            'operation': 'nova_plugin.server.connect_floatingip',
-                            'plugin': 'openstack'
-                        }
-                    },
-                    'target_operations': {},
                     'type_hierarchy': [
                         'cloudify.relationships.depends_on',
                         'cloudify.relationships.connected_to',
                         'cloudify.openstack.server_connected_to_floating_ip'
                     ],
-                    'target_interfaces': {
-                        'cloudify.interfaces.relationship_lifecycle': [
-                            'preconfigure',
-                            'postconfigure',
-                            'establish',
-                            'unlink'
-                        ]
-                    },
                     'target_id': 'virtual_ip',
                     'state': 'reachable',
                     'base': 'connected',
-                    'source_interfaces': {
-                        'cloudify.interfaces.relationship_lifecycle': [
-                            'preconfigure',
-                            'postconfigure',
-                            {
-                                'establish': 'openstack.nova_plugin.server.connect_floatingip'
-                            },
-                            {
-                                'unlink': 'openstack.nova_plugin.server.disconnect_floatingip'
-                            }
-                        ]
-                    },
                     'type': 'cloudify.openstack.server_connected_to_floating_ip',
                     'properties': {
                         'connection_type': 'all_to_all'
                     }
                 },
                 {
-                    'source_operations': {
-                        'unlink': {
-                            'operation': 'nova_plugin.server.disconnect_security_group',
-                            'plugin': 'openstack'
-                        },
-                        'establish': {
-                            'operation': 'nova_plugin.server.connect_security_group',
-                            'plugin': 'openstack'
-                        },
-                        'cloudify.interfaces.relationship_lifecycle.unlink': {
-                            'operation': 'nova_plugin.server.disconnect_security_group',
-                            'plugin': 'openstack'
-                        },
-                        'cloudify.interfaces.relationship_lifecycle.establish': {
-                            'operation': 'nova_plugin.server.connect_security_group',
-                            'plugin': 'openstack'
-                        }
-                    },
-                    'target_operations': {},
                     'type_hierarchy': [
                         'cloudify.relationships.depends_on',
                         'cloudify.relationships.connected_to',
                         'cloudify.openstack.server_connected_to_security_group'
                     ],
-                    'target_interfaces': {
-                        'cloudify.interfaces.relationship_lifecycle': [
-                            'preconfigure',
-                            'postconfigure',
-                            'establish',
-                            'unlink'
-                        ]
-                    },
                     'target_id': 'security_group',
                     'state': 'reachable',
                     'base': 'connected',
-                    'source_interfaces': {
-                        'cloudify.interfaces.relationship_lifecycle': [
-                            'preconfigure',
-                            'postconfigure',
-                            {
-                                'establish': 'openstack.nova_plugin.server.connect_security_group'
-                            },
-                            {
-                                'unlink': 'openstack.nova_plugin.server.disconnect_security_group'
-                            }
-                        ]
-                    },
                     'type': 'cloudify.openstack.server_connected_to_security_group',
                     'properties': {
                         'connection_type': 'all_to_all'
@@ -500,152 +209,181 @@ describe('Service: NetworksService', function () {
                 'cloudify.nodes.Compute',
                 'cloudify.openstack.nodes.Server'
             ],
-            'deployment_plugins_to_install': [
-                {
-                    'source': 'https://github.com/cloudify-cosmo/cloudify-openstack-plugin/archive/1.1m4.zip',
-                    'name': 'openstack',
-                    'install': true,
-                    'executor': 'central_deployment_agent'
-                },
-                {
-                    'source': null,
-                    'name': 'agent_installer',
-                    'install': false,
-                    'executor': 'central_deployment_agent'
-                }
-            ],
             'id': 'vm',
             'instances': {
                 'deploy': 1
             },
-            'plugins': {
-                'openstack': {
-                    'source': 'https://github.com/cloudify-cosmo/cloudify-openstack-plugin/archive/1.1m4.zip',
-                    'name': 'openstack',
-                    'install': true,
-                    'executor': 'central_deployment_agent'
-                },
-                'plugin_installer': {
-                    'source': null,
-                    'name': 'plugin_installer',
-                    'install': false,
-                    'executor': 'host_agent'
-                },
-                'agent_installer': {
-                    'source': null,
-                    'name': 'agent_installer',
-                    'install': false,
-                    'executor': 'central_deployment_agent'
-                }
-            },
             'host_id': 'vm',
             'type': 'cloudify.openstack.nodes.Server',
             'properties': {
-                'cloudify_agent': {
-                    'user': {
-                        'get_input': 'agent_user'
-                    }
-                },
+                'resource_id': ''
+            }
+        },
+        {
+            'declared_type': 'cloudify.openstack.nodes.Router',
+            'name': 'management_router',
+            'type_hierarchy': [
+                'cloudify.nodes.Root',
+                'cloudify.nodes.Router',
+                'cloudify.openstack.nodes.Router'
+            ],
+            'id': 'management_router',
+            'type': 'cloudify.openstack.nodes.Router',
+            'properties': {
+                'resource_id': 'management-router'
+            }
+        },
+        {
+            'declared_type': 'cloudify.openstack.nodes.Network',
+            'name': 'management_network',
+            'type_hierarchy': ['cloudify.nodes.Root', 'cloudify.nodes.Network', 'cloudify.openstack.nodes.Network'],
+            'id': 'management_network',
+            'instances': {
+                'deploy': 1
+            },
+            'type': 'cloudify.openstack.nodes.Network',
+            'properties': {
                 'openstack_config': {},
-                'resource_id': '',
-                'ip': '',
-                'management_network_name': '',
-                'server': {
-                    'image_name': {
-                        'get_input': 'image_name'
-                    },
-                    'flavor_name': {
-                        'get_input': 'flavor_name'
-                    }
-                },
-                'install_agent': true,
+                'resource_id': 'management-network',
+                'default_to_managers_external_network': true,
                 'use_external_resource': false,
                 'cloudify_runtime': {}
-            },
-            'plugins_to_install': [
-                {
-                    'source': null,
-                    'name': 'plugin_installer',
-                    'install': false,
-                    'executor': 'host_agent'
+            }
+        },
+        {
+            'relationships': [{
+                'type_hierarchy': ['cloudify.relationships.depends_on', 'cloudify.relationships.contained_in'],
+                'target_id': 'management_network',
+                'state': 'reachable',
+                'base': 'contained',
+                'type': 'cloudify.relationships.contained_in'
+            }],
+            'declared_type': 'cloudify.openstack.nodes.Subnet',
+            'name': 'management_subnet',
+            'type_hierarchy': ['cloudify.nodes.Root', 'cloudify.nodes.Subnet', 'cloudify.openstack.nodes.Subnet'],
+            'id': 'management_subnet',
+            'type': 'cloudify.openstack.nodes.Subnet',
+            'properties': {
+                'subnet': {
+                    'ip_version': 4,
+                    'cidr': '10.0.1.0/24'
                 },
-                {
-                    'source': null,
-                    'name': 'script',
-                    'install': false,
-                    'executor': 'host_agent'
+                'resource_id': 'management_subnet'
+            }
+        },
+        {
+            'relationships': [{
+                'type_hierarchy': [
+                    'cloudify.relationships.depends_on',
+                    'cloudify.relationships.connected_to'
+                ],
+                'target_id': 'management_network',
+                'type': 'cloudify.relationships.connected_to',
+                'properties': {
+                    'connection_type': 'all_to_all'
                 }
-            ]
+            }],
+            'declared_type': 'cloudify.openstack.nodes.Server',
+            'name': 'my_server',
+            'type_hierarchy': [
+                'cloudify.nodes.Root',
+                'cloudify.nodes.Compute',
+                'cloudify.openstack.nodes.Server'
+            ],
+            'id': 'my_server',
+            'host_id': 'my_server',
+            'type': 'cloudify.openstack.nodes.Server',
+            'properties': {
+                'resource_id': 'my_server'
+            }
         }
     ];
     var results;
 
-    describe('Test setup', function() {
-        it('Injecting required data & initializing a new instance', function() {
+    beforeEach(module('cosmoUiApp', 'backend-mock'));
 
-            // Load the app module
-            module('cosmoUiApp', 'gsUiHelper');
+    // Initialize a new instance of mNetworksService
+    beforeEach(inject(function (NetworksService) {
+        mNetworksService = NetworksService;
+        colorsList = mNetworksService.getNetworkColors();
+        results = mNetworksService.createNetworkTree(providerData, nodes);
+    }));
 
-            // Initialize a new instance of mNetworksService
-            inject(function (NetworksService) {
-                mNetworksService = NetworksService;
-            });
 
-            colorsList = mNetworksService.getNetworkColors();
-        });
-    });
+    describe('Unit tests', function () {
 
-    describe('Unit tests', function() {
-
-        it('should create a new mNetworksService instance', function() {
+        it('should create a new mNetworksService instance', function () {
             expect(mNetworksService).not.toBeUndefined();
         });
 
-        beforeEach(function(){
-            results = mNetworksService.createNetworkTree(providerData, nodes);
-        });
-
-        it('should have external network', function(){
+        it('should have external network', function () {
             expect(results.external).not.toBeUndefined();
         });
 
-        it('should have 2 external networks', function(){
-            expect(results.external.length).toEqual(2);
+        it('should have external network object', function () {
+            expect(results.external.name).toBe('public');
         });
 
-        it('should have networks', function(){
+        it('should have networks', function () {
             expect(results.networks).not.toBeUndefined();
         });
 
-        it('should have relations', function(){
+        it('should have relations', function () {
             expect(results.relations).not.toBeUndefined();
         });
 
-        it('should have 2 relations', function(){
-            expect(results.relations.length).toEqual(2);
+        it('should have 2 relations', function () {
+            expect(results.relations.length).toEqual(5);
         });
 
-        it('should have subnet', function(){
-            expect(results.external[1].type).toBe('subnet');
+        it('should have subnet', function () {
+            expect(results.external.subnets.length).toEqual(1);
         });
 
-        it('should have 13 kind of colors', function(){
+        it('should have 13 kind of colors', function () {
             expect(colorsList.length).toBe(13);
         });
 
-        it('should contain the 5th color', function(){
+        it('should contain the 5th color', function () {
             color = mNetworksService.getNetworkColor();
             expect(color).toContain(colorsList[4]);
         });
 
-        describe('Reset Colors', function() {
-            beforeEach(function(){
+        describe('Reset Colors', function () {
+            beforeEach(function () {
                 mNetworksService.resetNetworkColors();
             });
 
-            it('should contain the 2st color', function(){
+            it('should contain the 2st color', function () {
                 color = mNetworksService.getNetworkColor();
                 expect(color).toContain(colorsList[1]);
+            });
+        });
+
+        describe('Networks model', function () {
+
+            it('should add router to routers array in external network model', function () {
+                expect(results.external.routers.length).toBe(2);
+                expect(results.external.routers[0].name).toBe('ui-cloudify-router');
+                expect(results.external.routers[1].name).toBe('management_router');
+            });
+
+            it('should add a network to networks array in networks model', function () {
+                expect(results.networks[0].id).toBe('management_network');
+            });
+
+            it('should set the network device as target in relations array', function () {
+                expect(results.relations[results.relations.length - 1].target).toBe('my_server');
+            });
+
+            it('should add devices to network model', function () {
+                expect(results.networks[0].devices.length).toEqual(1);
+                expect(results.networks[0].devices[0].name).toBe('my_server');
+            });
+
+            it('should add an internal network with internal subnet inside it', function () {
+                expect(results.external.subnets[0].name).toBe('ui-management-net');
+                expect(results.external.subnets[0].subnet.name).toBe('ui-management-subnet');
             });
         });
     });

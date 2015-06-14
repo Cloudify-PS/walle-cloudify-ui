@@ -5,7 +5,7 @@
     margin-right: 15px;
     position: relative;
     top: 14px;
-    font-family: "Cosmo";
+    font-family: "gigaspaces";
 
     &.plans {
         background-position: 0px 0px;
@@ -45,180 +45,214 @@ $gs-icon-prefix: 'gs-icon';
 [class^=#{$gs-icon-prefix}], [class*=" #{$gs-icon-prefix}"] {
     font-size: 50px;
     line-height: 10px;
-    font-family: 'Cosmo';
+    font-family: 'gigaspaces';
     font-style: normal;
     display: inline-block;
 
 }
 
 .#{$gs-icon-prefix}-question-mark-sign:before {
-    content: "a";
+    content: "\e60f";
 }
 
 .#{$gs-icon-prefix}-question-mark:before {
-    content: "b";
+    content: "\e610";
 }
 
 .#{$gs-icon-prefix}-closed-envelope:before {
-    content: "c";
+    content: "\e611";
 }
 
 .#{$gs-icon-prefix}-events:before {
-    content: "d";
+    content: "\e612";
 }
 
 .#{$gs-icon-prefix}-floating-ips:before {
-    content: "e";
+    content: "\e61a";
 }
 
 .#{$gs-icon-prefix}-hosts:before {
-    content: "f";
+    content: "\e61b";
 }
 
 .#{$gs-icon-prefix}-logs:before {
-    content: "g";
+    content: "\e624";
 }
 
 .#{$gs-icon-prefix}-monitoring:before {
-    content: "h";
+    content: "\e628";
 }
 
 .#{$gs-icon-prefix}-networks:before {
-    content: "i";
+    content: "\e62f";
 }
 
 .#{$gs-icon-prefix}-plans:before {
-    content: "j";
+    content: "\e60d";
 }
 
 .#{$gs-icon-prefix}-deployments:before {
-    content: "k";
+    content: "\e60e";
 }
 
 .#{$gs-icon-prefix}-storage:before {
-    content: "l";
+    content: "\e620";
 }
 
-.cloudify-nodes-Root {
+i.gs-node-icon {
+
+  &.topology-glyph {
     &:after {
-        content: 'a';
+      font-size: 23px;
+      font-family: gigaspaces;
+      font-style: normal;
+    }
+
+    &.small {
+      &:after {
+        font-size: 15px;
+      }
+    }
+  }
+
+  &.cloudify-nodes-Root {
+    &:after {
+      content: '\e616';
     }
 
     &.cloudify-nodes-SoftwareComponent {
 
+      &:after {
+        content: '\e61e';
+      }
+
+      &.cloudify-nodes-WebServer {
         &:after {
-            content: 'h';
+          content: '\e622';
         }
+      }
 
-        &.cloudify-nodes-WebServer {
-            &:after {
-                content: 'l';
-            }
+      &.cloudify-nodes-ApplicationServer {
+        &:after {
+          content: '\e61e';
         }
+      }
 
-        &.cloudify-nodes-ApplicationServer {
-            &:after {
-                content: 'h';
-            }
+      &.cloudify-nodes-DBMS {
+        &:after {
+          content: '\e619';
         }
-
-        &.cloudify-nodes-DBMS {
-            &:after {
-                content: 'c';
-            }
-        }
+      }
     }
 
     &.cloudify-nodes-ApplicationModule {
-        &:after {
-            content: 'a';
-        }
+      &:after {
+        content: '\e616';
+      }
     }
 
     &.cloudify-types-floatingip,
     &.cloudify-nodes-VirtualIP {
-        &:after {
-            content: 'd';
-        }
+      &:after {
+        content: '\e61a';
+      }
     }
 
     &.cloudify-nodes-Port {
-        &:after {
-            content: 'd';
-        }
+      &:after {
+        content: '\e61a';
+      }
     }
 
     &.cloudify-nodes-Network {
-        &:after {
-            font-family: routerregular;
-            content: 'a';
-        }
+      &:after {
+        content: '\e62f';
+      }
     }
 
     &.cloudify-nodes-Subnet {
-        &:after {
-            content: 'g';
-        }
+      &:after {
+        content: '\e61d';
+      }
     }
 
-    &.cloudify-types-server, &.cloudify-nodes-Compute {
+    &.cloudify-types-server, &.cloudify-nodes-Compute, &.cloudify-openstack-nodes-Server {
+      &:after {
+        content: '\e61b';
+      }
+      &.vm-host {
         &:after {
-            content: 'e';
+          content: '\e61b';
         }
-        &.vm-host {
-            &:after {
-                content: 'e';
-            }
-        }
+      }
     }
 
     &.cloudify-nodes-Router {
-        &:after {
-            font-family: routerregular;
-            content: 'b';
-        }
+      &:after {
+        content: '\e618';
+      }
     }
 
     &.cloudify-nodes-LoadBalancer {
-        &:after {
-            content: 'b';
-        }
+      &:after {
+        content: '\e617';
+      }
     }
 
     &.cloudify-nodes-SecurityGroup {
-        &:after {
-            content: 'i';
-        }
+      &:after {
+        content: '\e61f';
+      }
     }
 
     &.cloudify-types-server {
-        &:after {
-            content: 'e';
-        }
+      &:after {
+        content: '\e61b';
+      }
     }
 
     &.cloudify-nodes-MessageBusServer {
-        &:after {
-            content: 'f';
-        }
+      &:after {
+        content: '\e61c';
+      }
     }
 
     &.cloudify-nodes-ObjectStorage {
-        &:after {
-            content: 'o';
-        }
+      &:after {
+        content: '\e625';
+      }
     }
 
     &.cloudify-nodes-Tier {
-        &:after {
-            content: 'k';
-        }
+      &:after {
+        content: '\e621';
+      }
+    }
+
+    &.cloudify-openstack-nodes-KeyPair {
+      &:after {
+        content: '\e626';
+      }
+    }
+
+    &.cloudify-nodes-FileSystem {
+      &:after {
+        content: '\e627';
+      }
     }
 
     &.cloudify-nodes-Volume {
-        &:after {
-            content: 'j';
-        }
+      &:after {
+        content: '\e620';
+      }
     }
+  }
+}
 
+.browse-button {
+    &:after {
+      content: '\e623';
+      position: relative;
+      top: -2px;
+    }
 }

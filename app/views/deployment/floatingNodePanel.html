@@ -5,14 +5,16 @@
     </div>
 
     <div class="content">
-
-        <select ng-model="selectedNode" ng-change="nodeSelected(selectedNode)" ng-options="node.id for node in selectNodesArr">
-            <option value="">{{ 'plans.all' | i18n }}</option>
-        </select>
-        <div class="selectbox-arrow"></div>
+        <div class="gs-selection-button" ng-show="selectNodesArr.length > 0">
+            <div multi-select-menu
+                 class="gs-select"
+                 options="selectNodesArr"
+                 ng-model="selectedNode"
+                 onchange="nodeSelected(selectedNode)"></div>
+        </div>
 
         <div class="buttons-group no-embed" checkbox-toggle value="propSection" ng-show="selectedNode != null">
-            <button ng-repeat="(key, value) in showProperties" type="button" class="btn btn-default" ng-class="{active: key == propSection}" value="{{key}}">{{ 'plans.' + key | i18n }}</button>
+            <button ng-repeat="(key, value) in showProperties" type="button" class="btn btn-default" ng-class="{active: key == propSection}" value="{{key}}">{{ 'plans.' + key | translate }}</button>
         </div>
 
         <div ng-switch="section" class="content-section">
@@ -21,8 +23,8 @@
                 <div ng-switch-default="general">
                     <table>
                         <tr>
-                            <td>{{ 'plans.details.key' | i18n }}</td>
-                            <td>{{ 'plans.details.value' | i18n }}</td>
+                            <td>{{ 'plans.details.key' | translate }}</td>
+                            <td>{{ 'plans.details.value' | translate }}</td>
                         </tr>
                         <tr ng-repeat="(key, value) in showProperties.general">
                             <td>{{getPropertyKeyName(key)}}</td><td>{{ value.length > 0 ? value : 'N/A' }}</td>
@@ -32,8 +34,8 @@
                 <div ng-switch-when="properties">
                     <table>
                         <tr>
-                            <td>{{ 'plans.details.key' | i18n }}</td>
-                            <td>{{ 'plans.details.value' | i18n }}</td>
+                            <td>{{ 'plans.details.key' | translate }}</td>
+                            <td>{{ 'plans.details.value' | translate }}</td>
                         </tr>
                         <tr ng-repeat="(key, value) in showProperties.properties">
                             <td>{{key}}</td><td>{{value}}</td>
@@ -41,40 +43,23 @@
                     </table>
                 </div>
                 <div ng-switch-when="relationships">
-                    <div class="no-properties" ng-show="showProperties.relationships.length == undefined">{{ 'plans.details.noRelationships' | i18n }}</div>
+                    <div class="no-properties" ng-show="showProperties.relationships.length == undefined">{{ 'plans.details.noRelationships' | translate }}</div>
 
                     <table class="relationships-table" ng-show="showProperties.relationships.length != undefined">
                         <tr>
-                            <td class="relationships-target">{{ 'plans.details.target' | i18n }}</td>
-                            <td class="relationships-type">{{ 'plans.details.type' | i18n }}</td>
-                            <td class="relationships-source">{{ 'plans.details.source' | i18n }}</td>
+                            <td class="relationships-target">{{ 'plans.details.target' | translate }}</td>
+                            <td class="relationships-type">{{ 'plans.details.type' | translate }}</td>
+                            <td class="relationships-source">{{ 'plans.details.source' | translate }}</td>
                         </tr>
                         <tr ng-repeat="relationship in showProperties.relationships">
                             <td colspan="3">
                                 <table class="interfaces-table">
                                     <tr ng-click="showRelationship(relationship)">
-                                        <td class="relationships-target"><div class="relationship-arrow right" ng-class="{'down': selectedRelationship == relationship, 'right': selectedRelationship != relationship}"></div>{{relationship.target_id}}</td>
+                                        <td class="relationships-target">
+                                            {{relationship.target_id}}
+                                        </td>
                                         <td class="relationships-type">{{relationship.type}}</td>
                                         <td class="relationships-source">{{showProperties.general.name}}</td>
-                                    </tr>
-                                    <tr ng-show="selectedRelationship.target_id == relationship.target_id && selectedRelationship.type == relationship.type">
-                                        <td colspan="3">
-                                            <table>
-                                                <tr>
-                                                    <td>{{ 'plans.details.interface' | i18n }}</td>
-                                                    <td>{{ 'plans.details.methods' | i18n }}</td>
-                                                </tr>
-                                                <tr ng-repeat="(key, value) in relationship.target_interfaces">
-                                                    <td>{{key}}</td>
-                                                    <td>
-                                                        <ul ng-repeat="val in value">
-                                                            <li>{{val}}</li>
-                                                        </ul>
-                                                    </td>
-                                                </tr>
-                                            </table>
-
-                                        </td>
                                     </tr>
                                 </table>
 
@@ -91,8 +76,8 @@
                         <div class="overview-node-name">{{node.id}}</div>
                         <table class="overview-data">
                             <tr>
-                                <td>{{ 'plans.details.key' | i18n }}</td>
-                                <td>{{ 'plans.details.value' | i18n }}</td>
+                                <td>{{ 'plans.details.key' | translate }}</td>
+                                <td>{{ 'plans.details.value' | translate }}</td>
                             </tr>
                             <tr ng-repeat="(key, value) in getNodeStateData(node.id)">
                                 <td>{{key}}</td><td>{{value}}</td>

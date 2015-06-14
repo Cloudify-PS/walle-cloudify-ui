@@ -43,20 +43,20 @@
             <p data-ng-click="scrollToTop()">{{ newEvents }} new events</p>
         </div>
 
-        <table class="table eventsTable">
+        <table class="gs-table eventsTable">
             <thead>
             <tr>
                 <th class="icon"><!-- icon --></th>
                 <th class="date sorting" data-ng-click="sortEvents('timestamp')" data-ng-class="isSorted('timestamp')">Timestamp</th>
-                <th class="type sorting" data-ng-click="sortEvents('event_type')" data-ng-class="isSorted('event_type')">{{ 'deployment.table.heading.eventType' | i18n }}</th>
-                <th class="node sorting" data-ng-click="sortEvents('node')" data-ng-class="isSorted('node')">{{ 'deployment.table.heading.node' | i18n }}</th>
-                <th class="task sorting" data-ng-click="sortEvents('message.text')" data-ng-class="isSorted('message.text')">{{ 'deployment.table.heading.message' | i18n }}</th>
+                <th class="type sorting" data-ng-click="sortEvents('event_type')" data-ng-class="isSorted('event_type')">{{ 'deployment.table.heading.eventType' | translate }}</th>
+                <th class="node sorting" data-ng-click="sortEvents('node')" data-ng-class="isSorted('node')">{{ 'deployment.table.heading.node' | translate }}</th>
+                <th class="task sorting" data-ng-click="sortEvents('message.text')" data-ng-class="isSorted('message.text')">{{ 'deployment.table.heading.message' | translate }}</th>
                 <th class="action"><!-- Actions --></th>
             </tr>
             </thead>
             <tbody class="animate-repeat" ng-repeat="event in eventHits" ng-init="isOpen=false">
             <tr>
-                <td data-ng-click="isOpen=!isOpen" class="icon-events cliclable" ng-class="getEventIcon(event._source.event_type)"></td>
+                <td data-ng-click="isOpen=!isOpen" class="icon-events cliclable" ng-class="getEventIcon(event)"></td>
                 <td data-ng-click="isOpen=!isOpen" class="date cliclable">{{event._source.timestamp == undefined && 'N/A' || event._source.timestamp}}</td>
                 <td data-ng-click="isOpen=!isOpen" class="type cliclable">{{getEventText(event._source.event_type) == undefined && 'N/A' || getEventText(event._source.event_type)}}</td>
                 <td data-ng-click="isOpen=!isOpen" class="node cliclable">{{event._source.context.node_name == undefined && 'N/A' || event._source.context.node_name}}</td>

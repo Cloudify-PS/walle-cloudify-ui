@@ -8,11 +8,13 @@
  * Service in the cosmoUiApp.
  */
 angular.module('cosmoUiApp')
-    .service('NodeSearchService', function Nodesearchservice($q, CloudifyService, UpdateNodes) {
+    .service('NodeSearchService', function NodeSearchService($q, CloudifyService, UpdateNodes) {
 
         var blueprintsList = [];
         var deploymentsList = [];
         var _updateNodes = UpdateNodes.newInstance();
+
+
 
         // get all data for node search page.
         // we need to iterate over blueprints and deployments and extract the relevant information to construct
@@ -55,7 +57,7 @@ angular.module('cosmoUiApp')
             var count = 0;
 
             function getNodes(deploymentId) {
-                CloudifyService.getNodes({deployment_id: deploymentId})
+                CloudifyService.getNodes(deploymentId)
                     .then(function(nodes){
                         count++;
                         result = result.concat(nodes);
@@ -72,25 +74,25 @@ angular.module('cosmoUiApp')
             return deferred.promise;
         }
 
+
         function _getDeploymentNodesInstances(deployments) {
             var deferred = $q.defer();
             var result = [];
             var count = 0;
 
-            function getDeploymentNodes(deploymentId) {
-                CloudifyService.deployments.getDeploymentNodes({deployment_id: deploymentId})
-                    .then(function(nodes){
-                        count++;
-                        result = result.concat(nodes);
+            // guy - won't pass jshint if defined inside loop
+            function handleDeploymentNodes( nodes ){
+                count++;
+                result = result.concat(nodes);
 
-                        if(count === deployments.length) {
-                            deferred.resolve(result);
-                        }
-                    });
+                if (count === deployments.length) {
+                    deferred.resolve(result);
+                }
             }
 
-            for(var i in deployments) {
-                getDeploymentNodes(deployments[i].value);
+            for (var i in deployments) {
+                CloudifyService.deployments.getDeploymentNodes(deployments[i].value)
+                    .then(handleDeploymentNodes);
             }
             return deferred.promise;
         }
@@ -107,6 +109,7 @@ angular.module('cosmoUiApp')
                 }
             }
 
+            // todo:  $q.all? why do I need it here?
             return $q.all(filterNodesInstances);
         }
 

@@ -1,27 +1,24 @@
 'use strict';
 
+// TODO: this code should be much more testable
 angular.module('cosmoUiApp')
-    .controller('DeploymentsCtrl', function ($scope, $cookieStore, $location, $routeParams, BreadcrumbsService, $timeout, $log, CloudifyService) {
+    .controller('DeploymentsCtrl', function ($scope, $cookieStore, $location, $routeParams, BreadcrumbsService, $timeout, $log, CloudifyService, ngDialog) {
 
         $scope.blueprints = null;
         $scope.deployments = [];
         $scope.selectedBlueprint = '';
-        $scope.isConfirmationDialogVisible = false;
-        $scope.isDeleteDeploymentVisible = false;
-        $scope.delDeployError = false;
-        $scope.deleteInProcess = false;
         $scope.executedErr = false;
-        $scope.ignoreLiveNodes = false;
         $scope.confirmationType = '';
         var _executedDeployments = [];
         $scope.selectedWorkflow = {
             data: null
         };
         $scope.inputs = {};
+        $scope.managerError = false;
         var selectedWorkflows = [];
         var workflows = [];
-        var cosmoError = false;
-        var currentDeployToDelete = null;
+        var _dialog = null;
+        $scope.itemToDelete = null;
 
         BreadcrumbsService.push('deployments',
             {
@@ -60,7 +57,7 @@ angular.module('cosmoUiApp')
 
         $scope.getSelectedWorkflow = function() {
             if ($scope.selectedDeployment !== undefined && selectedWorkflows[$scope.selectedDeployment] !== null) {
-                return selectedWorkflows[$scope.selectedDeployment];
+                return selectedWorkflows[$scope.selectedDeployment.id];
             }
         };
 
@@ -79,13 +76,22 @@ angular.module('cosmoUiApp')
             return selectedWorkflows[deployment_id] !== undefined;
         };
 
-        $scope.toggleConfirmationDialog = function(deployment, confirmationType) {
+        $scope.openConfirmationDialog = function(deployment, confirmationType) {
+            if (_isDialogOpen()) {
+                return;
+            }
             if (confirmationType === 'execute' && selectedWorkflows[deployment.id] === undefined) {
                 return;
             }
             $scope.selectedDeployment = deployment;
             $scope.confirmationType = confirmationType;
-            $scope.isConfirmationDialogVisible = $scope.isConfirmationDialogVisible === false;
+
+            _dialog = ngDialog.open({
+                template: 'views/dialogs/confirm.html',
+                controller: 'ExecuteDialogCtrl',
+                scope: $scope,
+                className: 'confirm-dialog'
+            });
         };
 
         $scope.redirectTo = function (deployment) {
@@ -98,36 +104,42 @@ angular.module('cosmoUiApp')
             }
         };
 
-        $scope.cosmoConnectionError = function() {
-            return cosmoError;
-        };
+        function _loadExecutions() {
 
-        function _loadExecutions(blueprint_id, deployment_id) {
-            CloudifyService.deployments.getDeploymentExecutions(deployment_id)
+            CloudifyService.deployments.getDeploymentExecutions()
                 .then(function(data) {
                     if (data.length > 0) {
-                        if (_executedDeployments[blueprint_id] === undefined) {
-                            _executedDeployments[blueprint_id] = [];
-                        }
-                        for (var i = 0; i < data.length; i++) {
-                            if (data[i].status !== null && data[i].status !== 'failed' && data[i].status !== 'terminated' && data[i].status !== 'cancelled') {
-                                selectedWorkflows[deployment_id] = data[i].workflow_id;
-                                _executedDeployments[blueprint_id][deployment_id] = data[i];
-                            } else if (_executedDeployments[blueprint_id][deployment_id] !== undefined && (data[i].status === 'failed' || data[i].status === 'terminated' || data[i].status === 'cancelled') ){
-                                var currentCreatedDate = new Date(_executedDeployments[blueprint_id][deployment_id].created_at).getTime();
-                                var dataCreatedDate = new Date(data[i].created_at).getTime();
-                                if (currentCreatedDate < dataCreatedDate) {
-                                    _executedDeployments[blueprint_id][deployment_id] = null;
+                        for (var k = 0; k < $scope.deployments.length; k++) {   // running over deployments list
+                            var blueprint_id = $scope.deployments[k].blueprint_id;
+                            var deployment_id = $scope.deployments[k].id;
+
+                            if (_executedDeployments[blueprint_id] === undefined) { // creating executions array by blueprint name
+                                _executedDeployments[blueprint_id] = [];
+                            }
+
+                            for (var i = 0; i < data.length; i++) {
+                                if (data[i].blueprint_id === blueprint_id && data[i].deployment_id === deployment_id && data[i].status !== null && data[i].status !== 'failed' && data[i].status !== 'terminated' && data[i].status !== 'cancelled') {
+                                    selectedWorkflows[deployment_id] = data[i].workflow_id;
+                                    _executedDeployments[blueprint_id][deployment_id] = data[i];    // adding execution data by blueprint/deployment id's in executions array
+
+                                } else if (data[i].blueprint_id === blueprint_id && data[i].deployment_id === deployment_id && _executedDeployments[blueprint_id][deployment_id] !== undefined && (data[i].status === 'failed' || data[i].status === 'terminated' || data[i].status === 'cancelled') ){
+                                    var currentCreatedDate = new Date(_executedDeployments[blueprint_id][deployment_id].created_at).getTime();
+                                    var dataCreatedDate = new Date(data[i].created_at).getTime();
+
+                                    if (currentCreatedDate < dataCreatedDate) {
+                                        _executedDeployments[blueprint_id][deployment_id] = null;
+                                    }
                                 }
                             }
                         }
                     }
                 });
 
+            // location path check to prevent timeout from keep running after path was changed to different page
             if ($location.path() === '/deployments') {
                 $timeout(function(){
-                    _loadExecutions(blueprint_id, deployment_id);
-                }, 60000);
+                    _loadExecutions();
+                }, 10000);
             }
         }
 
@@ -143,12 +155,12 @@ angular.module('cosmoUiApp')
             }
         };
 
-        function _loadDeployments() {
+        $scope.loadDeployments = function() {
             $scope.blueprints = null;
             $scope.deployments = [];
             CloudifyService.blueprints.list()
                 .then(function(data) {
-                    cosmoError = false;
+                    $scope.managerError = false;
                     $scope.blueprints = data;
                     $scope.deployments = [];
 
@@ -156,7 +168,6 @@ angular.module('cosmoUiApp')
                         var deployments = data[j].deployments;
                         $scope.deployments = $scope.deployments.concat(data[j].deployments);
                         for (var i = 0; i < deployments.length; i++) {
-                            _loadExecutions(deployments[i].blueprint_id, deployments[i].id);
                             workflows[deployments[i].id] = [];
                             for (var w in deployments[i].workflows) {
                                 var workflow = deployments[i].workflows[w];
@@ -169,55 +180,42 @@ angular.module('cosmoUiApp')
                             }
                         }
                     }
+                    _loadExecutions();
                 },
                 function() {
-                    cosmoError = true;
+                    $scope.managerError = true;
                 });
-        }
+        };
 
-        _loadDeployments();
-
-        function deleteDeployment() {
-            if(currentDeployToDelete !== null && !$scope.deleteInProcess) {
-                $scope.deleteInProcess = true;
-                CloudifyService.deployments.deleteDeploymentById({deployment_id: currentDeployToDelete.id, ignoreLiveNodes: $scope.ignoreLiveNodes})
-                    .then(function(data){
-                        $scope.deleteInProcess = false;
-                        if(data.hasOwnProperty('message')) {
-                            $scope.delDeployError = data.message;
-                        }
-                        else {
-                            closeDeleteDialog();
-                            $timeout(function(){
-                                _loadDeployments();
-                            }, 500);
-                        }
-                    });
-            }
-        }
+        $scope.loadDeployments();
 
         $scope.deleteDeployment = function(deployment) {
-            currentDeployToDelete = deployment;
-            $scope.delDeployError = false;
-            $scope.ignoreLiveNodes = false;
-            $scope.delDeployName = deployment.id;
-            $scope.isDeleteDeploymentVisible = true;
-        };
-
-        function closeDeleteDialog() {
-            if ($scope.deleteInProcess) {
+            if (_isDialogOpen()) {
                 return;
             }
-            $scope.isDeleteDeploymentVisible = false;
-            currentDeployToDelete = null;
+
+            $scope.itemToDelete = deployment;
+
+            _dialog = ngDialog.open({
+                template: 'views/dialogs/delete.html',
+                controller: 'DeleteDialogCtrl',
+                scope: $scope,
+                className: 'delete-dialog'
+            });
+        };
+
+        $scope.closeDialog = function() {
+            if (_dialog !== null) {
+                ngDialog.close(_dialog.id);
+            }
+            _dialog = null;
+        };
+
+        $scope.$on('executionStarted', function() {
+            $scope.loadDeployments();
+        });
+
+        function _isDialogOpen() {
+            return _dialog !== null && ngDialog.isOpen(_dialog.id);
         }
-        $scope.closeDeleteDialog = closeDeleteDialog;
-
-        $scope.confirmDeleteDeployment = function() {
-            deleteDeployment();
-        };
-
-        $scope.toggleIgnoreLiveNodes = function() {
-            $scope.ignoreLiveNodes = !$scope.ignoreLiveNodes;
-        };
     });

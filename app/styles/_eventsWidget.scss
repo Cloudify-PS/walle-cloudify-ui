@@ -29,7 +29,7 @@
 
         .title {
             display: inline-block;
-            font-size: 24px;
+            font-size: 18px;
             color: #29AAEE;
             line-height: 28px;
         }
@@ -69,26 +69,8 @@
     .containList {
         position: relative;
         z-index: 10;
-        overflow-y: hidden;
+        overflow-y: scroll;
         height: 263px;
-
-        .ps-scrollbar-y-rail {
-            width: 10px;
-            height: calc(100% - 20px) !important;
-            margin-top: 10px;
-            margin-right: 5px;
-            background: #E2E2E2;
-            border-left: 2px solid #bbb;
-            border-radius: 5px;
-
-            .ps-scrollbar-y {
-                width: 8px !important;
-                min-height: 20px !important;
-                background-color: #3aaeda !important;
-                box-shadow: inset -1px -1px 1px #1E6D8B;
-                cursor: pointer;
-            }
-        }
     }
 
     .icon-events {

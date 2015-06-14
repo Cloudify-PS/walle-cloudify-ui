@@ -100,7 +100,7 @@
                                         font-size: $COSMOUI_LIST_HOVER_ACTION_FONT_SIZE;
 
                                         select {
-                                            background: #cce4f6;
+                                            background: $COSMOUI_INPUT_BACKGROUND;
                                             height: 35px;
                                             width: 160px;
                                             float: left;
@@ -198,7 +198,7 @@
                 pointer-events: none;
             }
         }
-        i.icon {
+        i.gs-node-icon {
             width: 36px;
             height: 36px;
             border-radius: 19px;
@@ -207,8 +207,19 @@
             &:after {
                 position: absolute;
                 top: 21px;
-                left: 8px;
-                font-size: 48px;
+                left: 7px;
+                font-size: 26px;
+            }
+            &.small {
+              width: 25px;
+              height: 25px;
+              border-radius: 15px;
+
+              &:after {
+                top: -2px;
+                left: 5px;
+                font-size: 30px;
+              }
             }
             &.fa {
                 display: inline-block;
@@ -257,15 +268,6 @@
                     text-align: center;
                     margin-top: 8px;
                 }
-                > i.icon {
-                    position: absolute;
-                    background: #3aaeda;
-                    border-width: 2px;
-                    border-style: solid;
-                    border-color: white;
-                    top: 0px;
-                    left: -20px;
-                }
                 .hoverup {
                     z-index: 101;
 
@@ -273,15 +275,6 @@
                         left: 37px;
                     }
                 }
-            }
-            > i.icon {
-                position: absolute;
-                background: #136e9d;
-                border-width: 2px;
-                border-style: solid;
-                border-color: white;
-                top: 0px;
-                left: -20px;
             }
             .piProgress {
                 position: absolute;
@@ -394,12 +387,12 @@
                         width: 10px;
                         height: 10px;
                         cursor: pointer;
-                        &.icon {
+                        &.gs-node-icon {
                             &:after {
                                 position: relative;
-                                top: 10px;
+                                top: 4px;
                                 left: 5px;
-                                font-size: 28px;
+                                font-size: 15px;
                             }
                         }
                     }
@@ -409,7 +402,7 @@
             .holder {
                 display: block;
                 background-color: white;
-                padding: 5px 15px;
+                padding: 5px 25px;
                 margin-top: 3px;
             }
             .hoverup {
@@ -482,61 +475,10 @@
             p {
                 position: relative;
                 top: 50px;
-                left: -50%;
                 margin: 0px;
                 color: #555869;
+                text-align: center;
                 font-size: 15px;
-            }
-            i.icon {
-                display: inline-block;
-                &:after {
-                    position: absolute;
-                    top: 19px;
-                    left: 8px;
-                }
-            }
-        }
-        .disableBox {
-            $disableBoxColor: "#eee";
-            border-color: #eee;
-            > .head {
-                background-color: #eee;
-            }
-            > .piProgress {
-                .circle {
-                    background-color: #eee;
-                    > .icon {
-                        background-color: #eee;
-                        > .badge {
-                            background-color: #eee;
-                        }
-                    }
-                }
-                svg {
-                    path {
-                        fill: #eee;
-                    }
-                }
-            }
-        }
-        &.disableCompute {
-            [data-type="compute"].box {
-                @extend .disableBox;
-            }
-        }
-        &.disableMiddleware {
-            [data-type="middleware"].box {
-                @extend .disableBox;
-            }
-        }
-        &.disableModules {
-            [data-type="modules"].app {
-                @extend .disableBox;
-            }
-        }
-        &.disableConnections {
-            .coordinates > svg {
-                display: none;
             }
         }
     }
@@ -612,6 +554,9 @@
                     &.orange {
                         background-color: #f89406;
                     }
+                    &.external {
+                      height: 533px;
+                    }
                 }
                 .subnet:last-child {
                     margin: 0;
@@ -622,7 +567,7 @@
                 width: 150px;
                 height: 500px;
                 vertical-align: top;
-                > .device {
+                > .device, > .router {
                     display: block;
                     color: #797B86;
                     border-radius: 20px;
@@ -642,19 +587,24 @@
                     > p {
                         margin: 5px;
                     }
-                    i.topology-glyph {
-                        display: inline-block;
-                        color: inherit;
-                        width: 21px;
-                        height: 30px;
-                        font-size: 60px;
-                        line-height: 5px;
+                    i.gs-node-icon:after {
+                      position: relative;
+                      top: 6px;
                     }
-                    i.topology-glyph:before {
+                    i.topology-glyph {
+                      display: inline-block;
+                      color: inherit;
+                      width: 21px;
+                      height: 30px;
+                      font-size: 60px;
+                      line-height: 5px;
+
+                      &:before {
                         font-size: 60px;
                         position: absolute;
                         top: -26px;
                         left: 0px;
+                      }
                     }
                     .portarea {
                         position: relative;
@@ -673,7 +623,7 @@
                         }
                     }
                 }
-                > .device:last-child {
+                > .router:last-child {
                     margin-bottom: 0px;
                 }
                 .buttons {
@@ -700,9 +650,9 @@
                             position: relative;
                             &:after {
                                 position: absolute;
-                                top: -8px;
-                                left: 9px;
-                                font-size: 30px;
+                                top: -2px;
+                                left: 6px;
+                                font-size: 20px;
                             }
                         }
                         li:first-child {
@@ -721,14 +671,25 @@
                 }
             }
         }
-        .network:nth-child(even) .devices .device {
-            margin: 92px auto 47px;
+        .network {
+            .devices {
+                > .router {
+                  margin: 92px auto 47px;
+                }
+
+                > .device {
+                  margin: 52px auto 47px;
+                }
+            }
         }
     }
 
-    .table {
+    .gs-table {
         tr {
             cursor: default;
+          td i {
+            margin-top: 9px;
+          }
         }
         .node-details {
             cursor: pointer;

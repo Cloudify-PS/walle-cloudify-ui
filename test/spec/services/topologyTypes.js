@@ -1,23 +1,14 @@
 'use strict';
 
-describe('Service: topologyTypes', function () {
+describe('Service: TopologyTypes', function () {
 
     var mtopologyTypes;
     var typesList = [];
 
-    describe('Test setup', function () {
-        it('Injecting required data & initializing a new instance', function () {
-
-            // Load the app module
-            module('cosmoUiApp', 'gsUiHelper');
-
-            // Initialize a new instance of NodeSearchService
-            inject(function (topologyTypes) {
-                mtopologyTypes = topologyTypes;
-            });
-
-        });
-    });
+    beforeEach(module('cosmoUiApp', 'backend-mock'));
+    beforeEach(inject(function (TopologyTypes) {
+        mtopologyTypes = TopologyTypes;
+    }));
 
     describe('Unit tests', function () {
 
@@ -29,10 +20,9 @@ describe('Service: topologyTypes', function () {
             typesList = mtopologyTypes.getList();
         });
 
-        it('should have list of 17 topology types', function () {
-            expect(Object.keys(typesList).length).toBe(18);
+        it('should have list of 20 topology types', function () {
+            expect(Object.keys(typesList).length).toBe(20);
         });
-
     });
 
 });

@@ -1,6 +1,5 @@
 'use strict';
 
-
 /**
  * <h1> Configuration file.</h1>
  *
@@ -40,7 +39,8 @@
  */
 
 var log4js = require('log4js');
-var logger = log4js.getLogger('server');
+var request = require('request');
+var logger = log4js.getLogger('appConf');
 var os = require('os');
 
 var publicConfiguration = {
@@ -52,7 +52,10 @@ var publicConfiguration = {
 var privateConfiguration = {
     cosmoServer: undefined,
     cosmoPort: 80,
+    autoDetectProtocol:true, // automatically detect if cloudify is listening on http or https
+    cloudifyManagerEndpoint: 'http://localhost:80',
     cloudifyLicense: 'tempLicense',
+    secretValue: 'WmLaL99qM95260zZE460d5t2BM4B34yo370447J3f8456F57wrq1Qd653g6s',
     log4js: {
         appenders: [
             { 'type': 'console' },
@@ -162,6 +165,28 @@ exports.applyConfiguration = function (settings) {
     gsSettings.write(settings);
 
 };
+
+function discoverProtocol( endpoint, usingPath, callback ){
+    var prefix = endpoint.split(':')[0];
+    var other = prefix === 'https' ? 'http' : 'https';
+
+    request({'url' : endpoint + usingPath }, function(err){
+        if ( !err ){
+            callback(null, endpoint);
+        }else{
+            callback(null, endpoint.replace(prefix,other));
+        }
+    });
+}
+
+discoverProtocol(privateConfiguration.cloudifyManagerEndpoint, '/blueprints',function( err, endpoint ){
+    if ( !err && !!endpoint ) {
+        logger.trace('setting endpoint protocol. new endpoint is', endpoint);
+        privateConfiguration.cloudifyManagerEndpoint = endpoint;
+    }else{
+        logger.error('unable to decide protocol',err);
+    }
+});
 
 var prConf = getPrivateConfiguration();
 if (prConf !== null) {

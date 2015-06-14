@@ -1,16 +1,20 @@
 'use strict';
 
 var conf = require('../appConf');
+var request = require('request');
 var fs = require('fs.extra');
 var path = require('path');
+var compressSrv = require('./CompressService');
+var logger = require('log4js').getLogger('BrowseBlueprintService');
 
-module.exports.isBlueprintExist = function (id, callbackFn) {
+// todo : why don't we have "last updated" here?? does this function actually work??
+module.exports.isBlueprintExist = function ( id, callbackFn) {
     fs.exists(path.join(conf.browseBlueprint.path, id), function (exists){
         callbackFn(null, exists);
     });
 };
 
-module.exports.browseBlueprint = function (id, last_update, callbackFn){
+module.exports.walkBlueprint = function (  id, last_update, callbackFn){
     if(id.indexOf('.') !== -1 || id.indexOf('/') !== -1) {
         var err = new Error('Blueprint ID can\'t contain spacial characters.');
         return callbackFn(err);
@@ -19,9 +23,7 @@ module.exports.browseBlueprint = function (id, last_update, callbackFn){
     walker.walk(path.join(conf.browseBlueprint.path, id, last_update), callbackFn);
 };
 
-module.exports.fileGetContent = function(id, relativePath, callbackFn) {
-    fs.readFile(path.join(conf.browseBlueprint.path, id, relativePath), 'utf-8', callbackFn);
-};
+
 
 module.exports.deleteBlueprint = function(id, callbackFn) {
     function removeFile(id, callbackFn) {
@@ -113,6 +115,7 @@ module.exports.Walker = function() {
     }
 
     function walkFolder(rootFolder, _list) {
+        logger.trace('walkFolder', rootFolder);
         counter++;
         fs.readdir(rootFolder, function (err, files) {
             if (files.length === 0) {
@@ -150,4 +153,73 @@ module.exports.Walker = function() {
         walkFolder(rootFolder, root.children);
     };
 
+};
+
+
+
+exports.downloadBlueprint = function( cloudifyClientConf, blueprint_id, last_update, callback) {
+    logger.trace('downloading blueprint');
+
+    function alreadyExists( name ){
+        return function(e) {
+            logger.debug('folder' + name + ' already exist :: ', e);
+        };
+    }
+
+    fs.exists(conf.browseBlueprint.path, function (exists) {
+        if (!exists) {
+            var pathParts = conf.browseBlueprint.path.split('/');
+            var pathToCreate = '';
+            for (var i = 0; i < pathParts.length; i++) {
+                pathToCreate += pathParts[i] + '/';
+                fs.mkdir(pathToCreate, alreadyExists(pathParts[i]));
+            }
+        }
+        var filepath = path.join(conf.browseBlueprint.path, blueprint_id + '.archive');
+        var file = fs.createWriteStream(filepath);
+
+        var requestDetails = {
+            url: cloudifyClientConf.endpoint + '/blueprints/' + blueprint_id + '/archive',
+            method: 'GET',
+            auth: cloudifyClientConf.cloudifyAuth
+        };
+
+        var stream = request(requestDetails);
+        stream.on('response',function(res){
+            res.pipe(file);
+            file.on('close', function(){
+                compressSrv.extract(blueprint_id, last_update, callback);
+            });
+        });
+
+
+        stream.on('error', function(e) {
+            logger.info('problem with request: ' + e.message);
+            callback(e.message, null);
+        });
+    });
+};
+
+
+
+exports.browseBlueprint = function( cloudifyConfig, blueprint_id, last_update, callback) {
+    logger.trace('browsing blueprint', blueprint_id);
+    exports.isBlueprintExist(blueprint_id, function(err, isExist){
+        if(!isExist) {
+            exports.downloadBlueprint( cloudifyConfig, blueprint_id, last_update, function(err){
+                logger.trace('blueprint downloaded');
+                if(err) {
+                    callback({e: err, errCode: 'browseError'}, null);
+                } else {
+                    exports.walkBlueprint(blueprint_id, last_update, callback);
+                }
+            });
+        } else {
+            exports.walkBlueprint(blueprint_id, last_update, callback);
+        }
+    });
+};
+
+exports.browseBlueprintFile = function(blueprint_id, relativePath, callback) {
+    fs.readFile(path.join(conf.browseBlueprint.path, blueprint_id, relativePath), 'utf-8', callback);
 };

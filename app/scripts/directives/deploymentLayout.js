@@ -7,7 +7,7 @@
  * # deploymentLayout
  */
 angular.module('cosmoUiApp')
-    .directive('deploymentLayout', function ($location, BreadcrumbsService, CloudifyService) {
+    .directive('deploymentLayout', function ($location, BreadcrumbsService, CloudifyService, nodeStatus, ngDialog) {
         return {
             templateUrl: 'views/deployment/layout.html',
             restrict: 'EA',
@@ -37,11 +37,11 @@ angular.module('cosmoUiApp')
                 };
                 var deploymentModel = {};
                 var nodesList = [];
-                var statesIndex = ['uninitialized', 'initializing', 'creating', 'created', 'configuring', 'configured', 'starting', 'started', 'deleted'];
+                var statesIndex = nodeStatus.getStatesIndex();
+                var _dialog = null;
 
                 $scope.breadcrumb = [];
                 $scope.workflowsList = [];
-                $scope.isConfirmationDialogVisible = false;
                 $scope.deploymentInProgress = null;
                 $scope.currentExecution = null;
                 $scope.executedData = null;
@@ -49,6 +49,7 @@ angular.module('cosmoUiApp')
                     data: null
                 };
                 $scope.deployments = deploymentModel;
+                $scope.isInitilizingLoader = false;
 
                 // Set Breadcrumb
                 BreadcrumbsService.push('deployments', {
@@ -61,7 +62,7 @@ angular.module('cosmoUiApp')
                 $scope.$emit('selectedWorkflow', $scope.selectedWorkflow);
 
                 // Get Deployment Data
-                CloudifyService.deployments.getDeploymentById({deployment_id: $scope.id})
+                CloudifyService.deployments.getDeploymentById($scope.id)
                     .then(function (dataDeployment) {
 
                         // Verify it's valid page, if not redirect to deployments page
@@ -71,6 +72,34 @@ angular.module('cosmoUiApp')
 
                         // Set Deployment ID on Scope
                         $scope.deploymentId = dataDeployment.id;
+
+                        // Set Navigation Menu - Need to set only after blueprint id available for source page href
+                        $scope.navMenu = [
+                            {
+                                'name': 'Topology',
+                                'href': '/topology'
+                            },
+                            {
+                                'name': 'Network',
+                                'href': '/network'
+                            },
+                            {
+                                'name': 'Nodes',
+                                'href': '/nodes'
+                            },
+                            {
+                                'name': 'Executions',
+                                'href': '/executions'
+                            },
+                            {
+                                'name': 'Source',
+                                'href': '/source'
+                            },
+                            {
+                                'name': 'Monitoring',
+                                'href': '/monitoring'
+                            }
+                        ];
 
                         // Emit deployment data
                         $scope.$emit('deploymentData', dataDeployment);
@@ -107,31 +136,7 @@ angular.module('cosmoUiApp')
 
                         _loadExecutions();
 
-                        // Get Nodes
-                        CloudifyService.getNodes({deployment_id: dataDeployment.id})
-                            .then(function(dataNodes) {
-
-                                var nodes = [];
-                                dataNodes.forEach(function(node) {
-                                    if (node.deployment_id === dataDeployment.id) {
-                                        node.name = node.id;
-                                        nodes.push(node);
-                                    }
-                                });
-                                nodesList = nodes;
-
-                                // Set Deployment Model
-                                _setDeploymentModel(nodesList);
-                                _updateDeploymentModel(nodesList);
-
-                                // Emit nodes data
-                                $scope.$emit('nodesList', nodesList);
-
-                                // Emit deployment process data
-                                $scope.$emit('deploymentProcess', deploymentModel);
-
-                            });
-
+                        _getNodes(dataDeployment.id);
                     });
 
                 $scope.$watch('breadcrumb', function (breadcrumbs) {
@@ -139,30 +144,6 @@ angular.module('cosmoUiApp')
                         BreadcrumbsService.push('deployments', breadcrumb);
                     });
                 }, true);
-
-                // Set Navigation Menu
-                $scope.navMenu = [
-                    {
-                        'name': 'Topology',
-                        'href': '/topology'
-                    },
-                    {
-                        'name': 'Network',
-                        'href': '/network'
-                    },
-                    {
-                        'name': 'Nodes',
-                        'href': '/nodes'
-                    },
-                    {
-                        'name': 'Executions',
-                        'href': '/executions'
-                    },
-                    {
-                        'name': 'Monitoring',
-                        'href': '/monitoring'
-                    }
-                ];
 
                 $scope.isSectionActive = function (section) {
                     return section.name === $scope.section ? 'active' : '';
@@ -172,124 +153,162 @@ angular.module('cosmoUiApp')
                     $location.path('/deployment/' + $scope.id + section.href);
                 };
 
-                // Workflows & Execution
-                CloudifyService.autoPull('getDeploymentExecutions', $scope.id, CloudifyService.deployments.getDeploymentExecutions)
-                    .then(null, null, function (dataExec) {
-                        $scope.currentExecution = _getCurrentExecution(dataExec);
-                        if (!$scope.currentExecution && $scope.deploymentInProgress) {
-                            $scope.deploymentInProgress = false;
-                        }
-                        else if ($scope.deploymentInProgress === null && $scope.currentExecution !== false) {
-                            $scope.deploymentInProgress = true;
-                        }
-                        CloudifyService.deployments.getDeploymentNodes({deployment_id : $scope.id, state: true}).then(function(dataNodes){
-                            _updateDeploymentModel(dataNodes);
-                        });
-                        $scope.$emit('deploymentExecution', {
-                            currentExecution: $scope.currentExecution,
-                            deploymentInProgress: $scope.deploymentInProgress,
-                            executionsList: dataExec
-                        });
-                    });
+                function _getNodes(deployment_id) {
+                    // Get Nodes
+                    CloudifyService.getNodes(deployment_id)
+                        .then(function(dataNodes) {
 
-                function _orderNodesById( nodes ) {
-                    var IndexedNodes = {};
-                    for (var i in nodes) {
-                        var node = nodes[i];
-                        if(node.hasOwnProperty('node_id')) {
-                            IndexedNodes[node.node_id] = {
-                                state: node.state
-                            };
-                        }
-                    }
-                    return IndexedNodes;
+                            var nodes = [];
+                            dataNodes.forEach(function(node) {
+                                if (node.deployment_id === deployment_id) {
+                                    node.name = node.id;
+                                    nodes.push(node);
+                                }
+                            });
+                            nodesList = nodes;
+
+                            // Set Deployment Model
+                            _setDeploymentModel(nodesList);
+                            // todo - not sure if we need this..
+                            //_updateDeploymentModel(nodesList);
+
+                            // Emit nodes data
+                            $scope.$emit('nodesList', nodesList);
+
+                            // Emit deployment process data
+                            $scope.$emit('deploymentProcess', deploymentModel);
+
+                            _startDeploymentExecutionsAutopull();
+                        });
                 }
 
+                function _startDeploymentExecutionsAutopull() {
+                    // Workflows & Execution
+                    CloudifyService.autoPull('getDeploymentExecutions', $scope.id, CloudifyService.deployments.getDeploymentExecutions)
+                        .then(null,
+                        function(/*reason*/) {
+                            // getDeploymentExecutions failed. Redirect to deployments screen.
+                            $scope.deploymentInProgress = false;
+                            $location.path('/deployments');
+
+                        }, function (dataExec) {
+                            $scope.currentExecution = _getCurrentExecution(dataExec);
+                            if (!$scope.currentExecution && $scope.deploymentInProgress) {
+                                $scope.deploymentInProgress = false;
+                            }
+                            else if (!$scope.deploymentInProgress && $scope.currentExecution !== false) {
+                                $scope.deploymentInProgress = true;
+                            }
+                            CloudifyService.deployments.getDeploymentNodes($scope.id)
+                                .then(function(dataNodes){
+                                    // now that we have the instances, we can count how many instances we have per node
+                                    // we cannot use "number_of_instances" or "deploy" field, because it does not
+                                    // consider parent nodes with multiple instances.
+                                    // host A with 2 instances that contains App B with 2 instances will actually
+                                    // spawn 4 instances of App B (2 per host).
+                                    _.each(deploymentModel, function(value/*, key*/){
+                                        value.total = 0; // reset count..
+                                    });
+
+                                    _.each(dataNodes, function( instance ){
+                                        deploymentModel[instance.node_id].total++;
+                                        deploymentModel['*'].total++;
+                                    });
+
+
+                                    _updateDeploymentModel(dataNodes);
+                                });
+                            $scope.$emit('deploymentExecution', {
+                                currentExecution: $scope.currentExecution,
+                                deploymentInProgress: $scope.deploymentInProgress,
+                                executionsList: dataExec
+                            });
+                        });
+                }
+
+                function _orderNodesById( nodes ) {
+                    var instancesByNodeId =  _.groupBy(nodes, 'node_id');
+                    _.each(instancesByNodeId, function(instances, node_id) {
+                        instancesByNodeId[node_id] = _.indexBy(instances,'id');
+                    });
+                    return instancesByNodeId;
+                }
+
+                /*
+                Updating the model. Grouping node instances by their node id to collect their statuses & update the node statuses in the model.
+                 */
                 function _updateDeploymentModel( nodes ) {
                     var IndexedNodes = _orderNodesById(nodes);
-
                     for (var i in deploymentModel) {
-                        var deployment = deploymentModel[i];
+                        var _nodeInstanceStatus = deploymentModel[i];   // Node instance status in the model
                         var _reachable = 0;
                         var _states = 0;
                         var _completed = 0;
                         var _uninitialized = 0;
 
                         // go over all the instances
-                        for (var n in deployment.instancesIds) {
-                            var nodeId = deployment.instancesIds[n];
+                        for (var n in _nodeInstanceStatus.instancesIds) {
+                            var nodeId = _nodeInstanceStatus.instancesIds[n];
 
                             if(IndexedNodes.hasOwnProperty(nodeId)) {
-                                var nodeInstance = IndexedNodes[nodeId];
-                                var stateNum = statesIndex.indexOf(nodeInstance.state);
+                                for (var inst in IndexedNodes[nodeId]) {
+                                    var instance = IndexedNodes[nodeId][inst];
+                                    var stateNum = statesIndex.indexOf(instance.state);
 
-                                // Count how many instances are reachable
-                                if(nodeInstance.state === 'started') {
-                                    _reachable++;
-                                }
-
-                                // instance state between 'initializing' to 'starting'
-                                if(stateNum > 0 && stateNum <= 7) {
-                                    _states += stateNum;
-
-                                    // instance 'started'
-                                    if(stateNum === 7) {
-                                        _completed++;
+                                    // Count how many instances are reachable
+                                    if(instance.state === 'started') {
+                                        _reachable++;
                                     }
-                                }
 
-                                // instance 'uninitialized' or 'deleted'
-                                if(stateNum === 0 || stateNum > 7) {
-                                    _uninitialized++;
+                                    // instance state between 'initializing' to 'starting'
+                                    if(stateNum > 0 && stateNum <= 7) {
+                                        _states += stateNum;
+
+                                        // instance 'started'
+                                        if(stateNum === 7) {
+                                            _completed++;
+                                        }
+                                    }
+
+                                    // instance 'uninitialized' or 'deleted'
+                                    if(stateNum === 0 || stateNum > 7) {
+                                        _uninitialized++;
+                                    }
                                 }
                             }
                         }
 
                         // * results of all the instances of the node * //
                         // completed instances
-                        deployment.completed = _completed;
+                        _nodeInstanceStatus.completed = _completed;
 
                         // reachable instances
-                        deployment.reachables = _reachable;
+                        _nodeInstanceStatus.reachables = _reachable;
 
                         // average process
-                        deployment.state = Math.round(_states / deployment.total);
+                        _nodeInstanceStatus.state = Math.round(_states / _nodeInstanceStatus.total);
 
-                        // average process in percents
-                        deployment.states = calcState(_states, deployment.total);
+                        // average process in percentage
+                        _nodeInstanceStatus.states = calcState(_states, _nodeInstanceStatus.total);
 
                         // Set Status by Workflow Execution Progress
-                        var processDone = (deployment.states < 100 ? deployment.states : calcProgress(deployment.reachables, deployment.total));
-                        deployment.process = {
-                            'done': processDone
+                        var _processDone = (_nodeInstanceStatus.states < 100 ? _nodeInstanceStatus.states : calcProgress(_nodeInstanceStatus.reachables, _nodeInstanceStatus.total));
+                        _nodeInstanceStatus.process = {
+                            'done': _processDone
                         };
 
-                        if(_uninitialized === deployment.total) {
-                            setDeploymentStatus(deployment, false);
+                        if(_uninitialized === _nodeInstanceStatus.total) {
+                            _nodeInstanceStatus.status = nodeStatus.getNodeStatus(_nodeInstanceStatus, $scope.currentExecution, false);
                         }
                         else {
-                            setDeploymentStatus(deployment, processDone);
+                            _nodeInstanceStatus.status = nodeStatus.getNodeStatus(_nodeInstanceStatus, $scope.currentExecution, _processDone);
                         }
+
                     }
 
                     nodesList.forEach(function(node) {
                         node.state = deploymentModel[node.id];
                     });
-                }
-
-                function setDeploymentStatus(deployment, process) {
-                    if(process === false) {
-                        deployment.status = 0;
-                    }
-                    else if(process === 100) {
-                        deployment.status = 1;
-                    }
-                    else if(process > 0 && process < 100) {
-                        deployment.status = 2;
-                    }
-                    else if(process === 0) {
-                        deployment.status = 3;
-                    }
                 }
 
                 function calcState(state, instances) {
@@ -327,17 +346,25 @@ angular.module('cosmoUiApp')
                         });
                 }
 
-                function _toggleConfirmationDialog(confirmationType) {
+                $scope.openConfirmationDialog = function(confirmationType) {
+                    if(_isDialogOpen()) {
+                        return;
+                    }
                     if (confirmationType === 'execute' && $scope.selectedWorkflow.data === null) {
                         return;
                     }
                     $scope.confirmationType = confirmationType;
-                    $scope.isConfirmationDialogVisible = !$scope.isConfirmationDialogVisible;
                     $scope.executedErr = false;
-                }
+
+                    _dialog = ngDialog.open({
+                        template: 'views/dialogs/confirm.html',
+                        controller: 'ExecuteDialogCtrl',
+                        scope: $scope,
+                        className: 'confirm-dialog'
+                    });
+                };
 
                 $scope.isExecuteEnabled = _isExecuteEnabled;
-                $scope.toggleConfirmationDialog = _toggleConfirmationDialog;
 
                 function _setDeploymentModel( data ) {
                     deploymentModel['*'] = angular.copy(deploymentDataModel);
@@ -347,9 +374,8 @@ angular.module('cosmoUiApp')
                             deploymentModel[node.id] = angular.copy(deploymentDataModel);
                         }
                         deploymentModel['*'].instancesIds.push(node.id);
-                        deploymentModel['*'].total += parseInt(node.number_of_instances, 10);
                         deploymentModel[node.id].instancesIds.push(node.id);
-                        deploymentModel[node.id].total += parseInt(node.number_of_instances, 10);
+
                     }
                 }
 
@@ -357,7 +383,10 @@ angular.module('cosmoUiApp')
                     $scope.$emit('toggleChange', toggleBar);
                 });
 
-                $scope.isInitilizingLoader = false;
+                $scope.$on('executionStarted', function(e, data) {
+                    $scope.executedData = data;
+                });
+
                 $scope.isInitilizing = function() {
                     if($scope.currentExecution === null) {
                         return true;
@@ -369,6 +398,22 @@ angular.module('cosmoUiApp')
                     $scope.isInitilizingLoader = false;
                     return false;
                 };
+
+                $scope.closeDialog = function() {
+                    if (_dialog !== null) {
+                        ngDialog.close(_dialog.id);
+                    }
+                    _dialog = null;
+                };
+
+                $scope.getSelectedWorkflow = function() {
+                    return $scope.selectedWorkflow.data.value;
+                };
+
+                function _isDialogOpen() {
+                    return _dialog !== null && ngDialog.isOpen(_dialog.id);
+                }
+
             }
         };
     });

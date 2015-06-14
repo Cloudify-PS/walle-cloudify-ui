@@ -7,54 +7,45 @@
     <div class="content-section">
         <div class="filters">
 
-            <div class="filter">
+            <div class="filter gs-selection-button" ng-show="blueprintsList.length">
                 Blueprints:<br>
                 <div multi:select:menu
+                     class="gs-select"
                      data-multiple="true"
                      data-options="blueprintsList"
                      data-ng-model="eventsFilter.blueprints"
+                     data-filter="eventsFilter.blueprints"
                      data-init="{{ filterModel.blueprints }}"
-                     data-text="Choose Blueprints"
                      data-listener="true"
-                     name="blueprints"></div>
+                     name="blueprints"
+                     data-text="Choose Blueprints"></div>
             </div>
 
-            <div class="filter" data-ng-show="deploymentsList.length">
+            <div class="filter gs-selection-button" ng-show="deploymentsList.length">
                 Deployments:<br>
                 <div multi:select:menu
+                     class="gs-select"
                      data-multiple="true"
                      data-options="deploymentsList"
                      data-ng-model="eventsFilter.deployments"
                      data-filter="eventsFilter.blueprints"
                      data-init="{{ filterModel.deployments }}"
-                     data-text="Choose Deployments"
                      data-listener="true"
-                     name="deployments"></div>
+                     name="deployments"
+                     data-text="Choose Deployments"></div>
             </div>
 
-            <!--<div class="filter" data-ng-show="executionList.length">-->
-                <!--Executions:<br>-->
-                <!--<div multi:select:menu-->
-                     <!--data-multiple="true"-->
-                     <!--data-options="executionList"-->
-                     <!--data-ng-model="eventsFilter.executions"-->
-                     <!--data-init="{{ filterModel.executions }}"-->
-                     <!--data-text="Choose Execution"-->
-                     <!--data-listener="true"-->
-                     <!--name="executions"></div>-->
-            <!--</div>-->
-
-            <div class="filter">
+            <div class="filter gs-selection-button">
                 Timeframe (from {{ timeframeFrom }}):<br>
                 <div multi:select:menu
+                     class="gs-select"
+                     data-multiple="false"
                      data-options="timeframeList"
                      data-ng-model="eventsFilter.timeframe"
                      data-init="{{ filterModel.timeframe }}"
-                     data-text="Choose timeframe"
-                     data-onchange="filterEventsByTimeframe(filter)"
                      data-listener="true"
-                     name="timeframe"></div>
-
+                     name="timeframe"
+                     data-text="Choose Timeframe"></div>
             </div>
 
             <button class="gs-btn" data-ng-click="execute()" ng-class="{gsBtnDisabled: !!isSearchDisabled}">Show</button>
@@ -66,22 +57,22 @@
             <p data-ng-click="scrollToTop()">{{ newLogs }} new logs</p>
         </div>
 
-        <table class="table eventsTable">
+        <table class="gs-table gs-table-align-top eventsTable">
             <thead>
             <tr>
                 <th class="icon"><!-- icon --></th>
                 <th class="date sorting" data-ng-click="sortEvents('timestamp')" data-ng-class="isSorted('timestamp')">Timestamp</th>
-                <th class="type sorting" data-ng-click="sortEvents('eventType')" data-ng-class="isSorted('eventType')">{{ 'deployment.table.heading.eventType' | i18n }}</th>
-                <th class="node sorting" data-ng-click="sortEvents('logLevel')" data-ng-class="isSorted('logLevel')">{{ 'deployment.table.heading.logLevel' | i18n }}</th>
-                <th class="node sorting" data-ng-click="sortEvents('operation')" data-ng-class="isSorted('operation')">{{ 'deployment.table.heading.operation' | i18n }}</th>
-                <th class="node sorting" data-ng-click="sortEvents('node')" data-ng-class="isSorted('node')">{{ 'deployment.table.heading.node' | i18n }}</th>
-                <th class="node sorting" data-ng-click="sortEvents('nodeId')" data-ng-class="isSorted('nodeId')">{{ 'deployment.table.heading.nodeId' | i18n }}</th>
-                <th class="task sorting" data-ng-click="sortEvents('message.text')" data-ng-class="isSorted('message.text')">{{ 'deployment.table.heading.message' | i18n }}</th>
+                <th class="type sorting" data-ng-click="sortEvents('eventType')" data-ng-class="isSorted('eventType')">{{ 'deployment.table.heading.eventType' | translate }}</th>
+                <th class="node sorting" data-ng-click="sortEvents('logLevel')" data-ng-class="isSorted('logLevel')">{{ 'deployment.table.heading.logLevel' | translate }}</th>
+                <th class="node sorting" data-ng-click="sortEvents('operation')" data-ng-class="isSorted('operation')">{{ 'deployment.table.heading.operation' | translate }}</th>
+                <th class="node sorting" data-ng-click="sortEvents('node')" data-ng-class="isSorted('node')">{{ 'deployment.table.heading.node' | translate }}</th>
+                <th class="node sorting" data-ng-click="sortEvents('nodeId')" data-ng-class="isSorted('nodeId')">{{ 'deployment.table.heading.nodeId' | translate }}</th>
+                <th class="task sorting" data-ng-click="sortEvents('message.text')" data-ng-class="isSorted('message.text')">{{ 'deployment.table.heading.message' | translate }}</th>
             </tr>
             </thead>
             <tbody class="animate-repeat" ng-repeat="log in logsHits" ng-init="isOpen=false">
             <tr data-ng-click="isOpen=!isOpen">
-                <td class="icon-events" ng-class="getEventIcon(log._source.event_type)"></td>
+                <td class="icon-events" ng-class="getEventIcon(log)"></td>
                 <td class="date">{{log._source.timestamp == undefined && '-' || log._source.timestamp}}</td>
                 <td class="type">{{getEventText(log._source.event_type) == undefined && '-' || getEventText(log._source.event_type)}}</td>
                 <td class="node">{{log._source.level == undefined && '-' || log._source.level | uppercase}}</td>
@@ -112,12 +103,12 @@
         <div class="dialogBoxBg"></div>
         <div id="confirmationDialogContainer" class="dialogBox">
             <div class="dialogTitle">
-                <label>{{ 'logs.errorPopup.title' | i18n }} {{blueprint.id}}</label>
+                <label>{{ 'logs.errorPopup.title' | translate }} {{blueprint.id}}</label>
             </div>
-            <div class="dialogDescription">{{ 'logs.errorPopup.description' | i18n }}</div>
+            <div class="dialogDescription">{{ 'logs.errorPopup.description' | translate }}</div>
            <div class="error-message" data-ng-show="errorMsg">{{ errorMsg }}</div>
             <div class="buttonsContainer confirmationButtons">
-                <button id="confirmBtn" class="dialogButton" ng-click="closeErrorDialog()">{{ 'logs.errorPopup.close' | i18n }}</button>
+                <button id="confirmBtn" class="gs-btn" ng-click="closeErrorDialog()">{{ 'logs.errorPopup.close' | translate }}</button>
             </div>
         </div>
     </div>

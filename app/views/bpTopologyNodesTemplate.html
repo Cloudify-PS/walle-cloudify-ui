@@ -1,33 +1,27 @@
 <div data-ng-repeat="node in map track by node.name" data-type="{{node.dataType}}" ng-class="{box: !node.isApp, app: node.isApp, boxHover: headerHover == node.name}" blueprint:coordinate="{{node.id}}">
-    <!--<div class="hoverup" ng-class="{appHoverup: node.isApp}">-->
-        <!--<div class="buttons no-embed">-->
-            <!--<ul>-->
-                <!--<li data-ng-click="onNodeSelected(node)" class="topology-glyph node-details"></li>-->
-            <!--</ul>-->
-        <!--</div>-->
-    <!--</div>-->
     <div progress:pie="piProgress2" class="piProgress" size="55">
+        <div class="badge-title" ng-class="getBadgeStatus(node.state.status)" ng-show="shouldShowBadgeTitle(node)" >{{ node.state.completed }}/{{ node.state.total }}</div>
         <div class="circle">
-            <i class="icon topology-glyph" ng-class="node.class"></i>
+            <i class="gs-node-icon topology-glyph" ng-class="node.class"></i>
             <div class="badge" ng-show="node.state == undefined && node.instances.deploy != undefined">{{ node.instances.deploy }}</div>
-            <div class="badge" data-ng-class="getBadgeStatus(node.state.status)" ng-show="node.state != undefined && node.state.completed != undefined">
-                {{ node.state.completed }}/{{ node.state.total }}
+            <div class="badge" data-ng-class="getBadgeStatusAndIcon(node.state.status)" ng-show="shouldShowBadge(node)">
+                <!-- Don't remove this newline, it will make the badge disappear! -->
             </div>
         </div>
     </div>
 
     <div class="connections" ng-show="node.isHost == true">
         <div class="connection" ng-class="relationship.target_id" data-ng-show="isConnectedTo(relationship)" data-ng-repeat="relationship in node.relationships">
-            <i class="icon topology-glyph cloudify-nodes-Root" ng-class="relationship.node.class" ng-click="onRelationshipSelected(relationship)"></i>
+            <i class="gs-node-icon topology-glyph small cloudify-nodes-Root" ng-class="relationship.node.class" ng-click="onRelationshipSelected(relationship)"></i>
         </div>
     </div>
 
-    <div class="head" ng-show="node.isApp == false" ng-mouseover="setHeaderHover(node.name)" ng-mouseleave="setHeaderHover(null)" ng-click="onNodeSelected(node)">
+    <div class="head" ng-show="node.isApp == false" ng-mouseover="setHeaderHover(node.name)" ng-mouseleave="setHeaderHover(null)" ng-click="onNodeSelected(node)" tooltip>
         {{ node.name }}
     </div>
     <div class="holder" ng-show="node.isApp == false" data-ng-if="node.isApp == false" ng-class="{boxHover: headerHover == node.name}">
-        <div bp-topology-nodes map="node.children"></div>
+        <div bp-topology-nodes deployment-in-progress="deploymentInProgress" map="node.children"></div>
     </div>
 
-    <p ng-show="node.isApp == true">{{ node.name }}</p>
+    <p ng-show="node.isApp == true" tooltip>{{ node.name }}</p>
 </div>

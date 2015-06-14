@@ -1,4 +1,4 @@
-table.table {
+.gs-table {
     width: $COSMOUI_LIST_WIDTH;
     margin: 10px 20px 0px;
 
@@ -79,6 +79,30 @@ table.table {
                 }
             }
 
+          &.details {
+            background-color: #f5f5f5;
+            border-bottom: 1px solid #ccc;
+            padding: 10px;
+
+            .group {
+              display: inline-block;
+              border-right: 1px dotted #ccc;
+              min-width: 250px;
+              height: 100%;
+              font-size: 13px;
+              vertical-align: top;
+              > span {
+                display: block;
+                padding: 5px 0;
+                margin: 0 10px;
+                line-height: 18px;
+              }
+              &:last-child {
+                border: 0px;
+              }
+            }
+          }
+
             &:hover {
 //                background-color: $COSMOUI_LIST_HOVER_BACKGROUND;
                 cursor: $COSMOUI_DIALOG_CURSOR;
@@ -93,11 +117,18 @@ table.table {
     i {
         color: $COSMOUI_EVENTS_LIST_ITEM_COLOR;
     }
+
+  &.gs-table-align-top {
+    tr {
+      td {
+        vertical-align: top;
+      }
+    }
+  }
 }
 
 .gs-btn {
     color: white;
-    font-weight: bold;
     padding: 5px 10px 5px 10px;
     background-color: $COSMOUI_BUTTON_BACKGROUND;
     border-radius: 3px;
@@ -107,7 +138,51 @@ table.table {
     border-left: none;
     vertical-align: middle;
 
+    &.disabled {
+      background: $COSMOUI_BUTTON_DISABLED_BACKGROUND;
+      border-bottom: 1px solid $COSMOUI_BUTTON_DISABLED_BORDER_COLOR;
+      border-right: 1px solid $COSMOUI_BUTTON_DISABLED_BORDER_COLOR;
+      color: $COSMOUI_BUTTON_DISABLED_BORDER_COLOR;
+      cursor: default;
+    }
 
+    &.enabled {
+      background: $COSMOUI_BUTTON_BACKGROUND;
+      cursor: pointer;
+    }
+
+    &.loader {
+      color: transparent;
+      background-image: url($img-loading-button);
+      background-repeat: no-repeat;
+      background-position: center center;
+    }
+
+    &.close {
+      float: right;
+      position: absolute;
+      right: 0px;
+      top: 5px;
+      background: url("/images/x_idle.png") no-repeat center center;
+      width: 32px;
+      height: 32px;
+      cursor: pointer;
+      background-color: transparent;
+      border: none;
+      padding-right: 0px;
+
+      &:hover {
+        background: url("/images/x_hover.png") no-repeat center center;
+      }
+
+      &:active {
+        background: url("/images/x_pressed.png") no-repeat center center;
+      }
+
+      &.disabled {
+        background: url("/images/x_idle.png") no-repeat center center;
+      }
+    }
 }
 
 .gsBtnDisabled {
@@ -123,11 +198,11 @@ table.table {
 
     .gs-select {
         min-width: 0px;
-        width: 160px;
+        width: 190px;
         color: $clr-base-11;
         background-color: $clr-base-01;
         font-weight: normal;
-        padding: 5px 10px 5px 10px;
+        padding: 5px 40px 5px 10px;
         border-radius: 5px;
         border: 2px solid $clr-base-04;
         float: left;
@@ -157,22 +232,24 @@ table.table {
     }
 
     .select-list-arrow {
-        background-color: $clr-base-01;
-        width: 24px;
-        height: 29px;
         position: relative;
-        left: 122px;
-        top: 2px;
-        border-left: 2px solid $clr-base-09;
+        width: 30px;
+        height: 33px;
+        top: 0px;
+        right: 30px;
+        border-left: 1px solid #cccccc;
+        cursor: pointer;
+        float: left;
+        pointer-events: none;
 
         &:after {
             content: "";
             position: relative;
             left: 7px;
-            bottom: 15px;
+            top: 20px;
             border-left: 5px solid transparent;
             border-right: 5px solid transparent;
-            border-top: 5px solid $clr-base-20;
+            border-top: 5px solid #cccccc;
         }
     }
 }
@@ -191,13 +268,6 @@ table.table {
 }
 
 .icon-events {
-    font-family: 'cloudify-events';
-    speak: none;
-    font-style: normal;
-    font-weight: normal;
-    font-variant: normal;
-    text-transform: none;
-    line-height: 1;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     width: 36px;
@@ -205,60 +275,132 @@ table.table {
     font-size: 32px;
     color: #2C4B68;
 
-    &.policy-failed:before {
-        content: "\21";
+    // some classes are left empty as placeholders for color changes for the icon.
+    &.icon-gs-policy-failed:before {
         color: #d64b34;
     }
-    &.policy-success:before {
-        content: "\22";
+    &.icon-gs-policy-success:before {
         color: #9ABC2E;
     }
-    &.task-canceled:before {
-        content: "\23";
+    &.icon-gs-task-failed:before {
         color: #d64b34;
     }
-    &.task-failed:before {
-        content: "\24";
-        color: #d64b34;
-    }
-    &.task-retried:before {
-        content: "\25";
+    &.icon-gs-task-retried:before {
         color: #F9B71B;
     }
-    &.task-sent:before {
-        content: "\26";
+    &.icon-gs-task-sent:before {
+        color: #049cdb;
     }
-    &.task-started:before {
-        content: "\27";
+    &.icon-gs-task-started:before {
     }
-    &.task-success:before {
-        content: "\28";
+    &.icon-gs-task-success:before {
         color: #9ABC2E;
     }
-    &.workflow-stage:before {
-        content: "\29";
+    &.icon-gs-workflow-stage:before {
     }
-    &.workflow-cancelled:before {
-        content: "\2a";
+    &.icon-gs-workflow-cancelled:before {
         color: #d64b34;
     }
-    &.workflow-failed:before {
-        content: "\2b";
+    &.icon-gs-workflow-failed:before {
         color: #d64b34;
     }
-    &.workflow-started:before {
-        content: "\2c";
+    &.icon-gs-workflow-started:before {
     }
-    &.workflow-end-successfully:before {
-        content: "\2d";
+    &.icon-gs-workflow-success:before {
         color: #9ABC2E;
+    }
+    &.icon-gs-task-sent:before {
     }
 
     &.gs-icon-logs {
-        font-family: Cosmo;
+        font-family: gigaspaces;
         padding-left: 16px;
         color: #049cdb;
         line-height: 46px;
         font-size: 55px;
     }
+}
+
+$install: #2f3334;
+$done: #8eaf26;
+$alerts: #feb300;
+$failed: #d54931;
+
+.badge-title {
+    position: relative;
+    text-decoration: none;
+    font-size: 12px;
+    line-height: 15px;
+    font-style: normal;
+    font-weight: bold;
+    opacity: 1;
+    top: -6px;
+    left: 47px;
+
+    &.install {
+        color: $install;
+    }
+    &.done {
+        color: $done;
+    }
+    &.alerts {
+        color: $alerts;
+    }
+    &.failed {
+        color: $failed;
+    }
+
+}
+
+.badge {
+  position: relative;
+  display: inline-block;
+  z-index: 1;
+  min-width: 20px;
+  border-radius: 10px;
+  padding: 3px !important;  // this is here to override bootstrap's own .badge class definition
+  vertical-align: baseline;
+  white-space: nowrap;
+  text-align: center;
+  background-color: $install;
+  text-decoration: none;
+  font-size: 14px;
+  color: #fff;
+  line-height: 15px;
+  font-style: normal;
+  font-weight: normal;
+  opacity: 1;
+  &.install {
+    background-color: $install;
+  }
+  &.done {
+    background-color: $done;
+  }
+  &.alerts {
+    background-color: $alerts;
+  }
+  &.failed {
+    background-color: $failed;
+  }
+}
+
+p[tooltip], div[tooltip], td {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+input[type=text], input[type=password]{
+  height: 32px;
+  border-radius: 3px;
+  padding-left: 10px;
+  background-clip: padding-box;
+  background-color: $COSMOUI_INPUT_BACKGROUND;
+  border: 0;
+}
+
+.hidden-thing{
+    width:0;
+    height:0;
+    display:none;
+    font-size:0;
 }

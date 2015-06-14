@@ -7,20 +7,23 @@
     <div class="content-section">
 
         <h4>Types Icons</h4>
-        <p>Basic using element to display type icons must be in the pattern <code>&lt;i class=&quot;icon topology-glyph { icon_type }&quot;&gt;&lt;/i&gt;</code></p>
-        <table class="table table-striped">
+        <p>Basic using element to display type icons must be in the pattern <code>&lt;i class=&quot;gs-node-icon topology-glyph { icon_type }&quot;&gt;&lt;/i&gt;</code></p>
+        <p>For small sized icons (connected nodes), the 'small' class can be used <code>&lt;i class=&quot;gs-node-icon topology-glyph small { icon_type }&quot;&gt;&lt;/i&gt;</code></p>
+        <table class="gs-table table-striped">
             <thead>
                 <tr>
                     <td>Type</td>
-                    <td class="col-sm-1 text-center info">Preview</td>
-                    <td>Element</td>
+                    <td class="col-sm-1 text-center info">Default</td>
+                    <td class="col-sm-1 text-center info">Small</td>
+                    <td>Implementation</td>
                 </tr>
             </thead>
             <tbody>
                 <tr data-ng-repeat="(type, data) in typesList">
                     <td>{{ type }}</td>
-                    <td class="active text-center"><i class="icon topology-glyph {{ data.icon }}"></i></td>
-                    <td><code>&lt;i class=&quot;icon topology-glyph {{ data.icon }}&quot;&gt;&lt;/i&gt;</code></td>
+                    <td class="active text-center"><i class="gs-node-icon topology-glyph {{ data.icon }}"></i></td>
+                    <td class="active text-center"><i class="gs-node-icon topology-glyph small {{ data.icon }}"></i></td>
+                    <td><code>&lt;i class=&quot;gs-node-icon topology-glyph {{ data.icon }}&quot;&gt;&lt;/i&gt;</code></td>
                 </tr>
             </tbody>
         </table>
@@ -29,7 +32,7 @@
 
         <h4>Events Icons</h4>
         <p>Basic using element to display type icons must be in the pattern <code>&lt;i class=&quot;icon { icon_type }&quot;&gt;&lt;/i&gt;</code></p>
-        <table class="table table-striped">
+        <table class="gs-table table-striped">
             <thead>
             <tr>
                 <td>Type</td>
@@ -42,6 +45,29 @@
                 <td>{{ data.text }}</td>
                 <td class="active text-center"><i class="icon-events {{ data.icon }}"></i></td>
                 <td><code>&lt;i class=&quot;icon-events {{ data.icon }}&quot;&gt;&lt;/i&gt;</code></td>
+            </tr>
+            </tbody>
+        </table>
+
+        <h4>Node Statuses</h4>
+        <p>Basic using element to display node status must be in the pattern <code>&lt;div class=&quot;badge { node_status } { node_status_icon }&quot;&gt;&lt;/div&gt;</code></p>
+        <table class="gs-table table-striped">
+            <thead>
+            <tr>
+                <td>Status</td>
+                <td class="text-center" style="width:200px;">Icon</td>
+                <td class="col-sm-1 text-center info">Preview</td>
+                <td>Element</td>
+            </tr>
+            </thead>
+            <tbody>
+            <tr data-ng-repeat="(status, data) in nodeStatusList">
+                <td>{{ data }}</td>
+                <td>{{ getIconClass(status) }}</td>
+                <td class="active text-center"><div class="badge {{ getBadgeStatusAndIcon(status, data) }}">
+                                        <!-- Don't remove this newline, it will make the badge disappear! -->
+                </div></td>
+                <td><code>&lt;div class=&quot;badge {{ getBadgeStatusAndIcon(status, data) }}&quot;&gt;&lt;/div&gt;</code></td>
             </tr>
             </tbody>
         </table>

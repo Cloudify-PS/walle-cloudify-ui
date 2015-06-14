@@ -31,6 +31,61 @@ html, body, .layout {
     background: $COSMOUI_BACKGROUND;
 
     display: table-cell;
+
+    .logout-panel{
+        position:absolute;
+        top:34px;
+        right:21px;
+        overflow:hidden;
+        padding-top:1px;
+        * {
+            color: #CADBEC;
+            font-family:"OpenSansCondLight", Helvetica, Arial, sans-serif;
+
+        }
+
+        .user-icon{
+            background:url('/images/user_icon.jpg');
+            width:23px;
+            height:24px;
+            display:inline-block;
+            vertical-align: middle;
+        }
+
+        .logout_icon{
+            background:url('/images/logout_icon.jpg');
+            width:19px;
+            height:23px;
+            display:inline-block;
+            vertical-align:middle;
+        }
+
+        .username {
+
+            padding-right:6px;
+            margin-right:15px;
+            font-family: "OpenSansRegular";
+            position:relative;
+            display:inline-block;
+            top:2px;
+
+            &:after{
+                display:inline-block;
+                height:20px;
+                width:1px;
+                background:#CADBEC;
+                content:"";
+                position:absolute;
+                top:-2px;
+                right:0;
+            }
+        }
+
+        .logout_icon{
+            cursor:pointer;
+            margin-top:-3px;
+        }
+    }
 }
 
 #footer {
@@ -210,8 +265,9 @@ html, body, .layout {
 
     .breadcrumbs {
         color: $COSMOUI_BREADCRUMB_ITEM_COLOR;
-        font-size: 28px;
+        font-size: 20px;
         display: inline-block;
+        margin-top: 1px;
 
         ul, li {
             list-style: none;
@@ -247,20 +303,6 @@ html, body, .layout {
             padding-left: 5px;
             color: $COSMOUI_BREADCRUMB_LAST_ITEM_COLOR;
         }
-        //li:last-child:not(:first-child):after{
-        //  content: "\f057";
-        //  display: inline-block;
-        //  font-family: FontAwesome;
-        //  font-style: normal;
-        //  font-weight: normal;
-        //  line-height: 1;
-        //  -webkit-font-smoothing: antialiased;
-        //  -moz-osx-font-smoothing: grayscale;
-        //  cursor: pointer;
-        //  color: $COSMOUI_BREADCRUMB_LAST_ITEM_COLOR;
-        //  top: 2px;
-        //  position: relative;
-        //}
     }
     .right {
         float: right;
@@ -275,7 +317,6 @@ html, body, .layout {
             border-right: 1px solid $COSMOUI_BUTTON_RIGHT_BORDER_COLOR;
             border-top: none;
             border-left: none;
-            margin-top: 9px;
         }
     }
 }
@@ -287,6 +328,11 @@ html, body, .layout {
 .floating-panel {
     width: 400px;
     display: none;
+}
+
+
+button, input[type="button"], input[type="submit"] {
+  outline: none !important;
 }
 
 .buttons-group {
@@ -305,6 +351,7 @@ html, body, .layout {
         border-radius: 0px;
         margin: 0 -6px 0 0;
         background-color: $clr-base-01;
+
         &:first-child {
             border-radius: $RADIUS 0 0 $RADIUS;
         }
@@ -319,9 +366,6 @@ html, body, .layout {
         &:hover:not(.active) {
             background-color: $clr-base-01;
             border: $COSMOUI_BLUEPRINT_BUTTON_GROUP_BORDER_COLOR;
-        }
-        &:focus {
-          outline:0;
         }
     }
 }

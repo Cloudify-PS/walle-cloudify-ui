@@ -10,7 +10,7 @@
     <!--<div deployment-events="deploymentId"></div>-->
 
     <div class="nodesTable">
-        <table class="table">
+        <table class="gs-table">
             <thead>
             <tr>
                 <th></th>
@@ -24,7 +24,7 @@
             </thead>
             <tbody data-ng-repeat="row in dataTable">
             <tr>
-                <td><i class="topology-glyph {{ row.class }}"></i></td>
+                <td><i class="gs-node-icon topology-glyph {{ row.class }}"></i></td>
                 <td>{{ row.id }}</td>
                 <td>{{ row.type }}</td>
                 <td>{{ row.number_of_instances }}</td>
@@ -38,11 +38,7 @@
                           data-ng-repeat="connection in getRelationshipByType(row, 'connected')">{{ connection.target_id }}{{$last ? '' : ', '}}</span>
                     <span data-ng-if="getRelationshipByType(row, 'connected').length == 0">--</span>
                 </td>
-                <td>
-                    <ul>
-                        <li data-ng-click="viewNodeDetails(getNodeById(row.id))" class="topology-glyph node-details"></li>
-                    </ul>
-                </td>
+                <td><i class="topology-glyph node-details" ng-click="viewNodeDetails(getNodeById(row.id))"></i></td>
             </tr>
             </tbody>
         </table>

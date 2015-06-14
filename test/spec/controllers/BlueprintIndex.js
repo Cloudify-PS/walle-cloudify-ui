@@ -2,29 +2,47 @@
 
 describe('Controller: BlueprintsIndexCtrl', function () {
 
-    var BlueprintsIndexCtrl, scope, cloudifyService;
+    var BlueprintsIndexCtrl, scope, _cloudifyService, _ngDialog;
     var errorDeleteJSON = {
-        'message': 'Can\'t delete blueprint nc1 - There exist deployments for this blueprint; Deployments ids: nc1_dep3,b2',
-        'error_code': 'dependent_exists_error'
+        'data': {
+            'message': 'Can\'t delete blueprint blueprint1 - There exist deployments for this blueprint; Deployments ids: deployment1',
+            'error_code': 'dependent_exists_error',
+            'server_traceback': 'Traceback'
+        },
+        'status': 400,
+        'config': {
+            'method': 'GET',
+            'transformRequest': [null],
+            'transformResponse': [null],
+            'url': '/backend/blueprints/delete',
+            'params': {
+                'id': 'blueprint1'
+            },
+            'headers': {
+                'Accept': 'application/json, text/plain, */*'
+            }
+        },
+        'statusText': 'Bad Request'
     };
     var successDeleteJSON = {
         'id': 'blueprint1'
     };
 
     // load the controller's module
-    beforeEach(module('cosmoUiApp', 'ngMock'));
+    beforeEach(module('cosmoUiApp', 'ngMock', 'backend-mock', 'templates-main'));
 
     function _testSetup(deleteSuccess) {
-        inject(function ($controller, $rootScope, $httpBackend, $q, CloudifyService) {
+        inject(function ($controller, $rootScope, $httpBackend, $q, CloudifyService, ngDialog) {
             $httpBackend.whenGET('/backend/configuration?access=all').respond(200);
             $httpBackend.whenGET('/backend/versions/ui').respond(200);
             $httpBackend.whenGET('/backend/versions/manager').respond(200);
             $httpBackend.whenGET('/backend/version/latest?version=00').respond('300');
 
             scope = $rootScope.$new();
-            cloudifyService = CloudifyService;
+            _cloudifyService = CloudifyService;
+            _ngDialog = ngDialog;
 
-            cloudifyService.blueprints.list = function () {
+            _cloudifyService.blueprints.list = function () {
                 var deferred = $q.defer();
                 var blueprints = [
                     {
@@ -65,18 +83,23 @@ describe('Controller: BlueprintsIndexCtrl', function () {
                 return deferred.promise;
             };
 
-            cloudifyService.blueprints.delete = function () {
-                var deferred = $q.defer();
-                var result = !deleteSuccess ? errorDeleteJSON : successDeleteJSON;
+            _cloudifyService.blueprints.delete = function () {
+                return {
+                    then: function(success, error){
+                        if (!deleteSuccess) {
+                            error( errorDeleteJSON );
+                        } else {
+                            success( successDeleteJSON );
+                        }
 
-                deferred.resolve(result);
-
-                return deferred.promise;
+                    }
+                };
             };
 
             BlueprintsIndexCtrl = $controller('BlueprintsIndexCtrl', {
                 $scope: scope,
-                CloudifyService: cloudifyService
+                CloudifyService: _cloudifyService,
+                ngDialog: _ngDialog
             });
 
             scope.$digest();
@@ -104,44 +127,14 @@ describe('Controller: BlueprintsIndexCtrl', function () {
             });
         });
 
-        it('should toggle delete confirmation dialog when deleteBlueprint function is triggered', function () {
+        it('should open delete confirmation dialog when deleteBlueprint function is triggered', function () {
             var blueprintToDelete = scope.blueprints[0];
-            spyOn(scope, 'toggleDeleteDialog').andCallThrough();
+            spyOn(_ngDialog, 'open').andCallThrough();
 
             scope.deleteBlueprint(blueprintToDelete);
 
-            expect(scope.delBlueprintName).toBe(blueprintToDelete.id);
-            expect(scope.toggleDeleteDialog).toHaveBeenCalled();
-        });
-
-        it('should delete a blueprint by calling method to refresh blueprints list', function () {
-            spyOn(cloudifyService.blueprints, 'delete').andCallThrough();
-
-            scope.confirmDeleteBlueprint();
-
-            waitsFor(function () {
-                return scope.deleteInProcess === true;
-            });
-
-            runs(function () {
-                expect(cloudifyService.blueprints.delete).toHaveBeenCalled();
-            });
-        });
-
-        it('should show delete error message if blueprint has deployments', function () {
-            _testSetup(false);
-
-            var blueprintToDelete = scope.blueprints[0];
-            scope.deleteBlueprint(blueprintToDelete);
-            scope.confirmDeleteBlueprint();
-
-            waitsFor(function () {
-                return scope.delBlueprintError === true;
-            });
-
-            runs(function () {
-                expect(scope.delErrorMessage).toBe(errorDeleteJSON.message);
-            });
+            expect(scope.itemToDelete.id).toBe(blueprintToDelete.id);
+            expect(_ngDialog.open).toHaveBeenCalled();
         });
     });
 });

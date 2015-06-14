@@ -2,6 +2,7 @@ node_modules
 doc
 xunit.xml
 dist
+dist-blueprint
 dev
 .tmp
 .sass-cache
@@ -27,3 +28,4 @@ backend/appConf.js
 coverage
 backend-coverage
 backend-instrument
+artifacts

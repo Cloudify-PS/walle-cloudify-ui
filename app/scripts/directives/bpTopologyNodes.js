@@ -1,13 +1,14 @@
 'use strict';
 
 angular.module('cosmoUiApp')
-    .directive('bpTopologyNodes', ['RecursionHelper', function (RecursionHelper) {
+    .directive('bpTopologyNodes',  function (RecursionHelper, TopologyTypes) {
         return {
             templateUrl: 'views/bpTopologyNodesTemplate.html',
             restrict: 'EA',
             transclude: true,
             scope: {
-                map: '='
+                map: '=',
+                deploymentInProgress: '='
             },
             compile: function(element) {
                 return RecursionHelper.compile(element, function(scope) {
@@ -20,26 +21,19 @@ angular.module('cosmoUiApp')
                     };
                 });
             },
-            controller: function($scope) {
+            controller: function($scope, nodeStatus) {
                 $scope.headerHover = null;
 
+                $scope.getBadgeStatusAndIcon = function(status) {
+                    return nodeStatus.getStatusClass(status) + ' ' + nodeStatus.getIconClass(status);
+                };
+
                 $scope.getBadgeStatus = function(status) {
-                    switch(status) {
-                    case 0:
-                        return 'install';
-                    case 1:
-                        return 'done';
-                    case 2:
-                        return 'alerts';
-                    case 3:
-                        return 'failed';
-                    default:
-                        return 'install';
-                    }
+                    return nodeStatus.getStatusClass(status);
                 };
 
                 $scope.isConnectedTo = function(relationship) {
-                    return relationship.type_hierarchy.join(',').indexOf('connected_to') > -1;
+                    return relationship.type_hierarchy.join(',').indexOf('connected_to') && TopologyTypes.isValidConnection(relationship.node);
                 };
 
                 // TODO: 3.2 - Check if function still needed
@@ -50,6 +44,22 @@ angular.module('cosmoUiApp')
                 $scope.setHeaderHover = function(nodeName) {
                     $scope.headerHover = nodeName;
                 };
+
+                $scope.shouldShowBadge = function(node) {
+                    if (node.state === undefined || node.state.completed === undefined) {
+                        return false;
+                    }
+
+                    if (node.state.status === 0 && !$scope.deploymentInProgress) {
+                        return false;
+                    }
+
+                    return true;
+                };
+
+                $scope.shouldShowBadgeTitle = function(node) {
+                    return node.state !== undefined && node.state.completed !== undefined && !node.isContained;
+                };
             }
         };
-    }]);
+    });

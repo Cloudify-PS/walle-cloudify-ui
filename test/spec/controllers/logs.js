@@ -2,17 +2,11 @@
 
 describe('Controller: LogsCtrl', function () {
     var LogsCtrl, scope;
+    var anchorScroll = null;
 
-    beforeEach(module('cosmoUiApp', 'ngMock'));
+    beforeEach(module('cosmoUiApp', 'ngMock','backend-mock', 'backend-mock'));
 
 
-    function mockBackend( $httpBackend ){
-        $httpBackend.whenGET('/backend/configuration?access=all').respond(200);
-        $httpBackend.whenGET('/backend/versions/ui').respond(200);
-        $httpBackend.whenGET('/backend/versions/manager').respond(200);
-        $httpBackend.whenGET('/backend/version/latest?version=00').respond('300');
-        $httpBackend.whenGET('/backend/blueprints').respond(200);
-    }
 
     function mockEventsService (){
         return {
@@ -20,6 +14,7 @@ describe('Controller: LogsCtrl', function () {
                 return {
                     filterRange: function() {},
                     filterRemove: function() {},
+                    getExecuteLastFiftyOptions: function() {},
                     filter: function() {},
                     execute: function() {}
                 };
@@ -77,16 +72,17 @@ describe('Controller: LogsCtrl', function () {
     }
 
     var initializeController = inject(function( $controller, $q, CloudifyService ){
+        anchorScroll = jasmine.createSpy();
         LogsCtrl = $controller('LogsCtrl', {
             $scope: scope,
+            $anchorScroll : anchorScroll,
             EventsService: mockEventsService(),
             CloudifyService: mockCloudifyService( $q, CloudifyService)
         });
     });
 
     function setup() {
-        inject(function ($controller, $rootScope, $httpBackend) {
-            mockBackend($httpBackend);
+        inject(function ($controller, $rootScope) {
             scope = $rootScope.$new();
             initializeController( );
         });
@@ -111,10 +107,9 @@ describe('Controller: LogsCtrl', function () {
             expect(LogsCtrl).not.toBeUndefined();
         });
 
-        it('should select all blueprints and show their events from the last 5 minutes on first page entry', inject(function( $httpBackend ) {
-            $httpBackend.flush();
+        it('should select all blueprints and show their events from the last 5 minutes on first page entry', function() {
             expect(JSON.stringify(scope.eventsFilter.blueprints)).toBe(JSON.stringify(scope.blueprintsList));
-        }));
+        });
 
         it('should set isSearchDisabled flag to true if no blueprints were selected', function() {
             flush();
@@ -135,31 +130,48 @@ describe('Controller: LogsCtrl', function () {
         });
     });
 
+    describe('scrollToTop', function(){
+        it('should call anchorScroll', function(){
+            scope.scrollToTop();
+            expect(anchorScroll).toHaveBeenCalled();
+        });
+    });
+
+    describe('execute', function(){
+        it('should execute logs if search is disabled', function(){
+            scope.filterLoading = false;
+            scope.execute();
+            expect(scope.filterLoading).toBe(false); // logs was not called
+
+            scope.isSearchDisabled = false;
+            scope.execute();
+            expect(scope.filterLoading).toBe(true); // logs was not called
+        });
+    });
+
     describe('logs controller', function () {
         describe('#first load', function () {
-            it('should not execute logs if no deployments were selected in filter', inject(function ($httpBackend) {
+            it('should not execute logs if no deployments were selected in filter', function () {
                 scope.eventsFilter.deployments = [];
                 spyOn(scope.events, 'execute').andCallThrough();
 
-
-                $httpBackend.flush();
-
-
                 expect(scope.events.execute).not.toHaveBeenCalled();
-            }));
+            });
 
-            it('should execute logs if deployments were selected in filter', inject(function ($httpBackend) {
+            it('should execute logs if deployments were selected in filter', function () {
                 scope.eventsFilter.deployments = [
                     {
                         name: 'deployment1'
                     }
                 ];
                 spyOn(scope.events, 'execute').andCallThrough();
-                $httpBackend.flush();
+                flush();
+                scope.$apply();
                 expect(scope.events.execute).toHaveBeenCalled();
-            }));
+            });
         });
     });
+
 
 
 });
