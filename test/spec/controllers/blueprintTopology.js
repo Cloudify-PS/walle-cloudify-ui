@@ -30,7 +30,9 @@ describe('Controller: BlueprintTopologyCtrl', function () {
     };
 
     // load the controller's module
-    beforeEach(module('cosmoUiApp', 'ngMock'));
+    beforeEach(module('cosmoUiApp', 'ngMock', function ($translateProvider) {
+        $translateProvider.translations('en', {});
+    }));
 
     describe('Test setup', function() {
         it ('', inject(function ($controller, $rootScope, $httpBackend) {

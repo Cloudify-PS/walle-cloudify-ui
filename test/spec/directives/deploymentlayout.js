@@ -136,7 +136,9 @@ describe('Directive: deploymentLayout', function () {
         });
     }
 
-    beforeEach(module('cosmoUiApp', 'ngMock', 'templates-main'));
+    beforeEach(module('cosmoUiApp', 'ngMock', 'templates-main', function ($translateProvider) {
+        $translateProvider.translations('en', {});
+    }));
 
     describe('Directive tests', function() {
         beforeEach(function() {

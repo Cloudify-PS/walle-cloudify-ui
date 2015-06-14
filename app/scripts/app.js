@@ -13,11 +13,21 @@ angular.module('cosmoUiApp', [
     'nvd3ChartDirectives',
     'ngStorage',
     'datePicker',
-    'timer'
+    'timer',
+    'pascalprecht.translate',
+    'ngDialog'
 
-]).config( function ($routeProvider, $httpProvider) {
+]).config( function ($routeProvider, $httpProvider, $translateProvider) {
 
         //var isSettingsExists = window.isSettingsExists();
+
+        // add translate module
+        $translateProvider.useStaticFilesLoader({
+            prefix: '/i18n/translations_',
+            suffix: '.json'
+        });
+
+        $translateProvider.preferredLanguage('en');
 
         $routeProvider
             .when('/json', {
@@ -137,22 +147,4 @@ angular.module('cosmoUiApp', [
             ui: '0.0',
             manager: '0.0'
         }
-    })
-    .run(['I18next', 'CloudifyService', '$log', 'appConfig', function(I18next, CloudifyService, $log) {
-
-        CloudifyService.getConfiguration().then(function (data) {
-            if ( !data ){
-                data = { 'i18n' : {
-                    'language' : 'en'
-                }};
-            }
-            var i18nConf = data.i18n;
-            if (i18nConf) {
-                I18next.setOptions({
-                    lng: i18nConf.language
-                });
-            }
-        }, function () {
-            $log.info('problem loading configuration for i18n init');
-        });
-    }]);
+    });
