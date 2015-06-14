@@ -1,5 +1,6 @@
 'use strict';
 
+// TODO: there's a lot of copy paste here from BlueprintTopology
 angular.module('cosmoUiApp')
     .controller('DeploymentTopologyCtrl', function ($scope, $rootScope, $routeParams, NodeService, blueprintCoordinateService, CloudifyService) {
 

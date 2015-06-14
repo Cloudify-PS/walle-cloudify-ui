@@ -14,12 +14,22 @@ angular.module('cosmoUiApp', [
     'ngStorage',
     'datePicker',
     'timer',
+    'pascalprecht.translate',
+    'ngDialog',
     'ngProgress',
     'angular-loading-bar'
 
-]).config( function ($routeProvider, $httpProvider) {
+]).config( function ($routeProvider, $httpProvider, $translateProvider) {
 
         //var isSettingsExists = window.isSettingsExists();
+
+        // add translate module
+        $translateProvider.useStaticFilesLoader({
+            prefix: '/i18n/translations_',
+            suffix: '.json'
+        });
+
+        $translateProvider.preferredLanguage('en');
 
         $routeProvider
             .when('/json', {
@@ -42,9 +52,9 @@ angular.module('cosmoUiApp', [
                 templateUrl: 'views/blueprint/nodes.html',
                 controller: 'BlueprintNodesCtrl'
             })
-            .when('/blueprint/:blueprintId/source', {
+            .when('/blueprint/:id/source', {
                 templateUrl: 'views/blueprint/source.html',
-                controller: 'BlueprintSourceCtrl'
+                controller: 'SourceCtrl'
             })
             .when('/deployments',{
                 templateUrl: 'views/deployments.html',
@@ -73,6 +83,10 @@ angular.module('cosmoUiApp', [
             .when('/deployment/:deploymentId/events', {
                 templateUrl: 'views/deployment/events.html',
                 controller: 'DeploymentEventsCtrl'
+            })
+            .when('/deployment/:id/source', {
+                templateUrl: 'views/deployment/source.html',
+                controller: 'SourceCtrl'
             })
             .when('/monitoring',{
                 templateUrl: 'views/blueprintsIndex.html'
@@ -110,9 +124,23 @@ angular.module('cosmoUiApp', [
                 controller: 'LoginCtrl'
             })
             .otherwise({
-//                redirectTo: isSettingsExists ? '/blueprints' : '/config'
                 redirectTo: '/blueprints'
             });
+
+        //initialize get if not there
+        if (!$httpProvider.defaults.headers.get) {
+            $httpProvider.defaults.headers.get = {};
+        }
+
+        //http://stackoverflow.com/questions/16098430/angular-ie-caching-issue-for-http
+        // Answer edited to include suggestions from comments
+        // because previous version of code introduced browser-related errors
+
+        //disable IE ajax request caching
+        $httpProvider.defaults.headers.get['If-Modified-Since'] = 'Mon, 26 Jul 1997 05:00:00 GMT';
+        // extra
+        $httpProvider.defaults.headers.get['Cache-Control'] = 'no-cache';
+        $httpProvider.defaults.headers.get.Pragma = 'no-cache';
 
         $httpProvider.interceptors.push('cloudifyLoginInterceptor');
     })
@@ -121,22 +149,4 @@ angular.module('cosmoUiApp', [
             ui: '0.0',
             manager: '0.0'
         }
-    })
-    .run(['I18next', 'CloudifyService', '$log', 'appConfig', function(I18next, CloudifyService, $log) {
-
-        CloudifyService.getConfiguration().then(function (data) {
-            if ( !data ){
-                data = { 'i18n' : {
-                    'language' : 'en'
-                }};
-            }
-            var i18nConf = data.i18n;
-            if (i18nConf) {
-                I18next.setOptions({
-                    lng: i18nConf.language
-                });
-            }
-        }, function () {
-            $log.info('problem loading configuration for i18n init');
-        });
-    }]);
+    });

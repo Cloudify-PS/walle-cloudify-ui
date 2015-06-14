@@ -7,7 +7,7 @@
 
     <div class="grafanaLoader" data-ng-show="showGrafanaLoader">
         <div class="loader"></div>
-        <p>{{ 'deployment.monitoring.loading' | i18n }}</p>
+        <p>{{ 'deployment.monitoring.loading' | translate }}</p>
     </div>
     <iframe iframe-onload="grafanaLoad()" ng-src="{{ grafanaDashboard }}" class="monitoringIframe"></iframe>
 

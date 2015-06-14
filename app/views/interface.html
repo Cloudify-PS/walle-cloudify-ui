@@ -50,11 +50,12 @@
         </table>
 
         <h4>Node Statuses</h4>
-        <p>Basic using element to display node status must be in the pattern <code>&lt;div class=&quot;badge { node_status }&quot;&gt;&lt;/div&gt;</code></p>
+        <p>Basic using element to display node status must be in the pattern <code>&lt;div class=&quot;badge { node_status } { node_status_icon }&quot;&gt;&lt;/div&gt;</code></p>
         <table class="gs-table table-striped">
             <thead>
             <tr>
                 <td>Status</td>
+                <td class="text-center" style="width:200px;">Icon</td>
                 <td class="col-sm-1 text-center info">Preview</td>
                 <td>Element</td>
             </tr>
@@ -62,8 +63,11 @@
             <tbody>
             <tr data-ng-repeat="(status, data) in nodeStatusList">
                 <td>{{ data }}</td>
-                <td class="active text-center"><div class="badge {{ data }}">1/2</div></td>
-                <td><code>&lt;div class=&quot;badge {{ data }}&quot;&gt;1/2&lt;/div&gt;</code></td>
+                <td>{{ getIconClass(status) }}</td>
+                <td class="active text-center"><div class="badge {{ getBadgeStatusAndIcon(status, data) }}">
+                                        <!-- Don't remove this newline, it will make the badge disappear! -->
+                </div></td>
+                <td><code>&lt;div class=&quot;badge {{ getBadgeStatusAndIcon(status, data) }}&quot;&gt;&lt;/div&gt;</code></td>
             </tr>
             </tbody>
         </table>

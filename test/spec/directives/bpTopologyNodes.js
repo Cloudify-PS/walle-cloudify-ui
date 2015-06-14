@@ -317,7 +317,7 @@ describe('Directive: bpTopologyNodes', function () {
     }];
 
     var element, scope;
-    beforeEach(module('cosmoUiApp', 'ngMock', 'gsUiHelper', 'templates-main'));
+    beforeEach(module('cosmoUiApp', 'ngMock', 'backend-mock', 'templates-main'));
 
     function compileDirective(opts) {
         inject(function($compile, $rootScope) {

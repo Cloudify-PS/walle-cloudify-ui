@@ -9,10 +9,10 @@
  */
 angular.module('cosmoUiApp')
     .constant('TopologyNetworkValues', [
-        'FloatingIp',
-        'VirtualIp',
-        'Network',
-        'Port',
-        'Subnet',
-        'Router'
+        'cloudify-nodes-FloatingIP',
+        'cloudify-nodes-VirtualIP',
+        'cloudify-nodes-Network',
+        'cloudify-nodes-Port',
+        'cloudify-nodes-Subnet',
+        'cloudify-nodes-Router'
     ]);

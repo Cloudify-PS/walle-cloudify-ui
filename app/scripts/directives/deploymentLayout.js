@@ -7,7 +7,7 @@
  * # deploymentLayout
  */
 angular.module('cosmoUiApp')
-    .directive('deploymentLayout', function ($location, BreadcrumbsService, CloudifyService, nodeStatus) {
+    .directive('deploymentLayout', function ($location, BreadcrumbsService, CloudifyService, nodeStatus, ngDialog) {
         return {
             templateUrl: 'views/deployment/layout.html',
             restrict: 'EA',
@@ -38,10 +38,10 @@ angular.module('cosmoUiApp')
                 var deploymentModel = {};
                 var nodesList = [];
                 var statesIndex = nodeStatus.getStatesIndex();
+                var _dialog = null;
 
                 $scope.breadcrumb = [];
                 $scope.workflowsList = [];
-                $scope.isConfirmationDialogVisible = false;
                 $scope.deploymentInProgress = null;
                 $scope.currentExecution = null;
                 $scope.executedData = null;
@@ -72,6 +72,34 @@ angular.module('cosmoUiApp')
 
                         // Set Deployment ID on Scope
                         $scope.deploymentId = dataDeployment.id;
+
+                        // Set Navigation Menu - Need to set only after blueprint id available for source page href
+                        $scope.navMenu = [
+                            {
+                                'name': 'Topology',
+                                'href': '/topology'
+                            },
+                            {
+                                'name': 'Network',
+                                'href': '/network'
+                            },
+                            {
+                                'name': 'Nodes',
+                                'href': '/nodes'
+                            },
+                            {
+                                'name': 'Executions',
+                                'href': '/executions'
+                            },
+                            {
+                                'name': 'Source',
+                                'href': '/source'
+                            },
+                            {
+                                'name': 'Monitoring',
+                                'href': '/monitoring'
+                            }
+                        ];
 
                         // Emit deployment data
                         $scope.$emit('deploymentData', dataDeployment);
@@ -117,30 +145,6 @@ angular.module('cosmoUiApp')
                     });
                 }, true);
 
-                // Set Navigation Menu
-                $scope.navMenu = [
-                    {
-                        'name': 'Topology',
-                        'href': '/topology'
-                    },
-                    {
-                        'name': 'Network',
-                        'href': '/network'
-                    },
-                    {
-                        'name': 'Nodes',
-                        'href': '/nodes'
-                    },
-                    {
-                        'name': 'Executions',
-                        'href': '/executions'
-                    },
-                    {
-                        'name': 'Monitoring',
-                        'href': '/monitoring'
-                    }
-                ];
-
                 $scope.isSectionActive = function (section) {
                     return section.name === $scope.section ? 'active' : '';
                 };
@@ -181,12 +185,18 @@ angular.module('cosmoUiApp')
                 function _startDeploymentExecutionsAutopull() {
                     // Workflows & Execution
                     CloudifyService.autoPull('getDeploymentExecutions', $scope.id, CloudifyService.deployments.getDeploymentExecutions)
-                        .then(null, null, function (dataExec) {
+                        .then(null,
+                        function(/*reason*/) {
+                            // getDeploymentExecutions failed. Redirect to deployments screen.
+                            $scope.deploymentInProgress = false;
+                            $location.path('/deployments');
+
+                        }, function (dataExec) {
                             $scope.currentExecution = _getCurrentExecution(dataExec);
                             if (!$scope.currentExecution && $scope.deploymentInProgress) {
                                 $scope.deploymentInProgress = false;
                             }
-                            else if ($scope.deploymentInProgress === null && $scope.currentExecution !== false) {
+                            else if (!$scope.deploymentInProgress && $scope.currentExecution !== false) {
                                 $scope.deploymentInProgress = true;
                             }
                             CloudifyService.deployments.getDeploymentNodes($scope.id)
@@ -336,17 +346,25 @@ angular.module('cosmoUiApp')
                         });
                 }
 
-                function _toggleConfirmationDialog(confirmationType) {
+                $scope.openConfirmationDialog = function(confirmationType) {
+                    if(_isDialogOpen()) {
+                        return;
+                    }
                     if (confirmationType === 'execute' && $scope.selectedWorkflow.data === null) {
                         return;
                     }
                     $scope.confirmationType = confirmationType;
-                    $scope.isConfirmationDialogVisible = !$scope.isConfirmationDialogVisible;
                     $scope.executedErr = false;
-                }
+
+                    _dialog = ngDialog.open({
+                        template: 'views/dialogs/confirm.html',
+                        controller: 'ExecuteDialogCtrl',
+                        scope: $scope,
+                        className: 'confirm-dialog'
+                    });
+                };
 
                 $scope.isExecuteEnabled = _isExecuteEnabled;
-                $scope.toggleConfirmationDialog = _toggleConfirmationDialog;
 
                 function _setDeploymentModel( data ) {
                     deploymentModel['*'] = angular.copy(deploymentDataModel);
@@ -365,6 +383,10 @@ angular.module('cosmoUiApp')
                     $scope.$emit('toggleChange', toggleBar);
                 });
 
+                $scope.$on('executionStarted', function(e, data) {
+                    $scope.executedData = data;
+                });
+
                 $scope.isInitilizing = function() {
                     if($scope.currentExecution === null) {
                         return true;
@@ -376,6 +398,22 @@ angular.module('cosmoUiApp')
                     $scope.isInitilizingLoader = false;
                     return false;
                 };
+
+                $scope.closeDialog = function() {
+                    if (_dialog !== null) {
+                        ngDialog.close(_dialog.id);
+                    }
+                    _dialog = null;
+                };
+
+                $scope.getSelectedWorkflow = function() {
+                    return $scope.selectedWorkflow.data.value;
+                };
+
+                function _isDialogOpen() {
+                    return _dialog !== null && ngDialog.isOpen(_dialog.id);
+                }
+
             }
         };
     });

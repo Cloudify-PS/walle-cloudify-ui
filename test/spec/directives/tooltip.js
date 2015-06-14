@@ -3,7 +3,7 @@
 describe('Directive: tooltip', function () {
 
     var element, scope;
-    beforeEach(module('cosmoUiApp', 'ngMock', 'templates-main'));
+    beforeEach(module('cosmoUiApp', 'ngMock', 'templates-main', 'backend-mock'));
 
     function compileDirective(opts) {
         inject(function($compile, $rootScope, $httpBackend) {
