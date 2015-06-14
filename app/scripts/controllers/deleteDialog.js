@@ -2,7 +2,6 @@
 
 angular.module('cosmoUiApp')
     .controller('DeleteDialogCtrl', function ($scope, $timeout, CloudifyService, DELETE_TYPES) {
-
         $scope.ignoreLiveNodes = false;
         $scope.deleteState = {
             itemToDelete: $scope.itemToDelete,
