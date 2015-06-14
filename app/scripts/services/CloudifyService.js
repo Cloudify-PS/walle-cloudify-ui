@@ -25,6 +25,9 @@ angular.module('cosmoUiApp')
                     fn(params).then(function(data){
                         deferred.notify(data);
                         autoPullPromise[name] = $timeout(_internalLoad, 10000);
+                    },
+                    function(reason) {
+                        deferred.reject(reason);
                     });
                 })();
             }
