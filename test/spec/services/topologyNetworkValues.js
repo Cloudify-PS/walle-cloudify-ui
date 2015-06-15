@@ -3,7 +3,7 @@
 describe('Service: TopologyNetworkValues', function () {
 
     // load the service's module
-    beforeEach(module('cosmoUiApp', 'ngMock', 'gsUiHelper'));
+    beforeEach(module('cosmoUiApp', 'ngMock','backend-mock'));
 
     // instantiate service
     var topologyNetworkValues;
@@ -16,7 +16,7 @@ describe('Service: TopologyNetworkValues', function () {
     });
 
     it('should include FloatingIp in array', function() {
-        expect(topologyNetworkValues.indexOf('FloatingIp')).toEqual(0);
+        expect(topologyNetworkValues.indexOf('cloudify-nodes-FloatingIP')).toEqual(0);
     });
 
 });

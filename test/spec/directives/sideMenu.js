@@ -1,13 +1,15 @@
 'use strict';
 
 describe('Directive: sideMenu', function () {
-//  beforeEach(module('cosmoUiApp'));
+    beforeEach(module('cosmoUiApp','backend-mock','templates-main'));
 
-//  var element;
+    var element;
 
-//  it('should make hidden element visible', inject(function ($rootScope, $compile) {
-//    element = angular.element('<side-menu></side-menu>');
-//    element = $compile(element)($rootScope);
-//    expect(element.text()).toBe('this is the sideMenu directive');
-//  }));
+    it('should put items on scope', inject(function ($rootScope, $compile) {
+        element = angular.element('<div side-menu></div>');
+        element = $compile(element)($rootScope);
+        $rootScope.$digest();
+        var isolateScope = element.children().scope();
+        expect( !!isolateScope.items ).toBe(true);
+    }));
 });

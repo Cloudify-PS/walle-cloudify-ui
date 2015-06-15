@@ -9,8 +9,8 @@
  */
 angular.module('cosmoUiApp')
     .constant('TopologyConnectionsValues', [
-        'FloatingIp',
-        'VirtualIp',
-        'KeyPair',
-        'SecurityGroup'
+        'cloudify-nodes-FloatingIp',
+        'cloudify-nodes-VirtualIp',
+        'cloudify-nodes-KeyPair',
+        'cloudify-nodes-SecurityGroup'
     ]);

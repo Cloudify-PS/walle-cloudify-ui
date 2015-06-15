@@ -14,17 +14,13 @@
     <meta name="viewport" content="width=device-width">
 
     <!-- build:css({.tmp,app}) styles/main.css -->
+    <link rel="stylesheet" href="styles/main.css">
     <link rel="stylesheet" href="bower_components/SyntaxHighlighter/styles/shCore.css">
     <link rel="stylesheet" href="bower_components/SyntaxHighlighter/styles/shThemeDefault.css">
     <link rel="stylesheet" href="bower_components/nvd3/nv.d3.min.css" />
     <link rel="stylesheet" href="bower_components/angular-datepicker/dist/index.min.css" />
     <link rel="stylesheet" href="bower_components/gs-ui-infra/assets/fonts/gigaspaces/style.css" />
-    <link rel="stylesheet" href="bower_components/ngDialog/css/ngDialog.css" />
-    <link rel="stylesheet" href="bower_components/ngDialog/css/ngDialog-theme-default.css" />
-    <link rel="stylesheet" href="bower_components/ngDialog/css/ngDialog-theme-plain.css" />
-
-    <link rel="stylesheet" href="styles/main.css">
-
+    <link rel="stylesheet" href="bower_components/ngDialog/css/ngDialog.min.css" />
     <!-- endbuild -->
 
 </head>
@@ -59,15 +55,14 @@
     <script src="bower_components/angularjs-nvd3-directives/dist/angularjs-nvd3-directives.min.js"></script>
     <script src="bower_components/elastic.js/dist/elastic.js"></script>
     <script src="bower_components/elastic.js/dist/elastic-angular-client.js"></script>
-    <script src="bower_components/i18next/i18next.min.js"></script>
+    <script src="bower_components/angular-translate/angular-translate.min.js"></script>
+    <script src="bower_components/angular-translate-loader-static-files/angular-translate-loader-static-files.min.js"></script>
     <script src="bower_components/lodash/dist/lodash.js"></script>
 
     <script src="bower_components/gs-ui-infra/app/scripts/app.js"></script>
     <script src="bower_components/gs-ui-infra/app/scripts/directives/topology.js"></script>
     <script src="bower_components/gs-ui-infra/app/scripts/directives/blueprintArrows.js"></script>
     <script src="bower_components/gs-ui-infra/app/scripts/services/utils.js"></script>
-    <script src="bower_components/gs-ui-infra/app/scripts/filters/i18n.js"></script>
-    <script src="bower_components/gs-ui-infra/app/scripts/services/i18next.js"></script>
     <script src="bower_components/gs-ui-infra/app/scripts/filters/as.js"></script>
     <script src="bower_components/gs-ui-infra/app/scripts/directives/multiSelectMenu.js"></script>
 
@@ -80,6 +75,7 @@
     <script src="bower_components/ngstorage/ngStorage.min.js"></script>
     <script src="bower_components/angular-datepicker/dist/index.min.js"></script>
     <script src="bower_components/angular-timer/dist/angular-timer.min.js"></script>
+    <script src="bower_components/ngDialog/js/ngDialog.min.js"></script>
 
     <script src="bower_components/SyntaxHighlighter/scripts/XRegExp.js"></script>
     <script src="bower_components/SyntaxHighlighter/scripts/shCore.js"></script>
@@ -90,12 +86,10 @@
     <script src="bower_components/SyntaxHighlighter/scripts/shBrushPlain.js"></script>
     <script src="brushes/shBrushBat.js"></script>
     <script src="brushes/shBrushPowerShell.js"></script>
-    <script src="bower_components/ngDialog/js/ngDialog.js"></script>
     <!-- endbuild -->
 
     <!-- build:js scripts/modules.js -->
     <script src="scripts/app.js"></script>
-    <script src="scripts/controllers/main.js"></script>
     <script src="scripts/controllers/blueprintsIndex.js"></script>
     <script src="scripts/controllers/fileSelectionDialog.js"></script>
     <script src="scripts/controllers/deployments.js"></script>
@@ -109,14 +103,11 @@
     <script src="scripts/directives/checkboxToggle.js"></script>
     <script src="scripts/directives/header.js"></script>
     <script src="scripts/directives/toggleSwitch.js"></script>
-    <script src="scripts/directives/eventsWidget.js"></script>
     <script src="scripts/directives/appStatusWidget.js"></script>
-    <script src="scripts/directives/settingsToggles.js"></script>
     <script src="scripts/directives/breadcrumbs.js"></script>
     <script src="scripts/directives/progressPie.js"></script>
     <script src="scripts/directives/bpNetworks.js"></script>
     <script src="scripts/directives/codeHighlight.js"></script>
-    <script src="scripts/directives/dotsLoader.js"></script>
     <script src="scripts/directives/ngEnter.js"></script>
     <script src="scripts/services/BreadcrumbsService.js"></script>
     <script src="scripts/services/EventsService.js"></script>
@@ -149,7 +140,7 @@
     <script src="scripts/directives/floatingBlueprintNodePanel.js"></script>
     <script src="scripts/controllers/blueprintNetwork.js"></script>
     <script src="scripts/controllers/blueprintNodes.js"></script>
-    <script src="scripts/controllers/blueprintSource.js"></script>
+    <script src="scripts/controllers/source.js"></script>
     <script src="scripts/controllers/executeDialog.js"></script>
     <script src="scripts/services/NetworksService.js"></script>
     <script src="scripts/services/CloudifyService.js"></script>
@@ -168,6 +159,12 @@
     <script src="scripts/directives/tooltip.js"></script>
     <script src="scripts/services/LoginService.js"></script>
     <script src="scripts/services/cloudifyLoginInterceptor.js"></script>
+    <script src="scripts/services/deploymentSourceService.js"></script>
+    <script src="scripts/services/blueprintSourceService.js"></script>
+    <script src="scripts/services/sourceService.js"></script>
+    <script src="scripts/controllers/deleteDialog.js"></script>
+    <script src="scripts/controllers/messageDialog.js"></script>
+    <script src="scripts/controllers/dialogConstants.js"></script>
     <script src="scripts/controllers/dialogs/DeploymentDetails.js"></script>
     <!-- endbuild -->
 

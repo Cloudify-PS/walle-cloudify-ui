@@ -4,9 +4,9 @@ describe('Directive: deploymentEvents', function () {
 
     var element, scope;
 
-    beforeEach(module('cosmoUiApp', 'ngMock', 'gsUiHelper', 'templates-main'));
+    beforeEach(module('cosmoUiApp', 'ngMock','backend-mock', 'templates-main'));
 
-    beforeEach(inject(function ($compile, $rootScope, $helper, $httpBackend) {
+    beforeEach(inject(function ($compile, $rootScope, $httpBackend) {
         $httpBackend.whenPOST('/backend/events/_search').respond(200);
 
         scope = $rootScope.$new();
@@ -65,6 +65,8 @@ describe('Directive: deploymentEvents', function () {
 
     describe('drag head functionality', function () {
         it('should change the height', function(){
+
+            element.css({ height: 250, width: 200});
             $('body').append(element);
             $('body').addClass('bpContainer');
             $('body').attr('id','main-content');

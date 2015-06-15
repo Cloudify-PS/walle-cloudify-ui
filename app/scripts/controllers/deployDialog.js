@@ -1,14 +1,12 @@
 'use strict';
 
 angular.module('cosmoUiApp')
-    .controller('DeployDialogCtrl', function ($scope, CloudifyService) {
+    .controller('DeployDialogCtrl', function ($scope, CloudifyService, INPUT_STATE) {
         $scope.deployment_id = null;
         $scope.showError = false;
         $scope.deployErrorMessage = 'Error deploying blueprint';
         $scope.inputs = {};
-        $scope.inputsState = 'params';
-        var RAW = 'raw';
-
+        $scope.inputsState = INPUT_STATE.PARAMS;
 
         $scope.isDeployEnabled = function () {
             // if error message is shown, deploy button should be disabled
@@ -18,7 +16,7 @@ angular.module('cosmoUiApp')
 
             for (var input in $scope.inputs) {
                 // if any of the inputs value is null, the deploy button should be disabled
-                if ($scope.inputs[input] === null || ($scope.inputsState !== RAW && $scope.inputs[input] === '')) {
+                if ($scope.inputs[input] === null || ($scope.inputsState !== INPUT_STATE.RAW && $scope.inputs[input] === '')) {
                     return false;
                 }
             }
@@ -26,7 +24,7 @@ angular.module('cosmoUiApp')
         };
 
         $scope.updateInputs = function() {
-            if ($scope.inputsState === RAW) {
+            if ($scope.inputsState === INPUT_STATE.RAW) {
                 _formToRaw();
             } else {
                 _rawToForm();
@@ -67,7 +65,7 @@ angular.module('cosmoUiApp')
             _parseInputs();
             $scope.showError = false;
 
-            if ($scope.inputsState === RAW) {
+            if ($scope.inputsState === INPUT_STATE.RAW) {
                 try {
                     $scope.inputs = JSON.parse($scope.rawString);
                 } catch (e) {}
@@ -95,13 +93,8 @@ angular.module('cosmoUiApp')
             }
         };
 
-        $scope.closeDialog = function () {
-            _resetDialog();
-            $scope.toggleDeployDialog();
-        };
-
         $scope.toggleInputsState = function (state) {
-            $scope.inputsState = state;
+            $scope.inputsState = INPUT_STATE[state];
         };
 
         $scope.$watch('selectedBlueprint', function (selectedBlueprint) {
@@ -116,13 +109,14 @@ angular.module('cosmoUiApp')
                     }
                 }
                 $scope.rawString = JSON.stringify($scope.inputs, null, 2);
+                $scope.inputsState = INPUT_STATE.PARAMS;
             }
         }, true);
 
         $scope.$watch('deployment_id', function() {
             if ($scope.showError) {
                 $scope.showError = false;
-                if ($scope.inputsState === RAW && !_validateJSON()) {
+                if ($scope.inputsState === INPUT_STATE.RAW && !_validateJSON()) {
                     $scope.showError = true;
                 }
             }
@@ -172,7 +166,7 @@ angular.module('cosmoUiApp')
                     }
                 }
             } catch (e) {
-                $scope.inputsState = RAW;
+                $scope.inputsState = INPUT_STATE.RAW;
                 $scope.showError = true;
                 $scope.deployErrorMessage = 'Invalid JSON: ' + e.message;
             }
@@ -211,12 +205,4 @@ angular.module('cosmoUiApp')
             }
         }
 
-        function _resetDialog() {
-            $scope.deployment_id = null;
-            $scope.showError = false;
-            $scope.inputs = {};
-            $scope.inputsState = 'params';
-        }
-
-        _resetDialog();
     });
