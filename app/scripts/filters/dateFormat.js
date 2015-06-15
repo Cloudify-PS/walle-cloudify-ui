@@ -15,7 +15,7 @@ Date.fromISO = (function () {
             offset *= -1;
             day.setHours(day.getHours() + offset);
         }
-        return day;
+        return day.getTime();
     };
     if (noOffset(testIso) === 1322118027000 && !Date.forceIsoOffset /* make it testable */ ) {
         return noOffset;

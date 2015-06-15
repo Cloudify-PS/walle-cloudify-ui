@@ -230,7 +230,7 @@ input[required] {
           max-height: 300px;
           line-height: 20px;
           word-wrap: break-word;
-          overflow-x: scroll;
+          overflow-x: auto;
       }
 
       .buttonsContainer {
@@ -251,15 +251,6 @@ input[required] {
 }
 
 #uploadDialogContainer {
-    width: 430px;
-    position: fixed;
-    top: 80px;
-    left: 0;
-    right: 0;
-    margin: auto;
-    margin-top: 100px;
-    min-height:300px;
-
    &.dialogBox{
         .dialogDescription{
             margin:0;

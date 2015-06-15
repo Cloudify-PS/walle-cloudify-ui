@@ -22,7 +22,7 @@
     <div class="error-message" data-ng-show="showError">{{ executeErrorMessage }}</div>
     <div class="buttonsContainer confirmationButtons" ng-show="confirmationType == 'execute'">
         <button class="gs-btn" ng-click="closeDialog()">{{ 'dialogs.confirm.cancel' | translate }}</button>
-        <button class="gs-btn" ng-class="{disabled: !isExecuteEnabled(), enabled: isExecuteEnabled(), loader: inProcess}" ng-click="executeWorkflow(selectedDeployment)">{{ 'dialogs.confirm.confirm' | i18n }}</button>
+        <button class="gs-btn" ng-class="{disabled: !isExecuteEnabled(), enabled: isExecuteEnabled(), loader: inProcess}" ng-click="executeWorkflow(selectedDeployment)">{{ 'dialogs.confirm.confirm' | translate }}</button>
     </div>
     <div class="buttonsContainer confirmationButtons" ng-show="confirmationType == 'cancel'">
         <button class="gs-btn" ng-click="closeDialog()">{{ 'dialogs.confirm.cancel' | translate }}</button>
