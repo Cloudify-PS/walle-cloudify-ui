@@ -36,6 +36,10 @@ input[required] {
   padding-top: 80px;
   padding-bottom: 80px;
 
+    .ngdialog-content { /* default width */
+        width: 800px;
+    }
+
   &.deploy-dialog {
     .ngdialog-content {
       width: 350px;

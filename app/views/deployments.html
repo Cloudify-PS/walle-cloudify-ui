@@ -29,7 +29,7 @@
                              data-ng-model="selectedWorkflow.data"
                              data-text="Select workflow"></div>
                     </div>
-                    <div class="executingWorkflow" ng-show="isExecuting(deployment.blueprint_id, deployment.id)">
+                    <div class="executingWorkflow" ng-dblclick="showInputs(deployment)" ng-show="isExecuting(deployment.blueprint_id, deployment.id)">
                         <div class="deploymentExecute" ng-show="isExecuting(deployment.blueprint_id, deployment.id)"></div>
                         {{ 'deployments.process.' + getExecutionAttr(deployment, 'workflow_id') | translate }}
                     </div>
