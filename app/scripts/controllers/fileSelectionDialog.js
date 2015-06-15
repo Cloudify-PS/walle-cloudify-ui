@@ -44,10 +44,11 @@ angular.module('cosmoUiApp')
             }
         });
 
-        $scope.$watch('uploadInProcess', function( newValue ){
-            if ( !!newValue ){
+        $scope.$watch('uploadInProcess', function (newValue) {
+            if (!!newValue) {
                 ngProgress.reset();
-        }});
+            }
+        });
 
         $scope.uploadFile = function() {
             $log.info(['upload: ', selectedFile]);
@@ -73,7 +74,7 @@ angular.module('cosmoUiApp')
 
             $scope.uploadError = false;
             $upload.upload(uploadData).progress(function(evt){
-                $log.debug('loaded ', evt.loaded, ' out of total', evt.total)
+                $log.debug('loaded ', evt.loaded, ' out of total', evt.total);
             }).success(function(data){
                 if ($scope.blueprintName === undefined || $scope.blueprintName === '') {
                     $scope.blueprintName = data.id;
@@ -99,7 +100,7 @@ angular.module('cosmoUiApp')
                 $scope.uploadInProcess = false;
             }).progress(function(evt){
                 try {
-                    var percentage= Math.min(100,parseInt(100.0 * evt.loaded / evt.total)); //normalize;
+                    var percentage= Math.min(100,parseInt(100.0 * evt.loaded / evt.total,10)); //normalize;
                     $log.info('setting', percentage);
                     ngProgress.set(percentage);
                 }catch(e){ $log.error(e); }
