@@ -1,6 +1,6 @@
-<div id="uploadDialogContainer" class="dialogBox">
+<div id="uploadDialogContainer" class="dialogBox" ng-file-drop ng-model="myFile">
     <div class="dialogTitle">{{ 'dialogs.upload.title' | translate }}</div>
-    <div class="dialogDescription">{{ 'dialogs.upload.description' | translate }}</div>
+    <div class="dialogDescription" ng-file-drop ng-model="myFile"  drag-over-class="dragover">{{ 'dialogs.upload.description' | translate }}</div>
     <form id="uploadForm" name="uploadForm">
         <div class="browse">
             <div id="browseBtn" class="gs-btn">
