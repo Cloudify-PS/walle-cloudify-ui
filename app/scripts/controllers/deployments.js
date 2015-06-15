@@ -1,27 +1,24 @@
 'use strict';
 
+// TODO: this code should be much more testable
 angular.module('cosmoUiApp')
-    .controller('DeploymentsCtrl', function ($scope, $cookieStore, $location, $routeParams, BreadcrumbsService, $timeout, $log, CloudifyService) {
+    .controller('DeploymentsCtrl', function ($scope, $cookieStore, $location, $routeParams, BreadcrumbsService, $timeout, $log, CloudifyService, ngDialog) {
 
         $scope.blueprints = null;
         $scope.deployments = [];
         $scope.selectedBlueprint = '';
-        $scope.isConfirmationDialogVisible = false;
-        $scope.isDeleteDeploymentVisible = false;
-        $scope.delDeployError = false;
-        $scope.deleteInProcess = false;
         $scope.executedErr = false;
-        $scope.ignoreLiveNodes = false;
         $scope.confirmationType = '';
         var _executedDeployments = [];
         $scope.selectedWorkflow = {
             data: null
         };
         $scope.inputs = {};
+        $scope.managerError = false;
         var selectedWorkflows = [];
         var workflows = [];
-        var cosmoError = false;
-        var currentDeployToDelete = null;
+        var _dialog = null;
+        $scope.itemToDelete = null;
 
         BreadcrumbsService.push('deployments',
             {
@@ -79,13 +76,22 @@ angular.module('cosmoUiApp')
             return selectedWorkflows[deployment_id] !== undefined;
         };
 
-        $scope.toggleConfirmationDialog = function(deployment, confirmationType) {
+        $scope.openConfirmationDialog = function(deployment, confirmationType) {
+            if (_isDialogOpen()) {
+                return;
+            }
             if (confirmationType === 'execute' && selectedWorkflows[deployment.id] === undefined) {
                 return;
             }
             $scope.selectedDeployment = deployment;
             $scope.confirmationType = confirmationType;
-            $scope.isConfirmationDialogVisible = $scope.isConfirmationDialogVisible === false;
+
+            _dialog = ngDialog.open({
+                template: 'views/dialogs/confirm.html',
+                controller: 'ExecuteDialogCtrl',
+                scope: $scope,
+                className: 'confirm-dialog'
+            });
         };
 
         $scope.redirectTo = function (deployment) {
@@ -96,10 +102,6 @@ angular.module('cosmoUiApp')
             if(event.target.tagName.toLowerCase() + '.' + event.target.className === matchElement) {
                 $scope.redirectTo(deployment);
             }
-        };
-
-        $scope.cosmoConnectionError = function() {
-            return cosmoError;
         };
 
         function _loadExecutions() {
@@ -153,12 +155,12 @@ angular.module('cosmoUiApp')
             }
         };
 
-        function _loadDeployments() {
+        $scope.loadDeployments = function() {
             $scope.blueprints = null;
             $scope.deployments = [];
             CloudifyService.blueprints.list()
                 .then(function(data) {
-                    cosmoError = false;
+                    $scope.managerError = false;
                     $scope.blueprints = data;
                     $scope.deployments = [];
 
@@ -181,60 +183,39 @@ angular.module('cosmoUiApp')
                     _loadExecutions();
                 },
                 function() {
-                    cosmoError = true;
+                    $scope.managerError = true;
                 });
-        }
+        };
 
-        _loadDeployments();
-
-        function deleteDeployment() {
-            if(currentDeployToDelete !== null && !$scope.deleteInProcess) {
-                $scope.deleteInProcess = true;
-                CloudifyService.deployments.deleteDeploymentById({deployment_id: currentDeployToDelete.id, ignoreLiveNodes: $scope.ignoreLiveNodes})
-                    .then(function(data){
-                        $scope.deleteInProcess = false;
-                        if(data.hasOwnProperty('message')) {
-                            $scope.delDeployError = data.message;
-                        }
-                        else {
-                            closeDeleteDialog();
-                            $timeout(function(){
-                                _loadDeployments();
-                            }, 500);
-                        }
-                    }, function(e) {
-                        $scope.deleteInProcess = false;
-                        if(e.data.hasOwnProperty('message')) {
-                            $scope.delDeployError = e.data.message;
-                        } else {
-                            $scope.delDeployError = 'An error occurred';
-                        }
-                    });
-            }
-        }
+        $scope.loadDeployments();
 
         $scope.deleteDeployment = function(deployment) {
-            currentDeployToDelete = deployment;
-            $scope.delDeployError = false;
-            $scope.ignoreLiveNodes = false;
-            $scope.delDeployName = deployment.id;
-            $scope.isDeleteDeploymentVisible = true;
-        };
-
-        function closeDeleteDialog() {
-            if ($scope.deleteInProcess) {
+            if (_isDialogOpen()) {
                 return;
             }
-            $scope.isDeleteDeploymentVisible = false;
-            currentDeployToDelete = null;
+
+            $scope.itemToDelete = deployment;
+
+            _dialog = ngDialog.open({
+                template: 'views/dialogs/delete.html',
+                controller: 'DeleteDialogCtrl',
+                scope: $scope,
+                className: 'delete-dialog'
+            });
+        };
+
+        $scope.closeDialog = function() {
+            if (_dialog !== null) {
+                ngDialog.close(_dialog.id);
+            }
+            _dialog = null;
+        };
+
+        $scope.$on('executionStarted', function() {
+            $scope.loadDeployments();
+        });
+
+        function _isDialogOpen() {
+            return _dialog !== null && ngDialog.isOpen(_dialog.id);
         }
-        $scope.closeDeleteDialog = closeDeleteDialog;
-
-        $scope.confirmDeleteDeployment = function() {
-            deleteDeployment();
-        };
-
-        $scope.toggleIgnoreLiveNodes = function() {
-            $scope.ignoreLiveNodes = !$scope.ignoreLiveNodes;
-        };
     });

@@ -33,7 +33,7 @@
         background-color: $COSMOUI_BLUEPRINT_DETAILS_BACKGROUND;
         padding-left: 19px;
         padding-right: 13px;
-        padding-top: 20px;
+        padding-top: 5px;
         z-index: 10001;
 
         .title {
@@ -44,6 +44,7 @@
             border-bottom: 1px solid $COSMOUI_BLUEPRINT_DETAILS_TITLE_BOTTOM_BORDER_COLOR;
             i {
                 float: right;
+                margin-top: 8px;
             }
         }
 
@@ -311,7 +312,7 @@
                             padding-left: 0px;
 
                             &.relationships-target {
-                              width: 160px;
+                              width: 140px;
                             }
                             &.relationships-type {
                               width: 300px;
@@ -654,8 +655,8 @@
             &:after {
                 position: absolute;
                 top: 21px;
-                left: 8px;
-                font-size: 48px;
+                left: 7px;
+                font-size: 26px;
             }
             &.small {
               width: 25px;
@@ -807,9 +808,9 @@
                         &.gs-node-icon {
                             &:after {
                                 position: relative;
-                                top: 10px;
+                                top: 4px;
                                 left: 5px;
-                                font-size: 28px;
+                                font-size: 15px;
                             }
                         }
                     }
@@ -1072,9 +1073,9 @@
                             position: relative;
                             &:after {
                                 position: absolute;
-                                top: -8px;
-                                left: 9px;
-                                font-size: 30px;
+                                top: -2px;
+                                left: 6px;
+                                font-size: 20px;
                             }
                         }
                         li:first-child {

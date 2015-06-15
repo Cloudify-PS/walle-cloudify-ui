@@ -1,11 +1,9 @@
 'use strict';
 
 describe('Controller: DeploymentsCtrl', function () {
-    var DeploymentsCtrl, scope, _cloudifyService, _timeout, _depExecSpy;
+    var DeploymentsCtrl, scope, _cloudifyService, _timeout, _depExecSpy, _ngDialog;
 
-    var _execution = {
-
-    };
+    var _execution = {};
 
     var _deleteErr = {
         'data': {
@@ -128,10 +126,10 @@ describe('Controller: DeploymentsCtrl', function () {
         }
     ];
 
-    beforeEach(module('cosmoUiApp', 'ngMock'));
+    beforeEach(module('cosmoUiApp', 'ngMock','templates-main', 'backend-mock'));
 
     function _testSetup() {
-        inject(function ($controller, $rootScope, $httpBackend, $q, CloudifyService, $location, $timeout) {
+        inject(function ($controller, $rootScope, $httpBackend, $q, CloudifyService, $location, $timeout, ngDialog) {
             $httpBackend.whenGET('/backend/configuration?access=all').respond(200);
             $httpBackend.whenGET('/backend/versions/ui').respond(200);
             $httpBackend.whenGET('/backend/versions/manager').respond(200);
@@ -140,7 +138,8 @@ describe('Controller: DeploymentsCtrl', function () {
 
             scope = $rootScope.$new();
             _cloudifyService = CloudifyService;
-            _depExecSpy = spyOn(CloudifyService.deployments, 'getDeploymentExecutions').andCallFake(function(){
+            _ngDialog = ngDialog;
+            _depExecSpy = spyOn(CloudifyService.deployments, 'getDeploymentExecutions').andCallFake(function () {
                 var deferred = $q.defer();
                 deferred.resolve(_executions);
                 return deferred.promise;
@@ -161,8 +160,8 @@ describe('Controller: DeploymentsCtrl', function () {
             _cloudifyService.deployments.deleteDeploymentById = function () {
 
                 return {
-                    then: function(success, error){
-                        error( _deleteErr );
+                    then: function (success, error) {
+                        error(_deleteErr);
                     }
                 };
 
@@ -179,12 +178,73 @@ describe('Controller: DeploymentsCtrl', function () {
             DeploymentsCtrl = $controller('DeploymentsCtrl', {
                 $scope: scope,
                 CloudifyService: _cloudifyService,
-                $timeout: _timeout
+                $timeout: _timeout,
+                ngDialog: _ngDialog
             });
 
             scope.$digest();
         });
     }
+
+
+
+    describe('managerError', function () {
+        it('should be initialized to true', function () {
+            _testSetup();
+            expect(scope.managerError).toBe(false);
+        });
+    });
+
+    describe('isExecuting', function () {
+        it('should return true if something is executing', function () {
+            _testSetup();
+            expect(scope.isExecuting()).toBe(false);
+        });
+    });
+
+    describe('getWorkflows', function () {
+        it('should return workflows by deployment id', function () {
+            _testSetup();
+            expect(scope.getWorkflows({})).toBe(undefined);
+        });
+    });
+
+
+    describe('#executeDeployment', function () {
+        it('should run execute on deployments if enabled', inject(function (CloudifyService) {
+            _testSetup();
+            var executeResponse = {};
+            var isExecuteEnabled = false;
+            scope.isExecuteEnabled = jasmine.createSpy().andCallFake(function () {
+                return isExecuteEnabled;
+            });
+            scope.selectedDeployment = {};
+            scope.selectedWorkflow = {data: {parameters: ''}};
+            spyOn(scope, 'redirectTo');
+
+            scope.executeDeployment({});
+            expect(scope.redirectTo).not.toHaveBeenCalled();
+
+            isExecuteEnabled = true;
+
+            spyOn(CloudifyService.deployments, 'execute').andCallFake(function () {
+                return {
+                    then: function (success) {
+                        success(executeResponse);
+                    }
+                };
+            });
+            scope.executeDeployment({});
+            expect(scope.redirectTo).toHaveBeenCalled();
+
+            executeResponse = {'error_code': 'yes', 'message': 'foo'};
+            scope.executeDeployment({});
+            expect(scope.executedErr).toBe('foo');
+
+
+        }));
+
+    });
 
 
     describe('Controller tests', function () {
@@ -202,10 +262,9 @@ describe('Controller: DeploymentsCtrl', function () {
             expect(scope.getExecutionAttr(scope.selectedDeployment, 'id')).toBe(_executions[1].id);
         });
 
-        it('should load deployment executions every 10000 milliseconds', inject(function($httpBackend) {
+        it('should load deployment executions every 10000 milliseconds', inject(function ($httpBackend) {
             _testSetup();
 
-            //scope.$apply();
             $httpBackend.whenGET('/backend/executions').respond({});
             $httpBackend.whenGET('/backend/configuration?access=all').respond({});
 
@@ -214,21 +273,14 @@ describe('Controller: DeploymentsCtrl', function () {
             expect(_depExecSpy.callCount).toEqual(2);
         }));
 
-        it('should show error message if deployment delete fails', function() {
-            _testSetup();
+
+        it('should toggle delete confirmation dialog when deleteBlueprint function is triggered', function () {
+            spyOn(_ngDialog, 'open').andCallThrough();
+
             scope.deleteDeployment(_deployment);
 
-            scope.confirmDeleteDeployment();
-            expect(scope.delDeployError).toBe(_deleteErr.data.message);
-        });
-
-        it('should show general error message if error returns with no message', function() {
-            _testSetup();
-            _deleteErr.data = {};
-            scope.deleteDeployment(_deployment);
-
-            scope.confirmDeleteDeployment();
-            expect(scope.delDeployError).toBe('An error occurred');
+            expect(scope.itemToDelete.id).toBe(_deployment.id);
+            expect(_ngDialog.open).toHaveBeenCalled();
         });
     });
 });

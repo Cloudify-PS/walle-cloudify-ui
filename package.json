@@ -1,6 +1,6 @@
 {
     "name": "cosmo-ui",
-    "version": "3.2.0-m8",
+    "version": "3.2.0-development",
     "private": true,
     "man": [
         "./man/cosmoui.1"
@@ -16,8 +16,9 @@
         }
     ],
     "scripts": {
-        "install_prereq" : "npm install -g  bower grunt-cli && npm cache clean && gem install compass ",
-        "build_linux" : "rm -rf node_modules && rm -rf app/bower_components && npm cache clean && bower cache clean &&  npm install && bower install && grunt pack $FORCEs"
+        "install_prereq": "npm install -g  bower grunt-cli && npm cache clean && gem install compass ",
+        "build_linux": "rm -rf node_modules && rm -rf app/bower_components && npm cache clean && bower cache clean &&  npm install && bower install && grunt buildArtifacts $FORCEs",
+        "build_and_publish": "npm run build_linux && grunt uploadArtifacts"
     },
     "description": "UI for Cloudify. code name is cosmo.",
     "bin": {
@@ -42,7 +43,7 @@
         "fs-extra": "^0.14.0",
         "grunt": "~0.4.2",
         "grunt-concurrent": "~0.3.0",
-        "grunt-connect-proxy": "~0.1.6",
+        "grunt-connect-proxy": "0.1.6",
         "grunt-contrib-clean": "~0.4.1",
         "grunt-contrib-coffee": "~0.7.0",
         "grunt-contrib-compass": "~0.3.0",
@@ -85,7 +86,11 @@
         "mocha": "^2.1.0",
         "sinon": "^1.12.2",
         "xunit-file": "0.0.6",
-        "grunt-shell": "~1.1.2"
+        "grunt-shell": "~1.1.2",
+        "grunt-contrib-compress": "~0.13.0",
+        "grunt-aws-s3": "~0.11.1",
+        "grunt-available-tasks": "~0.5.7",
+        "grunt-sass": "~1.0.0"
     },
     "engines": {
         "node": ">=0.8.0"

@@ -39,15 +39,6 @@ var fs = require('fs');
 var http = require('http');
 var controllers = require('./backend/controllers');
 
-fs.mkdir('logs', function(e) {
-    if (!e) {
-        logger.debug('logs folder was created');
-    } else {
-        logger.debug('folder /logs already exist :: ' + e);
-    }
-});
-
-
 logger.debug(JSON.stringify(conf));
 
 if (conf.cloudifyLicense !== 'tempLicense') {

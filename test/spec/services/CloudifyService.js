@@ -4,27 +4,13 @@ describe('Service: CloudifyService', function () {
 
     var mCloudifyService;
 
-    describe('Test setup', function() {
-        it('Injecting required data & initializing a new instance', function() {
+    beforeEach(module('cosmoUiApp','backend-mock'));
+    beforeEach(inject(function (CloudifyService) {
 
-            // Load the app module
-            module('cosmoUiApp', 'gsUiHelper');
+        mCloudifyService = CloudifyService;
+    }));
 
-            // Initialize a new instance of CloudifyService
-            inject(function (CloudifyService, $helper) {
-                $helper.addInjects([
-                    {
-                        method: 'POST',
-                        url: '/backend/node/get',
-                        respond: 200
-                    }
-                ]);
-                mCloudifyService = CloudifyService;
-            });
-
-        });
-    });
-
+    // todo: find out if we need $httpBackend expect get on /backend/node/get (see merge)
     describe('Unit tests', function() {
 
         it('should create a new CloudifyService instance', function() {

@@ -2,7 +2,7 @@
 
 describe('Service: nodeStatus', function () {
     // load the service's module
-    beforeEach(module('cosmoUiApp', 'gsUiHelper'));
+    beforeEach(module('cosmoUiApp','backend-mock'));
 
     // instantiate service
     var nodeStatus;

@@ -3,7 +3,7 @@
 describe('Directive: header', function () {
 
     var element, scope;
-    beforeEach(module('cosmoUiApp', 'ngMock', 'templates-main'));
+    beforeEach(module('cosmoUiApp', 'ngMock', 'templates-main', 'backend-mock'));
 
     function compileDirective(opts) {
         inject(function($compile, $rootScope, $httpBackend) {
@@ -77,6 +77,12 @@ describe('Directive: header', function () {
                 compileDirective();
                 expect(element.find('.logout-panel').length).toBe(1);
             });
+
+            it('should call logout on service', inject(function(LoginService){
+                compileDirective();
+                spyOn(LoginService,'logout');
+                scope.logout();
+            }));
 
             it('should not show logout if user is logged in', inject(function(){
                 compileDirective();
