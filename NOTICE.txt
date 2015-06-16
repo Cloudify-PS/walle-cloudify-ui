@@ -44,9 +44,6 @@ https://github.com/components/angular-route/blob/master/LICENSE
 angular-sanitize
 https://github.com/componentizr/angular-sanitize/blob/master/LICENSE
 
-i18next
-https://github.com/i18next/i18next/blob/master/license
-
 elasticjs
 https://github.com/fullscale/elastic.js/blob/master/LICENSE-MIT
 

@@ -29,11 +29,11 @@
                              data-ng-model="selectedWorkflow.data"
                              data-text="Select workflow"></div>
                     </div>
-                    <div class="executingWorkflow" ng-show="isExecuting(deployment.blueprint_id, deployment.id)">
+                    <div class="executingWorkflow" ng-dblclick="showInputs(deployment)" ng-show="isExecuting(deployment.blueprint_id, deployment.id)">
                         <div class="deploymentExecute" ng-show="isExecuting(deployment.blueprint_id, deployment.id)"></div>
                         {{ 'deployments.process.' + getExecutionAttr(deployment, 'workflow_id') | translate }}
                     </div>
-                    <i class="deployment-play" ng-class="{play: isExecuteEnabled(deployment.id), playDisabled: !isExecuteEnabled(deployment.id)}" ng-click="openConfirmationDialog(deployment, 'execute')" ng-show="!isExecuting(deployment.blueprint_id, deployment.id)"></i>
+                    <i class="deployment-play" ng-class="{play: isExecuteEnabled(deployment.id), playDisabled: !isExecuteEnabled(deployment.id)}" ng-dblclick="showInputs(deployment)" ng-click="openConfirmationDialog(deployment, 'execute')" ng-show="!isExecuting(deployment.blueprint_id, deployment.id)"></i>
                     <i class="deployment-pause fa fa-times-circle" ng-show="isExecuting(deployment.blueprint_id, deployment.id, getExecutionAttr(deployment, 'workflow_id'))" ng-click="openConfirmationDialog(deployment, 'cancel')"></i>
                 </td>
                 <td class="delete" ng-click="layerRedirectTo(deployment, $event, 'td.delete')">
@@ -45,7 +45,7 @@
 
     <div class="no-blueprints-message" ng-show="deployments.length == 0">{{ 'deployments.emptyMessage' | translate }}</div>
 
-    <div class="loading" ng-show="blueprints == null && !managerError"></div>
+    <div class="gs-big-loader" ng-show="blueprints == null && !managerError"></div>
 
     <div class="connect-error-message" ng-show="managerError">{{ 'connectError' | translate }}</div>
 </div>

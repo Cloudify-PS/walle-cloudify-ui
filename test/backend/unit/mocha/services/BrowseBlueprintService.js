@@ -2,36 +2,30 @@
 var expect = require('expect.js');
 var conf = require('../../../../../backend/appConf');
 var path = require('path');
-var fs = require('fs');
+var fs = require('fs.extra');
 var BrowseBlueprintService = require('../../../../../backend/services/BrowseBlueprintService');
 
 
-describe('BrowseBlueprintService', function() {
+describe('BrowseBlueprintService', function () {
 
-    function setBlueprintsPath() {
+    beforeEach(function () {
         conf.browseBlueprint.path = path.join(__dirname, '../../../resources/');
-    }
+    });
 
-    function removeEmptyFolders() {
-        fs.rmdir(conf.browseBlueprint.path + '/invalidBlueprint/111', function() {
-            fs.rmdir(conf.browseBlueprint.path + '/invalidBlueprint/');
-        });
-    }
+    afterEach(function () {
+        console.log('deleting  ', conf.browseBlueprint.path);
+        fs.removeSync( path.join( conf.browseBlueprint.path, 'invalidBlueprint') );
+        fs.removeSync( path.join( conf.browseBlueprint.path, '111.archive') );
+    });
 
-    describe('browseBlueprint', function() {
-        it('should return error if source folder empty', function() {
-            setBlueprintsPath();
-
-            fs.mkdir(conf.browseBlueprint.path + 'invalidBlueprint/', function() {
-                fs.mkdir(conf.browseBlueprint.path + 'invalidBlueprint/111', function() {
-                    BrowseBlueprintService.browseBlueprint('invalidBlueprint', '111', function(err) {
-                        removeEmptyFolders();
-
-                        expect(err.message).to.be('Error browsing blueprint files');
-                    });
+    describe('browseBlueprint', function () {
+        it('should return error if source folder empty', function (done) {
+            fs.mkdirs(path.join(conf.browseBlueprint.path, 'invalidBlueprint', '111'), function () {
+                BrowseBlueprintService.walkBlueprint('invalidBlueprint', '111', function (err) {
+                    expect(err.message).to.be('Error browsing blueprint files');
+                    done();
                 });
             });
-
         });
     });
 });
