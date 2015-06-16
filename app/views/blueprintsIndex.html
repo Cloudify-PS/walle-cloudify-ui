@@ -32,7 +32,7 @@
 
     <div class="connect-error-message" ng-show="managerError">{{ 'connectError' | translate }}</div>
 
-    <div class="loading" ng-show="blueprints == null && !managerError"></div>
+    <div class="gs-big-loader" ng-show="blueprints == null && !managerError"></div>
 
     <div class="no-blueprints-message" ng-show="blueprints.length == 0">{{ 'blueprints.emptyMessage' | translate }}</div>
 </div>

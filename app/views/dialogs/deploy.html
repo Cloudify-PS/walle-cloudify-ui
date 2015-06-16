@@ -13,7 +13,7 @@
         </div>
         <div class="inputsParameters" ng-show="inputsState == 'params'">
             <ul>
-                <li ng-repeat="(name, value) in selectedBlueprint.plan.inputs">{{name}}: <input type="text" spellcheck="false" ng-trim="false" ng-model="inputs[name]" placeholder="{{ 'dialogs.deploy.value' | i18n }}"></li>
+                <li ng-repeat="(name, value) in selectedBlueprint.plan.inputs">{{name}}: <input type="text" spellcheck="false" ng-trim="false" ng-model="inputs[name]" placeholder="{{ 'dialogs.deploy.value' | translate }}"></li>
             </ul>
         </div>
         <div class="inputsRaw" ng-show="inputsState == 'raw'">
@@ -22,6 +22,6 @@
     </div>
     <div class="error-message" ng-show="showError">{{deployErrorMessage}}</div>
     <div class="buttonsContainer deployButtons">
-        <button id="deployBtn" class="gs-btn" ng-class="{disabled: !isDeployEnabled(), enabled: isDeployEnabled(), loader: inProcess}" ng-click="deployBlueprint(selectedBlueprint.id)">{{ 'dialogs.deploy.create' | i18n }}</button>
+        <button id="deployBtn" class="gs-btn" ng-class="{disabled: !isDeployEnabled(), enabled: isDeployEnabled(), loader: inProcess}" ng-click="deployBlueprint(selectedBlueprint.id)">{{ 'dialogs.deploy.create' | translate }}</button>
     </div>
 </div>

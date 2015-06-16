@@ -137,51 +137,49 @@
     border-top: none;
     border-left: none;
     vertical-align: middle;
+    background: $COSMOUI_BUTTON_BACKGROUND;
+    cursor: pointer;
 
-    &.disabled {
-      background: $COSMOUI_BUTTON_DISABLED_BACKGROUND;
-      border-bottom: 1px solid $COSMOUI_BUTTON_DISABLED_BORDER_COLOR;
-      border-right: 1px solid $COSMOUI_BUTTON_DISABLED_BORDER_COLOR;
-      color: $COSMOUI_BUTTON_DISABLED_BORDER_COLOR;
-      cursor: default;
-    }
-
-    &.enabled {
-      background: $COSMOUI_BUTTON_BACKGROUND;
-      cursor: pointer;
+    &.disabled, &[disabled] {
+        background: $COSMOUI_BUTTON_DISABLED_BACKGROUND;
+        border-bottom: 1px solid $COSMOUI_BUTTON_DISABLED_BORDER_COLOR;
+        border-right: 1px solid $COSMOUI_BUTTON_DISABLED_BORDER_COLOR;
+        color: $COSMOUI_BUTTON_DISABLED_BORDER_COLOR;
+        cursor: default;
     }
 
     &.loader {
-      color: transparent;
-      background-image: url($img-loading-button);
-      background-repeat: no-repeat;
-      background-position: center center;
+        color: transparent;
+        background-image: url($img-loading-button);
+        background-repeat: no-repeat;
+        background-position: center center;
+        background-color: $COSMOUI_BUTTON_BACKGROUND;
     }
 
     &.close {
-      float: right;
-      position: absolute;
-      right: 0px;
-      top: 5px;
-      background: url("/images/x_idle.png") no-repeat center center;
-      width: 32px;
-      height: 32px;
-      cursor: pointer;
-      background-color: transparent;
-      border: none;
-      padding-right: 0px;
-
-      &:hover {
-        background: url("/images/x_hover.png") no-repeat center center;
-      }
-
-      &:active {
-        background: url("/images/x_pressed.png") no-repeat center center;
-      }
-
-      &.disabled {
+        float: right;
+        position: absolute;
+        right: 0px;
+        top: 5px;
         background: url("/images/x_idle.png") no-repeat center center;
-      }
+        width: 32px;
+        height: 32px;
+        cursor: pointer;
+        background-color: transparent;
+        border: none;
+        padding-right: 0px;
+
+        &:hover {
+            background: url("/images/x_hover.png") no-repeat center center;
+        }
+
+        &:active {
+            background: url("/images/x_pressed.png") no-repeat center center;
+        }
+
+        &.disabled {
+            background: url("/images/x_idle.png") no-repeat center center;
+        }
     }
 }
 
@@ -403,4 +401,14 @@ input[type=text], input[type=password]{
     height:0;
     display:none;
     font-size:0;
+}
+
+.gs-big-loader {
+    position: relative;
+    margin-left: auto;
+    margin-right: auto;
+    top: 50px;
+    width: 128px;
+    height: 128px;
+    background: url("/images/big-loader.gif") no-repeat center center;
 }
