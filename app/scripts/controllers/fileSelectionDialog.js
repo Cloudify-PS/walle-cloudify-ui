@@ -8,7 +8,6 @@ angular.module('cosmoUiApp')
         $scope.selectedFile = '';
         $scope.inputText = '';
         $scope.uploadType = 'file';
-        $scope.blueprintName = '';
         $scope.uploadError = false;
         $scope.errorMessage = 'Error uploading blueprint';
         $scope.blueprintUploadOpts = {};
@@ -53,12 +52,11 @@ angular.module('cosmoUiApp')
 
         function onSuccess(data){
 
-            if ($scope.blueprintName === undefined || $scope.blueprintName === '') {
-                $scope.blueprintName = data.id;
+            if ($scope.blueprintUploadOpts.blueprint_id === undefined || $scope.blueprintUploadOpts.blueprint_id === '') {
+                $scope.blueprintUploadOpts.blueprint_id = data.id;
             }
             $scope.uploadError = false;
-            $scope.uploadDone($scope.blueprintName);
-            $scope.uploadDone($scope.blueprintName);
+            $scope.uploadDone($scope.blueprintUploadOpts.blueprint_id);
         }
 
         function onError(e) {
