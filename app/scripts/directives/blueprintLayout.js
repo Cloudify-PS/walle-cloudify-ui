@@ -37,6 +37,7 @@ angular.module('cosmoUiApp')
 
                         // Verify it's valid page, if not redirect to blueprints page
                         if (blueprintData.hasOwnProperty('error_code')) {
+                            // todo: this seems wrong to me. we should display error instead
                             $location.path('/blueprints');
                         }
 

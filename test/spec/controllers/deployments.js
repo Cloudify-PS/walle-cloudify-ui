@@ -3,9 +3,7 @@
 describe('Controller: DeploymentsCtrl', function () {
     var DeploymentsCtrl, scope, _cloudifyService, _timeout, _depExecSpy, _ngDialog;
 
-    var _execution = {
-
-    };
+    var _execution = {};
 
     var _deleteErr = {
         'data': {
@@ -128,9 +126,7 @@ describe('Controller: DeploymentsCtrl', function () {
         }
     ];
 
-    beforeEach(module('cosmoUiApp', 'ngMock', 'templates-main', function ($translateProvider) {
-        $translateProvider.translations('en', {});
-    }));
+    beforeEach(module('cosmoUiApp', 'ngMock','templates-main', 'backend-mock'));
 
     function _testSetup() {
         inject(function ($controller, $rootScope, $httpBackend, $q, CloudifyService, $location, $timeout, ngDialog) {
@@ -143,8 +139,7 @@ describe('Controller: DeploymentsCtrl', function () {
             scope = $rootScope.$new();
             _cloudifyService = CloudifyService;
             _ngDialog = ngDialog;
-
-            _depExecSpy = spyOn(CloudifyService.deployments, 'getDeploymentExecutions').andCallFake(function(){
+            _depExecSpy = spyOn(CloudifyService.deployments, 'getDeploymentExecutions').andCallFake(function () {
                 var deferred = $q.defer();
                 deferred.resolve(_executions);
                 return deferred.promise;
@@ -165,8 +160,8 @@ describe('Controller: DeploymentsCtrl', function () {
             _cloudifyService.deployments.deleteDeploymentById = function () {
 
                 return {
-                    then: function(success, error){
-                        error( _deleteErr );
+                    then: function (success, error) {
+                        error(_deleteErr);
                     }
                 };
 
@@ -192,6 +187,66 @@ describe('Controller: DeploymentsCtrl', function () {
     }
 
 
+
+    describe('managerError', function () {
+        it('should be initialized to true', function () {
+            _testSetup();
+            expect(scope.managerError).toBe(false);
+        });
+    });
+
+    describe('isExecuting', function () {
+        it('should return true if something is executing', function () {
+            _testSetup();
+            expect(scope.isExecuting()).toBe(false);
+        });
+    });
+
+    describe('getWorkflows', function () {
+        it('should return workflows by deployment id', function () {
+            _testSetup();
+            expect(scope.getWorkflows({})).toBe(undefined);
+        });
+    });
+
+
+    describe('#executeDeployment', function () {
+        it('should run execute on deployments if enabled', inject(function (CloudifyService) {
+            _testSetup();
+            var executeResponse = {};
+            var isExecuteEnabled = false;
+            scope.isExecuteEnabled = jasmine.createSpy().andCallFake(function () {
+                return isExecuteEnabled;
+            });
+            scope.selectedDeployment = {};
+            scope.selectedWorkflow = {data: {parameters: ''}};
+            spyOn(scope, 'redirectTo');
+
+            scope.executeDeployment({});
+            expect(scope.redirectTo).not.toHaveBeenCalled();
+
+            isExecuteEnabled = true;
+
+            spyOn(CloudifyService.deployments, 'execute').andCallFake(function () {
+                return {
+                    then: function (success) {
+                        success(executeResponse);
+                    }
+                };
+            });
+            scope.executeDeployment({});
+            expect(scope.redirectTo).toHaveBeenCalled();
+
+            executeResponse = {'error_code': 'yes', 'message': 'foo'};
+            scope.executeDeployment({});
+            expect(scope.executedErr).toBe('foo');
+
+
+        }));
+
+    });
+
+
     describe('Controller tests', function () {
 
         it('should create a controller', function () {
@@ -207,7 +262,7 @@ describe('Controller: DeploymentsCtrl', function () {
             expect(scope.getExecutionAttr(scope.selectedDeployment, 'id')).toBe(_executions[1].id);
         });
 
-        it('should load deployment executions every 10000 milliseconds', inject(function($httpBackend) {
+        it('should load deployment executions every 10000 milliseconds', inject(function ($httpBackend) {
             _testSetup();
 
             $httpBackend.whenGET('/backend/executions').respond({});
@@ -217,6 +272,7 @@ describe('Controller: DeploymentsCtrl', function () {
             _timeout.flush();
             expect(_depExecSpy.callCount).toEqual(2);
         }));
+
 
         it('should toggle delete confirmation dialog when deleteBlueprint function is triggered', function () {
             spyOn(_ngDialog, 'open').andCallThrough();

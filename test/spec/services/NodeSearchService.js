@@ -6,54 +6,55 @@ describe('Service: NodeSearchService', function () {
         nodeSearchData,
         nodeSearchDataSec;
 
-    describe('Test setup', function() {
-        it('Injecting required data & initializing a new instance', function() {
+    beforeEach(module('cosmoUiApp', 'backend-mock'));
 
-            // Load the app module
-            module('cosmoUiApp', 'gsUiHelper', function ($translateProvider) {
-                $translateProvider.translations('en', {});
-            });
 
-            // Initialize a new instance of mNodeSearchService
-            inject(function (NodeSearchService, $helper, CloudifyService, $q) {
-                $helper.addInjects([
+    // Initialize a new instance of mNodeSearchService
+    beforeEach(inject(function (NodeSearchService, CloudifyService) {
+
+        spyOn(CloudifyService,'getNodes').andCallFake(function(){
+            return { then:function(success){ success([{ 'id' : 'bar' , runtime_properties : {}, 'type_hierarchy' : ['foo']}]); }};
+        });
+
+
+        mNodeSearchService = NodeSearchService;
+
+        spyOn(CloudifyService.blueprints,'list').andCallFake(function () {
+            return { then:function(success){
+                var result = success([
                     {
-                        url: '/backend/blueprints',
-                        respond: 200
+                        'id': 'nodecellar',
+                        'deployments': [
+                            {
+                                'blueprint_id': 'nodecellar',
+                                'id': 'nodecellarDep'
+                            }
+                        ]
+                    },
+                    {
+                        'id': 'monitoring',
+                        'deployments': [
+                            {
+                                'blueprint_id': 'monitoring',
+                                'id': 'monitoringDep'
+                            }
+                        ]
                     }
                 ]);
 
-                mNodeSearchService = NodeSearchService;
-
-                CloudifyService.blueprints.list = function() {
-                    var deferred = $q.defer();
-                    var resolve = [
-                        {
-                            'id': 'nodecellar',
-                            'deployments': [
-                                {
-                                    'blueprint_id': 'nodecellar',
-                                    'id': 'nodecellarDep'
-                                }
-                            ]
-                        },
-                        {
-                            'id': 'monitoring',
-                            'deployments': [
-                                {
-                                    'blueprint_id': 'monitoring',
-                                    'id': 'monitoringDep'
-                                }
-                            ]
-                        }
-                    ];
-                    deferred.resolve(resolve);
-                    return deferred.promise;
-                };
-            });
+                return { then : function(success){ return success(result);} };
+            }};
 
         });
-    });
+
+        // guy - don't know why but spyOn does not work on this specific method in this specific test
+        CloudifyService.deployments.getDeploymentNodes = jasmine.createSpy().andCallFake(function(){
+            return { then : function(success){ success([ { 'id' : 'foo', 'node_id' : 'bar', 'runtime_properties' : {}, 'type_hierarchy' : ['foo'] }]); } };
+        });
+
+    }));
+
+
 
     describe('Unit tests', function() {
 
@@ -62,8 +63,7 @@ describe('Service: NodeSearchService', function () {
         });
 
         beforeEach(function(){
-            mNodeSearchService.getNodeSearchData()
-                .then(function(data){
+            mNodeSearchService.getNodeSearchData().then(function (data){
                     nodeSearchData = data;
                 });
         });
@@ -86,6 +86,27 @@ describe('Service: NodeSearchService', function () {
                 });
         });
 
+        // todo : if the code was more test friendly, we wouldn't need async testing here..
+        // todo: CFY2569 - this test does not pass because of timeout. The code needs to be refactored before thid test
+        // can be properly implemented.
+        // JIRA issue: CFY-2885.
+        //describe('execute', function(){
+            //it('should get node instances by type', function(  ){
+            //    var result = null;
+            //    mNodeSearchService.execute('foo', 'bar', [ { id :'bar'} ]).then(function( instances ){
+            //        result = instances;
+            //    });
+            //    waitsFor(function(){
+            //        return result !== null;
+            //    });
+            //
+            //    runs(function(){
+            //        expect(result.length).toBe(1);
+            //    });
+            //
+            //});
+        //});
+
         describe('Test duplicate data', function(){
             it('should not have duplicate blueprints', function(){
 //                waitsFor(function(){
@@ -97,7 +118,6 @@ describe('Service: NodeSearchService', function () {
 //                });
             });
         });
-
     });
 
 });

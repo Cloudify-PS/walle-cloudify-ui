@@ -64,9 +64,7 @@ describe('Directive: floatingBlueprintNodePanel', function () {
         'nodeType': 'relationship'
     };
 
-    beforeEach(module('cosmoUiApp', 'ngMock', 'templates-main', function ($translateProvider) {
-        $translateProvider.translations('en', {});
-    }));
+    beforeEach(module('cosmoUiApp', 'ngMock', 'templates-main', 'backend-mock'));
 
     describe('Test setup', function() {
         it ('', inject(function ($compile, $rootScope, $httpBackend) {

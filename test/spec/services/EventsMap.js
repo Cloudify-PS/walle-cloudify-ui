@@ -43,7 +43,7 @@ describe('Service: EventsMap', function () {
         it('Injecting required data & initializing a new instance', function () {
 
             // load the service's module, mocking ejsResource dependency
-            module('cosmoUiApp', 'ngMock', 'gsUiHelper', function ($translateProvider) {
+            module('cosmoUiApp', 'ngMock', 'backend-mock', function ($translateProvider) {
                 $translateProvider.translations('en', {});
             });
 

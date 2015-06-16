@@ -38,27 +38,19 @@ describe('Service: NodeService', function () {
         }
     ];
 
-    describe('Test setup', function() {
-        it('Injecting required data & initializing a new instance', function() {
+    beforeEach(module('cosmoUiApp', 'ngMock', 'backend-mock'));
 
-            // load the filter's module
-            module('cosmoUiApp', 'ngMock', 'gsUiHelper', function ($translateProvider) {
-                $translateProvider.translations('en', {});
-            });
+    beforeEach(
+        inject(function (NodeService) {
+            nodeService = NodeService;
+        }));
 
-            // initialize a new instance of the filter
-            inject(function (NodeService) {
-                nodeService = NodeService;
-            });
-        });
-    });
-
-    describe('Unit tests', function() {
-        it('should create a new NodeService instance', function() {
+    describe('Unit tests', function () {
+        it('should create a new NodeService instance', function () {
             expect(nodeService).not.toBeUndefined();
         });
 
-        it('should create a node tree out of a given node list', function() {
+        it('should create a node tree out of a given node list', function () {
             var nodesTree = nodeService.createNodesTree(nodesList);
 
             expect(nodesTree.length).toBe(1);
@@ -72,7 +64,7 @@ describe('Service: NodeService', function () {
             expect(nodesTree[0].children[0].dataType).toBe('middleware');
         });
 
-        it('should set isHost parameter to true only for Compute type nodes', function() {
+        it('should set isHost parameter to true only for Compute type nodes', function () {
             var nodesTree = nodeService.createNodesTree(nodesList);
 
             expect(nodesTree[0].dataType).toBe('compute');

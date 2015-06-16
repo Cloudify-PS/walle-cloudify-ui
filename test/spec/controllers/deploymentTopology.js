@@ -29,22 +29,46 @@ describe('Controller: DeploymentTopologyCtrl', function () {
     };
 
     // load the controller's module
-    beforeEach(module('cosmoUiApp', 'ngMock', function ($translateProvider) {
-        $translateProvider.translations('en', {});
-    }));
+    beforeEach(module('cosmoUiApp', 'ngMock','backend-mock'));
 
-    describe('Test setup', function() {
-        it ('', inject(function ($controller, $rootScope, $httpBackend) {
-            $httpBackend.whenGET('/backend/configuration?access=all').respond(200);
-            $httpBackend.whenGET('/backend/versions/ui').respond(200);
-            $httpBackend.whenGET('/backend/versions/manager').respond(200);
-            $httpBackend.whenGET('/backend/version/latest?version=00').respond('300');
-
+    beforeEach(inject(function ($controller, $rootScope) {
             scope = $rootScope.$new();
-
             DeploymentTopologyCtrl = $controller('DeploymentTopologyCtrl', {
                 $scope: scope
             });
+        }));
+
+
+    describe('selectedWorkflow', function(){
+        it('should put value on scope', inject(function( $rootScope ){
+            $rootScope.$broadcast('selectedWorkflow','foo');
+            expect(scope.selectedWorkflow).toBe('foo');
+        }));
+    });
+
+    describe('toggleChange', function( ){
+        it('should put value on scope', inject(function( $rootScope){
+            $rootScope.$broadcast('toggleChange','foo');
+            expect(scope.toggleBar).toBe('foo');
+        }));
+    });
+
+    describe('nodesList', function(){
+        it('should put value on scope', inject(function( $rootScope, NodeService, blueprintCoordinateService ){
+            spyOn(NodeService,'createNodesTree');
+            spyOn(blueprintCoordinateService,'resetCoordinates');
+            spyOn(blueprintCoordinateService,'setMap');
+            spyOn(blueprintCoordinateService,'getCoordinates');
+            $rootScope.$broadcast( 'nodesList', []);
+            expect(scope.nodesList.length).toBe(0);
+        }));
+    });
+
+    describe('deploymentExecution eventHandler', function(){
+        it('should update info about execution', inject(function( $rootScope, CloudifyService ){
+            spyOn(CloudifyService,'autoPull').andCallFake(function(){ return { then: function(){}};});
+            $rootScope.$broadcast('deploymentExecution', { currentExecution : false , deploymentInProgress : true });
+
         }));
     });
 

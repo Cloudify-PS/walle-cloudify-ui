@@ -2,7 +2,7 @@
 
 describe('Controller: ExecuteDialogCtrl', function () {
     /*jshint camelcase: false */
-    var ExecuteDialogCtrl, _cloudifyService, scope;
+    var ExecuteDialogCtrl, scope;
     var _workflow = {
         'data': {
             'value': 'execute_operation',
@@ -28,52 +28,41 @@ describe('Controller: ExecuteDialogCtrl', function () {
     };
     var _execution = {};
 
-    beforeEach(module('cosmoUiApp', 'ngMock', 'templates-main', function ($translateProvider) {
-        $translateProvider.translations('en', {});
+    beforeEach(module('cosmoUiApp', 'ngMock', 'templates-main', 'backend-mock'));
+
+    beforeEach(inject(function ($controller, $rootScope, $httpBackend, $q, CloudifyService) {
+        scope = $rootScope.$new();
+
+        CloudifyService.deployments.execute = function (executionData) {
+            var deferred = $q.defer();
+
+            if (executionData.inputs === undefined || JSON.stringify(executionData.inputs) === '{}') {
+                deferred.reject(_executionError);
+            } else {
+                deferred.resolve(_execution);
+            }
+
+            return deferred.promise;
+        };
+
+        CloudifyService.deployments.updateExecutionState = function (execution_id) {
+            var deferred = $q.defer();
+
+            if (execution_id) {
+                deferred.reject(_executionError);
+            } else {
+                deferred.resolve(execution_id);
+            }
+
+            return deferred.promise;
+        };
+
+        ExecuteDialogCtrl = $controller('ExecuteDialogCtrl', {
+            $scope: scope,
+            CloudifyService: CloudifyService
+        });
+
     }));
-
-    describe('Test setup', function () {
-        it('', inject(function ($controller, $rootScope, $httpBackend, $q, CloudifyService) {
-            $httpBackend.whenGET('/backend/configuration?access=all').respond(200);
-            $httpBackend.whenGET('/backend/versions/ui').respond(200);
-            $httpBackend.whenGET('/backend/versions/manager').respond(200);
-            $httpBackend.whenGET('/backend/version/latest?version=00').respond('300');
-
-            scope = $rootScope.$new();
-
-            _cloudifyService = CloudifyService;
-            _cloudifyService.deployments.execute = function (executionData) {
-                var deferred = $q.defer();
-
-                if (executionData.inputs === undefined || JSON.stringify(executionData.inputs) === '{}') {
-                    deferred.reject(_executionError);
-                } else {
-                    deferred.resolve(_execution);
-                }
-
-                return deferred.promise;
-            };
-
-            _cloudifyService.deployments.updateExecutionState = function (execution_id) {
-                var deferred = $q.defer();
-
-                if (execution_id) {
-                    deferred.reject(_executionError);
-                } else {
-                    deferred.resolve(execution_id);
-                }
-
-                return deferred.promise;
-            };
-
-            ExecuteDialogCtrl = $controller('ExecuteDialogCtrl', {
-                $scope: scope,
-                CloudifyService: _cloudifyService
-            });
-
-            scope.$digest();
-        }));
-    });
 
     describe('Controller tests', function () {
         beforeEach(function () {
@@ -112,45 +101,75 @@ describe('Controller: ExecuteDialogCtrl', function () {
             expect(typeof(JSON.parse(scope.rawString).bool_variable)).toBe('boolean');
         });
 
-        it('should show error message if required parameters are not provided', function () {
+        it('should show error message if required parameters are not provided', inject(function (CloudifyService) {
+            var executeParams = null;
+            spyOn(CloudifyService.deployments, 'execute').andCallFake(function (params) {
+                executeParams = params;
+                return {
+                    then: function(success, error) {
+                        error({'data': {'message': 'foo'}});
+                    }
+                };
+            });
+
+            scope.toggleConfirmationDialog = function () {
+            };
+
+            spyOn(scope, 'isExecuteEnabled').andCallFake(function () {
+                return true;
+            });
+
             scope.rawString = '{}';
             scope.inputs = {};
             scope.executeErrorMessage = '';
-            scope.toggleConfirmationDialog = function () {};
-            scope.isExecuteEnabled = function () {
-                return true;
+            scope.selectedWorkflow = {
+                data: {
+
+                }
             };
 
             scope.executeWorkflow();
-            scope.$apply();
 
-            waitsFor(function () {
-                return scope.executeErrorMessage !== '';
-            });
-            runs(function () {
-                expect(scope.executeErrorMessage).toBe(_executionError.data.message);
-            });
-        });
+            expect(scope.executeErrorMessage).toBe('foo');
+            expect(scope.showError).toBe(true);
+        }));
 
-        it('should cancel execution by its id', function () {
-            spyOn(_cloudifyService.deployments, 'updateExecutionState').andCallThrough();
+        it('should cancel execution by its id', inject(function (CloudifyService) {
+            spyOn(CloudifyService.deployments, 'updateExecutionState').andCallThrough();
 
             scope.cancelWorkflow('123');
 
-            expect(_cloudifyService.deployments.updateExecutionState).toHaveBeenCalledWith({ execution_id: '123', state: 'cancel' });
-        });
+            expect(CloudifyService.deployments.updateExecutionState).toHaveBeenCalledWith({
+                execution_id: '123',
+                state: 'cancel'
+            });
+        }));
 
-        it('should show error message if cancel execution fails', function () {
-//            scope.executeErrorMessage = '';
-//
-//            scope.cancelWorkflow();
-//
-//            waitsFor(function () {
-//                return scope.executeErrorMessage !== '';
-//            });
-//            runs(function () {
-//                expect(scope.executeErrorMessage).toBe(_executionError.data.message);
-//            });
-        });
+        it('should show error message if cancel execution fails', inject(function (CloudifyService) {
+            var executeParams = null;
+            spyOn(CloudifyService.deployments, 'updateExecutionState').andCallFake(function (params) {
+                executeParams = params;
+                return {
+                    then: function(success, error) {
+                        error({'data': {'message': 'foo'}});
+                    }
+                };
+            });
+
+            scope.toggleConfirmationDialog = function () {
+            };
+
+            spyOn(scope, 'isExecuteEnabled').andCallFake(function () {
+                return true;
+            });
+
+            scope.executeErrorMessage = '';
+
+            scope.cancelWorkflow();
+
+            expect(scope.executeErrorMessage).toBe('foo');
+            expect(scope.showError).toBe(true);
+        }));
+
     });
 });
