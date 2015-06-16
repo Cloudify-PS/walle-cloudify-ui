@@ -345,5 +345,7 @@ angular.module('cosmoUiApp')
         this.resetNetworkColors = _resetNetworkColors;
         this.getNetworkColors = _getNetworkColors;
         this.getNetworkColor = _getNetworkColor;
+        this.setExternalNetwork = _setExternalNetworks;
+        this.getNetworkModel = function(){ return networkModel; };
 
     });

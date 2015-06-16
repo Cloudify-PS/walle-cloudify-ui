@@ -300,6 +300,17 @@ describe('Service: NetworksService', function () {
     ];
     var results;
 
+
+    describe('set external networks', function(){
+        beforeEach(module('cosmoUiApp', 'gsUiHelper'));
+        it('should put default values in case provider context does not have network info CFY-2851', inject(function( NetworksService ){
+
+            NetworksService.setExternalNetwork(null,[]);
+            var networkModel = NetworksService.getNetworkModel();
+            expect(networkModel.hasOwnProperty('external')).toBe(true);
+        }));
+    });
+
     describe('Test setup', function() {
         it('Injecting required data & initializing a new instance', function() {
 
