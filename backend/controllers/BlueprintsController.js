@@ -98,14 +98,7 @@ exports.upload = function( req, res ){
 
         services.cloudify4node.uploadBlueprint( cloudifyConf, readStream, blueprintUploadData.opts , uploadCallback);
     } else { // url
-        var url = blueprintUploadData.url;
-        if ( !url ){
-            res.status(400).send({'message' : 'missing url on request'});
-            return;
-        }
         try {
-            logger.debug('getting url', url);
-            blueprintUploadData.blueprint_archive_url = url;
             services.cloudify4node.uploadBlueprint( cloudifyConf, res, blueprintUploadData.opts, uploadCallback);
         } catch(e) {
             logger.error('unable to send request to url [', url ,'] reason:', e);
