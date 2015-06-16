@@ -481,17 +481,17 @@ module.exports = function (grunt) {
                 configFile: 'karma.conf.js',
                 singleRun: true
             },
+            develop: {
+                reporters: ['failed'],
+                singleRun: true,
+                configFile: 'karma.conf.js'
+            },
             debug: {
                 browsers: ['Chrome'],
                 reporters: ['spec'],
                 configFile: 'karma.conf.js',
                 singleRun: false /** TODO : find how to : 1) tell karma to use chrome from here.. override conf file**/
                                                          /** 2) tell karma to run a single test from here... override conf file **/
-            },
-            develop: {
-                configFile: 'karma.conf.js',
-                singleRun: true,
-                browsers: ['PhantomJS']
             }
         },
         ngmin: {
