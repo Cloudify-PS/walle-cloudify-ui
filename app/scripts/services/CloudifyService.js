@@ -109,7 +109,7 @@ angular.module('cosmoUiApp')
                 return '[' + errResponse.data.error_code + '] : ' + errResponse.data.message;
             }catch(e){
                 try {
-                    return type(errResponse.data) === 'string' ? errResponse.data : JSON.stringify(errResponse.data);
+                    return typeof(errResponse.data) === 'string' ? errResponse.data : JSON.stringify(errResponse.data);
                 }catch(e){
                     return 'An error has occurred. information is not available';
                 }
