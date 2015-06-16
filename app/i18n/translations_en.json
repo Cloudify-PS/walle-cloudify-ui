@@ -1,4 +1,7 @@
 {
+    "general" : {
+        "unknownError" : "Unknown Error"
+    },
     "connectError": "Error connecting to Cosmo server",
     "appStatus": {
         "title": "App Status",
