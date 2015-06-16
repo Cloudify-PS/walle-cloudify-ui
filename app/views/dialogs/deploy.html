@@ -20,8 +20,9 @@
             <textarea ng-model="rawString" spellcheck="false"></textarea>
         </div>
     </div>
-    <div class="error-message" ng-show="showError">{{deployErrorMessage}}</div>
+
+    <div class="error-message" ng-show="!!deployErrorMessage">{{deployErrorMessage}}</div>
     <div class="buttonsContainer deployButtons">
-        <button id="deployBtn" class="gs-btn" ng-class="{disabled: !isDeployEnabled(), enabled: isDeployEnabled(), loader: inProcess}" ng-click="deployBlueprint(selectedBlueprint.id)">{{ 'dialogs.deploy.create' | translate }}</button>
+        <button id="deployBtn" class="gs-btn" ng-disabled="!isDeployEnabled()" ng-class="{loader: inProcess}" ng-click="deployBlueprint(selectedBlueprint.id)">{{ 'dialogs.deploy.create' | translate }}</button>
     </div>
 </div>
