@@ -65,7 +65,11 @@ exports.uploadBlueprint = function( cloudifyConf, streamReader, opts, callback) 
             if (res.statusCode === 200) {
                 callback(null, res.statusCode);
             } else {
-                callback(JSON.parse(responseMessage), res.statusCode);
+                try {
+                    callback(JSON.parse(responseMessage), res.statusCode);
+                }catch(e){ // responseMessage might not be a JSON (nginx sometimes returns html)
+                    callback({'message' : responseMessage}, res.statusCode);
+                }
             }
         });
     }

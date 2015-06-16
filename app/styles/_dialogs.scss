@@ -248,10 +248,9 @@ input[required] {
               cursor: pointer;
           }
       }
+}
 
-
-
-
+#uploadDialogContainer {
    &.dialogBox{
         .dialogDescription{
             margin:0;
