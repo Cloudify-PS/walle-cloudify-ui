@@ -27,6 +27,21 @@ angular.module('cosmoUiApp')
                 id: 'deployments'
             });
 
+
+
+        $scope.showInputs = function(deployment){
+            $log.info('showing inputs');
+            var dialogScope = $scope.$new();
+            dialogScope.deployment = deployment;
+            ngDialog.open(
+                {
+                    template: 'views/dialogs/deploymentDetails.html' ,
+                    controller: 'DeploymentDetailsCtrl',
+                    scope: dialogScope
+                }
+            );
+        };
+
         $scope.executeDeployment = function(deployment) {
             if ($scope.isExecuteEnabled(deployment.id)) {
                 CloudifyService.deployments.execute({
