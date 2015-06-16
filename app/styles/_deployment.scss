@@ -457,16 +457,7 @@
                     font-size: 17px;
                 }
             }
-            .loading {
-                position: absolute;
-                top: 0;
-                right: 0;
-                width: 120px;
-                height: 30px;
-                background-image: url('../images/loading-dots.gif');
-                background-repeat: no-repeat;
-                background-position: center center;
-            }
+
             > span {
                 margin: 0 0 10px 0;
                 display: inline-block;

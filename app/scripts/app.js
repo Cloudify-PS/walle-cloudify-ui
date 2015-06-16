@@ -15,7 +15,9 @@ angular.module('cosmoUiApp', [
     'datePicker',
     'timer',
     'pascalprecht.translate',
-    'ngDialog'
+    'ngDialog',
+    'ngProgress',
+    'angular-loading-bar'
 
 ]).config( function ($routeProvider, $httpProvider, $translateProvider) {
 

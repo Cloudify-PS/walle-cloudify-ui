@@ -39,6 +39,8 @@ module.exports = function(config) {
             'app/styles/SyntaxHighlighter/shBrushYaml.js',
 
             'app/bower_components/ngDialog/js/ngDialog.min.js',
+            'app/bower_components/ngprogress/build/ngProgress.js',
+            'app/bower_components/angular-loading-bar/build/loading-bar.js',
             'app/scripts/*.js',
             'app/scripts/**/*.js',
             '.tmp/styles/main.css',

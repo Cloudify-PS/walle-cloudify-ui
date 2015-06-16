@@ -8,7 +8,7 @@
  * Service in the cosmoUiApp.
  */
 angular.module('cosmoUiApp')
-    .service('BlueprintsService', function Blueprintsservice($q, RestLoader) {
+    .service('BlueprintsService', function Blueprintsservice($q, RestLoader, $timeout) {
 
         function _load(rest, params){
             return RestLoader.load(rest, params);
@@ -49,10 +49,16 @@ angular.module('cosmoUiApp')
                 processData: false,
                 cache: false,
                 success: function(data) {
-                    successCallback(data);
+                    $timeout(function(){ // make sure digest loop, timeout will not crash if already in digest
+                        successCallback(data);
+                    },0);
+
                 },
-                error: function(e) {
-                    errorCallback(e);
+                error: function(e) { // make sure digest loop, timeout will not crash if already in digest
+                    $timeout(function(){
+                        errorCallback(e.responseJSON);
+                    },0);
+
                 }
             });
         }

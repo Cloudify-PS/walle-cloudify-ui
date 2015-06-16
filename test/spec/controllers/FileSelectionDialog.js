@@ -68,14 +68,26 @@ describe('Controller: FileSelectionDialogCtrl', function () {
             });
         });
 
-        it('should pass blueprint name to the blueprint add method', function () {
+        it('should pass blueprint name to the $upload.upload', inject(function ( $upload ) {
             scope.selectedFile = {};
+
             spyOn(scope, 'isUploadEnabled').andCallFake(function () {
                 return true;
             });
+
             scope.uploadDone = function () {
                 scope.uploadInProcess = false;
             };
+
+            spyOn($upload,'upload').andCallFake(function(){
+                return {
+                    progress: function(){
+                        return {
+                            success: function(callback){ callback( { id: 'foo' }); return { error: function(){}}; }
+                        };
+                    }
+                };
+            });
             _cloudifyService.blueprints.add = function (data, successCallback) {
                 successCallback();
             };
@@ -90,51 +102,24 @@ describe('Controller: FileSelectionDialogCtrl', function () {
                 }
             };
 
-            var expected = new FormData();
-            expected.append('application_archive', scope.selectedFile);
-            expected.append('opts', '{"blueprint_id":"blueprint1","params":{"application_file_name":"filename1"}}');
-            expected.append('type', 'file');
-
             spyOn(_cloudifyService.blueprints, 'add').andCallThrough();
 
             scope.uploadFile();
 
-            waitsFor(function () {
-                return scope.uploadInProcess === false;
-            });
-            runs(function () {
-                var formData = _cloudifyService.blueprints.add.mostRecentCall.args[0];
-
-                expect(JSON.stringify(formData)).toBe(JSON.stringify(expected));
-            });
-        });
-
-        it('should not validate blueprint name', function () {
-            scope.blueprintName = '~~~!!!@@@';
-            scope.selectedFile = {};
-            // expected to be on scope from parent.. todo: turn to directive. bind event callback.
-
-            scope.uploadDone = function () {
-                scope.uploadInProcess = false;
+            var expected = {
+                'url': '/backend/blueprints/upload',
+                'file': {},
+                'fileFormDataName': 'application_archive',
+                'fields': {
+                    'opts': '{"blueprint_id":"blueprint1","params":{"application_file_name":"filename1"}}',
+                    'type': 'file',
+                    'url': ''
+                }
             };
+            var formData = $upload.upload.mostRecentCall.args[0];
+            expect(JSON.stringify(formData)).toBe(JSON.stringify(expected));
+        }));
 
-            spyOn(scope, 'isUploadEnabled').andCallFake(function () {
-                return true;
-            });
-            _cloudifyService.blueprints.add = function (data, successCallback) {
-                successCallback();
-            };
-            spyOn(scope, 'uploadDone').andCallThrough();
-
-            scope.uploadFile();
-
-            waitsFor(function () {
-                return scope.uploadInProcess === false;
-            });
-            runs(function () {
-                expect(scope.uploadDone).toHaveBeenCalledWith(scope.blueprintName);
-            });
-        });
 
         it('should update upload type to file when file is browsed', function () {
             scope.inputText = 'http://some.kind/of/url.tar.gz';
@@ -176,14 +161,9 @@ describe('Controller: FileSelectionDialogCtrl', function () {
             });
 
             scope.uploadFile();
-
-            waitsFor(function () {
-                return scope.uploadInProcess === false;
-            });
-            runs(function () {
-                var formData = _cloudifyService.blueprints.add.mostRecentCall.args[0];
-                expect(formData.url).toBe('http://some.kind/of/url.tar.gz');
-            });
+            expect(scope.uploadInProcess).toBe(false);
+            var formData = _cloudifyService.blueprints.add.mostRecentCall.args[0];
+            expect(formData.url).toBe('http://some.kind/of/url.tar.gz');
         });
 
         it('should reset the dialog variables on dialog close (CFY-2583)', function() {
