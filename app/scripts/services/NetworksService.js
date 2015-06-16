@@ -54,43 +54,55 @@ angular.module('cosmoUiApp')
         }
 
         function _setExternalNetworks(providerData, nodes) {
-            var extNetwork = providerData.context.resources.ext_network;
-            var intNetwork = providerData.context.resources.int_network;
-            var intSubnet = providerData.context.resources.subnet;
-            providerData.context.resources.router.icon = 'router';
+
+            // set defaults
+            var providerContextResources = {
+                'ext_network': {'id': 'External Network', 'name': 'External Network', 'type': 'network'},
+                'int_network': { 'id' : 'Cloudify Manager Network', 'name' : 'Cloudify Manager Network' , 'type' : 'network' },
+                'subnet': { 'id' : 'Cloudify Manager Subnet', 'name' : 'Cloudify Manager Subnet', 'type': 'subnet' },
+                router: { 'id' : 'Router', 'name' : 'Router', 'type' : 'router' }
+            };
+
+            if ( providerData && providerData.context && providerData.context.resources ){
+                providerContextResources = _.merge(providerContextResources, providerData.context.resources);
+            }
+
+
+
+            providerContextResources.router.icon = 'router';
 
             /* public network */
             networkModel.external = {
-                'id': extNetwork.id,
-                'name': extNetwork.name,
+                'id': providerContextResources.ext_network.id,
+                'name': providerContextResources.ext_network.name,
                 'color': _getNetworkColor(),
-                'type': extNetwork.type,
+                'type': providerContextResources.ext_network.type, // possible value 'external'
                 'routers': [
-                    providerData.context.resources.router
+                    providerContextResources.router
                 ],
                 'subnets': []
             };
 
             networkModel.relations.push({
                 source: networkModel.external.id,
-                target: providerData.context.resources.router.id
+                target: providerContextResources.router.id
             });
 
             var externalSubnet = {
-                'id': intNetwork.id,
-                'name': intNetwork.name,
-                'type': intNetwork.type,
+                'id': providerContextResources.int_network.id,
+                'name': providerContextResources.int_network.name,
+                'type': providerContextResources.int_network.type,
                 'color': _getNetworkColor(),
                 'subnet': {
-                    'id': intNetwork.id,    // The router is connecting by network id and not subnet id, so subnet must have the network id
-                    'name': intSubnet.name,
-                    'type': intSubnet.type,
+                    'id': providerContextResources.int_network.id,    // The router is connecting by network id and not subnet id, so subnet must have the network id
+                    'name': providerContextResources.subnet.name,
+                    'type': providerContextResources.subnet.type,
                     'routers': _getRouters(nodes)
                 }
             };
             networkModel.relations.push({
                 source: externalSubnet.id,
-                target: providerData.context.resources.router.id
+                target: providerContextResources.router.id
             });
             networkModel.external.subnets.push(externalSubnet);
         }
