@@ -56,7 +56,7 @@ describe('Controller: dialogs/DeploymentDetailsCtrl', function () {
         it('should have a default error message', function(){
             _getOutputsError = { 'data' : {} };
             scope.load();
-            expect(scope.error).toBe('Unknown error');
+            expect(scope.error).toBe('general.unknownError');
         });
     });
 
