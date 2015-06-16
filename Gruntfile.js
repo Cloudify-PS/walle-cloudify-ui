@@ -40,7 +40,7 @@ module.exports = function (grunt) {
             help: {
                 options: {
                     filter: 'include',
-                    tasks: ['default', 'build','blueprint','buildArtifacts','uploadArtifacts']
+                    tasks: ['default', 'build','blueprint','buildArtifacts','uploadArtifacts','analyze']
                 }
             }
         },
@@ -600,6 +600,20 @@ module.exports = function (grunt) {
                 dest: '.tmp/viewTemplates/templates.js'
             }
         },
+        jscpd:{
+            all: {
+                path: '.',
+                output: 'dev/jscpd.output.txt',
+                exclude: [ 'app/bower_components/**', 'node_modules/**', 'dist/**','dev/**','app/styles/SyntaxHighlighter/**','test/jasmine-standalone-1.3.1/**'],
+                threshold: 1
+            }
+        },
+        'jscpdreporter': {
+            options: {
+                sourcefile: 'dev/jscpd.output.txt',
+                outputDir: 'dev/jscpd-report/'
+            }
+        },
         aws_s3: {
             options: {
                 accessKeyId: '<%= aws.accessKey %>', // Use the variables
@@ -639,6 +653,8 @@ module.exports = function (grunt) {
             'watch'
         ]);
     });
+
+    grunt.registerTask('analyze', 'analyzes the sources and reports quality problems such as copy-paste', [ 'jscpd', 'grunt-jscpd-reporter']);
 
     grunt.registerTask('test', function(testBackend) {
         var tasks  = [];
