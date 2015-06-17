@@ -142,7 +142,6 @@ angular.module('cosmoUiApp')
         $scope.timeframeFrom = LogsModel.getFromTimeText();
 
         $scope.closeDialog = function () {
-            console.log('this is _dialog', _dialog);
             if (_dialog !== null) {
                 ngDialog.close(_dialog.id);
             }
