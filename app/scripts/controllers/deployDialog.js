@@ -87,6 +87,7 @@ angular.module('cosmoUiApp')
                             $scope.showError = true;
                         }
                         else {
+                            $scope.closeThisDialog();
                             $scope.redirectToDeployment($scope.deployment_id);
                         }
                     });

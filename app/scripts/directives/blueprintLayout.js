@@ -107,15 +107,7 @@ angular.module('cosmoUiApp')
                 };
 
                 $scope.redirectToDeployment = function(deployment_id) {
-                    $scope.closeDialog();
                     $location.path('/deployment/' + deployment_id + '/topology');
-                };
-
-                $scope.closeDialog = function() {
-                    if (_dialog !== null) {
-                        ngDialog.close(_dialog.id);
-                    }
-                    _dialog = null;
                 };
 
                 function _isDialogOpen() {

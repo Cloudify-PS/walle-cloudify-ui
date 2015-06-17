@@ -219,13 +219,6 @@ angular.module('cosmoUiApp')
             });
         };
 
-        $scope.closeDialog = function() {
-            if (_dialog !== null) {
-                ngDialog.close(_dialog.id);
-            }
-            _dialog = null;
-        };
-
         $scope.$on('executionStarted', function() {
             $scope.loadDeployments();
         });

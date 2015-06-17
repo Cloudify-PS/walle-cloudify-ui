@@ -85,7 +85,7 @@ angular.module('cosmoUiApp')
                             $scope.showError = true;
                         } else {
                             $scope.$emit('executionStarted', data);
-                            $scope.closeDialog();
+                            $scope.closeThisDialog();
                         }
                     }, function(e) {
                         $scope.executeErrorMessage = e.data.message;
@@ -105,7 +105,7 @@ angular.module('cosmoUiApp')
                     $scope.executeErrorMessage = data.message;
                 }
                 else {
-                    $scope.closeDialog();
+                    $scope.closeThisDialog();
                 }
             }, function(e) {
                 $scope.showError = true;
