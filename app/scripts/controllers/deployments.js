@@ -2,7 +2,7 @@
 
 // TODO: this code should be much more testable
 angular.module('cosmoUiApp')
-    .controller('DeploymentsCtrl', function ($scope, $cookieStore, $location, $routeParams, BreadcrumbsService, $timeout, $log, CloudifyService, ngDialog) {
+    .controller('DeploymentsCtrl', function ($scope, $cookieStore, $location, $routeParams, BreadcrumbsService, $q, $log, CloudifyService, ngDialog) {
 
         $scope.blueprints = null;
         $scope.deployments = [];
@@ -105,6 +105,7 @@ angular.module('cosmoUiApp')
         };
 
         function _loadExecutions() {
+            var deferred = $q.defer();
 
             CloudifyService.deployments.getDeploymentExecutions()
                 .then(function(data) {
@@ -133,16 +134,13 @@ angular.module('cosmoUiApp')
                             }
                         }
                     }
+                    deferred.resolve();
                 });
 
-            // location path check to prevent timeout from keep running after path was changed to different page
-            if ($location.path() === '/deployments') {
-                $timeout(function(){
-                    _loadExecutions();
-                }, 10000);
-            }
+            return deferred.promise;
         }
 
+        // register the task.
         $scope.getExecutionAttr = function(deployment, attr) {
             for (var blueprint in _executedDeployments) {
                 for (var dep in _executedDeployments[blueprint]) {
@@ -180,7 +178,9 @@ angular.module('cosmoUiApp')
                             }
                         }
                     }
-                    _loadExecutions();
+
+                    $scope.registerTickerTask('deployments/loadExecutions', _loadExecutions, 10000);
+
                 },
                 function() {
                     $scope.managerError = true;
