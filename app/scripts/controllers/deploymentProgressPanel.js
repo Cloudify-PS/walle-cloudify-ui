@@ -1,7 +1,7 @@
 'use strict';
 // todo-quickwin : remove this class
 angular.module('cosmoUiApp')
-    .controller('DeploymentProgressPanelCtrl', function ($scope, $routeParams, EventsService) {
+    .controller('DeploymentProgressPanelCtrl', function ($scope, $routeParams, EventsService, $q) {
         var deployment_id = $routeParams.id || $routeParams.deploymentId;
         $scope.panelData = {};
         $scope.panelOpen = true;
@@ -14,15 +14,16 @@ angular.module('cosmoUiApp')
 
 
         function getEventsStarted() {
+            var deferred = $q.defer();
+
             events.execute(function(data){
                 if(data.hasOwnProperty('hits')) {
                     eventHits = data.hits.hits;
                 }
-            }, true, 30000);
-        }
+                deferred.resolve();
+            });
 
-        function stopEventsStarted() {
-            events.stopAutoPull();
+            return deferred.promise;
         }
 
         $scope.getWorkflow = function() {
@@ -49,10 +50,10 @@ angular.module('cosmoUiApp')
 
         $scope.$watch('panelOpen', function(isOpen){
             if(isOpen) {
-                getEventsStarted();
+                $scope.registerTickerTask('deploymentProgressPanel/events', getEventsStarted, 30000);
             }
             else {
-                stopEventsStarted();
+                $scope.unregisterTickerTask('deploymentProgressPanel/events');
             }
         });
 
