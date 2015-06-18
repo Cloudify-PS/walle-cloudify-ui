@@ -233,14 +233,21 @@ describe('Controller: FileSelectionDialogCtrl', function () {
         it('should update ngProgress with progress percentage', inject(function( $upload , ngProgress ){
             var progressCallback = null;
 
-            spyOn($upload,'upload').andCallFake(function(){
-               return {
-                   progress:function(callback){
-                       console.log('calling fake progress');
-                       progressCallback = callback;
-                       return { success: function(){ return {error:function(){}}} };
-                   }
-               }
+            spyOn($upload, 'upload').andCallFake(function () {
+                return {
+                    progress: function (callback) {
+                        console.log('calling fake progress');
+                        progressCallback = callback;
+                        return {
+                            success: function () {
+                                return {
+                                    error: function () {
+                                    }
+                                };
+                            }
+                        };
+                    }
+                };
             });
 
 
