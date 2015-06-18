@@ -1,7 +1,7 @@
 'use strict';
 
 describe('Controller: DeploymentsCtrl', function () {
-    var DeploymentsCtrl, scope, _cloudifyService, _timeout, _depExecSpy, _ngDialog;
+    var DeploymentsCtrl, scope, _cloudifyService, _timeout, _depExecSpy, _ngDialog, _q, _interval;
 
     var _execution = {};
 
@@ -129,7 +129,7 @@ describe('Controller: DeploymentsCtrl', function () {
     beforeEach(module('cosmoUiApp', 'ngMock','templates-main', 'backend-mock'));
 
     function _testSetup() {
-        inject(function ($controller, $rootScope, $httpBackend, $q, CloudifyService, $location, $timeout, ngDialog) {
+        inject(function ($controller, $rootScope, $httpBackend, $q, CloudifyService, $location, $timeout, ngDialog, $interval) {
             $httpBackend.whenGET('/backend/configuration?access=all').respond(200);
             $httpBackend.whenGET('/backend/versions/ui').respond(200);
             $httpBackend.whenGET('/backend/versions/manager').respond(200);
@@ -146,6 +146,8 @@ describe('Controller: DeploymentsCtrl', function () {
             });
 
             _timeout = $timeout;
+            _q = $q;
+            _interval = $interval;
 
             $location.path('/deployments');
 
@@ -178,7 +180,7 @@ describe('Controller: DeploymentsCtrl', function () {
             DeploymentsCtrl = $controller('DeploymentsCtrl', {
                 $scope: scope,
                 CloudifyService: _cloudifyService,
-                $timeout: _timeout,
+                $q: _q,
                 ngDialog: _ngDialog
             });
 
@@ -254,22 +256,15 @@ describe('Controller: DeploymentsCtrl', function () {
             expect(DeploymentsCtrl).not.toBeUndefined();
         });
 
-        it('should return selected workflow id', function () {
-            _testSetup();
-
-            scope.selectedDeployment = _deployment;
-
-            expect(scope.getExecutionAttr(scope.selectedDeployment, 'id')).toBe(_executions[1].id);
-        });
-
         it('should load deployment executions every 10000 milliseconds', inject(function ($httpBackend) {
             _testSetup();
 
             $httpBackend.whenGET('/backend/executions').respond({});
             $httpBackend.whenGET('/backend/configuration?access=all').respond({});
 
+            _interval.flush(10000);
             expect(_depExecSpy.callCount).toEqual(1);
-            _timeout.flush();
+            _interval.flush(10000);
             expect(_depExecSpy.callCount).toEqual(2);
         }));
 

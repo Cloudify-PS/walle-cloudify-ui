@@ -348,6 +348,12 @@ angular.module('cosmoUiApp')
                                     }
                                 }
                             }
+                        },
+                        function(/*reason*/) {
+                            // getDeploymentExecutions failed. Redirect to deployments screen.
+                            $scope.deploymentInProgress = false;
+                            $location.path('/deployments');
+
                         });
                 }
 

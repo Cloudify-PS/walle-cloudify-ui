@@ -214,12 +214,6 @@ describe('Directive: deploymentLayout', function () {
 
             $location.path('/deployment/' + _deployment.id + '/topology');
 
-            spyOn(CloudifyService, 'autoPull').andCallFake(function() {
-                var deferred = $q.defer();
-                deferred.reject({});
-                return deferred.promise;
-            });
-
             spyOn(CloudifyService, 'getNodes').andCallFake(function() {
                 var deferred = $q.defer();
                 _getNodesCalled = true;
@@ -230,7 +224,7 @@ describe('Directive: deploymentLayout', function () {
 
             spyOn(CloudifyService.deployments, 'getDeploymentExecutions').andCallFake(function() {
                 var deferred = $q.defer();
-                deferred.resolve(_executions);
+                deferred.reject({});
                 return deferred.promise;
             });
 
@@ -257,7 +251,7 @@ describe('Directive: deploymentLayout', function () {
 
         }));
 
-        it('should check all node instances states (CFY-2368)', inject(function($compile, $rootScope, $q, CloudifyService) {
+        it('should check all node instances states (CFY-2368)', inject(function($compile, $rootScope, $q, CloudifyService, $interval) {
             var _scope = $rootScope.$new();
             var _nodeList;
 
@@ -286,6 +280,7 @@ describe('Directive: deploymentLayout', function () {
             compileDirective({scope: _scope});
 
             scope.$apply();
+            $interval.flush(10001);
 
             waitsFor(function() {
                 return _nodeList;

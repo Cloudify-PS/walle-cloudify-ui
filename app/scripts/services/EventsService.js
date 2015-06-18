@@ -19,7 +19,6 @@ angular.module('cosmoUiApp')
             var rangeFilter = {};
             var rangePrefix = 'range';
             var isAutoPull = false;
-            var autoPullTimer = '3000';
             var sortField = false;
             var fieldIndex = {
                 'timestamp': '@timestamp',
