@@ -13,8 +13,6 @@ angular.module('cosmoUiApp')
                 selectview: '@'
             },
             link: function postLink($scope) {
-
-                var _dialog = null;
                 $scope.nodesTree = [];
                 $scope.toggleBar = {
                     'compute': true,
@@ -95,10 +93,7 @@ angular.module('cosmoUiApp')
                 };
 
                 $scope.openDeployDialog = function() {
-                    if(_isDialogOpen()) {
-                        return;
-                    }
-                    _dialog = ngDialog.open({
+                    ngDialog.open({
                         template: 'views/dialogs/deploy.html',
                         controller: 'DeployDialogCtrl',
                         scope: $scope,
@@ -109,10 +104,6 @@ angular.module('cosmoUiApp')
                 $scope.redirectToDeployment = function(deployment_id) {
                     $location.path('/deployment/' + deployment_id + '/topology');
                 };
-
-                function _isDialogOpen() {
-                    return _dialog !== null && ngDialog.isOpen(_dialog.id);
-                }
             }
         };
     });

@@ -109,7 +109,6 @@ angular.module('cosmoUiApp')
                         $scope.message = data.message;
                         _dialog = ngDialog.open({
                             template: 'views/dialogs/message.html',
-                            controller: 'MessageDialogCtrl',
                             scope: $scope,
                             className: 'message-dialog'
                         });
