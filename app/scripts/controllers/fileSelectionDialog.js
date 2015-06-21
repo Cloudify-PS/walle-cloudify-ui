@@ -57,7 +57,10 @@ angular.module('cosmoUiApp')
                 $scope.blueprintName = data.id;
             }
             $scope.uploadError = false;
-            $scope.uploadDone($scope.blueprintName);
+
+
+            // todo: need to find a way to make this function defined alongside this controller or at least linked to it in some way
+            // it is not friendly to have this function defined in a different file
             $scope.uploadDone($scope.blueprintName);
         }
 
@@ -72,7 +75,7 @@ angular.module('cosmoUiApp')
             }
 
             $scope.errorMessage = responseText;
-            $scope.uploadError = true;
+            $scope.uploadError = true; // bad practice. single source of truth. todo: remove this
             $scope.uploadInProcess = false;
         }
 
@@ -172,4 +175,9 @@ angular.module('cosmoUiApp')
         }
 
         resetDialog();
+
+
+        // make it test friendly do not use these functions
+        this.onUploadSuccess = onSuccess;
+        this.onUploadError = onError;
     });
