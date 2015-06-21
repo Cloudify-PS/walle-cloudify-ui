@@ -182,4 +182,79 @@ describe('Controller: FileSelectionDialogCtrl', function () {
             }));
         });
     });
+
+    describe('#onUploadSuccess', function(){
+        beforeEach(function(){
+            scope.uploadDone = function(){}; // mock.
+        });
+        it('should put id on scope.blueprintName ', function(){
+            FileSelectionDialogCtrl.onUploadSuccess({'id':'foo'});
+            expect(scope.blueprintName).toBe('foo');
+        });
+    });
+
+    describe('#onUploadError', function(){
+
+
+        it('should put error on scope while supporting 3 formats for error', function(){
+
+            FileSelectionDialogCtrl.onUploadError('foo'); // format 1 - simple text
+            expect(scope.errorMessage).toBe('foo');
+
+            FileSelectionDialogCtrl.onUploadError({'message' : 'bar'}); // format 2 - object with message
+            expect(scope.errorMessage).toBe('bar');
+
+            FileSelectionDialogCtrl.onUploadError({'statusText' : 'foo'}); // format 2 - object with message
+            expect(scope.errorMessage).toBe('foo');
+
+        });
+
+        it('should mark process is over', function(){
+            scope.uploadInProcess = true;
+            FileSelectionDialogCtrl.onUploadError('foo');
+            expect(scope.uploadInProcess).toBe(false);
+        });
+
+        it('handle HTML response that file is too big, and present a nice message to user', function(){
+            FileSelectionDialogCtrl.onUploadError('<html>Too Large</html>');
+            expect(scope.errorMessage).toBe('Blueprint is too big');
+        });
+
+    });
+
+    describe('#uploadBlueprint', function(){
+        it('should update ngProgress with progress percentage', inject(function( $upload , ngProgress ){
+            var progressCallback = null;
+
+            spyOn($upload, 'upload').andCallFake(function () {
+                return {
+                    progress: function (callback) {
+                        console.log('calling fake progress');
+                        progressCallback = callback;
+                        return {
+                            success: function () {
+                                return {
+                                    error: function () {
+                                    }
+                                };
+                            }
+                        };
+                    }
+                };
+            });
+
+
+            var lastProgress = null;
+            spyOn(ngProgress,'set').andCallFake(function( progress ){
+                lastProgress = progress;
+            });
+
+            scope.uploadBlueprint();
+            expect(progressCallback).not.toBe(null);
+
+            progressCallback({ loaded : 20, total: 100});
+            expect(lastProgress).toBe(20);
+
+        }));
+    });
 });

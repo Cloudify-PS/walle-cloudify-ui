@@ -6,7 +6,7 @@
     "bootstrap-sass-official": "~3.2.0",
     "json3": "~3.2.4",
     "es5-shim": "~2.0.8",
-    "gs-ui-infra": "git://github.com/cloudify-cosmo/gs-ui-infra.git#3.3m2",
+    "gs-ui-infra": "git://github.com/cloudify-cosmo/gs-ui-infra.git",
     "d3": "~3.4.1",
     "font-awesome": "~4.1.0",
     "angular-route": "~1.2.14",

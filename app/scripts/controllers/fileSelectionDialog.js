@@ -70,7 +70,7 @@ angular.module('cosmoUiApp')
             }
 
             $scope.errorMessage = responseText;
-            $scope.uploadError = true;
+            $scope.uploadError = true; // bad practice. single source of truth. todo: remove this
             $scope.uploadInProcess = false;
         }
 
@@ -170,4 +170,9 @@ angular.module('cosmoUiApp')
         }
 
         resetDialog();
+
+
+        // make it test friendly do not use these functions
+        this.onUploadSuccess = onSuccess;
+        this.onUploadError = onError;
     });
