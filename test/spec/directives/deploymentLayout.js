@@ -251,7 +251,7 @@ describe('Directive: deploymentLayout', function () {
 
         }));
 
-        it('should check all node instances states (CFY-2368)', inject(function($compile, $rootScope, $q, CloudifyService, $interval) {
+        it('should check all node instances states (CFY-2368)', inject(function($compile, $rootScope, $q, CloudifyService, TickerSrv) {
             var _scope = $rootScope.$new();
             var _nodeList;
 
@@ -273,6 +273,10 @@ describe('Directive: deploymentLayout', function () {
                 return deferred.promise;
             };
 
+            spyOn(TickerSrv, 'register').andCallFake(function(id, handler/*, interval, delay, isLinear*/) {
+                handler();
+            });
+
             $rootScope.$on('nodesList', function(event, data) {
                 _nodeList = data;
             });
@@ -280,7 +284,6 @@ describe('Directive: deploymentLayout', function () {
             compileDirective({scope: _scope});
 
             scope.$apply();
-            $interval.flush(10001);
 
             waitsFor(function() {
                 return _nodeList;

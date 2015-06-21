@@ -256,16 +256,18 @@ describe('Controller: DeploymentsCtrl', function () {
             expect(DeploymentsCtrl).not.toBeUndefined();
         });
 
-        it('should load deployment executions every 10000 milliseconds', inject(function ($httpBackend) {
+        it('should load deployment executions every 10000 milliseconds', inject(function ($httpBackend, TickerSrv) {
             _testSetup();
+
+            spyOn(TickerSrv, 'register').andCallFake(function(id, handler/*, interval, delay, isLinear*/) {
+                handler().then(function() {
+                    expect(_depExecSpy.callCount).toEqual(1);
+                });
+            });
 
             $httpBackend.whenGET('/backend/executions').respond({});
             $httpBackend.whenGET('/backend/configuration?access=all').respond({});
 
-            _interval.flush(10000);
-            expect(_depExecSpy.callCount).toEqual(1);
-            _interval.flush(10000);
-            expect(_depExecSpy.callCount).toEqual(2);
         }));
 
 
