@@ -94,7 +94,6 @@ describe('Controller: FileSelectionDialogCtrl', function () {
             FormData.prototype.append = function (name, data) {
                 this.name = data;
             };
-            scope.blueprintName = 'blueprint1';
             scope.blueprintUploadOpts = {
                 blueprint_id: 'blueprint1',
                 params: {
@@ -187,9 +186,9 @@ describe('Controller: FileSelectionDialogCtrl', function () {
         beforeEach(function(){
             scope.uploadDone = function(){}; // mock.
         });
-        it('should put id on scope.blueprintName ', function(){
+        it('should put id on scope.blueprintUploadOpts.blueprint_id ', function(){
             FileSelectionDialogCtrl.onUploadSuccess({'id':'foo'});
-            expect(scope.blueprintName).toBe('foo');
+            expect(scope.blueprintUploadOpts.blueprint_id).toBe('foo');
         });
     });
 
@@ -229,7 +228,6 @@ describe('Controller: FileSelectionDialogCtrl', function () {
             spyOn($upload, 'upload').andCallFake(function () {
                 return {
                     progress: function (callback) {
-                        console.log('calling fake progress');
                         progressCallback = callback;
                         return {
                             success: function () {

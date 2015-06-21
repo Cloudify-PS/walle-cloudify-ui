@@ -15,14 +15,18 @@ describe('BlueprintsController', function(){
     var sandbox;
 
     var _json = {
-        invalidURL: {'type' : 'url', 'opts' : '{"params": {"blueprint_archive_url": "invalid url value"}}'},
-        validURL: {'type' : 'url', 'opts' : '{"params": {"blueprint_archive_url": "http://some.url.com"}}'},
-        emptyOpts: {'type' : 'url'}
+        validURL: {'type' : 'url', 'opts' : '{"params": {"blueprint_archive_url": "http://some.url.com"}}'}
     };
 
     beforeEach(function(){
         sandbox = sinon.sandbox.create();
-        req = { };
+        req = {
+            cloudifyClient: {
+                blueprints: {
+                    publish_archive: function(){}
+                }
+            }
+        };
 
         logger.info('cloudify4node exists on services', !!services.cloudify4node);
 
@@ -94,49 +98,8 @@ describe('BlueprintsController', function(){
             expect(res.send.calledWith('data')).to.be(true);
         });
 
-        it('should return code 400 if type is url but url not specified', function(){
-            req.body = _json.emptyOpts;
-
-            BlueprintsController.upload(req,res);
-            expect(res.status.calledWith(400)).to.be(true);
-        });
-
-        it('should return error if url value is invalid', function(){
-            req.body = _json.invalidURL;
-
-            BlueprintsController.upload(req,res);
-            expect(res.status.calledWith(500)).to.be(true);
-        });
-
-        it('should handle errors from getUrls', function(){
-            req.body = _json.validURL;
-
-            sandbox.stub(services.httpUtils,'getUrl', sinon.spy(function( url, callback ){
-                console.log('inside stub');
-                callback(new Error('this is an error'));
-            }));
-            BlueprintsController.upload(req,res);
-
-            expect(res.status.calledWith(500)).to.be(true);
-        });
-
-        it('should handle errors if throws from getUrls', function(){
-            req.body = _json.validURL;
-            sandbox.stub(services.httpUtils,'getUrl', sinon.spy(function( ){
-                throw new Error('unexpected');
-            }));
-            BlueprintsController.upload(req,res);
-
-            expect(res.status.calledWith(500)).to.be(true);
-        });
-
         it('should upload blueprint from url', function(){
             req.body = _json.validURL;
-            req.cloudifyClient = {
-                blueprints: {
-                    publish_archive: function(){}
-                }
-            };
             sandbox.stub(req.cloudifyClient.blueprints, 'publish_archive', sinon.spy( function( cloudifyConf, stream, opts, callback ){
                 callback(null, 'data');
             }));
