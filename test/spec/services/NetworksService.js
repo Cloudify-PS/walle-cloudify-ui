@@ -303,7 +303,6 @@ describe('Service: NetworksService', function () {
 
 
     describe('set external networks', function(){
-        beforeEach(module('cosmoUiApp', 'gsUiHelper'));
         it('should put default values in case provider context does not have network info CFY-2851', inject(function( NetworksService ){
 
             NetworksService.setExternalNetwork(null,[]);
