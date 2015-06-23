@@ -200,7 +200,7 @@
         color: $clr-base-11;
         background-color: $clr-base-01;
         font-weight: normal;
-        padding: 5px 40px 5px 10px;
+        line-height:30px;
         border-radius: 5px;
         border: 2px solid $clr-base-04;
         float: left;
@@ -211,9 +211,14 @@
         appearance: none;
         cursor: pointer;
 
+
         &.disable {
             background: transparent;
             color: $clr-base-27;
+        }
+
+        t{
+            padding-left:5px;
         }
 
         div.button {
@@ -221,7 +226,7 @@
             border: none;
 
             label {
-                padding: 0px;
+                padding: 0;
             }
         }
         &.open {
@@ -407,6 +412,7 @@ input[type=text], input[type=password]{
     position: relative;
     margin-left: auto;
     margin-right: auto;
+    margin-bottom:100px;
     top: 50px;
     width: 128px;
     height: 128px;
