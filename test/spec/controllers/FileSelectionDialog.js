@@ -94,7 +94,6 @@ describe('Controller: FileSelectionDialogCtrl', function () {
             FormData.prototype.append = function (name, data) {
                 this.name = data;
             };
-            scope.blueprintName = 'blueprint1';
             scope.blueprintUploadOpts = {
                 blueprint_id: 'blueprint1',
                 params: {
@@ -142,28 +141,21 @@ describe('Controller: FileSelectionDialogCtrl', function () {
 
         it('should get a blueprint archive file from a url', function () {
             scope.inputText = 'http://some.kind/of/url.tar.gz';
-            scope.uploadType = 'url';
-            scope.blueprintName = 'foo';
-            var formDataUrl = null;
             scope.uploadDone = function () {
                 scope.uploadInProcess = false;
             };
             _cloudifyService.blueprints.add = function (data, successCallback) {
-                successCallback();
-            };
-            FormData.prototype.append = function (name, data) {
-                formDataUrl = data;
-                this.url = data;
+                successCallback({id:'blueprint1'});
             };
             spyOn(_cloudifyService.blueprints, 'add').andCallThrough();
             spyOn(scope, 'isUploadEnabled').andCallFake(function () {
                 return true;
             });
 
-            scope.uploadFile();
+            scope.publishArchive();
+
             expect(scope.uploadInProcess).toBe(false);
-            var formData = _cloudifyService.blueprints.add.mostRecentCall.args[0];
-            expect(formData.url).toBe('http://some.kind/of/url.tar.gz');
+            expect(scope.blueprintUploadOpts.params.blueprint_archive_url).toBe('http://some.kind/of/url.tar.gz');
         });
 
         it('should reset the dialog variables on dialog close (CFY-2583)', function() {
@@ -194,9 +186,9 @@ describe('Controller: FileSelectionDialogCtrl', function () {
         beforeEach(function(){
             scope.uploadDone = function(){}; // mock.
         });
-        it('should put id on scope.blueprintName ', function(){
+        it('should put id on scope.blueprintUploadOpts.blueprint_id ', function(){
             FileSelectionDialogCtrl.onUploadSuccess({'id':'foo'});
-            expect(scope.blueprintName).toBe('foo');
+            expect(scope.blueprintUploadOpts.blueprint_id).toBe('foo');
         });
     });
 
@@ -236,7 +228,6 @@ describe('Controller: FileSelectionDialogCtrl', function () {
             spyOn($upload, 'upload').andCallFake(function () {
                 return {
                     progress: function (callback) {
-                        console.log('calling fake progress');
                         progressCallback = callback;
                         return {
                             success: function () {

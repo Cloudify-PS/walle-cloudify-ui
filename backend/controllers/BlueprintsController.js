@@ -95,26 +95,13 @@ exports.upload = function( req, res ){
 
     if ( type === uploadTypes.ids.FILE ){
         var readStream = fs.createReadStream( req.files.application_archive.path, { bufferSize: 64 * 1024 });
-
         services.cloudify4node.uploadBlueprint( cloudifyConf, readStream, blueprintUploadData.opts , uploadCallback);
     } else { // url
-        var url = blueprintUploadData.url;
-        if ( !url ){
-            res.status(400).send({'message' : 'missing url on request'});
-            return;
-        }
+        var opts = JSON.parse(blueprintUploadData.opts);
         try {
-            logger.debug('getting url', url);
-            services.httpUtils.getUrl(url, function(err, response){
-                if ( !!err ){
-                    res.status(500).send('unable to read url [', err.message , ']');
-                    return;
-                }
-                logger.debug('got response when fetching upload url');
-                services.cloudify4node.uploadBlueprint( cloudifyConf, response, blueprintUploadData.opts, uploadCallback);
-            });
+            req.cloudifyClient.blueprints.publish_archive(opts.params.blueprint_archive_url, opts.blueprint_id, opts.params.application_file_name, uploadCallback);
         } catch(e) {
-            logger.error('unable to send request to url [', url ,'] reason:', e);
+            logger.error('unable to find blueprint_archive_url [' + opts.params.blueprint_archive_url + '] reason:', e);
             res.status(500).send({'message' : e.message});
             return;
         }

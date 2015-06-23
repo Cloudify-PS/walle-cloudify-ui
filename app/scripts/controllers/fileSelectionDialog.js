@@ -8,7 +8,6 @@ angular.module('cosmoUiApp')
         $scope.selectedFile = '';
         $scope.inputText = '';
         $scope.uploadType = 'file';
-        $scope.blueprintName = '';
         $scope.uploadError = false;
         $scope.errorMessage = 'Error uploading blueprint';
         $scope.blueprintUploadOpts = {};
@@ -53,15 +52,11 @@ angular.module('cosmoUiApp')
 
         function onSuccess(data){
 
-            if ($scope.blueprintName === undefined || $scope.blueprintName === '') {
-                $scope.blueprintName = data.id;
+            if ($scope.blueprintUploadOpts.blueprint_id === undefined || $scope.blueprintUploadOpts.blueprint_id === '') {
+                $scope.blueprintUploadOpts.blueprint_id = data.id;
             }
             $scope.uploadError = false;
-
-
-            // todo: need to find a way to make this function defined alongside this controller or at least linked to it in some way
-            // it is not friendly to have this function defined in a different file
-            $scope.uploadDone($scope.blueprintName);
+            $scope.uploadDone($scope.blueprintUploadOpts.blueprint_id);
         }
 
         function onError(e) {
@@ -84,12 +79,12 @@ angular.module('cosmoUiApp')
             $scope.uploadType = 'url';
 
             var blueprintUploadForm = new FormData();
+
+            $scope.blueprintUploadOpts.params.blueprint_archive_url = $scope.inputText;
+
             blueprintUploadForm.append('application_archive', $scope.selectedFile);
             blueprintUploadForm.append('opts', JSON.stringify($scope.blueprintUploadOpts));
             blueprintUploadForm.append('type', $scope.uploadType);
-            if ($scope.uploadType === 'url') {
-                blueprintUploadForm.append('url', $scope.inputText);
-            }
 
             $scope.uploadInProcess = true;
             $scope.uploadError = false;
