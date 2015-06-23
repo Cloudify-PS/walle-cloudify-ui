@@ -2,11 +2,9 @@
 
 // TODO: this code should be much more testable
 angular.module('cosmoUiApp')
-    .controller('DeploymentsCtrl', function ($scope, $cookieStore, $location, $routeParams, BreadcrumbsService, $timeout, $log, CloudifyService, ngDialog) {
+    .controller('DeploymentsCtrl', function ($scope, $cookieStore, $location, $routeParams, BreadcrumbsService, $timeout, $log, CloudifyService, ngDialog, cloudifyClient) {
 
-        $scope.blueprints = null;
         $scope.deployments = [];
-        $scope.selectedBlueprint = '';
         $scope.executedErr = false;
         $scope.confirmationType = '';
         var _executedDeployments = [];
@@ -16,7 +14,7 @@ angular.module('cosmoUiApp')
         $scope.inputs = {};
         $scope.managerError = false;
         var selectedWorkflows = [];
-        var workflows = [];
+        var workflows = {};
         var _dialog = null;
         $scope.itemToDelete = null;
 
@@ -67,6 +65,22 @@ angular.module('cosmoUiApp')
         }, true);
 
         $scope.getWorkflows = function(deployment) {
+            if ( !deployment ){
+                return; // no workflows
+            }
+
+            if ( !workflows.hasOwnProperty(deployment.id) ){ // construct once
+                workflows[deployment.id] = _.map(deployment.workflows, function(w){
+                    return {
+                        value: w.name,
+                        label: w.name,
+                        deployment: deployment.id,
+                        parameters: w.parameters
+                    }
+                });
+
+            }
+
             return workflows[deployment.id];
         };
 
@@ -171,30 +185,12 @@ angular.module('cosmoUiApp')
         };
 
         $scope.loadDeployments = function() {
-            $scope.blueprints = null;
-            $scope.deployments = [];
-            CloudifyService.blueprints.list()
-                .then(function(data) {
+            cloudifyClient.deployments.list('id,blueprint_id,created_at,updated_at,workflows')
+                .then(function(result) {
                     $scope.managerError = false;
-                    $scope.blueprints = data;
-                    $scope.deployments = [];
 
-                    for (var j = 0; j < data.length; j++) {
-                        var deployments = data[j].deployments;
-                        $scope.deployments = $scope.deployments.concat(data[j].deployments);
-                        for (var i = 0; i < deployments.length; i++) {
-                            workflows[deployments[i].id] = [];
-                            for (var w in deployments[i].workflows) {
-                                var workflow = deployments[i].workflows[w];
-                                workflows[deployments[i].id].push({
-                                    value: workflow.name,
-                                    label: workflow.name,
-                                    deployment: deployments[i].id,
-                                    parameters: workflow.parameters
-                                });
-                            }
-                        }
-                    }
+                    $scope.deployments = result.data;
+
                     _loadExecutions();
                 },
                 function() {
