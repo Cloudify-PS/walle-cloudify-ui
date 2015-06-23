@@ -13,9 +13,20 @@ describe('BlueprintsController', function(){
     var req;
     var res;
     var sandbox;
+
+    var _json = {
+        validURL: {'type' : 'url', 'opts' : '{"params": {"blueprint_archive_url": "http://some.url.com"}}'}
+    };
+
     beforeEach(function(){
         sandbox = sinon.sandbox.create();
-        req = { };
+        req = {
+            cloudifyClient: {
+                blueprints: {
+                    publish_archive: function(){}
+                }
+            }
+        };
 
         logger.info('cloudify4node exists on services', !!services.cloudify4node);
 
@@ -87,59 +98,11 @@ describe('BlueprintsController', function(){
             expect(res.send.calledWith('data')).to.be(true);
         });
 
-        it('should return code 400 if type is url but url not specified', function(){
-            req.body = { 'type' : 'url' };
-
-            BlueprintsController.upload(req,res);
-            expect(res.status.calledWith(400)).to.be(true);
-        });
-
-        it('should return error if url value is invalid', function(){
-            req.body = { 'type' : 'url' , 'url' : 'invalid url value'};
-            BlueprintsController.upload(req,res);
-            expect(res.status.calledWith(500)).to.be(true);
-        });
-
-        it('should handle errors from getUrls', function(){
-            req.body = { 'type' : 'url' , 'url' : 'http://some.url.com'};
-            sandbox.stub(services.httpUtils,'getUrl', sinon.spy(function( url, callback ){
-                console.log('inside stub');
-                callback(new Error('this is an error'));
-            }));
-            BlueprintsController.upload(req,res);
-
-            expect(res.status.calledWith(500)).to.be(true);
-        });
-
-        it('should handle errors if throws from getUrls', function(){
-            req.body = { 'type' : 'url' , 'url' : 'http://some.url.com'};
-            sandbox.stub(services.httpUtils,'getUrl', sinon.spy(function( ){
-                throw new Error('unexpected');
-            }));
-            BlueprintsController.upload(req,res);
-
-            expect(res.status.calledWith(500)).to.be(true);
-        });
-
-        it('should invoke getUrl on HttpUtils', function(){
-            req.body = { 'type' : 'url' , 'url' : 'http://www.demo.com'};
-            var getUrlValue = null;
-            sandbox.stub(services.httpUtils,'getUrl', function( url ){
-                getUrlValue = url;
-            });
-            BlueprintsController.upload(req,res);
-            expect(services.httpUtils.getUrl.called).to.be(true);
-            expect(getUrlValue).to.be('http://www.demo.com');
-        });
-//
         it('should upload blueprint from url', function(){
-            sandbox.stub(services.httpUtils,'getUrl', function( url, callback ){
-                callback(null, {});
-            });
-            sandbox.stub(services.cloudify4node, 'uploadBlueprint', sinon.spy( function( cloudifyConf, stream, opts, callback ){
+            req.body = _json.validURL;
+            sandbox.stub(req.cloudifyClient.blueprints, 'publish_archive', sinon.spy( function( cloudifyConf, stream, opts, callback ){
                 callback(null, 'data');
             }));
-            req.body = { 'type' : 'url' , 'url' : 'http://www.demo.com'};
             BlueprintsController.upload(req,res);
             expect(res.send.calledWith('data')).to.be(true);
         });
