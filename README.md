@@ -4,6 +4,7 @@
 An [AngularJS][4] based UI for Cosmo.
 
 
+
 ===
 
 
@@ -49,25 +50,6 @@ occurrences.
 
 When replacing images, the dimensions of new image files has to be the same as the old images'. You can either replace
 existing images, or create a new directory and refer to it from the stylesheet.
-
-
-
-## I18N
-
-*__Note:__ Updating I18N configuration requires server restart.*
-
-Translations can be done as follows:
-- Create an additional translation file under `/app/i18n`, copy the contents of `translations_en.json` into it.
-- Change the property values to include the desired translated strings.
-- Save the file to `/app/i18n` and rename it to update the locale suffix (e.g. `translations_zh_CN.json`).
-- Update the configuration with the locale string: In your `meConf` file (assuming you have created one - if not, in
-  the server root create `/conf/dev/meConf.js`),
-  add an entry to override the default language, as follows:
-
-      exports.i18n = {
-          language: 'zh_CN' // this is your locale string
-      };
-- Restart the server.
 
 
 

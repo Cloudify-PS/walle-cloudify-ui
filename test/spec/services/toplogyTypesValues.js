@@ -3,7 +3,7 @@
 describe('Service: TopologyTypesValues', function () {
 
     // load the service's module
-    beforeEach(module('cosmoUiApp', 'ngMock', 'gsUiHelper'));
+    beforeEach(module('cosmoUiApp', 'ngMock','backend-mock'));
 
     // instantiate service
     var topologyTypesValues;

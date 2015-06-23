@@ -34,13 +34,11 @@
                      data-text="Choose Deployments"></div>
             </div>
 
-            <button class="gs-btn" data-ng-click="execute()" ng-class="{gsBtnDisabled: isSearchDisabled() == true}">Show</button>
+            <button class="gs-btn" data-ng-click="execute()" ng-class="{gsBtnDisabled: isSearchDisabled() == true, loader: filterLoading}">Show</button>
 
             <div class="search">
                 <input type="text" spellcheck="false" placeholder="Search" data-ng-model="searchFilter" />
             </div>
-
-            <div class="loading" data-ng-show="filterLoading"></div>
         </div>
 
         <div class="newHosts" data-ng-show="newHosts>0">

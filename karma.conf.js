@@ -22,30 +22,41 @@ module.exports = function(config) {
             'app/bower_components/angularjs-nvd3-directives/dist/angularjs-nvd3-directives.js',
             'app/bower_components/elastic.js/dist/elastic-angular-client.js',
             'app/bower_components/gs-ui-infra/app/scripts/**/*.js',
-            'app/bower_components/i18next/i18next.js',
             'app/bower_components/d3/d3.js',
             'app/bower_components/elastic.js/dist/elastic.js',
             'app/bower_components/elastic.js/dist/elastic-angular-client.js',
             'app/bower_components/lodash/dist/lodash.js',
             'app/bower_components/jquery-simulate/jquery.simulate.js',
+            'app/bower_components/angular-translate/angular-translate.min.js',
+            'app/bower_components/angular-translate-loader-static-files/angular-translate-loader-static-files.min.js',
+            'app/bower_components/SyntaxHighlighter/scripts/XRegExp.js',
+            'app/bower_components/SyntaxHighlighter/scripts/shCore.js',
+            'app/bower_components/SyntaxHighlighter/scripts/shLegacy.js',
+            'app/bower_components/SyntaxHighlighter/scripts/shAutoloader.js',
+            'app/bower_components/SyntaxHighlighter/scripts/shBrushPython.js',
+            'app/bower_components/SyntaxHighlighter/scripts/shBrushBash.js',
+            'app/bower_components/SyntaxHighlighter/scripts/shBrushPlain.js',
+            'app/styles/SyntaxHighlighter/shBrushYaml.js',
+
+            'app/bower_components/ngDialog/js/ngDialog.min.js',
+            'app/bower_components/ngprogress/build/ngProgress.js',
+            'app/bower_components/angular-loading-bar/build/loading-bar.js',
             'app/scripts/*.js',
             'app/scripts/**/*.js',
             '.tmp/styles/main.css',
-            'test/mock/**/*.js',
+            'test/spec/mocks/**/*.js',
             'test/spec/*.js',
             'test/spec/**/*.js',
-            'test/spec/mocks/mock_translations_en.json',
             '.tmp/viewTemplates/templates.js'
         ],
 
         // list of files to exclude
         exclude: [],
         proxies: {
-            '/i18n/translations_en.json' : 'http://localhost:8080/base/test/spec/mocks/mock_translations_en.json',
-            '/images/' : 'http://localhost:8080/base/app/images'
+            '/images/': 'http://localhost:8080/base/app/images'
         },
         preprocessors: {
-            'app/scripts/**/*.js' : ['coverage']
+            'app/scripts/**/*.js': ['coverage']
         },
 
         // use dots reporter, as travis terminal does not support escaping sequences
@@ -108,11 +119,11 @@ module.exports = function(config) {
         // CLI --report-slower-than 500
         reportSlowerThan: 500,
         coverageReporter: {
-            type : 'html',
-            dir : 'coverage/',
-            subdir: function(browser){
+            type: 'html',
+            dir: 'coverage/',
+            subdir: function (browser) {
                 var result = browser.toLowerCase().split(/[ /-]/)[0];
-                console.log('this is browser',result);
+                console.log('this is browser', result);
                 return result;
             }
         },

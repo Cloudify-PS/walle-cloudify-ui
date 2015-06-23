@@ -1,0 +1,49 @@
+###########################################################
+# This Blueprint installs a node application on an existing host.
+###########################################################
+
+tosca_definitions_version: cloudify_dsl_1_0
+
+imports:
+  - http://www.getcloudify.org/spec/cloudify/3.2/types.yaml
+  - types/node-app.yaml
+
+
+inputs: {}
+
+node_templates:
+
+  host:
+     type: cloudify.nodes.Compute
+     properties:
+       ip: "127.0.0.1"
+       cloudify_agent:
+         user: "root"
+         key: "~/.ssh/agent_key.pem"
+
+  nodejs:
+    type: gs.nodes.NodeJSServer
+    relationships:
+      - type: cloudify.relationships.contained_in
+        target: host
+
+  myapp:
+    type: gs.nodes.NodeOfflineApplicationModule
+    relationships:
+      - type: cloudify.relationships.contained_in
+        target: nodejs
+
+#  nodecellar:
+#    type: nodecellar.nodes.NodecellarApplicationModule
+#    properties:
+#      port: 8080
+#    relationships:
+#
+#      ################################
+#      # Setting the nodejs connection
+#      ################################
+#
+#      - type: node_contained_in_nodejs
+#        target: nodejs
+
+

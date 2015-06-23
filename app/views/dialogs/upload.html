@@ -1,0 +1,25 @@
+<div id="uploadDialogContainer" class="dialogBox" ng-file-drop ng-model="myFile" ng-class="{'inprogress' : uploadInProcess }">
+    <div class="dialogTitle">{{ 'dialogs.upload.title' | translate }}</div>
+    <ng-progress></ng-progress>
+    <div class="dialogDescription" ng-file-drop ng-model="myFile"  drag-over-class="dragover">{{ 'dialogs.upload.description' | translate }}</div>
+    <form id="uploadForm" name="uploadForm">
+        <div class="browse">
+            <div id="browseBtn" class="gs-btn">
+                <i class="icon-gs-add-file"></i>
+                <input type="file" name="fileInput" id="fileInput" accept=".tar,.gz,.archive" ng-file-select="onFileSelect($files)">
+            </div>
+            <input type="text" spellcheck="false" class="browseTxt" ng-change="updatePath()" ng-model="inputText" placeholder="{{ 'dialogs.upload.browseText' | translate }}" required>
+        </div>
+
+        <div class="name">
+            <input type="text" spellcheck="false" ng-model="blueprintUploadOpts.blueprint_id" placeholder="{{ 'dialogs.upload.name' | translate }}" required>
+        </div>
+        <div class="name">
+            <input type="text" spellcheck="false" ng-model="blueprintUploadOpts.params.application_file_name" placeholder="{{ 'dialogs.upload.filename' | translate }}">
+        </div>
+        <div id="mainFile" style="display:none">Application file: <input type="text" ng-model="mainFileName"></div>
+        <div class="error-message" ng-show="isUploadError()">{{errorMessage}}</div>
+        <div id="required-message">{{ 'dialogs.upload.required' | translate }}</div>
+        <button id="uploadBtn" class="gs-btn" ng-disabled="!isUploadEnabled()" ng-class="{loader: uploadInProcess}" ng-click="uploadFile()">{{ 'dialogs.upload.save' | translate }}</button>
+    </form>
+</div>

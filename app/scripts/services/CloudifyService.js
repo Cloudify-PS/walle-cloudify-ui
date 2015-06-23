@@ -25,6 +25,9 @@ angular.module('cosmoUiApp')
                     fn(params).then(function(data){
                         deferred.notify(data);
                         autoPullPromise[name] = $timeout(_internalLoad, 10000);
+                    },
+                    function(reason) {
+                        deferred.reject(reason);
                     });
                 })();
             }
@@ -99,6 +102,19 @@ angular.module('cosmoUiApp')
             };
             return _load('configuration', callParams);
         }
+
+
+        this.getErrorMessage = function( errResponse ){
+            try {
+                return '[' + errResponse.data.error_code + '] : ' + errResponse.data.message;
+            }catch(e){
+                try {
+                    return typeof(errResponse.data) === 'string' ? errResponse.data : JSON.stringify(errResponse.data);
+                }catch(e){
+                    return 'An error has occurred. information is not available';
+                }
+            }
+        };
 
         this.autoPull = _autoPull;
         this.autoPullStop = _autoPullStop;

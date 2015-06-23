@@ -1,8 +1,8 @@
 <div class="toggle-switch">
-    <div id="toggle-switch-text">{{ 'toggleSwitch.' + text | i18n }}</div>
+    <div id="toggle-switch-text">{{ 'toggleSwitch.' + text | translate }}</div>
     <div id="toggle-switch-button" class="{{value}}" ng-click="toggleButton()">
-        <div id="toggle-switch-button-text-on" class="toggle-switch-button-text" ng-show="isToggleOn()">{{ 'toggleSwitch.on' | i18n }}</div>
+        <div id="toggle-switch-button-text-on" class="toggle-switch-button-text" ng-show="isToggleOn()">{{ 'toggleSwitch.on' | translate }}</div>
         <div id="toggle-switch-button-circle" class="{{value}}"></div>
-        <div id="toggle-switch-button-text-off" class="toggle-switch-button-text" ng-show="!isToggleOn()">{{ 'toggleSwitch.off' | i18n }}</div>
+        <div id="toggle-switch-button-text-off" class="toggle-switch-button-text" ng-show="!isToggleOn()">{{ 'toggleSwitch.off' | translate }}</div>
     </div>
 </div>

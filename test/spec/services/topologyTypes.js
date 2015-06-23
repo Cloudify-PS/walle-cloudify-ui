@@ -5,19 +5,10 @@ describe('Service: TopologyTypes', function () {
     var mtopologyTypes;
     var typesList = [];
 
-    describe('Test setup', function () {
-        it('Injecting required data & initializing a new instance', function () {
-
-            // Load the app module
-            module('cosmoUiApp', 'gsUiHelper');
-
-            // Initialize a new instance of NodeSearchService
-            inject(function (TopologyTypes) {
-                mtopologyTypes = TopologyTypes;
-            });
-
-        });
-    });
+    beforeEach(module('cosmoUiApp', 'backend-mock'));
+    beforeEach(inject(function (TopologyTypes) {
+        mtopologyTypes = TopologyTypes;
+    }));
 
     describe('Unit tests', function () {
 

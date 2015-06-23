@@ -22,6 +22,7 @@
 @import './deploymentProgressPanel';
 @import './hosts';
 @import './interface';
+@import './source';
 
 
 $gs-infra-root:'../bower_components/gs-ui-infra';
@@ -40,6 +41,7 @@ $fa-font-path:'../bower_components/font-awesome/fonts';
 @import './config';
 @import './logs';
 @import './login';
+@import './ngProgress';
 
 /** Bootstap **/
 @import '../bower_components/bootstrap-sass-official/assets/stylesheets/_bootstrap';

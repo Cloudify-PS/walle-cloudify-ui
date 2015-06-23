@@ -4,15 +4,15 @@
         <div id="main-content">
 
             <div id="configView">
-                <h3>{{ 'config.title' | i18n }}</h3>
+                <h3>{{ 'config.title' | translate }}</h3>
 
                 <div id="configForm">
-                    <div id="text">{{ 'config.mainMessage' | i18n }}</div>
+                    <div id="text">{{ 'config.mainMessage' | translate }}</div>
                     <form>
-                        <label for="cosmoServer">{{ 'config.addressLabel' | i18n }}</label>
+                        <label for="cosmoServer">{{ 'config.addressLabel' | translate }}</label>
                         <input type="text" spellcheck="false" id="cosmoServer" ng-model="cosmoServer">
 
-                        <label for="cosmoPort">{{ 'config.portLabel' | i18n }}</label>
+                        <label for="cosmoPort">{{ 'config.portLabel' | translate }}</label>
                         <input type="text" spellcheck="false" id="cosmoPort" ng-model="cosmoPort" maxlength="5" required>
 
                         <label><input type="checkbox" ng-model="cosmoLogs"> Enable Logs</label>
@@ -23,7 +23,7 @@
                             </li>
                         </ul>
 
-                        <button type="button" class="btn btn-default" ng-click="saveConfiguration()">{{ 'config.saveBtn' | i18n }}</button>
+                        <button type="button" class="btn btn-default" ng-click="saveConfiguration()">{{ 'config.saveBtn' | translate }}</button>
                     </form>
                 </div>
             </div>

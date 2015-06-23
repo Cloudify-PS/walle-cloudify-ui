@@ -4,15 +4,15 @@
         <div class="breadcrumbs"><ul id="deployments" breadcrumbs></ul></div>
     </div>
 
-    <table ng-show="!cosmoConnectionError()" id="deploymentTable" class="gs-table">
+    <table ng-show="!managerError" id="deploymentTable" class="gs-table">
         <thead>
             <tr>
-                <th class="id">{{ 'deployments.table.heading.id' | i18n }}</th>
-                <th class="blueprint">{{ 'deployments.table.heading.blueprint' | i18n }}</th>
-                <th class="create">{{ 'deployments.table.heading.createDate' | i18n }}</th>
-                <th class="update">{{ 'deployments.table.heading.updated' | i18n }}</th>
-                <th class="actions">{{ 'deployments.table.heading.action' | i18n }}</th>
-                <th class="delete">{{ 'deployments.table.heading.delete' | i18n }}</th>
+                <th class="id">{{ 'deployments.table.heading.id' | translate }}</th>
+                <th class="blueprint">{{ 'deployments.table.heading.blueprint' | translate }}</th>
+                <th class="create">{{ 'deployments.table.heading.createDate' | translate }}</th>
+                <th class="update">{{ 'deployments.table.heading.updated' | translate }}</th>
+                <th class="actions">{{ 'deployments.table.heading.action' | translate }}</th>
+                <th class="delete">{{ 'deployments.table.heading.delete' | translate }}</th>
             </tr>
         </thead>
         <tbody ng-repeat="deployment in deployments">
@@ -29,12 +29,12 @@
                              data-ng-model="selectedWorkflow.data"
                              data-text="Select workflow"></div>
                     </div>
-                    <div class="executingWorkflow" ng-show="isExecuting(deployment.blueprint_id, deployment.id)">
+                    <div class="executingWorkflow" ng-dblclick="showInputs(deployment)" ng-show="isExecuting(deployment.blueprint_id, deployment.id)">
                         <div class="deploymentExecute" ng-show="isExecuting(deployment.blueprint_id, deployment.id)"></div>
-                        {{ 'deployments.process.' + getExecutionAttr(deployment, 'workflow_id') | i18n }}
+                        {{ 'deployments.process.' + getExecutionAttr(deployment, 'workflow_id') | translate }}
                     </div>
-                    <i class="deployment-play" ng-class="{play: isExecuteEnabled(deployment.id), playDisabled: !isExecuteEnabled(deployment.id)}" ng-click="toggleConfirmationDialog(deployment, 'execute')" ng-show="!isExecuting(deployment.blueprint_id, deployment.id)"></i>
-                    <i class="deployment-pause fa fa-times-circle" ng-show="isExecuting(deployment.blueprint_id, deployment.id, getExecutionAttr(deployment, 'workflow_id'))" ng-click="toggleConfirmationDialog(deployment, 'cancel')"></i>
+                    <i class="deployment-play" ng-class="{play: isExecuteEnabled(deployment.id), playDisabled: !isExecuteEnabled(deployment.id)}" ng-dblclick="showInputs(deployment)" ng-click="openConfirmationDialog(deployment, 'execute')" ng-show="!isExecuting(deployment.blueprint_id, deployment.id)"></i>
+                    <i class="deployment-pause fa fa-times-circle" ng-show="isExecuting(deployment.blueprint_id, deployment.id, getExecutionAttr(deployment, 'workflow_id'))" ng-click="openConfirmationDialog(deployment, 'cancel')"></i>
                 </td>
                 <td class="delete" ng-click="layerRedirectTo(deployment, $event, 'td.delete')">
                     <button class="gs-btn btn-sm" data-ng-click="deleteDeployment(deployment)">Delete</button>
@@ -43,60 +43,9 @@
         </tbody>
     </table>
 
-    <div class="no-blueprints-message" ng-show="deployments.length == 0">{{ 'deployments.emptyMessage' | i18n }}</div>
+    <div class="no-blueprints-message" ng-show="deployments.length == 0">{{ 'deployments.emptyMessage' | translate }}</div>
 
-    <div class="loading" ng-show="blueprints == null && !cosmoConnectionError()"></div>
+    <div class="gs-big-loader" ng-show="blueprints == null && !managerError"></div>
 
-    <div class="connect-error-message" ng-show="cosmoConnectionError()">{{ 'connectError' | i18n }}</div>
-
-    <div ng-show="isConfirmationDialogVisible" ng-controller="ExecuteDialogCtrl">
-        <div class="dialogBoxBg"></div>
-        <div id="confirmationDialogContainer" class="dialogBox">
-            <div class="dialogTitle">Execute Workflow</div>
-            <div class="dialogClose dialogButton" ng-click="closeDialog()"></div>
-            <div class="dialogDescription" ng-show="confirmationType == 'execute'">{{ 'deployments.confirmationPopup.descriptionExecute' | i18n }} {{getSelectedWorkflow()}}?</div>
-            <div class="dialogDescription" ng-show="confirmationType == 'cancel'">{{ 'deployments.confirmationPopup.descriptionCancel' | i18n }} {{getSelectedWorkflow()}}?</div>
-            <div class="dialogInputs executeInputs" ng-show="isParamsVisible()">
-                <div class="buttons-group executeBtns">
-                    <button data-ng-class="{'active': inputsState == 'params'}" class="btn btn-default" data-ng-click="toggleInputsState('params')">Parameters</button>
-                    <button data-ng-class="{'active': inputsState == 'raw'}" class="btn btn-default" data-ng-click="toggleInputsState('raw')">Raw</button>
-                </div>
-                <div class="inputsParameters" ng-show="inputsState == 'params'">
-                    <ul>
-                        <li ng-repeat="(name, value) in selectedWorkflow.data.parameters">
-                            {{name}}:
-                            <input type="text" spellcheck="false" ng-trim="false" ng-model="inputs[name]" placeholder="{{ 'blueprints.deployDialog.enterValue' | i18n }}">
-                        </li>
-                    </ul>
-                </div>
-                <div class="inputsRaw" ng-show="inputsState == 'raw'">
-                    <textarea ng-model="rawString" spellcheck="false"></textarea>
-                </div>
-            </div>
-            <div class="error-message" data-ng-show="showError">{{ executeErrorMessage }}</div>
-            <div class="buttonsContainer confirmationButtons" ng-show="confirmationType == 'execute'">
-                <button class="gs-btn" ng-click="closeDialog()">{{ 'deployments.confirmationPopup.cancelBtn' | i18n }}</button>
-                <button class="gs-btn" ng-class="{disabled: !isExecuteEnabled(), enabled: isExecuteEnabled(), loader: inProcess}" ng-click="executeWorkflow(selectedDeployment)">{{ 'deployments.confirmationPopup.confirmBtn' | i18n }}</button>
-            </div>
-            <div class="buttonsContainer confirmationButtons" ng-show="confirmationType == 'cancel'">
-                <button class="gs-btn" ng-click="toggleConfirmationDialog()">{{ 'deployments.confirmationPopup.cancelBtn' | i18n }}</button>
-                <button class="gs-btn" ng-click="cancelWorkflow(getExecutionAttr(selectedDeployment, 'id'))">{{ 'deployments.confirmationPopup.confirmBtn' | i18n }}</button>
-            </div>
-        </div>
-    </div>
-
-    <div data-ng-show="isDeleteDeploymentVisible">
-        <div class="dialogBoxBg"></div>
-        <div id="deleteDeploymentDialog" class="dialogBox">
-            <div class="dialogTitle">Delete Deployment</div>
-            <div class="gs-btn close" ng-class="{disabled: deleteInProcess}" ng-click="closeDeleteDialog()"></div>
-            <div class="dialogDescription">Are you sure you want to delete '{{ delDeployName }}'?</div>
-            <div class="error-message" data-ng-show="delDeployError">{{ delDeployError }}</div>
-            <div class="buttonsContainer confirmationButtons">
-                <div class="dialogCheckbox"><label><input type="checkbox" ng-disabled="deleteInProcess" data-ng-model="ignoreLiveNodes" ng-click="toggleIgnoreLiveNodes()"> Force Delete</label></div>
-                <button id="cancelBtnDelDep" class="gs-btn" ng-class="{disabled: deleteInProcess}" ng-click="closeDeleteDialog()">{{ 'deployments.confirmationPopup.cancelBtn' | i18n }}</button>
-                <button class="gs-btn" ng-class="{loader: deleteInProcess}" ng-click="confirmDeleteDeployment()">{{ 'deployments.confirmationPopup.confirmBtn' | i18n }}</button>
-            </div>
-        </div>
-    </div>
+    <div class="connect-error-message" ng-show="managerError">{{ 'connectError' | translate }}</div>
 </div>

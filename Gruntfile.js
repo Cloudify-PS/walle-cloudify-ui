@@ -11,7 +11,7 @@ var mountFolder = function (connect, dir) {
 
 // # Globbing
 // for performance reasons we're only matching one level down:
-// 'test/spec/{,*/}*.js'
+// 'test/spec/**/*.js'
 // use this if you want to recursively match all subfolders:
 // 'test/spec/**/*.js'
 
@@ -24,7 +24,9 @@ module.exports = function (grunt) {
     // configurable paths
     var yeomanConfig = {
         app: 'app',
-        dist: 'dist'
+        dist: 'dist',
+        distBlueprint: 'dist-blueprint',
+        artifacts: 'artifacts'
     };
 
     try {
@@ -34,17 +36,25 @@ module.exports = function (grunt) {
 
     grunt.initConfig({
         yeoman: yeomanConfig,
+        availabletasks: {
+            help: {
+                options: {
+                    filter: 'include',
+                    tasks: ['default', 'build','blueprint','buildArtifacts','uploadArtifacts','analyze']
+                }
+            }
+        },
         watch: {
             coffee: {
-                files: ['<%= yeoman.app %>/scripts/{,*/}*.coffee'],
+                files: ['<%= yeoman.app %>/scripts/**/*.coffee'],
                 tasks: ['coffee:dist']
             },
             coffeeTest: {
-                files: ['test/spec/{,*/}*.coffee'],
+                files: ['test/spec/**/*.coffee'],
                 tasks: ['coffee:test']
             },
             compass: {
-                files: ['<%= yeoman.app %>/styles/{,*/}*.{scss,sass}'],
+                files: ['<%= yeoman.app %>/styles/**/*.{scss,sass}'],
                 tasks: ['compass:server']
             },
             livereload: {
@@ -52,10 +62,10 @@ module.exports = function (grunt) {
                     livereload: LIVERELOAD_PORT
                 },
                 files: [
-                    '<%= yeoman.app %>/{,*/}*.html',
-                    '{.tmp,<%= yeoman.app %>}/styles/{,*/}*.css',
-                    '{.tmp,<%= yeoman.app %>}/scripts/{,*/}*.js',
-                    '<%= yeoman.app %>/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}'
+                    '<%= yeoman.app %>/**/*.html',
+                    '{.tmp,<%= yeoman.app %>}/styles/**/*.css',
+                    '{.tmp,<%= yeoman.app %>}/scripts/**/*.js',
+                    '<%= yeoman.app %>/images/**/*.{png,jpg,jpeg,gif,webp,svg}'
                 ]
             }
         },
@@ -129,6 +139,7 @@ module.exports = function (grunt) {
                         src: [
                             '.tmp',
                             '<%= yeoman.dist %>/*',
+                            '<%= yeoman.distBlueprint %>/*',
                             '!<%= yeoman.dist %>/.git*'
                         ]
                     }
@@ -149,11 +160,12 @@ module.exports = function (grunt) {
         },
         jshint: {
             options: {
-                jshintrc: '.jshintrc'
+                jshintrc: '.jshintrc',
+                reporter: require('jshint-stylish')
             },
             all: [
                 'Gruntfile.js',
-                '<%= yeoman.app %>/scripts/{,*/}*.js'
+                '<%= yeoman.app %>/scripts/**/*.js'
             ],
             backend:{
                 options: {
@@ -204,7 +216,7 @@ module.exports = function (grunt) {
                     {
                         expand: true,
                         cwd: '<%= yeoman.app %>/scripts',
-                        src: '{,*/}*.coffee',
+                        src: '**/*.coffee',
                         dest: '.tmp/scripts',
                         ext: '.js'
                     }
@@ -215,14 +227,46 @@ module.exports = function (grunt) {
                     {
                         expand: true,
                         cwd: 'test/spec',
-                        src: '{,*/}*.coffee',
+                        src: '**/*.coffee',
                         dest: '.tmp/spec',
                         ext: '.js'
                     }
                 ]
             }
         },
-        compass: {
+        compress:{
+            blueprint:{
+                options: { archive: '<%=yeoman.dist%>/blueprint.tar.gz' },
+                files: [
+                    {
+                        cwd: '<%=yeoman.distBlueprint%>/blueprint',
+                        src: ['node-application/**'],
+                        expand:true
+
+                    }
+                ]
+
+            }
+
+        },
+
+
+// Compiles Sass to CSS and generates necessary files if requested
+        sass: {
+
+            dist: {
+                files: {
+                    '.tmp/styles/main.css' : '<%= yeoman.app %>/styles/main.scss'
+                }
+            },
+            server: {
+                files: {
+                    '.tmp/styles/main.css' : '<%= yeoman.app %>/styles/main.scss'
+                }
+
+            }
+        },
+       /* compass: {
             options: {
                 sassDir: '<%= yeoman.app %>/styles',
                 cssDir: '.tmp/styles',
@@ -242,7 +286,7 @@ module.exports = function (grunt) {
                     debugInfo: true
                 }
             }
-        },
+        },*/
         // not used since Uglify task does concat,
         // but still available if needed
         /*concat: {
@@ -252,9 +296,9 @@ module.exports = function (grunt) {
             dist: {
                 files: {
                     src: [
-                        '<%= yeoman.dist %>/scripts/{,*/}*.js',
-                        '<%= yeoman.dist %>/styles/{,*/}*.css',
-                        '<%= yeoman.dist %>/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}',
+                        '<%= yeoman.dist %>/scripts/**/*.js',
+                        '<%= yeoman.dist %>/styles/**/*.css',
+                        '<%= yeoman.dist %>/images/**/*.{png,jpg,jpeg,gif,webp,svg}',
                         '<%= yeoman.dist %>/styles/fonts/*'
                     ]
                 }
@@ -267,8 +311,8 @@ module.exports = function (grunt) {
             }
         },
         usemin: {
-            html: ['<%= yeoman.dist %>/{,*/}*.html'],
-            css: ['<%= yeoman.dist %>/styles/{,*/}*.css'],
+            html: ['<%= yeoman.dist %>/**/*.html'],
+            css: ['<%= yeoman.dist %>/styles/**/*.css'],
             options: {
                 dirs: ['<%= yeoman.dist %>']
             }
@@ -279,7 +323,7 @@ module.exports = function (grunt) {
                     {
                         expand: true,
                         cwd: '<%= yeoman.app %>/images',
-                        src: '{,*/}*.{png,jpg,jpeg}',
+                        src: '**/*.{png,jpg,jpeg}',
                         dest: '<%= yeoman.dist %>/images'
                     }
                 ]
@@ -292,8 +336,8 @@ module.exports = function (grunt) {
             // dist: {
             //   files: {
             //     '<%= yeoman.dist %>/styles/main.css': [
-            //       '.tmp/styles/{,*/}*.css',
-            //       '<%= yeoman.app %>/styles/{,*/}*.css'
+            //       '.tmp/styles/**/*.css',
+            //       '<%= yeoman.app %>/styles/**/*.css'
             //     ]
             //   }
             // }
@@ -324,6 +368,38 @@ module.exports = function (grunt) {
         },
         // Put files not handled in other tasks here
         copy: {
+            artifacts:{
+                files:[
+                    {
+                        expand:true,
+                        dot: true,
+                        cwd: '<%= yeoman.dist %>',
+                        dest: '<%= yeoman.artifacts %>',
+                        src: [ 'cosmo-ui-*.tgz', 'blueprint.tar.gz']
+                    }
+                ]
+            },
+            blueprint:{
+                files:[
+                    {
+                        expand:true,
+                        dot: true,
+                        cwd: 'build',
+                        dest: '<%= yeoman.distBlueprint %>',
+                        src: [ 'blueprint/**']
+                    },
+                    {
+                        expand: true,
+                        dot: true,
+                        cwd: '<%= yeoman.dist %>',
+                        dest: '<%= yeoman.distBlueprint%>',
+                        src: [ 'cosmo-ui*.tgz'],
+                        rename: function( dest /*, src*/ ){
+                            return dest + 'app.tgz';
+                        }
+                    }
+                ]
+            },
             dist: {
                 files: [
                     {
@@ -335,8 +411,8 @@ module.exports = function (grunt) {
                             '*.{ico,png,txt}',
                             '.htaccess',
                             'bower_components/**/*.{ttf,woff,eot,svg,gif,png}',
-                            'i18n/{,*/}*.json',
-                            'images/{,*/}*.{gif,webp,svg}',
+                            'i18n/**/*.json',
+                            'images/**/*.{gif,webp,svg}',
                             'styles/fonts/*'
                         ]
                     },
@@ -406,17 +482,17 @@ module.exports = function (grunt) {
                 configFile: 'karma.conf.js',
                 singleRun: true
             },
+            develop: {
+                reporters: ['failed'],
+                singleRun: true,
+                configFile: 'karma.conf.js'
+            },
             debug: {
                 browsers: ['Chrome'],
                 reporters: ['spec'],
                 configFile: 'karma.conf.js',
                 singleRun: false /** TODO : find how to : 1) tell karma to use chrome from here.. override conf file**/
                                                          /** 2) tell karma to run a single test from here... override conf file **/
-            },
-            develop: {
-                configFile: 'karma.conf.js',
-                singleRun: true,
-                browsers: ['PhantomJS']
             }
         },
         ngmin: {
@@ -524,6 +600,38 @@ module.exports = function (grunt) {
                 src: ['app/views/**/*.html'],
                 dest: '.tmp/viewTemplates/templates.js'
             }
+        },
+        jscpd:{
+            all: {
+                path: '.',
+                output: 'dev/jscpd.output.txt',
+                exclude: [ 'app/bower_components/**', 'node_modules/**', 'dist/**','dev/**','app/styles/SyntaxHighlighter/**','test/jasmine-standalone-1.3.1/**'],
+                threshold: 1
+            }
+        },
+        'jscpdreporter': {
+            options: {
+                sourcefile: 'dev/jscpd.output.txt',
+                outputDir: 'dev/jscpd-report/'
+            }
+        },
+        aws_s3: {
+            options: {
+                accessKeyId: '<%= aws.accessKey %>', // Use the variables
+                secretAccessKey: '<%= aws.secretKey %>', // You can also use env variables
+                region: '<%= aws.region %>',
+                access: 'public-read',
+                uploadConcurrency: 5, // 5 simultaneous uploads
+                downloadConcurrency: 5 // 5 simultaneous downloads
+            },
+            uploadArtifacts: {
+                options: {
+                    bucket: '<%= aws.bucket %>'
+                },
+                files: [
+                    {dest: '<%= aws.folder %>', cwd: './artifacts' , expand:true, src:['**'],action: 'upload'}
+                ]
+            }
         }
     });
 
@@ -547,6 +655,8 @@ module.exports = function (grunt) {
         ]);
     });
 
+    grunt.registerTask('analyze', 'analyzes the sources and reports quality problems such as copy-paste', [ 'jscpd', 'grunt-jscpd-reporter']);
+
     grunt.registerTask('test', function(testBackend) {
         var tasks  = [];
         if ( testBackend === undefined || testBackend === '' || testBackend === 'all' || testBackend === 'frontend') { // default
@@ -569,7 +679,7 @@ module.exports = function (grunt) {
         grunt.task.run(tasks);
     });
 
-    grunt.registerTask('build', function () {
+    grunt.registerTask('build', 'builds the project', function () {
 
         var tasks = [
             'clean:dist',
@@ -589,8 +699,7 @@ module.exports = function (grunt) {
         grunt.task.run(tasks);
     });
 
-    grunt.registerTask('pack', [
-        'build',
+    grunt.registerTask('pack', 'after `build` will run npm pack on dist folder',[
         'shell:npmInstallDist',
         'shell:npmPack'
     ]);
@@ -638,12 +747,50 @@ module.exports = function (grunt) {
         grunt.task.run('jshint:backend');
     });
 
-    grunt.registerTask('default', [
+    /**
+     * This task assumes we have a packed artifact
+     * run it by running `npm pack blueprint`
+     * or if you already ran `npm pack` just run `npm blueprint`
+     */
+    grunt.registerTask('blueprint', 'a task to run after npm pack in order to construct the blueprint',[
+        'copy:blueprint',
+        'compress:blueprint'
+    ]);
+
+
+    grunt.registerTask('uploadArtifacts', 'assumes `buildArtifacts` execution. uploads artifacts to amazon and tarzan',[
+        'readS3Keys',
+        'aws_s3:uploadArtifacts'
+    ]);
+
+    /**
+     * will output all artifacts : cosmo-ui.tar.gz and blueprint.tgz to folder named artifacts
+     */
+    grunt.registerTask('buildArtifacts', 'runs build from scratch. outputs ui.tar.gz and blueprint.tar.gz to folder `artifacts`', [
+        'default',
+        'pack',
+        'blueprint',
+        'copy:artifacts'
+    ]);
+
+    grunt.registerTask('readS3Keys', function(){
+        var s3KeysFile = process.env.AWS_JSON || './dev/aws-keys.json';
+        grunt.log.ok('reading s3 keys from [' + s3KeysFile  + ']' );
+        grunt.config.data.aws =  grunt.file.readJSON( s3KeysFile ); // Read the file
+    });
+
+    grunt.registerTask('default', 'compiles the project' ,[
         'jshint',
         'jsdoc',
         'test:all',
         'build',
         'backend'
     ]);
+
+
+    grunt.registerTask('compass', ['sass']);
+
+
+    grunt.registerTask('help', ['availabletasks:help']);
 
 };
