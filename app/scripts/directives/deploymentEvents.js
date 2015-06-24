@@ -7,7 +7,7 @@
  * # deploymentEvents
  */
 angular.module('cosmoUiApp')
-    .directive('deploymentEvents', function ($log, $filter, EventsService, EventsMap, $document) {
+    .directive('deploymentEvents', function ($log, $filter, EventsService, EventsMap, $document, cloudifyClient, $interval) {
         return {
             templateUrl: 'views/deployment/eventWidget.html',
             restrict: 'EA',
@@ -19,86 +19,45 @@ angular.module('cosmoUiApp')
                 $scope.events = [];
                 $scope.minimizeMode = false;
 
-
-                var dragFromY = 0, // indicates which Y value drag started
-                    dragFromHeight = 0,
-                    minHeight = 40;
-                var events = EventsService.newInstance('/backend/events'),
-                    troubleShoot = 0,
-                    executeRetry = 10,
-                    lastAmount = 0;
+                var dragFromY = 0; // indicates which Y value drag started
+                var dragFromHeight = 0;
+                var minHeight = 40;
 
                 function executeEvents() {
-                    function _convertDates(data) {
-                        for (var i in data) {
-                            data[i]._source.timestamp = $filter('dateFormat')(data[i]._source.timestamp, 'yyyy-MM-dd HH:mm:ss');
-                        }
-                        return data;
-                    }
 
-                    function pushLogs(data) {
-                        $scope.events = data.concat($scope.events);
-                    }
-
-                    events.execute(function (data) {
-                        if (data && data.hasOwnProperty('hits')) {
-                            var dataHits = _convertDates(data.hits.hits);
-                            if (dataHits.length > 0) {
-                                if (data.hits.hits.length !== lastAmount) {
-                                    pushLogs(dataHits);
-                                    lastAmount = dataHits.length;
-                                }
-                            }
-                        }
-                        else {
-                            $log.info('Cant load events, undefined data.');
-                            troubleShoot++;
-                        }
-
-                        // Stop AutoPull after 10 failures
-                        if (troubleShoot === executeRetry) {
-                            events.stopAutoPull();
-                        }
+                    cloudifyClient.events.get( { 'deployment_id' :  $scope.id ,  'from_event': 0, 'batch_size' : 50 , 'include_logs' :  false , 'order' : 'desc' }).then(function (result) {
+                        $scope.events = result.data.hits.hits;
+                        $scope.lastEvent = $scope.events.length > 0 ? $scope.events[0] : null;
+                        _.each($scope.events, function(e){
+                            e._source.timestamp = EventsService.convertTimestamp( e._source.timestamp  );
+                        });
                     }, true);
                 }
 
-                function filterEvents(field, newValue, oldValue) {
-                    if (newValue === null) {
-                        return;
+                // todo: use the polling service
+                var polling = $interval(executeEvents, 5000);
+                $scope.$on('$destroy', function() {
+                    if (polling) {
+                        $interval.cancel(polling);
                     }
-                    if (oldValue !== null && oldValue.value !== null) {
-                        events.filter(field, oldValue.value);
-                    }
-                    if (newValue.value !== null) {
-                        events.filter(field, newValue.value);
-                    }
-                }
-
-                filterEvents('type', {value: 'cloudify_event'}, null);
-                filterEvents('context.deployment_id', {value: $scope.id}, null);
+                });
                 executeEvents();
 
+
+                // todo : get rid of this. replace with scope binding on directive
                 $scope.$watch('events', function () {
                     $scope.$broadcast('rebuild:me');
                 });
 
+                // todo: use a directive for both instead of adding logic here..
+                // todo use EventsService to get the icon instead
                 $scope.getEventIcon = function (event) {
                     return EventsMap.getEventIcon(event);
                 };
 
+                // todo use EventsService to get the text instead
                 $scope.getEventText = function (event) {
                     return EventsMap.getEventText(event);
-                };
-
-                $scope.lastEvent = function () {
-                    return $scope.events[0];
-                };
-
-                $scope.hasLastEvent = function() {
-                    if($scope.minimizeMode && $scope.events.length > 0) {
-                        return true;
-                    }
-                    return false;
                 };
 
                 $scope.dragIt = function (event) {
@@ -136,8 +95,6 @@ angular.module('cosmoUiApp')
                     c.css({
                         height: newHeight + 'px'
                     });
-
-
                 }
 
                 function mouseup() {
@@ -146,7 +103,6 @@ angular.module('cosmoUiApp')
                     $document.unbind('mousemove', mousemove);
                     $document.unbind('mouseup', mouseup);
                 }
-
             }
         };
     });
