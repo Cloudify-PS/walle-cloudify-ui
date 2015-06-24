@@ -5,7 +5,6 @@ angular.module('cosmoUiApp')
         $scope.lastExecutedPlan = null;
         $scope.selectedBlueprint = null;
         $scope.managerError = false;
-        var _blueprintsArr = [];
         var _dialog = null;
         $scope.itemToDelete = null;
 
@@ -66,16 +65,16 @@ angular.module('cosmoUiApp')
         function loadBlueprints() {
             $scope.blueprints = null;
             $scope.managerError = false;
-            cloudifyClient.blueprints.list('id,updated_at,created_at').then( function( result ){
+            cloudifyClient.blueprints.list('id,updated_at,created_at').then(function (result) {
 
-                    if (result.data.length < 1) {
-                        $scope.blueprints = [];
-                    } else {
-                        $scope.blueprints = _.sortByOrder(result.data, ['updated_at'], [false]);
+                if (result.data.length < 1) {
+                    $scope.blueprints = [];
+                } else {
+                    $scope.blueprints = _.sortByOrder(result.data, ['updated_at'], [false]);
 
-                        $scope.closeDialog();
-                    }
-            }, function( result ){
+                    $scope.closeDialog();
+                }
+            }, function (result) {
                 $scope.managerError = result.data;
                 $log.error('got error result', result.data);
             });
@@ -92,7 +91,7 @@ angular.module('cosmoUiApp')
                     }
                     deploymentsCount[dep.blueprint_id]++;
                 });
-            }, function(result){
+            }, function(/*result*/){
                 // alert on error somewhere. todo.
             });
         }

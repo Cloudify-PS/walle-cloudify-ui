@@ -2,15 +2,21 @@
 
 // TODO: this code should be much more testable
 angular.module('cosmoUiApp')
-    .controller('DeploymentsCtrl', function ($scope, $cookieStore, $location, $routeParams, BreadcrumbsService, $timeout, $log, CloudifyService, ngDialog, cloudifyClient) {
+    .controller('DeploymentsCtrl', function ($scope, $cookieStore, ExecutionsService,
+                                             $location, $routeParams, BreadcrumbsService, $timeout, $log,
+                                             CloudifyService, ngDialog, cloudifyClient) {
 
         $scope.deployments = [];
         $scope.executedErr = false;
         $scope.confirmationType = '';
-        var _executedDeployments = [];
+
+        // holds currently running execution per deployment_id
+        var runningExecutions = {};
+
         $scope.selectedWorkflow = {
             data: null
         };
+
         $scope.inputs = {};
         $scope.managerError = false;
         var selectedWorkflows = [];
@@ -76,7 +82,7 @@ angular.module('cosmoUiApp')
                         label: w.name,
                         deployment: deployment.id,
                         parameters: w.parameters
-                    }
+                    };
                 });
 
             }
@@ -90,15 +96,17 @@ angular.module('cosmoUiApp')
             }
         };
 
-        $scope.isExecuting = function(blueprint_id, deployment_id, workflow) {
-            return _executedDeployments[blueprint_id] !== undefined &&
-                _executedDeployments[blueprint_id][deployment_id] !== null &&
-                _executedDeployments[blueprint_id][deployment_id] !== undefined &&
-                _executedDeployments[blueprint_id][deployment_id].status !== 'failed' &&
-                _executedDeployments[blueprint_id][deployment_id].status !== 'terminated' &&
-                _executedDeployments[blueprint_id][deployment_id].status !== 'cancelled' &&
-                _executedDeployments[blueprint_id][deployment_id].status !== null &&
-                workflow !== 'create_deployment_environment';
+        $scope.getExecution = function(deployment_id){
+            return runningExecutions[deployment_id];
+        };
+
+        $scope.canPause = function(deployment_id){
+            return ExecutionsService.canPause(runningExecutions[deployment_id]);
+        };
+
+        $scope.isExecuting = function(deployment_id) {
+            var execution = runningExecutions[deployment_id];
+            return !!execution;
         };
 
         $scope.isExecuteEnabled = function(deployment_id) {
@@ -135,34 +143,16 @@ angular.module('cosmoUiApp')
 
         function _loadExecutions() {
 
-            CloudifyService.deployments.getDeploymentExecutions()
-                .then(function(data) {
-                    if (data.length > 0) {
-                        for (var k = 0; k < $scope.deployments.length; k++) {   // running over deployments list
-                            var blueprint_id = $scope.deployments[k].blueprint_id;
-                            var deployment_id = $scope.deployments[k].id;
+            cloudifyClient.executions.list(null, 'id,workflow_id,status,deployment_id').then(function(result){
 
-                            if (_executedDeployments[blueprint_id] === undefined) { // creating executions array by blueprint name
-                                _executedDeployments[blueprint_id] = [];
-                            }
-
-                            for (var i = 0; i < data.length; i++) {
-                                if (data[i].blueprint_id === blueprint_id && data[i].deployment_id === deployment_id && data[i].status !== null && data[i].status !== 'failed' && data[i].status !== 'terminated' && data[i].status !== 'cancelled') {
-                                    selectedWorkflows[deployment_id] = data[i].workflow_id;
-                                    _executedDeployments[blueprint_id][deployment_id] = data[i];    // adding execution data by blueprint/deployment id's in executions array
-
-                                } else if (data[i].blueprint_id === blueprint_id && data[i].deployment_id === deployment_id && _executedDeployments[blueprint_id][deployment_id] !== undefined && (data[i].status === 'failed' || data[i].status === 'terminated' || data[i].status === 'cancelled') ){
-                                    var currentCreatedDate = new Date(_executedDeployments[blueprint_id][deployment_id].created_at).getTime();
-                                    var dataCreatedDate = new Date(data[i].created_at).getTime();
-
-                                    if (currentCreatedDate < dataCreatedDate) {
-                                        _executedDeployments[blueprint_id][deployment_id] = null;
-                                    }
-                                }
-                            }
-                        }
-                    }
+                var executions = result.data;
+                executions = _.filter(executions, function(exec){ return ExecutionsService.isRunning(exec); });
+                _.each(executions, function(exec){
+                    runningExecutions[exec.deployment_id] = exec;
                 });
+            },function(){
+                // todo: implement error handling
+            });
 
             // location path check to prevent timeout from keep running after path was changed to different page
             if ($location.path() === '/deployments') {
@@ -171,18 +161,6 @@ angular.module('cosmoUiApp')
                 }, 10000);
             }
         }
-
-        $scope.getExecutionAttr = function(deployment, attr) {
-            for (var blueprint in _executedDeployments) {
-                for (var dep in _executedDeployments[blueprint]) {
-                    if (_executedDeployments[blueprint][dep] !== null) {
-                        if (deployment.id === _executedDeployments[blueprint][dep].deployment_id) {
-                            return _executedDeployments[blueprint][dep][attr];
-                        }
-                    }
-                }
-            }
-        };
 
         $scope.loadDeployments = function() {
             cloudifyClient.deployments.list('id,blueprint_id,created_at,updated_at,workflows')

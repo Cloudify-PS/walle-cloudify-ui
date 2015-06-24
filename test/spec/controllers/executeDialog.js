@@ -30,32 +30,37 @@ describe('Controller: ExecuteDialogCtrl', function () {
 
     beforeEach(module('cosmoUiApp', 'ngMock', 'templates-main', 'backend-mock'));
 
-    beforeEach(inject(function ($controller, $rootScope, $httpBackend, $q, CloudifyService) {
+    beforeEach(inject(function ($controller, $rootScope, $httpBackend, CloudifyService/*, cloudifyClient*/ ) {
         scope = $rootScope.$new();
 
-        CloudifyService.deployments.execute = function (executionData) {
-            var deferred = $q.defer();
+        scope.getExecution = jasmine.createSpy('getExecution');
+        spyOn(CloudifyService.deployments, 'execute').andCallFake( function (executionData) {
+            return {
+                then:function(success,error){
 
-            if (executionData.inputs === undefined || JSON.stringify(executionData.inputs) === '{}') {
-                deferred.reject(_executionError);
-            } else {
-                deferred.resolve(_execution);
-            }
+                    if (executionData.inputs === undefined || JSON.stringify(executionData.inputs) === '{}') {
+                        error(_executionError);
+                    } else {
+                        success(_execution);
+                    }
+                }
+            };
 
-            return deferred.promise;
-        };
+        });
 
-        CloudifyService.deployments.updateExecutionState = function (execution_id) {
-            var deferred = $q.defer();
+        spyOn(CloudifyService.deployments,'updateExecutionState').andCallFake(function(execution_id) {
+            return {
+                then:function(success,error){
 
-            if (execution_id) {
-                deferred.reject(_executionError);
-            } else {
-                deferred.resolve(execution_id);
-            }
+                    if (execution_id) {
+                        error(_executionError);
+                    } else {
+                        success(execution_id);
+                    }
+                }
+            };
 
-            return deferred.promise;
-        };
+        });
 
         ExecuteDialogCtrl = $controller('ExecuteDialogCtrl', {
             $scope: scope,
@@ -103,7 +108,7 @@ describe('Controller: ExecuteDialogCtrl', function () {
 
         it('should show error message if required parameters are not provided', inject(function (CloudifyService) {
             var executeParams = null;
-            spyOn(CloudifyService.deployments, 'execute').andCallFake(function (params) {
+            CloudifyService.deployments.execute.andCallFake(function (params) {
                 executeParams = params;
                 return {
                     then: function(success, error) {
@@ -135,9 +140,9 @@ describe('Controller: ExecuteDialogCtrl', function () {
         }));
 
         it('should cancel execution by its id', inject(function (CloudifyService) {
-            spyOn(CloudifyService.deployments, 'updateExecutionState').andCallThrough();
 
-            scope.cancelWorkflow('123');
+            scope.getExecution.andReturn({ 'id' : '123'});
+            scope.cancelWorkflow('deployment_id');
 
             expect(CloudifyService.deployments.updateExecutionState).toHaveBeenCalledWith({
                 execution_id: '123',
@@ -147,7 +152,9 @@ describe('Controller: ExecuteDialogCtrl', function () {
 
         it('should show error message if cancel execution fails', inject(function (CloudifyService) {
             var executeParams = null;
-            spyOn(CloudifyService.deployments, 'updateExecutionState').andCallFake(function (params) {
+            scope.getExecution.andReturn({});
+            // override spy
+            CloudifyService.deployments.updateExecutionState.andCallFake(function (params) {
                 executeParams = params;
                 return {
                     then: function(success, error) {
