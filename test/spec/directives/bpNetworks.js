@@ -9,7 +9,7 @@ describe('Directive: bpNetworks', function () {
         element = angular.element('<div bp-networks></div>');
         element = $compile(element)($rootScope);
         $rootScope.$digest();
-        console.log(element.text());
+
         expect(element.text()).toBe(''); // empty template
     }));
 });
@@ -32,7 +32,7 @@ describe('Directive: bpNetworkCoordinate', function () {
             element = angular.element('<div bp-network-coordinate="myData" ng-model="myData"></div>');
             element = $compile(element)($rootScope);
             $rootScope.$digest();
-            console.log(element.text());
+
             expect(element.text()).toBe(''); // empty template
             expect(bpNetworkService[methodName]).toHaveBeenCalled();
         });

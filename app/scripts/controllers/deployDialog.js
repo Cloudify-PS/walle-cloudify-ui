@@ -1,26 +1,23 @@
 'use strict';
 
 angular.module('cosmoUiApp')
-    .controller('DeployDialogCtrl', function ($scope, CloudifyService, INPUT_STATE) {
+    .controller('DeployDialogCtrl', function ($scope, CloudifyService, INPUT_STATE ) {
         $scope.deployment_id = null;
-        $scope.showError = false;
-        $scope.deployErrorMessage = 'Error deploying blueprint';
+        $scope.deployErrorMessage = null;
         $scope.inputs = {};
         $scope.inputsState = INPUT_STATE.PARAMS;
 
+        $scope.showError = function(){
+            return !!$scope.deployErrorMessage;
+        };
+
+        $scope.isDetailsInvalid = function(){
+            return !$scope.selectedBlueprint || !$scope.deployment_id || $scope.showError();
+        };
+
         $scope.isDeployEnabled = function () {
             // if error message is shown, deploy button should be disabled
-            if (!$scope.selectedBlueprint || !$scope.deployment_id || $scope.showError) {
-                return false;
-            }
-
-            for (var input in $scope.inputs) {
-                // if any of the inputs value is null, the deploy button should be disabled
-                if ($scope.inputs[input] === null || ($scope.inputsState !== INPUT_STATE.RAW && $scope.inputs[input] === '')) {
-                    return false;
-                }
-            }
-            return true;
+            return _validateJSON() && _validateJsonKeys(true) && !$scope.isDetailsInvalid();
         };
 
         $scope.updateInputs = function() {
@@ -31,23 +28,6 @@ angular.module('cosmoUiApp')
             }
         };
 
-        $scope.$watch('inputsState', function() {
-            if (!!$scope.selectedBlueprint) {
-                $scope.updateInputs();
-            }
-        });
-
-        // watching the raw json string changes, validating json on every change
-        $scope.$watch('rawString', function() {
-            if ($scope.rawString !== undefined) {
-                if (!_validateJSON()) {
-                    $scope.showError = true;
-                } else {
-                    $scope.inputs = JSON.parse($scope.rawString);
-                    $scope.showError = false;
-                }
-            }
-        });
 
         $scope.isParamsVisible = function () {
             if ($scope.selectedBlueprint === null) {
@@ -62,19 +42,12 @@ angular.module('cosmoUiApp')
             }
 
             // parse inputs so "true" string will become boolean etc.
-            _parseInputs();
-            $scope.showError = false;
-
-            if ($scope.inputsState === INPUT_STATE.RAW) {
-                try {
-                    $scope.inputs = JSON.parse($scope.rawString);
-                } catch (e) {}
-            }
+            setDeployError(null);
 
             var params = {
                 blueprint_id: blueprintId,
                 deployment_id: $scope.deployment_id,
-                inputs: $scope.inputs
+                inputs: JSON.parse($scope.rawString)
             };
 
             if ($scope.isDeployEnabled()) {
@@ -83,15 +56,22 @@ angular.module('cosmoUiApp')
                     .then(function (data) {
                         $scope.inProcess = false;
                         if (data.hasOwnProperty('message')) {
-                            $scope.deployErrorMessage = data.message;
-                            $scope.showError = true;
+                            setDeployError(data.message);
                         }
                         else {
                             $scope.redirectToDeployment($scope.deployment_id);
                         }
+                    }, function (data) {
+                        $scope.inProcess = false;
+                        setDeployError(CloudifyService.getErrorMessage(data));
+
                     });
             }
         };
+
+        $scope.$watch('deployment_id', function(){
+            setDeployError(null);
+        });
 
         $scope.toggleInputsState = function (state) {
             $scope.inputsState = INPUT_STATE[state];
@@ -113,96 +93,117 @@ angular.module('cosmoUiApp')
             }
         }, true);
 
-        $scope.$watch('deployment_id', function() {
-            if ($scope.showError) {
-                $scope.showError = false;
-                if ($scope.inputsState === INPUT_STATE.RAW && !_validateJSON()) {
-                    $scope.showError = true;
-                }
-            }
-        });
 
         function _formToRaw() {
             // if error message is shown & json is invalid, stop raw JSON update process until JSON is fixed & valid
-            if ($scope.showError && !_validateJSON()) {
+            if ( !_validateJSON(true) ){ // validate without keys
                 return;
-            } else if ($scope.showError) {
-                return;
-            } else {
-                $scope.showError = false;
             }
 
-            for (var input in $scope.inputs) {
-                // if any of the inputs is empty or null, set its value to null
-                if ($scope.inputs[input] === '' || $scope.inputs[input] === null) {
-                    $scope.inputs[input] = null;
-                }
-            }
             // try to parse input value. if parse fails, keep the input value as it is.
-            _parseInputs();
-            $scope.rawString = JSON.stringify($scope.inputs, null, 2);
+            $scope.rawString = JSON.stringify(_parseInputs(), null, 2);
+
+            // now that we updated the RAW value properly, we would like to get an error if a key is missing
+            _validateJsonKeys();
         }
 
         function _rawToForm() {
-            if ($scope.showError) {
-                return;
-            } else {
-                $scope.showError = false;
-            }
-
+            setDeployError(null);
             try {
-                $scope.inputs = JSON.parse($scope.rawString);
-                for (var _parsedInput in $scope.inputs) {
-                    // if the input type is string or object, stringifying it (for object, to prevent [object, object] value)
-                    if (typeof($scope.inputs[_parsedInput]) === 'string' || typeof($scope.inputs[_parsedInput]) === 'object') {
-                        $scope.inputs[_parsedInput] = JSON.stringify($scope.inputs[_parsedInput]);
+                var parsedInputs = JSON.parse($scope.rawString);
+                _.each(parsedInputs, function (value, key) {
+                    var parsedValue = value;
+                    try{
+                        parsedValue = JSON.parse(value);
+                    }catch(e){}
+                    // if input type is object (except null) avoid [Object object] by stringifying
+                    // if input type will be changed by parsing again (see parseInputs) then we want to keep it a string, so we need to stringify it
+                    // this handles "true" and "1" strings that will accidentally be parsed to true (boolean) and 1 (number) etc..
+                    if ( ( !!value &&  typeof(value) === 'object') ||  typeof(value) !== typeof(parsedValue) ) {
+                        parsedInputs[key] = JSON.stringify(value);
                     }
-                }
-                $scope.showError = false;
-                for (var _input in $scope.selectedBlueprint.plan.inputs) {
-                    // if the input value was set to empty or null in the raw json, convert it to empty string for the inputs form
-                    if ($scope.inputs[_input] === undefined || $scope.inputs[_input] === '' || $scope.inputs[_input] === 'null') {
-                        $scope.inputs[_input] = '';
-                    }
-                }
+                });
+
+                $scope.inputs = parsedInputs;
             } catch (e) {
                 $scope.inputsState = INPUT_STATE.RAW;
-                $scope.showError = true;
-                $scope.deployErrorMessage = 'Invalid JSON: ' + e.message;
+                setDeployError('Invalid JSON: ' + e.message);
             }
         }
 
         // JSON validation by parsing it
-        function _validateJSON() {
+        function _validateJSON( skipKeys ) {
             try {
                 JSON.parse($scope.rawString);
-                return _validateJsonKeys();
+                setDeployError( null );
+                return skipKeys || _validateJsonKeys();
+
             } catch (e) {
-                $scope.deployErrorMessage = 'Invalid JSON: ' + e.message;
+                setDeployError( 'Invalid JSON: ' + e.message );
                 return false;
             }
         }
 
+        function setDeployError( msg ){
+            $scope.deployErrorMessage = msg;
+        }
+
         // JSON keys validation, verifying all expected keys exists in JSON
-        function _validateJsonKeys() {
+        // strict means check values are not null or ''
+        // if key is missing (non strict) we want to display an error
+        // if key is empty (strict) that return invalid, but don't display an error
+        // if there's an error, we want to display it (so if strict mode fails, keep searching for error to display)
+        function _validateJsonKeys( strict ) {
+            var result = true;
             var _json = JSON.parse($scope.rawString);
-            for (var i in $scope.inputs) {
-                if (_json[i] === undefined) {
-                    $scope.deployErrorMessage = 'Missing ' + i + ' key in JSON';
-                    return false;
+            for (var i in $scope.selectedBlueprint.plan.inputs) {
+                var value = _json[i];
+                if (value === undefined ) { // when in strict mode disallow empty value
+                    setDeployError('Missing ' + i + ' key in JSON');
+                    result =  false;
+                    return result; // no need to continue
+                }
+                if ( ( strict && ( value === null || value === '' ) ) ){
+                    result = false; // lets continue.. perhaps there's an error we want to display
                 }
             }
-            return true;
+            return result;
         }
 
         function _parseInputs() {
-            for (var input in $scope.inputs) {
-                try {
-                    $scope.inputs[input] = JSON.parse($scope.inputs[input]);
-                } catch(e) {
-                    $scope.inputs[input] = $scope.inputs[input];
+            var result = {};
+            _.each($scope.inputs, function(value,key){
+                if ( value === '' || value === null ){
+                    result[key] = null;
+                    return;
                 }
-            }
+
+                try {
+                    result[key] = JSON.parse(value);
+                } catch(e) {
+                    result[key] = value;
+                }
+            });
+            return result;
         }
+
+        $scope.$watch('inputsState', function() {
+            if (!!$scope.selectedBlueprint) {
+                $scope.updateInputs();
+            }
+        });
+
+        // watching the raw json string changes, validating json on every change
+        $scope.$watch('rawString', _validateJSON );
+
+        // cover scenario where key is missing and I just added it in form mode
+        $scope.$watch('inputs', _formToRaw, true);
+
+
+        // expose functions to test
+        $scope.validateJSON = _validateJSON;
+        $scope.validateJsonKeys = _validateJsonKeys;
+        $scope.rawToForm = _rawToForm;
+
 
     });
