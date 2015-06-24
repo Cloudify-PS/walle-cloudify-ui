@@ -61,7 +61,6 @@ describe('Directive: deploymentEvents', function () {
 
     describe('drag head functionality', function () {
         it('should change the height', function(){
-
             element.css({ height: 250, width: 200});
             $('body').append(element);
             $('body').addClass('bpContainer');
@@ -76,6 +75,10 @@ describe('Directive: deploymentEvents', function () {
             $('body').removeClass('bpContainer');
             $('body').attr('id',null);
             element.remove();
+        });
+
+        it('should enable drag from the entire header', function(){ // lets test that the drag button and the header tag have the same gs-mousedown attr..
+            expect(element.find('.head').attr('data-ng-mousedown')).toEqual(element.find('.dragBtn').attr('data-ng-mousedown'));
         });
 
     });
