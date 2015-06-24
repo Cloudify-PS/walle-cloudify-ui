@@ -397,7 +397,7 @@ module.exports = function (grunt) {
                         dest: '<%= yeoman.distBlueprint%>',
                         src: [ 'cosmo-ui*.tgz'],
                         rename: function( dest /*, src*/ ){
-                            return path.join(dest ,'app.tgz');
+                            return path.join(dest ,'blueprint/node-application','app.tgz');
                         }
                     }
                 ]
