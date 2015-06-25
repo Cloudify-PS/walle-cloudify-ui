@@ -184,7 +184,7 @@ describe('Controller: DeletedialogCtrl', function () {
             expect(_cloudifyService.deployments.deleteDeploymentById).toHaveBeenCalledWith({deployment_id :_deployment.id, ignoreLiveNodes:false});
         });
 
-        it('should close dialog when pressing the cancel button', inject(function(ngDialog, $timeout, $rootScope) {
+        it('should close dialog when pressing the cancel button', inject(function(ngDialog, $timeout) {
             _testSetup();
             var id = ngDialog.open({
                 template: 'views/dialogs/delete.html',

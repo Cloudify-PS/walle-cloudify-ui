@@ -171,7 +171,7 @@ describe('Controller: ExecuteDialogCtrl', function () {
             expect(scope.showError).toBe(true);
         }));
 
-        xit('should close dialog when pressing the cancel button', inject(function(ngDialog, $timeout, $document) {
+        it('should close dialog when pressing the cancel button', inject(function(ngDialog, $timeout) {
             scope.selectedWorkflow = _workflow;
             var id = ngDialog.open({
                 template: 'views/dialogs/confirm.html',
@@ -182,7 +182,7 @@ describe('Controller: ExecuteDialogCtrl', function () {
             $timeout.flush();
 
 
-            var elemsQuery = '#' + id + ' .confirmationButtons [ng-click="closeThisDialog()"]'
+            var elemsQuery = '#' + id + ' .confirmationButtons [ng-click="closeThisDialog()"]';
             var elems = $(elemsQuery);
             expect(elems.length).toBe(2);
 
