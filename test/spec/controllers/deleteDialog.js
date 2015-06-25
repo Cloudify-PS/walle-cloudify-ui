@@ -184,7 +184,7 @@ describe('Controller: DeletedialogCtrl', function () {
             expect(_cloudifyService.deployments.deleteDeploymentById).toHaveBeenCalledWith({deployment_id :_deployment.id, ignoreLiveNodes:false});
         });
 
-        it('should close dialog when pressing the cancel button', inject(function(ngDialog, $timeout, $document) {
+        it('should close dialog when pressing the cancel button', inject(function(ngDialog, $timeout, $rootScope) {
             _testSetup();
             var id = ngDialog.open({
                 template: 'views/dialogs/delete.html',
@@ -194,9 +194,19 @@ describe('Controller: DeletedialogCtrl', function () {
             }).id;
             $timeout.flush();
 
-            var elm = $($document[0].getElementById(id)).find('#cancelBtnDelDep');
-            expect($(elm).attr('ng-click')).toBe('closeThisDialog()');
-            ngDialog.close(id);
+            var elemsQuery = '#' + id + ' #cancelBtnDelDep[ng-click="closeThisDialog()"]';
+            var elems = $(elemsQuery);
+            expect(elems.length).toBe(1);
+
+            elems.remove();
+            ngDialog.closeAll();
+
+            elems = $(elemsQuery);
+            expect(elems.length).toBe(0);
+
+
+
+
         }));
     });
 });
