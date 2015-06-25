@@ -7,7 +7,7 @@
  * # deploymentEvents
  */
 angular.module('cosmoUiApp')
-    .directive('deploymentEvents', function ($log, $filter, EventsService, EventsMap, $document) {
+    .directive('deploymentEvents', function ($log, $filter, EventsService, EventsMap, $document, $q) {
         return {
             templateUrl: 'views/deployment/eventWidget.html',
             restrict: 'EA',
@@ -40,26 +40,35 @@ angular.module('cosmoUiApp')
                         $scope.events = data.concat($scope.events);
                     }
 
-                    events.execute(function (data) {
-                        if (data && data.hasOwnProperty('hits')) {
-                            var dataHits = _convertDates(data.hits.hits);
-                            if (dataHits.length > 0) {
-                                if (data.hits.hits.length !== lastAmount) {
-                                    pushLogs(dataHits);
-                                    lastAmount = dataHits.length;
+                    function startEventsAutoPull () {
+                        var deferred = $q.defer();
+
+                        events.execute(function (data) {
+                            if (data && data.hasOwnProperty('hits')) {
+                                var dataHits = _convertDates(data.hits.hits);
+                                if (dataHits.length > 0) {
+                                    if (data.hits.hits.length !== lastAmount) {
+                                        pushLogs(dataHits);
+                                        lastAmount = dataHits.length;
+                                    }
                                 }
                             }
-                        }
-                        else {
-                            $log.info('Cant load events, undefined data.');
-                            troubleShoot++;
-                        }
+                            else {
+                                $log.info('Cant load events, undefined data.');
+                                troubleShoot++;
+                            }
 
-                        // Stop AutoPull after 10 failures
-                        if (troubleShoot === executeRetry) {
-                            events.stopAutoPull();
-                        }
-                    }, true);
+                            // Stop AutoPull after 10 failures
+                            if (troubleShoot === executeRetry) {
+                                $scope.$parent.unregisterTickerTask('deploymentEvents/events');
+                            }
+                        });
+
+                        return deferred.promise;
+                    }
+
+                    $scope.$parent.registerTickerTask('deploymentEvents/events', startEventsAutoPull, 3000);
+
                 }
 
                 function filterEvents(field, newValue, oldValue) {

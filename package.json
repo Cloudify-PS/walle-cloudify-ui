@@ -17,8 +17,8 @@
     ],
     "scripts": {
         "install_prereq": "npm install -g  bower grunt-cli && npm cache clean && gem install compass ",
-        "build_linux": "rm -rf node_modules && rm -rf app/bower_components && npm cache clean && bower cache clean &&  npm install && bower install && grunt buildArtifacts $FORCEs",
-        "build_and_publish": "npm run build_linux && grunt uploadArtifacts"
+        "build_linux": "rm -rf node_modules && rm -rf app/bower_components && npm cache clean && bower cache clean &&  npm install && bower install && grunt buildArtifacts $FORCE $NO_COLOR",
+        "build_and_publish": "npm run build_linux && grunt uploadArtifacts $NO_COLOR"
     },
     "description": "UI for Cloudify. code name is cosmo.",
     "bin": {
