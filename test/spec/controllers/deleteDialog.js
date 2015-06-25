@@ -155,6 +155,7 @@ describe('Controller: DeletedialogCtrl', function () {
     });
 
     describe('Controller tests', function() {
+
         it('should create a controller', function () {
             _testSetup('blueprint');
             expect(DeleteDialogCtrl).not.toBeUndefined();
@@ -184,6 +185,7 @@ describe('Controller: DeletedialogCtrl', function () {
         });
 
         it('should close dialog when pressing the cancel button', inject(function(ngDialog, $timeout, $document) {
+            _testSetup();
             var id = ngDialog.open({
                 template: 'views/dialogs/delete.html',
                 controller: 'DeleteDialogCtrl',
@@ -194,6 +196,7 @@ describe('Controller: DeletedialogCtrl', function () {
 
             var elm = $($document[0].getElementById(id)).find('#cancelBtnDelDep');
             expect($(elm).attr('ng-click')).toBe('closeThisDialog()');
+            ngDialog.close(id);
         }));
     });
 });

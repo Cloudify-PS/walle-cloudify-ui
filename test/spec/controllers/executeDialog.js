@@ -65,7 +65,7 @@ describe('Controller: ExecuteDialogCtrl', function () {
     }));
 
     describe('Controller tests', function () {
-        beforeEach(function () {
+        beforeEach(function() {
             scope.inputs = {
                 'webserver_port': 8080,
                 'image_name': 'image_name',
@@ -169,6 +169,21 @@ describe('Controller: ExecuteDialogCtrl', function () {
 
             expect(scope.executeErrorMessage).toBe('foo');
             expect(scope.showError).toBe(true);
+        }));
+
+        it('should close dialog when pressing the cancel button', inject(function(ngDialog, $timeout, $document) {
+            scope.selectedWorkflow = _workflow;
+            var id = ngDialog.open({
+                template: 'views/dialogs/confirm.html',
+                controller: 'ExecuteDialogCtrl',
+                scope: scope,
+                className: 'confirm-dialog'
+            }).id;
+            $timeout.flush();
+
+            var elm = $($document[0].getElementById(id)).find('.confirmationButtons')[0];
+            expect($(elm).attr('ng-click')).toBe('closeThisDialog()');
+            ngDialog.close(id);
         }));
 
     });
