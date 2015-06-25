@@ -9,12 +9,9 @@ describe('Controller: FileSelectionDialogCtrl', function () {
 
     // Initialize the controller and a mock scope
     beforeEach(inject(function ($controller, $rootScope, $httpBackend, $q, CloudifyService) {
-        $httpBackend.whenGET('/backend/configuration?access=all').respond(200);
-        $httpBackend.whenGET('/backend/versions/ui').respond(200);
-        $httpBackend.whenGET('/backend/versions/manager').respond(200);
-        $httpBackend.whenGET('/backend/version/latest?version=00').respond('300');
 
         scope = $rootScope.$new();
+        scope.closeThisDialog = jasmine.createSpy();
         _cloudifyService = CloudifyService;
 
         FileSelectionDialogCtrl = $controller('FileSelectionDialogCtrl', {
@@ -163,9 +160,11 @@ describe('Controller: FileSelectionDialogCtrl', function () {
         beforeEach(function(){
             scope.uploadDone = function(){}; // mock.
         });
+
         it('should put id on scope.blueprintUploadOpts.blueprint_id ', function(){
             FileSelectionDialogCtrl.onUploadSuccess({'id':'foo'});
             expect(scope.blueprintUploadOpts.blueprint_id).toBe('foo');
+            expect(scope.closeThisDialog).toHaveBeenCalled();
         });
     });
 
