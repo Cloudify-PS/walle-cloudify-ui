@@ -109,7 +109,9 @@ app.use('/backend/cloudify-api', function( req, res, next ){
                 callback(null, data)
             }
         })(req, res, next);
-    }catch(e){}
+    }catch(e){
+        next(e); // must propagate the error or request is stuck.
+    }
 });
 
 /************************* END PROXY **********************************/
