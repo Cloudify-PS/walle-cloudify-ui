@@ -119,7 +119,7 @@ describe('Controller: DeletedialogCtrl', function () {
         }]
     };
 
-    beforeEach(module('cosmoUiApp', 'ngMock', 'backend-mock'));
+    beforeEach(module('cosmoUiApp', 'ngMock', 'backend-mock', 'templates-main'));
 
     function _testSetup(type) {
         inject(function ($controller, $rootScope, $httpBackend, $q, CloudifyService) {
@@ -182,5 +182,18 @@ describe('Controller: DeletedialogCtrl', function () {
 
             expect(_cloudifyService.deployments.deleteDeploymentById).toHaveBeenCalledWith({deployment_id :_deployment.id, ignoreLiveNodes:false});
         });
+
+        it('should close dialog when pressing the cancel button', inject(function(ngDialog, $timeout, $document) {
+            var id = ngDialog.open({
+                template: 'views/dialogs/delete.html',
+                controller: 'DeleteDialogCtrl',
+                scope: scope,
+                className: 'delete-dialog'
+            }).id;
+            $timeout.flush();
+
+            var elm = $($document[0].getElementById(id)).find('#cancelBtnDelDep');
+            expect($(elm).attr('ng-click')).toBe('closeThisDialog()');
+        }));
     });
 });
