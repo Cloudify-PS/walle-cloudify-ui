@@ -72,7 +72,6 @@ angular.module('cosmoUiApp')
                     } else {
                         $scope.blueprints = data;
                         updateDeployments();
-                        $scope.closeDialog();
                     }
 
                 }, function() {
@@ -81,7 +80,6 @@ angular.module('cosmoUiApp')
         };
 
         $scope.uploadDone = function(blueprint_id) {
-            $scope.closeDialog();
             $scope.redirectTo({
                 id: blueprint_id
             });
@@ -92,15 +90,7 @@ angular.module('cosmoUiApp')
         };
 
         $scope.redirectToDeployment = function(deployment_id) {
-            $scope.closeDialog();
             $location.path('/deployment/' + deployment_id + '/topology');
-        };
-
-        $scope.closeDialog = function() {
-            if (_dialog !== null) {
-                ngDialog.close(_dialog.id);
-            }
-            _dialog = null;
         };
 
         function updateDeployments() {

@@ -28,7 +28,7 @@ angular.module('cosmoUiApp')
                                 $scope.deleteState.inProcess = false;
                                 $scope.deleteState.errorMessage = data.message;
                             } else {
-                                $scope.closeDialog();
+                                $scope.closeThisDialog();
                                 $scope.loadBlueprints();
                                 $scope.deleteState.inProcess = false;
                             }
@@ -49,7 +49,7 @@ angular.module('cosmoUiApp')
                                 $scope.deleteState.errorMessage = data.message;
                             }
                             else {
-                                $scope.closeDialog();
+                                $scope.closeThisDialog();
                                 $scope.loadDeployments();
                             }
                         }, function(e) {
