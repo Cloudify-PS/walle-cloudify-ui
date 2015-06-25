@@ -4,7 +4,7 @@
 angular.module('cosmoUiApp')
     .controller('DeploymentsCtrl', function ($scope, $cookieStore, ExecutionsService,
                                              $location, $routeParams, BreadcrumbsService, $log,
-                                             CloudifyService, ngDialog, cloudifyClient) {
+                                             CloudifyService, ngDialog, cloudifyClient, $q) {
 
         $scope.deployments = [];
         $scope.executedErr = false;
