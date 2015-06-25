@@ -7,7 +7,7 @@
  * # deploymentLayout
  */
 angular.module('cosmoUiApp')
-    .directive('deploymentLayout', function ($location, BreadcrumbsService, CloudifyService, nodeStatus, ngDialog) {
+    .directive('deploymentLayout', function ($location, BreadcrumbsService, CloudifyService, nodeStatus, ngDialog, $q) {
         return {
             templateUrl: 'views/deployment/layout.html',
             restrict: 'EA',
@@ -178,20 +178,16 @@ angular.module('cosmoUiApp')
                             // Emit deployment process data
                             $scope.$emit('deploymentProcess', deploymentModel);
 
-                            _startDeploymentExecutionsAutopull();
+                            //_startDeploymentExecutionsAutopull();
+                            $scope.$parent.registerTickerTask('deploymentLayout/getDeploymentExecutions', _startDeploymentExecutionsAutopull, 10000);
                         });
                 }
 
                 function _startDeploymentExecutionsAutopull() {
                     // Workflows & Execution
-                    CloudifyService.autoPull('getDeploymentExecutions', $scope.id, CloudifyService.deployments.getDeploymentExecutions)
-                        .then(null,
-                        function(/*reason*/) {
-                            // getDeploymentExecutions failed. Redirect to deployments screen.
-                            $scope.deploymentInProgress = false;
-                            $location.path('/deployments');
-
-                        }, function (dataExec) {
+                    var deferred = $q.defer();
+                    CloudifyService.deployments.getDeploymentExecutions($scope.id)
+                        .then(function (dataExec) {
                             $scope.currentExecution = _getCurrentExecution(dataExec);
                             if (!$scope.currentExecution && $scope.deploymentInProgress) {
                                 $scope.deploymentInProgress = false;
@@ -217,13 +213,22 @@ angular.module('cosmoUiApp')
 
 
                                     _updateDeploymentModel(dataNodes);
+                                    deferred.resolve();
                                 });
                             $scope.$emit('deploymentExecution', {
                                 currentExecution: $scope.currentExecution,
                                 deploymentInProgress: $scope.deploymentInProgress,
                                 executionsList: dataExec
                             });
+                        },
+                        function(/*reason*/) {
+                            // getDeploymentExecutions failed. Redirect to deployments screen.
+                            deferred.reject();
+                            $scope.deploymentInProgress = false;
+                            $location.path('/deployments');
+
                         });
+                    return deferred.promise;
                 }
 
                 function _orderNodesById( nodes ) {
@@ -343,6 +348,12 @@ angular.module('cosmoUiApp')
                                     }
                                 }
                             }
+                        },
+                        function(/*reason*/) {
+                            // getDeploymentExecutions failed. Redirect to deployments screen.
+                            $scope.deploymentInProgress = false;
+                            $location.path('/deployments');
+
                         });
                 }
 

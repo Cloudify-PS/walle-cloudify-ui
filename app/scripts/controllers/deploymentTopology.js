@@ -2,7 +2,7 @@
 
 // TODO: there's a lot of copy paste here from BlueprintTopology
 angular.module('cosmoUiApp')
-    .controller('DeploymentTopologyCtrl', function ($scope, $rootScope, $routeParams, NodeService, blueprintCoordinateService, CloudifyService) {
+    .controller('DeploymentTopologyCtrl', function ($scope, $rootScope, $routeParams, NodeService, blueprintCoordinateService, CloudifyService, $q) {
 
         var isGotExecuteNodes = false;
         $scope.page = {};
@@ -35,40 +35,48 @@ angular.module('cosmoUiApp')
             $scope.coordinates = blueprintCoordinateService.getCoordinates();
         });
 
+        function _startGetDeploymentNodesAutoPull() {
+            var deferred = $q.defer();
+
+            CloudifyService.deployments.getDeploymentNodes({deployment_id: $scope.deploymentId})
+                .then(function (dataNodes) {
+                    CloudifyService.getNodeInstances()
+                        .then(function(data) {
+                            dataNodes.forEach(function(node) {
+                                data.forEach(function(item) {
+                                    if (node.node_instances === undefined) {
+                                        node.node_instances = [];
+                                    }
+                                    if (node.node_id === item.node_id) {
+                                        node.node_instances.push(item);
+                                    }
+                                });
+
+                                $scope.nodes = dataNodes;
+                                isGotExecuteNodes = true;
+                            });
+                            $scope.nodes = dataNodes;
+                            isGotExecuteNodes = true;
+                            deferred.resolve();
+                        });
+                });
+
+            return deferred.promise;
+        }
+
         $scope.$on('deploymentExecution', function(event, deploymentExecution){
             $scope.deploymentInProgress = deploymentExecution.deploymentInProgress;
             $scope.currentExecution = deploymentExecution.currentExecution;
             if (!deploymentExecution.currentExecution && deploymentExecution.deploymentInProgress) {
                 if(!isGotExecuteNodes) {
-                    CloudifyService.autoPull('getDeploymentNodes', {deployment_id: $scope.deploymentId}, CloudifyService.deployments.getDeploymentNodes)
-                        .then(null, null, function (dataNodes) {
+                    CloudifyService.deployments.getDeploymentNodes({deployment_id: $scope.deploymentId})
+                        .then(function (dataNodes) {
                             $scope.nodes = dataNodes.nodes;
                         });
                 }
-                CloudifyService.autoPullStop('getDeploymentNodes');
             }
             else if (deploymentExecution.deploymentInProgress === null || deploymentExecution.currentExecution !== false) {
-                CloudifyService.autoPull('getDeploymentNodes', {deployment_id: $scope.deploymentId}, CloudifyService.deployments.getDeploymentNodes)
-                    .then(null, null, function (dataNodes) {
-                        CloudifyService.getNodeInstances()
-                            .then(function(data) {
-                                dataNodes.forEach(function(node) {
-                                    data.forEach(function(item) {
-                                        if (node.node_instances === undefined) {
-                                            node.node_instances = [];
-                                        }
-                                        if (node.node_id === item.node_id) {
-                                            node.node_instances.push(item);
-                                        }
-                                    });
-
-                                    $scope.nodes = dataNodes;
-                                    isGotExecuteNodes = true;
-                                });
-                                $scope.nodes = dataNodes;
-                                isGotExecuteNodes = true;
-                            });
-                    });
+                $scope.registerTickerTask('deploymentTopology/getDeploymentNodes', _startGetDeploymentNodesAutoPull, 10000);
             }
             else {
                 isGotExecuteNodes = true;

@@ -56,13 +56,11 @@ angular.module('cosmoUiApp')
 
         var lastAmount = 0;
 
-        function executeLogs(autoPull, executeOptions) {
+        function executeLogs(executeOptions) {
             $scope.filterLoading = true;
             $scope.newLogs = 0;
             $scope.logsHits = [];
-            var troubleShoot = 0,
-                executeRetry = 10,
-                eventsCollect = [],
+            var eventsCollect = [],
                 lastData = [];
 
             // todo: OMG this function is duplicated several times in the code!!!!!!! need to be reused.
@@ -115,15 +113,10 @@ angular.module('cosmoUiApp')
                         });
                     }
                     $log.warn('Cant load events, undefined data.');
-                    troubleShoot++;
                 }
                 $scope.filterLoading = false;
 
-                // Stop AutoPull after 10 failures
-                if (troubleShoot === executeRetry) {
-                    $scope.events.stopAutoPull();
-                }
-            }, autoPull, false, executeOptions);
+            }, executeOptions);
         }
 
         if ($routeParams.filter) {
@@ -208,7 +201,7 @@ angular.module('cosmoUiApp')
                 $scope.events.filterRange(field, newValue);
             }
             if (execute === true) {
-                executeLogs(false, executeOptions);
+                executeLogs(executeOptions);
             }
         }
 
