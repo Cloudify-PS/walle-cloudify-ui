@@ -4,9 +4,11 @@
 var LIVERELOAD_PORT = 35729;
 var lrSnippet = null;
 var proxySnippet = null;
+var path = require('path');
 var mountFolder = function (connect, dir) {
-    return connect.static(require('path').resolve(dir));
+    return connect.static(path.resolve(dir));
 };
+
 //var gsWhitelabel = require("./backend/gsWhitelabel");
 
 // # Globbing
@@ -94,7 +96,7 @@ module.exports = function (grunt) {
                             function(req, res, next) {
                                 if(req.url.indexOf('/grafana') === 0) {
                                     req.url = req.url.substring('/grafana'.length) || '/';
-                                    return connect.static(require('path').resolve('../grafana-cosmo/src/'))(req, res, next);
+                                    return connect.static(path.resolve('../grafana-cosmo/src/'))(req, res, next);
                                 }
                                 else {
                                     next();
@@ -160,7 +162,8 @@ module.exports = function (grunt) {
         },
         jshint: {
             options: {
-                jshintrc: '.jshintrc'
+                jshintrc: '.jshintrc',
+                reporter: require('jshint-stylish')
             },
             all: [
                 'Gruntfile.js',
@@ -394,7 +397,7 @@ module.exports = function (grunt) {
                         dest: '<%= yeoman.distBlueprint%>',
                         src: [ 'cosmo-ui*.tgz'],
                         rename: function( dest /*, src*/ ){
-                            return dest + 'app.tgz';
+                            return path.join(dest ,'blueprint/node-application','app.tgz');
                         }
                     }
                 ]

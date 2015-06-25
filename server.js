@@ -138,7 +138,7 @@ app.get('/backend/blueprints/validate', CloudifyMiddleware, function(request, re
 });
 
 app.get('/backend/blueprints/delete', CloudifyMiddleware, function(request, response) {
-    request.cloudifyClient.blueprints.delete(request.query.id, null, cloudifyCallback(response));
+    request.cloudifyClient.blueprints.delete(request.query.id, cloudifyCallback(response));
 });
 
 var defaultResponseCallback = function(response){
