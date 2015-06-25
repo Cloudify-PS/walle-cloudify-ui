@@ -157,29 +157,6 @@ describe('Controller: FileSelectionDialogCtrl', function () {
             expect(scope.uploadInProcess).toBe(false);
             expect(scope.blueprintUploadOpts.params.blueprint_archive_url).toBe('http://some.kind/of/url.tar.gz');
         });
-
-        it('should reset the dialog variables on dialog close (CFY-2583)', function() {
-            scope.inputText = 'http://some.kind/of/url.tar.gz';
-            scope.selectedFile = {data: 'fake data'};
-            scope.blueprintUploadOpts = {
-                blueprint_id: 'blueprint1',
-                params: {
-                    application_file_name: 'filename1'
-                }
-            };
-            scope.toggleAddDialog = function() {};
-
-            scope.closeDialog();
-
-            expect(scope.inputText).toBe('');
-            expect(scope.selectedFile).toBe('');
-            expect(JSON.stringify(scope.blueprintUploadOpts)).toBe(JSON.stringify({
-                blueprint_id: '',
-                params: {
-                    application_file_name: ''
-                }
-            }));
-        });
     });
 
     describe('#onUploadSuccess', function(){

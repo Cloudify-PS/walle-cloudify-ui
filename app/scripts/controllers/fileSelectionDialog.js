@@ -142,12 +142,6 @@ angular.module('cosmoUiApp')
             }
         };
 
-        $scope.closeDialog = function() {
-            resetDialog();
-            $scope.toggleAddDialog();
-            $scope.uploadError = false;
-        };
-
         $scope.isUploadEnabled = function() {
             return (($scope.inputText !== '' && $scope.inputText !== undefined) &&
                 !$scope.uploadInProcess &&

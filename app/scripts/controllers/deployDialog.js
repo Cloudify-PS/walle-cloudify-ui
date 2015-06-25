@@ -59,6 +59,7 @@ angular.module('cosmoUiApp')
                             setDeployError(data.message);
                         }
                         else {
+                            $scope.closeThisDialog();
                             $scope.redirectToDeployment($scope.deployment_id);
                         }
                     }, function (data) {

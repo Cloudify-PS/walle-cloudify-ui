@@ -107,7 +107,6 @@ angular.module('cosmoUiApp')
                         $scope.message = data.message;
                         _dialog = ngDialog.open({
                             template: 'views/dialogs/message.html',
-                            controller: 'MessageDialogCtrl',
                             scope: $scope,
                             className: 'message-dialog'
                         });
@@ -133,14 +132,6 @@ angular.module('cosmoUiApp')
         }
         $scope.filterModel = LogsModel.get();
         $scope.timeframeFrom = LogsModel.getFromTimeText();
-
-        $scope.closeDialog = function () {
-            if (_dialog !== null) {
-                ngDialog.close(_dialog.id);
-            }
-            $scope.message = null;
-            _dialog = null;
-        };
 
         CloudifyService.blueprints.list()
             .then(function (data) {

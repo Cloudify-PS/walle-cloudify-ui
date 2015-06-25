@@ -410,13 +410,6 @@ angular.module('cosmoUiApp')
                     return false;
                 };
 
-                $scope.closeDialog = function() {
-                    if (_dialog !== null) {
-                        ngDialog.close(_dialog.id);
-                    }
-                    _dialog = null;
-                };
-
                 $scope.getSelectedWorkflow = function() {
                     return $scope.selectedWorkflow.data.value;
                 };
