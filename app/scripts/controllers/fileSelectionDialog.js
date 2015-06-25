@@ -99,6 +99,7 @@ angular.module('cosmoUiApp')
         $scope.uploadBlueprint = function () {
 
             $scope.uploadType = 'file';
+            $scope.blueprintUploadOpts.blueprint_id = encodeURIComponent($scope.blueprintUploadOpts.blueprint_id);
 
             var uploadData = {
                 url: '/backend/blueprints/upload',

@@ -214,12 +214,6 @@ describe('Directive: deploymentLayout', function () {
 
             $location.path('/deployment/' + _deployment.id + '/topology');
 
-            spyOn(CloudifyService, 'autoPull').andCallFake(function() {
-                var deferred = $q.defer();
-                deferred.reject({});
-                return deferred.promise;
-            });
-
             spyOn(CloudifyService, 'getNodes').andCallFake(function() {
                 var deferred = $q.defer();
                 _getNodesCalled = true;
@@ -230,7 +224,7 @@ describe('Directive: deploymentLayout', function () {
 
             spyOn(CloudifyService.deployments, 'getDeploymentExecutions').andCallFake(function() {
                 var deferred = $q.defer();
-                deferred.resolve(_executions);
+                deferred.reject({});
                 return deferred.promise;
             });
 
@@ -257,7 +251,7 @@ describe('Directive: deploymentLayout', function () {
 
         }));
 
-        it('should check all node instances states (CFY-2368)', inject(function($compile, $rootScope, $q, CloudifyService) {
+        it('should check all node instances states (CFY-2368)', inject(function($compile, $rootScope, $q, CloudifyService, TickerSrv) {
             var _scope = $rootScope.$new();
             var _nodeList;
 
@@ -278,6 +272,10 @@ describe('Directive: deploymentLayout', function () {
                 deferred.resolve(_deploymentNodes);
                 return deferred.promise;
             };
+
+            spyOn(TickerSrv, 'register').andCallFake(function(id, handler/*, interval, delay, isLinear*/) {
+                handler();
+            });
 
             $rootScope.$on('nodesList', function(event, data) {
                 _nodeList = data;

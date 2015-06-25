@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('cosmoUiApp')
-    .controller('BlueprintsIndexCtrl', function ($scope, $location, $cookieStore, BreadcrumbsService, $timeout, $log, CloudifyService, ngDialog) {
+    .controller('BlueprintsIndexCtrl', function ($scope, $location, $cookieStore, BreadcrumbsService, $log, CloudifyService, ngDialog) {
         $scope.lastExecutedPlan = null;
         $scope.selectedBlueprint = null;
         $scope.managerError = false;

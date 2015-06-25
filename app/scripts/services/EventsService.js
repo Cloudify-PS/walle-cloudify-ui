@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('cosmoUiApp')
-    .service('EventsService', function EventsService($http, $timeout, $q, ejsResource, $log, $rootScope) {
+    .service('EventsService', function EventsService($http, $q, ejsResource, $log, $rootScope) {
 
         function Events(server) {
 
@@ -19,7 +19,6 @@ angular.module('cosmoUiApp')
             var rangeFilter = {};
             var rangePrefix = 'range';
             var isAutoPull = false;
-            var autoPullTimer = '3000';
             var sortField = false;
             var fieldIndex = {
                 'timestamp': '@timestamp',
@@ -60,28 +59,6 @@ angular.module('cosmoUiApp')
             function _rangeTime(time) {
                 var fromTime = new Date();
                 return new Date(fromTime.setTime(time));
-            }
-
-            function _autoPull(callbackFn, customPullTime) {
-                var deferred = $q.defer();
-                isAutoPull = true;
-                $timeout(function _internalPull() {
-                    if(isAutoPullByDate) {
-                        _autoPullByLastDate();
-                    }
-                    if(!isAutoPull) {
-                        deferred.resolve('Events Auto Pull Stop!');
-                        return;
-                    }
-                    execute(function(data){
-                        if(angular.isFunction(callbackFn)) {
-                            callbackFn(data);
-                        }
-                        deferred.notify(data);
-                        $timeout(_internalPull, customPullTime !== undefined ? customPullTime : autoPullTimer);
-                    }, false);
-                }, autoPullTimer);
-                return deferred.promise;
             }
 
             function filter(field, term) {
@@ -130,10 +107,6 @@ angular.module('cosmoUiApp')
                     sortField = false;
                     break;
                 }
-            }
-
-            function stopAutoPull() {
-                isAutoPull = false;
             }
 
             function _getLastResultDate() {
@@ -201,11 +174,15 @@ angular.module('cosmoUiApp')
              * @param callbackFn
              * @param options
              */
-            function execute(callbackFn, autoPull, customPullTime, options) {
+            function execute(callbackFn, options) {
                 var results;
 
                 if (!options) {
                     options = _getExecuteDefaultOptions();
+                }
+
+                if(isAutoPullByDate) {
+                    _autoPullByLastDate();
                 }
 
                 client.from(options.clientFrom)
@@ -236,9 +213,6 @@ angular.module('cosmoUiApp')
                         }
                         callbackFn(data, results);
                         lastData = data;
-                        if(autoPull === true) {
-                            _this.autoPull(callbackFn, customPullTime);
-                        }
                     }
                 });
             }
@@ -248,8 +222,6 @@ angular.module('cosmoUiApp')
             _this.filterRemove = filterRemove;
             _this.filterRange = filterRange;
             _this.sort = sort;
-            _this.stopAutoPull = stopAutoPull;
-            _this.autoPull = _autoPull;
             _this.execute = execute;
             _this.getExecuteLastFiftyOptions = _getExecuteLastFiftyOptions;
             _this.getExecuteDefaultOptions = _getExecuteDefaultOptions;

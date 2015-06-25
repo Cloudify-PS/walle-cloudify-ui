@@ -231,5 +231,21 @@ describe('Controller: FileSelectionDialogCtrl', function () {
             expect(lastProgress).toBe(20);
 
         }));
+
+        it('should escape the blueprint id before upload (CFY-1958)', inject(function( $upload ) {
+            scope.blueprintUploadOpts = {
+                blueprint_id: 'a/b',
+                params: {
+                    application_file_name: 'filename1'
+                }
+            };
+
+            spyOn($upload,'upload').andCallThrough();
+
+            scope.uploadBlueprint();
+
+            var opts = JSON.parse($upload.upload.mostRecentCall.args[0].fields.opts);
+            expect(opts.blueprint_id).toBe('a%2Fb');
+        }));
     });
 });
