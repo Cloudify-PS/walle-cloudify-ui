@@ -71,8 +71,6 @@ angular.module('cosmoUiApp')
                     $scope.blueprints = [];
                 } else {
                     $scope.blueprints = _.sortByOrder(result.data, ['updated_at'], [false]);
-
-                    $scope.closeDialog();
                 }
             }, function (result) {
                 $scope.managerError = result.data;
