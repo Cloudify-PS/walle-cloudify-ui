@@ -28,12 +28,9 @@ angular.module('cosmoUiApp')
                                 $scope.deleteState.inProcess = false;
                                 $scope.deleteState.errorMessage = data.message;
                             } else {
-
-
-                                    $scope.closeThisDialog();
-                                    $scope.loadBlueprints();
-                                    $scope.deleteState.inProcess = false;
-
+                                $scope.closeThisDialog();
+                                $scope.loadBlueprints();
+                                $scope.deleteState.inProcess = false;
                             }
                         }, function(e) {
                             $scope.deleteState.inProcess = false;
