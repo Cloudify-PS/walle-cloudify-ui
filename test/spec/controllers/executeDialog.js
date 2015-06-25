@@ -188,7 +188,7 @@ describe('Controller: ExecuteDialogCtrl', function () {
 
 
             elems.remove();
-            ngDialog.closeAll(id);
+            ngDialog.closeAll(); //https://github.com/likeastore/ngDialog/issues/263
             expect($(elemsQuery).length).toBe(0);
         }));
 
