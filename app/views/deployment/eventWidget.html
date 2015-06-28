@@ -1,6 +1,6 @@
 <div class="events-widget" data-ng-class="{true: 'closed'}[minimizeMode]">
     <div class="bg"></div>
-    <div class="head">
+    <div class="head" data-ng-mousedown="dragIt($event)">
         <div class="title">Events</div>
         <div class="lastEvent" data-ng-show="!!lastEvent && minimizeMode">
             <div class="icon">
