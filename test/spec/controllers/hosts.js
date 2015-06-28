@@ -39,7 +39,6 @@ describe('Controller: HostsCtrl', function () {
         };
 
         CloudifyService.deployments.getDeploymentNodes = function () {
-            var deferred = $q.defer();
             var instances = [
                 {
                     deployment_id: 'deployment1',
@@ -58,8 +57,8 @@ describe('Controller: HostsCtrl', function () {
                     state: 'uninitialized'
                 }
             ];
-            deferred.resolve(instances);
-            return deferred.promise;
+
+            return { then: function(success) { success(instances); } };
         };
 
         NodeSearchService.getNodeSearchData = function () {
@@ -86,6 +85,7 @@ describe('Controller: HostsCtrl', function () {
                 return function () {
                 };
             },
+            $timeout:function(callback){ callback(); },
             NodeSearchService: NodeSearchService
         });
 
@@ -106,7 +106,7 @@ describe('Controller: HostsCtrl', function () {
 
     describe('#execute', function () {
         it('should call to ModelSearchService.execute', inject(function (NodeSearchService) {
-            scope.eventsFilter = {blueprints: {value: 'bar'}};
+            scope.eventsFilter = { blueprints: {value: 'bar'} };
             scope.$digest();
             spyOn(NodeSearchService, 'execute').andCallFake(function () {
                 return {
@@ -116,10 +116,15 @@ describe('Controller: HostsCtrl', function () {
                 };
             });
             scope.execute();
+
             expect(scope.filterLoading).toBe(false);
+
             expect(scope.nodesList).toBe('foo');
+
             expect(scope.getBlueprintId()).toBe('bar');
+
             expect(NodeSearchService.execute).toHaveBeenCalled();
+
 
         }));
 
@@ -148,13 +153,9 @@ describe('Controller: HostsCtrl', function () {
             expect(HostsCtrl).not.toBeUndefined();
         });
 
-        it('should filter the blueprints list to the selected blueprint', function() {
-            waitsFor(function() {
-                return scope.blueprintsList.length > 0;
-            });
-            runs(function() {
-                expect(scope.blueprintsList.length).toBe(1);
-            });
+        it('should filter the blueprints list to the selected blueprint', function () {
+            return scope.blueprintsList.length > 0;
+            expect(scope.blueprintsList.length).toBe(1);
         });
 
         it('should set isSearchDisabled flag to true if no blueprints were selected', function() {
