@@ -2,7 +2,19 @@
 
 describe('Controller: BlueprintsIndexCtrl', function () {
 
-    var BlueprintsIndexCtrl, scope, _cloudifyService, _ngDialog;
+    var BlueprintsIndexCtrl, scope, _cloudifyService, _ngDialog, _cloudifyClient;
+    var blueprints = [
+        {
+            'updated_at': '2014-08- 21 00:54:04.878540',
+            'created_at': '2014-08-21 00:54:04.878540',
+            'id': 'blueprint1'
+        },
+        {
+            'updated_at': '2014-08-17 01:13:10.905309',
+            'created_at': '2014-08-17 01:13:10.905309',
+            'id': 'blueprint2'
+        }
+    ];
     var errorDeleteJSON = {
         'data': {
             'message': 'Can\'t delete blueprint blueprint1 - There exist deployments for this blueprint; Deployments ids: deployment1',
@@ -32,64 +44,36 @@ describe('Controller: BlueprintsIndexCtrl', function () {
     beforeEach(module('cosmoUiApp', 'ngMock', 'backend-mock', 'templates-main'));
 
     function _testSetup(deleteSuccess) {
-        inject(function ($controller, $rootScope, $httpBackend, $q, CloudifyService, ngDialog) {
-            $httpBackend.whenGET('/backend/configuration?access=all').respond(200);
-            $httpBackend.whenGET('/backend/versions/ui').respond(200);
-            $httpBackend.whenGET('/backend/versions/manager').respond(200);
-            $httpBackend.whenGET('/backend/version/latest?version=00').respond('300');
+        inject(function ($controller, $rootScope, $httpBackend, $q, CloudifyService, ngDialog, cloudifyClient) {
 
             scope = $rootScope.$new();
             _cloudifyService = CloudifyService;
+            _cloudifyClient = cloudifyClient;
             _ngDialog = ngDialog;
 
-            _cloudifyService.blueprints.list = function () {
-                var deferred = $q.defer();
-                var blueprints = [
-                    {
-                        'updated_at': '2014-08- 21 00:54:04.878540',
-                        'created_at': '2014-08-21 00:54:04.878540',
-                        'id': 'blueprint1',
-                        'deployments': []
-                    },
-                    {
-                        'updated_at': '2014-08-17 01:13:10.905309',
-                        'created_at': '2014-08-17 01:13:10.905309',
-                        'id': 'blueprint2',
-                        'deployments': [
-                            {
-                                'workflows': [
-                                    {
-                                        'created_at': null,
-                                        'name': 'install',
-                                        'parameters': []
-                                    },
-                                    {
-                                        'created_at': null,
-                                        'name': 'uninstall',
-                                        'parameters': []
-                                    }
-                                ],
-                                'created_at': '2014-08-17 04:07:46.933729',
-                                'blueprint_id': 'nodecellar',
-                                'id': 'deployment1',
-                                'updated_at': '2014-08-17 04:07:46.933729'
-                            }
-                        ]
+            spyOn(cloudifyClient.blueprints, 'list').andCallFake(function () {
+                return {
+                    then: function (success/*, error*/) {
+                        success({ data : blueprints});
                     }
-                ];
+                };
+            });
 
-                deferred.resolve(blueprints);
-
-                return deferred.promise;
-            };
+            spyOn(cloudifyClient.deployments,'list').andCallFake(function(){
+                return {
+                    then: function(success){
+                        success({data:[]});
+                    }
+                };
+            });
 
             _cloudifyService.blueprints.delete = function () {
                 return {
-                    then: function(success, error){
+                    then: function (success, error) {
                         if (!deleteSuccess) {
-                            error( errorDeleteJSON );
+                            error(errorDeleteJSON);
                         } else {
-                            success( successDeleteJSON );
+                            success(successDeleteJSON);
                         }
 
                     }
@@ -106,11 +90,7 @@ describe('Controller: BlueprintsIndexCtrl', function () {
         });
     }
 
-    describe('Test setup', function () {
-        it('', function () {
-            _testSetup(true);
-        });
-    });
+    beforeEach(_testSetup);
 
     describe('Controller tests', function () {
         it('should create a controller', function () {

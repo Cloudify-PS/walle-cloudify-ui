@@ -8,11 +8,26 @@
   }
 
   .loginBox {
-    z-index: 9996;
-    border: 2px solid #c9dbeb;
+    border: 2px solid $COSMOUI_DIALOG_BORDER_COLOR;
     border-radius: 4px;
-    box-shadow: 0 0 5px rgba(0,0,0,.12);
-    background: #fff;
+    box-shadow: 0px 0px 5px $COSMOUI_DIALOG_SHADOW_COLOR;
+    background: $COSMOUI_DIALOG_BACKGROUND;
+    overflow-x: hidden;
+    font-family: "OpenSansLight";
+  }
+
+  #loginForm {
+    position: relative;
+    top: 70px;
+    margin-left: auto;
+    margin-right: auto;
+    width: 400px;
+    height: 230px;
+    z-index: 9996;
+    border: 2px solid $COSMOUI_DIALOG_BORDER_COLOR;
+    border-radius: 4px;
+    box-shadow: 0px 0px 5px $COSMOUI_DIALOG_SHADOW_COLOR;
+    background: $COSMOUI_DIALOG_BACKGROUND;
     overflow-x: hidden;
 
     .dialogTitle {
@@ -38,15 +53,6 @@
         font-weight: 700;
       }
     }
-  }
-
-  #loginForm {
-    position: relative;
-    top: 70px;
-    margin-left: auto;
-    margin-right: auto;
-    width: 400px;
-    height: 240px;
 
     form {
       position: relative;

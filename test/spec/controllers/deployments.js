@@ -1,7 +1,7 @@
 'use strict';
 
 describe('Controller: DeploymentsCtrl', function () {
-    var DeploymentsCtrl, scope, _cloudifyService, _timeout, _depExecSpy, _ngDialog;
+    var DeploymentsCtrl, scope, _cloudifyService, _timeout, _depExecSpy, _ngDialog, _q, _interval;
 
     var _execution = {};
 
@@ -129,16 +129,29 @@ describe('Controller: DeploymentsCtrl', function () {
     beforeEach(module('cosmoUiApp', 'ngMock','templates-main', 'backend-mock'));
 
     function _testSetup() {
-        inject(function ($controller, $rootScope, $httpBackend, $q, CloudifyService, $location, $timeout, ngDialog) {
-            $httpBackend.whenGET('/backend/configuration?access=all').respond(200);
-            $httpBackend.whenGET('/backend/versions/ui').respond(200);
-            $httpBackend.whenGET('/backend/versions/manager').respond(200);
-            $httpBackend.whenGET('/backend/version/latest?version=00').respond('300');
-            $httpBackend.whenGET('/backend/blueprints').respond(200);
+        inject(function ($controller, $rootScope, $httpBackend, $q, CloudifyService, cloudifyClient, $location, $timeout, ngDialog, $interval) {
+
 
             scope = $rootScope.$new();
             _cloudifyService = CloudifyService;
             _ngDialog = ngDialog;
+
+
+            spyOn(cloudifyClient.executions,'list').andCallFake(function(){
+                return {
+                    then:function(/*success,error*/){}
+                };
+            });
+
+            spyOn(cloudifyClient.deployments,'list').andCallFake(function(){
+                return {
+                    then: function (success/*, error*/) {
+                        success({ data: []});
+                    }
+                };
+            });
+
+
             _depExecSpy = spyOn(CloudifyService.deployments, 'getDeploymentExecutions').andCallFake(function () {
                 var deferred = $q.defer();
                 deferred.resolve(_executions);
@@ -146,15 +159,17 @@ describe('Controller: DeploymentsCtrl', function () {
             });
 
             _timeout = $timeout;
+            _q = $q;
+            _interval = $interval;
 
             $location.path('/deployments');
 
             _cloudifyService.deployments.updateExecutionState = function () {
-                var deferred = $q.defer();
-
-                deferred.resolve(_execution);
-
-                return deferred.promise;
+                return {
+                    then:function( success ){
+                        success(_execution);
+                    }
+                };
             };
 
             _cloudifyService.deployments.deleteDeploymentById = function () {
@@ -167,18 +182,18 @@ describe('Controller: DeploymentsCtrl', function () {
 
             };
 
-            _cloudifyService.blueprints.list = function () {
-                var deferred = $q.defer();
-
-                deferred.resolve(_blueprints);
-
-                return deferred.promise;
-            };
+            spyOn(cloudifyClient.blueprints,'list').andCallFake(function () {
+                return {
+                    then:function(success){
+                        success( { data : _blueprints } );
+                    }
+                };
+            });
 
             DeploymentsCtrl = $controller('DeploymentsCtrl', {
                 $scope: scope,
                 CloudifyService: _cloudifyService,
-                $timeout: _timeout,
+                $q: _q,
                 ngDialog: _ngDialog
             });
 
@@ -203,9 +218,9 @@ describe('Controller: DeploymentsCtrl', function () {
     });
 
     describe('getWorkflows', function () {
-        it('should return workflows by deployment id', function () {
+        it('should return empty array by default', function () {
             _testSetup();
-            expect(scope.getWorkflows({})).toBe(undefined);
+            expect(scope.getWorkflows({}).length).toBe(0);
         });
     });
 
@@ -254,23 +269,18 @@ describe('Controller: DeploymentsCtrl', function () {
             expect(DeploymentsCtrl).not.toBeUndefined();
         });
 
-        it('should return selected workflow id', function () {
+        it('should load deployment executions every 10000 milliseconds', inject(function ($httpBackend, TickerSrv) {
             _testSetup();
 
-            scope.selectedDeployment = _deployment;
-
-            expect(scope.getExecutionAttr(scope.selectedDeployment, 'id')).toBe(_executions[1].id);
-        });
-
-        it('should load deployment executions every 10000 milliseconds', inject(function ($httpBackend) {
-            _testSetup();
+            spyOn(TickerSrv, 'register').andCallFake(function(id, handler/*, interval, delay, isLinear*/) {
+                handler().then(function() {
+                    expect(_depExecSpy.callCount).toEqual(1);
+                });
+            });
 
             $httpBackend.whenGET('/backend/executions').respond({});
             $httpBackend.whenGET('/backend/configuration?access=all').respond({});
 
-            expect(_depExecSpy.callCount).toEqual(1);
-            _timeout.flush();
-            expect(_depExecSpy.callCount).toEqual(2);
         }));
 
 

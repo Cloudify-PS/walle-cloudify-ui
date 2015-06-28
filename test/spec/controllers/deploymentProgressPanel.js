@@ -214,24 +214,5 @@ describe('Controller: DeploymentProgressPanelCtrl', function () {
             expect(scope.panelData.node3.failed.count).toBe(1);
         });
 
-        it('should set the earliest execution time as start_time', function () {
-            scope.nodes = _nodes;
-            scope.currentExecution = _currentExecution;
-            var expectedTimestamp = new Date().getTime() - new Date('2014-10-05T00:44:00.000+00:00').getTime();
-            var expectedTime = {
-                seconds: Math.floor((expectedTimestamp / 1000) % 60),
-                minutes: Math.floor(((expectedTimestamp / (60000)) % 60)),
-                hours: Math.floor(((expectedTimestamp / (3600000)) % 24)),
-                days: Math.floor(((expectedTimestamp / (3600000)) / 24))
-            };
-            scope.$apply();
-
-            waitsFor(function () {
-                return scope.panelData.node1 !== undefined;
-            });
-            runs(function () {
-                expect(JSON.stringify(scope.panelData.node1.start_time)).toBe(JSON.stringify(expectedTime));
-            });
-        });
     });
 });
