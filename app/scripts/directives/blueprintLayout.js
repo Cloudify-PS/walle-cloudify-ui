@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('cosmoUiApp')
-    .directive('blueprintLayout', function ($location, BreadcrumbsService, CloudifyService, ngDialog) {
+    .directive('blueprintLayout', function ($location, BreadcrumbsService, CloudifyService, ngDialog, $routeParams) {
         return {
             templateUrl: 'views/blueprint/layout.html',
             restrict: 'EA',
@@ -104,6 +104,10 @@ angular.module('cosmoUiApp')
                 $scope.redirectToDeployment = function(deployment_id) {
                     $location.path('/deployment/' + deployment_id + '/topology');
                 };
+
+                if ( $routeParams.deploy === 'true' ){
+                    $scope.openDeployDialog();
+                }
             }
         };
     });

@@ -22,6 +22,7 @@ module.exports = function(config) {
             'app/bower_components/angular-timer/dist/angular-timer.js',
             'app/bower_components/angularjs-nvd3-directives/dist/angularjs-nvd3-directives.js',
             'app/bower_components/elastic.js/dist/elastic-angular-client.js',
+            'app/bower_components/gs-ui-infra/app/templates/all.js',
             'app/bower_components/gs-ui-infra/app/scripts/**/*.js',
             'app/bower_components/d3/d3.js',
             'app/bower_components/elastic.js/dist/elastic.js',
