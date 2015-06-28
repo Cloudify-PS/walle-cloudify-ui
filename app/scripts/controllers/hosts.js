@@ -20,7 +20,7 @@ angular.module('cosmoUiApp')
         var _blueprint = null;
         var _currentBlueprint = null;
         var _deploymentsList = [];
-        $scope.emptyReason = 'Choose a blueprint and click show...';
+        $scope.emptyReason = $filter('translate')('hosts.chooseBlueprint');
 
         NodeSearchService.getNodeSearchData()
             .then(function(data){
@@ -46,7 +46,7 @@ angular.module('cosmoUiApp')
                     _currentBlueprint = _blueprint;
 
                     if ( !$scope.nodesList || $scope.nodesList.length === 0 ){
-                        $scope.emptyReason = 'Blueprint ' + _blueprint + ' has no hosts at this moment. To see nodes deploy the blueprint';
+                        $scope.emptyReason = $filter('translate')('hosts.blueprintEmpty', { blueprint_id : _blueprint } );
                         $scope.deployBlueprintButton = true;
 
                     }

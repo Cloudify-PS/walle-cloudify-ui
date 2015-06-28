@@ -1,6 +1,7 @@
 {
     "general" : {
-        "unknownError" : "Unknown Error"
+        "unknownError" : "Unknown Error",
+        "loading" : "Loading..."
     },
     "connectError": "Error connecting to Cosmo server",
     "appStatus": {
@@ -204,6 +205,11 @@
             "cancel": "Cancel",
             "value": "Enter Value"
         }
+    },
+    "hosts" : {
+        "blueprintEmpty" : "Blueprint {{blueprint_id}} has no hosts at this moment. To see nodes deploy the blueprint",
+        "chooseBlueprint" : "Choose a blueprint and click show...",
+        "deployBlueprint" : "Deploy Blueprint"
     }
 }
 

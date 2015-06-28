@@ -6,7 +6,7 @@ describe('Controller: HostsCtrl', function () {
     var HostsCtrl, scope;
 
     // load the controller's module
-    beforeEach(module('cosmoUiApp', 'ngMock','backend-mock'));
+    beforeEach(module('cosmoUiApp','backend-mock'));
 
     // Initialize the controller and a mock scope
     beforeEach(inject(function ($controller, $rootScope, $httpBackend, $q, CloudifyService, NodeSearchService) {
@@ -81,10 +81,6 @@ describe('Controller: HostsCtrl', function () {
 
         HostsCtrl = $controller('HostsCtrl', {
             $scope: scope,
-            $filter: function () {
-                return function () {
-                };
-            },
             $timeout:function(callback){ callback(); },
             NodeSearchService: NodeSearchService
         });
@@ -118,14 +114,20 @@ describe('Controller: HostsCtrl', function () {
             scope.execute();
 
             expect(scope.filterLoading).toBe(false);
-
             expect(scope.nodesList).toBe('foo');
-
             expect(scope.getBlueprintId()).toBe('bar');
-
             expect(NodeSearchService.execute).toHaveBeenCalled();
+        }));
 
+        it('should display empty message', inject(function( NodeSearchService ){
+            spyOn(scope,'isSearchDisabled').andReturn(false);
+            spyOn(NodeSearchService,'execute').andReturn({ then: function(success){
+                success([]);
 
+            }});
+
+            scope.execute();
+            expect(scope.emptyReason).toBe('hosts.blueprintEmpty');
         }));
 
         it('should do nothing if sort is disabled', inject(function (NodeSearchService) {

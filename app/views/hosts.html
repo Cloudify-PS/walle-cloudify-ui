@@ -77,10 +77,10 @@
         </table>
         <div class="emptyTable" data-ng-hide="nodesList.length || filterLoading" ng-show="">
             <div>{{ emptyReason }}</div>
-            <a class="gs-btn" ng-hide="!deployBlueprintButton" href="#/blueprint/{{getBlueprintId()}}/topology?deploy=true"> Deploy Blueprint </a>
+            <a class="gs-btn" ng-hide="!deployBlueprintButton" href="#/blueprint/{{getBlueprintId()}}/topology?deploy=true"> {{ 'hosts.deployBlueprint' | translate }} </a>
         </div>
 
-        <div class="emptyTable" data-ng-show="filterLoading">Loading...</div>
+        <div class="emptyTable" data-ng-show="filterLoading"> {{ 'general.loading' | translate }} </div>
     </div>
 
 </div>
