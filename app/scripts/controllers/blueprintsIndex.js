@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('cosmoUiApp')
-    .controller('BlueprintsIndexCtrl', function ($scope, $location, $cookieStore, BreadcrumbsService, $timeout, $log, ngDialog, cloudifyClient) {
+    .controller('BlueprintsIndexCtrl', function ($scope, $location, $cookieStore, BreadcrumbsService, $log, ngDialog, cloudifyClient) {
         $scope.lastExecutedPlan = null;
         $scope.selectedBlueprint = null;
         $scope.managerError = false;
@@ -71,8 +71,6 @@ angular.module('cosmoUiApp')
                     $scope.blueprints = [];
                 } else {
                     $scope.blueprints = _.sortByOrder(result.data, ['updated_at'], [false]);
-
-                    $scope.closeDialog();
                 }
             }, function (result) {
                 $scope.managerError = result.data;
@@ -103,7 +101,6 @@ angular.module('cosmoUiApp')
         };
 
         $scope.uploadDone = function(blueprint_id) {
-            $scope.closeDialog();
             $scope.redirectTo({
                 id: blueprint_id
             });
@@ -114,15 +111,7 @@ angular.module('cosmoUiApp')
         };
 
         $scope.redirectToDeployment = function(deployment_id) {
-            $scope.closeDialog();
             $location.path('/deployment/' + deployment_id + '/topology');
-        };
-
-        $scope.closeDialog = function() {
-            if (_dialog !== null) {
-                ngDialog.close(_dialog.id);
-            }
-            _dialog = null;
         };
 
 

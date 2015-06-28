@@ -1,7 +1,7 @@
 'use strict';
 
 describe('Controller: DeploymentsCtrl', function () {
-    var DeploymentsCtrl, scope, _cloudifyService, _timeout, _depExecSpy, _ngDialog;
+    var DeploymentsCtrl, scope, _cloudifyService, _timeout, _depExecSpy, _ngDialog, _q, _interval;
 
     var _execution = {};
 
@@ -129,7 +129,7 @@ describe('Controller: DeploymentsCtrl', function () {
     beforeEach(module('cosmoUiApp', 'ngMock','templates-main', 'backend-mock'));
 
     function _testSetup() {
-        inject(function ($controller, $rootScope, $httpBackend, $q, CloudifyService, cloudifyClient, $location, $timeout, ngDialog) {
+        inject(function ($controller, $rootScope, $httpBackend, $q, CloudifyService, cloudifyClient, $location, $timeout, ngDialog, $interval) {
 
 
             scope = $rootScope.$new();
@@ -159,6 +159,8 @@ describe('Controller: DeploymentsCtrl', function () {
             });
 
             _timeout = $timeout;
+            _q = $q;
+            _interval = $interval;
 
             $location.path('/deployments');
 
@@ -191,7 +193,7 @@ describe('Controller: DeploymentsCtrl', function () {
             DeploymentsCtrl = $controller('DeploymentsCtrl', {
                 $scope: scope,
                 CloudifyService: _cloudifyService,
-                $timeout: _timeout,
+                $q: _q,
                 ngDialog: _ngDialog
             });
 
@@ -266,6 +268,20 @@ describe('Controller: DeploymentsCtrl', function () {
             _testSetup();
             expect(DeploymentsCtrl).not.toBeUndefined();
         });
+
+        it('should load deployment executions every 10000 milliseconds', inject(function ($httpBackend, TickerSrv) {
+            _testSetup();
+
+            spyOn(TickerSrv, 'register').andCallFake(function(id, handler/*, interval, delay, isLinear*/) {
+                handler().then(function() {
+                    expect(_depExecSpy.callCount).toEqual(1);
+                });
+            });
+
+            $httpBackend.whenGET('/backend/executions').respond({});
+            $httpBackend.whenGET('/backend/configuration?access=all').respond({});
+
+        }));
 
 
         it('should toggle delete confirmation dialog when deleteBlueprint function is triggered', function () {

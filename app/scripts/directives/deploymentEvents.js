@@ -7,7 +7,7 @@
  * # deploymentEvents
  */
 angular.module('cosmoUiApp')
-    .directive('deploymentEvents', function ($log, $filter, EventsService, EventsMap, $document, cloudifyClient, $interval) {
+    .directive('deploymentEvents', function ($log, $filter, EventsService, EventsMap, $document, cloudifyClient) {
         return {
             templateUrl: 'views/deployment/eventWidget.html',
             restrict: 'EA',
@@ -25,7 +25,7 @@ angular.module('cosmoUiApp')
 
                 function executeEvents() {
 
-                    cloudifyClient.events.get( { 'deployment_id' :  $scope.id ,  'from_event': 0, 'batch_size' : 50 , 'include_logs' :  false , 'order' : 'desc' }).then(function (result) {
+                    return cloudifyClient.events.get( { 'deployment_id' :  $scope.id ,  'from_event': 0, 'batch_size' : 50 , 'include_logs' :  false , 'order' : 'desc' }).then(function (result) {
                         $scope.events = result.data.hits.hits;
                         $scope.lastEvent = $scope.events.length > 0 ? $scope.events[0] : null;
                         _.each($scope.events, function(e){
@@ -34,14 +34,7 @@ angular.module('cosmoUiApp')
                     }, true);
                 }
 
-                // todo: use the polling service
-                var polling = $interval(executeEvents, 5000);
-                $scope.$on('$destroy', function() {
-                    if (polling) {
-                        $interval.cancel(polling);
-                    }
-                });
-                executeEvents();
+                $scope.registerTickerTask('deploymentEvents/events', executeEvents, 3000);
 
 
                 // todo : get rid of this. replace with scope binding on directive

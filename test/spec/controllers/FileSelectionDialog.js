@@ -9,12 +9,9 @@ describe('Controller: FileSelectionDialogCtrl', function () {
 
     // Initialize the controller and a mock scope
     beforeEach(inject(function ($controller, $rootScope, $httpBackend, $q, CloudifyService) {
-        $httpBackend.whenGET('/backend/configuration?access=all').respond(200);
-        $httpBackend.whenGET('/backend/versions/ui').respond(200);
-        $httpBackend.whenGET('/backend/versions/manager').respond(200);
-        $httpBackend.whenGET('/backend/version/latest?version=00').respond('300');
 
         scope = $rootScope.$new();
+        scope.closeThisDialog = jasmine.createSpy();
         _cloudifyService = CloudifyService;
 
         FileSelectionDialogCtrl = $controller('FileSelectionDialogCtrl', {
@@ -157,38 +154,17 @@ describe('Controller: FileSelectionDialogCtrl', function () {
             expect(scope.uploadInProcess).toBe(false);
             expect(scope.blueprintUploadOpts.params.blueprint_archive_url).toBe('http://some.kind/of/url.tar.gz');
         });
-
-        it('should reset the dialog variables on dialog close (CFY-2583)', function() {
-            scope.inputText = 'http://some.kind/of/url.tar.gz';
-            scope.selectedFile = {data: 'fake data'};
-            scope.blueprintUploadOpts = {
-                blueprint_id: 'blueprint1',
-                params: {
-                    application_file_name: 'filename1'
-                }
-            };
-            scope.toggleAddDialog = function() {};
-
-            scope.closeDialog();
-
-            expect(scope.inputText).toBe('');
-            expect(scope.selectedFile).toBe('');
-            expect(JSON.stringify(scope.blueprintUploadOpts)).toBe(JSON.stringify({
-                blueprint_id: '',
-                params: {
-                    application_file_name: ''
-                }
-            }));
-        });
     });
 
     describe('#onUploadSuccess', function(){
         beforeEach(function(){
             scope.uploadDone = function(){}; // mock.
         });
+
         it('should put id on scope.blueprintUploadOpts.blueprint_id ', function(){
             FileSelectionDialogCtrl.onUploadSuccess({'id':'foo'});
             expect(scope.blueprintUploadOpts.blueprint_id).toBe('foo');
+            expect(scope.closeThisDialog).toHaveBeenCalled();
         });
     });
 
@@ -253,6 +229,22 @@ describe('Controller: FileSelectionDialogCtrl', function () {
             progressCallback({ loaded : 20, total: 100});
             expect(lastProgress).toBe(20);
 
+        }));
+
+        it('should escape the blueprint id before upload (CFY-1958)', inject(function( $upload ) {
+            scope.blueprintUploadOpts = {
+                blueprint_id: 'a/b',
+                params: {
+                    application_file_name: 'filename1'
+                }
+            };
+
+            spyOn($upload,'upload').andCallThrough();
+
+            scope.uploadBlueprint();
+
+            var opts = JSON.parse($upload.upload.mostRecentCall.args[0].fields.opts);
+            expect(opts.blueprint_id).toBe('a%2Fb');
         }));
     });
 });
