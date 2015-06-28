@@ -85,7 +85,7 @@ angular.module('cosmoUiApp')
                             $scope.showError = true;
                         } else {
                             $scope.$emit('executionStarted', data);
-                            $scope.closeDialog();
+                            $scope.closeThisDialog();
                         }
                     }, function(e) {
                         $scope.executeErrorMessage = e.data.message;
@@ -94,7 +94,13 @@ angular.module('cosmoUiApp')
             }
         };
 
-        $scope.cancelWorkflow = function(execution_id) {
+        $scope.cancelWorkflow = function(deployment_id) {
+            var execution = $scope.getExecution(deployment_id);
+            if ( !execution ){
+                return;
+            }
+
+            var execution_id = execution.id;
             var callParams = {
                 'execution_id': execution_id,
                 'state': 'cancel'
@@ -105,7 +111,7 @@ angular.module('cosmoUiApp')
                     $scope.executeErrorMessage = data.message;
                 }
                 else {
-                    $scope.closeDialog();
+                    $scope.closeThisDialog();
                 }
             }, function(e) {
                 $scope.showError = true;

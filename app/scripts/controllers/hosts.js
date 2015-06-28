@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('cosmoUiApp')
-    .controller('HostsCtrl', function ($scope, BreadcrumbsService, $filter, NodeSearchService) {
+    .controller('HostsCtrl', function ($scope, BreadcrumbsService, $filter, NodeSearchService, $timeout ) {
 
         /**
          * Breadcrumbs
@@ -20,6 +20,7 @@ angular.module('cosmoUiApp')
         var _blueprint = null;
         var _currentBlueprint = null;
         var _deploymentsList = [];
+        $scope.emptyReason = $filter('translate')('hosts.chooseBlueprint');
 
         NodeSearchService.getNodeSearchData()
             .then(function(data){
@@ -34,12 +35,27 @@ angular.module('cosmoUiApp')
         };
 
         function _execute() {
+
+            $scope.emptyReason = null;
+            $scope.deployBlueprintButton = false;
+            var startTime = new Date().getTime();
             $scope.filterLoading = true;
             NodeSearchService.execute(_type, _blueprint, _deployments)
                 .then(function(data){
                     $scope.nodesList = data;
-                    $scope.filterLoading = false;
                     _currentBlueprint = _blueprint;
+
+                    if ( !$scope.nodesList || $scope.nodesList.length === 0 ){
+                        $scope.emptyReason = $filter('translate')('hosts.blueprintEmpty', { blueprint_id : _blueprint } );
+                        $scope.deployBlueprintButton = true;
+
+                    }
+
+                    $timeout(function() {  // fake delay time if response was too fast
+                        $scope.filterLoading = false;
+                    },2000 + new Date().getTime() - startTime  );
+
+
                 });
         }
 

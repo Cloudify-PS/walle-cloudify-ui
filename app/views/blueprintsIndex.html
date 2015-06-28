@@ -20,7 +20,7 @@
                 <td class="name"  ng-click="redirectTo(blueprint)">{{ blueprint.id }}</td>
                 <td class="created"  ng-click="redirectTo(blueprint)">{{ blueprint.created_at | dateFormat: 'yyyy-MM-dd HH:mm:ss' }}</td>
                 <td class="updated"  ng-click="redirectTo(blueprint)">{{ blueprint.updated_at | dateFormat: 'yyyy-MM-dd HH:mm:ss' }}</td>
-                <td class="deployments"><div class="deployments-number" ng-click="redirectToDeployments(blueprint)">{{ blueprint.deployments.length }}</div></td>
+                <td class="deployments"><div class="deployments-number" ng-click="redirectToDeployments(blueprint)">{{ countDeployments(blueprint) }}</div></td>
                 <td class="actions">
                     <button class="deploy-button" ng-click="openDeployDialog(blueprint)">{{ 'blueprints.table.deployBtn' | translate }}</button>
                     <i class="delete-button fa fa-times-circle right close-properties-button" ng-click="deleteBlueprint(blueprint)"></i>
@@ -30,7 +30,7 @@
         </tbody>
     </table>
 
-    <div class="connect-error-message" ng-show="managerError">{{ 'connectError' | translate }}</div>
+    <div class="connect-error-message" ng-show="managerError">{{ 'connectError' | translate }} - {{ managerError.message }} </div>
 
     <div class="gs-big-loader" ng-show="blueprints == null && !managerError"></div>
 

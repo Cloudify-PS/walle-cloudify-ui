@@ -64,14 +64,6 @@ describe('Controller: DeploymentTopologyCtrl', function () {
         }));
     });
 
-    describe('deploymentExecution eventHandler', function(){
-        it('should update info about execution', inject(function( $rootScope, CloudifyService ){
-            spyOn(CloudifyService,'autoPull').andCallFake(function(){ return { then: function(){}};});
-            $rootScope.$broadcast('deploymentExecution', { currentExecution : false , deploymentInProgress : true });
-
-        }));
-    });
-
     describe('Controller tests', function() {
         it('should create a controller', function () {
             expect(DeploymentTopologyCtrl).not.toBeUndefined();

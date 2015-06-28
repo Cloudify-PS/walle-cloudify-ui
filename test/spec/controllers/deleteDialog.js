@@ -119,7 +119,7 @@ describe('Controller: DeletedialogCtrl', function () {
         }]
     };
 
-    beforeEach(module('cosmoUiApp', 'ngMock', 'backend-mock'));
+    beforeEach(module('cosmoUiApp', 'ngMock', 'backend-mock', 'templates-main'));
 
     function _testSetup(type) {
         inject(function ($controller, $rootScope, $httpBackend, $q, CloudifyService) {
@@ -155,6 +155,7 @@ describe('Controller: DeletedialogCtrl', function () {
     });
 
     describe('Controller tests', function() {
+
         it('should create a controller', function () {
             _testSetup('blueprint');
             expect(DeleteDialogCtrl).not.toBeUndefined();
@@ -182,5 +183,30 @@ describe('Controller: DeletedialogCtrl', function () {
 
             expect(_cloudifyService.deployments.deleteDeploymentById).toHaveBeenCalledWith({deployment_id :_deployment.id, ignoreLiveNodes:false});
         });
+
+        it('should close dialog when pressing the cancel button', inject(function(ngDialog, $timeout) {
+            _testSetup();
+            var id = ngDialog.open({
+                template: 'views/dialogs/delete.html',
+                controller: 'DeleteDialogCtrl',
+                scope: scope,
+                className: 'delete-dialog'
+            }).id;
+            $timeout.flush();
+
+            var elemsQuery = '#' + id + ' #cancelBtnDelDep[ng-click="closeThisDialog()"]';
+            var elems = $(elemsQuery);
+            expect(elems.length).toBe(1);
+
+            elems.remove(); // https://github.com/likeastore/ngDialog/issues/263
+            ngDialog.closeAll();
+
+            elems = $(elemsQuery);
+            expect(elems.length).toBe(0);
+
+
+
+
+        }));
     });
 });

@@ -77,6 +77,7 @@
         width: 24px;
         height: 24px;
         font-size: 24px;
+        line-height:24px;
     }
 
     &.closed {
@@ -141,15 +142,6 @@
                         margin-right: 20px;
                     }
                 }
-
-                .gs-icon-logs {
-                    top: 6px;
-                    left: -6px;
-                    padding: 0px;
-                    font-size: 46px;
-                    line-height: 30px;
-                }
-
             }
 
             &.openRow {

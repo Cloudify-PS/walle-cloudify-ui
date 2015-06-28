@@ -68,6 +68,9 @@ angular.module('cosmoUiApp')
                     });
             }
 
+            if ( !deployments || deployments.length === 0 ){
+                deferred.resolve(result);
+            }
             for(var i in deployments) {
                 getNodes(deployments[i].value);
             }
@@ -88,6 +91,9 @@ angular.module('cosmoUiApp')
                 if (count === deployments.length) {
                     deferred.resolve(result);
                 }
+            }
+            if ( !deployments || deployments.length === 0 ){
+                deferred.resolve(result);
             }
 
             for (var i in deployments) {

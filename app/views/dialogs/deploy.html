@@ -1,23 +1,28 @@
 <div id="deployDialogContainer" class="dialogBox">
-    <div class="dialogTitle">
-        <label>{{ 'dialogs.deploy.title' | translate }} {{selectedBlueprint.id}}</label>
-    </div>
-    <div class="dialogDescription">{{ 'dialogs.deploy.description' | translate }}</div>
-    <div class="dialogDeploymentName">
-        <input type="text" spellcheck="false" ng-model="deployment_id" ng-enter="deployBlueprint(selectedBlueprint.id)" placeholder="{{ 'dialogs.deploy.name' | translate }}">
-    </div>
-    <div class="dialogInputs deployInputs" ng-show="isParamsVisible()">
-        <div class="buttons-group deployBtns">
-            <button data-ng-class="{'active': inputsState == 'params'}" class="btn btn-default" data-ng-click="toggleInputsState('PARAMS')">Parameters</button>
-            <button data-ng-class="{'active': inputsState == 'raw'}" class="btn btn-default" data-ng-click="toggleInputsState('RAW')">Raw</button>
+        <div class="dialogTitle">
+            <label>{{ 'dialogs.deploy.title' | translate }} {{selectedBlueprint.id}}</label>
         </div>
-        <div class="inputsParameters" ng-show="inputsState == 'params'">
-            <ul>
-                <li ng-repeat="(name, value) in selectedBlueprint.plan.inputs">{{name}}: <input type="text" spellcheck="false" ng-trim="false" ng-model="inputs[name]" placeholder="{{ 'dialogs.deploy.value' | translate }}"></li>
-            </ul>
+        <div class="dialogDescription">{{ 'dialogs.deploy.description' | translate }}</div>
+    <div ng-show="!selectedBlueprint" class="gs-big-loader"></div>
+
+    <div ng-show="selectedBlueprint">
+
+        <div class="dialogDeploymentName">
+            <input type="text" spellcheck="false" ng-model="deployment_id" ng-enter="deployBlueprint(selectedBlueprint.id)" placeholder="{{ 'dialogs.deploy.name' | translate }}">
         </div>
-        <div class="inputsRaw" ng-show="inputsState == 'raw'">
-            <textarea ng-model="rawString" spellcheck="false"></textarea>
+        <div class="dialogInputs deployInputs" ng-show="isParamsVisible()">
+            <div class="buttons-group deployBtns">
+                <button data-ng-class="{'active': inputsState == 'params'}" class="btn btn-default" data-ng-click="toggleInputsState('PARAMS')">Parameters</button>
+                <button data-ng-class="{'active': inputsState == 'raw'}" class="btn btn-default" data-ng-click="toggleInputsState('RAW')">Raw</button>
+            </div>
+            <div class="inputsParameters" ng-show="inputsState == 'params'">
+                <ul>
+                    <li ng-repeat="(name, value) in selectedBlueprint.plan.inputs">{{name}}: <input type="text" spellcheck="false" ng-trim="false" ng-model="inputs[name]" placeholder="{{ 'dialogs.deploy.value' | translate }}"></li>
+                </ul>
+            </div>
+            <div class="inputsRaw" ng-show="inputsState == 'raw'">
+                <textarea ng-model="rawString" spellcheck="false"></textarea>
+            </div>
         </div>
     </div>
 

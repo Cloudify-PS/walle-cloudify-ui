@@ -128,7 +128,8 @@
 }
 
 .gs-btn {
-    color: white;
+    $GS_BUTTON_COLOR:white;
+    color: $GS_BUTTON_COLOR;
     padding: 5px 10px 5px 10px;
     background-color: $COSMOUI_BUTTON_BACKGROUND;
     border-radius: 3px;
@@ -148,12 +149,19 @@
         cursor: default;
     }
 
-    &.loader {
+    &.loader, &.loader:hover {
         color: transparent;
         background-image: url($img-loading-button);
         background-repeat: no-repeat;
         background-position: center center;
         background-color: $COSMOUI_BUTTON_BACKGROUND;
+
+    }
+
+    &:hover{
+        text-decoration: none;
+        color:$GS_BUTTON_COLOR;
+
     }
 
     &.close {
@@ -200,7 +208,7 @@
         color: $clr-base-11;
         background-color: $clr-base-01;
         font-weight: normal;
-        padding: 5px 40px 5px 10px;
+        line-height:30px;
         border-radius: 5px;
         border: 2px solid $clr-base-04;
         float: left;
@@ -211,9 +219,14 @@
         appearance: none;
         cursor: pointer;
 
+
         &.disable {
             background: transparent;
             color: $clr-base-27;
+        }
+
+        t{
+            padding-left:5px;
         }
 
         div.button {
@@ -221,7 +234,7 @@
             border: none;
 
             label {
-                padding: 0px;
+                padding: 0;
             }
         }
         &.open {
@@ -256,13 +269,6 @@
     width: 36px;
     height: 36px;
     border-radius: 0px;
-
-    &.gs-icon-logs {
-        padding-left: 16px;
-        color: #049cdb;
-        line-height: 46px;
-        font-size: 55px;
-    }
 }
 
 .icon-events {
@@ -310,12 +316,8 @@
     &.icon-gs-task-sent:before {
     }
 
-    &.gs-icon-logs {
-        font-family: gigaspaces;
-        padding-left: 16px;
+    &.gs-icon-logs:before {
         color: #049cdb;
-        line-height: 46px;
-        font-size: 55px;
     }
 }
 
@@ -407,6 +409,7 @@ input[type=text], input[type=password]{
     position: relative;
     margin-left: auto;
     margin-right: auto;
+    margin-bottom:100px;
     top: 50px;
     width: 128px;
     height: 128px;

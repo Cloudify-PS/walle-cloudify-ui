@@ -17,7 +17,9 @@ angular.module('cosmoUiApp', [
     'pascalprecht.translate',
     'ngDialog',
     'ngProgress',
-    'angular-loading-bar'
+    'angular-loading-bar',
+    'jsbb.angularTicker',
+    'cloudifyjs'
 
 ]).config( function ($routeProvider, $httpProvider, $translateProvider) {
 

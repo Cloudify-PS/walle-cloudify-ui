@@ -6,8 +6,11 @@ describe('Directive: deploymentEvents', function () {
 
     beforeEach(module('cosmoUiApp', 'ngMock','backend-mock', 'templates-main'));
 
-    beforeEach(inject(function ($compile, $rootScope, $httpBackend) {
-        $httpBackend.whenPOST('/backend/events/_search').respond(200);
+    beforeEach(inject(function ($compile, $rootScope, cloudifyClient) {
+
+        spyOn(cloudifyClient.events,'get').andCallFake(function(){
+            return {then:function(){}};
+        });
 
         scope = $rootScope.$new();
         element = $compile(angular.element('<div deployment-events></div>'))(scope);
@@ -32,13 +35,6 @@ describe('Directive: deploymentEvents', function () {
             expect(typeof(scope.getEventText)).toBe('function');
         });
 
-        it('should create an element with lastEvent function', function () {
-            expect(typeof(scope.lastEvent)).toBe('function');
-        });
-
-        it('should create an element with hasLastEvent function', function () {
-            expect(typeof(scope.hasLastEvent)).toBe('function');
-        });
 
         it('should create an element with dragIt function', function () {
             expect(typeof(scope.dragIt)).toBe('function');
