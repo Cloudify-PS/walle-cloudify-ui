@@ -65,6 +65,9 @@
             display: block;
             text-align: center;
             padding: 20px;
+            &>div {
+                padding:20px;
+            }
         }
 
         .gs-table {

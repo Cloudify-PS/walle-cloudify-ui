@@ -128,7 +128,8 @@
 }
 
 .gs-btn {
-    color: white;
+    $GS_BUTTON_COLOR:white;
+    color: $GS_BUTTON_COLOR;
     padding: 5px 10px 5px 10px;
     background-color: $COSMOUI_BUTTON_BACKGROUND;
     border-radius: 3px;
@@ -148,12 +149,19 @@
         cursor: default;
     }
 
-    &.loader {
+    &.loader, &.loader:hover {
         color: transparent;
         background-image: url($img-loading-button);
         background-repeat: no-repeat;
         background-position: center center;
         background-color: $COSMOUI_BUTTON_BACKGROUND;
+
+    }
+
+    &:hover{
+        text-decoration: none;
+        color:$GS_BUTTON_COLOR;
+
     }
 
     &.close {
