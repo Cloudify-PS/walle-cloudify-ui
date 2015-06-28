@@ -206,6 +206,10 @@
             "value": "Enter Value"
         }
     },
+    "blueprintUpload" : {
+        "generalError" : "Error uploading blueprint",
+        "tooBig" : "Blueprint is too big"
+    },
     "hosts" : {
         "blueprintEmpty" : "Blueprint {{blueprint_id}} has no hosts at this moment. To see nodes deploy the blueprint",
         "chooseBlueprint" : "Choose a blueprint and click show...",
