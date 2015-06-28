@@ -34,16 +34,7 @@ angular.module('cosmoUiApp')
                     }, true);
                 }
 
-                $scope.registerTickerTask('deploymentEvents/events', startEventsAutoPull, 3000);
-
-                // todo: use the polling service
-                var polling = $interval(executeEvents, 5000);
-                $scope.$on('$destroy', function() {
-                    if (polling) {
-                        $interval.cancel(polling);
-                    }
-                });
-                executeEvents();
+                $scope.registerTickerTask('deploymentEvents/events', executeEvents, 3000);
 
 
                 // todo : get rid of this. replace with scope binding on directive

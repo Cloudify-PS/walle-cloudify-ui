@@ -20,6 +20,7 @@ module.exports = function (conf) {
             })(req, res, next);
         } catch (e) {
             console.log('unable to proxy', e);
+            next(e);
         }
     };
 };
