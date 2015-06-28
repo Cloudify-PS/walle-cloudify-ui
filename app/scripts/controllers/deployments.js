@@ -2,21 +2,25 @@
 
 // TODO: this code should be much more testable
 angular.module('cosmoUiApp')
-    .controller('DeploymentsCtrl', function ($scope, $cookieStore, $location, $routeParams, BreadcrumbsService, $q, $log, CloudifyService, ngDialog) {
+    .controller('DeploymentsCtrl', function ($scope, $cookieStore, ExecutionsService,
+                                             $location, $routeParams, BreadcrumbsService, $log,
+                                             CloudifyService, ngDialog, cloudifyClient, $q) {
 
-        $scope.blueprints = null;
         $scope.deployments = [];
-        $scope.selectedBlueprint = '';
         $scope.executedErr = false;
         $scope.confirmationType = '';
-        var _executedDeployments = [];
+
+        // holds currently running execution per deployment_id
+        var runningExecutions = {};
+
         $scope.selectedWorkflow = {
             data: null
         };
+
         $scope.inputs = {};
         $scope.managerError = false;
         var selectedWorkflows = [];
-        var workflows = [];
+        var workflows = {};
         var _dialog = null;
         $scope.itemToDelete = null;
 
@@ -67,6 +71,22 @@ angular.module('cosmoUiApp')
         }, true);
 
         $scope.getWorkflows = function(deployment) {
+            if ( !deployment ){
+                return; // no workflows
+            }
+
+            if ( !workflows.hasOwnProperty(deployment.id) ){ // construct once
+                workflows[deployment.id] = _.map(deployment.workflows, function(w){
+                    return {
+                        value: w.name,
+                        label: w.name,
+                        deployment: deployment.id,
+                        parameters: w.parameters
+                    };
+                });
+
+            }
+
             return workflows[deployment.id];
         };
 
@@ -76,15 +96,17 @@ angular.module('cosmoUiApp')
             }
         };
 
-        $scope.isExecuting = function(blueprint_id, deployment_id, workflow) {
-            return _executedDeployments[blueprint_id] !== undefined &&
-                _executedDeployments[blueprint_id][deployment_id] !== null &&
-                _executedDeployments[blueprint_id][deployment_id] !== undefined &&
-                _executedDeployments[blueprint_id][deployment_id].status !== 'failed' &&
-                _executedDeployments[blueprint_id][deployment_id].status !== 'terminated' &&
-                _executedDeployments[blueprint_id][deployment_id].status !== 'cancelled' &&
-                _executedDeployments[blueprint_id][deployment_id].status !== null &&
-                workflow !== 'create_deployment_environment';
+        $scope.getExecution = function(deployment_id){
+            return runningExecutions[deployment_id];
+        };
+
+        $scope.canPause = function(deployment_id){
+            return ExecutionsService.canPause(runningExecutions[deployment_id]);
+        };
+
+        $scope.isExecuting = function(deployment_id) {
+            var execution = runningExecutions[deployment_id];
+            return !!execution;
         };
 
         $scope.isExecuteEnabled = function(deployment_id) {
@@ -122,85 +144,34 @@ angular.module('cosmoUiApp')
         function _loadExecutions() {
             var deferred = $q.defer();
 
-            CloudifyService.deployments.getDeploymentExecutions()
-                .then(function(data) {
-                    if (data.length > 0) {
-                        for (var k = 0; k < $scope.deployments.length; k++) {   // running over deployments list
-                            var blueprint_id = $scope.deployments[k].blueprint_id;
-                            var deployment_id = $scope.deployments[k].id;
+            cloudifyClient.executions.list(null, 'id,workflow_id,status,deployment_id').then(function(result){
 
-                            if (_executedDeployments[blueprint_id] === undefined) { // creating executions array by blueprint name
-                                _executedDeployments[blueprint_id] = [];
-                            }
-
-                            for (var i = 0; i < data.length; i++) {
-                                if (data[i].blueprint_id === blueprint_id && data[i].deployment_id === deployment_id && data[i].status !== null && data[i].status !== 'failed' && data[i].status !== 'terminated' && data[i].status !== 'cancelled') {
-                                    selectedWorkflows[deployment_id] = data[i].workflow_id;
-                                    _executedDeployments[blueprint_id][deployment_id] = data[i];    // adding execution data by blueprint/deployment id's in executions array
-
-                                } else if (data[i].blueprint_id === blueprint_id && data[i].deployment_id === deployment_id && _executedDeployments[blueprint_id][deployment_id] !== undefined && (data[i].status === 'failed' || data[i].status === 'terminated' || data[i].status === 'cancelled') ){
-                                    var currentCreatedDate = new Date(_executedDeployments[blueprint_id][deployment_id].created_at).getTime();
-                                    var dataCreatedDate = new Date(data[i].created_at).getTime();
-
-                                    if (currentCreatedDate < dataCreatedDate) {
-                                        _executedDeployments[blueprint_id][deployment_id] = null;
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    deferred.resolve();
+                var executions = result.data;
+                executions = _.filter(executions, function(exec){ return ExecutionsService.isRunning(exec); });
+                _.each(executions, function(exec){
+                    runningExecutions[exec.deployment_id] = exec;
                 });
+                deferred.resolve();
+            },function(){
+                // todo: implement error handling
+            });
 
             return deferred.promise;
         }
 
-        // register the task.
-        $scope.getExecutionAttr = function(deployment, attr) {
-            for (var blueprint in _executedDeployments) {
-                for (var dep in _executedDeployments[blueprint]) {
-                    if (_executedDeployments[blueprint][dep] !== null) {
-                        if (deployment.id === _executedDeployments[blueprint][dep].deployment_id) {
-                            return _executedDeployments[blueprint][dep][attr];
-                        }
-                    }
-                }
-            }
-        };
-
         $scope.loadDeployments = function() {
-            $scope.blueprints = null;
-            $scope.deployments = [];
-            CloudifyService.blueprints.list()
-                .then(function(data) {
+            cloudifyClient.deployments.list('id,blueprint_id,created_at,updated_at,workflows')
+                .then(function(result) {
                     $scope.managerError = false;
-                    $scope.blueprints = data;
-                    $scope.deployments = [];
 
-                    for (var j = 0; j < data.length; j++) {
-                        var deployments = data[j].deployments;
-                        $scope.deployments = $scope.deployments.concat(data[j].deployments);
-                        for (var i = 0; i < deployments.length; i++) {
-                            workflows[deployments[i].id] = [];
-                            for (var w in deployments[i].workflows) {
-                                var workflow = deployments[i].workflows[w];
-                                workflows[deployments[i].id].push({
-                                    value: workflow.name,
-                                    label: workflow.name,
-                                    deployment: deployments[i].id,
-                                    parameters: workflow.parameters
-                                });
-                            }
-                        }
-                    }
-
-                    $scope.registerTickerTask('deployments/loadExecutions', _loadExecutions, 10000);
-
+                    $scope.deployments = result.data;
                 },
                 function() {
                     $scope.managerError = true;
                 });
         };
+
+        $scope.registerTickerTask('deployments/loadExecutions', _loadExecutions, 10000);
 
         $scope.loadDeployments();
 

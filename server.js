@@ -90,6 +90,32 @@ function cloudifyCallback( res ){
     }
 }
 
+/************************ PROXY TO REST API *****************************/
+
+var proxy = require('express-http-proxy');
+// guy - need to specify 'use' twice.. in express 4.x they added support for multiple middlewares in app.use, but we are using 3.x :(
+app.use('/backend/cloudify-api', CloudifyMiddleware);
+app.use('/backend/cloudify-api', function( req, res, next ){
+    // guy - we cannot use decorate request here, because decorate does not pass express request object
+    // and we need express request object because we placed cloudifyAuthHeader on it..
+    try {
+        req.headers.authorization = req.cloudifyAuthHeader;
+        proxy(function () {
+            return conf.cosmoServer
+        },{
+            intercept:function(rsp, data, req, res, callback ){
+                res.removeHeader('www-authenticate'); // we want a login page!
+                console.log('res headers is',res.headers, data, rsp.headers);
+                callback(null, data)
+            }
+        })(req, res, next);
+    }catch(e){
+        next(e); // must propagate the error or request is stuck.
+    }
+});
+
+/************************* END PROXY **********************************/
+
 // Cloudify REST APIs
 
 /* login */

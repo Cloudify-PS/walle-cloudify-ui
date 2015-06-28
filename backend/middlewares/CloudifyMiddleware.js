@@ -20,7 +20,10 @@ module.exports = function (req, res, next) {
             'user' : creds.username,
             'pass' : creds.password
         };
+        req.cloudifyAuthHeader = 'Basic ' + new Buffer(creds.username + ':' + creds.password).toString('base64');
     }
+
+
     req.cloudifyClient = new CloudifyClient(clientConf);
     req.cloudifyClientConf = clientConf;
     next();
