@@ -7,7 +7,7 @@
  * # deploymentEvents
  */
 angular.module('cosmoUiApp')
-    .directive('deploymentEvents', function ($log, $filter, EventsService, EventsMap, $document, cloudifyClient, $interval) {
+    .directive('deploymentEvents', function ($log, $filter, EventsService, EventsMap, $document, cloudifyClient) {
         return {
             templateUrl: 'views/deployment/eventWidget.html',
             restrict: 'EA',
