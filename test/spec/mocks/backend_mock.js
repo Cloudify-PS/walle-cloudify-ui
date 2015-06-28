@@ -14,7 +14,7 @@ angular.module('backend-mock',[]).config(function( $translateProvider){
 angular.module('backend-mock').factory('missingTranslationFactory', function (){
         return function(key){
             return key;
-        }
+        };
     }
 );
 
