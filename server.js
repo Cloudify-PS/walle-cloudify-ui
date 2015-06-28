@@ -145,7 +145,7 @@ app.get('/backend/blueprints/validate', middlewares.cloudifyAuthentication, func
 });
 
 app.get('/backend/blueprints/delete', middlewares.cloudifyAuthentication, function(request, response) {
-    request.cloudifyClient.blueprints.delete(request.query.id, null, cloudifyCallback(response));
+    request.cloudifyClient.blueprints.delete(request.query.id, cloudifyCallback(response));
 });
 
 var defaultResponseCallback = function(response){

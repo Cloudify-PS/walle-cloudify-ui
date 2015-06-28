@@ -25,7 +25,7 @@ angular.module('cosmoUiApp')
 
                 function executeEvents() {
 
-                    cloudifyClient.events.get( { 'deployment_id' :  $scope.id ,  'from_event': 0, 'batch_size' : 50 , 'include_logs' :  false , 'order' : 'desc' }).then(function (result) {
+                    return cloudifyClient.events.get( { 'deployment_id' :  $scope.id ,  'from_event': 0, 'batch_size' : 50 , 'include_logs' :  false , 'order' : 'desc' }).then(function (result) {
                         $scope.events = result.data.hits.hits;
                         $scope.lastEvent = $scope.events.length > 0 ? $scope.events[0] : null;
                         _.each($scope.events, function(e){
@@ -33,6 +33,8 @@ angular.module('cosmoUiApp')
                         });
                     }, true);
                 }
+
+                $scope.registerTickerTask('deploymentEvents/events', startEventsAutoPull, 3000);
 
                 // todo: use the polling service
                 var polling = $interval(executeEvents, 5000);

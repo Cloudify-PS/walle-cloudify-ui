@@ -7,33 +7,12 @@ describe('Controller: BlueprintsIndexCtrl', function () {
         {
             'updated_at': '2014-08- 21 00:54:04.878540',
             'created_at': '2014-08-21 00:54:04.878540',
-            'id': 'blueprint1',
-            'deployments': []
+            'id': 'blueprint1'
         },
         {
             'updated_at': '2014-08-17 01:13:10.905309',
             'created_at': '2014-08-17 01:13:10.905309',
-            'id': 'blueprint2',
-            'deployments': [
-                {
-                    'workflows': [
-                        {
-                            'created_at': null,
-                            'name': 'install',
-                            'parameters': []
-                        },
-                        {
-                            'created_at': null,
-                            'name': 'uninstall',
-                            'parameters': []
-                        }
-                    ],
-                    'created_at': '2014-08-17 04:07:46.933729',
-                    'blueprint_id': 'nodecellar',
-                    'id': 'deployment1',
-                    'updated_at': '2014-08-17 04:07:46.933729'
-                }
-            ]
+            'id': 'blueprint2'
         }
     ];
     var errorDeleteJSON = {

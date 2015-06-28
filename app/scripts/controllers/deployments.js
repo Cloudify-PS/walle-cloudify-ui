@@ -3,8 +3,8 @@
 // TODO: this code should be much more testable
 angular.module('cosmoUiApp')
     .controller('DeploymentsCtrl', function ($scope, $cookieStore, ExecutionsService,
-                                             $location, $routeParams, BreadcrumbsService, $timeout, $log,
-                                             CloudifyService, ngDialog, cloudifyClient) {
+                                             $location, $routeParams, BreadcrumbsService, $log,
+                                             CloudifyService, ngDialog, cloudifyClient, $q) {
 
         $scope.deployments = [];
         $scope.executedErr = false;
@@ -142,6 +142,7 @@ angular.module('cosmoUiApp')
         };
 
         function _loadExecutions() {
+            var deferred = $q.defer();
 
             cloudifyClient.executions.list(null, 'id,workflow_id,status,deployment_id').then(function(result){
 
@@ -150,16 +151,12 @@ angular.module('cosmoUiApp')
                 _.each(executions, function(exec){
                     runningExecutions[exec.deployment_id] = exec;
                 });
+                deferred.resolve();
             },function(){
                 // todo: implement error handling
             });
 
-            // location path check to prevent timeout from keep running after path was changed to different page
-            if ($location.path() === '/deployments') {
-                $timeout(function(){
-                    _loadExecutions();
-                }, 10000);
-            }
+            return deferred.promise;
         }
 
         $scope.loadDeployments = function() {
@@ -168,13 +165,13 @@ angular.module('cosmoUiApp')
                     $scope.managerError = false;
 
                     $scope.deployments = result.data;
-
-                    _loadExecutions();
                 },
                 function() {
                     $scope.managerError = true;
                 });
         };
+
+        $scope.registerTickerTask('deployments/loadExecutions', _loadExecutions, 10000);
 
         $scope.loadDeployments();
 
@@ -191,13 +188,6 @@ angular.module('cosmoUiApp')
                 scope: $scope,
                 className: 'delete-dialog'
             });
-        };
-
-        $scope.closeDialog = function() {
-            if (_dialog !== null) {
-                ngDialog.close(_dialog.id);
-            }
-            _dialog = null;
         };
 
         $scope.$on('executionStarted', function() {

@@ -33,29 +33,6 @@ describe('Service: EventsService', function () {
         expect(!!eventsService).toBe(true);
     });
 
-    it('should use defined autopull time provided by controller', inject(function ($q, $timeout) {
-        var client = events.getClient();
-        client.doSearch = function () {
-            var deferred = $q.defer();
-            deferred.resolve({});
-            return deferred.promise;
-        };
-
-        spyOn(events, 'autoPull').andCallThrough();
-
-        events.execute(_callback, true, 1000);
-        $timeout.flush();
-
-        waitsFor(function () {
-            return isExecuted;
-        });
-
-        runs(function () {
-            expect(events.autoPull).toHaveBeenCalledWith(_callback, 1000);
-            isExecuted = false;
-        });
-    }));
-
     it('should return the last 50 backward filter (CFY-1983)', inject(function ($q, $timeout) {
         var client = events.getClient();
 
@@ -66,7 +43,7 @@ describe('Service: EventsService', function () {
             return deferred.promise;
         };
 
-        events.execute(_callback, false, false, events.getExecuteLastFiftyOptions());
+        events.execute(_callback, events.getExecuteLastFiftyOptions());
         $timeout.flush();
 
         waitsFor(function () {
