@@ -154,7 +154,6 @@ describe('Controller: HostsCtrl', function () {
         });
 
         it('should filter the blueprints list to the selected blueprint', function () {
-            return scope.blueprintsList.length > 0;
             expect(scope.blueprintsList.length).toBe(1);
         });
 
