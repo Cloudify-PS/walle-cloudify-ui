@@ -1,7 +1,9 @@
 'use strict';
 
 angular.module('cosmoUiApp')
-    .controller('FileSelectionDialogCtrl', function ($scope, $log, $upload, ngProgress, CloudifyService) {
+    .controller('FileSelectionDialogCtrl', function ($scope, $log, $upload, ngProgress, CloudifyService, $filter) {
+
+        var translate = $filter('translate');
         var selectedFile = null;
         $scope.uploadEnabled = false;
         $scope.uploadInProcess = false;
@@ -9,7 +11,7 @@ angular.module('cosmoUiApp')
         $scope.inputText = '';
         $scope.uploadType = 'file';
         $scope.uploadError = false;
-        $scope.errorMessage = 'Error uploading blueprint';
+        $scope.errorMessage = translate('blueprintUpload.generalError');
         $scope.blueprintUploadOpts = {};
 
         $scope.onFileSelect = function ($files) {
@@ -64,10 +66,10 @@ angular.module('cosmoUiApp')
             // guy - todo - what the hell is going on here with the messages? we should try to uniform this
             // or at least document what/when
 
-            var responseText = e && ( e.message || e.statusText || e );
+            var responseText = e && ( e.message || e.statusText || e.responseText || e );
 
             if (typeof(responseText) === 'string' && responseText.indexOf('Too Large') > 0) {
-                responseText = 'Blueprint is too big';
+                responseText = translate('blueprintUpload.tooBig');
             }
 
             $scope.errorMessage = responseText;

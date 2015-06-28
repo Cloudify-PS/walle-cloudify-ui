@@ -27,17 +27,18 @@ describe('Controller: FileSelectionDialogCtrl', function () {
         });
 
         it('should show error message when error returns from backend', function () {
+            expect(scope.errorMessage).toBe('blueprintUpload.generalError'); // todo: verify with erez
             scope.selectedFile = {};
             scope.blueprintUploadOpts.blueprint_id = 'blueprint1';
-            _cloudifyService.blueprints.add = function (data, successCallback, errorCallback) {
-                var e = {
-                    'responseText': 'Error uploading blueprint'   // todo: verify with erez
-                };
-                errorCallback(e);
-            };
 
-            scope.uploadFile();
-            expect(scope.errorMessage).toBe('Error uploading blueprint'); // todo: verify with erez
+            spyOn(_cloudifyService.blueprints, 'add').andCallFake(function (data, success, error) {
+                error({
+                    'responseText': 'foo2'   // todo: verify with erez
+                });
+            });
+
+            scope.publishArchive();
+            expect(scope.errorMessage).toBe('foo2'); // todo: verify with erez
         });
 
         describe('$scope.$watch myFile', function () {
@@ -192,7 +193,7 @@ describe('Controller: FileSelectionDialogCtrl', function () {
 
         it('handle HTML response that file is too big, and present a nice message to user', function(){
             FileSelectionDialogCtrl.onUploadError('<html>Too Large</html>');
-            expect(scope.errorMessage).toBe('Blueprint is too big');
+            expect(scope.errorMessage).toBe('blueprintUpload.tooBig');
         });
 
     });
