@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('cosmoUiApp')
-    .service('EventsService', function EventsService($http, $q, ejsResource, $log, $rootScope) {
+    .service('EventsService', function EventsService($http, $q, ejsResource, $log, $rootScope, $filter ) {
 
         function Events(server) {
 
@@ -230,6 +230,15 @@ angular.module('cosmoUiApp')
 
         this.newInstance = function(server) {
             return new Events(server);
+        };
+
+        /**
+         * converts timestamp from what we get from manager to a pattern
+         * @param timestamp
+         * @returns {*}
+         */
+        this.convertTimestamp = function( timestamp ) {
+            return $filter('dateFormat')(timestamp, 'yyyy-MM-dd HH:mm:ss');
         };
 
     });

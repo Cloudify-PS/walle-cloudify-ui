@@ -17,6 +17,10 @@ angular.module('cosmoUiApp')
                     }; // noop
                 }
 
+                if ( opts.body ){
+                    opts.data = opts.body;
+                }
+
                 opts.params = opts.qs;
 
                 return $http(opts).then(function (result) {

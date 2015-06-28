@@ -269,13 +269,6 @@
     width: 36px;
     height: 36px;
     border-radius: 0px;
-
-    &.gs-icon-logs {
-        padding-left: 16px;
-        color: #049cdb;
-        line-height: 46px;
-        font-size: 55px;
-    }
 }
 
 .icon-events {
@@ -323,12 +316,8 @@
     &.icon-gs-task-sent:before {
     }
 
-    &.gs-icon-logs {
-        font-family: gigaspaces;
-        padding-left: 16px;
+    &.gs-icon-logs:before {
         color: #049cdb;
-        line-height: 46px;
-        font-size: 55px;
     }
 }
 
