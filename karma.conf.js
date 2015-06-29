@@ -57,7 +57,8 @@ module.exports = function(config) {
         // list of files to exclude
         exclude: [],
         proxies: {
-            '/images/': 'http://localhost:8080/base/app/images'
+            '/images/': 'http://localhost:8080/base/app/images/',
+            '/base/.tmp/bower_components/gs-ui-infra/' : 'http://localhost:8080/base/app/bower_components/gs-ui-infra/assets/fonts/'
         },
         preprocessors: {
             'app/scripts/**/*.js': ['coverage']

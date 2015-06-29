@@ -126,8 +126,9 @@ describe('Controller: FileSelectionDialogCtrl', function () {
 
         });
 
-        it('should update upload type to url when url is entered', function () {
+        it('should update upload type to url when url is entered', inject(function ( CloudifyService ) {
             scope.inputText = 'http://some.kind/of/url.tar.gz';
+            spyOn(CloudifyService.blueprints,'add');
             scope.uploadType = 'file';
             spyOn(scope, 'isUploadEnabled').andCallFake(function () {
                 return true;
@@ -135,7 +136,7 @@ describe('Controller: FileSelectionDialogCtrl', function () {
             scope.uploadFile();
             expect(scope.uploadType).toBe('url');
 
-        });
+        }));
 
         it('should get a blueprint archive file from a url', function () {
             scope.inputText = 'http://some.kind/of/url.tar.gz';

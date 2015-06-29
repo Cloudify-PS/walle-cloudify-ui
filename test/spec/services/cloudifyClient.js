@@ -46,7 +46,6 @@ describe('Service: cloudifyClient', function () {
             it('should invoke $http', inject(function($http){
                 var returnValue = mcloudifyClient.config.request({});
                 expect($http).toHaveBeenCalled();
-                console.log('this is return value', returnValue);
                 expect(returnValue).toBe('bar');
             }));
 
