@@ -21,7 +21,7 @@ angular.module('cosmoUiApp')
         $scope.managerError = false;
         var selectedWorkflows = [];
         var workflows = {};
-        var _dialog = null;
+
         $scope.itemToDelete = null;
 
         BreadcrumbsService.push('deployments',
@@ -114,16 +114,13 @@ angular.module('cosmoUiApp')
         };
 
         $scope.openConfirmationDialog = function(deployment, confirmationType) {
-            if (_isDialogOpen()) {
-                return;
-            }
             if (confirmationType === 'execute' && selectedWorkflows[deployment.id] === undefined) {
                 return;
             }
             $scope.selectedDeployment = deployment;
             $scope.confirmationType = confirmationType;
 
-            _dialog = ngDialog.open({
+            ngDialog.open({
                 template: 'views/dialogs/confirm.html',
                 controller: 'ExecuteDialogCtrl',
                 scope: $scope,
@@ -146,8 +143,10 @@ angular.module('cosmoUiApp')
 
             cloudifyClient.executions.list(null, 'id,workflow_id,status,deployment_id').then(function(result){
 
+                runningExecutions = []; //  CFY-2238 - remove terminated workflows.
+
                 var executions = result.data;
-                executions = _.filter(executions, function(exec){ return ExecutionsService.isRunning(exec); });
+                executions = _.filter(executions, function(exec){  return ExecutionsService.isRunning(exec); });
                 _.each(executions, function(exec){
                     runningExecutions[exec.deployment_id] = exec;
                 });
@@ -176,13 +175,10 @@ angular.module('cosmoUiApp')
         $scope.loadDeployments();
 
         $scope.deleteDeployment = function(deployment) {
-            if (_isDialogOpen()) {
-                return;
-            }
 
             $scope.itemToDelete = deployment;
 
-            _dialog = ngDialog.open({
+            ngDialog.open({
                 template: 'views/dialogs/delete.html',
                 controller: 'DeleteDialogCtrl',
                 scope: $scope,
@@ -194,7 +190,4 @@ angular.module('cosmoUiApp')
             $scope.loadDeployments();
         });
 
-        function _isDialogOpen() {
-            return _dialog !== null && ngDialog.isOpen(_dialog.id);
-        }
     });
