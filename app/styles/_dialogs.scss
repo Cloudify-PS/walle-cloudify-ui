@@ -198,6 +198,15 @@ input[required] {
 
           ul {
               list-style-type: none;
+              //restricting to 5 inputs,the rest is scrollable
+              max-height: 200px;
+              overflow-y: scroll;
+              li:first-child{
+                margin-top:-5px;
+              }
+              li:last-child{
+                padding-bottom:3px;
+              }
 
               input {
                   position: relative;
