@@ -192,5 +192,48 @@ describe('Controller: ExecuteDialogCtrl', function () {
             expect($(elemsQuery).length).toBe(0);
         }));
 
+        it('should have a scrollbar if overflow', inject(function(ngDialog, $timeout) {
+            scope.selectedWorkflow = _workflow;
+
+            var dialogId = ngDialog.open({
+                template: 'views/dialogs/confirm.html',
+                controller: 'ExecuteDialogCtrl',
+                scope: scope,
+                className: 'confirm-dialog'
+            }).id;
+            $timeout.flush();
+            var inputParameters = $('#'+dialogId+' .inputsParameters ul')[0];
+
+            function hasScrollbar (element){
+                return element.scrollHeight > element.clientHeight;
+            }
+            var elementHasScrollbar = hasScrollbar(inputParameters);
+            inputParameters = null;
+            ngDialog.closeAll();
+
+            expect(elementHasScrollbar).toBe(true);
+        }));
+
+        it('should not have a scrollbar if does not overflow', inject(function(ngDialog, $timeout) {
+            scope.selectedWorkflow = angular.copy(_workflow);
+            scope.selectedWorkflow.data.parameters = {1:[],2:[],3:[]};
+            var dialogId = ngDialog.open({
+                template: 'views/dialogs/confirm.html',
+                controller: 'ExecuteDialogCtrl',
+                scope: scope,
+                className: 'confirm-dialog'
+            }).id;
+            $timeout.flush();
+            var inputParameters = $('#'+dialogId+' .inputsParameters ul')[0];
+
+            function hasScrollbar (element){
+                return element.scrollHeight > element.clientHeight;
+            }
+            var elementHasScrollbar = hasScrollbar(inputParameters);
+            inputParameters = null;
+            ngDialog.closeAll();
+
+            expect(elementHasScrollbar).toBe(false);
+        }));
     });
 });
