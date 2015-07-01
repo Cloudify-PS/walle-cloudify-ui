@@ -1,6 +1,7 @@
 {
     "general" : {
-        "unknownError" : "Unknown Error"
+        "unknownError" : "Unknown Error",
+        "loading" : "Loading..."
     },
     "connectError": "Error connecting to Cosmo server",
     "appStatus": {
@@ -75,7 +76,7 @@
         },
         "process": {
             "create_deployment_environment": "Initializing",
-            "delete_deployment_environment": "Deletes",
+            "delete_deployment_environment": "Deleting",
             "install": "Install",
             "uninstall": "Uninstall",
             "wait": "Please wait"
@@ -204,6 +205,15 @@
             "cancel": "Cancel",
             "value": "Enter Value"
         }
+    },
+    "blueprintUpload" : {
+        "generalError" : "Error uploading blueprint",
+        "tooBig" : "Blueprint is too big"
+    },
+    "hosts" : {
+        "blueprintEmpty" : "Blueprint {{blueprint_id}} has no hosts at this moment. To see nodes deploy the blueprint",
+        "chooseBlueprint" : "Choose a blueprint and click show...",
+        "deployBlueprint" : "Deploy Blueprint"
     }
 }
 

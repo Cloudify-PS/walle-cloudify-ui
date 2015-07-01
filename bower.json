@@ -6,7 +6,7 @@
     "bootstrap-sass-official": "~3.2.0",
     "json3": "~3.2.4",
     "es5-shim": "~2.0.8",
-    "gs-ui-infra": "git://github.com/cloudify-cosmo/gs-ui-infra.git",
+    "gs-ui-infra": "cloudify-cosmo/gs-ui-infra",
     "d3": "~3.4.1",
     "font-awesome": "~4.1.0",
     "angular-route": "~1.2.14",
@@ -14,19 +14,20 @@
     "elastic.js": "~1.1.1",
     "angular": "~1.2.14",
     "angular-animate": "~1.2.14",
-    "SyntaxHighlighter": "git://github.com/alexgorbatchev/syntaxhighlighter.git",
+    "SyntaxHighlighter": "alexgorbatchev/syntaxhighlighter",
     "nvd3": "~1.1.15-beta",
     "angularjs-nvd3-directives": "~0.0.7",
     "ngstorage": "~0.3.0",
     "angular-timer": "~1.1.5",
-    "angular-datepicker": "https://github.com/g00fy-/angular-datepicker.git#~1.0.3",
-    "grafana": "https://github.com/grafana/grafana.git#~1.6.1",
-    "lodash": "~2.4.1",
+    "angular-datepicker": "g00fy-/angular-datepicker#~1.0.3",
+    "grafana": "grafana/grafana#~1.6.1",
+    "lodash": "~3.9.3",
     "ng-file-upload": "~3.2.4",
     "ngprogress": "~1.0.7",
     "angular-loading-bar": "~0.7.1",
     "angular-translate": "~2.6.1",
     "angular-translate-loader-static-files": "~2.6.1",
+    "cloudify-js": "cloudify-cosmo/cloudify-js#master",
     "ngDialog": "~0.4.0",
     "angular-ticker": "~0.1.8"
   },
@@ -38,6 +39,9 @@
   "resolutions": {
     "angular-sanitize": "~1.2.14",
     "angular": "~1.2.14",
-    "d3": "~3.4.1"
+    "d3": "~3.4.1",
+    "jquery": "~2.1.4",
+    "angular-mocks": "~1.2.14",
+    "cloudify-js": "master"
   }
 }

@@ -94,7 +94,13 @@ angular.module('cosmoUiApp')
             }
         };
 
-        $scope.cancelWorkflow = function(execution_id) {
+        $scope.cancelWorkflow = function(deployment_id) {
+            var execution = $scope.getExecution(deployment_id);
+            if ( !execution ){
+                return;
+            }
+
+            var execution_id = execution.id;
             var callParams = {
                 'execution_id': execution_id,
                 'state': 'cancel'

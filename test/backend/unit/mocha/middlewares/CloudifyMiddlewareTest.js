@@ -6,7 +6,7 @@ var sinon = require('sinon');
 
 
 describe('CloudifyMiddleware', function () {
-    var middleware;
+    var middlewares;
     var ClientMock;
     var clientConf = null;
     beforeEach(function () {
@@ -29,7 +29,7 @@ describe('CloudifyMiddleware', function () {
 
 
 
-        middleware = require('../../../../../backend/middlewares/CloudifyMiddleware');
+        middlewares = require('../../../../../backend/middlewares');
         //require('cloudify-js') = function(){
         //    console.log('in clouidyf-js');
         //};
@@ -37,7 +37,7 @@ describe('CloudifyMiddleware', function () {
 
     it('should put cloudify client on request', function () {
         var req = {session: {}};
-        middleware(req, {}, function () {
+        middlewares.cloudifyAuthentication(req, {}, function () {
         });
         expect(!!req.cloudifyClient).to.be(true);
         expect(!!req.cloudifyClientConf).to.be(true);
@@ -47,7 +47,7 @@ describe('CloudifyMiddleware', function () {
 
     it('should put authentication details if exist on session', function () {
         var req = { 'session' : { 'cloudifyCredentials' : { 'username' : 'foo', 'password' : 'bar'} } };
-        middleware(req, {}, function () {
+        middlewares.cloudifyAuthentication(req, {}, function () {
         });
 
         expect(req.cloudifyClientConf.cloudifyAuth.user).to.be('foo');

@@ -1,12 +1,12 @@
 <div class="events-widget" data-ng-class="{true: 'closed'}[minimizeMode]">
     <div class="bg"></div>
-    <div class="head">
+    <div class="head" data-ng-mousedown="dragIt($event)">
         <div class="title">Events</div>
-        <div class="lastEvent" data-ng-show="hasLastEvent()">
+        <div class="lastEvent" data-ng-show="!!lastEvent && minimizeMode">
             <div class="icon">
-                <div class="icon-events" ng-class="getEventIcon(lastEvent())"></div>
+                <div class="icon-events" ng-class="getEventIcon(lastEvent)"></div>
             </div>
-            <div class="type">{{ getEventText(lastEvent()._source.event_type) }} {{ lastEvent()._source.context.node_name ? ' - ' + lastEvent()._source.context.node_name : '' }}</div>
+            <div class="type">{{ getEventText(lastEvent._source.event_type) }} {{ lastEvent._source.context.node_name ? ' - ' + lastEvent._source.context.node_name : '' }}</div>
         </div>
         <div class="dragBtn" data-ng-mousedown="dragIt($event)"></div>
     </div>

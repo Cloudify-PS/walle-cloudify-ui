@@ -7,6 +7,7 @@ module.exports = function(config) {
 
         // list of files / patterns to load in the browser
         files: [
+            'test/phantomjs.shim.js',
             'app/bower_components/jquery/dist/jquery.js',
             'app/bower_components/angular/angular.js',
             'app/bower_components/angular-mocks/angular-mocks.js',
@@ -21,14 +22,15 @@ module.exports = function(config) {
             'app/bower_components/angular-timer/dist/angular-timer.js',
             'app/bower_components/angularjs-nvd3-directives/dist/angularjs-nvd3-directives.js',
             'app/bower_components/elastic.js/dist/elastic-angular-client.js',
+            'app/bower_components/gs-ui-infra/app/templates/all.js',
             'app/bower_components/gs-ui-infra/app/scripts/**/*.js',
             'app/bower_components/d3/d3.js',
             'app/bower_components/elastic.js/dist/elastic.js',
             'app/bower_components/elastic.js/dist/elastic-angular-client.js',
-            'app/bower_components/lodash/dist/lodash.js',
+            'app/bower_components/lodash/lodash.js',
             'app/bower_components/jquery-simulate/jquery.simulate.js',
-            'app/bower_components/angular-translate/angular-translate.min.js',
-            'app/bower_components/angular-translate-loader-static-files/angular-translate-loader-static-files.min.js',
+            'app/bower_components/angular-translate/angular-translate.js',
+            'app/bower_components/angular-translate-loader-static-files/angular-translate-loader-static-files.js',
             'app/bower_components/SyntaxHighlighter/scripts/XRegExp.js',
             'app/bower_components/SyntaxHighlighter/scripts/shCore.js',
             'app/bower_components/SyntaxHighlighter/scripts/shLegacy.js',
@@ -36,6 +38,7 @@ module.exports = function(config) {
             'app/bower_components/SyntaxHighlighter/scripts/shBrushPython.js',
             'app/bower_components/SyntaxHighlighter/scripts/shBrushBash.js',
             'app/bower_components/SyntaxHighlighter/scripts/shBrushPlain.js',
+            'app/bower_components/cloudify-js/dist/cloudify.angular.js',
             'app/styles/SyntaxHighlighter/shBrushYaml.js',
 
             'app/bower_components/ngDialog/js/ngDialog.min.js',
@@ -54,7 +57,8 @@ module.exports = function(config) {
         // list of files to exclude
         exclude: [],
         proxies: {
-            '/images/': 'http://localhost:8080/base/app/images'
+            '/images/': 'http://localhost:8080/base/app/images/',
+            '/base/.tmp/bower_components/gs-ui-infra/' : 'http://localhost:8080/base/app/bower_components/gs-ui-infra/assets/fonts/'
         },
         preprocessors: {
             'app/scripts/**/*.js': ['coverage']
