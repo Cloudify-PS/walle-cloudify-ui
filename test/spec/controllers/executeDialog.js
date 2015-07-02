@@ -194,14 +194,13 @@ describe('Controller: ExecuteDialogCtrl', function () {
             expect(elems.length).toBe(2);
 
 
-            elems.remove();
+            $('#'+id).remove();
             ngDialog.closeAll(); //https://github.com/likeastore/ngDialog/issues/263
             expect($(elemsQuery).length).toBe(0);
         }));
 
         it('should have a scrollbar if overflow', inject(function(ngDialog, $timeout) {
             scope.selectedWorkflow = _workflow;
-
             var dialogId = ngDialog.open({
                 template: 'views/dialogs/confirm.html',
                 controller: 'ExecuteDialogCtrl',
@@ -217,7 +216,6 @@ describe('Controller: ExecuteDialogCtrl', function () {
             var elementHasScrollbar = hasScrollbar(inputParameters);
             inputParameters = null;
             $('#'+dialogId).remove();
-
             expect(elementHasScrollbar).toBe(true);
         }));
 
@@ -239,7 +237,6 @@ describe('Controller: ExecuteDialogCtrl', function () {
             var elementHasScrollbar = hasScrollbar(inputParameters);
             inputParameters = null;
             $('#'+dialogId).remove();
-
             expect(elementHasScrollbar).toBe(false);
         }));
     });
