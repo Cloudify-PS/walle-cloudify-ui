@@ -198,7 +198,7 @@ describe('Controller: DeletedialogCtrl', function () {
             var elems = $(elemsQuery);
             expect(elems.length).toBe(1);
 
-            $('#'+id).remove();; // https://github.com/likeastore/ngDialog/issues/263
+            $('#'+id).remove(); // https://github.com/likeastore/ngDialog/issues/263
             ngDialog.closeAll();
 
             elems = $(elemsQuery);
