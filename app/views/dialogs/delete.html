@@ -5,6 +5,6 @@
     <div class="buttonsContainer confirmationButtons">
         <div class="dialogCheckbox" ng-show="deleteState.type == 'deployment'"><label><input type="checkbox" ng-disabled="deleteState.inProcess" data-ng-model="ignoreLiveNodes" ng-click="toggleIgnoreLiveNodes()"> Force Delete</label></div>
         <button id="cancelBtnDelDep" class="gs-btn" ng-click="closeThisDialog()">{{ 'dialogs.delete.cancel' | translate }}</button>
-        <button class="gs-btn" ng-class="{loader: deleteState.inProcess}" ng-click="confirmDelete()">{{ 'dialogs.delete.delete' | translate }}</button>
+        <button class="gs-btn" gs-spinner="{{deleteState.inProcess}}" ng-click="confirmDelete()">{{ 'dialogs.delete.delete' | translate }}</button>
     </div>
 </div>

@@ -40,18 +40,21 @@ angular.module('cosmoUiApp')
             $scope.deployBlueprintButton = false;
             var startTime = new Date().getTime();
             $scope.filterLoading = true;
+            $scope.nodesList = null;
             NodeSearchService.execute(_type, _blueprint, _deployments)
                 .then(function(data){
-                    $scope.nodesList = data;
-                    _currentBlueprint = _blueprint;
 
-                    if ( !$scope.nodesList || $scope.nodesList.length === 0 ){
-                        $scope.emptyReason = $filter('translate')('hosts.blueprintEmpty', { blueprint_id : _blueprint } );
-                        $scope.deployBlueprintButton = true;
 
-                    }
+
 
                     $timeout(function() {  // fake delay time if response was too fast
+                        $scope.nodesList = data;
+                        _currentBlueprint = _blueprint;
+                        if ( !$scope.nodesList || $scope.nodesList.length === 0 ){
+                            $scope.emptyReason = $filter('translate')('hosts.blueprintEmpty', { blueprint_id : _blueprint } );
+                            $scope.deployBlueprintButton = true;
+
+                        }
                         $scope.filterLoading = false;
                     },2000 + new Date().getTime() - startTime  );
 

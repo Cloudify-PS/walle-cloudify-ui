@@ -1,4 +1,6 @@
+
 <div class="cosmo-layout" id="blueprints-index">
+
     <div class="content-header">
         <div class="breadcrumbs"><ul id="blueprints" breadcrumbs></ul></div>
         <div class="right">
@@ -32,7 +34,7 @@
 
     <div class="connect-error-message" ng-show="managerError">{{ 'connectError' | translate }} - {{ managerError.message }} </div>
 
-    <div class="gs-big-loader" ng-show="blueprints == null && !managerError"></div>
+    <div  class="gs-spinner large" ng-show="blueprints == null && !managerError"></div>
 
     <div class="no-blueprints-message" ng-show="blueprints.length == 0">{{ 'blueprints.emptyMessage' | translate }}</div>
 </div>

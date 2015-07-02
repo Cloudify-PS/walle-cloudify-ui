@@ -2,7 +2,7 @@
 
     <div class="deploymentLoader" data-ng-show="isInitilizing()">
         <div data-ng-show="isInitilizingLoader">
-            <div class="loader"></div>
+            <div class="gs-spinner large"></div>
             <p>Initializing <b>{{ deploymentId }}</b><br> Please wait...</p>
         </div>
     </div>
@@ -25,21 +25,11 @@
 
             <!--<div settings-toggles id="settings-button" toggles="toggleBar" data-ng-show="selectview"></div>-->
 
-            <div class="actions">
-                <div class="gs-selection-button" ng-show="!deploymentInProgress">
-                    <div multi:select:menu
-                         class="gs-select"
-                         data-options="workflowsList"
-                         data-ng-model="selectedWorkflow.data"
-                         data-text="Select workflow"></div>
-                </div>
-                <div class="executingWorkflow" ng-show="deploymentInProgress">
-                    <div class="deploymentExecute" ng-show="deploymentInProgress"></div>
-                    {{ currentExecution.workflow_id != null ? 'deployment.process.' + currentExecution.workflow_id : 'deployment.process.wait' | translate }}
-                </div>
-                <i class="deployment-play" ng-class="{play: isExecuteEnabled(), disabled: !isExecuteEnabled()}" ng-click="openConfirmationDialog('execute')" ng-show="!deploymentInProgress"></i>
 
-                <i class="deployment-pause fa fa-times-circle" ng-show="deploymentInProgress && currentExecution.workflow_id != null" ng-click="openConfirmationDialog('cancel')"></i>
+            <div class="actions">
+                <div class="workflow-selector"
+                    deployment="deployment"
+                    current-execution="currentExecution"></div>
             </div>
 
         </div>

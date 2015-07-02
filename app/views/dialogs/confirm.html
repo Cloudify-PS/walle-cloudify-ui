@@ -1,29 +1,29 @@
 <div id="confirmationDialogContainer" class="dialogBox">
     <div class="dialogTitle">{{ 'dialogs.confirm.title' | translate }}</div>
+
+
+
     <div class="dialogDescription" ng-show="confirmationType == 'execute'">{{ 'dialogs.confirm.descriptionExecute' | translate }} {{getSelectedWorkflow()}}?</div>
     <div class="dialogDescription" ng-show="confirmationType == 'cancel'">{{ 'dialogs.confirm.descriptionCancel' | translate }} {{getSelectedWorkflow()}}?</div>
-    <div class="dialogInputs executeInputs" ng-show="isParamsVisible()">
-        <div class="buttons-group executeBtns">
-            <button data-ng-class="{'active': inputsState == 'params'}" class="btn btn-default" data-ng-click="toggleInputsState('PARAMS')">Parameters</button>
-            <button data-ng-class="{'active': inputsState == 'raw'}" class="btn btn-default" data-ng-click="toggleInputsState('RAW')">Raw</button>
-        </div>
-        <div class="inputsParameters" ng-show="inputsState == 'params'">
-            <ul>
-                <li ng-repeat="(name, value) in selectedWorkflow.data.parameters">
-                    {{name}}:
-                    <input type="text" spellcheck="false" ng-trim="false" ng-model="inputs[name]" placeholder="{{ 'dialogs.confirm.value' | translate }}">
-                </li>
-            </ul>
-        </div>
-        <div class="inputsRaw" ng-show="inputsState == 'raw'">
-            <textarea ng-model="rawString" spellcheck="false"></textarea>
-        </div>
+
+
+    <div class="selected-workflow">
+    <div form-raw-params
+         ng-show="isParamsVisible()"
+         on-error="setErrorMessage(msg)"
+         params="workflow.parameters"
+         raw-string="rawString"
+         valid="inputsValid"></div>
+
     </div>
-    <div class="error-message" data-ng-show="showError">{{ executeErrorMessage }}</div>
+
+    <div class="error-message" data-ng-show="!!executeErrorMessage">{{ executeErrorMessage }}</div>
+
     <div class="buttonsContainer confirmationButtons" ng-show="confirmationType == 'execute'">
-        <button class="gs-btn" ng-click="closeThisDialog()">{{ 'dialogs.confirm.cancel' | translate }}</button>
-        <button class="gs-btn" ng-enabled="isExecuteEnabled()" ng-class="{loader: inProcess}" ng-click="executeWorkflow(selectedDeployment)">{{ 'dialogs.confirm.confirm' | translate }}</button>
+        <button class="gs-btn" ng-click="closeThisDialog()" >{{ 'dialogs.confirm.cancel' | translate }}</button>
+        <button class="gs-btn" ng-enabled="isExecuteEnabled()" gs-spinner="{{inProcess}}" ng-click="executeWorkflow(selectedDeployment)">{{ 'dialogs.confirm.confirm' | translate }}</button>
     </div>
+
     <div class="buttonsContainer confirmationButtons" ng-show="confirmationType == 'cancel'">
         <button class="gs-btn" ng-click="closeThisDialog()">{{ 'dialogs.confirm.cancel' | translate }}</button>
         <button class="gs-btn" ng-click="cancelWorkflow(selectedDeployment.id)">{{ 'dialogs.confirm.confirm' | translate }}</button>

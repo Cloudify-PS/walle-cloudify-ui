@@ -5,17 +5,16 @@ angular.module('cosmoUiApp')
         $scope.blueprintId = $routeParams.blueprintId;
         $scope.page = {};
 
-        $scope.$on('toggleChange', function(event, toggleBar){
-            $scope.toggleBar = toggleBar;
-        });
 
-        $scope.$on('topologyNodeSelected', function(e, data) {
-            $scope.viewNode(data, 'node');
-        });
+        $scope.onNodeSelect = function(node){
+            console.log('node selected',node);
+            $scope.viewNode(node,'node');
+        };
 
-        $scope.$on('topologyRelationshipSelected', function(e, data) {
-            $scope.viewNode(data, 'relationship');
-        });
+        $scope.onRelationshipSelect = function( relationship ){
+            $scope.viewNode(relationship, 'relationship');
+        };
+
 
         $scope.$on('blueprintData', function(event, data){
             $scope.planNodes = data.plan.nodes;

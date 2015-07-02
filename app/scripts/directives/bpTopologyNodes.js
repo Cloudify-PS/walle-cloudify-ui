@@ -1,28 +1,40 @@
 'use strict';
 
 angular.module('cosmoUiApp')
-    .directive('bpTopologyNodes',  function (RecursionHelper, TopologyTypes) {
+    .directive('bpTopologyNodes',  function (RecursionHelper, TopologyTypes, NodeService) {
         return {
             templateUrl: 'views/bpTopologyNodesTemplate.html',
             restrict: 'EA',
             transclude: true,
             scope: {
                 map: '=',
-                deploymentInProgress: '='
+                nodeInstances: '=',
+                deploymentInProgress: '=',
+                onNodeSelect: '&selected',
+                onRelationshipSelect: '&'
             },
             compile: function(element) {
-                return RecursionHelper.compile(element, function(scope) {
-                    scope.onNodeSelected = function(node) {
-                        scope.$emit('topologyNodeSelected', node);
-                    };
-
-                    scope.onRelationshipSelected = function(relationship) {
-                        scope.$emit('topologyRelationshipSelected', relationship);
-                    };
-                });
+                return RecursionHelper.compile(element, function(scope) { });
             },
-            controller: function($scope, nodeStatus) {
-                $scope.headerHover = null;
+            controller: function($scope, $element, nodeStatus) {
+
+                var scope = $scope;
+
+                scope.getTotal = function( node ){
+                    if ( scope.nodeInstances ) {
+                        return scope.nodeInstances[node.id].length;
+                    }
+                };
+
+                scope.getCompleted = function(){
+                    if ( scope.nodeInstances ){
+                        return _.filter(scope.nodeInstances[node.id], function(instance){ NodeService.isCompleted(instance);}).length;
+                    }
+                };
+
+                scope.$watch('nodeInstances', function(){
+                    console.log('node intances changed!', $scope.nodeInstances);
+                });
 
                 $scope.getBadgeStatusAndIcon = function(status) {
                     return nodeStatus.getStatusClass(status) + ' ' + nodeStatus.getIconClass(status);
@@ -33,7 +45,7 @@ angular.module('cosmoUiApp')
                 };
 
                 $scope.isConnectedTo = function(relationship) {
-                    return relationship.type_hierarchy.join(',').indexOf('connected_to') && TopologyTypes.isValidConnection(relationship.node);
+                    NodeService.isConnectedTo(relationship);
                 };
 
                 // TODO: 3.2 - Check if function still needed
@@ -41,25 +53,30 @@ angular.module('cosmoUiApp')
                     return 'cloudify-nodes-' + type;
                 };
 
-                $scope.setHeaderHover = function(nodeName) {
-                    $scope.headerHover = nodeName;
-                };
 
-                $scope.shouldShowBadge = function(node) {
+                $scope.shouldShowBadge = function (node) {
+
                     if (node.state === undefined || node.state.completed === undefined) {
                         return false;
                     }
 
-                    if (node.state.status === 0 && !$scope.deploymentInProgress) {
+                    if (node.state.status === 0 && !this.currentExecution) {
                         return false;
                     }
 
                     return true;
                 };
 
-                $scope.shouldShowBadgeTitle = function(node) {
-                    return node.state !== undefined && node.state.completed !== undefined && !node.isContained;
+                $scope.shouldShowBadgeTitle = function (node) {
+                    return !!scope.nodeInstances && !node.isContained;
                 };
+
+
+
+
+
+
+
             }
         };
     });

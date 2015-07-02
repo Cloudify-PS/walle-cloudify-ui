@@ -6,7 +6,7 @@ angular.module('cosmoUiApp')
                                              $location, $routeParams, BreadcrumbsService, $log,
                                              CloudifyService, ngDialog, cloudifyClient, $q) {
 
-        $scope.deployments = [];
+        $scope.deployments = null;
         $scope.executedErr = false;
         $scope.confirmationType = '';
 
@@ -159,7 +159,7 @@ angular.module('cosmoUiApp')
         }
 
         $scope.loadDeployments = function() {
-            cloudifyClient.deployments.list('id,blueprint_id,created_at,updated_at,workflows')
+            cloudifyClient.deployments.list('id,blueprint_id,created_at,updated_at,workflows,inputs,outputs')
                 .then(function(result) {
                     $scope.managerError = false;
 

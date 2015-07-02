@@ -7,10 +7,10 @@
 
     <div floating-deployment-node-panel node="page.viewNode" nodes-list="nodesList" depid="deploymentId" class="floating-panel" id="right-side-menu"></div>
 
-    <div class="bpContainer" blueprint:resize>
-        <div bp-topology-nodes deployment-in-progress="deploymentInProgress" map="nodesTree" selected="viewNode(getNodeById(node_id))"></div>
-        <div class="coordinates" blueprint:arrows="coordinates" arrow="true" color="#7A7A7A"></div>
-    </div>
+    <div topology
+         deployment-id="deploymentId"
+         blueprint-id="blueprintId"
+         on-node-select="showNode(node)"></div>
 
     <div deployment-events="deploymentId"></div>
 
