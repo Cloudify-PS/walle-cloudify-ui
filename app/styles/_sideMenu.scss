@@ -24,7 +24,7 @@
 
           &:after{
             content: "";
-            display: block;
+            display: inline-block;
             border-style: solid;
             border-top-width: 10px;
             border-right-width: 10px;
@@ -35,10 +35,10 @@
             border-bottom-color: transparent;
             border-left-color: $clr-base-05;
             position: relative;
-            left: 163px;
+            left: 94px;
             top: -50px;
             z-index: 1;
-            width: 50px;
+            width: 25px;
           }
         }
 

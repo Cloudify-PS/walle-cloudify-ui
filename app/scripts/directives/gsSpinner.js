@@ -16,9 +16,13 @@ angular.module('cosmoUiApp')
 
             link: function(scope,element,attrs){
                 if ( element.is('.large')){
-
                     element.find('.gs-loader').addClass('large');
                 }
+
+                if ( element.is('.inline') ){
+                    element.find('.gs-loader').addClass('inline');
+                }
+
                 scope.$watch(function(){ return attrs.gsSpinner; }, function(){
                     if ( !attrs || !attrs.gsSpinner || attrs.gsSpinner.length === 0 ){ // empty
                         return;

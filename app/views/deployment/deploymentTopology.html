@@ -1,15 +1,11 @@
-<div class="cosmo-layout" id="deployment">
-
-    <div deployment-layout
-         depid="deploymentId"
-         section="Topology"
-         selectview="true"></div>
+<div class="deployment-layout" id="deployment">
 
     <div floating-deployment-node-panel node="page.viewNode" nodes-list="nodesList" depid="deploymentId" class="floating-panel" id="right-side-menu"></div>
 
     <div topology
          deployment-id="deploymentId"
          blueprint-id="blueprintId"
+         current-execution="currentExecution"
          on-node-select="showNode(node)"></div>
 
     <div deployment-events="deploymentId"></div>

@@ -7,44 +7,58 @@
  * # workflowSelector
  */
 angular.module('cosmoUiApp')
-    .directive('workflowSelector', function ( ngDialog ) {
+    .directive('workflowSelector', function ( ngDialog, ExecutionsService ) {
         return {
             templateUrl: 'views/directives/workflowSelector.html',
             restrict: 'C',
             scope: {
                 deployment: '=',
-                currentExecution: '='
+                currentExecution: '=',
+                onSubmit: '=' // fired when form is submitted
 
                 },
-                link: function postLink(scope) {
-                    scope.isExecuteEnabled = function() {
+                link: function postLink(scope, element) {
+
+                    scope.$watch('currentExecution', function (executing) {
+                        if (executing) {
+                            element.addClass('in-progress');
+                        } else {
+                            element.removeClass('in-progress');
+                        }
+                    }, true);
+
+                    scope.isExecuteEnabled = function () {
                         return scope.model && scope.model.data;
                     };
 
-                    scope.canCancel = function(){
-                        return scope.inProgress && scope.currentExecution != null
+                    scope.canCancel = function () {
+                        return ExecutionsService.canPause(scope.currentExecution);
                     };
 
-                    scope.canPlay = function(){
-                        return !scope.inProgress;
+                    scope.canPlay = function () {
+                        return !ExecutionsService.isRunning(scope.currentExecution);
                     };
 
-                    scope.isDisabled = function(){
+                    scope.isRunning = function () {
+                        return !ExecutionsService.isRunning(scope.currentExecution);
+                    };
+
+                    scope.isDisabled = function () {
                         return !scope.selectedWorkflow;
                     };
 
-                    scope.$watch('deployment', function(){
-                        if ( !scope.deployment){
+                    scope.$watch('deployment', function () {
+                        if (!scope.deployment) {
                             return;
                         }
-                        scope.selectWorkflows = _.map(scope.deployment.workflows, function(w){
-                           return _.merge({value: w.name, label: w.name }, w );
+                        scope.selectWorkflows = _.map(scope.deployment.workflows, function (w) {
+                            return _.merge({value: w.name, label: w.name}, w);
                         });
                     });
 
                     function openDialog(confirmationType) {
 
-                        if ( confirmationType === 'execute' && scope.model === null) {
+                        if (confirmationType === 'execute' && scope.model === null) {
                             return;
                         }
 
@@ -54,6 +68,13 @@ angular.module('cosmoUiApp')
                         isolatedScope.deploymentId = scope.deployment.id;
                         isolatedScope.workflow = scope.selectedWorkflow;
 
+                        isolatedScope.$on('ngDialog.closed', function () { // we want to poll for executions once the dialog is closed
+                            try {
+                                scope.onSubmit();
+                            } catch (e) {
+                            }
+                        });
+
                         ngDialog.open({
                             template: 'views/dialogs/confirm.html',
                             controller: 'ExecuteDialogCtrl',
@@ -62,8 +83,12 @@ angular.module('cosmoUiApp')
                         });
                     }
 
-                    scope.onPlay = function(){ openDialog('execute'); };
-                    scope.onCancel = function(){ openDialog('cancel');  }
+                    scope.onPlay = function () {
+                        openDialog('execute');
+                    };
+                    scope.onCancel = function () {
+                        openDialog('cancel');
+                    }
                 }
         };
     });

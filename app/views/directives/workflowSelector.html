@@ -1,15 +1,20 @@
-<div class="gs-selection-button" ng-show="!deploymentInProgress">
+<span class="workflow-selector-display">
+<div class="gs-selection-button"> <!-- only when no in progress -->
     <div multi:select:menu
          class="gs-select"
          data-options="selectWorkflows"
          data-ng-model="selectedWorkflow"
          data-text="Select workflow"></div>
 </div>
-<div class="executingWorkflow" ng-show="deploymentInProgress">
-    <div class="deploymentExecute" ng-show="deploymentInProgress"></div>
+
+<div class="executingWorkflow" > <!-- only in progress -->
+    <span class="gs-spinner inline">
+
+    </span>
     {{ currentExecution.workflow_id != null ? 'deployment.process.' + currentExecution.workflow_id : 'deployment.process.wait' | translate }}
 </div>
 
 <button class="deployment-play" ng-disabled="isDisabled()"  ng-click="onPlay()" ng-show="canPlay()"></button>
 
 <button class="deployment-pause fa fa-times-circle" ng-show="canCancel()" ng-click="onCancel()"></button>
+</span>

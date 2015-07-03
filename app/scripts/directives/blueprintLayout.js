@@ -3,25 +3,17 @@
 angular.module('cosmoUiApp')
     .directive('blueprintLayout', function ($location, BreadcrumbsService, CloudifyService, ngDialog, $routeParams) {
         return {
-            templateUrl: 'views/blueprint/layout.html',
-            restrict: 'EA',
+            templateUrl: 'views/blueprint/blueprintLayout.html',
+            restrict: 'C',
             transclude: true,
-            replace: true,
             scope: {
-                id: '=blueprintId',
                 section: '@',
                 selectview: '@'
             },
             link: function postLink($scope) {
-                $scope.nodesTree = [];
-                $scope.toggleBar = {
-                    'compute': true,
-                    'middleware': true,
-                    'modules': true,
-                    'connections': true
-                };
-                $scope.selectedBlueprint = null;
-                $scope.inputs = [];
+
+                $scope.blueprintId = $routeParams.blueprintId;
+
 
                 // Set Breadcrumb
                 BreadcrumbsService.push('blueprints', {
@@ -30,7 +22,7 @@ angular.module('cosmoUiApp')
                     id: 'blueprints'
                 });
 
-                CloudifyService.blueprints.getBlueprintById({id: $scope.id})
+                CloudifyService.blueprints.getBlueprintById({id: $scope.blueprintId})
                     .then(function(blueprintData) {
 
                         // Verify it's valid page, if not redirect to blueprints page
@@ -66,30 +58,25 @@ angular.module('cosmoUiApp')
 
                 // Set Navigation Menu
                 $scope.navMenu = [
-                    {
-                        'name': 'Topology',
-                        'href': '/topology'
-                    },
-                    {
-                        'name': 'Network',
-                        'href': '/network'
-                    },
-                    {
-                        'name': 'Nodes',
-                        'href': '/nodes'
-                    },
-                    {
-                        'name': 'Source',
-                        'href': '/source'
-                    }
+                    { 'name': 'Topology', 'href': '/topology'},
+                    { 'name': 'Network', 'href': '/network'},
+                    { 'name': 'Nodes', 'href': '/nodes'},
+                    { 'name': 'Source', 'href': '/source'}
                 ];
+
+                _.each($scope.navMenu, function(nm){
+                    if ( $location.path().indexOf(nm.href) >= 0){
+                        nm.active = true;
+                    }
+                    nm.href='#/blueprints/' + blueprintId + nm.href;
+                });
 
                 $scope.isSectionActive = function (section) {
                     return section.name === $scope.section ? 'active' : '';
                 };
 
                 $scope.goToSection = function (section) {
-                    $location.path('/blueprint/' + $scope.id + section.href);
+                    $location.path('/blueprint/' + $scope.blueprintId + section.href);
                 };
 
                 $scope.openDeployDialog = function() {

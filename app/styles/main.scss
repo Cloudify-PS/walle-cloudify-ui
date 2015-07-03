@@ -12,10 +12,9 @@
 @import './sideMenu';
 @import './dialogs';
 @import './toggleSwitch';
-@import './eventsWidget';
-@import './appStatusWidget';
+@import './deployments/deploymentEvents';
+@import './deployments/appStatusWidget';
 @import './pieProgress';
-@import './dotsLoader';
 @import './settingsToggles';
 @import './common';
 @import './animate';
@@ -23,6 +22,8 @@
 @import './interface';
 @import './source';
 @import './topology';
+@import './workflowSelector';
+@import './sectionNavMenu';
 
 
 $gs-infra-root:'../bower_components/gs-ui-infra';
@@ -33,11 +34,13 @@ $fa-font-path:'../bower_components/font-awesome/fonts';
 @import '../bower_components/font-awesome/scss/font-awesome';
 
 /** Pages **/
-@import './blueprintsIndex';
+@import './blueprints/blueprintLayout';
+@import './blueprints/blueprintsIndex';
 @import './eventsIndex';
-@import './plans';
-@import './deployments';
-@import './deployment';
+@import './blueprints/plans';
+@import './deployments/deployments';
+@import './deployments/deploymentLayout';
+@import './deployments/deployment';
 @import './config';
 @import './logs';
 @import './login';

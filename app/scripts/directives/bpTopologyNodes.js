@@ -9,40 +9,44 @@ angular.module('cosmoUiApp')
             scope: {
                 map: '=',
                 nodeInstances: '=',
-                deploymentInProgress: '=',
+                inProgress: '=',
+                initialized:'=', // need to know. if not initialized, don't show badges. busy also means we are initialized.
                 onNodeSelect: '&selected',
                 onRelationshipSelect: '&'
             },
             compile: function(element) {
                 return RecursionHelper.compile(element, function(scope) { });
             },
-            controller: function($scope, $element, nodeStatus) {
+            controller: function($scope, $element, NodeService) {
 
                 var scope = $scope;
 
                 scope.getTotal = function( node ){
-                    if ( scope.nodeInstances ) {
-                        return scope.nodeInstances[node.id].length;
+                    return getInstances(node).length;
+                };
+
+                function getInstances(node){
+                    if ( !node ){
+                        return [];
                     }
-                };
-
-                scope.getCompleted = function(){
-                    if ( scope.nodeInstances ){
-                        return _.filter(scope.nodeInstances[node.id], function(instance){ NodeService.isCompleted(instance);}).length;
+                    if ( scope.nodeInstances && scope.nodeInstances.hasOwnProperty(node.id)) {
+                        return scope.nodeInstances[node.id];
+                    }else{
+                        return [];
                     }
+                }
+
+                scope.getCompleted = function( node ){
+                    return _.filter(getInstances(node), function(instance){ NodeService.status.isCompleted(instance);}).length;
                 };
 
-                scope.$watch('nodeInstances', function(){
-                    console.log('node intances changed!', $scope.nodeInstances);
-                });
-
-                $scope.getBadgeStatusAndIcon = function(status) {
-                    return nodeStatus.getStatusClass(status) + ' ' + nodeStatus.getIconClass(status);
-                };
-
-                $scope.getBadgeStatus = function(status) {
-                    return nodeStatus.getStatusClass(status);
-                };
+                //$scope.getBadgeStatusAndIcon = function(status) {
+                //    return nodeStatus.getStatusClass(status) + ' ' + nodeStatus.getIconClass(status);
+                //};
+                //
+                //$scope.getBadgeStatus = function(status) {
+                //    return nodeStatus.getStatusClass(status);
+                //};
 
                 $scope.isConnectedTo = function(relationship) {
                     NodeService.isConnectedTo(relationship);
@@ -54,28 +58,22 @@ angular.module('cosmoUiApp')
                 };
 
 
-                $scope.shouldShowBadge = function (node) {
-
-                    if (node.state === undefined || node.state.completed === undefined) {
-                        return false;
-                    }
-
-                    if (node.state.status === 0 && !this.currentExecution) {
-                        return false;
-                    }
-
-                    return true;
+                $scope.shouldShowBadge = function () {
+                    return scope.initialized;
                 };
 
                 $scope.shouldShowBadgeTitle = function (node) {
                     return !!scope.nodeInstances && !node.isContained;
                 };
 
+                $scope.getBadgeStatusAndIcon = function( node ){
+                    return NodeService.status.getBadgeStatusAndIcon( scope.inProgress, getInstances(node));
 
+                };
 
-
-
-
+                $scope.getBadgeStatus = function( node ){
+                    return NodeService.status.getBadgeStatus( scope.inProgress, getInstances(node));
+                }
 
             }
         };

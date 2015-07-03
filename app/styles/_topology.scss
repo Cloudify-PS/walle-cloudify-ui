@@ -132,13 +132,22 @@ this css references the topology directive
                     text-align: center;
                     background-color: $install;
                     text-decoration: none;
-                    font-family: "OpenSansBold";
-                    font-size: 14px;
+
                     color: #fff;
                     line-height: 15px;
                     font-style: normal;
                     font-weight: normal;
                     opacity: 1;
+
+                    &.without-icon {
+                        font-family: "OpenSansBold";
+                        font-size: 14px;
+                    }
+
+                    &.with-icon{
+                        font-size:12px;
+                    }
+
                     &.install {
                         background-color: $install;
                     }

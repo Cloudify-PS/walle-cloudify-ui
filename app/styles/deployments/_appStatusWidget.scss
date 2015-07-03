@@ -1,3 +1,4 @@
+
 #appStatus {
     .app-status-widget {
         width: 100%;
@@ -18,13 +19,14 @@
                 top: 0px;
             }
             .gauge {
+
                 position: absolute;
                 top: 7px;
                 left: 31px;
                 width: 36px;
                 height: 36px;
                 border-radius: 20px;
-                background: $clr-base-01;
+                background-color: #136e9d;
                 line-height: 35px;
                 font-size: 11px;
                 box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.4);
@@ -73,46 +75,4 @@
             display: block;
         }
     }
-    &[status='0'] {
-        .gauge {
-            @extend .pieInProgress;
-            background-color: #dddddd !important;
-        }
-    }
-    &[status='1'] {
-        .gauge {
-            @extend .pieInProgress;
-            background-color: #bebebe !important;
-        }
-    }
-    &[status='2'] {
-        .gauge {
-            @extend .pieInProgress;
-            background-color: #3aaaed !important;
-        }
-    }
-    &[status='3'] {
-        .gauge {
-            @extend .pieInProgress;
-            background-color: #66a2c5 !important;
-        }
-    }
-    &[status='4'] {
-        .gauge {
-            @extend .pieInProgress;
-            background-color: #136e9d !important;
-        }
-    }
-    &[status='5'] {
-        .gauge {
-            @extend .pieInProgress;
-            background-color: #136e9d !important;
-        }
-    }
-    &[status='6'], &[status='7'] {
-         .gauge {
-             @extend .pieInProgress;
-             background-color: #136e9d !important;
-         }
-     }
 }

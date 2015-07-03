@@ -9,7 +9,7 @@
 angular.module('cosmoUiApp')
     .directive('deploymentEvents', function ($log, $filter, EventsService, EventsMap, $document, cloudifyClient) {
         return {
-            templateUrl: 'views/deployment/eventWidget.html',
+            templateUrl: 'views/deployment/deploymentEvents.html',
             restrict: 'EA',
             scope: {
                 id: '=deploymentEvents'
@@ -27,7 +27,7 @@ angular.module('cosmoUiApp')
 
                     return cloudifyClient.events.get( { 'deployment_id' :  $scope.id ,  'from_event': 0, 'batch_size' : 50 , 'include_logs' :  false , 'order' : 'desc' }).then(function (result) {
                         $scope.events = result.data.hits.hits;
-                        $scope.lastEvent = $scope.events.length > 0 ? $scope.events[0] : null;
+                        $scope.lastEvent = _.first($scope.events);
                         _.each($scope.events, function(e){
                             e._source.timestamp = EventsService.convertTimestamp( e._source.timestamp  );
                         });
@@ -55,9 +55,11 @@ angular.module('cosmoUiApp')
 
                 $scope.dragIt = function (event) {
 
+
                     event.preventDefault();
                     $scope.minimizeMode = false;
                     dragFromY = event.clientY;
+                    console.log('dragFrom', dragFromY);
                     dragFromHeight = $element.find('.containList').height();
                     $document.on('mousemove', mousemove);
                     $document.on('mouseup', mouseup);
@@ -75,15 +77,19 @@ angular.module('cosmoUiApp')
 
                 function mousemove(event) {
                     var currentY = event.clientY; // clientY increases if mouse is lower on screen.
-
+console.log('currentY' , currentY );
                     var newHeight = dragFromHeight + dragFromY - currentY;
 
+
+
                     var c = $element.find('.containList');
-                    var maxHeight = angular.element(document.querySelector('#main-content')).height() - angular.element(document.querySelector('.bpContainer')).position().top - 50;
+                    var maxHeight = $element.parent().height();
 
                     if (newHeight >= maxHeight) {
                         newHeight = maxHeight;
                     }
+
+                    console.log('new height',newHeight);
 
                     c.css({
                         height: newHeight + 'px'

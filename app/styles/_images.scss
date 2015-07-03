@@ -1,5 +1,18 @@
 $images-path: '/images' !default;
 
+
+
+/************************************************************************
+
+
+                DEPRECATED... STOP USING IMAGES. We are using front as much as possible.
+                if there's still an image we need to use.. lets agree together.
+
+
+***************************************************************************/
+
+
+
 $img-cloudify-logo:               '#{$images-path}/cloudify-logo.png' !default;
 $img-search:                      '#{$images-path}/search.svg' !default;
 $img-user:                        '#{$images-path}/user.svg' !default;
@@ -8,16 +21,11 @@ $img-widget-close:                '#{$images-path}/eventsWidgetClose.png' !defau
 $img-icons-bar:                   '#{$images-path}/icons-bar.png' !default;
 $img-buttons:                     '#{$images-path}/buttons.png' !default;
 $img-topology-settings:           '#{$images-path}/topology-settings.png' !default;
-$img-progress:                    '#{$images-path}/progress.gif' !default;
-$img-loading-button:              '#{$images-path}/loading-button.gif' !default;
-$img-loading-process-bar:         '#{$images-path}/loading-process-bar.gif' !default;
-$img-loading-big:                 '#{$images-path}/big-loader.gif' !default;
 $img-deployment-play:             '#{$images-path}/play_idle.png' !default;
 $img-deployment-play-disabled:    '#{$images-path}/play_disabled.png' !default;
 $img-deployment-play-selected:    '#{$images-path}/play_selected.png' !default;
 $img-deployment-pause:            '#{$images-path}/pause_idle.png' !default;
 $img-deployment-pause-selected:   '#{$images-path}/pause_selected.png' !default;
-$img-dots-loader:                 '#{$images-path}/dotsLoader.png' !default;
 $img-panel-expand:                '#{$images-path}/panel-expand.png' !default;
 $img-panel-collapse:              '#{$images-path}/panel-collapse.png' !default;
 $img-events-widget-drag:          '#{$images-path}/events-widget-drag.png' !default;

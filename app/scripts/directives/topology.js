@@ -20,12 +20,19 @@ angular.module('cosmoUiApp')
             scope: {
                 'blueprintId': '=',
                 'deploymentId': '=',
+                'currentExecution' : '=',
                 'onNodeSelect': '&',
                 'onRelationSelect': '&'
 
             },
             link: function postLink(scope) {
                 var $scope = scope;
+
+                // for lack of a better word, we are using initialized
+                // it means whether there's an execution right now, or all nodes are either deleted or uninitialized.
+                // we are trying to let the user know if the system is : 1) changing state, 2) up, 3) down
+                // so initialized is everything but down. when down we display no status on deployment
+                $scope.initialized = false;
 
 
                 /*  $scope.getBadgeStatusAndIcon = function(status) {
@@ -59,11 +66,12 @@ angular.module('cosmoUiApp')
                     });
                 };
 
-                $scope.loadInstances = function () {
-                    cloudifyClient.nodeInstances.list(scope.deploymentId).then(function (result) {
+                function loadInstances() {
+                    return cloudifyClient.nodeInstances.list(scope.deploymentId).then(function (result) {
+                        $scope.initialized = $scope.currentExecution || !!_.find( result.data, function(i){ return NodeService.status.isInProgress(i)} );
                         scope.nodeInstances = _.groupBy(result.data,'node_id');
-                    })
-                };
+                    });
+                }
 
                 if (!!scope.blueprintId) {
                     $scope.loadBlueprint();
@@ -71,7 +79,7 @@ angular.module('cosmoUiApp')
                 }
 
                 if ( !!$scope.deploymentId ){
-                    $scope.loadInstances();
+                    loadInstances();
                 }
 
                 //console.log('blueprintId', scope.blueprintId);
@@ -84,11 +92,11 @@ angular.module('cosmoUiApp')
 
                 scope.$watch('deploymentId', function(newValue, oldValue){
                     if ( newValue !== oldValue ){
-                        $scope.loadInstances();
+                        loadInstances();
                     }
-                })
+                });
 
-
+                $scope.registerTickerTask('deploymentTopology/loadInstances', loadInstances, 1000);
             }
         };
     });

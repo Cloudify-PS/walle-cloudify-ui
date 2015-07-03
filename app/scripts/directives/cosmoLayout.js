@@ -15,7 +15,7 @@ angular.module('cosmoUiApp')
             restrict: 'C',
             transclude: true,
             replace: true,
-            link: function postLink(scope) {
+            link: function postLink(scope, element) {
                 scope.embeded = $window !== $window.top;
                 if ( $routeParams.hasOwnProperty('embed')  ) { // override
                     scope.embeded = $routeParams.embed === 'true';
@@ -24,6 +24,19 @@ angular.module('cosmoUiApp')
                 VersionService.getVersions().then(function(versions) {
                     scope.versions = versions;
                 });
+
+
+                $(document).on('scroll', function(){
+                    var newValue =  $('body').scrollTop();
+                    var $left = $('#left-side-menu');
+                    if ( newValue > 80 ){
+                        $left.addClass('fix-to-top');
+                    }else{
+                        console.log('removing fixed',newValue,$left.offset().top );
+                        $left.removeClass('fix-to-top');
+                    }
+                });
+
             }
         };
     });

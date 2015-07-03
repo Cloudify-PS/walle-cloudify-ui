@@ -21,6 +21,7 @@
         border-bottom: $COSMOUI_DEPLOYMENT_APP_STATUS_BORDER;
         position: absolute;
         right: 0px;
+        top:0;
     }
 
     #right-side-menu {
@@ -51,11 +52,7 @@
         .content {
             margin-top: $COSMOUI_BLUEPRINT_DETAILS_CONTENT_MARGIN_TOP;
 
-            .buttons-group {
-                float: left;
-                margin-left: 0px;
-                vertical-align: top;
-            }
+
 
             .content-section {
                 table {
@@ -139,269 +136,7 @@
         }
     }
 
-    #deployment-header {
-        width: $COSMOUI_DEPLOYMENT_HEADER_WIDTH;
 
-        .content-header {
-            border-bottom: 3px solid $COSMOUI_MAIN_CONTENT_TITLE_SEPERATOR_COLOR;
-            margin-bottom: 10px;
-            overflow: hidden;
-            width: 90%;
-        }
-
-        .header-left {
-            min-height: 112px;
-
-            #settings-button {
-                display: inline-block;
-                margin-left: 10px;
-                cursor: pointer;
-                vertical-align: middle;
-            }
-
-            .buttons-group.sections {
-                margin-left: 20px;
-                vertical-align: top;
-            }
-
-            .actions {
-                display: inline-block;
-                margin-left: 30px;
-                white-space: nowrap;
-                vertical-align: top;
-
-                button {
-                    background-color:transparent;
-                    border:none;
-                    position: relative;
-                    top: 0px;
-                    left: 3px;
-                    cursor: pointer;
-                    width: 32px;
-                    height: 32px;
-                    display: inline-block;
-
-                    &.deployment-play {
-                        background-image: url($img-deployment-play);
-                        &[disabled] {
-                            background-image: url($img-deployment-play-disabled);
-                        }
-                    }
-
-                    &.deployment-pause {
-                      font-size: 30px;
-                      padding-left: 7px;
-                      padding-top: 2px;
-                      color: #3aaeda;
-
-                        &:hover {
-                          color: #136e9d;
-                        }
-                    }
-                }
-
-                .deploymentExecute {
-                    width: 20px;
-                    height: 20px;
-                    cursor: default;
-                    position: relative;
-                    top: -1px;
-                    left: -7px;
-                    display: inline-block;
-                    background-image: url($img-loading-process-bar);
-                    background-repeat: no-repeat;
-                    background-position: center center;
-                    vertical-align: middle;
-                    margin-left: 5px;
-                }
-
-                .executingWorkflow {
-                    min-width: 0px;
-                    max-width: 200px;
-                    height: 31px;
-                    color: $clr-base-11;
-                    background-color: $clr-base-05;
-                    font-weight: bold;
-                    padding: 4px 10px 5px 10px;
-                    margin-right: 5px;
-                    margin-top: 1px;
-                    border-radius: 5px;
-                    border: 2px solid #cadbec;
-                    float: left;
-                    font-size: 14px;
-                    box-shadow: none;
-                    -webkit-appearance: none;
-                    -moz-appearance: none;
-                    appearance: none;
-                    cursor: default;
-                    overflow: hidden;
-                    text-overflow: ellipsis;
-                }
-            }
-        }
-
-        .eventsTable {
-          tr {
-            td {
-              vertical-align: top;
-            }
-          }
-        }
-    }
-
-    #right-side-menu {
-
-        .close-properties-button {
-            cursor: pointer;
-        }
-
-        .content {
-
-            .buttons-group {
-                float: left;
-                margin-left: 0px;
-            }
-
-            .content-section {
-                position: relative;
-                padding-left: 0px;
-                top: 30px;
-
-                .prop-section {
-                    top: 0px;
-
-                    .no-properties {
-                        float: left;
-                    }
-                }
-
-                .overview-node-name {
-                    font-size: 16px;
-                    font-weight: bold;
-                    color: #333;
-                    margin-bottom: 5px;
-                }
-
-                table.overview-data {
-                    margin-bottom: 30px;
-                }
-
-                table.relationships-table {
-                    width: 100%;
-
-                    tr {
-                        border-bottom: none;
-                        cursor: pointer;
-
-                        //&:first-child {
-                        //  background-color: transparent;
-                        //}
-
-                        &:first-child td {
-                            background-color: #d3dfe2;
-                            height: 30px;
-                            color: #333333;
-                            font-size: 13px;
-                            padding-left: 5px;
-                        }
-
-                        td {
-                            min-width: 120px;
-                            vertical-align: middle;
-                            padding-left: 0px;
-
-                            &.relationships-target {
-                              width: 140px;
-                            }
-                            &.relationships-type {
-                              width: 300px;
-//                              float: left;
-                            }
-                            &.relationships-source {
-                              width: 100px;
-                            }
-
-                            table {
-                                width: 100%;
-                                //margin-left: 10px;
-
-                                tr {
-
-                                    &:first-child {
-                                        background-color: $clr-base-09;
-                                        td {
-                                            background-color: #fff;
-                                        }
-                                    }
-
-                                    .relationship-arrow {
-                                        float: left;
-
-                                        &.right {
-                                            margin-top: 5px;
-                                            margin-right: 10px;
-                                            border-top: 5px solid transparent;
-                                            border-bottom: 5px solid transparent;
-                                            border-left: 5px solid #333;
-                                        }
-
-                                        &.down {
-                                            margin-top: 7px;
-                                            margin-right: 5px;
-                                            border-left: 5px solid transparent;
-                                            border-right: 5px solid transparent;
-                                            border-top: 5px solid #333;
-                                        }
-                                    }
-
-                                    //&:first-child td {
-                                    //  background-color: #d3dfe2;
-                                    //  height: 30px;
-                                    //  color: #333333;
-                                    //  font-size: 13px;
-                                    //  padding-left: 5px;
-                                    //}
-
-                                    &:hover:not(:first-child) td {
-                                        background: none;
-                                        color: #333333;
-                                    }
-
-                                    td {
-                                        height: 30px;
-                                        border-bottom: 1px solid #cadbec;
-
-                                        table {
-
-                                            margin-left: 10px;
-                                            width: 98%;
-
-                                            tr {
-                                                &:first-child td {
-                                                    background: none;
-                                                    border-bottom: 1px solid #cadbec;
-                                                }
-
-                                                td {
-                                                    padding-left: 5px;
-                                                    ul {
-                                                        li {
-                                                            list-style: none;
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-
-        }
-    }
 
     .events {
         padding: 0px 20px;
@@ -1005,14 +740,6 @@
         height: 710px;
         background-color: #ffffff;
         text-align: center;
-
-        .loader {
-            height: 128px;
-            background-image: url($img-loading-big);
-            background-position: top center;
-            background-repeat: no-repeat;
-            margin: 140px 0 0 0;
-        }
 
         p {
             font-size: 24px;

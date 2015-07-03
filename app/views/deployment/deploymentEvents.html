@@ -12,7 +12,7 @@
     </div>
     <div class="containList" wheel-propagation="true">
         <table class="eventsList">
-            <tr class="animate-repeat" data-ng-class="{true: 'openRow'}[isOpen]" ng-repeat="event in events" data-ng-click="isOpen=!isOpen" ng-init="isOpen=false">
+            <tr class="animate-repeat" data-ng-class="{true: 'openRow'}[isOpen]" ng-repeat="event in events track by event._id" data-ng-click="isOpen=!isOpen" ng-init="isOpen=false">
                 <td class="icon">
                     <div class="icon-events" ng-class="getEventIcon(event)"></div>
                 </td>

@@ -1,6 +1,5 @@
 .gs-table {
     width: $COSMOUI_LIST_WIDTH;
-    margin: 10px 20px 0px;
 
     thead {
         tr {
@@ -134,6 +133,7 @@
         position:absolute;
         left:0;
         right:0;
+
     }
 
     &.gs-spinner-active{
@@ -406,6 +406,15 @@ input[type=text], input[type=password]{
         font-size:$LARGE_SIZE;
         color:$COSMOUI_SPINNER_COLOR_LARGE;
         width: $LARGE_SIZE;
+    }
+
+    &.inline{
+        display:inline-block;
+        i, i:before{
+            height:14px;
+            width:14px;
+            font-size:14px;
+        }
     }
 
     &.gs-btn{

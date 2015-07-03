@@ -1,0 +1,37 @@
+<div class="deployments-layout-display cosmo-layout">
+    <div id="deployment-header">
+
+        <div class="deploymentLoader" data-ng-show="isInitializing()">
+            <div>
+                <div class="gs-spinner large"></div>
+                <p>Initializing <b>{{ deploymentId }}</b><br> Please wait...</p>
+            </div>
+        </div>
+
+        <div class="header-left">
+            <div data-ng-hide="isInitializing()">
+
+                <div app-status-widget deployment-id="deploymentId" id="appStatus"></div>
+
+                <div class="content-header">
+                    <div class="breadcrumbs"><ul id="deployments" breadcrumbs></ul></div>
+                </div>
+
+                <div section-nav-menu="navMenu"></div>
+
+                <!--<div settings-toggles id="settings-button" toggles="toggleBar" data-ng-show="selectview"></div>-->
+
+
+                <div class="actions">
+                    <div class="workflow-selector"
+                        deployment="deployment"
+                        current-execution="currentExecution"></div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+    <div id="deployment-content" ng-transclude></div>
+</div>

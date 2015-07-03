@@ -12,6 +12,14 @@ angular.module('cosmoUiApp')
 
         var statesIndex = ['uninitialized', 'initializing', 'creating', 'created', 'configuring', 'configured', 'starting', 'started', 'deleted'];
 
+        // use this instead of numbers
+        var NODE_STATUS = {
+            LOADING: 0,
+            DONE: 1,
+            ALERT: 2,
+            FAILED: 3
+        };
+
         var statuses = {
             0: 'install',
             1: 'done',
@@ -34,13 +42,6 @@ angular.module('cosmoUiApp')
             return statesIndex[index];
         };
 
-        this.getStatusClass = function(status_id) {
-            return statuses[status_id] || '';
-        };
-
-        this.getIconClass = function(status_id) {
-            return statusIcons[status_id] || '';
-        };
 
         this.getStatuses = function() {
             return statuses;
@@ -69,13 +70,10 @@ angular.module('cosmoUiApp')
             }
         };
 
-        function calcState(state, instances) {
-            return Math.round(state > 0 ? (state / instances / 7 * 100) : 0);
-        }
-
-        function calcProgress(partOf, instances) {
-            return Math.round(partOf > 0 ? 100 * partOf / instances : 0);
-        }
+        this.getCompleteProgress = function( instances ){
+            var stateNum = this.stateToNum( { state: 'started' } ); // started is the complete
+            return stateNum * _.size(instances); // this is our 100%.
+        };
 
 
         this.isCompleted = function( instance ){ // sugar
@@ -86,7 +84,7 @@ angular.module('cosmoUiApp')
             return statesIndex.indexOf(instance.state);
         };
 
-        this.isInProgress = function( instance ){
+        this.isInProgress = function( instance ){ // todo: consider using !uninitialized.. single source of truth
             var stateNum = this.stateToNum( instance );
             return stateNum > 0 && stateNum <= 7
         };
@@ -96,74 +94,72 @@ angular.module('cosmoUiApp')
             return stateNum === 0 || stateNum > 7;
         };
 
+
+        this.getStatusClass = function(status_id) {
+            return statuses[status_id] || '';
+        };
+
+        this.getIconClass = function(status_id) {
+            return statusIcons[status_id] || '';
+        };
+
+        this.getStatus = function (inProgress, instances) {
+            var me = this;
+            var status = NODE_STATUS.LOADING;
+
+            // if node is not completed when execution is over, the execution is failed. we ignore uninitialized scenario here.
+            var failed = _.find(instances, function (instance) {
+                return !me.isCompleted(instance);
+            });
+            var completed = _.find(instances, function (instance) {
+                return me.isCompleted(instance);
+            });
+
+            //
+            if ( !inProgress ) {
+                if ( !completed ) { // not even one node is completed. this is a total failure!!!
+                    status = NODE_STATUS.FAILED
+                } else if ( failed) { // some are completed. some are failed.. minor failure
+                    status = NODE_STATUS.ALERT
+                }
+            } else if(!failed) { // !failed - not a single instance failed!! everyone are completed !!! yey!!!! success!!! lets show this huge success whether we are in progress or not..
+                status = NODE_STATUS.DONE
+            }
+
+            return status;
+        };
+
+        this.getBadgeStatusAndIcon = function( inProgress, instances ){
+            var status = this.getStatus(inProgress, instances);
+            return this.getStatusClass( status ) + ' ' + this.getIconClass( status );
+        };
+
+        this.getBadgeStatus = function( inProgress, instances ){
+            var status = this.getStatus(inProgress, instances);
+            return this.getStatusClass( status );
+        };
+
+
         this.isStarted = function( instance ){
             return instance.state === 'started';
         };
 
         /**
-         * translate each of the statesIndex into status and calculates progress both in total and per node
+         * @return {number} the deployment's progress in percentage. (0 - 100)
          */
         this.calculateProgress = function (nodeInstances) {
 
             var me = this;
 
-            function getStats(){
-                return {reachable: 0, states: 0, completed: 0, uninitialized: 0};
-            }
+            var total = 0;
 
-            var result = { total : getStats() }; // node per stats
-
-            _.each(nodeInstances, function (nodeInstance, isExecuting) {
-
-                if ( !result[nodeInstance.node_id]){
-                    result[nodeInstance.node_id] = getStats();
-                }
-                var nodeStats =  result[nodeInstance.node_id];
-
-                var stateNum = statesIndex.indexOf(nodeInstance.state);
-                // Count how many instances are reachable
-                if ( me.isStarted(nodeInstance) ) {
-                    nodeStats.reachable++;
-                    result.total.reachable++;
-                }
-                // instance state between 'initializing' to 'starting'
-                if ( me.isInProgress(nodeInstance)) {
-                    nodeStats.states += stateNum;
-                    result.total.states += stateNum;
-
-                    // instance 'started'
-                    if ( me.isStarted(nodeInstance) ) {
-                        nodeStats.completed++;
-                        result.total.completed++;
-                    }
-                }
-                // instance 'uninitialized' or 'deleted'
-                if ( me.isUninitialized( nodeInstance ) ) {
-                    nodeStats.uninitialized++;
-                    result.total.uninitialized++;
-                }
-
-                // average process
-                nodeStats.state = Math.round( nodeStats.states / result.total.states);
-
-                // average process in percentage.. override old value
-                nodeStats.states = calcState( nodeStats.states, result.total.states);
-
-                // Set Status by Workflow Execution Progress
-                var _processDone = (nodeStats.states < 100 ? nodeStats.states : calcProgress(nodeStats.reachables, nodeStats.total));
-                nodeStats.process = {
-                    'done': _processDone
-                };
-
-                if ( result.total.uninitialized === nodeInstances.length) {
-                    nodeStats.status = me.getNodeStatus(nodeStats, isExecuting, false);
-                }
-                else {
-                    nodeStats.status = me.getNodeStatus(nodeStats, isExecuting, _processDone);
-                }
-
+            _.each(nodeInstances, function(instance){
+                total += me.stateToNum(instance);
             });
-        }
+
+            return  ( total / this.getCompleteProgress( nodeInstances ) ) * 100;
+
+        };
 
 
     });

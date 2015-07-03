@@ -8,13 +8,11 @@ module.exports = function (conf) {
         // and we need express request object because we placed cloudifyAuthHeader on it..
         try {
             req.headers.authorization = req.cloudifyAuthHeader;
-            console.log('proxying request');
             proxy(function () {
                 return conf.cosmoServer;
             }, {
                 intercept: function (rsp, data, req, res, callback) {
                     res.removeHeader('www-authenticate'); // we want a login page!
-                    console.log('res headers is', res.headers, data, rsp.headers);
                     callback(null, data);
                 }
             })(req, res, next);

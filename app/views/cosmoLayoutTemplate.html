@@ -1,32 +1,36 @@
-<div style="height:100%;" data-ng-class="{true: 'embeded'}[embeded]">
+<div style="height:100%;" data-ng-class="{true: 'embeded'}">
     <div class="layout">
-        <div class="line-row">
-            <div header id="header"></div>
+
+        <div header id="header" ></div>
+
+        <div id="left-side-menu" >
+
+            <div side-menu class="side-menu"></div>
         </div>
-        <div class="line-row">
-            <div id="left-side-menu">
-                <div side-menu class="side-menu"></div>
+
+        <div class="main-content">
+            <div ng-transclude>
+
             </div>
-            <!--<div id="right-side-menu"></div>-->
-            <div id="main-content">
-                <div id="main-content-panel" ng-transclude></div>
-            </div>
+            <div class="layout-fix-push"></div>
         </div>
-        <div id="fix"></div>
+
+
         <!--  a fix for footer position. -->
-    </div>
-    <!--  layout end -->
-    <div id="footer">
-        <div id="smallFooter">
-            <ul class="links">
-                <li>Manager version: {{ versions.manager }}</li>
-                <li>UI version: {{ versions.ui }}</li>
-                <li><a href="/api/spec.html#!/spec.json" target="_blank">API Spec</a></li>
-                <li><a href="https://cloudifysource.atlassian.net/browse/CFY" target="_blank">Report an Issue</a></li>
-                <li><a href="https://groups.google.com/forum/#!forum/cloudify-users" target="_blank">Support
-                    Forum</a></li>
-            </ul>
-            Copyright © GigaSpaces 2014, All rights reserved.
+
+        <!--  layout end -->
+        <div id="footer">
+            <div id="smallFooter">
+                <ul class="links">
+                    <li>Manager version: {{ versions.manager }}</li>
+                    <li>UI version: {{ versions.ui }}</li>
+                    <li><a href="/api/spec.html#!/spec.json" target="_blank">API Spec</a></li>
+                    <li><a href="https://cloudifysource.atlassian.net/browse/CFY" target="_blank">Report an Issue</a></li>
+                    <li><a href="https://groups.google.com/forum/#!forum/cloudify-users" target="_blank">Support
+                        Forum</a></li>
+                </ul>
+                Copyright &copy; GigaSpaces 2014, All rights reserved.
+            </div>
         </div>
     </div>
 </div>

@@ -9,15 +9,18 @@
 angular.module('cosmoUiApp')
     .directive('deploymentLayout', function ($location, BreadcrumbsService, nodeStatus, ngDialog, cloudifyClient, ExecutionsService, $routeParams, $log ) {
         return {
-            templateUrl: 'views/deployment/layout.html',
-            restrict: 'EA',
+            templateUrl: 'views/deployment/deploymentLayout.html',
+            restrict: 'C',
             transclude: true,
-            replace: true,
-            scope: {},
+            replace: false,
             link: function postLink($scope/*, $element, $attrs*/) {
 
                 $scope.deploymentId = $routeParams.deploymentId;
-                $scope.executedData = null;
+
+                $scope.$watch('totalProgress', function( newValue ){
+                       console.log('total progress changed', newValue );
+                    }
+                ,true);
 
                 // Set Breadcrumb
                 BreadcrumbsService.push('deployments', {
@@ -36,7 +39,11 @@ angular.module('cosmoUiApp')
                     {'name': 'Monitoring', 'href': '/monitoring'}
                 ];
                 _.each($scope.navMenu, function (nm) {
-                    nm.href = '/deployment/' + $scope.deploymentId + nm.href
+                    if ( $location.path().indexOf(nm.href) >=0 ){
+                        nm.active = true;
+                    }
+                    nm.href = '#/deployment/' + $scope.deploymentId + nm.href
+
                 });
 
                 // Get Deployment Data
@@ -68,46 +75,17 @@ angular.module('cosmoUiApp')
                     $location.path(section.href);
                 };
 
-                function loadInstances() {
-                    return cloudifyClient.nodeInstances.list($scope.deploymentId, 'node_id,state')
-                        .then(function (result) {
-                            // now that we have the instances, we can count how many instances we have per node
-                            // we cannot use "number_of_instances" or "deploy" field, because it does not
-                            // consider parent nodes with multiple instances.
-                            // host A with 2 instances that contains App B with 2 instances will actually
-                            // spawn 4 instances of App B (2 per host).
-                            $scope.nodeInstances = result;
-                            $scope.progress = nodeStatus.calculateProgress($scope.nodeInstances, $scope.currentExecution);
-                        });
-                }
-
-                function _startDeploymentExecutionsAutopull() {
-                    // Workflows & Execution
-
-                    return cloudifyClient.executions.list($scope.deploymentId).then(function (result) {
-
-                            $scope.currentExecution = _.filter(result.data, ExecutionsService.isRunning);
-
-                            $scope.$emit('deploymentExecution', {
-                                currentExecution: $scope.currentExecution,
-                                deploymentInProgress: !!$scope.currentExecution,
-                                executionsList: result.data
-                            });
-                        },
-                        function (/*reason*/) {
-                            // getDeploymentExecutions failed. Redirect to deployments screen.
-                            $scope.deploymentInProgress = false;
-                            $location.path('/deployments');
-
-                        });
-                }
 
                 function _loadExecutions() {
-                    return cloudifyClient.executions.list($scope.deploymentId, 'id,workflow_id,status,deployment_id')
+                    return cloudifyClient.executions.list($scope.deploymentId, 'id,workflow_id,status')
                         .then(function (result) {
-                            $scope.executedData = _.filter(result.data, function (execution) {
+                            $scope.currentExecution = _.first(_.filter(result.data, function (execution) {
                                 return ExecutionsService.isRunning(execution)
-                            });
+                            }));
+
+                            // mock.... remove!!!
+                            //$scope.currentExecution = {"status":"started","workflow_id":"uninstall","id":"fa56b8a1-04b5-43b9-894e-8ae4f44321f3"}
+
                         },
                         function (result) {
                             // todo add proper erorr feedback for user
@@ -122,17 +100,13 @@ angular.module('cosmoUiApp')
                     $scope.$emit('toggleChange', toggleBar);
                 });
 
-                $scope.$on('executionStarted', function (e, data) {
-                    $scope.executedData = data;
-                });
 
                 $scope.isInitializing = function () {
                     return $scope.currentExecution && $scope.currentExecution.workflow_id === 'create_deployment_environment';
                 };
 
+                $scope.registerTickerTask('deploymentLayout/loadExecutions', _loadExecutions, 1000);
 
-                $scope.registerTickerTask('deploymentLayout/loadExecutions', _loadExecutions, 10000);
-                $scope.registerTickerTask('deploymentLayout/loadInstances', loadInstances, 10000);
             }
         };
     });

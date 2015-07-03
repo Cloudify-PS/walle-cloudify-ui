@@ -19,7 +19,6 @@ angular.module('cosmoUiApp')
         };
 
         $scope.executeWorkflow = function() {
-            debugger;
             var params = {
                 deployment_id: $scope.deploymentId,
                 workflow_id: $scope.workflow.name,
@@ -29,15 +28,15 @@ angular.module('cosmoUiApp')
             if ($scope.isExecuteEnabled()) {
                 $scope.inProcess = true;
                 CloudifyService.deployments.execute(params)
-                    .then(function(data) {
+                    .then(function (data) {
                         $scope.inProcess = false;
-                        if(data.hasOwnProperty('message')) {
+                        if (data.hasOwnProperty('message')) {
                             $scope.setErrorMessage(data.message);
                         } else {
                             $scope.$emit('executionStarted', data);
                             $scope.closeThisDialog();
                         }
-                    }, function(e) {
+                    }, function (e) {
                         $scope.setErrorMessage(e.data.message);
                     });
             }
