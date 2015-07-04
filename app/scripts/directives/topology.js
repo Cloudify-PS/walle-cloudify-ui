@@ -13,7 +13,7 @@
  * # blueprintTopology
  */
 angular.module('cosmoUiApp')
-    .directive('topology', function (cloudifyClient, NodeService, blueprintCoordinateService, $log) {
+    .directive('topology', function (cloudifyClient, NodeService, blueprintCoordinateService, $log, $q ) {
         return {
             templateUrl: 'views/directives/topology.html',
             restrict: 'A',
@@ -67,10 +67,16 @@ angular.module('cosmoUiApp')
                 };
 
                 function loadInstances() {
-                    return cloudifyClient.nodeInstances.list(scope.deploymentId).then(function (result) {
-                        $scope.initialized = $scope.currentExecution || !!_.find( result.data, function(i){ return NodeService.status.isInProgress(i)} );
-                        scope.nodeInstances = _.groupBy(result.data,'node_id');
-                    });
+                    if ( !!scope.deployment_id ) {
+                        return cloudifyClient.nodeInstances.list(scope.deploymentId).then(function (result) {
+                            $scope.initialized = $scope.currentExecution || !!_.find(result.data, function (i) {
+                                return NodeService.status.isInProgress(i)
+                            });
+                            scope.nodeInstances = _.groupBy(result.data, 'node_id');
+                        });
+                    }else{
+                        return $q.defer().promise;
+                    }
                 }
 
                 if (!!scope.blueprintId) {

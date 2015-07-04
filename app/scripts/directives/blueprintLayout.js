@@ -68,15 +68,11 @@ angular.module('cosmoUiApp')
                     if ( $location.path().indexOf(nm.href) >= 0){
                         nm.active = true;
                     }
-                    nm.href='#/blueprints/' + blueprintId + nm.href;
+                    nm.href='#/blueprint/' + $scope.blueprintId + nm.href;
                 });
 
                 $scope.isSectionActive = function (section) {
                     return section.name === $scope.section ? 'active' : '';
-                };
-
-                $scope.goToSection = function (section) {
-                    $location.path('/blueprint/' + $scope.blueprintId + section.href);
                 };
 
                 $scope.openDeployDialog = function() {

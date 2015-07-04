@@ -12,6 +12,9 @@ html, body, .layout {
 
 
 .layout {
+
+    $FOOTER_HEIGHT:60px;
+
     margin: 0 auto;
     min-width: 600px;
     /*min-height: 100%;*/
@@ -32,7 +35,7 @@ html, body, .layout {
         left: 0;
         width: 100px;
         top: 83px;
-        bottom: 60px;
+        bottom: $FOOTER_HEIGHT;
         background: white;
         overflow: visible;
         &.fix-to-top{
@@ -45,27 +48,37 @@ html, body, .layout {
     }
 
     .main-content{
-        padding:20px;
         position: absolute;
         left: 186px;
         right: 20px;
-//        bottom: 60px;
+        bottom: $FOOTER_HEIGHT;
         top: 83px;
         background: white;
-        overflow: hidden;
-        min-height:1000px;
+        overflow: visible;
+//        min-height:1000px;
 
-        margin-bottom:-1000px;
-        &>div{
-            background: transparent;
-            height: 100%;
-            position: relative;
-            width: 100%
+//        margin-bottom:-1000px;
+        .main-content-display {
+            padding: 20px;
+            background: white;
+            & > div {
+                background:transparent;
+                height: 100%;
+                position: relative;
+                width: 100%
+            }
         }
         .layout-fix-push{
-            height:60px;
+            height:$FOOTER_HEIGHT;
+            background:transparent;
 
         }
+    }
+
+    .layout-fix-push{
+        height:$FOOTER_HEIGHT;
+        background:transparent;
+
     }
 
     #footer{
@@ -75,7 +88,8 @@ html, body, .layout {
         left: 0;
         right: 0;
         bottom: 0;
-        height: 60px;
+        height: $FOOTER_HEIGHT;
+        z-index:10;
     }
 
 }

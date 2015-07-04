@@ -8,15 +8,14 @@
  * Controller of the cosmoUiAppApp
  */
 angular.module('cosmoUiApp')
-    .controller('BlueprintNodesCtrl', function ($scope, $routeParams, NodeService) {
+    .controller('BlueprintNodesCtrl', function ($scope, $routeParams, NodeService, cloudifyClient ) {
+
 
         $scope.blueprintId = $routeParams.blueprintId;
         $scope.page = {};
 
-        $scope.$on('blueprintData', function(event, data){
-            NodeService.createNodesTree(data.plan.nodes);
-            $scope.dataTable = data.plan.nodes;
-
+        cloudifyClient.blueprints.get($scope.blueprintId).then(function(result){
+                $scope.dataTable = result.data.plan.nodes;
         });
 
         $scope.getRelationshipByType = function(node, type) {

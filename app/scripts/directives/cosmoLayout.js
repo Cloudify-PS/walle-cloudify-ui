@@ -31,7 +31,7 @@ angular.module('cosmoUiApp')
                     var $left = $('#left-side-menu');
                     if ( newValue > 80 ){
                         $left.addClass('fix-to-top');
-                    }else{
+                    }else if ( $('body')[0].scrollHeight > 1000 ){ // fix flicker when  body is small.. this will make the scroll disappear, but at least we will not flicker
                         console.log('removing fixed',newValue,$left.offset().top );
                         $left.removeClass('fix-to-top');
                     }

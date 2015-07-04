@@ -8,23 +8,39 @@
  * Controller of the cosmoUiApp
  */
 angular.module('cosmoUiApp')
-    .controller('SourceCtrl', function ($scope, $routeParams, $location, CloudifyService, SourceService, VIEW_CONTEXT) {
+    .controller('SourceCtrl', function ($scope, $routeParams, $location, CloudifyService, SourceService, cloudifyClient ) {
 
-        $scope.id = $routeParams.id;
+
         $scope.errorMessage = 'noPreview';
         $scope.selectedBlueprint = {};
         $scope.browseData = {};
 
-        var context = $location.url().indexOf(VIEW_CONTEXT.DEPLOYMENT) > -1 ? VIEW_CONTEXT.DEPLOYMENT : VIEW_CONTEXT.BLUEPRINT;
         var autoFilesList = ['blueprint.yaml', 'README.md'];
         var selectedAutoFile = null;
         var firstDefaultFile = null;
         var autoKeepLooking = true;
 
-        SourceService.get($scope.id, context)
-            .then(function(blueprint) {
-                setData(blueprint);
+
+        $scope.$watch('blueprintId', function(newValue){
+            if ( !!newValue ) {
+                cloudifyClient.blueprints.get(newValue, 'id,updated_at').then(function( result ){
+                    setData(result.data);
+                });
+            }
+        });
+
+        if ( $routeParams.blueprintId ){
+            $scope.blueprintId = $routeParams.blueprintId;
+        }
+
+
+
+        if ( $routeParams.deploymentId ){
+            cloudifyClient.deployments.get($routeParams.deploymentId, 'blueprint_id').then(function( result ){
+                $scope.blueprintId = result.data.blueprint_id;
             });
+        }
+
 
         function locateFilesInBrowseTree(data) {
             for(var i in data) {
@@ -160,10 +176,4 @@ angular.module('cosmoUiApp')
 
         };
 
-    });
-
-angular.module('cosmoUiApp')
-    .constant('VIEW_CONTEXT', {
-        DEPLOYMENT: 'deployment',
-        BLUEPRINT: 'blueprint'
     });
