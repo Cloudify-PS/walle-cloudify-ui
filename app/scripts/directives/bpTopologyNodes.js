@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('cosmoUiApp')
-    .directive('bpTopologyNodes',  function (RecursionHelper, TopologyTypes, NodeService) {
+    .directive('bpTopologyNodes',  function (RecursionHelper) {
         return {
             templateUrl: 'views/bpTopologyNodesTemplate.html',
             restrict: 'EA',
@@ -15,7 +15,7 @@ angular.module('cosmoUiApp')
                 onRelationshipSelect: '&'
             },
             compile: function(element) {
-                return RecursionHelper.compile(element, function(scope) { });
+                return RecursionHelper.compile(element, function(/*scope*/) { });
             },
             controller: function($scope, $element, NodeService) {
 
@@ -73,7 +73,7 @@ angular.module('cosmoUiApp')
 
                 $scope.getBadgeStatus = function( node ){
                     return NodeService.status.getBadgeStatus( scope.inProgress, getInstances(node));
-                }
+                };
 
             }
         };

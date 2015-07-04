@@ -86,7 +86,7 @@ angular.module('cosmoUiApp')
 
         this.isInProgress = function( instance ){ // todo: consider using !uninitialized.. single source of truth
             var stateNum = this.stateToNum( instance );
-            return stateNum > 0 && stateNum <= 7
+            return stateNum > 0 && stateNum <= 7;
         };
 
         this.isUninitialized = function(instance){
@@ -118,12 +118,12 @@ angular.module('cosmoUiApp')
             //
             if ( !inProgress ) {
                 if ( !completed ) { // not even one node is completed. this is a total failure!!!
-                    status = NODE_STATUS.FAILED
+                    status = NODE_STATUS.FAILED;
                 } else if ( failed) { // some are completed. some are failed.. minor failure
-                    status = NODE_STATUS.ALERT
+                    status = NODE_STATUS.ALERT;
                 }
             } else if(!failed) { // !failed - not a single instance failed!! everyone are completed !!! yey!!!! success!!! lets show this huge success whether we are in progress or not..
-                status = NODE_STATUS.DONE
+                status = NODE_STATUS.DONE;
             }
 
             return status;

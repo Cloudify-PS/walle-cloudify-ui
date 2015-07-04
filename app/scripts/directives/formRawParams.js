@@ -14,28 +14,28 @@
  *
  */
 angular.module('cosmoUiApp')
-    .directive('formRawParams', function ( INPUT_STATE ) {
+    .directive('formRawParams', function (INPUT_STATE) {
         return {
             templateUrl: 'views/directives/formRawParams.html',
             restrict: 'A',
-            scope:{
-                'sendErrorMessage' : '&onError',
-                'params' : '=',
-                'rawString' : '=',
-                'valid' : '='
+            scope: {
+                'sendErrorMessage': '&onError',
+                'params': '=',
+                'rawString': '=',
+                'valid': '='
             },
-            link: function postLink(scope, element, attrs) {
+            link: function postLink(scope/*, element, attrs*/) {
                 var $scope = scope;
                 $scope.inputsState = INPUT_STATE.PARAMS;
                 $scope.inputs = {};
 
-                function setDeployError( msg ){
-                    scope.sendErrorMessage({'msg' : msg});
+                function setDeployError(msg) {
+                    scope.sendErrorMessage({'msg': msg});
                 }
 
-                scope.$watch(function(){
-                   return  _validateJSON( false, true )
-                }, function( newValue ){
+                scope.$watch(function () {
+                    return _validateJSON(false, true);
+                }, function (newValue) {
                     _validateJsonKeys(true); //set error message turned on
                     scope.valid = newValue;
                 });
@@ -46,20 +46,20 @@ angular.module('cosmoUiApp')
                 // if key is missing (non strict) we want to display an error
                 // if key is empty (strict) that return invalid, but don't display an error
                 // if there's an error, we want to display it (so if strict mode fails, keep searching for error to display)
-                function _validateJsonKeys( strict, skipErrorMessage ) {
+                function _validateJsonKeys(strict, skipErrorMessage) {
 
                     var result = true;
                     var _json = $scope.rawString ? JSON.parse($scope.rawString) : {};
                     for (var i in $scope.params) {
                         var value = _json[i];
-                        if (value === undefined ) { // when in strict mode disallow empty value
-                            if ( !skipErrorMessage ) {
+                        if (value === undefined) { // when in strict mode disallow empty value
+                            if (!skipErrorMessage) {
                                 setDeployError('Missing ' + i + ' key in JSON');
                             }
-                            result =  false;
+                            result = false;
                             return result; // no need to continue
                         }
-                        if ( ( strict && ( value === null || value === '' ) ) ){
+                        if (( strict && ( value === null || value === '' ) )) {
                             result = false; // lets continue.. perhaps there's an error we want to display
                         }
                     }
@@ -67,24 +67,24 @@ angular.module('cosmoUiApp')
                 }
 
                 // JSON validation by parsing it
-                function _validateJSON( skipKeys, skipErrorMessage ) {
+                function _validateJSON(skipKeys, skipErrorMessage) {
                     try {
                         JSON.parse($scope.rawString);
-                        if ( !skipErrorMessage ) {
+                        if (!skipErrorMessage) {
                             setDeployError(null);
                         }
                         return skipKeys || _validateJsonKeys();
 
                     } catch (e) {
-                        setDeployError( 'Invalid JSON: ' + e.message );
+                        setDeployError('Invalid JSON: ' + e.message);
                         return false;
                     }
                 }
 
                 function _parseInputs() {
                     var result = {};
-                    _.each($scope.inputs, function(value,key){
-                        if ( value === '' || value === null ){
+                    _.each($scope.inputs, function (value, key) {
+                        if (value === '' || value === null) {
                             result[key] = null;
                             return;
                         }
@@ -92,12 +92,12 @@ angular.module('cosmoUiApp')
                         try {
 
                             var parsedValue = JSON.parse(value);
-                            if ( typeof(parsedValue) !== 'string') {
+                            if (typeof(parsedValue) !== 'string') {
                                 result[key] = parsedValue;
-                            }else{
-                                result[key]=value;
+                            } else {
+                                result[key] = value;
                             }
-                        } catch(e) {
+                        } catch (e) {
                             result[key] = value;
                         }
                     });
@@ -144,8 +144,8 @@ angular.module('cosmoUiApp')
                     }
                 }
 
-                $scope.$watch('params', function(){
-                    if ( !!$scope.params ) {
+                $scope.$watch('params', function () {
+                    if (!!$scope.params) {
                         $scope.rawString = JSON.stringify($scope.params, null, 2);
                         $scope.inputsState = INPUT_STATE.PARAMS;
                     }
@@ -155,14 +155,14 @@ angular.module('cosmoUiApp')
                     $scope.inputsState = INPUT_STATE[state];
                 };
 
-                $scope.$watch('inputsState', function() {
+                $scope.$watch('inputsState', function () {
                     if (!!$scope.selectedBlueprint) {
                         $scope.updateInputs();
                     }
                 });
 
                 // watching the raw json string changes, validating json on every change
-                $scope.$watch('rawString', _rawToForm    );
+                $scope.$watch('rawString', _rawToForm);
 
                 // cover scenario where key is missing and I just added it in form mode
                 $scope.$watch('inputs', _formToRaw, true);
@@ -175,11 +175,11 @@ angular.module('cosmoUiApp')
                     }
                 };
 
-                $scope.$watch('params', function(params){
+                $scope.$watch('params', function (params) {
                     scope.inputs = {};
-                    if ( !!params ){
-                        _.each(params, function(value,key){
-                            scope.inputs[key] = value.default ? value.default:null;
+                    if (!!params) {
+                        _.each(params, function (value, key) {
+                            scope.inputs[key] = value.default ? value.default : null;
                         });
                     }
                 });

@@ -16,15 +16,15 @@
  *
  */
 angular.module('cosmoUiApp')
-  .directive('sectionNavMenu', function () {
-    return {
-      templateUrl: 'views/directives/sectionNavMenu.html',
-      restrict: 'A',
-        scope:{
-            'sections' : '=sectionNavMenu'
-        },
-      link: function postLink(scope, element, attrs) {
+    .directive('sectionNavMenu', function () {
+        return {
+            templateUrl: 'views/directives/sectionNavMenu.html',
+            restrict: 'A',
+            scope: {
+                'sections': '=sectionNavMenu'
+            },
+            link: function postLink(/*scope, element, attrs*/) {
 
-      }
-    };
-  });
+            }
+        };
+    });

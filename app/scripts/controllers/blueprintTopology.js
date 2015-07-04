@@ -7,7 +7,6 @@ angular.module('cosmoUiApp')
 
 
         $scope.onNodeSelect = function(node){
-            console.log('node selected',node);
             $scope.viewNode(node,'node');
         };
 

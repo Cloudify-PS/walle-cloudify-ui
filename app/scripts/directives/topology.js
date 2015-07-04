@@ -70,7 +70,7 @@ angular.module('cosmoUiApp')
                     if ( !!scope.deployment_id ) {
                         return cloudifyClient.nodeInstances.list(scope.deploymentId).then(function (result) {
                             $scope.initialized = $scope.currentExecution || !!_.find(result.data, function (i) {
-                                return NodeService.status.isInProgress(i)
+                                return NodeService.status.isInProgress(i);
                             });
                             scope.nodeInstances = _.groupBy(result.data, 'node_id');
                         });

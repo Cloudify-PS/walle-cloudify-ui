@@ -59,7 +59,6 @@ angular.module('cosmoUiApp')
                     event.preventDefault();
                     $scope.minimizeMode = false;
                     dragFromY = event.clientY;
-                    console.log('dragFrom', dragFromY);
                     dragFromHeight = $element.find('.containList').height();
                     $document.on('mousemove', mousemove);
                     $document.on('mouseup', mouseup);
@@ -77,7 +76,6 @@ angular.module('cosmoUiApp')
 
                 function mousemove(event) {
                     var currentY = event.clientY; // clientY increases if mouse is lower on screen.
-console.log('currentY' , currentY );
                     var newHeight = dragFromHeight + dragFromY - currentY;
 
 
@@ -89,7 +87,6 @@ console.log('currentY' , currentY );
                         newHeight = maxHeight;
                     }
 
-                    console.log('new height',newHeight);
 
                     c.css({
                         height: newHeight + 'px'

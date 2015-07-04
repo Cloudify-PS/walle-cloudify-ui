@@ -60,7 +60,6 @@ angular.module('cosmoUiApp')
         });
 
         function setDeployError( msg ){
-            console.log('got error message',msg);
             $scope.deployErrorMessage = msg;
         }
 

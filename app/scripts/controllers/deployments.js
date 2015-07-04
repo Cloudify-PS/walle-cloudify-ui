@@ -20,7 +20,6 @@ angular.module('cosmoUiApp')
         $scope.inputs = {};
         $scope.managerError = false;
         var selectedWorkflows = [];
-        var workflows = {};
 
         $scope.itemToDelete = null;
 

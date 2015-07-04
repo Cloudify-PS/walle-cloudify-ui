@@ -27,7 +27,6 @@ angular.module('cosmoUiApp')
                     if ( !attrs || !attrs.gsSpinner || attrs.gsSpinner.length === 0 ){ // empty
                         return;
                     }
-                    console.log('this is gsSpinner',attrs.gsSpinner);
 
                     if ( attrs.gsSpinner === 'true' ){
                         element.addClass('gs-spinner-active');

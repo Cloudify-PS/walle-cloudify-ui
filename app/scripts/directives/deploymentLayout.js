@@ -17,11 +17,6 @@ angular.module('cosmoUiApp')
 
                 $scope.deploymentId = $routeParams.deploymentId;
 
-                $scope.$watch('totalProgress', function( newValue ){
-                       console.log('total progress changed', newValue );
-                    }
-                ,true);
-
                 // Set Breadcrumb
                 BreadcrumbsService.push('deployments', {
                     href: '#/deployments',
@@ -42,7 +37,7 @@ angular.module('cosmoUiApp')
                     if ( $location.path().indexOf(nm.href) >=0 ){
                         nm.active = true;
                     }
-                    nm.href = '#/deployment/' + $scope.deploymentId + nm.href
+                    nm.href = '#/deployment/' + $scope.deploymentId + nm.href;
 
                 });
 
@@ -80,7 +75,7 @@ angular.module('cosmoUiApp')
                     return cloudifyClient.executions.list($scope.deploymentId, 'id,workflow_id,status')
                         .then(function (result) {
                             $scope.currentExecution = _.first(_.filter(result.data, function (execution) {
-                                return ExecutionsService.isRunning(execution)
+                                return ExecutionsService.isRunning(execution);
                             }));
 
                             // mock.... remove!!!

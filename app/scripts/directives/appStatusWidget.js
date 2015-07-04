@@ -19,7 +19,7 @@ angular.module('cosmoUiApp')
                         var progress = Math.floor(NodeService.status.calculateProgress( result.data ));
                         $scope.value = { 'done' : progress };
                         $scope.text = progress;
-                    })
+                    });
                 }
 
                 // need to use $parent here
