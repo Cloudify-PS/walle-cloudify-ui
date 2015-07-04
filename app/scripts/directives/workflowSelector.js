@@ -76,7 +76,7 @@ angular.module('cosmoUiApp')
                     });
 
                     ngDialog.open({
-                        template: 'views/dialogs/confirm.html',
+                        template: 'views/dialogs/executeDialog.html',
                         controller: 'ExecuteDialogCtrl',
                         scope: isolatedScope,
                         className: 'confirm-dialog'

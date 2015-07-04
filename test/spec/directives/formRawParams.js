@@ -1,6 +1,6 @@
 'use strict';
 
-describe('Directive: formRawParams', function () {
+xdescribe('Directive: formRawParams', function () {
 
     // load the directive's module
     beforeEach(module('cosmoUiApp'));
@@ -117,4 +117,57 @@ describe('Directive: formRawParams', function () {
             expect(scope.inputsState).toBe(INPUT_STATE.RAW);
         }));
     });
+
+    it('should update input JSON object when one of the parameters is updated', function () {
+        scope.selectedWorkflow = _workflow;
+        scope.inputs.image_name = 'new value';
+        scope.inputsState = 'raw';
+
+        scope.updateInputs();
+
+        expect(JSON.parse(scope.rawString).image_name).toBe('new value');
+    });
+
+    xit('should keep input type when converting to JSON object', function () {
+        scope.selectedWorkflow = _workflow;
+        scope.inputsState = 'raw';
+
+        scope.updateInputs();
+
+        expect(typeof(JSON.parse(scope.rawString).str_variable)).toBe('string');
+        expect(typeof(JSON.parse(scope.rawString).webserver_port)).toBe('number');
+        expect(typeof(JSON.parse(scope.rawString).bool_variable)).toBe('boolean');
+    });
+
+    xit('should show error message if required parameters are not provided', inject(function (CloudifyService) {
+        var executeParams = null;
+        CloudifyService.deployments.execute.andCallFake(function (params) {
+            executeParams = params;
+            return {
+                then: function (success, error) {
+                    error({'data': {'message': 'foo'}});
+                }
+            };
+        });
+
+        scope.toggleConfirmationDialog = function () {
+        };
+
+        spyOn(scope, 'isExecuteEnabled').andCallFake(function () {
+            return true;
+        });
+
+        scope.rawString = '{}';
+        scope.inputs = {};
+        scope.executeErrorMessage = '';
+        scope.selectedWorkflow = {
+            data: {}
+        };
+
+        scope.executeWorkflow();
+
+        expect(scope.executeErrorMessage).toBe('foo');
+        expect(scope.showError).toBe(true);
+    }));
+
 });
