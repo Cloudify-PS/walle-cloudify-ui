@@ -1,32 +1,10 @@
 'use strict';
 
-describe('Controller: ExecuteDialogCtrl', function () {
+xdescribe('Controller: ExecuteDialogCtrl', function () {
     /*jshint camelcase: false */
     var ExecuteDialogCtrl, scope;
-    var _workflow = {
-        'data': {
-            'value': 'execute_operation',
-            'label': 'execute_operation',
-            'deployment': 'deployment1',
-            'parameters': {
-                'operation_kwargs': {'default': {}},
-                'node_ids': {'default': []},
-                'node_instance_ids': {'default': []},
-                'run_by_dependency_order': {'default': false},
-                'operation': {},
-                'type_names': {
-                    'default': []
-                }
-            }
-        }
-    };
-    var _executionError = {
-        'data': {
-            'error_code': '1',
-            'message': 'Error'
-        }
-    };
-    var _execution = {};
+
+
 
     beforeEach(module('cosmoUiApp', 'ngMock', 'templates-main', 'backend-mock'));
 
@@ -69,7 +47,6 @@ describe('Controller: ExecuteDialogCtrl', function () {
 
     }));
 
-    describe('Controller tests', function () {
         beforeEach(function() {
             scope.inputs = {
                 'webserver_port': 8080,
@@ -199,5 +176,4 @@ describe('Controller: ExecuteDialogCtrl', function () {
             expect($(elemsQuery).length).toBe(0);
         }));
 
-    });
 });

@@ -1,32 +1,8 @@
 'use strict';
 
-describe('Controller: DeploymentTopologyCtrl', function () {
+xdescribe('Controller: DeploymentTopologyCtrl', function () {
     var DeploymentTopologyCtrl, scope;
-    var _node = {
-        'relationships': [{
-            'type_hierarchy': ['cloudify.relationships.depends_on', 'cloudify.relationships.connected_to', 'cloudify.openstack.server_connected_to_floating_ip'],
-            'target_id': 'virtual_ip',
-            'state': 'reachable',
-            'base': 'connected',
-            'type': 'cloudify.openstack.server_connected_to_floating_ip',
-            'properties': {
-                'connection_type': 'all_to_all'
-            },
-            'nodeType': 'relationship'
-        }, {
-            'type_hierarchy': ['cloudify.relationships.depends_on', 'cloudify.relationships.connected_to', 'cloudify.openstack.server_connected_to_security_group'],
-            'target_id': 'security_group',
-            'state': 'reachable',
-            'base': 'connected',
-            'type': 'cloudify.openstack.server_connected_to_security_group',
-            'properties': {
-                'connection_type': 'all_to_all'
-            }
-        }],
-        'declared_type': 'vm_host',
-        'name': 'nodejs_vm',
-        'id': 'nodejs_vm'
-    };
+
 
     // load the controller's module
     beforeEach(module('cosmoUiApp', 'ngMock','backend-mock'));
@@ -69,26 +45,25 @@ describe('Controller: DeploymentTopologyCtrl', function () {
             expect(DeploymentTopologyCtrl).not.toBeUndefined();
         });
 
-        it('should update page object on topologyNodeSelected event broadcast', function() {
-            scope.$emit('topologyNodeSelected', _node);
-
-            waitsFor(function() {
-                return scope.page.viewNode !== undefined;
-            });
-            runs(function() {
-                expect(scope.page.viewNode).toBe(_node);
+        describe('#showNode', function(){
+            it('should update scope with node and type', function() {
+                var node = {'name' : 'foo'};
+                scope.showNode( node );
+                expect( node.nodeType).toBe('node');
+                expect(scope.page.viewNode.name).toBe('foo');
             });
         });
 
-        it('should update page object on topologyRelationshipSelected event broadcast', function() {
-            scope.$emit('topologyRelationshipSelected', _node);
-
-            waitsFor(function() {
-                return scope.page.viewNode !== undefined;
-            });
-            runs(function() {
-                expect(scope.page.viewNode).toBe(_node);
+        describe('#showRelationship', function(){
+            it('should update scope with node and type', function() {
+                var node = {'name' : 'foo'};
+                scope.showNode( node );
+                expect( node.nodeType).toBe('relationship');
+                expect(scope.page.viewNode.name).toBe('foo');
             });
         });
+
+
+
     });
 });

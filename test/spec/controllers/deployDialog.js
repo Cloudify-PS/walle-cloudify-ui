@@ -1,163 +1,22 @@
 'use strict';
 
 /*jshint camelcase: false */
-describe('Controller: DeploydialogCtrl', function () {
+xdescribe('Controller: DeployDialogCtrl', function () {
     var DeployDialogCtrl, scope;
-    var _deployment = {
-        'inputs': {
-            'webserver_port': 8080,
-            'image_name': 'image_name',
-            'agent_user': 'agent_user',
-            'flavor_name': 'flavor_name'
-        },
-        'blueprint_id': 'blueprint1',
-        'id': 'deployment1',
-        'outputs': {
-            'http_endpoint': {
-                'description': 'HTTP web server endpoint.',
-                'value': {
-                    'get_attribute': ['vm', 'ip']
-                }
-            }
-        }
-    };
-
-    var _blueprint = {
-        'id': 'blueprint1',
-        'plan': {
-            'inputs': {
-                'webserver_port': {
-                    'default': 8080
-                },
-                'flavor_name': {},
-                'agent_user': {},
-                'image_name': {},
-                'bool_variable': {
-                    'default': false
-                },
-                'str_variable': {
-                    'default': 'some string'
-                }
-            },
-            'workflows': {
-                'execute_operation': {
-                    'operation': 'cloudify.plugins.workflows.execute_operation',
-                    'parameters': {
-                        'operation_kwargs': {
-                            'default': {}
-                        },
-                        'node_ids': {
-                            'default': []
-                        },
-                        'node_instance_ids': {
-                            'default': []
-                        },
-                        'run_by_dependency_order': {
-                            'default': false
-                        },
-                        'operation': {},
-                        'type_names': {
-                            'default': []
-                        }
-                    },
-                    'plugin': 'default_workflows'
-                },
-                'install': {
-                    'operation': 'cloudify.plugins.workflows.install',
-                    'plugin': 'default_workflows'
-                },
-                'uninstall': {
-                    'operation': 'cloudify.plugins.workflows.uninstall',
-                    'plugin': 'default_workflows'
-                }
-            }
-        },
-        'deployments': [{
-            'inputs': {
-                'flavor_name': 'flavor_name',
-                'webserver_port': 8080,
-                'image_name': 'image_name',
-                'agent_user': 'agent_user'
-            },
-            'blueprint_id': 'blueprint1',
-            'created_at': '2014-11-10 23:15:06.908209',
-            'workflows': [{
-                'created_at': null,
-                'name': 'execute_operation',
-                'parameters': {
-                    'operation_kwargs': {
-                        'default': {}
-                    },
-                    'node_ids': {
-                        'default': []
-                    },
-                    'node_instance_ids': {
-                        'default': []
-                    },
-                    'run_by_dependency_order': {
-                        'default': false
-                    },
-                    'operation': {},
-                    'type_names': {
-                        'default': []
-                    }
-                }
-            }, {
-                'created_at': null,
-                'name': 'install',
-                'parameters': {}
-            }, {
-                'created_at': null,
-                'name': 'uninstall',
-                'parameters': {}
-            }],
-            'id': 'deployment1'
-        }]
-    };
-
-    var errType = '';
-    var _errors = {
-        'missingInputs': {
-            'message': 'Required input \'image_name\' was not specified - expected inputs: [u\'webserver_port\', u\'image_name\', u\'flavor_name\', u\'agent_user\']',
-            'error_code': 'missing_required_deployment_input_error'
-        },
-        'depName': {
-            'message': 'Error browsing blueprint files',
-            'errCode': 'browseError'
-        }
-    };
 
     beforeEach(module('cosmoUiApp', 'ngMock', 'backend-mock'));
 
-    beforeEach(inject(function ($controller, $rootScope, $q, CloudifyService) {
+    beforeEach(inject(function ($controller, $rootScope) {
         scope = $rootScope.$new();
 
-        CloudifyService.blueprints.deploy = function () {
-            var result;
-            if (errType !== '') {
-                result = _errors[errType];
-            } else {
-                result = _deployment;
-            }
-
-            return { then : function( success/*, error*/ ){
-                success(result);
-            }};
-
-        };
-
-        scope.redirectToDeployment = function () {
-        };
 
         spyOn(scope, 'redirectToDeployment').andCallThrough();
 
         DeployDialogCtrl = $controller('DeployDialogCtrl', {
-            $scope: scope,
-            CloudifyService: CloudifyService
+            $scope: scope
         });
     }));
 
-    describe('Controller tests', function () {
         beforeEach(function () {
             scope.inputs = {
                 'webserver_port': 8080,
@@ -288,7 +147,6 @@ describe('Controller: DeploydialogCtrl', function () {
 
             expect(scope.showError()).toBe(false);
         });
-    });
 
     describe('#isParamsVisible', function(){
         it('should return false if selectedBlueprint is null', function(){

@@ -8,7 +8,7 @@
  * Controller of the cosmoUiApp
  */
 angular.module('cosmoUiApp')
-    .controller('SourceCtrl', function ($scope, $routeParams, $location, CloudifyService, SourceService, cloudifyClient ) {
+    .controller('SourceCtrl', function ($scope, $routeParams, $location, CloudifyService, BlueprintSourceService, cloudifyClient ) {
 
 
         $scope.errorMessage = 'noPreview';
@@ -113,7 +113,7 @@ angular.module('cosmoUiApp')
             ];
 
             // Emit deployment data
-            SourceService.getBrowseData(blueprint.id, blueprint.updated_at)
+            BlueprintSourceService.getBrowseData(blueprint.id, blueprint.updated_at)
                 .then(function(browseData) {
                     if (browseData.errCode) {
                         $scope.errorMessage = browseData.errCode;

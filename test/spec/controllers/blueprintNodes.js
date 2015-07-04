@@ -1,6 +1,6 @@
 'use strict';
 
-describe('Controller: BlueprintNodesCtrl', function () {
+xdescribe('Controller: BlueprintNodesCtrl', function () {
 
     // load the controller's module
     beforeEach(module('cosmoUiApp', 'ngMock', 'backend-mock'));
