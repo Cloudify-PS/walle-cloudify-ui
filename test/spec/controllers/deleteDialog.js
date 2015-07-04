@@ -1,191 +1,52 @@
 'use strict';
 
 /*jshint camelcase: false */
-describe('Controller: DeletedialogCtrl', function () {
-    var DeleteDialogCtrl, scope, _cloudifyService;
-
-    var _deployment = {
-        'inputs': {
-            'webserver_port': 8080,
-            'image_name': 'image_name',
-            'agent_user': 'agent_user',
-            'flavor_name': 'flavor_name'
-        },
-        'blueprint_id': 'blueprint1',
-        'id': 'deployment1',
-        'outputs': {
-            'http_endpoint': {
-                'description': 'HTTP web server endpoint.',
-                'value': {
-                    'get_attribute': ['vm', 'ip']
-                }
-            }
-        }
-    };
-
-    var _blueprint = {
-        'id': 'blueprint1',
-        'plan': {
-            'inputs': {
-                'webserver_port': {
-                    'default': 8080
-                },
-                'flavor_name': {
-                },
-                'agent_user': {
-                },
-                'image_name': {
-                },
-                'bool_variable': {
-                    'default': false
-                },
-                'str_variable': {
-                    'default': 'some string'
-                }
-            },
-            'workflows': {
-                'execute_operation': {
-                    'operation': 'cloudify.plugins.workflows.execute_operation',
-                    'parameters': {
-                        'operation_kwargs': {
-                            'default': {}
-                        },
-                        'node_ids': {
-                            'default': []
-                        },
-                        'node_instance_ids': {
-                            'default': []
-                        },
-                        'run_by_dependency_order': {
-                            'default': false
-                        },
-                        'operation': {},
-                        'type_names': {
-                            'default': []
-                        }
-                    },
-                    'plugin': 'default_workflows'
-                },
-                'install': {
-                    'operation': 'cloudify.plugins.workflows.install',
-                    'plugin': 'default_workflows'
-                },
-                'uninstall': {
-                    'operation': 'cloudify.plugins.workflows.uninstall',
-                    'plugin': 'default_workflows'
-                }
-            }
-        },
-        'deployments': [{
-            'inputs': {
-                'flavor_name': 'flavor_name',
-                'webserver_port': 8080,
-                'image_name': 'image_name',
-                'agent_user': 'agent_user'
-            },
-            'blueprint_id': 'blueprint1',
-            'created_at': '2014-11-10 23:15:06.908209',
-            'workflows': [{
-                'created_at': null,
-                'name': 'execute_operation',
-                'parameters': {
-                    'operation_kwargs': {
-                        'default': {}
-                    },
-                    'node_ids': {
-                        'default': []
-                    },
-                    'node_instance_ids': {
-                        'default': []
-                    },
-                    'run_by_dependency_order': {
-                        'default': false
-                    },
-                    'operation': {},
-                    'type_names': {
-                        'default': []
-                    }
-                }
-            }, {
-                'created_at': null,
-                'name': 'install',
-                'parameters': {}
-            }, {
-                'created_at': null,
-                'name': 'uninstall',
-                'parameters': {}
-            }],
-            'id': 'deployment1'
-        }]
-    };
+describe('Controller: DeleteDialogCtrl', function () {
+    var DeleteDialogCtrl, scope;
 
     beforeEach(module('cosmoUiApp', 'ngMock', 'backend-mock', 'templates-main'));
 
-    function _testSetup(type) {
-        inject(function ($controller, $rootScope, $httpBackend, $q, CloudifyService) {
-            $httpBackend.whenGET('/backend/configuration?access=all').respond(200);
-            $httpBackend.whenGET('/backend/versions/ui').respond(200);
-            $httpBackend.whenGET('/backend/versions/manager').respond(200);
-            $httpBackend.whenGET('/backend/version/latest?version=00').respond('300');
-            $httpBackend.whenGET('/backend/blueprints/delete?id=blueprint1').respond(200);
-            $httpBackend.whenPOST('/backend/deployments/delete').respond(200);
+    beforeEach(inject(function ($controller, $rootScope, CloudifyService) {
 
-            scope = $rootScope.$new();
-            _cloudifyService = CloudifyService;
-            scope.itemToDelete = type === 'blueprint' ? _blueprint : _deployment;
-
-            DeleteDialogCtrl = $controller('DeleteDialogCtrl', {
-                $scope: scope,
-                CloudifyService: _cloudifyService
-            });
-
-            scope.$digest();
+        spyOn(CloudifyService.blueprints, 'delete').andReturn({
+            then: function () {
+            }
         });
-    }
-
-    describe('toggle ignore live nodes', function () {
-        it('should toggle value on scope', function () {
-            _testSetup();
-            scope.ignoreLiveNodes = true;
-            scope.toggleIgnoreLiveNodes();
-            expect(scope.ignoreLiveNodes).toBe(false);
-            scope.toggleIgnoreLiveNodes();
-            expect(scope.ignoreLiveNodes).toBe(true);
+        spyOn(CloudifyService.deployments, 'deleteDeploymentById').andReturn({
+            then: function () {
+            }
         });
-    });
 
-    describe('Controller tests', function() {
+        scope = $rootScope.$new();
+        DeleteDialogCtrl = $controller('DeleteDialogCtrl', {
+            $scope: scope
+        });
+    }));
+
+    describe('Controller tests', function () {
 
         it('should create a controller', function () {
-            _testSetup('blueprint');
             expect(DeleteDialogCtrl).not.toBeUndefined();
         });
 
-        it('should call blueprint delete method if a blueprint is being deleted', function() {
-            _testSetup('blueprint');
-
-            scope.itemToDelete = _blueprint;
-            spyOn(_cloudifyService.blueprints, 'delete').andCallThrough();
-
+        it('should call blueprint delete method if a blueprint is being deleted', inject(function (CloudifyService, DELETE_TYPES) {
+            scope.deleteState = {itemToDelete: {'id': 'foo'}, type: DELETE_TYPES.BLUEPRINT};
             scope.confirmDelete();
-            scope.$apply();
+            expect(CloudifyService.blueprints.delete).toHaveBeenCalledWith({id: 'foo'});
+        }));
 
-            expect(_cloudifyService.blueprints.delete).toHaveBeenCalledWith({id :_blueprint.id});
-        });
-
-        it('should call deployment delete method if a deployment is being deleted', function() {
-            _testSetup('deployment');
-            scope.itemToDelete = _deployment;
-            spyOn(_cloudifyService.deployments, 'deleteDeploymentById').andCallThrough();
-
+        it('should call deployment delete method if a deployment is being deleted', inject(function (CloudifyService, DELETE_TYPES) {
+            scope.deleteState = {itemToDelete: {'id': 'foo'}, type: DELETE_TYPES.DEPLOYMENT};
+            scope.ignoreLiveNodes = true;
             scope.confirmDelete();
-            scope.$apply();
+            expect(CloudifyService.deployments.deleteDeploymentById).toHaveBeenCalledWith({
+                deployment_id: 'foo',
+                ignoreLiveNodes: true
+            });
+        }));
 
-            expect(_cloudifyService.deployments.deleteDeploymentById).toHaveBeenCalledWith({deployment_id :_deployment.id, ignoreLiveNodes:false});
-        });
 
-        it('should close dialog when pressing the cancel button', inject(function(ngDialog, $timeout) {
-            _testSetup();
+        it('should close dialog when pressing the cancel button', inject(function (ngDialog, $timeout) {
             var id = ngDialog.open({
                 template: 'views/dialogs/delete.html',
                 controller: 'DeleteDialogCtrl',
@@ -193,7 +54,6 @@ describe('Controller: DeletedialogCtrl', function () {
                 className: 'delete-dialog'
             }).id;
             $timeout.flush();
-
             var elemsQuery = '#' + id + ' #cancelBtnDelDep[ng-click="closeThisDialog()"]';
             var elems = $(elemsQuery);
             expect(elems.length).toBe(1);
@@ -203,10 +63,137 @@ describe('Controller: DeletedialogCtrl', function () {
 
             elems = $(elemsQuery);
             expect(elems.length).toBe(0);
-
-
-
-
         }));
+
+
+        describe('#delete blueprint handler', function () {
+            beforeEach(inject(function (CloudifyService) {
+
+                CloudifyService.blueprints.delete.andCallFake(function (opts) {
+                    return {
+                        then: function (success, error) {
+                            if (opts.id === 'fail') {
+                                error({data: {}});
+                            } else if (opts.id === 'fail_with_message') {
+                                error({data: {message: 'foo'}});
+                            } else if (opts.id === 'success') {
+                                success({});
+                            } else if (opts.id === 'success_with_error_code') {
+                                success({error_code: 'bar', message: 'foo'});
+                            }
+                        }
+                    };
+                });
+
+            }));
+
+            describe('success handling', function () {
+                beforeEach(inject(function (DELETE_TYPES) {
+                    scope.deleteState = {inProcess: true, itemToDelete: {id: 'success'}, type: DELETE_TYPES.BLUEPRINT};
+                }));
+
+                it('should call `closeThisDialog`', function () {
+                    scope.closeThisDialog = jasmine.createSpy('closeThisDialog');
+                    scope.loadBlueprints = jasmine.createSpy('loadBlueprints'); // todo: this should be handled with `onClose` event
+                    scope.confirmDelete();
+                    expect(scope.closeThisDialog).toHaveBeenCalled();
+                    expect(scope.loadBlueprints).toHaveBeenCalled();
+                    expect(scope.deleteState.inProcess).toBe(false);
+                });
+
+                it('should put error message on scope if error_code present', function () {
+                    scope.deleteState.itemToDelete.id = 'success_with_error_code';
+                    scope.confirmDelete();
+                    expect(scope.deleteState.inProcess).toBe(false);
+                    expect(scope.deleteState.errorMessage).toBe('foo');
+                });
+            });
+
+
+            describe('error handling', function () {
+                beforeEach(inject(function (DELETE_TYPES) {
+                    scope.deleteState = {inProcess: true, itemToDelete: {id: 'fail'}, type: DELETE_TYPES.BLUEPRINT};
+                }));
+                it('should put false on inProcess', function () {
+                    scope.confirmDelete();
+                    expect(scope.deleteState.inProcess).toBe(false);
+                });
+                it('should put a general error if non is present', function () {
+                    scope.confirmDelete();
+                    expect(scope.deleteState.errorMessage).toBe('An error occurred'); // todo, this should be translated.
+                });
+                it('should put message on scope if one exists', function () {
+                    scope.deleteState.itemToDelete.id = 'fail_with_message';
+                    scope.confirmDelete();
+                    expect(scope.deleteState.errorMessage).toBe('foo');
+                });
+            });
+
+        });
+
+        describe('#delete deployment handler', function () {
+            beforeEach(inject(function (CloudifyService) {
+
+                CloudifyService.deployments.deleteDeploymentById.andCallFake(function (opts) {
+                    return {
+                        then: function (success, error) {
+                            if (opts.deployment_id === 'fail') {
+                                error({data: {}});
+                            } else if (opts.deployment_id === 'fail_with_message') {
+                                error({data: {message: 'foo'}});
+                            } else if (opts.deployment_id === 'success') {
+                                success({});
+                            } else if (opts.deployment_id === 'success_with_error_code') {
+                                success({error_code: 'bar', message: 'foo'});
+                            }
+                        }
+                    };
+                });
+
+            }));
+
+            describe('success handling', function () {
+                beforeEach(inject(function (DELETE_TYPES) {
+                    scope.deleteState = {inProcess: true, itemToDelete: {id: 'success'}, type: DELETE_TYPES.DEPLOYMENT};
+                }));
+
+                it('should call `closeThisDialog`', function () {
+                    scope.closeThisDialog = jasmine.createSpy('closeThisDialog');
+                    scope.loadDeployments = jasmine.createSpy('loadDeployments'); // todo: this should be handled with `onClose` event
+                    scope.confirmDelete();
+                    expect(scope.closeThisDialog).toHaveBeenCalled();
+                    expect(scope.loadDeployments).toHaveBeenCalled();
+                    expect(scope.deleteState.inProcess).toBe(false);
+                });
+
+                it('should put error message on scope if error_code present', function () {
+                    scope.deleteState.itemToDelete.id = 'success_with_error_code';
+                    scope.confirmDelete();
+                    expect(scope.deleteState.inProcess).toBe(false);
+                    expect(scope.deleteState.errorMessage).toBe('foo');
+                });
+            });
+
+
+            describe('error handling', function () {
+                beforeEach(inject(function (DELETE_TYPES) {
+                    scope.deleteState = {inProcess: true, itemToDelete: {id: 'fail'}, type: DELETE_TYPES.DEPLOYMENT};
+                }));
+                it('should put false on inProcess', function () {
+                    scope.confirmDelete();
+                    expect(scope.deleteState.inProcess).toBe(false);
+                });
+                it('should put a general error if non is present', function () {
+                    scope.confirmDelete();
+                    expect(scope.deleteState.errorMessage).toBe('An error occurred'); // todo, this should be translated.
+                });
+                it('should put message on scope if one exists', function () {
+                    scope.deleteState.itemToDelete.id = 'fail_with_message';
+                    scope.confirmDelete();
+                    expect(scope.deleteState.errorMessage).toBe('foo');
+                });
+            });
+        });
+
     });
 });

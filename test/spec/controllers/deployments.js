@@ -1,14 +1,14 @@
 'use strict';
 
-xdescribe('Controller: DeploymentsCtrl', function () {
+describe('Controller: DeploymentsCtrl', function () {
     var DeploymentsCtrl, scope;
 
 
-    beforeEach(module('cosmoUiApp', 'ngMock','templates-main', 'backend-mock'));
+    beforeEach(module('cosmoUiApp', 'templates-main', 'backend-mock'));
 
     function _testSetup() {
         inject(function ($controller, $rootScope, $httpBackend, $q,
-                         CloudifyService, cloudifyClient, $location) {
+                          cloudifyClient) {
 
 
             scope = $rootScope.$new();
@@ -27,36 +27,13 @@ xdescribe('Controller: DeploymentsCtrl', function () {
                 };
             });
 
-            spyOn(CloudifyService.deployments, 'getDeploymentExecutions').andCallFake(function () {
-                return {
-                    then: function (success) {
-                        success(_executions);
-                    }
-                };
-            });
 
-            $location.path('/deployments');
 
-            spyOn(CloudifyService.deployments,'updateExecutionState').andCallFake(function () {
-                return {
-                    then:function( success ){
-                        success(_execution);
-                    }
-                };
-            });
-
-            spyOn(CloudifyService.deployments,'deleteDeploymentById').andCallFake(function () {
-                return {
-                    then: function (success, error) {
-                        error(_deleteErr);
-                    }
-                };
-            });
 
             spyOn(cloudifyClient.blueprints,'list').andCallFake(function () {
                 return {
                     then:function(success){
-                        success( { data : _blueprints } );
+                        success( { data : {} } );
                     }
                 };
             });
@@ -73,7 +50,6 @@ xdescribe('Controller: DeploymentsCtrl', function () {
         beforeEach(_testSetup);
 
         it('should call ngDialog', inject(function( ngDialog ){
-
             spyOn(ngDialog, 'open' );
             scope.showInputs({});
             expect(ngDialog.open).toHaveBeenCalled();
@@ -95,27 +71,21 @@ xdescribe('Controller: DeploymentsCtrl', function () {
             });
 
             _testSetup();
-            executions = [{'deployment_id' : 'foo', is_running: true }];
+            executions = [{'deployment_id' : 'foo', name : 'bar', is_running: true }];
             cloudifyClient.executions.list.andReturn({ then : function(success/*, error*/){ success( { data : executions  } );}});
 
             spyOn(ExecutionsService,'isRunning').andCallFake(function( e){
                 return !!e.is_running;
             });
-
-
-
-
-
-
-
         }));
 
         it('should reset execution on each iteration CFY-2238', function(){
+
             loadExecutions();
-            expect(scope.getExecution('foo').deployment_id).toBe('foo');
+            expect(scope.getExecution({ 'id' : 'foo' } ).name).toBe('bar');
             executions[0].is_running = false;
             loadExecutions();
-            expect(!scope.getExecution('foo')).toBe(true);
+            expect(!scope.getExecution({ 'id' : 'foo' } )).toBe(true);
         });
     });
 
@@ -133,48 +103,25 @@ xdescribe('Controller: DeploymentsCtrl', function () {
         });
     });
 
-    describe('getWorkflows', function () {
-        it('should return empty array by default', function () {
+    describe('#redirectTo', function(){
+
+        it('should redirect to deployment', inject(function( $location ){
             _testSetup();
-            expect(scope.getWorkflows({}).length).toBe(0);
-        });
+            spyOn($location,'path');
+            scope.redirectTo({'id' : 'foo'});
+            expect($location.path).toHaveBeenCalledWith('/deployment/foo/topology');
+        }));
     });
 
-
-    describe('#executeDeployment', function () {
-        it('should run execute on deployments if enabled', inject(function (CloudifyService) {
+    describe('canPause', function(){
+        it('should call ExecutionsService.canPause', inject(function( ExecutionsService){
             _testSetup();
-            var executeResponse = {};
-            var isExecuteEnabled = false;
-            scope.isExecuteEnabled = jasmine.createSpy().andCallFake(function () {
-                return isExecuteEnabled;
-            });
-            scope.selectedDeployment = {};
-            scope.selectedWorkflow = {data: {parameters: ''}};
-            spyOn(scope, 'redirectTo');
-
-            scope.executeDeployment({});
-            expect(scope.redirectTo).not.toHaveBeenCalled();
-
-            isExecuteEnabled = true;
-
-            spyOn(CloudifyService.deployments, 'execute').andCallFake(function () {
-                return {
-                    then: function (success) {
-                        success(executeResponse);
-                    }
-                };
-            });
-            scope.executeDeployment({});
-            expect(scope.redirectTo).toHaveBeenCalled();
-
-            executeResponse = {'error_code': 'yes', 'message': 'foo'};
-            scope.executeDeployment({});
-            expect(scope.executedErr).toBe('foo');
-
-
+            spyOn(ExecutionsService,'canPause');
+            spyOn(scope,'getExecution');
+            scope.canPause('foo');
+            expect(scope.getExecution).toHaveBeenCalled();
+            expect(ExecutionsService.canPause).toHaveBeenCalled();
         }));
-
     });
 
 
@@ -214,9 +161,9 @@ xdescribe('Controller: DeploymentsCtrl', function () {
             _testSetup();
 
             spyOn(ngDialog, 'open').andReturn({});
-            scope.deleteDeployment(_deployment);
+            scope.deleteDeployment({ id : 'foo'});
 
-            expect(scope.itemToDelete.id).toBe(_deployment.id);
+            expect(scope.itemToDelete.id).toBe('foo');
             expect(ngDialog.open).toHaveBeenCalled();
         }));
     });

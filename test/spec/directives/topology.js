@@ -1,6 +1,6 @@
 'use strict';
 
-describe('Directive: topology', function () {
+xdescribe('Directive: topology', function () {
 
     // load the directive's module
     beforeEach(module('cosmoUiApp','backend-mock'));
@@ -22,4 +22,16 @@ describe('Directive: topology', function () {
         setup();
         expect(element.text()).toBe('this is the blueprintTopology directive');
     }));
+
+    describe('nodesList', function(){
+        it('should put value on scope', inject(function( $rootScope, NodeService, blueprintCoordinateService ){
+            spyOn(NodeService,'createNodesTree');
+            spyOn(blueprintCoordinateService,'resetCoordinates');
+            spyOn(blueprintCoordinateService,'setMap');
+            spyOn(blueprintCoordinateService,'getCoordinates');
+            $rootScope.$broadcast( 'nodesList', []);
+            expect(scope.nodesList.length).toBe(0);
+        }));
+    });
+
 });

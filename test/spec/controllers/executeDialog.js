@@ -5,16 +5,15 @@ xdescribe('Controller: ExecuteDialogCtrl', function () {
     var ExecuteDialogCtrl, scope;
 
 
-
     beforeEach(module('cosmoUiApp', 'ngMock', 'templates-main', 'backend-mock'));
 
-    beforeEach(inject(function ($controller, $rootScope, $httpBackend, CloudifyService/*, cloudifyClient*/ ) {
+    beforeEach(inject(function ($controller, $rootScope, $httpBackend, CloudifyService/*, cloudifyClient*/) {
         scope = $rootScope.$new();
 
         scope.getExecution = jasmine.createSpy('getExecution');
-        spyOn(CloudifyService.deployments, 'execute').andCallFake( function (executionData) {
+        spyOn(CloudifyService.deployments, 'execute').andCallFake(function (executionData) {
             return {
-                then:function(success,error){
+                then: function (success, error) {
 
                     if (executionData.inputs === undefined || JSON.stringify(executionData.inputs) === '{}') {
                         error(_executionError);
@@ -26,9 +25,9 @@ xdescribe('Controller: ExecuteDialogCtrl', function () {
 
         });
 
-        spyOn(CloudifyService.deployments,'updateExecutionState').andCallFake(function(execution_id) {
+        spyOn(CloudifyService.deployments, 'updateExecutionState').andCallFake(function (execution_id) {
             return {
-                then:function(success,error){
+                then: function (success, error) {
 
                     if (execution_id) {
                         error(_executionError);
@@ -47,133 +46,131 @@ xdescribe('Controller: ExecuteDialogCtrl', function () {
 
     }));
 
-        beforeEach(function() {
-            scope.inputs = {
-                'webserver_port': 8080,
-                'image_name': 'image_name',
-                'agent_user': 'agent_user',
-                'flavor_name': 'flavor_name',
-                'bool_variable': false,
-                'str_variable': 'some string'
-            };
-        });
+    beforeEach(function () {
+        scope.inputs = {
+            'webserver_port': 8080,
+            'image_name': 'image_name',
+            'agent_user': 'agent_user',
+            'flavor_name': 'flavor_name',
+            'bool_variable': false,
+            'str_variable': 'some string'
+        };
+    });
 
-        it('should create a controller', function () {
-            expect(ExecuteDialogCtrl).not.toBeUndefined();
-        });
+    it('should create a controller', function () {
+        expect(ExecuteDialogCtrl).not.toBeUndefined();
+    });
 
-        it('should update input JSON object when one of the parameters is updated', function () {
-            scope.selectedWorkflow = _workflow;
-            scope.inputs.image_name = 'new value';
-            scope.inputsState = 'raw';
+    it('should update input JSON object when one of the parameters is updated', function () {
+        scope.selectedWorkflow = _workflow;
+        scope.inputs.image_name = 'new value';
+        scope.inputsState = 'raw';
 
-            scope.updateInputs();
+        scope.updateInputs();
 
-            expect(JSON.parse(scope.rawString).image_name).toBe('new value');
-        });
+        expect(JSON.parse(scope.rawString).image_name).toBe('new value');
+    });
 
-        it('should keep input type when converting to JSON object', function () {
-            scope.selectedWorkflow = _workflow;
-            scope.inputsState = 'raw';
+    it('should keep input type when converting to JSON object', function () {
+        scope.selectedWorkflow = _workflow;
+        scope.inputsState = 'raw';
 
-            scope.updateInputs();
+        scope.updateInputs();
 
-            expect(typeof(JSON.parse(scope.rawString).str_variable)).toBe('string');
-            expect(typeof(JSON.parse(scope.rawString).webserver_port)).toBe('number');
-            expect(typeof(JSON.parse(scope.rawString).bool_variable)).toBe('boolean');
-        });
+        expect(typeof(JSON.parse(scope.rawString).str_variable)).toBe('string');
+        expect(typeof(JSON.parse(scope.rawString).webserver_port)).toBe('number');
+        expect(typeof(JSON.parse(scope.rawString).bool_variable)).toBe('boolean');
+    });
 
-        it('should show error message if required parameters are not provided', inject(function (CloudifyService) {
-            var executeParams = null;
-            CloudifyService.deployments.execute.andCallFake(function (params) {
-                executeParams = params;
-                return {
-                    then: function(success, error) {
-                        error({'data': {'message': 'foo'}});
-                    }
-                };
-            });
-
-            scope.toggleConfirmationDialog = function () {
-            };
-
-            spyOn(scope, 'isExecuteEnabled').andCallFake(function () {
-                return true;
-            });
-
-            scope.rawString = '{}';
-            scope.inputs = {};
-            scope.executeErrorMessage = '';
-            scope.selectedWorkflow = {
-                data: {
-
+    it('should show error message if required parameters are not provided', inject(function (CloudifyService) {
+        var executeParams = null;
+        CloudifyService.deployments.execute.andCallFake(function (params) {
+            executeParams = params;
+            return {
+                then: function (success, error) {
+                    error({'data': {'message': 'foo'}});
                 }
             };
+        });
 
-            scope.executeWorkflow();
+        scope.toggleConfirmationDialog = function () {
+        };
 
-            expect(scope.executeErrorMessage).toBe('foo');
-            expect(scope.showError).toBe(true);
-        }));
+        spyOn(scope, 'isExecuteEnabled').andCallFake(function () {
+            return true;
+        });
 
-        it('should cancel execution by its id', inject(function (CloudifyService) {
+        scope.rawString = '{}';
+        scope.inputs = {};
+        scope.executeErrorMessage = '';
+        scope.selectedWorkflow = {
+            data: {}
+        };
 
-            scope.getExecution.andReturn({ 'id' : '123'});
-            scope.cancelWorkflow('deployment_id');
+        scope.executeWorkflow();
 
-            expect(CloudifyService.deployments.updateExecutionState).toHaveBeenCalledWith({
-                execution_id: '123',
-                state: 'cancel'
-            });
-        }));
+        expect(scope.executeErrorMessage).toBe('foo');
+        expect(scope.showError).toBe(true);
+    }));
 
-        it('should show error message if cancel execution fails', inject(function (CloudifyService) {
-            var executeParams = null;
-            scope.getExecution.andReturn({});
-            // override spy
-            CloudifyService.deployments.updateExecutionState.andCallFake(function (params) {
-                executeParams = params;
-                return {
-                    then: function(success, error) {
-                        error({'data': {'message': 'foo'}});
-                    }
-                };
-            });
+    it('should cancel execution by its id', inject(function (CloudifyService) {
 
-            scope.toggleConfirmationDialog = function () {
+        scope.getExecution.andReturn({'id': '123'});
+        scope.cancelWorkflow('deployment_id');
+
+        expect(CloudifyService.deployments.updateExecutionState).toHaveBeenCalledWith({
+            execution_id: '123',
+            state: 'cancel'
+        });
+    }));
+
+    it('should show error message if cancel execution fails', inject(function (CloudifyService) {
+        var executeParams = null;
+        scope.getExecution.andReturn({});
+        // override spy
+        CloudifyService.deployments.updateExecutionState.andCallFake(function (params) {
+            executeParams = params;
+            return {
+                then: function (success, error) {
+                    error({'data': {'message': 'foo'}});
+                }
             };
+        });
 
-            spyOn(scope, 'isExecuteEnabled').andCallFake(function () {
-                return true;
-            });
+        scope.toggleConfirmationDialog = function () {
+        };
 
-            scope.executeErrorMessage = '';
+        spyOn(scope, 'isExecuteEnabled').andCallFake(function () {
+            return true;
+        });
 
-            scope.cancelWorkflow();
+        scope.executeErrorMessage = '';
 
-            expect(scope.executeErrorMessage).toBe('foo');
-            expect(scope.showError).toBe(true);
-        }));
+        scope.cancelWorkflow();
 
-        it('should close dialog when pressing the cancel button', inject(function(ngDialog, $timeout) {
-            scope.selectedWorkflow = _workflow;
-            var id = ngDialog.open({
-                template: 'views/dialogs/confirm.html',
-                controller: 'ExecuteDialogCtrl',
-                scope: scope,
-                className: 'confirm-dialog'
-            }).id;
-            $timeout.flush();
+        expect(scope.executeErrorMessage).toBe('foo');
+        expect(scope.showError).toBe(true);
+    }));
 
-
-            var elemsQuery = '#' + id + ' .confirmationButtons [ng-click="closeThisDialog()"]';
-            var elems = $(elemsQuery);
-            expect(elems.length).toBe(2);
+    it('should close dialog when pressing the cancel button', inject(function (ngDialog, $timeout) {
+        scope.selectedWorkflow = _workflow;
+        var id = ngDialog.open({
+            template: 'views/dialogs/confirm.html',
+            controller: 'ExecuteDialogCtrl',
+            scope: scope,
+            className: 'confirm-dialog'
+        }).id;
+        $timeout.flush();
 
 
-            elems.remove();
-            ngDialog.closeAll(); //https://github.com/likeastore/ngDialog/issues/263
-            expect($(elemsQuery).length).toBe(0);
-        }));
+        var elemsQuery = '#' + id + ' .confirmationButtons [ng-click="closeThisDialog()"]';
+        var elems = $(elemsQuery);
+        expect(elems.length).toBe(2);
+
+
+        elems.remove();
+        ngDialog.closeAll(); //https://github.com/likeastore/ngDialog/issues/263
+        expect($(elemsQuery).length).toBe(0);
+    }));
 
 });

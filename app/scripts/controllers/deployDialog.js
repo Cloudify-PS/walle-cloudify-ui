@@ -27,32 +27,27 @@ angular.module('cosmoUiApp')
         };
 
         $scope.deployBlueprint = function (blueprintId) {
-            if (!$scope.isDeployEnabled()) {
-                return;
-            }
 
             // parse inputs so "true" string will become boolean etc.
             setDeployError(null);
 
-            if ($scope.isDeployEnabled()) {
-                $scope.inProcess = true;
-                cloudifyClient.deployments.create(blueprintId, $scope.deployment_id, JSON.parse($scope.rawString))
-                    .then(function (result) {
-                        var data = result.data;
-                        $scope.inProcess = false;
-                        if (data.hasOwnProperty('message')) {
-                            setDeployError(data.message);
-                        }
-                        else {
-                            $scope.closeThisDialog();
-                            $scope.redirectToDeployment($scope.deployment_id);
-                        }
-                    }, function (data) {
-                        $scope.inProcess = false;
-                        setDeployError(CloudifyService.getErrorMessage(data));
+            $scope.inProcess = true;
+            cloudifyClient.deployments.create(blueprintId, $scope.deployment_id, JSON.parse($scope.rawString))
+                .then(function (result) {
+                    var data = result.data;
+                    $scope.inProcess = false;
+                    if (data.hasOwnProperty('message')) {
+                        setDeployError(data.message);
+                    }
+                    else {
+                        $scope.closeThisDialog();
+                        $scope.redirectToDeployment($scope.deployment_id);
+                    }
+                }, function (data) {
+                    $scope.inProcess = false;
+                    setDeployError(CloudifyService.getErrorMessage(data));
 
-                    });
-            }
+                });
         };
 
         $scope.$watch('deployment_id', function(){
