@@ -68,7 +68,7 @@ describe('Controller: ExecuteDialogCtrl', function () {
 
     it('should cancel execution by its id', inject(function (CloudifyService) {
 
-        scope.getExecution.andReturn({'id': '123'});
+        scope.currentExecution = {'id': '123'};
         scope.cancelWorkflow('deployment_id');
 
         expect(CloudifyService.deployments.updateExecutionState).toHaveBeenCalledWith({
@@ -90,7 +90,7 @@ describe('Controller: ExecuteDialogCtrl', function () {
     describe('cancelExecution', function(){
         it('should show error message if cancel execution fails', inject(function (CloudifyService) {
             var executeParams = null;
-            scope.getExecution.andReturn({});
+            scope.currentExecution = {};
             // override spy
             CloudifyService.deployments.updateExecutionState.andCallFake(function (params) {
                 executeParams = params;
@@ -117,7 +117,7 @@ describe('Controller: ExecuteDialogCtrl', function () {
                     }
                 };
             });
-            scope.getExecution.andReturn({});
+            scope.currentExecution = {};
             spyOn(scope,'setErrorMessage');
             scope.cancelWorkflow();
             expect(scope.setErrorMessage).toHaveBeenCalledWith('foo');
