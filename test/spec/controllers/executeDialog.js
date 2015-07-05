@@ -27,7 +27,7 @@ describe('Controller: ExecuteDialogCtrl', function () {
                     if (executionData.inputs === undefined || JSON.stringify(executionData.inputs) === '{}') {
                         error({});
                     } else {
-                        success(_execution);
+                        success({});
                     }
                 }
             };
