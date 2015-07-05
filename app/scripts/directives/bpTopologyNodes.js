@@ -40,13 +40,6 @@ angular.module('cosmoUiApp')
                     return _.filter(getInstances(node), function(instance){ NodeService.status.isCompleted(instance);}).length;
                 };
 
-                //$scope.getBadgeStatusAndIcon = function(status) {
-                //    return nodeStatus.getStatusClass(status) + ' ' + nodeStatus.getIconClass(status);
-                //};
-                //
-                //$scope.getBadgeStatus = function(status) {
-                //    return nodeStatus.getStatusClass(status);
-                //};
 
                 $scope.isConnectedTo = function(relationship) {
                     NodeService.isConnectedTo(relationship);

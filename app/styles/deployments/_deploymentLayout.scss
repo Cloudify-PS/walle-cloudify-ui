@@ -199,5 +199,13 @@
         }
     }
 
+    .not-found-message{
+        text-align: center;
+        vertical-align: middle;
+        .message{
+            margin-top:100px;
+            padding:20px;
+        }
+    }
 }
 

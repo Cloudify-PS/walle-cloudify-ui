@@ -2,7 +2,6 @@
 
 describe('Directive: bpTopologyNodes', function () {
 
-    var _nodesTree = [];
 
     var element, scope;
     beforeEach(module('cosmoUiApp', 'ngMock', 'backend-mock', 'templates-main'));
@@ -46,28 +45,33 @@ describe('Directive: bpTopologyNodes', function () {
             expect(element.find('i.gs-node-icon').hasClass('cloudify-types-base')).toBe(false);
         });
 
-        xit('should have a cloudify-nodes-Root class', inject(function($rootScope) {
-            var _scope = $rootScope.$new();
-            _scope.map = _nodesTree;
-            compileDirective({scope: _scope});
 
-            expect(element.find('i.gs-node-icon').hasClass('cloudify-nodes-Root')).toBe(true);
-        }));
 
-        xit('should have a cloudify-nodes-Volume class on volume node', inject(function($rootScope) {
-            var _scope = $rootScope.$new();
-            _scope.map = _nodesTree;
-            compileDirective({scope: _scope});
+        describe('icons on topology', function(){ //  todo : not sure what these tests actually check.. need to fine tune them.
+            it('should have a cloudify-nodes-Root class', inject(function($rootScope) {
+                var _scope = $rootScope.$new();
+                _scope.map = [{ 'id' : '' , 'class' : 'cloudify-nodes-Root'}];
+                compileDirective({scope: _scope});
 
-            expect(element.find('i.gs-node-icon.topology-glyph.cloudify-nodes-Root.cloudify-nodes-Volume').length).toBe(1);
-        }));
+                expect(element.find('i.gs-node-icon').hasClass('cloudify-nodes-Root')).toBe(true);
+            }));
 
-        xit('should have a cloudify-nodes-FileSystem class on filesystem node', inject(function($rootScope) {
-            var _scope = $rootScope.$new();
-            _scope.map = _nodesTree;
-            compileDirective({scope: _scope});
+            it('should have a cloudify-nodes-Volume class on volume node', inject(function($rootScope) {
+                var _scope = $rootScope.$new();
+                _scope.map = [{ 'id' : '' , 'class' : 'cloudify-nodes-Root cloudify-nodes-Volume'}];
+                compileDirective({scope: _scope});
 
-            expect(element.find('i.gs-node-icon.topology-glyph.cloudify-nodes-Root.cloudify-nodes-FileSystem').length).toBe(1);
-        }));
+                expect(element.find('i.gs-node-icon.topology-glyph.cloudify-nodes-Root.cloudify-nodes-Volume').length).toBe(1);
+            }));
+
+            it('should have a cloudify-nodes-FileSystem class on filesystem node', inject(function($rootScope) {
+                var _scope = $rootScope.$new();
+                _scope.map = [{ 'id' : '' , 'class' : 'cloudify-nodes-Root cloudify-nodes-FileSystem'}];
+                compileDirective({scope: _scope});
+
+                expect(element.find('i.gs-node-icon.topology-glyph.cloudify-nodes-Root.cloudify-nodes-FileSystem').length).toBe(1);
+            }));
+        });
+
     });
 });

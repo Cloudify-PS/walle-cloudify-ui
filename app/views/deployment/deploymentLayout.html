@@ -1,4 +1,7 @@
 <div class="deployments-layout-display cosmo-layout">
+    <span ng-show="!deploymentNotFound">
+
+
     <div id="deployment-header">
 
         <div class="deploymentLoader" data-ng-show="isInitializing()">
@@ -34,4 +37,16 @@
     </div>
 
     <div id="deployment-content" ng-transclude></div>
+    </span>
+    <div ng-show="!!deploymentNotFound" class="not-found-message">
+
+        <div class="message">
+        Deployment not found.
+        </div>
+        <div>
+            <a class="gs-btn" href="#/deployments">Go back to deployment</a>
+            <a class="gs-btn" href="#/blueprints">Lets deploy a blueprint</a>
+        </div>
+
+    </div>
 </div>
