@@ -68,6 +68,9 @@ angular.module('cosmoUiApp')
 
                 // JSON validation by parsing it
                 function _validateJSON(skipKeys, skipErrorMessage) {
+                    if ( $scope.rawString === undefined){
+                        return false; // fail silently. we don't care about undefined. in this scenario. don't alert invalid json.
+                    }
                     try {
                         JSON.parse($scope.rawString);
                         if (!skipErrorMessage) {

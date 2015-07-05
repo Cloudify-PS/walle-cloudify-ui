@@ -40,8 +40,9 @@ angular.module('cosmoUiApp')
                 });
         };
 
-        $scope.cancelWorkflow = function(deployment_id) {
-            var execution = $scope.getExecution(deployment_id);
+        $scope.cancelWorkflow = function() {
+
+            var execution = $scope.currentExecution;
             if ( !execution ){
                 return;
             }

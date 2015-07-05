@@ -16,6 +16,7 @@ angular.module('cosmoUiApp')
             transclude: true,
             replace: true,
             link: function postLink(scope/*, element*/) {
+                console.log('showEvents', scope.showDeploymentEvents);
                 scope.embeded = $window !== $window.top;
                 if ( $routeParams.hasOwnProperty('embed')  ) { // override
                     scope.embeded = $routeParams.embed === 'true';

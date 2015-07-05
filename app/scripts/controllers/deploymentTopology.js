@@ -6,6 +6,7 @@ angular.module('cosmoUiApp')
 
         $scope.page = {};
         $scope.deploymentId = $routeParams.deploymentId;
+        $scope.showDeploymentEvents = true;
 
         cloudifyClient.deployments.get($scope.deploymentId, 'blueprint_id').then(function( result ){
             $scope.blueprintId = result.data.blueprint_id;

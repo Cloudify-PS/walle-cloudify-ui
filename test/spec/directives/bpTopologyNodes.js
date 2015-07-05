@@ -26,14 +26,16 @@ describe('Directive: bpTopologyNodes', function () {
             expect(typeof(element.isolateScope().getBadgeStatus)).toBe('function');
         });
 
-        xit('should return the badge status by its status id using the getBadgeStatus function', function() {
+        it('should return the badge status by its status id using the getBadgeStatus function', inject(function( NodeService ) {
             compileDirective();
-            expect(element.isolateScope().getBadgeStatus(0)).toBe('install');
-            expect(element.isolateScope().getBadgeStatus(1)).toBe('done');
-            expect(element.isolateScope().getBadgeStatus(2)).toBe('alerts');
-            expect(element.isolateScope().getBadgeStatus(3)).toBe('failed');
-            expect(element.isolateScope().getBadgeStatus()).toBe('');
-        });
+            spyOn(NodeService.status,'getBadgeStatus');
+            element.isolateScope().inProgress = 'bar';
+            element.isolateScope().nodeInstances = { 'foo' : 'fooInstances' };
+            element.isolateScope().getBadgeStatus({ 'id' : 'foo'});
+
+            expect( NodeService.status.getBadgeStatus).toHaveBeenCalledWith( 'bar', 'fooInstances' );
+
+        }));
 
         it('should return type class using the getTypeClass method', function() {
             compileDirective();

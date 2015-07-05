@@ -12,7 +12,8 @@ angular.module('cosmoUiApp')
             templateUrl: 'views/deployment/deploymentEvents.html',
             restrict: 'EA',
             scope: {
-                id: '=deploymentEvents'
+                id: '=deploymentEvents',
+                showDeploymentEvents: '='
             },
             link: function postLink($scope, $element) {
 
@@ -25,6 +26,9 @@ angular.module('cosmoUiApp')
 
                 function executeEvents() {
 
+                    if ( !$scope.id || !$scope.showDeploymentEvents ){
+                        return { then:function(){}};
+                    }
                     return cloudifyClient.events.get( { 'deployment_id' :  $scope.id ,  'from_event': 0, 'batch_size' : 50 , 'include_logs' :  false , 'order' : 'desc' }).then(function (result) {
                         $scope.events = result.data.hits.hits;
                         $scope.lastEvent = _.first($scope.events);
@@ -95,7 +99,6 @@ angular.module('cosmoUiApp')
 
                 function mouseup() {
                     toggleIt();
-                    $scope.$broadcast('rebuild:me');
                     $document.unbind('mousemove', mousemove);
                     $document.unbind('mouseup', mouseup);
                 }

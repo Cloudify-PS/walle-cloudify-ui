@@ -67,6 +67,7 @@ angular.module('cosmoUiApp')
                     isolatedScope.executedErr = false;
                     isolatedScope.deploymentId = scope.deployment.id;
                     isolatedScope.workflow = scope.selectedWorkflow;
+                    isolatedScope.currentExecution = scope.currentExecution;
 
                     isolatedScope.$on('ngDialog.closed', function () { // we want to poll for executions once the dialog is closed
                         try {

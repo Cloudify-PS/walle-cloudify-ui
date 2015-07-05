@@ -1,7 +1,6 @@
 <div class="buttons-group sections">
     <a data-ng-repeat="section in sections"
        href="{{section.href}}"
-            data-ng-click="goToSection(section)"
             data-ng-class="{ 'active' : section.active }"
             class="btn btn-default">{{ section.name }}</a>
 </div>

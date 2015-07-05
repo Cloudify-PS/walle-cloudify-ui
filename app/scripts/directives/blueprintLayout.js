@@ -52,10 +52,6 @@ angular.module('cosmoUiApp')
                     });
                 }, true);
 
-                $scope.$watch('toggleBar', function(toggleBar) {
-                    $scope.$emit('toggleChange', toggleBar);
-                });
-
                 // Set Navigation Menu
                 $scope.navMenu = [
                     { 'name': 'Topology', 'href': '/topology'},
@@ -75,14 +71,16 @@ angular.module('cosmoUiApp')
                     return section.name === $scope.section ? 'active' : '';
                 };
 
-                $scope.openDeployDialog = function() {
-                    ngDialog.open({
-                        template: 'views/dialogs/deploy.html',
-                        controller: 'DeployDialogCtrl',
-                        scope: $scope,
-                        className: 'deploy-dialog'
-                    });
-                };
+                if ( !$scope.openDeployDialog ) { // allow tests to override this function..
+                    $scope.openDeployDialog = function () {
+                        ngDialog.open({
+                            template: 'views/dialogs/deploy.html',
+                            controller: 'DeployDialogCtrl',
+                            scope: $scope,
+                            className: 'deploy-dialog'
+                        });
+                    };
+                }
 
                 $scope.redirectToDeployment = function(deployment_id) {
                     $location.path('/deployment/' + deployment_id + '/topology');

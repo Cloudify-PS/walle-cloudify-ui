@@ -21,7 +21,7 @@
 
     <div class="buttonsContainer confirmationButtons" ng-show="confirmationType == 'execute'">
         <button class="gs-btn" ng-click="closeThisDialog()" >{{ 'dialogs.confirm.cancel' | translate }}</button>
-        <button class="gs-btn" ng-enabled="isExecuteEnabled()" gs-spinner="{{inProcess}}" ng-click="executeWorkflow(selectedDeployment)">{{ 'dialogs.confirm.confirm' | translate }}</button>
+        <button class="gs-btn" ng-enabled="isExecuteEnabled()" gs-spinner="{{inProcess}}" ng-click="executeWorkflow()">{{ 'dialogs.confirm.confirm' | translate }}</button>
     </div>
 
     <div class="buttonsContainer confirmationButtons" ng-show="confirmationType == 'cancel'">

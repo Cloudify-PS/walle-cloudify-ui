@@ -61,16 +61,6 @@ angular.module('cosmoUiApp')
 
                     });
 
-
-                $scope.isSectionActive = function (section) {
-                    return section.name === $scope.section ? 'active' : '';
-                };
-
-                $scope.goToSection = function (section) {
-                    $location.path(section.href);
-                };
-
-
                 function _loadExecutions() {
                     return cloudifyClient.executions.list($scope.deploymentId, 'id,workflow_id,status')
                         .then(function (result) {
