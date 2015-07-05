@@ -200,7 +200,7 @@ input[required] {
               list-style-type: none;
               //restricting to 5 inputs,the rest is scrollable
               max-height: 200px;
-              overflow-y: scroll;
+              overflow-y: auto;
               li:first-child{
                 margin-top:-5px;
               }

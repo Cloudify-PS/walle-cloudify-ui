@@ -416,7 +416,7 @@ input[type=text], input[type=password]{
     background: url("/images/big-loader.gif") no-repeat center center;
 }
 
-//making scroll appear always
+//making scroll appear always, added because mac hide scroll by default.
 ::-webkit-scrollbar {
     -webkit-appearance: none;
     width: 7px;
