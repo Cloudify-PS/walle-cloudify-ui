@@ -29,7 +29,7 @@
     "angular-translate-loader-static-files": "~2.6.1",
     "cloudify-js": "cloudify-cosmo/cloudify-js#master",
     "ngDialog": "~0.4.0",
-    "angular-ticker": "0.1.8"
+    "angular-ticker": "~0.1.11"
   },
   "devDependencies": {
     "angular-mocks": "~1.2.21",
