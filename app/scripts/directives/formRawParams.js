@@ -47,7 +47,6 @@ angular.module('cosmoUiApp')
                 // if key is empty (strict) that return invalid, but don't display an error
                 // if there's an error, we want to display it (so if strict mode fails, keep searching for error to display)
                 function _validateJsonKeys(strict, skipErrorMessage) {
-
                     var result = true;
                     var _json = $scope.rawString ? JSON.parse($scope.rawString) : {};
                     for (var i in $scope.params) {

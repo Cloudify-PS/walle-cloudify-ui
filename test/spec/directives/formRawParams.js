@@ -1,26 +1,23 @@
 'use strict';
 
-xdescribe('Directive: formRawParams', function () {
+describe('Directive: formRawParams', function () {
 
     // load the directive's module
-    beforeEach(module('cosmoUiApp'));
+    beforeEach(module('cosmoUiApp','backend-mock','templates-main'));
 
     var element,
         scope;
 
-    beforeEach(inject(function ($rootScope) {
+    beforeEach(inject(function ($compile, $rootScope ) {
+
         scope = $rootScope.$new();
-    }));
+        scope.onError = jasmine.createSpy('onError');
+        scope.valid = false;
+        scope.params = [];
+        scope.rawString = '';
 
-    var setup = inject(function ($compile) {
-        element = angular.element('<form-raw-params></form-raw-params>');
+        element = angular.element('<div form-raw-params on-error="onError(msg)" raw-string="rawString" valid="valid" params="params"></div>');
         element = $compile(element)(scope);
-        scope.$digest();
-    });
-
-    xit('should make hidden element visible', inject(function () {
-        setup();
-        expect(element.text()).toBe('this is the formRawParams directive');
     }));
 
     xit('should update input JSON object when one of the inputs is updated', function () {
@@ -44,51 +41,48 @@ xdescribe('Directive: formRawParams', function () {
         expect(typeof(JSON.parse(scope.rawString).str_variable)).toBe('string');
     });
 
-    xdescribe('#validateJsonKeys', function () {
+    describe('#validateJsonKeys', function () {
         describe('non strict mode', function () {
             beforeEach(function () {
-                scope.selectedBlueprint = {
-                    plan: {
-                        inputs: {
-                            'foo': 'bar',
-                            'hello': 'world'
-                        }
-                    }
+                scope.params = {
+                    'foo': 'bar',
+                    'hello': 'world'
                 };
+                scope.$digest();
             });
             it('should return error and false if key is missing', function () {
                 scope.rawString = JSON.stringify({'foo': 'bar'});
-                expect(scope.validateJsonKeys()).toBe(false);
-                expect(scope.deployErrorMessage).toBe('Missing hello key in JSON');
+                scope.$digest();
+                expect(element.isolateScope().validateJsonKeys()).toBe(false);
+                expect(scope.onError).toHaveBeenCalledWith('Missing hello key in JSON');
             });
 
             it('should return true if all keys exist', function () {
                 scope.rawString = JSON.stringify({'foo': 'bar', 'hello': 'world'});
-                expect(scope.validateJsonKeys()).toBe(true);
-                expect(scope.deployErrorMessage).toBe(null);
+                scope.$digest();
+                expect(element.isolateScope().validateJsonKeys()).toBe(true);
+                expect(scope.onError).toHaveBeenCalledWith(null);
             });
         });
 
         describe('strict mode', function () {
             beforeEach(function () {
-                scope.selectedBlueprint = {
-                    plan: {
-                        inputs: {
-                            'foo': 'bar'
-                        }
-                    }
-                };
+                scope.params = {
+                    'foo': 'bar'
+                }
             });
-            it('should return error and false if key is missing', function () {
+            it('should return error and false if key is empty', function () {
                 scope.rawString = JSON.stringify({'foo': ''});
-                expect(scope.validateJsonKeys(true)).toBe(false);
-                expect(scope.deployErrorMessage).toBe(null);
+                scope.$digest();
+                expect(element.isolateScope().validateJsonKeys(true)).toBe(false);
+                expect(scope.onError).toHaveBeenCalledWith(null);
             });
 
             it('should return error and false if key is missing', function () {
-                scope.rawString = JSON.stringify({'foo': null});
-                expect(scope.validateJsonKeys(true)).toBe(false);
-                expect(scope.deployErrorMessage).toBe(null);
+                scope.rawString = JSON.stringify({'foo': undefined , 'unit' : null});
+                scope.$digest();
+                expect(element.isolateScope().validateJsonKeys(true)).toBe(false);
+                expect(scope.onError).toHaveBeenCalledWith(null);
             });
         });
     });
@@ -118,7 +112,7 @@ xdescribe('Directive: formRawParams', function () {
         }));
     });
 
-    it('should update input JSON object when one of the parameters is updated', function () {
+    xit('should update input JSON object when one of the parameters is updated', function () {
         scope.selectedWorkflow = _workflow;
         scope.inputs.image_name = 'new value';
         scope.inputsState = 'raw';
