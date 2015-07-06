@@ -36,8 +36,7 @@ angular.module('cosmoUiApp')
                 scope.$watch(function () {
                     return _validateJSON(false, true);
                 }, function (newValue) {
-                    _validateJsonKeys(true); //set error message turned on
-                    scope.valid = newValue;
+                    scope.valid = newValue && _validateJsonKeys(true); //set error message turned on
                 });
 
 

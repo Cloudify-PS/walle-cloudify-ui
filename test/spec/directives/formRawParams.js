@@ -20,21 +20,28 @@ describe('Directive: formRawParams', function () {
         element = $compile(element)(scope);
     }));
 
-    xit('should update input JSON object when one of the inputs is updated', function () {
-        scope.inputs.image_name = 'new value';
-        scope.inputsState = 'raw';
+    it('should update input JSON object when one of the inputs is updated', function () {
+        scope.$digest();
 
-        scope.updateInputs();
+        expect(JSON.parse(element.isolateScope().rawString).image_name).not.toBe('new value');
 
-        expect(JSON.parse(scope.rawString).image_name).toBe('new value');
+        element.isolateScope().inputs = { image_name : { default : 'new value' } } ;
+        element.isolateScope().inputsState = 'raw';
+
+        element.isolateScope().updateInputs();
+
+        expect(JSON.parse(element.isolateScope().rawString).image_name.default).toBe('new value');
     });
 
-    xit('should save input type when converting inputs to JSON', function () {
-        scope.selectedBlueprint = _blueprint;
-        scope.rawString = JSON.stringify(scope.inputs, null, 2);
+    it('should save input type when converting inputs to JSON', function () {
+
+        scope.params = { 'webserver_port' : { default: 80 }, 'bool_variable' : { default: true }, 'str_variable' : { default : 'foo bar' } };
+        scope.rawString = JSON.stringify(scope.params, null, 2);
         scope.inputsState = 'raw';
 
-        scope.updateInputs();
+        scope.$digest();
+
+        element.isolateScope().updateInputs();
 
         expect(typeof(JSON.parse(scope.rawString).webserver_port)).toBe('number');
         expect(typeof(JSON.parse(scope.rawString).bool_variable)).toBe('boolean');
@@ -51,15 +58,15 @@ describe('Directive: formRawParams', function () {
                 scope.$digest();
             });
             it('should return error and false if key is missing', function () {
-                scope.rawString = JSON.stringify({'foo': 'bar'});
-                scope.$digest();
+                element.isolateScope().rawString = JSON.stringify({'foo': 'bar'});
+
                 expect(element.isolateScope().validateJsonKeys()).toBe(false);
                 expect(scope.onError).toHaveBeenCalledWith('Missing hello key in JSON');
             });
 
             it('should return true if all keys exist', function () {
-                scope.rawString = JSON.stringify({'foo': 'bar', 'hello': 'world'});
-                scope.$digest();
+                element.isolateScope().rawString = JSON.stringify({'foo': 'bar', 'hello': 'world'});
+
                 expect(element.isolateScope().validateJsonKeys()).toBe(true);
                 expect(scope.onError).toHaveBeenCalledWith(null);
             });
@@ -69,99 +76,52 @@ describe('Directive: formRawParams', function () {
             beforeEach(function () {
                 scope.params = {
                     'foo': 'bar'
-                }
+                };
+                scope.$digest();
             });
             it('should return error and false if key is empty', function () {
-                scope.rawString = JSON.stringify({'foo': ''});
-                scope.$digest();
+                element.isolateScope().rawString = JSON.stringify({'foo': ''});
+
                 expect(element.isolateScope().validateJsonKeys(true)).toBe(false);
                 expect(scope.onError).toHaveBeenCalledWith(null);
             });
 
             it('should return error and false if key is missing', function () {
-                scope.rawString = JSON.stringify({'foo': undefined , 'unit' : null});
-                scope.$digest();
+                element.isolateScope().rawString = JSON.stringify({'foo': undefined , 'unit' : null});
+
                 expect(element.isolateScope().validateJsonKeys(true)).toBe(false);
                 expect(scope.onError).toHaveBeenCalledWith(null);
             });
         });
     });
 
-    xdescribe('#validateJSON', function () {
+    describe('#validateJSON', function () {
         it('should return false if rawString is an invalid JSON', function () {
-            scope.rawString = ' { "some" goofy } ';
-            expect(scope.validateJSON(true)).toBe(false);
-            expect(scope.deployErrorMessage).toBe('Invalid JSON: Unable to parse JSON string');
+            scope.$digest();
+            element.isolateScope().rawString = ' { "some" goofy } ';
+
+            expect(element.isolateScope().validateJSON(true)).toBe(false);
+            expect(scope.onError).toHaveBeenCalledWith('Invalid JSON: Unable to parse JSON string');
         });
     });
 
-    xdescribe('#rawToForm', function () {
+    describe('#rawToForm', function () {
         it('should stringify "1","true" and "null" and not convert them to 1,true,null', function () {
-            scope.rawString = '{ "foo" : "1", "bar" : "true", "hello" : "null" }';
-            scope.rawToForm();
-            expect(scope.inputs.foo).toBe('"1"');
-            expect(scope.inputs.bar).toBe('"true"');
-            expect(scope.inputs.hello).toBe('"null"');
+            scope.$digest();
+            element.isolateScope().rawString = '{ "foo" : "1", "bar" : "true", "hello" : "null" }';
+            element.isolateScope().rawToForm();
+            expect(element.isolateScope().inputs.foo).toBe('"1"');
+            expect(element.isolateScope().inputs.bar).toBe('"true"');
+            expect(element.isolateScope().inputs.hello).toBe('"null"');
         });
 
         it('should handle invalid raw string and remain in raw mode', inject(function (INPUT_STATE) {
-            scope.rawString = '{ foo bar }';
-            scope.rawToForm();
-            expect(scope.deployErrorMessage).toBe('Invalid JSON: Unable to parse JSON string');
-            expect(scope.inputsState).toBe(INPUT_STATE.RAW);
+            scope.$digest();
+            element.isolateScope().rawString = '{ foo bar }';
+            element.isolateScope().rawToForm();
+            expect(scope.onError).toHaveBeenCalledWith('Invalid JSON: Unable to parse JSON string');
+            expect(element.isolateScope().inputsState).toBe(INPUT_STATE.RAW);
         }));
     });
-
-    xit('should update input JSON object when one of the parameters is updated', function () {
-        scope.selectedWorkflow = _workflow;
-        scope.inputs.image_name = 'new value';
-        scope.inputsState = 'raw';
-
-        scope.updateInputs();
-
-        expect(JSON.parse(scope.rawString).image_name).toBe('new value');
-    });
-
-    xit('should keep input type when converting to JSON object', function () {
-        scope.selectedWorkflow = _workflow;
-        scope.inputsState = 'raw';
-
-        scope.updateInputs();
-
-        expect(typeof(JSON.parse(scope.rawString).str_variable)).toBe('string');
-        expect(typeof(JSON.parse(scope.rawString).webserver_port)).toBe('number');
-        expect(typeof(JSON.parse(scope.rawString).bool_variable)).toBe('boolean');
-    });
-
-    xit('should show error message if required parameters are not provided', inject(function (CloudifyService) {
-        var executeParams = null;
-        CloudifyService.deployments.execute.andCallFake(function (params) {
-            executeParams = params;
-            return {
-                then: function (success, error) {
-                    error({'data': {'message': 'foo'}});
-                }
-            };
-        });
-
-        scope.toggleConfirmationDialog = function () {
-        };
-
-        spyOn(scope, 'isExecuteEnabled').andCallFake(function () {
-            return true;
-        });
-
-        scope.rawString = '{}';
-        scope.inputs = {};
-        scope.executeErrorMessage = '';
-        scope.selectedWorkflow = {
-            data: {}
-        };
-
-        scope.executeWorkflow();
-
-        expect(scope.executeErrorMessage).toBe('foo');
-        expect(scope.showError).toBe(true);
-    }));
 
 });

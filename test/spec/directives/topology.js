@@ -1,36 +1,29 @@
 'use strict';
 
-xdescribe('Directive: topology', function () {
+// todo : increase code coverage
+describe('Directive: topology', function () {
 
     // load the directive's module
-    beforeEach(module('cosmoUiApp','backend-mock'));
+    beforeEach(module('cosmoUiApp','backend-mock' ,'templates-main'));
 
     var element,
         scope;
 
-    beforeEach(inject(function ($rootScope) {
+    beforeEach(inject(function ($rootScope, $compile) {
         scope = $rootScope.$new();
-    }));
-
-    var setup = inject(function ($compile) {
-        element = angular.element('<blueprint-topology></blueprint-topology>');
+        spyOn(scope,'registerTickerTask');
+        element = angular.element('<div topology blueprint-id="blueprintId"></div>');
         element = $compile(element)(scope);
-        scope.$digest();
-    });
 
-    xit('should make hidden element visible', inject(function () {
-        setup();
-        expect(element.text()).toBe('this is the blueprintTopology directive');
     }));
 
-    describe('nodesList', function(){
-        it('should put value on scope', inject(function( $rootScope, NodeService, blueprintCoordinateService ){
-            spyOn(NodeService,'createNodesTree');
-            spyOn(blueprintCoordinateService,'resetCoordinates');
-            spyOn(blueprintCoordinateService,'setMap');
-            spyOn(blueprintCoordinateService,'getCoordinates');
-            $rootScope.$broadcast( 'nodesList', []);
-            expect(scope.nodesList.length).toBe(0);
+
+    describe('init', function(){
+        it('should load blueprint if id exists', inject(function( cloudifyClient ){
+            spyOn(cloudifyClient.blueprints,'get').andReturn({ then:function(){ }});
+            scope.blueprintId = 'foo';
+            scope.$digest();
+            expect(cloudifyClient.blueprints.get).toHaveBeenCalled();
         }));
     });
 
