@@ -7,7 +7,14 @@ module.exports = function (conf) {
         // guy - we cannot use decorate request here, because decorate does not pass express request object
         // and we need express request object because we placed cloudifyAuthHeader on it..
         try {
+<<<<<<< HEAD
             req.headers.authorization = req.cloudifyAuthHeader;
+=======
+            if(req.cloudifyAuthHeader) {
+                req.headers.authorization = req.cloudifyAuthHeader;
+            }
+            console.log('proxying request');
+>>>>>>> d39e809bae99b5c41e886685fadd3a94e907cf00
             proxy(function () {
                 return conf.cosmoServer;
             }, {

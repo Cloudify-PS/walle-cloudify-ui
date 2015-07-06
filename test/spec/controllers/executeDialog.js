@@ -177,28 +177,68 @@ describe('Controller: ExecuteDialogCtrl', function () {
         }));
     });
 
-    describe('cancel button', function(){
-        it('should close dialog when pressing the cancel button', inject(function (ngDialog, $timeout) {
-            scope.workflow = {};
-            var id = ngDialog.open({
-                template: 'views/dialogs/executeDialog.html',
-                controller: 'ExecuteDialogCtrl',
-                scope: scope,
-                className: 'confirm-dialog'
-            }).id;
-            $timeout.flush();
+    describe('Views tests',function(){
+        var newConfirmDialog = null,
+            hasScrollbar = null;
 
+        beforeEach(inject(function(ngDialog,$timeout){
 
-            var elemsQuery = '#' + id + ' .confirmationButtons [ng-click="closeThisDialog()"]';
+            newConfirmDialog = function (){
+                var dialogId = ngDialog.open({
+                    template: 'views/dialogs/confirm.html',
+                    controller: 'ExecuteDialogCtrl',
+                    scope: scope,
+                    className: 'confirm-dialog'
+                }).id;
+                $timeout.flush();
+                return dialogId;
+            };
+
+            hasScrollbar = function (element){
+                return element.scrollHeight > element.clientHeight;
+            };
+
+        }));
+
+        it('should close dialog when pressing the cancel button', function() {
+            scope.selectedWorkflow = _workflow;
+            var dialogId = newConfirmDialog();
+            var elemsQuery = '#' + dialogId + ' .confirmationButtons [ng-click="closeThisDialog()"]';
             var elems = $(elemsQuery);
+
             expect(elems.length).toBe(2);
 
+            $('#'+dialogId).remove();
 
-            elems.remove();
-            ngDialog.closeAll(); //https://github.com/likeastore/ngDialog/issues/263
             expect($(elemsQuery).length).toBe(0);
-        }));
+        });
+
+        it('should have a scrollbar if overflow',function() {
+            scope.selectedWorkflow = _workflow;
+            var dialogId= newConfirmDialog();
+            var inputParameters = $('#'+dialogId+' .inputsParameters ul')[0];
+            var elementHasScrollbar = hasScrollbar(inputParameters);
+
+            inputParameters = null;
+            $('#'+dialogId).remove();
+
+            expect(elementHasScrollbar).toBe(true);
+        });
+
+        it('should not have a scrollbar if does not overflow',function() {
+            scope.selectedWorkflow = angular.copy(_workflow);
+            scope.selectedWorkflow.data.parameters = {1:[],2:[],3:[]};
+            var dialogId = newConfirmDialog();
+            var inputParameters = $('#'+dialogId+' .inputsParameters ul')[0];
+            var elementHasScrollbar = hasScrollbar(inputParameters);
+
+            inputParameters = null;
+            $('#'+dialogId).remove();
+
+            expect(elementHasScrollbar).toBe(false);
+        });
     });
+
 
 
 
