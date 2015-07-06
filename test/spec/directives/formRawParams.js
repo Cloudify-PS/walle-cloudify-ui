@@ -105,6 +105,44 @@ describe('Directive: formRawParams', function () {
         });
     });
 
+    describe('overflow', function(){
+
+        function hasScrollbar  (element){
+            return element.scrollHeight > element.clientHeight;
+        }
+
+
+        var content = null;
+        beforeEach(function(){
+            var wrapper = angular.element('<div class="ngdialog"><div class="ngdialog-content"></div></div>');
+            $('body').append(wrapper);
+            content = wrapper.find('.ngdialog-content');
+
+        });
+
+        afterEach(function(){
+            $('body .ngdialog').remove();
+        });
+
+        it('should have a scrollbar if overflow',function() {
+            scope.params = { 'foo' : '' , 'bar' : '', 'hello' : '', 'world' : '', 'long' : '', 'short' : ''};
+            scope.$digest();
+            content.append(element);
+            var inputParameters = element.find('ul')[0];
+            var elementHasScrollbar = hasScrollbar(inputParameters);
+            expect(elementHasScrollbar).toBe(true);
+        });
+
+        it('should not have a scrollbar if does not overflow',function() {
+            scope.params = { 'foo' : '' , 'bar' : '', 'hello' : ''};
+            scope.$digest();
+            content.append(element);
+            var inputParameters = element.find('ul')[0];
+            var elementHasScrollbar = hasScrollbar(inputParameters);
+            expect(elementHasScrollbar).toBe(false);
+        });
+    });
+
     describe('#rawToForm', function () {
         it('should stringify "1","true" and "null" and not convert them to 1,true,null', function () {
             scope.$digest();

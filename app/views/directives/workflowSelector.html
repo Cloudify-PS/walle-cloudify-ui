@@ -15,8 +15,6 @@
     {{ currentExecution.workflow_id != null ? 'deployment.process.' + currentExecution.workflow_id : 'deployment.process.wait' | translate }}
 </div>
 
-    before
 <button class="deployment-play" ng-disabled="isDisabled()"  ng-click="onPlay()" ng-show="canPlay()"></button>
-after
 <button class="deployment-pause fa fa-times-circle" ng-show="canCancel()" ng-click="onCancel()"></button>
 </span>
