@@ -34,7 +34,7 @@
                      data-text="Choose Deployments"></div>
             </div>
 
-            <button class="gs-btn" data-ng-click="execute()" ng-class="{gsBtnDisabled: isSearchDisabled() == true, loader: filterLoading}">Show</button>
+            <button class="gs-btn" gs-spinner="{{filterLoading}}" data-ng-click="execute()" ng-disabled="isSearchDisabled()">Show</button>
 
             <div class="search">
                 <input type="text" spellcheck="false" placeholder="Search" data-ng-model="searchFilter" />

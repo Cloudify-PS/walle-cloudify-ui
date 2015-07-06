@@ -1,6 +1,5 @@
 .gs-table {
     width: $COSMOUI_LIST_WIDTH;
-    margin: 10px 20px 0px;
 
     thead {
         tr {
@@ -52,30 +51,6 @@
                     line-height: 1;
                     -webkit-font-smoothing: antialiased;
                     -moz-osx-font-smoothing: grayscale;
-
-                    &.deployment-play {
-                        margin-left: 7px;
-
-                        &.play {
-                            background-image: url($img-deployment-play);
-                        }
-
-                        &.playDisabled {
-                            background-image: url($img-deployment-play-disabled);
-                        }
-                    }
-
-                    &.deployment-pause {
-                        margin-top: 2px;
-
-                        &.pause {
-                          color: #3aaeda;
-                        }
-
-                        &:hover {
-                          color: #136e9d;
-                        }
-                    }
                 }
             }
 
@@ -140,22 +115,34 @@
     vertical-align: middle;
     background: $COSMOUI_BUTTON_BACKGROUND;
     cursor: pointer;
+    position:relative;
 
     &.disabled, &[disabled] {
-        background: $COSMOUI_BUTTON_DISABLED_BACKGROUND;
-        border-bottom: 1px solid $COSMOUI_BUTTON_DISABLED_BORDER_COLOR;
-        border-right: 1px solid $COSMOUI_BUTTON_DISABLED_BORDER_COLOR;
-        color: $COSMOUI_BUTTON_DISABLED_BORDER_COLOR;
-        cursor: default;
+        &,&:hover {
+            background: $COSMOUI_BUTTON_DISABLED_BACKGROUND;
+            border-bottom: 1px solid $COSMOUI_BUTTON_DISABLED_BORDER_COLOR;
+            border-right: 1px solid $COSMOUI_BUTTON_DISABLED_BORDER_COLOR;
+            color: $COSMOUI_BUTTON_DISABLED_BORDER_COLOR;
+            cursor: default;
+        }
+
     }
 
-    &.loader, &.loader:hover {
-        color: transparent;
-        background-image: url($img-loading-button);
-        background-repeat: no-repeat;
-        background-position: center center;
-        background-color: $COSMOUI_BUTTON_BACKGROUND;
+    .gs-loader, .gs-loader:hover {
+        display:none;
+        position:absolute;
+        left:0;
+        right:0;
 
+    }
+
+    &.gs-spinner-active{
+        [ng-transclude] {
+            color:transparent;
+        }
+        .gs-loader, .gs-loader:hover{
+            display:inline-block;
+        }
     }
 
     &:hover{
@@ -405,15 +392,36 @@ input[type=text], input[type=password]{
     font-size:0;
 }
 
-.gs-big-loader {
-    position: relative;
-    margin-left: auto;
-    margin-right: auto;
-    margin-bottom:100px;
-    top: 50px;
-    width: 128px;
-    height: 128px;
-    background: url("/images/big-loader.gif") no-repeat center center;
+
+
+.gs-loader{
+
+    $LARGE_SIZE:130px;
+    $SMALL_SIZE:14px;
+    $MEDIUM_SIZE:130px;
+    &.large{
+        margin:0 auto;
+        top:50px;
+        margin-bottom:100px;
+        font-size:$LARGE_SIZE;
+        color:$COSMOUI_SPINNER_COLOR_LARGE;
+        width: $LARGE_SIZE;
+    }
+
+    &.inline{
+        display:inline-block;
+        i, i:before{
+            height:14px;
+            width:14px;
+            font-size:14px;
+        }
+    }
+
+    &.gs-btn{
+        display:inline-block;
+        font-size:$SMALL_SIZE;
+        width:$SMALL_SIZE;
+    }
 }
 
 //making scroll appear always, added because mac hide scroll by default.

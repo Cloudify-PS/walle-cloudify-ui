@@ -8,79 +8,121 @@
  * Controller of the cosmoUiApp
  */
 angular.module('cosmoUiApp')
-    .controller('SourceCtrl', function ($scope, $routeParams, $location, CloudifyService, SourceService, VIEW_CONTEXT) {
+    .controller('SourceCtrl', function ($scope, $routeParams, $location, CloudifyService, BlueprintSourceService, cloudifyClient ) {
 
-        $scope.id = $routeParams.id;
+
+
         $scope.errorMessage = 'noPreview';
         $scope.selectedBlueprint = {};
         $scope.browseData = {};
 
-        var context = $location.url().indexOf(VIEW_CONTEXT.DEPLOYMENT) > -1 ? VIEW_CONTEXT.DEPLOYMENT : VIEW_CONTEXT.BLUEPRINT;
-        var autoFilesList = ['blueprint.yaml', 'README.md'];
-        var selectedAutoFile = null;
-        var firstDefaultFile = null;
-        var autoKeepLooking = true;
+        var autoFileDetector = new RegExp(['.*blueprint.*\\.yaml', 'README(\\.md)?'].join('|'));
 
-        SourceService.get($scope.id, context)
-            .then(function(blueprint) {
-                setData(blueprint);
+
+
+
+
+        $scope.$watch('blueprintId', function(newValue){
+            if ( !!newValue ) {
+                cloudifyClient.blueprints.get(newValue, 'id,updated_at').then(function( result ){
+                    $scope.setData(result.data);
+                });
+            }
+        });
+
+        if ( $routeParams.blueprintId ){
+            $scope.blueprintId = $routeParams.blueprintId;
+        }
+
+
+
+        if ( $routeParams.deploymentId ){
+            cloudifyClient.deployments.get($routeParams.deploymentId, 'blueprint_id').then(function( result ){
+                $scope.blueprintId = result.data.blueprint_id;
             });
+        }
 
-        function locateFilesInBrowseTree(data) {
-            for(var i in data) {
-                if(!autoKeepLooking) {
-                    break;
-                }
-                var pos = autoFilesList.indexOf(data[i].name);
-                if(pos > -1) {
-                    selectedAutoFile = data[i];
-                }
-                if(pos !== 0) {
-                    locateFilesInBrowseTree(data[i].children);
-                }
-                else {
-                    autoKeepLooking = false;
-                }
-                if(!data[i].hasOwnProperty('children') && firstDefaultFile === null) {
-                    firstDefaultFile = data[i];
-                }
+
+        // returns true iff we might want this file to open by default
+        function isDefaultCandidate( filename ){
+            return autoFileDetector.test( filename );
+        }
+
+
+        /**
+         * we are going for a very non efficient but simple algorithm.
+         * trusting small size (in amount of file ) for blueprint
+         *
+         * http://stackoverflow.com/a/18008336
+         *
+         * @param data
+         * @returns {*}
+         */
+        function autoSelectFile(data) {
+
+            var list = [];
+
+            // the reason we split into 2 loops is to have lowest level available first.
+            function flatten(item) {
+                // add all leafs in this level
+                _.each(_.filter(item.children, function (_item) {
+                    return !_item.children;
+                }), function (_item) {
+                    list.push(_item);
+                });
+                // go over the rest recursively
+                _.each(_.filter(item.children, function (_item) {
+                    return !!_item.children;
+                }), flatten);
+
+            }
+            flatten(data);
+
+            list = _.flatten(list);
+
+            var result = _.find(list, function(item){ return isDefaultCandidate(item.name); });
+            if ( !result ){
+                result = _.first(list);
+            }
+
+            return result;
+        }
+
+        var brushes = {
+            'sh' : 'bash',
+            'bat' : 'bat',
+            'cmd' : 'cmd',
+            'ps1' : 'powershell',
+            'yaml' : 'yml',
+            'yml' : 'yml',
+            'py' : 'py',
+            'md' : 'text',
+            'html' : 'text',
+            '_' : 'text' // default
+
+        };
+
+        function getExt( file ){
+            var filename = file;
+            if ( file.hasOwnProperty('name') ){
+                filename = file.name;
+            }
+            var ext = filename.split('.');
+            ext = ext[ext.length-1];
+            return ext;
+        }
+
+        function getBrushByFile(file) {
+            var ext = getExt(file);
+            if ( brushes.hasOwnProperty(ext) ){
+                return brushes[ext];
+            }else{
+                return brushes._;
             }
         }
 
-        function autoOpenSourceFile() {
-            if(selectedAutoFile !== null) {
-                $scope.openSourceFile(selectedAutoFile);
-            }
-            else if(firstDefaultFile !== null) {
-                $scope.openSourceFile(firstDefaultFile);
-            }
-        }
-
-        function getBrashByFile(file) {
-            var ext = file.split('.');
-            switch(ext[ext.length-1]) {
-            case 'sh':
-                return 'bash';
-            case 'bat':
-                return 'bat';
-            case 'cmd':
-                return 'cmd';
-            case 'ps1':
-                return 'powershell';
-            case 'yaml':
-                return 'yml';
-            case 'py':
-                return 'py';
-            case 'md':
-                return 'text';
-            case 'html':
-                return 'text';
-            default:
-                return 'text';
-            }
-        }
-
-        function setData(blueprint) {
+        // put on scope for test purpose. make test friendly.
+        $scope.setData = function(blueprint) {
             if (blueprint.hasOwnProperty('error_code')) {
                 $location.path('/blueprints');
             }
@@ -97,17 +139,15 @@ angular.module('cosmoUiApp')
             ];
 
             // Emit deployment data
-            SourceService.getBrowseData(blueprint.id, blueprint.updated_at)
+            BlueprintSourceService.getBrowseData(blueprint.id, blueprint.updated_at)
                 .then(function(browseData) {
                     if (browseData.errCode) {
                         $scope.errorMessage = browseData.errCode;
                     }
                     $scope.browseData = browseData;
-
-                    locateFilesInBrowseTree(browseData[0].children);
-                    autoOpenSourceFile();
+                    $scope.openSourceFile(autoSelectFile(browseData[0]));
                 });
-        }
+        };
 
         $scope.openTreeFolder = function(data) {
             if(!data.hasOwnProperty('show')) {
@@ -143,27 +183,28 @@ angular.module('cosmoUiApp')
                 .then(function(fileContent) {
                     $scope.dataCode = {
                         data: fileContent,
-                        brush: getBrashByFile(data.name),
+                        brush: getBrushByFile(data.name),
                         path: data.path
                     };
                     $scope.filename = data.name;
                 });
         };
 
-        $scope.isSourceText = function(fileName) {
-            if (fileName === undefined) {
+        $scope.isSourceText = function(filename) {
+            if (!filename){
                 return;
             }
             var textExt = ['yaml', 'js', 'css', 'sh', 'txt', 'bat', 'cmd', 'ps1', 'py', 'md', 'html'];
-            var fileExt = fileName.substr(fileName.lastIndexOf('.') + 1);
+            var fileExt = getExt(filename);
             return textExt.indexOf(fileExt) > -1;
 
         };
 
-    });
 
-angular.module('cosmoUiApp')
-    .constant('VIEW_CONTEXT', {
-        DEPLOYMENT: 'deployment',
-        BLUEPRINT: 'blueprint'
+        //// for tests - make test friendly
+        $scope.autoSelectFile = autoSelectFile;
+        $scope.isDefaultCandidate = isDefaultCandidate;
+        $scope.getBrushByFile = getBrushByFile;
+
+
     });

@@ -48,7 +48,7 @@
                      data-text="Choose Timeframe"></div>
             </div>
 
-            <button class="gs-btn" ng-class="{ loader : filterLoading}" data-ng-click="execute()" ng-class="{gsBtnDisabled: !!isSearchDisabled}">Show</button>
+            <button class="gs-btn" gs-spinner="{{filterLoading}}" data-ng-click="execute()" ng-disabled="!!isSearchDisabled">Show</button>
 
         </div>
 

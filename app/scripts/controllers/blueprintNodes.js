@@ -8,18 +8,17 @@
  * Controller of the cosmoUiAppApp
  */
 angular.module('cosmoUiApp')
-    .controller('BlueprintNodesCtrl', function ($scope, $routeParams, NodeService) {
+    .controller('BlueprintNodesCtrl', function ($scope, $routeParams, NodeService, cloudifyClient) {
+
 
         $scope.blueprintId = $routeParams.blueprintId;
         $scope.page = {};
 
-        $scope.$on('blueprintData', function(event, data){
-            NodeService.createNodesTree(data.plan.nodes);
-            $scope.dataTable = data.plan.nodes;
-
+        cloudifyClient.blueprints.get($scope.blueprintId).then(function (result) {
+            $scope.dataTable = result.data.plan.nodes;
         });
 
-        $scope.getRelationshipByType = function(node, type) {
+        $scope.getRelationshipByType = function (node, type) {
             var relationshipData = [];
             if (node.relationships !== undefined) {
                 for (var i = 0; i < node.relationships.length; i++) {
@@ -31,9 +30,9 @@ angular.module('cosmoUiApp')
             return relationshipData;
         };
 
-        $scope.getNodeById = function(node_id) {
+        $scope.getNodeById = function (node_id) {
             var _node = {};
-            $scope.dataTable.forEach(function(node) {
+            $scope.dataTable.forEach(function (node) {
                 if (node.id === node_id) {
                     _node = node;
                 }

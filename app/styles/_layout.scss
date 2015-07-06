@@ -10,7 +10,11 @@ html, body, .layout {
     background-color: #2c4a67 !important;
 }
 
+
 .layout {
+
+    $FOOTER_HEIGHT:60px;
+
     margin: 0 auto;
     min-width: 600px;
     /*min-height: 100%;*/
@@ -18,19 +22,118 @@ html, body, .layout {
     background: $COSMOUI_BACKGROUND;
     font-family: "OpenSansLight";
 
-    display: table;
+    #header{
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 100px;
+    }
+
+    #left-side-menu{
+        position: absolute;
+        left: 0;
+        width: 100px;
+        top: 83px;
+        bottom: $FOOTER_HEIGHT;
+        background: white;
+        overflow: visible;
+        &.fix-to-top{
+            position:fixed;
+            top:0;
+        }
+//        ul{
+//            position:fixed;
+//        }
+    }
+
+    .main-content{
+        position: absolute;
+        left: 186px;
+        right: 20px;
+        bottom: $FOOTER_HEIGHT;
+        top: 83px;
+        background: white;
+        overflow: visible;
+//        min-height:1000px;
+
+//        margin-bottom:-1000px;
+        .main-content-display {
+            padding: 20px;
+            background: white;
+            & > div {
+                background:transparent;
+                height: 100%;
+                position: relative;
+                width: 100%
+            }
+        }
+        .layout-fix-push{
+            height:$FOOTER_HEIGHT;
+            background:transparent;
+
+        }
+    }
+
+    .layout-fix-push{
+        height:$FOOTER_HEIGHT;
+        background:transparent;
+
+    }
+
+    #footer{
+//        position: absolute;
+        position: fixed;
+        background: $COSMOUI_BACKGROUND;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        height: $FOOTER_HEIGHT;
+        z-index:10;
+    }
+
 }
 
-.layout[class] {
-    height: auto;
-    /*overflow: hidden;*/
+@media screen and ( max-height: 700px ){
+    .layout {
+        #left-side-menu{
+
+            li {
+                &, a {
+                    height: 35px;
+                    text-align:left;
+                    .side-menu-icon {
+                        margin-left:5px;
+
+                        font-size:25px;
+                        line-height:35px;
+                        top:0;
+                        width:25px;
+                        vertical-align: middle;
+                    }
+                    .side-menu-title{
+                        line-height:35px;
+                        top:0;
+                        text-align:left;
+                        padding-left:10px;
+                        display: inline-block;
+                        vertical-align: middle;
+                    }
+                }
+                &.selected:after{
+                    top:-28px;
+                    left: 163px;
+                }
+            }
+        }
+
+    }
 }
+
 
 #header {
     height: $HEADER_HEIGHT;
     background: $COSMOUI_BACKGROUND;
-
-    display: table-cell;
 
     .logout-panel{
         position:absolute;
@@ -88,16 +191,16 @@ html, body, .layout {
     }
 }
 
-#footer {
+/*#footer {
     height: $FOOTER_HEIGHT;
     margin-top: -$FOOTER_HEIGHT;
     background: $FOOTER_BACKGROUND
-}
+}*/
 
-#footer[id] {
+/*#footer[id] {
     z-index: 100;
     position: relative;
-}
+}*/
 
 #smallFooter {
     margin: 10px 23px 0 186px;
@@ -122,11 +225,6 @@ html, body, .layout {
     }
 }
 
-#fix {
-    height: $FOOTER_HEIGHT;
-    clear: both;
-    background-color: yellow;
-}
 
 #left-side-menu {
     width: $LEFT_MENU_WIDTH;
@@ -259,9 +357,8 @@ html, body, .layout {
 
 .content-header {
     width: 100%;
-    padding: 10px 0px 10px 0px;
     vertical-align: middle;
-    margin-left: 20px;
+    border-bottom: 3px solid $COSMOUI_MAIN_CONTENT_TITLE_SEPERATOR_COLOR;
 
     .breadcrumbs {
         color: $COSMOUI_BREADCRUMB_ITEM_COLOR;
@@ -335,37 +432,4 @@ button, input[type="button"], input[type="submit"] {
   outline: none !important;
 }
 
-.buttons-group {
-    $RADIUS: 30px;
-    display: inline-block;
-    margin: 0px 4px 0px 20px;
-    vertical-align: middle;
 
-    button {
-        display: inline-block;
-        height: $COSMOUI_BLUEPRINT_DETAILS_BUTTON_HEIGHT;
-        font-size: $COSMOUI_BLUEPRINT_DETAILS_BUTTON_FONT_SIZE;
-        padding: $COSMOUI_BLUEPRINT_DETAILS_BUTTON_PADDING;
-        //        color: $COSMOUI_BLUEPRINT_BUTTON_GROUP_BACKGROUND;
-        border: $COSMOUI_BLUEPRINT_BUTTON_GROUP_BORDER_COLOR;
-        border-radius: 0px;
-        margin: 0 -6px 0 0;
-        background-color: $clr-base-01;
-
-        &:first-child {
-            border-radius: $RADIUS 0 0 $RADIUS;
-        }
-        &:last-child {
-            border-radius: 0 $RADIUS $RADIUS 0;
-        }
-        &.active {
-            background: $COSMOUI_BLUEPRINT_BUTTON_ACTIVE_COLOR;
-            border: $COSMOUI_BLUEPRINT_BUTTON_GROUP_BORDER_COLOR;
-            color: white;
-        }
-        &:hover:not(.active) {
-            background-color: $clr-base-01;
-            border: $COSMOUI_BLUEPRINT_BUTTON_GROUP_BORDER_COLOR;
-        }
-    }
-}

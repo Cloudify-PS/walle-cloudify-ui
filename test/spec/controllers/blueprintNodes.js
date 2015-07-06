@@ -8,7 +8,12 @@ describe('Controller: BlueprintNodesCtrl', function () {
     var DeploymentNodesCtrl, scope;
 
     // Initialize the controller and a mock scope
-    beforeEach(inject(function ($controller, $rootScope) {
+    beforeEach(inject(function ($controller, $rootScope, cloudifyClient ) {
+        spyOn(cloudifyClient.blueprints, 'get').andReturn({
+            then: function (success) {
+                success({'data': {'plan': {'nodes': 'foo'}}});
+            }
+        });
         scope = $rootScope.$new();
         DeploymentNodesCtrl = $controller('BlueprintNodesCtrl', {
             $scope: scope
@@ -30,12 +35,8 @@ describe('Controller: BlueprintNodesCtrl', function () {
     });
 
     describe('#blueprintDataHandler', function(){
-        it('it should listen on blueprintData event', inject(function( NodeService, $rootScope ){
-            spyOn(NodeService,'createNodesTree');
-            $rootScope.$broadcast('blueprintData', { plan : { nodes : 'foo' }});
-
-            expect(NodeService.createNodesTree).toHaveBeenCalled();
-            expect(scope.dataTable).toBe('foo');
+        it('is should get blueprintId from route params and call get blueprint on cloudify client', inject(function( cloudifyClient ){
+            expect(cloudifyClient.blueprints.get).toHaveBeenCalled();
         }));
     });
 

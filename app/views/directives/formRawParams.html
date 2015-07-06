@@ -1,0 +1,14 @@
+<div class="dialogInputs deployInputs">
+    <div class="buttons-group deployBtns">
+        <button data-ng-class="{'active': inputsState == 'params'}" class="btn btn-default" data-ng-click="toggleInputsState('PARAMS')">Parameters</button>
+        <button data-ng-class="{'active': inputsState == 'raw'}" class="btn btn-default" data-ng-click="toggleInputsState('RAW')">Raw</button>
+    </div>
+    <div class="inputsParameters" ng-show="inputsState == 'params'">
+        <ul>
+            <li ng-repeat="(name, value) in params"><div title="{{name}}" class="form-raw-item-name">{{name}}:</div> <input type="text" spellcheck="false" ng-trim="false" ng-model="inputs[name]" placeholder="{{ 'dialogs.deploy.value' | translate }}"></li>
+        </ul>
+    </div>
+    <div class="inputsRaw" ng-show="inputsState == 'raw'">
+        <textarea ng-model="rawString" spellcheck="false"></textarea>
+    </div>
+</div>

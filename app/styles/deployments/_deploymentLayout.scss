@@ -1,0 +1,211 @@
+.deployment-layout {
+    height:100%;
+    #main-content-panel{
+        padding:20px;
+    }
+
+    #deployment-header {
+        width: $COSMOUI_DEPLOYMENT_HEADER_WIDTH;
+
+        .content-header {
+
+            margin-bottom: 10px;
+            overflow: hidden;
+        }
+
+        .header-left {
+            min-height: 112px;
+
+            #settings-button {
+                display: inline-block;
+                cursor: pointer;
+                vertical-align: middle;
+            }
+
+
+            [app-status-widget]{
+                margin-top:-20px;
+                margin-right:-20px;
+            }
+
+
+            .actions {
+                display: inline-block;
+                margin-left: 30px;
+                white-space: nowrap;
+                vertical-align: top;
+                .workflow-selector{
+
+                }
+            }
+
+
+        }
+
+        .eventsTable {
+            tr {
+                td {
+                    vertical-align: top;
+                }
+            }
+        }
+    }
+
+    #right-side-menu {
+
+        .close-properties-button {
+            cursor: pointer;
+        }
+
+        .content {
+            .content-section {
+                position: relative;
+                padding-left: 0px;
+                top: 30px;
+
+                .prop-section {
+                    top: 0px;
+
+                    .no-properties {
+                        float: left;
+                    }
+                }
+
+                .overview-node-name {
+                    font-size: 16px;
+                    font-weight: bold;
+                    color: #333;
+                    margin-bottom: 5px;
+                }
+
+                table.overview-data {
+                    margin-bottom: 30px;
+                }
+
+                table.relationships-table {
+                    width: 100%;
+
+                    tr {
+                        border-bottom: none;
+                        cursor: pointer;
+
+                        //&:first-child {
+                        //  background-color: transparent;
+                        //}
+
+                        &:first-child td {
+                            background-color: #d3dfe2;
+                            height: 30px;
+                            color: #333333;
+                            font-size: 13px;
+                            padding-left: 5px;
+                        }
+
+                        td {
+                            min-width: 120px;
+                            vertical-align: middle;
+                            padding-left: 0px;
+
+                            &.relationships-target {
+                                width: 140px;
+                            }
+                            &.relationships-type {
+                                width: 300px;
+                                //                              float: left;
+                            }
+                            &.relationships-source {
+                                width: 100px;
+                            }
+
+                            table {
+                                width: 100%;
+                                //margin-left: 10px;
+
+                                tr {
+
+                                    &:first-child {
+                                        background-color: $clr-base-09;
+                                        td {
+                                            background-color: #fff;
+                                        }
+                                    }
+
+                                    .relationship-arrow {
+                                        float: left;
+
+                                        &.right {
+                                            margin-top: 5px;
+                                            margin-right: 10px;
+                                            border-top: 5px solid transparent;
+                                            border-bottom: 5px solid transparent;
+                                            border-left: 5px solid #333;
+                                        }
+
+                                        &.down {
+                                            margin-top: 7px;
+                                            margin-right: 5px;
+                                            border-left: 5px solid transparent;
+                                            border-right: 5px solid transparent;
+                                            border-top: 5px solid #333;
+                                        }
+                                    }
+
+                                    //&:first-child td {
+                                    //  background-color: #d3dfe2;
+                                    //  height: 30px;
+                                    //  color: #333333;
+                                    //  font-size: 13px;
+                                    //  padding-left: 5px;
+                                    //}
+
+                                    &:hover:not(:first-child) td {
+                                        background: none;
+                                        color: #333333;
+                                    }
+
+                                    td {
+                                        height: 30px;
+                                        border-bottom: 1px solid #cadbec;
+
+                                        table {
+
+                                            margin-left: 10px;
+                                            width: 98%;
+
+                                            tr {
+                                                &:first-child td {
+                                                    background: none;
+                                                    border-bottom: 1px solid #cadbec;
+                                                }
+
+                                                td {
+                                                    padding-left: 5px;
+                                                    ul {
+                                                        li {
+                                                            list-style: none;
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+        }
+    }
+
+    .not-found-message{
+        text-align: center;
+        vertical-align: middle;
+        .message{
+            margin-top:100px;
+            padding:20px;
+        }
+    }
+}
+

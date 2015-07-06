@@ -1,0 +1,18 @@
+<div id="blueprint-header" class="cosmo-layout">
+    <div class="header-left">
+
+        <div class="content-header">
+            <div class="breadcrumbs"><ul id="blueprints" breadcrumbs></ul></div>
+        </div>
+
+
+
+        <div section-nav-menu="navMenu"></div>
+
+        <!--<div settings-toggles id="settings-button" toggles="toggleBar" data-ng-show="selectview"></div>-->
+
+        <button class="gs-btn right deploy-button" ng-click="openDeployDialog(blueprint)">{{ 'blueprints.table.deployBtn' | translate }}</button>
+    </div>
+
+    <div ng-transclude></div>
+</div>

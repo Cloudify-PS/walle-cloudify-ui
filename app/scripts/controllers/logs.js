@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('cosmoUiApp')
-    .controller('LogsCtrl', function ($scope, BreadcrumbsService, EventsService, $location, $anchorScroll, $filter, $routeParams, LogsModel, $window, EventsMap, $log, CloudifyService, ngDialog) {
+    .controller('LogsCtrl', function ($scope, BreadcrumbsService, EventsService, $location, $timeout, $anchorScroll, $filter, $routeParams, LogsModel, $window, EventsMap, $log, CloudifyService, ngDialog) {
 
         /**
          * Breadcrumbs
@@ -82,6 +82,7 @@ angular.module('cosmoUiApp')
                 }
             });
 
+            var startTime = new Date().getTime();
             $scope.events.execute(function (data) {
                 if (data && data.hasOwnProperty('hits')) {
                     lastData = _convertDates(data.hits.hits);
@@ -113,7 +114,10 @@ angular.module('cosmoUiApp')
                     }
                     $log.warn('Cant load events, undefined data.');
                 }
-                $scope.filterLoading = false;
+                $timeout(function() {  // fake delay time if response was too fast
+                    $scope.filterLoading = false;
+                },2000 + new Date().getTime() - startTime  );
+
 
             }, executeOptions);
         }

@@ -1,0 +1,94 @@
+<div class="blueprint-layout" id="blueprint">
+
+    <div floating-blueprint-node-panel node="page.viewNode" node-lists="planNodes" class="floating-panel" id="right-side-menu"></div>
+
+    <div class="networksContainer">
+        <div bp:networks class="relations"></div>
+
+        <!-- External networks -->
+        <div class="network">
+            <div class="line">
+                <!--<div class="name" tooltip>{{ networks.external.name }}</div>-->
+                <div class="subnet external" bp:network:coordinate ng-model="networks.external" tooltip>
+                    <p>{{ networks.external.name }}</p>
+                    <p class="cidr">{{ networks.external.type }}</p>
+                </div>
+                <div class="devices">
+                    <div data-ng-repeat="device in networks.external.routers" class="router">
+                        <div data-ng-class="{'true': 'portarea'}[device.ports.length > 0]">
+                            <div class="inner">
+                            <div class="buttons no-embed">
+                                <ul>
+                                    <li data-ng-click="viewNodeDetails(device)" class="topology-glyph node-details"></li>
+                                </ul>
+                            </div>
+                            <i class="topology-glyph {{ device.icon }}" bp:network:coordinate ng-model="device"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div data-ng-repeat="network in networks.external.subnets" class="network">
+                <div class="line">
+                    <div class="name" tooltip>{{ network.name }}</div>
+                    <div class="subnet" bp:network:coordinate ng-model="network" tooltip>
+                        <p>{{ network.subnet.name }}</p>
+                        <p class="cidr">{{ network.subnet.type }}</p>
+                    </div>
+                </div>
+                <div class="devices">
+                    <div data-ng-repeat="device in network.routers" class="router">
+                        <div data-ng-class="{'true': 'portarea'}[device.ports.length > 0]">
+                            <div class="inner">
+                                <div class="buttons no-embed">
+                                    <ul>
+                                        <li data-ng-click="viewNodeDetails(device)" class="topology-glyph node-details"></li>
+                                    </ul>
+                                </div>
+                                <i class="topology-glyph {{ device.icon }}" bp:network:coordinate ng-model="device"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Blueprint networks -->
+        <div data-ng-repeat="network in networks.networks" class="network">
+            <div class="line">
+                <div class="name" tooltip>{{ network.name }}</div>
+                <div data-ng-repeat="subnet in network.subnets" class="subnet" bp:network:coordinate ng-model="subnet" tooltip>
+                    <p>{{ subnet.name }}</p>
+                    <p class="cidr">{{ subnet.cidr }}</p>
+                </div>
+            </div>
+
+            <!-- Network devices -->
+            <div class="devices">
+                <div data-ng-repeat="device in network.devices" class="device">
+                    <div data-ng-class="{'true': 'portarea'}[device.ports.length > 0]">
+                        <div class="inner">
+                            <div class="buttons no-embed">
+                                <ul>
+                                    <li data-ng-click="viewNodeDetails(device)" class="topology-glyph node-details"></li>
+                                </ul>
+                            </div>
+                            <i class="gs-node-icon topology-glyph {{ device.icon }}" bp:network:coordinate ng-model="device"></i>
+                        </div>
+                        <div class="ports" data-ng-repeat="port in device.ports">
+                            <div class="buttons no-embed">
+                                <ul>
+                                    <li data-ng-click="viewNodeDetails(device)" class="topology-glyph node-details"></li>
+                                </ul>
+                            </div>
+                            <i class="topology-glyph {{ port.icon }}" bp:network:coordinate ng-model="port"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</div>

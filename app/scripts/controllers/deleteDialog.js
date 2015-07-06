@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('cosmoUiApp')
-    .controller('DeleteDialogCtrl', function ($scope, CloudifyService, DELETE_TYPES) {
+    .controller('DeleteDialogCtrl', function ($scope, CloudifyService, DELETE_TYPES, $log ) {
         $scope.ignoreLiveNodes = false;
         $scope.deleteState = {
             itemToDelete: $scope.itemToDelete,
@@ -10,16 +10,19 @@ angular.module('cosmoUiApp')
             errorMessage: ''
         };
 
-        if (!!$scope.deleteState.itemToDelete.blueprint_id) {
-            $scope.deleteState.type = DELETE_TYPES.DEPLOYMENT;
-        } else  {
-            $scope.deleteState.type = DELETE_TYPES.BLUEPRINT;
+        if ( !!$scope.deleteState && !!$scope.deleteState.itemToDelete ) {
+            if (!!$scope.deleteState.itemToDelete.blueprint_id) {
+                $scope.deleteState.type = DELETE_TYPES.DEPLOYMENT;
+            } else {
+                $scope.deleteState.type = DELETE_TYPES.BLUEPRINT;
+            }
         }
 
         $scope.confirmDelete = function() {
             $scope.deleteState.inProcess = true;
 
             if(!!$scope.deleteState.itemToDelete) {
+                $log.info('deleting a',$scope.deleteState.type);
                 switch($scope.deleteState.type) {
                 case DELETE_TYPES.BLUEPRINT:
                     CloudifyService.blueprints.delete({id: $scope.deleteState.itemToDelete.id})
@@ -63,9 +66,5 @@ angular.module('cosmoUiApp')
                     break;
                 }
             }
-        };
-
-        $scope.toggleIgnoreLiveNodes = function() {
-            $scope.ignoreLiveNodes = !$scope.ignoreLiveNodes;
         };
     });

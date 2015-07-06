@@ -1,39 +1,48 @@
 'use strict';
 
 angular.module('cosmoUiApp')
-    .directive('bpTopologyNodes',  function (RecursionHelper, TopologyTypes) {
+    .directive('bpTopologyNodes',  function (RecursionHelper) {
         return {
             templateUrl: 'views/bpTopologyNodesTemplate.html',
             restrict: 'EA',
             transclude: true,
             scope: {
                 map: '=',
-                deploymentInProgress: '='
+                nodeInstances: '=',
+                inProgress: '=',
+                initialized:'=', // need to know. if not initialized, don't show badges. busy also means we are initialized.
+                onNodeSelect: '&selected',
+                onRelationshipSelect: '&'
             },
             compile: function(element) {
-                return RecursionHelper.compile(element, function(scope) {
-                    scope.onNodeSelected = function(node) {
-                        scope.$emit('topologyNodeSelected', node);
-                    };
-
-                    scope.onRelationshipSelected = function(relationship) {
-                        scope.$emit('topologyRelationshipSelected', relationship);
-                    };
-                });
+                return RecursionHelper.compile(element, function(/*scope*/) { });
             },
-            controller: function($scope, nodeStatus) {
-                $scope.headerHover = null;
+            controller: function($scope, $element, NodeService) {
 
-                $scope.getBadgeStatusAndIcon = function(status) {
-                    return nodeStatus.getStatusClass(status) + ' ' + nodeStatus.getIconClass(status);
+                var scope = $scope;
+
+                scope.getTotal = function( node ){
+                    return getInstances(node).length;
                 };
 
-                $scope.getBadgeStatus = function(status) {
-                    return nodeStatus.getStatusClass(status);
+                function getInstances(node){
+                    if ( !node ){
+                        return [];
+                    }
+                    if ( scope.nodeInstances && scope.nodeInstances.hasOwnProperty(node.id)) {
+                        return scope.nodeInstances[node.id];
+                    }else{
+                        return [];
+                    }
+                }
+
+                scope.getCompleted = function( node ){
+                    return _.filter(getInstances(node), function(instance){ NodeService.status.isCompleted(instance);}).length;
                 };
+
 
                 $scope.isConnectedTo = function(relationship) {
-                    return relationship.type_hierarchy.join(',').indexOf('connected_to') && TopologyTypes.isValidConnection(relationship.node);
+                    NodeService.isConnectedTo(relationship);
                 };
 
                 // TODO: 3.2 - Check if function still needed
@@ -41,25 +50,24 @@ angular.module('cosmoUiApp')
                     return 'cloudify-nodes-' + type;
                 };
 
-                $scope.setHeaderHover = function(nodeName) {
-                    $scope.headerHover = nodeName;
+
+                $scope.shouldShowBadge = function () {
+                    return scope.initialized;
                 };
 
-                $scope.shouldShowBadge = function(node) {
-                    if (node.state === undefined || node.state.completed === undefined) {
-                        return false;
-                    }
-
-                    if (node.state.status === 0 && !$scope.deploymentInProgress) {
-                        return false;
-                    }
-
-                    return true;
+                $scope.shouldShowBadgeTitle = function (node) {
+                    return !!scope.nodeInstances && !node.isContained;
                 };
 
-                $scope.shouldShowBadgeTitle = function(node) {
-                    return node.state !== undefined && node.state.completed !== undefined && !node.isContained;
+                $scope.getBadgeStatusAndIcon = function( node ){
+                    return NodeService.status.getBadgeStatusAndIcon( scope.inProgress, getInstances(node));
+
                 };
+
+                $scope.getBadgeStatus = function( node ){
+                    return NodeService.status.getBadgeStatus( scope.inProgress, getInstances(node));
+                };
+
             }
         };
     });

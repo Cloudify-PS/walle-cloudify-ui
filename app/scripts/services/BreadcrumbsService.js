@@ -32,6 +32,12 @@ angular.module('ngBreadcrumbs', []).factory('BreadcrumbsService', function() {
 
     return {
         push: function(id, item) {
+
+            if ( typeof(id) === 'object'){ // support passing object with id
+                item = id;
+                id = item.id;
+            }
+
             _checkIdExists(id);
             if (!_checkItemExists(id, item)) {
                 if (item.id === id) {

@@ -1,5 +1,6 @@
 'use strict';
 
+//http://stackoverflow.com/questions/14430655/recursion-in-angular-directives
 angular.module('cosmoUiApp').factory('RecursionHelper', ['$compile', function($compile) {
     return {
         compile: function(element, link){

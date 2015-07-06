@@ -9,10 +9,11 @@
 angular.module('cosmoUiApp')
     .directive('deploymentEvents', function ($log, $filter, EventsService, EventsMap, $document, cloudifyClient) {
         return {
-            templateUrl: 'views/deployment/eventWidget.html',
+            templateUrl: 'views/deployment/deploymentEvents.html',
             restrict: 'EA',
             scope: {
-                id: '=deploymentEvents'
+                id: '=deploymentEvents',
+                showDeploymentEvents: '='
             },
             link: function postLink($scope, $element) {
 
@@ -25,9 +26,12 @@ angular.module('cosmoUiApp')
 
                 function executeEvents() {
 
+                    if ( !$scope.id || !$scope.showDeploymentEvents ){
+                        return { then:function(){}};
+                    }
                     return cloudifyClient.events.get( { 'deployment_id' :  $scope.id ,  'from_event': 0, 'batch_size' : 50 , 'include_logs' :  false , 'order' : 'desc' }).then(function (result) {
                         $scope.events = result.data.hits.hits;
-                        $scope.lastEvent = $scope.events.length > 0 ? $scope.events[0] : null;
+                        $scope.lastEvent = _.first($scope.events);
                         _.each($scope.events, function(e){
                             e._source.timestamp = EventsService.convertTimestamp( e._source.timestamp  );
                         });
@@ -55,6 +59,7 @@ angular.module('cosmoUiApp')
 
                 $scope.dragIt = function (event) {
 
+
                     event.preventDefault();
                     $scope.minimizeMode = false;
                     dragFromY = event.clientY;
@@ -75,15 +80,17 @@ angular.module('cosmoUiApp')
 
                 function mousemove(event) {
                     var currentY = event.clientY; // clientY increases if mouse is lower on screen.
-
                     var newHeight = dragFromHeight + dragFromY - currentY;
 
+
+
                     var c = $element.find('.containList');
-                    var maxHeight = angular.element(document.querySelector('#main-content')).height() - angular.element(document.querySelector('.bpContainer')).position().top - 50;
+                    var maxHeight = $element.parent().height();
 
                     if (newHeight >= maxHeight) {
                         newHeight = maxHeight;
                     }
+
 
                     c.css({
                         height: newHeight + 'px'
@@ -92,7 +99,6 @@ angular.module('cosmoUiApp')
 
                 function mouseup() {
                     toggleIt();
-                    $scope.$broadcast('rebuild:me');
                     $document.unbind('mousemove', mousemove);
                     $document.unbind('mouseup', mouseup);
                 }

@@ -168,8 +168,15 @@ input[required] {
 
       .dialogInputs {
           position: relative;
-          padding-left: 20px;
+          margin:0 auto;
           text-align: left;
+
+          .form-raw-item-name{
+              display:inline-block;
+              max-width:150px;
+              text-overflow: ellipsis;
+              overflow: hidden;
+          }
 
           &.deployInputs {
               width: 330px;
@@ -179,22 +186,7 @@ input[required] {
               width: 405px;
           }
 
-          .buttons-group {
-              margin-left: 92px;
-              margin-bottom: 10px;
 
-              &.deployBtns {
-                  margin-left: 52px;
-              }
-
-              &.executeBtns {
-                  margin-left: 92px;
-              }
-
-              button {
-                  min-width: 100px;
-              }
-          }
 
           ul {
               list-style-type: none;

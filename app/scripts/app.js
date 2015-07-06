@@ -43,19 +43,19 @@ angular.module('cosmoUiApp', [
                 controller: 'BlueprintsIndexCtrl'
             })
             .when('/blueprint/:blueprintId/topology', {
-                templateUrl: 'views/blueprint/topology.html',
+                templateUrl: 'views/blueprint/blueprintTopology.html',
                 controller: 'BlueprintTopologyCtrl'
             })
             .when('/blueprint/:blueprintId/network', {
-                templateUrl: 'views/blueprint/network.html',
+                templateUrl: 'views/blueprint/blueprintNetwork.html',
                 controller: 'BlueprintNetworkCtrl'
             })
             .when('/blueprint/:blueprintId/nodes', {
-                templateUrl: 'views/blueprint/nodes.html',
+                templateUrl: 'views/blueprint/blueprintNodes.html',
                 controller: 'BlueprintNodesCtrl'
             })
-            .when('/blueprint/:id/source', {
-                templateUrl: 'views/blueprint/source.html',
+            .when('/blueprint/:blueprintId/source', {
+                templateUrl: 'views/blueprint/blueprintSource.html',
                 controller: 'SourceCtrl'
             })
             .when('/deployments',{
@@ -63,31 +63,31 @@ angular.module('cosmoUiApp', [
                 controller: 'DeploymentsCtrl'
             })
             .when('/deployment/:deploymentId/monitoring', {
-                templateUrl: 'views/deployment/monitoring.html',
+                templateUrl: 'views/deployment/deploymentMonitoring.html',
                 controller: 'DeploymentMonitoringCtrl'
             })
             .when('/deployment/:deploymentId/topology', {
-                templateUrl: 'views/deployment/topology.html',
+                templateUrl: 'views/deployment/deploymentTopology.html',
                 controller: 'DeploymentTopologyCtrl'
             })
             .when('/deployment/:deploymentId/network', {
-                templateUrl: 'views/deployment/network.html',
+                templateUrl: 'views/deployment/deploymentNetwork.html',
                 controller: 'DeploymentNetworkCtrl'
             })
             .when('/deployment/:deploymentId/nodes', {
-                templateUrl: 'views/deployment/nodes.html',
+                templateUrl: 'views/deployment/deploymentNodes.html',
                 controller: 'DeploymentNodesCtrl'
             })
             .when('/deployment/:deploymentId/executions', {
-                templateUrl: 'views/deployment/executions.html',
+                templateUrl: 'views/deployment/deploymentExecutions.html',
                 controller: 'DeploymentExecutionsCtrl'
             })
             .when('/deployment/:deploymentId/events', {
                 templateUrl: 'views/deployment/events.html',
                 controller: 'DeploymentEventsCtrl'
             })
-            .when('/deployment/:id/source', {
-                templateUrl: 'views/deployment/source.html',
+            .when('/deployment/:deploymentId/source', {
+                templateUrl: 'views/deployment/deploymentSource.html',
                 controller: 'SourceCtrl'
             })
             .when('/monitoring',{
