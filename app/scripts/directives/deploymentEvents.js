@@ -102,6 +102,11 @@ angular.module('cosmoUiApp')
                     $document.unbind('mousemove', mousemove);
                     $document.unbind('mouseup', mouseup);
                 }
+
+
+
+                /// for tests
+                $scope.executeEvents = executeEvents;
             }
         };
     });
