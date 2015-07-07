@@ -9,7 +9,7 @@ describe('Directive: deploymentEvents', function () {
     beforeEach(inject(function ($compile, $rootScope, cloudifyClient) {
 
         spyOn(cloudifyClient.events,'get').andCallFake(function(){
-            return {then:function(){}};
+            return {then:function( success ){ success({ data: { hits : { hits : [{}] }}}); }};
         });
 
         scope = $rootScope.$new();
@@ -56,6 +56,18 @@ describe('Directive: deploymentEvents', function () {
             expect(element.find('div.containList').length).toBe(1);
         });
 
+    });
+
+    describe('events view', function(){ // tests for the HTML
+        it('should identify events by id when painting CFY-3071', function(){
+
+            scope.events = [{ 'hello' : 'world', _source: { event_type: 'install'} }];
+            scope.$digest();
+
+
+            // use track by event._id so angular will know not to repaint old events, only new ones.
+            expect(element.find('[ng-repeat="event in events track by event._id"]').length).toBe(1);
+        });
     });
 
 
