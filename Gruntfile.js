@@ -122,6 +122,7 @@ module.exports = function (grunt) {
                 options: {
                     middleware: function (connect) {
                         return [
+                            proxySnippet,
                             mountFolder(connect, yeomanConfig.dist)
                         ];
                     }
@@ -639,12 +640,18 @@ module.exports = function (grunt) {
 
 
     grunt.registerTask('server', function (target) {
+
+        proxySnippet = require('grunt-connect-proxy/lib/utils').proxyRequest;
+
         if (target === 'dist') {
-            return grunt.task.run(['build', 'open', 'connect:dist:keepalive']);
+            return grunt.task.run([ 'configureProxies', 'open', 'connect:dist:keepalive']);
+        }
+        if (target === 'build_dist') {
+            return grunt.task.run([ 'build', 'configureProxies', 'open', 'connect:dist:keepalive']);
         }
         // guy - moving lines here after build broke.
         // this way : 1) build will not break 2) it will be clearer what broke where
-        proxySnippet = require('grunt-connect-proxy/lib/utils').proxyRequest;
+
         lrSnippet = require('connect-livereload')({ port: LIVERELOAD_PORT });
 
         grunt.task.run([
@@ -700,6 +707,7 @@ module.exports = function (grunt) {
 
         grunt.task.run(tasks);
     });
+
 
     grunt.registerTask('pack', 'after `build` will run npm pack on dist folder',[
         'shell:npmInstallDist',
@@ -788,6 +796,8 @@ module.exports = function (grunt) {
         'build',
         'backend'
     ]);
+
+
 
 
     grunt.registerTask('compass', ['sass']);

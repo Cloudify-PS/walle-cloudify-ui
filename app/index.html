@@ -34,37 +34,54 @@
         try {
             // guy - adding it here to support system tests
 
-            //https://github.com/ariya/phantomjs/issues/10522
-            if (!Function.prototype.bind) {
-                Function.prototype.bind = function (oThis) {
-                    if (typeof this !== 'function') {
-                        // closest thing possible to the ECMAScript 5
-                        // internal IsCallable function
-                        throw new TypeError('Function.prototype.bind - what is trying to be bound is not callable');
+
+            // https://github.com/ariya/phantomjs/issues/10522 - THIS ONE DID NOT WORK!!!
+            // using a different one
+            // https://github.com/gruntjs/grunt-contrib-jasmine/issues/107
+            Function.prototype.bind = function bind(that) { // .length is 1
+                var target = this;
+                var slice = [].slice;
+                if (typeof target != "function") {
+                    throw new TypeError("Function.prototype.bind called on incompatible " + target);
+                }
+                var args = slice.call(arguments, 1); // for normal call
+                var bound = function () {
+
+                    if (this instanceof bound) {
+
+                        var result = target.apply(
+                            this,
+                            args.concat(slice.call(arguments))
+                        );
+                        if (Object(result) === result) {
+                            return result;
+                        }
+                        return this;
+
+                    } else {
+                        return target.apply(
+                            that,
+                            args.concat(slice.call(arguments))
+                        );
+
                     }
 
-                    var aArgs = Array.prototype.slice.call(arguments, 1),
-                        fToBind = this,
-                        fNOP = function () {
-                        },
-                        fBound = function () {
-                            return fToBind.apply(this instanceof fNOP
-                                    ? this
-                                    : oThis,
-                                aArgs.concat(Array.prototype.slice.call(arguments)));
-                        };
-
-                    fNOP.prototype = this.prototype;
-                    fBound.prototype = new fNOP();
-
-                    return fBound;
                 };
-            }
+                var Empty = function(){}
+                if(target.prototype) {
+                    Empty.prototype = target.prototype;
+                    bound.prototype = new Empty();
+                    Empty.prototype = null;
+                }
+                return bound;
+            };
 
             if (!console.log.bind) {
                 console.log.bind = Function.prototype.bind;
             }
-        }catch(e){}
+        }catch(e){
+            console.log('unable to mock bind',e);
+        }
     </script>
 
 
