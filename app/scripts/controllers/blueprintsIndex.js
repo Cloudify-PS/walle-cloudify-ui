@@ -5,7 +5,6 @@ angular.module('cosmoUiApp')
         $scope.lastExecutedPlan = null;
         $scope.selectedBlueprint = null;
         $scope.managerError = false;
-        var _dialog = null;
         $scope.itemToDelete = null;
 
         BreadcrumbsService.push('blueprints',
@@ -20,10 +19,7 @@ angular.module('cosmoUiApp')
         };
 
         $scope.openAddDialog = function() {
-            if (_isDialogOpen()) {
-                return;
-            }
-            _dialog = ngDialog.open({
+            ngDialog.open({
                 template: 'views/dialogs/upload.html',
                 controller: 'FileSelectionDialogCtrl',
                 scope: $scope,
@@ -32,7 +28,8 @@ angular.module('cosmoUiApp')
         };
 
         $scope.openDeployDialog = function(blueprint) {
-            _dialog = ngDialog.open({
+            $scope.selectedBlueprint = null;
+            ngDialog.open({
                 template: 'views/dialogs/deploy.html',
                 controller: 'DeployDialogCtrl',
                 scope: $scope,
@@ -46,10 +43,7 @@ angular.module('cosmoUiApp')
         };
 
         $scope.openDeleteDialog = function() {
-            if (_isDialogOpen()) {
-                return;
-            }
-            _dialog = ngDialog.open({
+            ngDialog.open({
                 template: 'views/dialogs/delete.html',
                 controller: 'DeleteDialogCtrl',
                 scope: $scope,
@@ -114,10 +108,6 @@ angular.module('cosmoUiApp')
             $location.path('/deployment/' + deployment_id + '/topology');
         };
 
-
-        function _isDialogOpen() {
-            return _dialog !== null && ngDialog.isOpen(_dialog.id);
-        }
 
         loadBlueprints();
         loadDeployments();

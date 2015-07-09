@@ -23,6 +23,12 @@ angular.module('cosmoUiApp')
 
                 opts.params = opts.qs;
 
+                // add support to json headers. required by REST.
+                // follow recommendation by cloudify-js project.
+                if ( !!opts.json ){
+                    opts.headers = _.merge({}, opts.headers, { 'Content-Type' : 'application/json'});
+                }
+
                 return $http(opts).then(function (result) {
                     callback(null, result, result ? result.data : null);
                     return result;
