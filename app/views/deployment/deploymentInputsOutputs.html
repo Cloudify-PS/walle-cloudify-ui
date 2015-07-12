@@ -1,0 +1,46 @@
+<div class="cosmo-layout" id="deployment">
+    <div deployment-layout
+         depid="deploymentId"
+         section="Inputs&Outputs"
+         selectview="false"></div>
+    <div class="inputsOutputs">
+        <div id="inputs">
+            <h4>Inputs:</h4>
+            <table class="gs-table gs-table-align-top" ng-if="!inputsError && !!inputs ">
+                <thead>
+                <tr>
+                    <th class="input">Input</th>
+                    <th class="value">Value</th>
+                </tr>
+                </thead>
+                <tbody data-ng-repeat="(key, value) in inputs">
+                <tr>
+                    <td class="input">{{ key }}</td>
+                    <td class="value">{{ value }}</td>
+                </tr>
+                </tbody>
+            </table>
+            <p class="error" ng-if="!!inputsError">Error getting deployment's inputs</p>
+            <p class="info" ng-if="!inputs && !inputsError">No inputs were defined for this deployment</p>
+        </div>
+        <div id="outputs">
+            <h4>Outputs:</h4>
+            <table class="gs-table gs-table-align-top" ng-if="!outputsError && !!outputs">
+                <thead>
+                <tr>
+                    <th class="output">Output</th>
+                    <th class="value">Value</th>
+                </tr>
+                </thead>
+                <tbody data-ng-repeat="(key, value) in outputs">
+                <tr>
+                    <td class="output">{{ key }}</td>
+                    <td class="value">{{ value }}</td>
+                </tr>
+                </tbody>
+            </table>
+            <p class="error" ng-if="!!outputsError">Error getting deployment's outputs</p>
+            <p class="info" ng-if="!outputs && !outputsError">No outputs were defined for this deployment</p>
+        </div>
+    </div>
+</div>

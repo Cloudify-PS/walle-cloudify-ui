@@ -82,6 +82,10 @@ angular.module('cosmoUiApp', [
                 templateUrl: 'views/deployment/deploymentExecutions.html',
                 controller: 'DeploymentExecutionsCtrl'
             })
+            .when('/deployment/:deploymentId/inputs-outputs', {
+                templateUrl: 'views/deployment/deploymentInputsOutputs.html',
+                controller: 'InputsOutputsCtrl'
+            })
             .when('/deployment/:deploymentId/events', {
                 templateUrl: 'views/deployment/events.html',
                 controller: 'DeploymentEventsCtrl'
