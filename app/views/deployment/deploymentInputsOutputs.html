@@ -20,8 +20,8 @@
                 </tr>
                 </tbody>
             </table>
-            <p class="error" ng-if="!!inputsError">Error getting deployment's inputs</p>
-            <p class="info" ng-if="!inputs && !inputsError">No inputs were defined for this deployment</p>
+            <p class="error" ng-if="!!inputsError">{{'deployment.inputsOutputs.inputsError' | translate }}</p>
+            <p class="info" ng-if="!inputs && !inputsError">{{'deployment.inputsOutputs.inputsUndefined' | translate}}</p>
         </div>
         <div id="outputs">
             <h4>Outputs:</h4>
@@ -39,8 +39,8 @@
                 </tr>
                 </tbody>
             </table>
-            <p class="error" ng-if="!!outputsError">Error getting deployment's outputs</p>
-            <p class="info" ng-if="!outputs && !outputsError">No outputs were defined for this deployment</p>
+            <p class="error" ng-if="!!outputsError">{{'deployment.inputsOutputs.outputsError' | translate }}</p>
+            <p class="info" ng-if="!outputs && !outputsError">{{'deployment.inputsOutputs.outputsUndefined' | translate}}</p>
         </div>
     </div>
 </div>
