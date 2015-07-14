@@ -2,7 +2,11 @@
 <div class="cosmo-layout" id="blueprints-index">
 
     <div class="content-header no-border">
-        <div class="breadcrumbs"><ul id="blueprints" breadcrumbs></ul></div>
+        <div class="breadcrumbs">
+            <ul>
+                <li><span>{{ 'breadcrumb.blueprints' | translate }}</span></li>
+            </ul>
+        </div>
         <div class="right">
         <button class="gs-btn" ng-click="openAddDialog()">{{ 'blueprints.uploadBtn' | translate }}</button>
         </div>

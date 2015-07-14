@@ -1,16 +1,8 @@
 'use strict';
 
 angular.module('cosmoUiApp')
-    .controller('HostsCtrl', function ($scope, BreadcrumbsService, $filter, NodeSearchService, $timeout ) {
+    .controller('HostsCtrl', function ($scope, $filter, NodeSearchService, $timeout ) {
 
-        /**
-         * Breadcrumbs
-         */
-        BreadcrumbsService.push('hosts', {
-            href: '#/hosts',
-            i18nKey: 'breadcrumb.hosts',
-            id: 'hosts'
-        });
 
         /**
          * Hosts

@@ -1,18 +1,13 @@
 'use strict';
 
 angular.module('cosmoUiApp')
-    .controller('BlueprintsIndexCtrl', function ($scope, $location, $cookieStore, BreadcrumbsService, $log, ngDialog, cloudifyClient) {
+    .controller('BlueprintsIndexCtrl', function ($scope, $location, $cookieStore, $log, ngDialog, cloudifyClient) {
         $scope.lastExecutedPlan = null;
         $scope.selectedBlueprint = null;
         $scope.managerError = false;
         $scope.itemToDelete = null;
 
-        BreadcrumbsService.push('blueprints',
-            {
-                href: '#/blueprints',
-                i18nKey: 'breadcrumb.blueprints',
-                id: 'blueprints'
-            });
+
 
         $scope.redirectTo = function (blueprint) {
             $location.path('/blueprint/' + blueprint.id + '/topology');

@@ -17,7 +17,12 @@
                 <div app-status-widget deployment-id="deploymentId" id="appStatus"></div>
 
                 <div class="content-header">
-                    <div class="breadcrumbs"><ul id="deployments" breadcrumbs></ul></div>
+                    <div class="breadcrumbs">
+                        <ul>
+                            <li><a ng-href="#/deployments">{{ 'breadcrumb.deployments' | translate }}</a></li>
+                            <li class="active"><span>{{ deploymentId }} <a ng-href="#/blueprint/{{ blueprintId }}/topology">({{ blueprintId }})</a> </span></li>
+                        </ul>
+                    </div>
                 </div>
 
                 <div section-nav-menu="navMenu"></div>

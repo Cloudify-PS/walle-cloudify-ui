@@ -1,16 +1,9 @@
 'use strict';
 
 angular.module('cosmoUiApp')
-    .controller('LogsCtrl', function ($scope, BreadcrumbsService, EventsService, $location, $timeout, $anchorScroll, $filter, $routeParams, LogsModel, $window, EventsMap, $log, CloudifyService, ngDialog) {
+    .controller('LogsCtrl', function ($scope, EventsService, $location, $timeout, $anchorScroll, $filter, $routeParams, LogsModel, $window, EventsMap, $log, CloudifyService, ngDialog) {
 
-        /**
-         * Breadcrumbs
-         */
-        BreadcrumbsService.push('logs', {
-            href: '#/logs',
-            i18nKey: 'breadcrumb.logs',
-            id: 'logs'
-        });
+
 
         /**
          * Logs

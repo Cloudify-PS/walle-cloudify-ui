@@ -1,13 +1,17 @@
 'use strict';
 
 angular.module('cosmoUiApp')
-    .directive('breadcrumbs', function (BreadcrumbsService) {
+    .directive('breadcrumbs', function () {
         return {
-            restrict: 'EA',
+            restrict: 'A',
             templateUrl: 'views/breadcrumbsTemplate.html',
             replace: true,
-            link: function ($scope, $attr) {
-                $scope.breadcrumbs = BreadcrumbsService.get($attr[0].id);
+            scope:{
+                'breadcrumbs' : '='
+            },
+            link: function (/*$scope, $attr*/) {
+
             }
+
         };
     });
