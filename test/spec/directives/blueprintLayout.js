@@ -30,10 +30,6 @@ describe('Directive: blueprintLayout', function () {
         compileElement();
     }));
 
-    it('transclude content', inject(function () {
-        scope.$digest(); // see before each comment
-        expect(element.text().indexOf('foo') >= 0).toBe(true);
-    }));
 
     describe('#openDeployDialog', function(){
         it('should open dialog', inject(function(ngDialog){

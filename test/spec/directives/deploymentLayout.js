@@ -39,20 +39,6 @@ describe('Directive: deploymentLayout', function () {
             }));
 
 
-            it('should define the url to blueprint topology in the breadcrumbs', inject(function (BreadcrumbsService, cloudifyClient, $compile ) {
-                cloudifyClient.deployments.get.andReturn({
-                    then: function (success) {
-                        success({data: { blueprint_id : 'foo' }});
-                    }
-                });
-                spyOn(BreadcrumbsService, 'push');
-                element = $compile(angular.element('<div class="deployment-layout"></div>'))(scope);
-                scope.$digest();
-
-                expect(BreadcrumbsService.push).toHaveBeenCalledWith({ href : false, label : 'foo', brackets : { label : 'foo', href : '#/blueprint/foo/topology' }, id : 'deployment' });
-
-            }));
-
             it('should put blueprint_id and deployment on scope', inject(function ($compile, cloudifyClient) {
                 cloudifyClient.deployments.get.andReturn({
                     then: function (success) {
