@@ -1,5 +1,4 @@
 .workflow-selector {
-
     &.in-progress{
 
         .gs-select{
@@ -20,6 +19,12 @@
 
 
     .workflow-selector-display {
+        t{
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width:85%;
+        }
+
         button {
             background-color: transparent;
             border: none;
