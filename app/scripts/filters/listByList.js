@@ -10,7 +10,7 @@
  */
 
 angular.module('cosmoUiApp')
-    .filter('listByList', function filterListByList() {
+    .filter('listByList', function listByList() {
         return function (list, filterList) {
             var results = [];
             for (var f in filterList) {
