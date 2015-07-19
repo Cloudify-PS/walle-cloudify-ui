@@ -7,7 +7,6 @@ angular.module('cosmoUiApp', [
     'ngRoute',
     'ngSanitize',
     'ngResource',
-    'ngBreadcrumbs',
     'elasticjs.service',
     'ngAnimate',
     'nvd3ChartDirectives',

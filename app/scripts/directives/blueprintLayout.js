@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('cosmoUiApp')
-    .directive('blueprintLayout', function ($location, BreadcrumbsService, CloudifyService, ngDialog, $routeParams) {
+    .directive('blueprintLayout', function ($location, CloudifyService, ngDialog, $routeParams) {
         return {
             templateUrl: 'views/blueprint/blueprintLayout.html',
             restrict: 'C',
@@ -14,13 +14,6 @@ angular.module('cosmoUiApp')
 
                 $scope.blueprintId = $routeParams.blueprintId;
 
-
-                // Set Breadcrumb
-                BreadcrumbsService.push('blueprints', {
-                    href: '#/blueprints',
-                    i18nKey: 'breadcrumb.blueprints',
-                    id: 'blueprints'
-                });
 
                 CloudifyService.blueprints.getBlueprintById({id: $scope.blueprintId})
                     .then(function(blueprintData) {
@@ -46,11 +39,7 @@ angular.module('cosmoUiApp')
 
                     });
 
-                $scope.$watch('breadcrumb', function (breadcrumbs) {
-                    angular.forEach(breadcrumbs, function (breadcrumb) {
-                        BreadcrumbsService.push('blueprints', breadcrumb);
-                    });
-                }, true);
+
 
                 // Set Navigation Menu
                 $scope.navMenu = [

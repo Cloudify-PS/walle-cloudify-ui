@@ -1,16 +1,8 @@
 'use strict';
 
 angular.module('cosmoUiApp')
-    .controller('InterfaceCtrl', function ($scope, BreadcrumbsService, TopologyTypes, EventsMap, nodeStatus) {
+    .controller('InterfaceCtrl', function ($scope, TopologyTypes, EventsMap, nodeStatus) {
 
-        /**
-         * Breadcrumbs
-         */
-        BreadcrumbsService.push('interface', {
-            href: '#/interface',
-            i18nKey: 'breadcrumb.interface',
-            id: 'interface'
-        });
 
         $scope.typesList = TopologyTypes.getList();
 

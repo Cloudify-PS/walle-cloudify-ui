@@ -3,7 +3,7 @@
 // TODO: this code should be much more testable
 angular.module('cosmoUiApp')
     .controller('DeploymentsCtrl', function ($scope, ExecutionsService,
-                                             $location, $routeParams, BreadcrumbsService, $log,
+                                             $location, $routeParams, $log,
                                               ngDialog, cloudifyClient ) {
 
         $scope.deployments = null;
@@ -18,12 +18,6 @@ angular.module('cosmoUiApp')
 
         $scope.itemToDelete = null;
 
-        BreadcrumbsService.push('deployments',
-            {
-                href: '#/deployments',
-                i18nKey: 'breadcrumb.deployments',
-                id: 'deployments'
-            });
 
 
 

@@ -1,16 +1,8 @@
 'use strict';
 
 angular.module('cosmoUiApp')
-    .controller('HostsCtrl', function ($scope, BreadcrumbsService, $filter, NodeSearchService, $timeout ) {
+    .controller('HostsCtrl', function ($scope, $filter, NodeSearchService, $timeout ) {
 
-        /**
-         * Breadcrumbs
-         */
-        BreadcrumbsService.push('hosts', {
-            href: '#/hosts',
-            i18nKey: 'breadcrumb.hosts',
-            id: 'hosts'
-        });
 
         /**
          * Hosts
@@ -68,7 +60,7 @@ angular.module('cosmoUiApp')
 
         $scope.$watch('eventsFilter.blueprints', function(newValue){
             if(newValue !== null) {
-                $scope.deploymentsList = $filter('filterListByList')(_deploymentsList, [newValue]);
+                $scope.deploymentsList = $filter('listByList')(_deploymentsList, [newValue]);
                 _blueprint = newValue.value;
             }
             else {

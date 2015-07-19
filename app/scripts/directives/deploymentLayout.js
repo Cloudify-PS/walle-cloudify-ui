@@ -7,7 +7,7 @@
  * # deploymentLayout
  */
 angular.module('cosmoUiApp')
-    .directive('deploymentLayout', function ($location, BreadcrumbsService, nodeStatus, ngDialog, cloudifyClient, ExecutionsService, $routeParams, $log ) {
+    .directive('deploymentLayout', function ($location, nodeStatus, ngDialog, cloudifyClient, ExecutionsService, $routeParams, $log ) {
         return {
             templateUrl: 'views/deployment/deploymentLayout.html',
             restrict: 'C',
@@ -17,12 +17,7 @@ angular.module('cosmoUiApp')
 
                 $scope.deploymentId = $routeParams.deploymentId;
 
-                // Set Breadcrumb
-                BreadcrumbsService.push('deployments', {
-                    href: '#/deployments',
-                    i18nKey: 'breadcrumb.deployments',
-                    id: 'deployments'
-                });
+
 
                 // Set Navigation Menu - Need to set only after blueprint id available for source page href
                 $scope.navMenu = [
@@ -47,19 +42,6 @@ angular.module('cosmoUiApp')
                     .then(function (result) {
                         $scope.blueprintId = result.data.blueprint_id;
                         $scope.deployment = result.data;
-                        // Add breadcrumbs for the current deployment
-                        BreadcrumbsService.push(
-                            {
-                                href: false,
-                                label: result.data.blueprint_id,
-                                brackets: {
-                                    label: result.data.blueprint_id,
-                                    href: '#/blueprint/' + result.data.blueprint_id + '/topology'
-                                },
-                                id: 'deployment'
-                            }
-                        );
-
                     }, function( result ){
                         if ( result.status === 404 ){
                             $scope.deploymentNotFound = true;
