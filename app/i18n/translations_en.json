@@ -83,6 +83,12 @@
         },
         "monitoring": {
             "loading": "Please wait while monitoring dashboard loads"
+        },
+        "inputsOutputs": {
+            "inputsError": "Error getting deployment's inputs",
+            "outputsError": "Error getting deployment's outputs",
+            "inputsUndefined": "No inputs were defined for this deployment",
+            "outputsUndefined": "No outputs were defined for this deployment"
         }
     },
     "deployments": {

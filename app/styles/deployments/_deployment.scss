@@ -566,6 +566,36 @@
         width: 100%;
     }
 
+    .inputsOutputs{
+        margin: 30px 0 0;
+        padding: 0 20px 20px;
+
+        div{
+            width: 50%;
+            display: inline-block;
+            vertical-align: top;
+            text-align: left;
+        }
+
+        .error{
+            color:red;
+        }
+
+        #inputs{
+            float:left;
+            padding-right: 20px;
+        }
+
+        #outputs{
+            float:right;
+            padding-left: 20px;
+        }
+
+        .gs-table{
+            margin:0;
+        }
+    }
+
     .monitor {
         margin: 20px 20px 0;
         .navigate {
