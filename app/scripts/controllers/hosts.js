@@ -60,7 +60,7 @@ angular.module('cosmoUiApp')
 
         $scope.$watch('eventsFilter.blueprints', function(newValue){
             if(newValue !== null) {
-                $scope.deploymentsList = $filter('filterListByList')(_deploymentsList, [newValue]);
+                $scope.deploymentsList = $filter('listByList')(_deploymentsList, [newValue]);
                 _blueprint = newValue.value;
             }
             else {

@@ -216,17 +216,17 @@ angular.module('cosmoUiApp')
 
         $scope.$watch('eventsFilter.blueprints', function (newValue, oldValue) {
             $scope.isSearchDisabled = (newValue === null || newValue.length === 0);
-            $scope.deploymentsList = $filter('filterListByList')(_deploymentsList, newValue);
+            $scope.deploymentsList = $filter('listByList')(_deploymentsList, newValue);
             filterLogsByList('context.blueprint_id', newValue, oldValue, false);
         }, true);
 
         $scope.$watch('eventsFilter.deployments', function (newValue, oldValue) {
-            $scope.executionList = $filter('filterListByList')(_executionList, newValue);
+            $scope.executionList = $filter('listByList')(_executionList, newValue);
             filterLogsByList('context.deployment_id', newValue, oldValue, false);
             $scope.$watch(function () {
                 return _executionList;
             }, function () {
-                $scope.executionList = $filter('filterListByList')(_executionList, newValue);
+                $scope.executionList = $filter('listByList')(_executionList, newValue);
             }, true);
         }, true);
 
@@ -285,23 +285,6 @@ angular.module('cosmoUiApp')
             return _dialog !== null && ngDialog.isOpen(_dialog.id);
         }
 
-        var longetPeriod = $scope.timeframeList[$scope.timeframeList.length - 1];
-        filterLogsByRange('@timestamp', _filterByTimeframe(longetPeriod.value), true, $scope.events.getExecuteLastFiftyOptions());
-    });
-
-angular.module('cosmoUiApp')
-    .filter('filterListByList', function filterListByList() {
-        return function (list, filterList) {
-            var results = [];
-            for (var f in filterList) {
-                var filter = filterList[f];
-                for (var l in list) {
-                    var item = list[l];
-                    if (item.parent === filter.value) {
-                        results.push(item);
-                    }
-                }
-            }
-            return results;
-        };
+        var longestPeriod = $scope.timeframeList[$scope.timeframeList.length - 1];
+        filterLogsByRange('@timestamp', _filterByTimeframe(longestPeriod.value), true, $scope.events.getExecuteLastFiftyOptions());
     });
