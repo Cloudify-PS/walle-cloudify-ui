@@ -14,9 +14,21 @@ angular.module('cosmoUiApp')
         var _deploymentsList = [];
         $scope.emptyReason = $filter('translate')('hosts.chooseBlueprint');
 
+        function getBlueprintsWithDeployments(blueprints, deployments){
+            var blueprintsWithDeployments = [];
+            blueprints.forEach(function(blueprint) {
+                deployments.forEach(function (deployment) {
+                    if (blueprint.value === deployment.parent) {
+                        blueprintsWithDeployments.push(blueprint);
+                    }
+                });
+            });
+            return blueprintsWithDeployments;
+        }
+
         NodeSearchService.getNodeSearchData()
             .then(function(data){
-                $scope.blueprintsList = data.blueprints;
+                $scope.blueprintsList = getBlueprintsWithDeployments(data.blueprints,data.deployments);
                 _deploymentsList = data.deployments;
             });
 
