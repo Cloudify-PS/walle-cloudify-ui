@@ -63,23 +63,22 @@
             </tr>
             </thead>
             <tbody ng-repeat="row in nodesList | filter: searchFilter" ng-init="isOpen=false">
-                <tr>
-                    <td class="id">{{row.id == null && '-' || row.id }}</td>
-                    <td class="state">{{row.state == null && '-' || row.state }}</td>
-                    <td class="deploymentId">{{getBlueprintId() == null && '-' || getBlueprintId() }}</td>
-                    <td class="deploymentId">{{row.deployment_id == null && '-' || row.deployment_id }}</td>
-                    <td class="">{{row.host_id == null && '-' || row.host_id }}</td>
-                    <td class="">{{row.runtime_properties.ips == null && '-' || row.runtime_properties.ips }}</td>
-                    <td class="">{{row.runtime_properties.ip_addresses == null && '-' || row.runtime_properties.ip_addresses.join(', ') }}</td>
-                    <!--<td class="">{{row.runtime_properties.security_groups == null && '-' || row.runtime_properties.security_groups }}</td>-->
-                    <!--<td class="">{{row.runtime_properties.image_id == null && '-' || row.runtime_properties.image_id }}</td>-->
-                    <!--<td class="">{{row.runtime_properties.flavor_id == null && '-' || row.runtime_properties.flavor_id }}</td>-->
-                </tr>
+            <tr>
+                <td class="id">{{row.id == null && '-' || row.id }}</td>
+                <td class="state">{{row.state == null && '-' || row.state }}</td>
+                <td class="deploymentId">{{getBlueprintId() == null && '-' || getBlueprintId() }}</td>
+                <td class="deploymentId">{{row.deployment_id == null && '-' || row.deployment_id }}</td>
+                <td class="">{{row.host_id == null && '-' || row.host_id }}</td>
+                <td class="">{{row.runtime_properties.ips == null && '-' || row.runtime_properties.ips }}</td>
+                <td class="">{{row.runtime_properties.ip_addresses == null && '-' || row.runtime_properties.ip_addresses.join(', ') }}</td>
+                <!--<td class="">{{row.runtime_properties.security_groups == null && '-' || row.runtime_properties.security_groups }}</td>-->
+                <!--<td class="">{{row.runtime_properties.image_id == null && '-' || row.runtime_properties.image_id }}</td>-->
+                <!--<td class="">{{row.runtime_properties.flavor_id == null && '-' || row.runtime_properties.flavor_id }}</td>-->
+            </tr>
             </tbody>
         </table>
         <div class="emptyTable" data-ng-hide="nodesList.length || filterLoading" ng-show="">
             <div>{{ emptyReason }}</div>
-            <a class="gs-btn" ng-hide="!deployBlueprintButton" href="#/blueprint/{{getBlueprintId()}}/topology?deploy=true"> {{ 'hosts.deployBlueprint' | translate }} </a>
         </div>
 
         <div class="emptyTable" data-ng-show="filterLoading"> {{ 'general.loading' | translate }} </div>
