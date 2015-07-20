@@ -164,5 +164,60 @@ describe('Controller: HostsCtrl', function () {
 
             expect(scope.isSearchDisabled()).toBe(false);
         });
+
+        it('should show only blueprints with deployments',inject(function (NodeSearchService,$q,$rootScope,$controller) {
+
+            NodeSearchService.getNodeSearchData = function() {
+                var deferred = $q.defer();
+                deferred.resolve({
+                    blueprints: [
+                        {
+                            'label': 'blueprint1',
+                            'value': 'blueprint1'
+                        },
+                        {
+                            'label': 'blueprint2',
+                            'value': 'blueprint2'
+                        },
+                        {
+                            'label': 'blueprint3',
+                            'value': 'blueprint3'
+                        }
+                    ],
+                    deployments: [
+                        {
+                            'label': 'deployment3',
+                            'parent': 'blueprint3',
+                            'value': 'deployment3'
+                        },
+                        {
+                            'label': 'deployment1',
+                            'parent': 'blueprint1',
+                            'value': 'deployment1'
+                        }
+                    ]
+                });
+                return deferred.promise;
+            };
+
+            var scope = $rootScope.$new();
+            HostsCtrl = $controller('HostsCtrl', {
+                $scope: scope,
+                $timeout:function(callback){ callback(); },
+                NodeSearchService: NodeSearchService
+            });
+
+            scope.$digest();
+            expect(scope.blueprintsList).toEqual([
+                {
+                    'label': 'blueprint1',
+                    'value': 'blueprint1'
+                },
+                {
+                    'label': 'blueprint3',
+                    'value': 'blueprint3'
+                }
+            ]);
+        }));
     });
 });
