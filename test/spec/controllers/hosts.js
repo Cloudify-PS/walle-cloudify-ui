@@ -203,7 +203,6 @@ describe('Controller: HostsCtrl', function () {
             var scope = $rootScope.$new();
             HostsCtrl = $controller('HostsCtrl', {
                 $scope: scope,
-                $timeout:function(callback){ callback(); },
                 NodeSearchService: NodeSearchService
             });
 
