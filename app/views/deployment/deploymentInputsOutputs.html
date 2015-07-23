@@ -4,7 +4,7 @@
          section="Inputs&Outputs"
          selectview="false"></div>
     <div class="inputsOutputs">
-        <div id="inputs">
+        <div id="inputs" class="splitContainer">
             <h4>Inputs:</h4>
             <table class="gs-table gs-table-align-top" ng-if="!inputsError && !!inputs ">
                 <thead>
@@ -23,7 +23,7 @@
             <p class="error" ng-if="!!inputsError">{{'deployment.inputsOutputs.inputsError' | translate }}</p>
             <p class="info" ng-if="!inputs && !inputsError">{{'deployment.inputsOutputs.inputsUndefined' | translate}}</p>
         </div>
-        <div id="outputs">
+        <div id="outputs" class="splitContainer">
             <h4>Outputs:</h4>
             <table class="gs-table gs-table-align-top" ng-if="!outputsError && !!outputs">
                 <thead>
