@@ -16,12 +16,13 @@ angular.module('cosmoUiApp')
 
         function getBlueprintsWithDeployments(blueprints, deployments){
             var blueprintsWithDeployments = [];
-            blueprints.forEach(function(blueprint) {
-                deployments.forEach(function (deployment) {
-                    if (blueprint.value === deployment.parent) {
+            blueprints.forEach(function(blueprint){
+                for(var i=0;i<deployments.length;i++){
+                    if (blueprint.value === deployments[i].parent) {
                         blueprintsWithDeployments.push(blueprint);
+                        break;
                     }
-                });
+                };
             });
             return blueprintsWithDeployments;
         }
