@@ -36,39 +36,7 @@ input[required] {
   padding-top: 80px;
   padding-bottom: 80px;
 
-    .ngdialog-content { /* default width */
-        width: 800px;
-    }
 
-  &.deploy-dialog {
-    .ngdialog-content {
-      width: 350px;
-    }
-  }
-
-  &.upload-dialog {
-    .ngdialog-content {
-      width: 430px;
-    }
-  }
-
-  &.delete-dialog {
-    .ngdialog-content {
-      width: 450px;
-    }
-  }
-
-  &.confirm-dialog {
-    .ngdialog-content {
-      width: 430px;
-    }
-  }
-
-  &.message-dialog {
-    .ngdialog-content {
-      width: 430px;
-    }
-  }
 
   .ngdialog-overlay {
     background: $COSMOUI_DIALOG_OVERLAY;
@@ -83,6 +51,7 @@ input[required] {
       margin: 0 auto;
       line-height: 40px;
       font-family: "OpenSansLight";
+      width: 430px; /* default width */
 
       .ngdialog-close {
           float: right;
@@ -167,9 +136,22 @@ input[required] {
       }
 
       .dialogInputs {
+
           position: relative;
           margin:0 auto;
           text-align: left;
+
+          .type-toggle{
+              text-align:center;
+              button{ width:120px; }
+              .section-nav-menu-class{
+                  margin-left:-6px; /*  */
+              }
+          }
+
+          .inputsParameters{
+              margin-top:20px;
+          }
 
           .form-raw-item-name{
               display:inline-block;
@@ -253,10 +235,12 @@ input[required] {
               cursor: pointer;
           }
       }
-}
+  }
 
+
+}
 #uploadDialogContainer {
-   &.dialogBox{
+    &.dialogBox{
         .dialogDescription{
             margin:0;
             line-height:56px;
@@ -269,118 +253,117 @@ input[required] {
     }
 
     #uploadForm {
-      position: relative;
-      display: block;
-
-      .browse {
+        position: relative;
         display: block;
-        height: 33px;
 
-        #fileInput {
-          position: absolute;
-          opacity: 0;
-          left: 0px;
-          z-index: 9998;
-          top: 0px;
-          width: 35px;
-          height: 35px;
-          cursor: pointer;
-        }
+        .browse {
+            display: block;
+            height: 33px;
 
-        #browseBtn {
-          position: absolute;
-          right: 22px;
-          height: 32px;
-          font-size: 30px;
-          padding: 0px 8px 0px 9px;
-          line-height: 33px;
-          cursor: pointer;
-        }
-
-        .browseTxt {
-          position: absolute;
-          left: 20px;
-          width: 340px;
-          height: 32px;
-          border-radius: 3px;
-          padding-left: 10px;
-          background-clip: padding-box;
-          background-color: $COSMOUI_INPUT_BACKGROUND;
-          border: 0;
-
-          &.url {
-            width: 385px;
-            &.disabled {
-              color: red;
+            #fileInput {
+                position: absolute;
+                opacity: 0;
+                left: 0px;
+                z-index: 9998;
+                top: 0px;
+                width: 35px;
+                height: 35px;
+                cursor: pointer;
             }
-          }
+
+            #browseBtn {
+                position: absolute;
+                right: 22px;
+                height: 32px;
+                font-size: 30px;
+                padding: 0px 8px 0px 9px;
+                line-height: 33px;
+                cursor: pointer;
+            }
+
+            .browseTxt {
+                position: absolute;
+                left: 20px;
+                width: 340px;
+                height: 32px;
+                border-radius: 3px;
+                padding-left: 10px;
+                background-clip: padding-box;
+                background-color: $COSMOUI_INPUT_BACKGROUND;
+                border: 0;
+
+                &.url {
+                    width: 385px;
+                    &.disabled {
+                        color: red;
+                    }
+                }
+            }
         }
-      }
 
-      .name {
-        display: block;
-        position: relative;
-        top: 15px;
-        height: 48px;
-        input {
-          position: relative;
-          left: 20px;
-          width: 385px;
-          height: 32px;
-          border-radius: 3px;
-          padding-left: 10px;
-          background-clip: padding-box;
-          background-color: $COSMOUI_INPUT_BACKGROUND;
-          border: 0;
+        .name {
+            display: block;
+            position: relative;
+            top: 15px;
+            height: 48px;
+            input {
+                position: relative;
+                left: 20px;
+                width: 385px;
+                height: 32px;
+                border-radius: 3px;
+                padding-left: 10px;
+                background-clip: padding-box;
+                background-color: $COSMOUI_INPUT_BACKGROUND;
+                border: 0;
+            }
+
+            &.browseUrl {
+                left: 10px;
+            }
         }
 
-        &.browseUrl {
-          left: 10px;
+        #mainFile {
+            position: relative;
+            float: left;
+            left: 120px;
+            top: 63px;
+
+            #mainYamlName {
+                width: 272px;
+                height: 30px;
+                border-radius: 5px;
+                margin-left: 10px;
+            }
         }
-      }
 
-      #mainFile {
-        position: relative;
-        float: left;
-        left: 120px;
-        top: 63px;
-
-        #mainYamlName {
-          width: 272px;
-          height: 30px;
-          border-radius: 5px;
-          margin-left: 10px;
+        .upload-process-anim {
+            width: 25px;
+            height: 25px;
+            background: url("/images/progress.gif") no-repeat center center;
+            background-color: $clr-base-01;
+            border-radius: 25px;
+            position: absolute;
+            right: 81px;
+            bottom: 13px;
         }
-      }
 
-      .upload-process-anim {
-        width: 25px;
-        height: 25px;
-        background: url("/images/progress.gif") no-repeat center center;
-        background-color: $clr-base-01;
-        border-radius: 25px;
-        position: absolute;
-        right: 81px;
-        bottom: 13px;
-      }
+        #uploadBtn {
+            position: relative;
+            margin: 10px 0;
+            left: 355px;
+            line-height: 20px;
+        }
 
-      #uploadBtn {
-        position: relative;
-        margin: 10px 0;
-        left: 355px;
-        line-height: 20px;
-      }
-
-      #required-message {
-        display: inline-block;
-        color: $clr-base-06;
-        font-size: 12px;
-        position: absolute;
-        bottom: 10px;
-        left: 23px;
-      }
+        #required-message {
+            display: inline-block;
+            color: $clr-base-06;
+            font-size: 12px;
+            position: absolute;
+            bottom: 10px;
+            left: 23px;
+        }
     }
-  }
 }
 
 #confirmationDialogContainer {

@@ -1,4 +1,4 @@
-[section-nav-menu] {
+[section-nav-menu],.section-nav-menu-class /** use -class to allow usage of css without directive **/ {
     display:inline-block;
     .buttons-group {
         margin-left: 0px;
@@ -8,14 +8,21 @@
 
         a, button {
             display: inline-block;
-            border: 2px solid $COSOMUI_SECTION_MENU_BORDER_COLOR;
+
+            $BORDER_WIDTH:2px;
+
+            border: $BORDER_WIDTH solid $COSOMUI_SECTION_MENU_BORDER_COLOR;
+            border-left-width: 0;
+
+
 
             border-radius: 0;
-            margin: 0 -6px 0 0;
+            margin: 0 0 0 0;
             background-color: $clr-base-01;
 
             &:first-child {
                 border-radius: $RADIUS 0 0 $RADIUS;
+                border-left-width:$BORDER_WIDTH;
             }
             &:last-child {
                 border-radius: 0 $RADIUS $RADIUS 0;
