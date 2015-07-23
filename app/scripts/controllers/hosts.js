@@ -22,7 +22,7 @@ angular.module('cosmoUiApp')
                         blueprintsWithDeployments.push(blueprint);
                         break;
                     }
-                };
+                }
             });
             return blueprintsWithDeployments;
         }
