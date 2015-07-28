@@ -10,7 +10,7 @@
         <div class="filters">
 
             <div class="filter gs-selection-button">
-                Blueprints:<br>
+                {{'hosts.blueprintsFilter' | translate}}<br>
                 <div multi:select:menu
                      class="gs-select"
                      data-multiple="false"
@@ -19,11 +19,11 @@
                      data-init="{{ filterModel.blueprints }}"
                      data-listener="true"
                      name="blueprints"
-                     data-text="Choose Blueprints"></div>
+                     data-text="{{'hosts.blueprintsFilterPlaceholder' | translate}}"></div>
             </div>
 
             <div class="filter gs-selection-button" ng-show="deploymentsList.length">
-                Deployments:<br>
+                {{'hosts.deploymentsFilter' | translate}}<br>
                 <div multi:select:menu
                      class="gs-select"
                      data-multiple="true"
@@ -33,7 +33,7 @@
                      data-init="{{ filterModel.deployments }}"
                      data-listener="true"
                      name="deployments"
-                     data-text="Choose Deployments"></div>
+                     data-text="{{'hosts.deploymentsFilterPlaceholder' | translate}}"></div>
             </div>
 
             <button class="gs-btn" gs-spinner="{{filterLoading}}" data-ng-click="execute()" ng-disabled="isSearchDisabled()">Show</button>

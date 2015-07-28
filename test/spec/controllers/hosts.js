@@ -194,6 +194,11 @@ describe('Controller: HostsCtrl', function () {
                             'label': 'deployment1',
                             'parent': 'blueprint1',
                             'value': 'deployment1'
+                        },
+                        {
+                            'label': 'deployment1Copy',
+                            'parent': 'blueprint1',
+                            'value': 'deploymentCopy'
                         }
                     ]
                 });
