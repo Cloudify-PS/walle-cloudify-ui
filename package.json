@@ -38,7 +38,8 @@
         "log4js": "~0.6.9",
         "request": "^2.51.0",
         "tar": "^1.0.3",
-        "express-http-proxy": "~0.6.0"
+        "express-http-proxy": "~0.6.0",
+        "cloudify-kibana" : "https://s3.amazonaws.com/cloudify-ui-automations/cloudify-kibana/builds/3.3/cloudify-kibana-3.3.0.tgz"
     },
     "devDependencies": {
         "connect-livereload": "^0.3.2",
