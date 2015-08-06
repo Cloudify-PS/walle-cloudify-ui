@@ -1,4 +1,4 @@
-#plans, #blueprint {
+#plans, #blueprint, .blueprint-layout {
 
     #main-content-panel {
         padding-right: 40px;
@@ -10,11 +10,13 @@
     $failed: #d54931;
 
     #right-side-menu {
-        position: absolute;
-        top: 0;
-        right: 0;
+        position: fixed;
+        // reuse constants
+        top: 83px;
+        right: 20px;
+        bottom:60px;
         width: 600px;
-        height: 100%;
+        height: auto;
         border-left: 4px solid $COSMOUI_BLUEPRINT_DETAILS_LEFT_BORDER_COLOR;
         background-color: $COSMOUI_BLUEPRINT_DETAILS_BACKGROUND;
         padding-left: 19px;
