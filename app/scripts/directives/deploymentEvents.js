@@ -87,8 +87,11 @@ angular.module('cosmoUiApp')
                     var c = $element.find('.containList');
                     var maxHeight = $element.parent().height();
 
-                    if (newHeight >= maxHeight) {
-                        newHeight = maxHeight;
+                    newHeight= Math.min(newHeight, maxHeight);
+
+                    // don't allow element overflow from page anyway..
+                    if ($element.find('.events-widget').position().top <= 0 ){
+                        newHeight = Math.min(newHeight, c.height());
                     }
 
 
