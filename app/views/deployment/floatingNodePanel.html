@@ -13,8 +13,10 @@
                  onchange="nodeSelected(selectedNode)"></div>
         </div>
 
+        <div class="section-nav-menu-class">
         <div class="buttons-group no-embed" checkbox-toggle value="propSection" ng-show="selectedNode != null">
             <button ng-repeat="(key, value) in showProperties" type="button" class="btn btn-default" ng-class="{active: key == propSection}" value="{{key}}">{{ 'plans.' + key | translate }}</button>
+        </div>
         </div>
 
         <div ng-switch="section" class="content-section">

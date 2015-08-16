@@ -18,6 +18,7 @@ describe('Directive: cosmoLayout', function () {
         // http://stackoverflow.com/questions/17533052/how-do-you-mock-directives-to-enable-unit-testing-of-higher-level-directive
 
         $provide.factory('headerDirective', function(){  return {}; });
+        $provide.factory('floatingDeploymentNodePanelDirective', function(){  return {}; });
 
 
     }));
