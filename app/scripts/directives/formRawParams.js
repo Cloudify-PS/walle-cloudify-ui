@@ -66,7 +66,7 @@ angular.module('cosmoUiApp')
 
                 // JSON validation by parsing it
                 function _validateJSON(skipKeys, skipErrorMessage) {
-                    if ( $scope.rawString === undefined){
+                    if ($scope.rawString === undefined) {
                         return false; // fail silently. we don't care about undefined. in this scenario. don't alert invalid json.
                     }
                     try {
@@ -85,13 +85,7 @@ angular.module('cosmoUiApp')
                 function _parseInputs() {
                     var result = {};
                     _.each($scope.inputs, function (value, key) {
-                        if (value === '' || value === null) {
-                            result[key] = null;
-                            return;
-                        }
-
                         try {
-
                             var parsedValue = JSON.parse(value);
                             if (typeof(parsedValue) !== 'string') {
                                 result[key] = parsedValue;
@@ -104,7 +98,6 @@ angular.module('cosmoUiApp')
                     });
                     return result;
                 }
-
 
                 function _formToRaw() {
                     // if error message is shown & json is invalid, stop raw JSON update process until JSON is fixed & valid
@@ -180,7 +173,7 @@ angular.module('cosmoUiApp')
                     scope.inputs = {};
                     if (!!params) {
                         _.each(params, function (value, key) {
-                            scope.inputs[key] = value.default ? value.default : null;
+                            scope.inputs[key] = value.default ? value.default : '';
                         });
                     }
                 });
