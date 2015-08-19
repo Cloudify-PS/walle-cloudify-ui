@@ -36,7 +36,13 @@ angular.module('cosmoUiApp')
                 scope.$watch(function () {
                     return _validateJSON(false, true);
                 }, function (newValue) {
-                    scope.valid = newValue && _validateJsonKeys(true); //set error message turned on
+                    scope.valid = newValue && _validateJsonKeys(true) && _validateInputsNotEmpty(); //set error message turned on
+                });
+
+                scope.$watch(function () {
+                    return _validateInputsNotEmpty();
+                }, function (newValue) {
+                    scope.valid = newValue && _validateJsonKeys(true) && _validateJSON(false, true); //set error message turned on
                 });
 
 
@@ -78,6 +84,22 @@ angular.module('cosmoUiApp')
 
                     } catch (e) {
                         setDeployError('Invalid JSON: ' + e.message);
+                        return false;
+                    }
+                }
+
+                function _validateInputsNotEmpty(){
+                    try {
+                        var parsedInputs = JSON.parse($scope.rawString);
+                        var isInputsNotEmpty = true;
+                        _.each(parsedInputs, function (value) {
+                            if (value === '') {
+                                isInputsNotEmpty = false;
+                            }
+                        });
+                        return isInputsNotEmpty;
+                    }
+                    catch (e) {
                         return false;
                     }
                 }
@@ -183,6 +205,7 @@ angular.module('cosmoUiApp')
                 $scope.validateJSON = _validateJSON;
                 $scope.validateJsonKeys = _validateJsonKeys;
                 $scope.rawToForm = _rawToForm;
+                $scope.validateInputsNotEmpty = _validateInputsNotEmpty;
             }
         };
     });
