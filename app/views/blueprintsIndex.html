@@ -28,9 +28,7 @@
                 <td class="updated"  ng-click="redirectTo(blueprint)">{{ blueprint.updated_at | dateFormat: 'yyyy-MM-dd HH:mm:ss' }}</td>
                 <td class="deployments"><div class="deployments-number" ng-click="redirectToDeployments(blueprint)">{{ countDeployments(blueprint) }}</div></td>
                 <td class="actions">
-                    <button class="deploy-button" ng-click="openDeployDialog(blueprint)">{{ 'blueprints.table.deployBtn' | translate }}</button>
-                    <i class="delete-button fa fa-times-circle right close-properties-button" ng-click="deleteBlueprint(blueprint)"></i>
-                    <!--i id="blueprint-down" class="fa  fa-chevron-circle-down"></i><i class="fa  fa-play-circle-o" ng-click="deployBlueprint(blueprint)"></i-->
+                    <div class="bp-action-selector" open-deploy-dialog="openDeployDialog(blueprint)" delete-blueprint="deleteBlueprint(blueprint)"></div>
                 </td>
             </tr>
         </tbody>

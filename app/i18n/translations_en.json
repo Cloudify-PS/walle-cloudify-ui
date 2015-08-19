@@ -22,7 +22,8 @@
                 "updated": "Update date",
                 "deployments": "# of Deployments"
             },
-            "deployBtn": "Create Deployment"
+            "deployBtn": "Create Deployment",
+            "deleteBtn": "Delete"
         },
         "emptyMessage": "No Blueprints",
         "source": {

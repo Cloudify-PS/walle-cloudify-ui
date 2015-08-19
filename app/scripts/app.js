@@ -18,7 +18,8 @@ angular.module('cosmoUiApp', [
     'ngProgress',
     'angular-loading-bar',
     'jsbb.angularTicker',
-    'cloudifyjs'
+    'cloudifyjs',
+    'ui.bootstrap'
 
 ]).config( function ($routeProvider, $httpProvider, $translateProvider) {
 
