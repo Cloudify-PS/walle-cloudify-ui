@@ -60,11 +60,11 @@ angular.module('cosmoUiApp')
                     }
 
                     var _json = $scope.rawString ? JSON.parse($scope.rawString) : {};
-                    for (var key in scope.params) {
-                        var value = _json[key];
+                    for (var expectedKey in scope.params) {
+                        var value = _json[expectedKey];
                         if (value === undefined) {
                             if (!skipErrorMessage) {
-                                setDeployError($filter('translate')('formRawParams.missingKeyInJson',{key:key}));
+                                setDeployError($filter('translate')('formRawParams.missingKeyInJson',{key:expectedKey}));
                             }
                             return false;
                         }

@@ -84,7 +84,7 @@ describe('Directive: formRawParams', function () {
 
             expect(element.isolateScope().validateJsonKeys()).toBe(false);
             expect(scope.onError).toHaveBeenCalledWith('formRawParams.unexpectedKeyInJson');
-        })
+        });
     });
 
     describe('#validateJSON', function () {
