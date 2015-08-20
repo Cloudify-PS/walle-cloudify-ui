@@ -14,7 +14,7 @@
  *
  */
 angular.module('cosmoUiApp')
-    .directive('formRawParams', function (INPUT_STATE) {
+    .directive('formRawParams', function (INPUT_STATE,$filter) {
         return {
             templateUrl: 'views/directives/formRawParams.html',
             restrict: 'A',
@@ -48,13 +48,31 @@ angular.module('cosmoUiApp')
 
                 // JSON keys validation, verifying all expected keys exists in JSON
                 // if key is missing we want to display an error
+                // if additional key is added and unexpected we want to display an error
                 function _validateJsonKeys(skipErrorMessage) {
+                    function isKeyInParams(key){
+                        if(key in scope.params){
+                            return true;
+                        }
+                        else{
+                            return false;
+                        }
+                    }
+
                     var _json = $scope.rawString ? JSON.parse($scope.rawString) : {};
-                    for (var i in $scope.params) {
-                        var value = _json[i];
-                        if (value === undefined) { // when in strict mode disallow empty value
+                    for (var key in scope.params) {
+                        var value = _json[key];
+                        if (value === undefined) {
                             if (!skipErrorMessage) {
-                                setDeployError('Missing ' + i + ' key in JSON');
+                                setDeployError($filter('translate')('formRawParams.missingKeyInJson',{key:key}));
+                            }
+                            return false;
+                        }
+                    }
+                    for (var key in _json) {
+                        if (!isKeyInParams(key)) {
+                            if (!skipErrorMessage) {
+                                setDeployError($filter('translate')('formRawParams.unexpectedKeyInJson',{key:key}));
                             }
                             return false;
                         }

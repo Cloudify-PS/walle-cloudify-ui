@@ -177,7 +177,9 @@
         "interface": "Interface Elements"
     },
     "formRawParams": {
-        "noDescriptionTooltip": "No description was defined"
+        "noDescriptionTooltip": "No description was defined",
+        "missingKeyInJson": "Missing '{{key}}' key in JSON",
+        "unexpectedKeyInJson": "Unexpected '{{key}}' key in JSON"
     },
     "dialogs": {
         "delete": {
