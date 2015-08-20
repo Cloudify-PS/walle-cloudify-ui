@@ -166,7 +166,7 @@ describe('Directive: formRawParams', function () {
                 translate = $filter('translate');
             }));
 
-            it('tooltip should show input params description', function(){
+            it('should show input params description as tooltip', function(){
                 scope.params = { 'foo' : {'description':'A yummy snickers'}};
                 scope.$digest();
                 content.append(element);
@@ -174,7 +174,7 @@ describe('Directive: formRawParams', function () {
                 expect(inputParameters[0].getAttribute('title')).toBe('A yummy snickers');
             });
 
-            it('tooltip should show no description defined message', function(){
+            it('should show no description defined message as tooltip', function(){
                 scope.params = {'bar' : {}};
                 scope.$digest();
                 content.append(element);
