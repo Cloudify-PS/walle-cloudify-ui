@@ -95,6 +95,8 @@ angular.module('cosmoUiApp')
                         _.each(parsedInputs, function (value) {
                             if (value === '') {
                                 isInputsNotEmpty = false;
+                                //returning false will break the loop, not checking other items unnecessarily
+                                return false;
                             }
                         });
                         return isInputsNotEmpty;
