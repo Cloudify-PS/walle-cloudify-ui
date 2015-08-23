@@ -784,9 +784,33 @@ module.exports = function (grunt) {
     ]);
 
     grunt.registerTask('readS3Keys', function(){
+
+        var s3KeysDefault = {
+            "accessKey" : process.env.S3_ACCESS_KEY,
+            "secretKey" : process.env.S3_SECRET_KEY,
+            "bucket" :    process.env.S3_BUCKET,
+            "folder" :    process.env.S3_FOLDER,
+            "region" :    process.env.S3_REGION
+
+    };
+
+
         var s3KeysFile = process.env.AWS_JSON || './dev/aws-keys.json';
-        grunt.log.ok('reading s3 keys from [' + s3KeysFile  + ']' );
-        grunt.config.data.aws =  grunt.file.readJSON( s3KeysFile ); // Read the file
+
+        // if nothing is defined anywhere... lets fail the process
+        if (_.compact(_.values(s3KeysDefault)).length === 0 && !grunt.file.exists(s3KeysFile) ){
+            grunt.fail.fatal('expecting s3 configuration either with S3_(ACCESS_KEY, SECRET_KEY, BUCKET_FOLDER, REGION) environment variables or in file ' + s3KeysFile  + ' but configuration was empty');
+        }
+
+        var fileOverrides = {};
+        if ( grunt.file.exists(s3KeysFile)) {
+            grunt.log.ok('reading s3 keys from [' + s3KeysFile + ']');
+            fileOverrides = grunt.file.readJSON(s3KeysFile); // Read the file
+        }else if ( process.env.AWS_JSON){
+            grunt.log.warn('AWS_JSON file declared but does not exist [' + process.env.AWS_JSON + ']' );
+        }
+
+        grunt.config.data.aws = _.merge({}, s3KeysDefault, fileOverrides);
     });
 
     grunt.registerTask('default', 'compiles the project' ,[

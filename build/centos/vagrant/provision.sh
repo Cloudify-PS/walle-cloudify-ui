@@ -78,7 +78,7 @@ if [ "$SKIP_BUILD" == "" ];then # for development purposes
     cd $GIT_DEST
     echo "installing preprequirements"
     sudo npm run install_prereq
-    npm run build_linux
+    npm run build_and_publish
 else
     echo "skipping build"
 fi
