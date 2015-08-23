@@ -5,6 +5,7 @@ var LIVERELOAD_PORT = 35729;
 var lrSnippet = null;
 var proxySnippet = null;
 var path = require('path');
+var _ = require('lodash');
 var mountFolder = function (connect, dir) {
     return connect.static(path.resolve(dir));
 };
