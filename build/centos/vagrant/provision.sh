@@ -12,7 +12,7 @@ fi
 
 if [ ! -f /usr/bin/git ]; then
     echo "installing git"
-    yum install git -y
+    sudo yum install git -y
 else
     echo "git already installed"
 fi
@@ -43,13 +43,21 @@ GIT_DEST="cloudify-ui"
 
 
 
-if [ ! -f /usr/lib64/libfreetype.so.6 ];then
+if [ ! -f /usr/lib64/libfreetype.so.6 ] || [ ! -f /usr/lib64/libfontconfig.so.1 ];then
     echo "fixing centos image : installing libfreetype.so.6 for phantomjs"
-    sudo yum install fontconfig -y
+    sudo yum install freetype fontconfig -y
 
     # sudo yum update -y
     # sudo yum update libX11-devel -y
-    # sudo yum install freetype
+
+else
+    echo "libfreetype is present.. moving on.."
+fi
+
+if [ ! -f /usr/bin/bzip2 ]; then
+    sudo yum install -y bzip2
+else
+    echo "bzip2 exists. skipping..."
 fi
 
 
