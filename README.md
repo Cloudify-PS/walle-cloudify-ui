@@ -19,8 +19,16 @@ Assuming you have cloned the repository, make sure you have the following instal
 - [NodeJS][1]
 - [bower][2] (which can be installed via node - simply run `npm install -g bower`)
 
-Than navigate to the project root directory and run `npm install` and `bower install`. To launch a preview server run
-`grunt server` in the same directory.
+Then navigate to the project root directory and run `npm install` and `bower install`. 
+In the directory `conf/dev` create a file `meConf.js` containing the following code:
+```javascript
+var exports = module.exports = {  
+    cosmoServer: '10.10.1.10',  
+    cloudifyManagerEndpoint: 'http://10.10.1.10:80'  
+}  
+```
+To launch a preview server run `grunt server` in the same directory. Launch `node server` in the root directory to connect frontend to cloudify.
+To build the app and run all the tests, simply run `grunt` in your terminal.
 
 The app is bundled with a file named `_whitelabel.scss`, which can be found under `/app/styles`. This file contains
 [Sass][3] variables for overriding colors and images across the application.
