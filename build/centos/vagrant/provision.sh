@@ -1,7 +1,7 @@
 set -e
 set -v
 
-
+source /etc/ENVIRONMENT_VARIABLES.sh || echo "no environment variables file.. skipping.. "
 DEV_ENV_VARS="/vagrant/dev/ENVIRONMENT_VARIABLES.sh"
 if [ -f  "$DEV_ENV_VARS" ]; then
     echo "development environment variables exist. reading them"
