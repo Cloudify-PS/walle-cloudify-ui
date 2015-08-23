@@ -162,13 +162,20 @@ module.exports = function (grunt) {
                 }
             }
         },
+        curl: {
+            nodejs: {
+                src: 'http://nodejs.org/dist/v0.10.35/node-v0.10.35-linux-x64.tar.gz',
+                dest: '<%= yeoman.dist %>'
+            }
+
+        },
         jshint: {
             options: {
                 jshintrc: '.jshintrc',
                 reporter: require('jshint-stylish')
             },
             all: [
-                'Gruntfile.js',
+
                 '<%= yeoman.app %>/scripts/**/*.js'
             ],
             backend:{
@@ -177,6 +184,7 @@ module.exports = function (grunt) {
                 },
                 files: {
                     src: [
+                        'Gruntfile.js',
                         'backend/**/*.js'
                     ]
                 }
@@ -697,6 +705,7 @@ module.exports = function (grunt) {
             'concurrent:dist',
             'concat',
             'copy:dist',
+            'curl:nodejs',
             'overrideBuildVersion',
             'bundle',
             'ngmin',
