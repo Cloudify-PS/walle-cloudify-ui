@@ -786,13 +786,13 @@ module.exports = function (grunt) {
     grunt.registerTask('readS3Keys', function(){
 
         var s3KeysDefault = {
-            "accessKey" : process.env.S3_ACCESS_KEY,
-            "secretKey" : process.env.S3_SECRET_KEY,
-            "bucket" :    process.env.S3_BUCKET,
-            "folder" :    process.env.S3_FOLDER,
-            "region" :    process.env.S3_REGION
+            'accessKey' : process.env.S3_ACCESS_KEY,
+            'secretKey' : process.env.S3_SECRET_KEY,
+            'bucket' :    process.env.S3_BUCKET,
+            'folder' :    process.env.S3_FOLDER,
+            'region' :    process.env.S3_REGION
 
-    };
+        };
 
 
         var s3KeysFile = process.env.AWS_JSON || './dev/aws-keys.json';
