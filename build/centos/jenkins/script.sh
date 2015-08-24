@@ -9,8 +9,8 @@
 #   +---- vagrant-config - holds configuration for vagrant
 #   +---- vagrant-automation-machines - holds the vagrantfile
 
- set -e
- set -v
+set -e
+set -v
 
 
 echo "user is $USER";
@@ -57,9 +57,16 @@ if [ -f ${JENKINS_CREDENTIALS_FILE} ]; then
      # AWS_ACCESS_KEY_UPLOAD_TEMP
 
      ## lets replace everything from overrides
+     echo "overriding aws access key id"
      sed -i.bak s/__S3_ACCESS_KEY__/$AWS_ACCESS_KEY_ID_UPLOAD_TEMP/g config.json
+
+     echo "overriding aws token"
      sed -i.bak s/__S3_SECRET_KEY__/$AWS_ACCESS_KEY_UPLOAD_TEMP/g config.json
+
+     echo "overriding bucket"
      sed -i.bak s/__S3_BUCKET__/$BUCKET_NAME/g config.json
+
+     echo "overriding bucket path"
      sed -i.bak s/__S3_FOLDER__/$AWS_S3_BUCKET_PATH/g config.json
 
 
