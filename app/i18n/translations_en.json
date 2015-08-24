@@ -176,6 +176,9 @@
         "hosts": "Hosts",
         "interface": "Interface Elements"
     },
+    "formRawParams": {
+        "noDescriptionTooltip": "No description was defined"
+    },
     "dialogs": {
         "delete": {
             "blueprint": "Blueprint",
