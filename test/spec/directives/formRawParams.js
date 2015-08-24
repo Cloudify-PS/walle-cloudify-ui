@@ -105,6 +105,16 @@ describe('Directive: formRawParams', function () {
         });
     });
 
+    describe('updating params object', function(){
+        it('should set default values as an empty string', function() {
+            scope.$digest();
+            element.isolateScope().params = {'money' :{}, 'happiness': {}};
+            scope.$digest();
+            expect(element.isolateScope().inputs.money).toBe('');
+            expect(element.isolateScope().inputs.happiness).toBe('');
+        });
+    });
+
     describe('#rawToForm', function () {
         it('should stringify "1","true" and "null" and not convert them to 1,true,null', function () {
             scope.$digest();
