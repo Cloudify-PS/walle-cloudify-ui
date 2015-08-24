@@ -105,6 +105,22 @@ describe('Directive: formRawParams', function () {
         });
     });
 
+    describe('#validateInputsNotEmpty', function () {
+        it('should return false if one of the inputs is empty', function () {
+            scope.$digest();
+            element.isolateScope().rawString = ' { "input" : "", "empty" : "I aint no empty homie" } ';
+
+            expect(element.isolateScope().validateInputsNotEmpty()).toBe(false);
+        });
+
+        it('should return true if all inputs are not empty', function () {
+            scope.$digest();
+            element.isolateScope().rawString = ' { "input" : "What would life be if we had no courage to attempt anything - Vincent Van Gogh", "empty" : "I aint no empty homie" } ';
+
+            expect(element.isolateScope().validateInputsNotEmpty()).toBe(true);
+        });
+    });
+
     describe('updating params object', function(){
         it('should set default values as an empty string', function() {
             scope.$digest();
