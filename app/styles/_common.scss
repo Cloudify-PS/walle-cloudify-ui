@@ -80,7 +80,6 @@
 
             &:hover {
 //                background-color: $COSMOUI_LIST_HOVER_BACKGROUND;
-                cursor: $COSMOUI_DIALOG_CURSOR;
             }
         }
     }
@@ -433,4 +432,9 @@ input[type=text], input[type=password]{
     border-radius: 4px;
     background-color: rgba(0,0,0,.5);
     -webkit-box-shadow: 0 0 1px rgba(255,255,255,.5);
+}
+
+//making every element with ng-click directive displaying a clickable cursor
+[ng-click],[data-ng-click]{
+    cursor: $COSMOUI_CLICKABLE_CURSOR;
 }
