@@ -105,41 +105,29 @@ describe('Directive: formRawParams', function () {
         });
     });
 
-    describe('overflow', function(){
-
-        function hasScrollbar  (element){
-            return element.scrollHeight > element.clientHeight;
-        }
-
-
-        var content = null;
-        beforeEach(function(){
-            var wrapper = angular.element('<div class="ngdialog"><div class="ngdialog-content"></div></div>');
-            $('body').append(wrapper);
-            content = wrapper.find('.ngdialog-content');
-
-        });
-
-        afterEach(function(){
-            $('body .ngdialog').remove();
-        });
-
-        it('should have a scrollbar if overflow',function() {
-            scope.params = { 'foo' : '' , 'bar' : '', 'hello' : '', 'world' : '', 'long' : '', 'short' : ''};
+    describe('#validateInputsNotEmpty', function () {
+        it('should return false if one of the inputs is empty', function () {
             scope.$digest();
-            content.append(element);
-            var inputParameters = element.find('ul')[0];
-            var elementHasScrollbar = hasScrollbar(inputParameters);
-            expect(elementHasScrollbar).toBe(true);
+            element.isolateScope().rawString = ' { "input" : "", "empty" : "I aint no empty homie" } ';
+
+            expect(element.isolateScope().validateInputsNotEmpty()).toBe(false);
         });
 
-        it('should not have a scrollbar if does not overflow',function() {
-            scope.params = { 'foo' : '' , 'bar' : '', 'hello' : ''};
+        it('should return true if all inputs are not empty', function () {
             scope.$digest();
-            content.append(element);
-            var inputParameters = element.find('ul')[0];
-            var elementHasScrollbar = hasScrollbar(inputParameters);
-            expect(elementHasScrollbar).toBe(false);
+            element.isolateScope().rawString = ' { "input" : "What would life be if we had no courage to attempt anything - Vincent Van Gogh", "empty" : "I aint no empty homie" } ';
+
+            expect(element.isolateScope().validateInputsNotEmpty()).toBe(true);
+        });
+    });
+
+    describe('updating params object', function(){
+        it('should set default values as an empty string', function() {
+            scope.$digest();
+            element.isolateScope().params = {'money' :{}, 'happiness': {}};
+            scope.$digest();
+            expect(element.isolateScope().inputs.money).toBe('');
+            expect(element.isolateScope().inputs.happiness).toBe('');
         });
     });
 
@@ -162,4 +150,64 @@ describe('Directive: formRawParams', function () {
         }));
     });
 
+    describe('views tests', function(){
+
+        var content = null;
+        beforeEach(function(){
+            var wrapper = angular.element('<div class="ngdialog"><div class="ngdialog-content"></div></div>');
+            $('body').append(wrapper);
+            content = wrapper.find('.ngdialog-content');
+        });
+
+        afterEach(function(){
+            $('body .ngdialog').remove();
+        });
+        describe('overflow', function(){
+            function hasScrollbar  (element){
+                return element.scrollHeight > element.clientHeight;
+            }
+
+            it('should have a scrollbar if overflow',function() {
+                scope.params = { 'foo' : '' , 'bar' : '', 'hello' : '', 'world' : '', 'long' : '', 'short' : ''};
+                scope.$digest();
+                content.append(element);
+                var inputParameters = element.find('ul')[0];
+                var elementHasScrollbar = hasScrollbar(inputParameters);
+                expect(elementHasScrollbar).toBe(true);
+            });
+
+            it('should not have a scrollbar if does not overflow',function() {
+                scope.params = { 'foo' : '' , 'bar' : '', 'hello' : ''};
+                scope.$digest();
+                content.append(element);
+                var inputParameters = element.find('ul')[0];
+                var elementHasScrollbar = hasScrollbar(inputParameters);
+                expect(elementHasScrollbar).toBe(false);
+            });
+        });
+
+        describe('inputs params tooltip', function(){
+            var translate;
+            beforeEach(inject(function($filter){
+                translate = $filter('translate');
+            }));
+
+            it('should show input params description as tooltip', function(){
+                scope.params = { 'foo' : {'description':'A yummy snickers'}};
+                scope.$digest();
+                content.append(element);
+                var inputParameters = element.find('li div');
+                expect(inputParameters[0].getAttribute('title')).toBe('A yummy snickers');
+            });
+
+            it('should show no description defined message as tooltip', function(){
+                scope.params = {'bar' : {}};
+                scope.$digest();
+                content.append(element);
+                var inputParameters = element.find('li div');
+                expect(inputParameters[0].getAttribute('title')).toBe(translate('formRawParams.noDescriptionTooltip'));
+            });
+        });
+
+    });
 });

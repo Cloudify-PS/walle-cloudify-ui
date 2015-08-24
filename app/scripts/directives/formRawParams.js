@@ -36,7 +36,13 @@ angular.module('cosmoUiApp')
                 scope.$watch(function () {
                     return _validateJSON(false, true);
                 }, function (newValue) {
-                    scope.valid = newValue && _validateJsonKeys(true); //set error message turned on
+                    scope.valid = newValue && _validateJsonKeys(true) && _validateInputsNotEmpty(); //set error message turned on
+                });
+
+                scope.$watch(function () {
+                    return _validateInputsNotEmpty();
+                }, function (newValue) {
+                    scope.valid = newValue && _validateJsonKeys(true) && _validateJSON(false, true); //set error message turned on
                 });
 
 
@@ -66,7 +72,7 @@ angular.module('cosmoUiApp')
 
                 // JSON validation by parsing it
                 function _validateJSON(skipKeys, skipErrorMessage) {
-                    if ( $scope.rawString === undefined){
+                    if ($scope.rawString === undefined) {
                         return false; // fail silently. we don't care about undefined. in this scenario. don't alert invalid json.
                     }
                     try {
@@ -82,16 +88,28 @@ angular.module('cosmoUiApp')
                     }
                 }
 
+                function _validateInputsNotEmpty(){
+                    try {
+                        var parsedInputs = JSON.parse($scope.rawString);
+                        var isInputsNotEmpty = true;
+                        _.each(parsedInputs, function (value) {
+                            if (value === '') {
+                                isInputsNotEmpty = false;
+                                //returning false will break the loop, not checking other items unnecessarily
+                                return false;
+                            }
+                        });
+                        return isInputsNotEmpty;
+                    }
+                    catch (e) {
+                        return false;
+                    }
+                }
+
                 function _parseInputs() {
                     var result = {};
                     _.each($scope.inputs, function (value, key) {
-                        if (value === '' || value === null) {
-                            result[key] = null;
-                            return;
-                        }
-
                         try {
-
                             var parsedValue = JSON.parse(value);
                             if (typeof(parsedValue) !== 'string') {
                                 result[key] = parsedValue;
@@ -104,7 +122,6 @@ angular.module('cosmoUiApp')
                     });
                     return result;
                 }
-
 
                 function _formToRaw() {
                     // if error message is shown & json is invalid, stop raw JSON update process until JSON is fixed & valid
@@ -180,7 +197,7 @@ angular.module('cosmoUiApp')
                     scope.inputs = {};
                     if (!!params) {
                         _.each(params, function (value, key) {
-                            scope.inputs[key] = value.default ? value.default : null;
+                            scope.inputs[key] = value.default ? value.default : '';
                         });
                     }
                 });
@@ -190,6 +207,7 @@ angular.module('cosmoUiApp')
                 $scope.validateJSON = _validateJSON;
                 $scope.validateJsonKeys = _validateJsonKeys;
                 $scope.rawToForm = _rawToForm;
+                $scope.validateInputsNotEmpty = _validateInputsNotEmpty;
             }
         };
     });
