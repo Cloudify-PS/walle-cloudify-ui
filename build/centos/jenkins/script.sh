@@ -84,7 +84,12 @@ cp -f $VCONFIG/centos-ireland-keyfile.pem /tmp/automations/centos-cloudify-ui-bu
 
 cp -Rf $SOURCES/build/centos/vagrant/* $VAM/
 
-export VAGRANT_HOME="~/.vagrant_$CLOUD"
+if [ -e ~/.vagrant_$CLOUD ]; then
+    echo "declaring new vagrant home"
+    export VAGRANT_HOME="~/.vagrant_$CLOUD"
+else
+    echo "assuming pluging installed in default vagrant home"
+fi
 cd $VAM/$CLOUD
 FAILED="false"
 vagrant destroy -f || echo "no need to teardown the machine because it was not running"
