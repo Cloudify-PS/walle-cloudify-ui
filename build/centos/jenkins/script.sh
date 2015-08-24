@@ -69,7 +69,7 @@ if [ -f ${JENKINS_CREDENTIALS_FILE} ]; then
      sed -i.bak s/__S3_BUCKET__/$BUCKET_NAME/g config.json
 
      echo "overriding bucket path"
-     sed -i.bak s/__S3_FOLDER__/$AWS_S3_BUCKET_PATH/g config.json
+     sed -i.bak s#__S3_FOLDER__#$AWS_S3_BUCKET_PATH#g config.json
 
 
 else
