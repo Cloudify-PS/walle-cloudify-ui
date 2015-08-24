@@ -61,7 +61,9 @@ if [ -f ${JENKINS_CREDENTIALS_FILE} ]; then
      sed -i.bak s/__S3_ACCESS_KEY__/$AWS_ACCESS_KEY_ID_UPLOAD_TEMP/g config.json
 
      echo "overriding aws token"
-     sed -i.bak s/__S3_SECRET_KEY__/$AWS_ACCESS_KEY_UPLOAD_TEMP/g config.json
+     ## use other character in sed rather than / because aws tokens have / which messes things up
+     ##
+     sed -i.bak s#__S3_SECRET_KEY__#$AWS_ACCESS_KEY_UPLOAD_TEMP#g config.json
 
      echo "overriding bucket"
      sed -i.bak s/__S3_BUCKET__/$BUCKET_NAME/g config.json
