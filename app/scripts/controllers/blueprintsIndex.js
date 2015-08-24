@@ -8,11 +8,6 @@ angular.module('cosmoUiApp')
         $scope.itemToDelete = null;
 
 
-
-        $scope.redirectTo = function (blueprint) {
-            $location.path('/blueprint/' + blueprint.id + '/topology');
-        };
-
         $scope.openAddDialog = function() {
             ngDialog.open({
                 template: 'views/dialogs/upload.html',
@@ -90,13 +85,7 @@ angular.module('cosmoUiApp')
         };
 
         $scope.uploadDone = function(blueprint_id) {
-            $scope.redirectTo({
-                id: blueprint_id
-            });
-        };
-
-        $scope.redirectToDeployments = function() {
-            $location.path('/deployments');
+            $location.path('/blueprint/' + blueprint_id + '/topology');
         };
 
         $scope.redirectToDeployment = function(deployment_id) {
