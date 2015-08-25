@@ -12,6 +12,7 @@
 set -e
 set -v
 
+echoerr() { echo "$@" 1>&2; }
 
 echo "user is $USER";
 
@@ -100,8 +101,8 @@ vagrant up --provider=$CLOUD || FAILED="true"
 SCP_PLUGIN=`vagrant plugin list | grep vagrant-scp | wc -l`
 
 if [ "$SCP_PLUGIN" = "0" ]; then
-	echo "installing scp plugin"
-    vagrant plugin install vagrant-scp
+    echoerr "need vagrant-scp plugin which is missing"
+	exit 1
 else
     echo "scp plugin already installed"
 fi
