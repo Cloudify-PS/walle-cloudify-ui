@@ -96,6 +96,9 @@ cd $VAM/$CLOUD
 
 echo "I am at [`pwd`] and I am about to run vagrant up with CLOUD=$CLOUD"
 
+cat Vagrantfile
+vagrant plugin list
+
 FAILED="false"
 vagrant destroy -f || echo "no need to teardown the machine because it was not running"
 
