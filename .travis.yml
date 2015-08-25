@@ -12,10 +12,4 @@ before_script:
   - 'bower install'
   - 'bower update'
   - 'grunt test'
-notifications:
-  email:
-    recipients:
-      - guym@gigaspaces.com
-      - erez@gigaspaces.com
-    on_success: never
-    on_failure: always
+
