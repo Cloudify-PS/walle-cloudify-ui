@@ -99,6 +99,10 @@ echo "I am at [`pwd`] and I am about to run vagrant up with CLOUD=$CLOUD"
 cat Vagrantfile
 vagrant plugin list
 
+echo "and this is my configuration file [$CONFIG_FILE]"
+cat $CONFIG_FILE
+
+
 FAILED="false"
 vagrant destroy -f || echo "no need to teardown the machine because it was not running"
 
