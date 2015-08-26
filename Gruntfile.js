@@ -38,6 +38,7 @@ module.exports = function (grunt) {
     }
 
     grunt.initConfig({
+        reportsBase: process.env.REPORTS_BASE || 'reports',
         yeoman: yeomanConfig,
         availabletasks: {
             help: {
@@ -492,7 +493,9 @@ module.exports = function (grunt) {
         karma: {
             unit: {
                 configFile: 'karma.conf.js',
-                singleRun: true
+                singleRun: true,
+                junitReporter: { outputFile: '<%= reportsBase %>/unit/test-results.xml' },
+                coverageReporter: {dir: '<%= reportsBase %>/coverage/' }
             },
             develop: {
                 reporters: ['failed'],
