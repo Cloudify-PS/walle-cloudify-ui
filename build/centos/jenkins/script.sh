@@ -35,7 +35,7 @@ if [ -f ${JENKINS_CREDENTIALS_FILE} ]; then
      echo "credentials.sh exists. overriding parameters.."
 
      echo "copying file to override"
-     cp -f $VCONFIG/centos-build-config.json config.json #copy original file
+     cp -f $VCONFIG/official-build-config.json config.json #copy original file
 
      echo "reading properties from provision.sh"
      source $SOURCES/build/centos/jenkins/provision.sh
