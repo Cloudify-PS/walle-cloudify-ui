@@ -627,7 +627,7 @@ module.exports = function (grunt) {
             //testBackend: { path: 'test/backend', output: 'dev/jscpd.testBackend.output.txt' , threshold: 1 },
             all : {
                 path: '.',
-                output: 'dev/jscpd.output.txt',
+                output: 'reports/jscpd/jscpd.output.txt',
                 exclude: [
                     '**/*.html',
                     'coverage/**',
@@ -641,14 +641,15 @@ module.exports = function (grunt) {
                     'dist/**',
                     'dev/**',
                     'app/styles/SyntaxHighlighter/**',
-                    'test/jasmine-standalone-1.3.1/**'],
+                    'test/jasmine-standalone-1.3.1/**'
+                ],
                 threshold: 1
             }
         },
         'jscpdreporter': {
             options: {
-                sourcefile: 'dev/jscpd.output.txt',
-                outputDir: 'dev/jscpd-report/'
+                sourcefile: 'reports/jscpd/jscpd.output.txt',
+                outputDir: 'reports/jscpd/html-report/'
             }
         },
         aws_s3: {
