@@ -153,7 +153,10 @@ module.exports = function (grunt) {
             server: '.tmp',
             coverageBackend: ['backend-coverage'],
             coverageFrontend: ['coverage'],
-            instrumentBackend: ['backend-instrument']
+            instrumentBackend: ['backend-instrument'],
+            reports: ['reports'],
+            doc: ['doc'],
+            backendTestResults: ['backend_test_results']
         },
         jsdoc : {
             backend : {
@@ -617,10 +620,28 @@ module.exports = function (grunt) {
             }
         },
         jscpd:{
-            all: {
+            //js: { path: 'app/scripts', output: 'dev/jscpd.js.output.txt' , threshold: 1 },
+            //scss: { path: 'app/styles', output: 'dev/jscpd.scss.output.txt' , threshold: 1 },
+            //backend: { path: 'backend', output: 'dev/jscpd.backend.output.txt' , threshold: 1 },
+            //test: { path: 'test/spec', output: 'dev/jscpd.test.output.txt' , threshold: 1 },
+            //testBackend: { path: 'test/backend', output: 'dev/jscpd.testBackend.output.txt' , threshold: 1 },
+            all : {
                 path: '.',
                 output: 'dev/jscpd.output.txt',
-                exclude: [ 'app/bower_components/**', 'node_modules/**', 'dist/**','dev/**','app/styles/SyntaxHighlighter/**','test/jasmine-standalone-1.3.1/**'],
+                exclude: [
+                    '**/*.html',
+                    'coverage/**',
+                    'build/**',
+                    'artifacts/**',
+                    'backend-coverage/**',
+                    'dist-blueprint/**',
+                    'docs/**',
+                    'app/bower_components/**',
+                    'node_modules/**',
+                    'dist/**',
+                    'dev/**',
+                    'app/styles/SyntaxHighlighter/**',
+                    'test/jasmine-standalone-1.3.1/**'],
                 threshold: 1
             }
         },
@@ -703,7 +724,7 @@ module.exports = function (grunt) {
     grunt.registerTask('build', 'builds the project', function () {
 
         var tasks = [
-            'clean:dist',
+            'clean',
             'useminPrepare',
             'concurrent:dist',
             'concat',
