@@ -497,7 +497,7 @@ module.exports = function (grunt) {
             unit: {
                 configFile: 'karma.conf.js',
                 singleRun: true,
-                //junitReporter: { outputFile: '<%= reportsBase %>/unit/test-results.xml' },
+                junitReporter: { outputFile: '<%= reportsBase %>/unit/test-results.xml' },
                 coverageReporter:  {
                     dir: '<%= reportsBase %>/coverage/',
                     subdir: function (browser) {
