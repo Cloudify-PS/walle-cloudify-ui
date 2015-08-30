@@ -17,7 +17,7 @@
     ],
     "scripts": {
         "install_prereq": "npm install -g  bower grunt-cli phantomjs && npm cache clean ",
-        "build_linux": "rm -rf node_modules && rm -rf app/bower_components && npm cache clean && bower cache clean &&  npm install && bower install && grunt buildArtifacts $FORCE $NO_COLOR",
+        "build_linux": "rm -rf node_modules && rm -rf app/bower_components && npm cache clean && bower cache clean &&  npm install && bower install && grunt  clean buildArtifacts analyze $FORCE $NO_COLOR",
         "build_and_publish": "npm run build_linux && grunt uploadArtifacts $NO_COLOR",
         "clean_all": "rm -rf app/bower_components && rm -rf node_modules && bower cache clean && npm cache clean && bower install && npm install"
     },

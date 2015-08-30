@@ -38,6 +38,7 @@ module.exports = function (grunt) {
     }
 
     grunt.initConfig({
+        reportsBase: process.env.REPORTS_BASE || 'reports',
         yeoman: yeomanConfig,
         availabletasks: {
             help: {
@@ -152,7 +153,10 @@ module.exports = function (grunt) {
             server: '.tmp',
             coverageBackend: ['backend-coverage'],
             coverageFrontend: ['coverage'],
-            instrumentBackend: ['backend-instrument']
+            instrumentBackend: ['backend-instrument'],
+            reports: ['reports'],
+            doc: ['doc'],
+            backendTestResults: ['backend_test_results']
         },
         jsdoc : {
             backend : {
@@ -492,7 +496,17 @@ module.exports = function (grunt) {
         karma: {
             unit: {
                 configFile: 'karma.conf.js',
-                singleRun: true
+                singleRun: true,
+                junitReporter: { outputFile: '<%= reportsBase %>/unit/test-results.xml' },
+                coverageReporter:  {
+                    dir: '<%= reportsBase %>/coverage/',
+                    subdir: function (browser) {
+                        return browser.toLowerCase().split(/[ /-]/)[0];
+                    },
+                    reporters: [  {type: 'html'},{ type: 'cobertura'} ]
+
+
+                }
             },
             develop: {
                 reporters: ['failed'],
@@ -614,17 +628,36 @@ module.exports = function (grunt) {
             }
         },
         jscpd:{
-            all: {
+            //js: { path: 'app/scripts', output: 'dev/jscpd.js.output.txt' , threshold: 1 },
+            //scss: { path: 'app/styles', output: 'dev/jscpd.scss.output.txt' , threshold: 1 },
+            //backend: { path: 'backend', output: 'dev/jscpd.backend.output.txt' , threshold: 1 },
+            //test: { path: 'test/spec', output: 'dev/jscpd.test.output.txt' , threshold: 1 },
+            //testBackend: { path: 'test/backend', output: 'dev/jscpd.testBackend.output.txt' , threshold: 1 },
+            all : {
                 path: '.',
-                output: 'dev/jscpd.output.txt',
-                exclude: [ 'app/bower_components/**', 'node_modules/**', 'dist/**','dev/**','app/styles/SyntaxHighlighter/**','test/jasmine-standalone-1.3.1/**'],
+                output: 'reports/jscpd/jscpd.output.txt',
+                exclude: [
+                    '**/*.html',
+                    'coverage/**',
+                    'build/**',
+                    'artifacts/**',
+                    'backend-coverage/**',
+                    'dist-blueprint/**',
+                    'docs/**',
+                    'app/bower_components/**',
+                    'node_modules/**',
+                    'dist/**',
+                    'dev/**',
+                    'app/styles/SyntaxHighlighter/**',
+                    'test/jasmine-standalone-1.3.1/**'
+                ],
                 threshold: 1
             }
         },
         'jscpdreporter': {
             options: {
-                sourcefile: 'dev/jscpd.output.txt',
-                outputDir: 'dev/jscpd-report/'
+                sourcefile: 'reports/jscpd/jscpd.output.txt',
+                outputDir: 'reports/jscpd/html-report/'
             }
         },
         aws_s3: {
@@ -700,7 +733,7 @@ module.exports = function (grunt) {
     grunt.registerTask('build', 'builds the project', function () {
 
         var tasks = [
-            'clean:dist',
+            'clean:server',
             'useminPrepare',
             'concurrent:dist',
             'concat',

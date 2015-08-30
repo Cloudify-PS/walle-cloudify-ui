@@ -1,4 +1,12 @@
 module.exports = function(config) {
+
+
+    reportsHome = 'coverage/';
+
+    if ( process.REPORTS_HOME ){
+        reportsHome = process.REPORTS_BASE + '/coverage/';
+    }
+
     var configuration = {
         // base path, that will be used to resolve files and exclude
         basePath: '',
@@ -124,13 +132,15 @@ module.exports = function(config) {
         // CLI --report-slower-than 500
         reportSlowerThan: 500,
         coverageReporter: {
-            type: 'html',
-            dir: 'coverage/',
+            dir: reportsHome,
             subdir: function (browser) {
                 var result = browser.toLowerCase().split(/[ /-]/)[0];
                 console.log('this is browser', result);
                 return result;
-            }
+            },
+            reporters: [  {type: 'html' },{ type: 'cobertura'} ]
+
+
         },
 
         plugins: [
