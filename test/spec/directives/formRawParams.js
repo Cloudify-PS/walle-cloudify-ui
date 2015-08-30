@@ -49,49 +49,32 @@ describe('Directive: formRawParams', function () {
     });
 
     describe('#validateJsonKeys', function () {
-        describe('non strict mode', function () {
-            beforeEach(function () {
-                scope.params = {
-                    'foo': 'bar',
-                    'hello': 'world'
-                };
-                scope.$digest();
-            });
-            it('should return error and false if key is missing', function () {
-                element.isolateScope().rawString = JSON.stringify({'foo': 'bar'});
+        beforeEach(function () {
+            scope.params = {
+                'foo': 'bar',
+                'hello': 'world'
+            };
+            scope.$digest();
+        });
+        it('should return error and false if key is missing', function () {
+            element.isolateScope().rawString = JSON.stringify({'foo': 'bar'});
 
-                expect(element.isolateScope().validateJsonKeys()).toBe(false);
-                expect(scope.onError).toHaveBeenCalledWith('Missing hello key in JSON');
-            });
-
-            it('should return true if all keys exist', function () {
-                element.isolateScope().rawString = JSON.stringify({'foo': 'bar', 'hello': 'world'});
-
-                expect(element.isolateScope().validateJsonKeys()).toBe(true);
-                expect(scope.onError).toHaveBeenCalledWith(null);
-            });
+            expect(element.isolateScope().validateJsonKeys()).toBe(false);
+            expect(scope.onError).toHaveBeenCalledWith('Missing hello key in JSON');
         });
 
-        describe('strict mode', function () {
-            beforeEach(function () {
-                scope.params = {
-                    'foo': 'bar'
-                };
-                scope.$digest();
-            });
-            it('should return error and false if key is empty', function () {
-                element.isolateScope().rawString = JSON.stringify({'foo': ''});
+        it('should return true if all keys exist', function () {
+            element.isolateScope().rawString = JSON.stringify({'foo': 'bar', 'hello': 'world'});
 
-                expect(element.isolateScope().validateJsonKeys(true)).toBe(false);
-                expect(scope.onError).toHaveBeenCalledWith(null);
-            });
+            expect(element.isolateScope().validateJsonKeys()).toBe(true);
+            expect(scope.onError).toHaveBeenCalledWith(null);
+        });
 
-            it('should return error and false if key is missing', function () {
-                element.isolateScope().rawString = JSON.stringify({'foo': undefined , 'unit' : null});
+        it('should return error and false if key is missing', function () {
+            element.isolateScope().rawString = JSON.stringify({'foo': undefined , 'hello': 'world'});
 
-                expect(element.isolateScope().validateJsonKeys(true)).toBe(false);
-                expect(scope.onError).toHaveBeenCalledWith(null);
-            });
+            expect(element.isolateScope().validateJsonKeys(true)).toBe(false);
+            expect(scope.onError).toHaveBeenCalledWith(null);
         });
     });
 
@@ -187,11 +170,6 @@ describe('Directive: formRawParams', function () {
         });
 
         describe('inputs params tooltip', function(){
-            var translate;
-            beforeEach(inject(function($filter){
-                translate = $filter('translate');
-            }));
-
             it('should show input params description as tooltip', function(){
                 scope.params = { 'foo' : {'description':'A yummy snickers'}};
                 scope.$digest();
@@ -205,7 +183,32 @@ describe('Directive: formRawParams', function () {
                 scope.$digest();
                 content.append(element);
                 var inputParameters = element.find('li div');
-                expect(inputParameters[0].getAttribute('title')).toBe(translate('formRawParams.noDescriptionTooltip'));
+                expect(inputParameters[0].getAttribute('title')).toBe('formRawParams.noDescriptionTooltip');
+            });
+        });
+
+        describe('placeholder', function(){
+            it('should make placeholder "null" when input has a null value', function(){
+                scope.params =  {'foo' :{}};
+                content.append(element);
+                scope.$digest();
+                element.isolateScope().rawString = ' { "foo" : null } ';
+                scope.$digest();
+                var input = element.find('li input');
+
+                expect(input[0].getAttribute('placeholder')).toBe('null');
+            });
+
+
+            it('should make placeholder translate "dialogs.deploy.value" when input has no value and is not null', function(){
+                scope.params =  {'foo' :{}};
+                content.append(element);
+                scope.$digest();
+                element.isolateScope().rawString = ' { "foo" : "" } ';
+                scope.$digest();
+                var input = element.find('li input');
+
+                expect(input[0].getAttribute('placeholder')).toBe('dialogs.deploy.value');
             });
         });
 
