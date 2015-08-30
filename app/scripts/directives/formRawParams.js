@@ -168,11 +168,6 @@ angular.module('cosmoUiApp')
                         $scope.inputsState = INPUT_STATE.PARAMS;
                     }
                 });
-
-                $scope.toggleInputsState = function (state) {
-                    $scope.inputsState = INPUT_STATE[state];
-                };
-
                 $scope.$watch('inputsState', function () {
                     if (!!$scope.selectedBlueprint) {
                         $scope.updateInputs();
@@ -181,17 +176,6 @@ angular.module('cosmoUiApp')
 
                 // watching the raw json string changes, validating json on every change
                 $scope.$watch('rawString', _rawToForm);
-
-                // cover scenario where key is missing and I just added it in form mode
-                $scope.$watch('inputs', _formToRaw, true);
-
-                $scope.updateInputs = function () {
-                    if ($scope.inputsState === INPUT_STATE.RAW) {
-                        _formToRaw();
-                    } else {
-                        _rawToForm();
-                    }
-                };
 
                 $scope.$watch('params', function (params) {
                     scope.inputs = {};
@@ -202,6 +186,36 @@ angular.module('cosmoUiApp')
                     }
                 });
 
+                // cover scenario where key is missing and I just added it in form mode
+                $scope.$watch('inputs', _formToRaw, true);
+
+
+                $scope.toggleInputsState = function (state) {
+                    $scope.inputsState = INPUT_STATE[state];
+                };
+
+                $scope.updateInputs = function () {
+                    if ($scope.inputsState === INPUT_STATE.RAW) {
+                        _formToRaw();
+                    } else {
+                        _rawToForm();
+                    }
+                };
+
+
+                $scope.parseDefVal = function(defaultVal){
+                    if(defaultVal === null){
+                        return 'null';
+                    }else if(typeof defaultVal === 'string'){
+                        return defaultVal;
+                    }else{
+                        return JSON.stringify(defaultVal);
+                    }
+                };
+
+                $scope.restoreDefault = function(paramName,defaultValue){
+                    $scope.inputs[paramName] = $scope.parseDefVal(defaultValue);
+                };
 
                 // expose functions to test
                 $scope.validateJSON = _validateJSON;
