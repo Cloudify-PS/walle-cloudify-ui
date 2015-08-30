@@ -162,7 +162,13 @@ module.exports = function (grunt) {
             backend : {
                 src: ['backend/**/*.js'],
                 options: {
-                    destination: 'doc'
+                    destination: '<%= reportsBase %>/backend-doc'
+                }
+            },
+            frontend: {
+                src: ['app/scripts/**/*.js'],
+                options: {
+                    destination: '<%= reportsBase %>/frontend-doc'
                 }
             }
         },
