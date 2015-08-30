@@ -725,7 +725,7 @@ module.exports = function (grunt) {
     grunt.registerTask('build', 'builds the project', function () {
 
         var tasks = [
-            'clean',
+            'clean:server',
             'useminPrepare',
             'concurrent:dist',
             'concat',
