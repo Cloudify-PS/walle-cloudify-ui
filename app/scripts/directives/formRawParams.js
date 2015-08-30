@@ -36,23 +36,19 @@ angular.module('cosmoUiApp')
                 scope.$watch(function () {
                     return _validateJSON(false, true);
                 }, function (newValue) {
-                    scope.valid = newValue && _validateJsonKeys(true) && _validateInputsNotEmpty(); //set error message turned on
+                    scope.valid = newValue && _validateJsonKeys() && _validateInputsNotEmpty(); //set error message turned on
                 });
 
                 scope.$watch(function () {
                     return _validateInputsNotEmpty();
                 }, function (newValue) {
-                    scope.valid = newValue && _validateJsonKeys(true) && _validateJSON(false, true); //set error message turned on
+                    scope.valid = newValue && _validateJsonKeys() && _validateJSON(false, true); //set error message turned on
                 });
 
 
                 // JSON keys validation, verifying all expected keys exists in JSON
-                // strict means check values are not null or ''
-                // if key is missing (non strict) we want to display an error
-                // if key is empty (strict) that return invalid, but don't display an error
-                // if there's an error, we want to display it (so if strict mode fails, keep searching for error to display)
-                function _validateJsonKeys(strict, skipErrorMessage) {
-                    var result = true;
+                // if key is missing we want to display an error
+                function _validateJsonKeys(skipErrorMessage) {
                     var _json = $scope.rawString ? JSON.parse($scope.rawString) : {};
                     for (var i in $scope.params) {
                         var value = _json[i];
@@ -60,14 +56,10 @@ angular.module('cosmoUiApp')
                             if (!skipErrorMessage) {
                                 setDeployError('Missing ' + i + ' key in JSON');
                             }
-                            result = false;
-                            return result; // no need to continue
-                        }
-                        if (( strict && ( value === null || value === '' ) )) {
-                            result = false; // lets continue.. perhaps there's an error we want to display
+                            return false;
                         }
                     }
-                    return result;
+                    return true;
                 }
 
                 // JSON validation by parsing it
