@@ -138,7 +138,7 @@ module.exports = function(config) {
                 console.log('this is browser', result);
                 return result;
             },
-            reporters: [ { type: 'html'} , { type: 'cobertura'} ]
+            reporters: [  {type: 'html' },{ type: 'cobertura'} ]
 
 
         },
