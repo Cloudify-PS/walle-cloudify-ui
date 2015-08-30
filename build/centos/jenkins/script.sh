@@ -117,7 +117,11 @@ if [ "$SCP_PLUGIN" = "0" ]; then
 else
     echo "scp plugin already installed"
 fi
-vagrant scp default:reports ../..
+
+echo "cleaning old reports"
+REPORTS_PARENT_DIR="../.."
+rm -rf $REPORTS_PARENT_DIR/reports
+vagrant scp default:reports $REPORTS_PARENT_DIR
 
 
 vagrant destroy -f || echo "could not tear down the machine"
