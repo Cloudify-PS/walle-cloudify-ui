@@ -184,7 +184,7 @@ describe('Directive: formRawParams', function () {
                 scope.$digest();
                 content.append(element);
                 var inputParameters = element.find('li div');
-                expect(inputParameters[0].getAttribute('title')).toBe('A yummy snickers');
+                expect(inputParameters[0].getAttribute('title')).toBe('foo: A yummy snickers');
             });
 
             it('should show no description defined message as tooltip', function(){
@@ -192,7 +192,7 @@ describe('Directive: formRawParams', function () {
                 scope.$digest();
                 content.append(element);
                 var inputParameters = element.find('li div');
-                expect(inputParameters[0].getAttribute('title')).toBe('formRawParams.noDescriptionTooltip');
+                expect(inputParameters[0].getAttribute('title')).toBe('bar: formRawParams.noDescriptionTooltip');
             });
         });
 
