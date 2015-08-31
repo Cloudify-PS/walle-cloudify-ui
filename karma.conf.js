@@ -53,6 +53,8 @@ module.exports = function(config) {
             'app/bower_components/ngprogress/build/ngProgress.js',
             'app/bower_components/angular-ticker/release/angular-ticker.js',
             'app/bower_components/angular-loading-bar/build/loading-bar.js',
+            'app/bower_components/angular-bootstrap/ui-bootstrap.js',
+            'app/bower_components/angular-bootstrap/ui-bootstrap-tpls.js',
             'app/scripts/*.js',
             'app/scripts/**/*.js',
             '.tmp/styles/main.css',
