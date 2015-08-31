@@ -59,18 +59,29 @@ if [ -f ${JENKINS_CREDENTIALS_FILE} ]; then
 
      ## lets replace everything from overrides
      echo "overriding aws access key id"
-     sed -i.bak s/__S3_ACCESS_KEY__/$AWS_ACCESS_KEY_ID_UPLOAD_TEMP/g config.json
+     sed -i.bak s/__S3_ACCESS_KEY__/$AWS_ACCESS_KEY_ID_UPLOAD_TEMP/g $CONFIG_FILE
 
      echo "overriding aws token"
      ## use other character in sed rather than / because aws tokens have / which messes things up
      ##
-     sed -i.bak s#__S3_SECRET_KEY__#$AWS_ACCESS_KEY_UPLOAD_TEMP#g config.json
+     sed -i.bak s#__S3_SECRET_KEY__#$AWS_ACCESS_KEY_UPLOAD_TEMP#g $CONFIG_FILE
 
      echo "overriding bucket"
-     sed -i.bak s/__S3_BUCKET__/$BUCKET_NAME/g config.json
+     sed -i.bak s/__S3_BUCKET__/$BUCKET_NAME/g $CONFIG_FILE
+
 
      echo "overriding bucket path"
-     sed -i.bak s#__S3_FOLDER__#$AWS_S3_BUCKET_PATH#g config.json
+     sed -i.bak s#__S3_FOLDER__#$AWS_S3_BUCKET_PATH#g $CONFIG_FILE
+
+
+     sed -i.bak s/__VERSION__/$VERSION/g $CONIG_FILE
+     sed -i.bak s/__PRERELEASE__/$PRERELEASE/g $CONFIG_FILE
+     sed -i.bak s/__BUILD__/$BUILD/g $CONFIG_FILE
+     sed -i.bak s/__TAG__/$CORE_TAG_NAME/g $CONFIG_FILE
+
+
+     sed -i.bak s/__GITHUB_USERNAME__/$GITHUB_USERNAME/g $CONFIG_FILE
+     sed -i.bak s/__GITHUB_TOKEN__/$GITHUB_PASSWORD/g $CONFIG_FILE
 
 
 else
