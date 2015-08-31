@@ -754,6 +754,7 @@ module.exports = function (grunt) {
             'concat',
             'copy:dist',
             'curl:nodejs',
+            'readMetadata',
             'overrideBuildVersion',
             'bundle',
             'ngmin',
@@ -873,6 +874,7 @@ module.exports = function (grunt) {
         'default',
         'pack',
         'blueprint',
+        'readMetadata',
         'copy:artifacts'
     ]);
 
