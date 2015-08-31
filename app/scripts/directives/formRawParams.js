@@ -207,7 +207,7 @@ angular.module('cosmoUiApp')
                     scope.inputs = {};
                     if (!!params) {
                         _.each(params, function (value, key) {
-                            scope.inputs[key] = value.default ? value.default : '';
+                            scope.inputs[key] = value.default || value.default ===null ? value.default : '';
                         });
                     }
                 });
