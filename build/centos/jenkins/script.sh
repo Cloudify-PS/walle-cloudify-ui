@@ -74,13 +74,18 @@ if [ -f ${JENKINS_CREDENTIALS_FILE} ]; then
      sed -i.bak s#__S3_FOLDER__#$AWS_S3_BUCKET_PATH#g $CONFIG_FILE
 
 
+     echo "overriding version"
      sed -i.bak s/__VERSION__/$VERSION/g $CONIG_FILE
+     echo "overriding prerelease"
      sed -i.bak s/__PRERELEASE__/$PRERELEASE/g $CONFIG_FILE
+     echo "overriding build"
      sed -i.bak s/__BUILD__/$BUILD/g $CONFIG_FILE
+     echo "overriding tag"
      sed -i.bak s/__TAG__/$CORE_TAG_NAME/g $CONFIG_FILE
 
-
+     echo "overriding github username"
      sed -i.bak s/__GITHUB_USERNAME__/$GITHUB_USERNAME/g $CONFIG_FILE
+     echo "overriding github token"
      sed -i.bak s/__GITHUB_TOKEN__/$GITHUB_PASSWORD/g $CONFIG_FILE
 
 
