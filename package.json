@@ -1,5 +1,5 @@
 {
-    "name": "cosmo-ui",
+    "name": "cloudify-ui",
     "version": "3.2.0-development",
     "private": true,
     "man": [
@@ -17,7 +17,7 @@
     ],
     "scripts": {
         "install_prereq": "npm install -g  bower grunt-cli phantomjs && npm cache clean ",
-        "build_linux": "rm -rf node_modules && rm -rf app/bower_components && npm cache clean && bower cache clean &&  npm install && bower install && grunt buildArtifacts $FORCE $NO_COLOR",
+        "build_linux": "rm -rf node_modules && rm -rf app/bower_components && npm cache clean && bower cache clean &&  npm install && bower install && grunt  clean buildArtifacts analyze $FORCE $NO_COLOR",
         "build_and_publish": "npm run build_linux && grunt uploadArtifacts $NO_COLOR",
         "clean_all": "rm -rf app/bower_components && rm -rf node_modules && bower cache clean && npm cache clean && bower install && npm install"
     },
@@ -37,8 +37,7 @@
         "log4js": "~0.6.9",
         "request": "^2.51.0",
         "tar": "^1.0.3",
-        "express-http-proxy": "~0.6.0",
-        "cloudify-kibana": "https://s3.amazonaws.com/cloudify-ui-automations/cloudify-kibana/builds/3.3/cloudify-kibana-3.3.0.tgz"
+        "express-http-proxy": "~0.6.0"
     },
     "devDependencies": {
         "connect-livereload": "^0.3.2",

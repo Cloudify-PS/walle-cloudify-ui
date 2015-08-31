@@ -9,9 +9,10 @@
 #   +---- vagrant-config - holds configuration for vagrant
 #   +---- vagrant-automation-machines - holds the vagrantfile
 
- set -e
- set -v
+set -e
+set -v
 
+echoerr() { echo "$@" 1>&2; }
 
 echo "user is $USER";
 
@@ -31,8 +32,12 @@ JENKINS_CREDENTIALS_FILE="${JENKINS_HOME}/jobs/credentials.sh"
 
 if [ -f ${JENKINS_CREDENTIALS_FILE} ]; then
 
-     cp -f $VCONFIG/centos-build-config.json config.json# copy original file
+     echo "credentials.sh exists. overriding parameters.."
 
+     echo "copying file to override"
+     cp -f $VCONFIG/official-build-config.json config.json #copy original file
+
+     echo "reading properties from provision.sh"
      source $SOURCES/build/centos/jenkins/provision.sh
 
 
@@ -53,10 +58,30 @@ if [ -f ${JENKINS_CREDENTIALS_FILE} ]; then
      # AWS_ACCESS_KEY_UPLOAD_TEMP
 
      ## lets replace everything from overrides
-     sed -i.bak s/__S3_ACCESS_KEY__/$AWS_ACCESS_KEY_ID_UPLOAD_TEMP/g config.json
-     sed -i.bak s/__S3_SECRET_KEY__/$AWS_ACCESS_KEY_UPLOAD_TEMP/g config.json
-     sed -i.bak s/__S3_BUCKET__/$BUCKET_NAME/g config.json
-     sed -i.bak s/__S3_FOLDER__/$AWS_S3_BUCKET_PATH/g config.json
+     echo "overriding aws access key id"
+     sed -i.bak s/__S3_ACCESS_KEY__/$AWS_ACCESS_KEY_ID_UPLOAD_TEMP/g $CONFIG_FILE
+
+     echo "overriding aws token"
+     ## use other character in sed rather than / because aws tokens have / which messes things up
+     ##
+     sed -i.bak s#__S3_SECRET_KEY__#$AWS_ACCESS_KEY_UPLOAD_TEMP#g $CONFIG_FILE
+
+     echo "overriding bucket"
+     sed -i.bak s/__S3_BUCKET__/$BUCKET_NAME/g $CONFIG_FILE
+
+
+     echo "overriding bucket path"
+     sed -i.bak s#__S3_FOLDER__#$AWS_S3_BUCKET_PATH#g $CONFIG_FILE
+
+
+     sed -i.bak s/__VERSION__/$VERSION/g $CONIG_FILE
+     sed -i.bak s/__PRERELEASE__/$PRERELEASE/g $CONFIG_FILE
+     sed -i.bak s/__BUILD__/$BUILD/g $CONFIG_FILE
+     sed -i.bak s/__TAG__/$CORE_TAG_NAME/g $CONFIG_FILE
+
+
+     sed -i.bak s/__GITHUB_USERNAME__/$GITHUB_USERNAME/g $CONFIG_FILE
+     sed -i.bak s/__GITHUB_TOKEN__/$GITHUB_PASSWORD/g $CONFIG_FILE
 
 
 else
@@ -71,8 +96,24 @@ cp -f $VCONFIG/centos-ireland-keyfile.pem /tmp/automations/centos-cloudify-ui-bu
 
 cp -Rf $SOURCES/build/centos/vagrant/* $VAM/
 
-export VAGRANT_HOME="~/.vagrant_$CLOUD"
+if [ -e ~/.vagrant_$CLOUD ]; then
+    echo "declaring new vagrant home"
+    export VAGRANT_HOME="~/.vagrant_$CLOUD"
+else
+    echo "assuming pluging installed in default vagrant home"
+fi
+
 cd $VAM/$CLOUD
+
+echo "I am at [`pwd`] and I am about to run vagrant up with CLOUD=$CLOUD"
+
+cat Vagrantfile
+vagrant plugin list
+
+echo "and this is my configuration file [$CONFIG_FILE]"
+cat $CONFIG_FILE
+
+
 FAILED="false"
 vagrant destroy -f || echo "no need to teardown the machine because it was not running"
 
@@ -82,12 +123,16 @@ vagrant up --provider=$CLOUD || FAILED="true"
 SCP_PLUGIN=`vagrant plugin list | grep vagrant-scp | wc -l`
 
 if [ "$SCP_PLUGIN" = "0" ]; then
-	echo "installing scp plugin"
-    vagrant plugin install vagrant-scp
+    echoerr "need vagrant-scp plugin which is missing"
+	exit 1
 else
     echo "scp plugin already installed"
 fi
-vagrant scp default:reports ../..
+
+echo "cleaning old reports"
+REPORTS_PARENT_DIR="../.."
+rm -rf $REPORTS_PARENT_DIR/reports
+vagrant scp default:reports $REPORTS_PARENT_DIR
 
 
 vagrant destroy -f || echo "could not tear down the machine"
