@@ -75,7 +75,7 @@ if [ -f ${JENKINS_CREDENTIALS_FILE} ]; then
 
 
      echo "overriding version"
-     sed -i.bak s/__VERSION__/$VERSION/g $CONIG_FILE
+     sed -i.bak s/__VERSION__/$VERSION/g $CONFIG_FILE
      echo "overriding prerelease"
      sed -i.bak s/__PRERELEASE__/$PRERELEASE/g $CONFIG_FILE
      echo "overriding build"
