@@ -29,7 +29,7 @@
     "cloudify-js": "cloudify-cosmo/cloudify-js#master",
     "ngDialog": "~0.4.0",
     "angular-ticker": "~0.1.11",
-    "angular-bootstrap": "~0.13"
+    "angular-bootstrap": "0.12"
   },
   "devDependencies": {
     "angular-mocks": "~1.2.21",
