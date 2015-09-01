@@ -60,7 +60,16 @@ describe('Directive: formRawParams', function () {
             element.isolateScope().rawString = JSON.stringify({'foo': 'bar'});
 
             expect(element.isolateScope().validateJsonKeys()).toBe(false);
-            expect(scope.onError).toHaveBeenCalledWith('Missing hello key in JSON');
+            expect(scope.onError).toHaveBeenCalledWith('formRawParams.missingKeyInJson');
+
+
+        });
+
+        it('should return error and false if key is missing', function () {
+            element.isolateScope().rawString = JSON.stringify({'foo': undefined , 'hello': 'world'});
+
+            expect(element.isolateScope().validateJsonKeys(true)).toBe(false);
+            expect(scope.onError).toHaveBeenCalledWith(null);
         });
 
         it('should return true if all keys exist', function () {
@@ -70,11 +79,11 @@ describe('Directive: formRawParams', function () {
             expect(scope.onError).toHaveBeenCalledWith(null);
         });
 
-        it('should return error and false if key is missing', function () {
-            element.isolateScope().rawString = JSON.stringify({'foo': undefined , 'hello': 'world'});
+        it('should return error and false if addition unexpected key was added', function(){
+            element.isolateScope().rawString = JSON.stringify({'foo': 'bar','hello':'world','unexpected':'key'});
 
-            expect(element.isolateScope().validateJsonKeys(true)).toBe(false);
-            expect(scope.onError).toHaveBeenCalledWith(null);
+            expect(element.isolateScope().validateJsonKeys()).toBe(false);
+            expect(scope.onError).toHaveBeenCalledWith('formRawParams.unexpectedKeyInJson');
         });
     });
 
@@ -201,7 +210,7 @@ describe('Directive: formRawParams', function () {
                 scope.$digest();
                 content.append(element);
                 var inputParameters = element.find('li div');
-                expect(inputParameters[0].getAttribute('title')).toBe('A yummy snickers');
+                expect(inputParameters[0].getAttribute('title')).toBe('foo: A yummy snickers');
             });
 
             it('should show no description defined message as tooltip', function(){
@@ -209,7 +218,7 @@ describe('Directive: formRawParams', function () {
                 scope.$digest();
                 content.append(element);
                 var inputParameters = element.find('li div');
-                expect(inputParameters[0].getAttribute('title')).toBe('formRawParams.noDescriptionTooltip');
+                expect(inputParameters[0].getAttribute('title')).toBe('bar: formRawParams.noDescriptionTooltip');
             });
         });
 

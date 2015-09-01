@@ -1,0 +1,14 @@
+<div class="btn-group" dropdown>
+    <button id="split-button" class="btn" type="button" ng-click="openDeployDialog(blueprint)">{{ 'blueprints.actions.deployBtn' | translate }}</button>
+    <button type="button" class="btn" dropdown-toggle>
+        <span class="caret"></span>
+    </button>
+    <ul class="dropdown-menu" role="menu" aria-labelledby="split-button">
+        <li role="menuitem" ng-click="openDeployDialog(blueprint)">
+                <button class="btn" type="button">{{ 'blueprints.actions.deployBtn' | translate }}</button>
+        </li>
+        <li role="menuitem" ng-click="deleteBlueprint(blueprint)">
+            <button class="btn" type="button">{{ 'blueprints.actions.deleteBtn' | translate }}</button>
+        </li>
+    </ul>
+</div>

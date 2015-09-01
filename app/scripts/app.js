@@ -11,14 +11,14 @@ angular.module('cosmoUiApp', [
     'ngAnimate',
     'nvd3ChartDirectives',
     'ngStorage',
-    'datePicker',
     'timer',
     'pascalprecht.translate',
     'ngDialog',
     'ngProgress',
     'angular-loading-bar',
     'jsbb.angularTicker',
-    'cloudifyjs'
+    'cloudifyjs',
+    'ui.bootstrap'
 
 ]).config( function ($routeProvider, $httpProvider, $translateProvider) {
 

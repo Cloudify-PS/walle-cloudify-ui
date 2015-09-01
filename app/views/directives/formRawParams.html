@@ -10,7 +10,7 @@
     <div class="inputsParameters" ng-show="inputsState == 'params'">
         <ul>
             <li ng-repeat="(name, value) in params">
-                <div title=" {{value.description ||('formRawParams.noDescriptionTooltip'|translate)}}" class="form-raw-item-name">{{name}}:</div>
+                <div title="{{name}}{{': '+(value.description ||'formRawParams.noDescriptionTooltip'|translate)}}" class="form-raw-item-name">{{name}}:</div>
                 <span class="input-wrapper">
                     <input type="text" class="param-input" spellcheck="false" ng-trim="false" ng-model="inputs[name]" ng-class="{'rightPaddingText': value.default}"
                            placeholder="{{ inputs[name]==null? 'null' : ('dialogs.deploy.value' | translate) }}">

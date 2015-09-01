@@ -21,14 +21,17 @@
                 "created": "Create date",
                 "updated": "Update date",
                 "deployments": "# of Deployments"
-            },
-            "deployBtn": "Create Deployment"
+            }
         },
         "emptyMessage": "No Blueprints",
         "source": {
             "chooseFile": "Please choose file to preview.",
             "noPreview": "No preview available",
             "browseError": "Error browsing blueprint files"
+        },
+        "actions": {
+            "deployBtn": "Create Deployment",
+            "deleteBtn": "Delete"
         }
     },
     "config": {
@@ -177,7 +180,9 @@
         "interface": "Interface Elements"
     },
     "formRawParams": {
-        "noDescriptionTooltip": "No description was defined"
+        "noDescriptionTooltip": "No description was defined",
+        "missingKeyInJson": "Missing '{{key}}' key in JSON",
+        "unexpectedKeyInJson": "Unexpected '{{key}}' key in JSON"
     },
     "dialogs": {
         "delete": {

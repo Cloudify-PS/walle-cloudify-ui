@@ -30,3 +30,6 @@ backend-coverage
 backend-instrument
 artifacts
 .vagrant
+reports
+build/centos/vagrant/aws
+build/centos/vagrant/util
