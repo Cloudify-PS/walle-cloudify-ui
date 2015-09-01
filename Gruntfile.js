@@ -812,7 +812,8 @@ module.exports = function (grunt) {
 
         grunt.config.data.cfy.metadata.fullVersion = _.compact([ grunt.config.data.cfy.metadata.version, grunt.config.data.cfy.metadata.prerelease ]).join('-');
 
-        grunt.config.data.cfy.metadata.buildVersion = _.compact([ grunt.config.data.cfy.metadata.version, grunt.config.data.cfy.metadata.prerelease, grunt.config.data.cfy.metadata.build ]).join('-');
+        //
+        grunt.config.data.cfy.metadata.buildVersion = _.compact([ grunt.config.data.cfy.metadata.version, grunt.config.data.cfy.metadata.prerelease, grunt.config.data.cfy.metadata.build ?  'b' + grunt.config.data.cfy.metadata.build : null ]).join('-');
 
         grunt.log.debug('version data is', grunt.config.data.cfy.version);
 
