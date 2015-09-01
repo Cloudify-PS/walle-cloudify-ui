@@ -221,18 +221,18 @@ angular.module('cosmoUiApp')
                     } else {
                         return JSON.stringify(defaultVal);
                     }
-                    ;
+                };
 
-                    $scope.restoreDefault = function (paramName, defaultValue) {
-                        $scope.inputs[paramName] = $scope.parseDefVal(defaultValue);
-                    };
+                $scope.restoreDefault = function (paramName, defaultValue) {
+                    $scope.inputs[paramName] = $scope.parseDefVal(defaultValue);
+                };
 
-                    // expose functions to test
-                    $scope.validateJSON = _validateJSON;
-                    $scope.validateJsonKeys = _validateJsonKeys;
-                    $scope.rawToForm = _rawToForm;
-                    $scope.validateInputsNotEmpty = _validateInputsNotEmpty;
-                }
+                // expose functions to test
+                $scope.validateJSON = _validateJSON;
+                $scope.validateJsonKeys = _validateJsonKeys;
+                $scope.rawToForm = _rawToForm;
+                $scope.validateInputsNotEmpty = _validateInputsNotEmpty;
+
             }
         }
     });
