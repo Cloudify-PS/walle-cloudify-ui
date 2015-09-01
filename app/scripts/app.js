@@ -11,7 +11,6 @@ angular.module('cosmoUiApp', [
     'ngAnimate',
     'nvd3ChartDirectives',
     'ngStorage',
-    'datePicker',
     'timer',
     'pascalprecht.translate',
     'ngDialog',
