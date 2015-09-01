@@ -234,5 +234,5 @@ angular.module('cosmoUiApp')
                 $scope.validateInputsNotEmpty = _validateInputsNotEmpty;
 
             }
-        }
+        };
     });
