@@ -26,7 +26,7 @@
         "cosmoui": "cosmoui.js"
     },
     "dependencies": {
-        "cloudify-js": "git://github.com/cloudify-cosmo/cloudify-js.git",
+        "cloudify-js": "git://github.com/cloudify-cosmo/cloudify-js.git#CFY-3426-logs-events-paging-sorting",
         "express": "~3.4.2",
         "express-params": "0.0.3",
         "fs.extra": "^1.2.1",

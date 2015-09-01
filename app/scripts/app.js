@@ -18,8 +18,8 @@ angular.module('cosmoUiApp', [
     'ngProgress',
     'angular-loading-bar',
     'jsbb.angularTicker',
-    'cloudifyjs'
-
+    'cloudifyjs',
+    'smart-table'
 ]).config( function ($routeProvider, $httpProvider, $translateProvider) {
 
         //var isSettingsExists = window.isSettingsExists();
