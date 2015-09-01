@@ -142,6 +142,32 @@ describe('Directive: formRawParams', function () {
         }));
     });
 
+    describe('restore-default button logic', function(){
+        it('should return value to default value', function(){
+            scope.params = { 'int_variable' : { 'default': 80 }, 'bool_variable' : { 'default': 'true' }, 'str_variable' : { 'default' : 'foo bar' }, 'null_variable' : { 'default': 'null'} };
+            scope.rawString = JSON.stringify(scope.params, null, 2);
+            scope.inputsState = 'raw';
+            scope.$digest();
+
+            element.isolateScope().inputs.int_variable = 'changed default';
+            element.isolateScope().inputs.bool_variable = 'changed default';
+            element.isolateScope().inputs.str_variable = 'changed default';
+            element.isolateScope().inputs.null_variable = 'changed default';
+            scope.$digest();
+
+            element.isolateScope().restoreDefault('int_variable',80);
+            element.isolateScope().restoreDefault('bool_variable','true' );
+            element.isolateScope().restoreDefault('str_variable','foo bar');
+            element.isolateScope().restoreDefault('null_variable','null');
+            scope.$digest();
+
+            expect(JSON.parse(scope.rawString).int_variable).toBe(80);
+            expect(JSON.parse(scope.rawString).bool_variable).toBe(true);
+            expect(JSON.parse(scope.rawString).str_variable).toBe('foo bar');
+            expect(JSON.parse(scope.rawString).null_variable).toBe(null);
+        });
+    });
+
     describe('views tests', function(){
 
         var content = null;
@@ -218,6 +244,37 @@ describe('Directive: formRawParams', function () {
                 var input = element.find('li input');
 
                 expect(input[0].getAttribute('placeholder')).toBe('dialogs.deploy.value');
+            });
+        });
+
+        describe('restore-default button', function(){
+            it('should show default value as tooltip', function(){
+                scope.params = { 'array' : {'default':'[1,2,3,true]'},'object' : {'default':'{"key":"value"}'},'string': {'default':'bloop'},'null': {'default': 'null'} };
+                scope.$digest();
+                content.append(element);
+                var restoreDefault = element.find('.restore-default');
+                //Checking - Array, Object, String, Null
+                expect(restoreDefault[0].getAttribute('title')).toBe('[1,2,3,true]');
+                expect(restoreDefault[2].getAttribute('title')).toBe('{"key":"value"}');
+                expect(restoreDefault[3].getAttribute('title')).toBe('bloop');
+                expect(restoreDefault[1].getAttribute('title')).toBe('null');
+            });
+
+            it('should have restore-default button if has default', function(){
+                scope.params = { 'array' : {'default':'[1,2,3,true]'},'object' : {'default':'{"key":"value"}'},'string': {'default':'bloop'},'null': {'default': 'null'},
+                    'noDefault':{'description':'making sure not all has restore-default button'} };
+                scope.$digest();
+                content.append(element);
+                var restoreDefault = element.find('.restore-default');
+                expect(restoreDefault.length).toBe(4);
+            });
+
+            it('should not have restore-default button if has no default', function(){
+                scope.params = { 'foo' : {},'bar' : {},'bloop': {} };
+                scope.$digest();
+                content.append(element);
+                var restoreDefault = element.find('.restore-default');
+                expect(restoreDefault.length).toBe(0);
             });
         });
 

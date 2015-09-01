@@ -50,11 +50,11 @@ angular.module('cosmoUiApp')
                 // if key is missing we want to display an error
                 // if additional key is added and unexpected we want to display an error
                 function _validateJsonKeys(skipErrorMessage) {
-                    function isKeyInParams(key){
-                        if(key in scope.params){
+                    function isKeyInParams(key) {
+                        if (key in scope.params) {
                             return true;
                         }
-                        else{
+                        else {
                             return false;
                         }
                     }
@@ -64,7 +64,7 @@ angular.module('cosmoUiApp')
                         var value = _json[expectedKey];
                         if (value === undefined) {
                             if (!skipErrorMessage) {
-                                setDeployError($filter('translate')('formRawParams.missingKeyInJson',{key:expectedKey}));
+                                setDeployError($filter('translate')('formRawParams.missingKeyInJson', {key: expectedKey}));
                             }
                             return false;
                         }
@@ -72,7 +72,7 @@ angular.module('cosmoUiApp')
                     for (var key in _json) {
                         if (!isKeyInParams(key)) {
                             if (!skipErrorMessage) {
-                                setDeployError($filter('translate')('formRawParams.unexpectedKeyInJson',{key:key}));
+                                setDeployError($filter('translate')('formRawParams.unexpectedKeyInJson', {key: key}));
                             }
                             return false;
                         }
@@ -98,7 +98,7 @@ angular.module('cosmoUiApp')
                     }
                 }
 
-                function _validateInputsNotEmpty(){
+                function _validateInputsNotEmpty() {
                     try {
                         var parsedInputs = JSON.parse($scope.rawString);
                         var isInputsNotEmpty = true;
@@ -178,11 +178,6 @@ angular.module('cosmoUiApp')
                         $scope.inputsState = INPUT_STATE.PARAMS;
                     }
                 });
-
-                $scope.toggleInputsState = function (state) {
-                    $scope.inputsState = INPUT_STATE[state];
-                };
-
                 $scope.$watch('inputsState', function () {
                     if (!!$scope.selectedBlueprint) {
                         $scope.updateInputs();
@@ -192,8 +187,22 @@ angular.module('cosmoUiApp')
                 // watching the raw json string changes, validating json on every change
                 $scope.$watch('rawString', _rawToForm);
 
+                $scope.$watch('params', function (params) {
+                    scope.inputs = {};
+                    if (!!params) {
+                        _.each(params, function (value, key) {
+                            scope.inputs[key] = value.default ? value.default : '';
+                        });
+                    }
+                });
+
                 // cover scenario where key is missing and I just added it in form mode
                 $scope.$watch('inputs', _formToRaw, true);
+
+
+                $scope.toggleInputsState = function (state) {
+                    $scope.inputsState = INPUT_STATE[state];
+                };
 
                 $scope.updateInputs = function () {
                     if ($scope.inputsState === INPUT_STATE.RAW) {
@@ -203,21 +212,27 @@ angular.module('cosmoUiApp')
                     }
                 };
 
-                $scope.$watch('params', function (params) {
-                    scope.inputs = {};
-                    if (!!params) {
-                        _.each(params, function (value, key) {
-                            scope.inputs[key] = value.default || value.default ===null ? value.default : '';
-                        });
-                    }
-                });
 
+                $scope.parseDefVal = function (defaultVal) {
+                    if (defaultVal === null) {
+                        return 'null';
+                    } else if (typeof defaultVal === 'string') {
+                        return defaultVal;
+                    } else {
+                        return JSON.stringify(defaultVal);
+                    }
+                };
+
+                $scope.restoreDefault = function (paramName, defaultValue) {
+                    $scope.inputs[paramName] = $scope.parseDefVal(defaultValue);
+                };
 
                 // expose functions to test
                 $scope.validateJSON = _validateJSON;
                 $scope.validateJsonKeys = _validateJsonKeys;
                 $scope.rawToForm = _rawToForm;
                 $scope.validateInputsNotEmpty = _validateInputsNotEmpty;
+
             }
         };
     });
