@@ -11,7 +11,6 @@ angular.module('cosmoUiApp', [
     'ngAnimate',
     'nvd3ChartDirectives',
     'ngStorage',
-    'datePicker',
     'timer',
     'pascalprecht.translate',
     'ngDialog',
@@ -19,6 +18,7 @@ angular.module('cosmoUiApp', [
     'angular-loading-bar',
     'jsbb.angularTicker',
     'cloudifyjs',
+    'ui.bootstrap',
     'smart-table'
 ]).config( function ($routeProvider, $httpProvider, $translateProvider) {
 

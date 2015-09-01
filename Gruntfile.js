@@ -162,7 +162,13 @@ module.exports = function (grunt) {
             backend : {
                 src: ['backend/**/*.js'],
                 options: {
-                    destination: 'doc'
+                    destination: '<%= reportsBase %>/backend-doc'
+                }
+            },
+            frontend: {
+                src: ['app/scripts/**/*.js'],
+                options: {
+                    destination: '<%= reportsBase %>/frontend-doc'
                 }
             }
         },
@@ -391,7 +397,16 @@ module.exports = function (grunt) {
                         dot: true,
                         cwd: '<%= yeoman.dist %>',
                         dest: '<%= yeoman.artifacts %>',
-                        src: [ 'cosmo-ui-*.tgz', 'blueprint.tar.gz']
+                        src: [ 'cloudify-ui-*.tgz', 'blueprint.tar.gz'],
+                        rename: function( dest , src ){
+                            var md = grunt.config.data.cfy.metadata;
+                            console.log('renaming ', dest, src);
+                            if ( src.indexOf('blueprint.tar.gz') >= 0){
+                                return require('path').join(dest , 'ui-blueprint-' + md.buildVersion + '.tar.gz');
+                            }else if ( src.indexOf('cloudify-ui') >= 0){
+                                return require('path').join(dest,'cloudify-ui-' + md.buildVersion + '.tgz');
+                            }
+                        }
                     }
                 ]
             },
@@ -409,7 +424,7 @@ module.exports = function (grunt) {
                         dot: true,
                         cwd: '<%= yeoman.dist %>',
                         dest: '<%= yeoman.distBlueprint%>',
-                        src: [ 'cosmo-ui*.tgz'],
+                        src: [ 'cloudify-ui*.tgz'],
                         rename: function( dest /*, src*/ ){
                             return path.join(dest ,'blueprint/node-application','app.tgz');
                         }
@@ -739,6 +754,7 @@ module.exports = function (grunt) {
             'concat',
             'copy:dist',
             'curl:nodejs',
+            'readMetadata',
             'overrideBuildVersion',
             'bundle',
             'ngmin',
@@ -766,33 +782,69 @@ module.exports = function (grunt) {
         grunt.file.write('dist/package.json', JSON.stringify(pkg, undefined, '  '));
     });
 
-    grunt.registerTask('overrideBuildVersion', function(){
-        var done = this.async();
-        var versionFilename = 'VERSION';
-        var buildVersion = null;
-        if (grunt.file.exists(versionFilename)) {
-            var fs = require('fs');
-            buildVersion = grunt.file.readJSON(versionFilename).version;
-            grunt.log.ok('build version is ', buildVersion );
-            var packageJson = grunt.file.readJSON('dist/package.json');
-            packageJson.version = buildVersion;
-            try {
-                fs.writeFile('dist/package.json', JSON.stringify(packageJson,{},4), function (err) {
-                    if ( !!err ){
-                        grunt.log.error('writing file failed',err);
-                        grunt.fail.fatal('writing version failed');
-                    }
-                    grunt.log.ok('version changed successfully');
-                    done();
-                });
-            }catch(e){
-                grunt.log.error('unable to write build version ',e);
-                grunt.fail.fatal('unable to write build version ');
-            }
-            grunt.log.ok('build version : ' +  buildVersion);
-        } else {
-            grunt.log.ok( versionFilename + ' does not exist. skipping version manipulation');
+    grunt.registerTask('readMetadata', function(){
+
+        // either read version.json file or from environment variables
+
+        var envData = {
+            version: process.env.VERSION || 'dev',
+            prerelease: process.env.PRERELEASE || null,
+            build: process.env.BUILD || new Date().getTime()
+        };
+
+        var versionFile = process.env.VERSION_JSON || './dev/version.json';
+
+        var fileData = {};
+        if ( grunt.file.exists(versionFile) ){
+            grunt.log.ok('version file exists. reading..');
+            fileData = grunt.file.readJSON(versionFile);
+        }else{
+            grunt.log.ok('version file does not exist. skipping');
         }
+
+
+        if ( !grunt.config.data.cfy){
+            grunt.config.data.cfy = {};
+        }
+
+        grunt.config.data.cfy.metadata = _.merge({}, envData, fileData);
+
+
+        grunt.config.data.cfy.metadata.fullVersion = _.compact([ grunt.config.data.cfy.metadata.version, grunt.config.data.cfy.metadata.prerelease ]).join('-');
+
+        //
+        grunt.config.data.cfy.metadata.buildVersion = _.compact([ grunt.config.data.cfy.metadata.version, grunt.config.data.cfy.metadata.prerelease, grunt.config.data.cfy.metadata.build ?  'b' + grunt.config.data.cfy.metadata.build : null ]).join('-');
+
+        grunt.log.debug('version data is', grunt.config.data.cfy.version);
+
+    });
+
+    grunt.registerTask('overrideBuildVersion', function () {
+        var done = this.async();
+
+
+        var packageJson = grunt.file.readJSON('dist/package.json');
+
+
+
+        packageJson.version = grunt.config.data.cfy.metadata.fullVersion;
+
+
+        try {
+            require('fs').writeFile('dist/package.json', JSON.stringify(packageJson, {}, 4), function (err) {
+                if (!!err) {
+                    grunt.log.error('writing file failed', err);
+                    grunt.fail.fatal('writing version failed');
+                }
+                grunt.log.ok('version changed successfully');
+                done();
+            });
+        } catch (e) {
+            grunt.log.error('unable to write build version ', e);
+            grunt.fail.fatal('unable to write build version ');
+        }
+        grunt.log.ok('build version : ' + packageJson.version);
+
     });
 
     grunt.registerTask('backend', function() {
@@ -823,6 +875,7 @@ module.exports = function (grunt) {
         'default',
         'pack',
         'blueprint',
+        'readMetadata',
         'copy:artifacts'
     ]);
 

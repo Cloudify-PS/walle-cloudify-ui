@@ -1,0 +1,106 @@
+
+<?xml version='1.0' encoding='UTF-8'?>
+<project>
+    <actions/>
+    <description></description>
+    <keepDependencies>false</keepDependencies>
+    <properties>
+        <hudson.model.ParametersDefinitionProperty>
+            <parameterDefinitions>
+                <hudson.model.ChoiceParameterDefinition>
+                    <name>tag</name>
+                    <description></description>
+                    <choices class="java.util.Arrays$ArrayList">
+                        <a class="string-array">
+                            <string>master</string>
+                            <string>3.3m4</string>
+                        </a>
+                    </choices>
+                </hudson.model.ChoiceParameterDefinition>
+            </parameterDefinitions>
+        </hudson.model.ParametersDefinitionProperty>
+    </properties>
+    <scm class="org.jenkinsci.plugins.multiplescms.MultiSCM" plugin="multiple-scms@0.3">
+        <scms>
+            <hudson.plugins.git.GitSCM plugin="git@2.3.5">
+                <configVersion>2</configVersion>
+                <userRemoteConfigs>
+                    <hudson.plugins.git.UserRemoteConfig>
+                        <url>git@github.com:cloudify-cosmo/cloudify-ui.git</url>
+                    </hudson.plugins.git.UserRemoteConfig>
+                </userRemoteConfigs>
+                <branches>
+                    <hudson.plugins.git.BranchSpec>
+                        <name>${tag}</name>
+                    </hudson.plugins.git.BranchSpec>
+                </branches>
+                <doGenerateSubmoduleConfigurations>false</doGenerateSubmoduleConfigurations>
+                <submoduleCfg class="list"/>
+                <extensions>
+                    <hudson.plugins.git.extensions.impl.RelativeTargetDirectory>
+                        <relativeTargetDir>cloudify-ui</relativeTargetDir>
+                    </hudson.plugins.git.extensions.impl.RelativeTargetDirectory>
+                </extensions>
+            </hudson.plugins.git.GitSCM>
+            <hudson.scm.SubversionSCM plugin="subversion@1.54">
+                <locations>
+                    <hudson.scm.SubversionSCM_-ModuleLocation>
+                        <remote>svn://svn-srv/SVN/ui/builds/cloudify-ui-build</remote>
+                        <local>vagrant-config</local>
+                        <depthOption>infinity</depthOption>
+                        <ignoreExternalsOption>false</ignoreExternalsOption>
+                    </hudson.scm.SubversionSCM_-ModuleLocation>
+                </locations>
+                <excludedRegions></excludedRegions>
+                <includedRegions></includedRegions>
+                <excludedUsers></excludedUsers>
+                <excludedRevprop></excludedRevprop>
+                <excludedCommitMessages></excludedCommitMessages>
+                <workspaceUpdater class="hudson.scm.subversion.UpdateUpdater"/>
+                <ignoreDirPropChanges>false</ignoreDirPropChanges>
+                <filterChangelog>false</filterChangelog>
+            </hudson.scm.SubversionSCM>
+            <hudson.plugins.git.GitSCM plugin="git@2.3.5">
+                <configVersion>2</configVersion>
+                <userRemoteConfigs>
+                    <hudson.plugins.git.UserRemoteConfig>
+                        <url>https://github.com/cloudify-cosmo/vagrant-automation-machines.git</url>
+                    </hudson.plugins.git.UserRemoteConfig>
+                </userRemoteConfigs>
+                <branches>
+                    <hudson.plugins.git.BranchSpec>
+                        <name>*/master</name>
+                    </hudson.plugins.git.BranchSpec>
+                </branches>
+                <doGenerateSubmoduleConfigurations>false</doGenerateSubmoduleConfigurations>
+                <submoduleCfg class="list"/>
+                <extensions>
+                    <hudson.plugins.git.extensions.impl.RelativeTargetDirectory>
+                        <relativeTargetDir>vagrant-automation-machines</relativeTargetDir>
+                    </hudson.plugins.git.extensions.impl.RelativeTargetDirectory>
+                </extensions>
+            </hudson.plugins.git.GitSCM>
+        </scms>
+    </scm>
+    <canRoam>true</canRoam>
+    <disabled>false</disabled>
+    <blockBuildWhenDownstreamBuilding>false</blockBuildWhenDownstreamBuilding>
+    <blockBuildWhenUpstreamBuilding>false</blockBuildWhenUpstreamBuilding>
+    <triggers/>
+    <concurrentBuild>false</concurrentBuild>
+    <builders>
+        <hudson.tasks.Shell>
+            <command>#!/bin/bash
+
+                export VAGRANT_HOME=&quot;~/.guy_tmp_vagrant_home&quot;
+                vagrant plugin install vagrant-aws
+                vagrant plugin install vagrant-scp
+
+                source cloudify-ui/build/centos/jenkins/script.sh
+
+                # rm -rf ~/.vagrant_aws</command>
+        </hudson.tasks.Shell>
+    </builders>
+    <publishers/>
+    <buildWrappers/>
+</project>

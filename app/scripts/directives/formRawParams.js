@@ -14,7 +14,7 @@
  *
  */
 angular.module('cosmoUiApp')
-    .directive('formRawParams', function (INPUT_STATE) {
+    .directive('formRawParams', function (INPUT_STATE,$filter) {
         return {
             templateUrl: 'views/directives/formRawParams.html',
             restrict: 'A',
@@ -48,13 +48,31 @@ angular.module('cosmoUiApp')
 
                 // JSON keys validation, verifying all expected keys exists in JSON
                 // if key is missing we want to display an error
+                // if additional key is added and unexpected we want to display an error
                 function _validateJsonKeys(skipErrorMessage) {
+                    function isKeyInParams(key) {
+                        if (key in scope.params) {
+                            return true;
+                        }
+                        else {
+                            return false;
+                        }
+                    }
+
                     var _json = $scope.rawString ? JSON.parse($scope.rawString) : {};
-                    for (var i in $scope.params) {
-                        var value = _json[i];
-                        if (value === undefined) { // when in strict mode disallow empty value
+                    for (var expectedKey in scope.params) {
+                        var value = _json[expectedKey];
+                        if (value === undefined) {
                             if (!skipErrorMessage) {
-                                setDeployError('Missing ' + i + ' key in JSON');
+                                setDeployError($filter('translate')('formRawParams.missingKeyInJson', {key: expectedKey}));
+                            }
+                            return false;
+                        }
+                    }
+                    for (var key in _json) {
+                        if (!isKeyInParams(key)) {
+                            if (!skipErrorMessage) {
+                                setDeployError($filter('translate')('formRawParams.unexpectedKeyInJson', {key: key}));
                             }
                             return false;
                         }
@@ -80,7 +98,7 @@ angular.module('cosmoUiApp')
                     }
                 }
 
-                function _validateInputsNotEmpty(){
+                function _validateInputsNotEmpty() {
                     try {
                         var parsedInputs = JSON.parse($scope.rawString);
                         var isInputsNotEmpty = true;
@@ -160,11 +178,6 @@ angular.module('cosmoUiApp')
                         $scope.inputsState = INPUT_STATE.PARAMS;
                     }
                 });
-
-                $scope.toggleInputsState = function (state) {
-                    $scope.inputsState = INPUT_STATE[state];
-                };
-
                 $scope.$watch('inputsState', function () {
                     if (!!$scope.selectedBlueprint) {
                         $scope.updateInputs();
@@ -173,17 +186,6 @@ angular.module('cosmoUiApp')
 
                 // watching the raw json string changes, validating json on every change
                 $scope.$watch('rawString', _rawToForm);
-
-                // cover scenario where key is missing and I just added it in form mode
-                $scope.$watch('inputs', _formToRaw, true);
-
-                $scope.updateInputs = function () {
-                    if ($scope.inputsState === INPUT_STATE.RAW) {
-                        _formToRaw();
-                    } else {
-                        _rawToForm();
-                    }
-                };
 
                 $scope.$watch('params', function (params) {
                     scope.inputs = {};
@@ -194,12 +196,43 @@ angular.module('cosmoUiApp')
                     }
                 });
 
+                // cover scenario where key is missing and I just added it in form mode
+                $scope.$watch('inputs', _formToRaw, true);
+
+
+                $scope.toggleInputsState = function (state) {
+                    $scope.inputsState = INPUT_STATE[state];
+                };
+
+                $scope.updateInputs = function () {
+                    if ($scope.inputsState === INPUT_STATE.RAW) {
+                        _formToRaw();
+                    } else {
+                        _rawToForm();
+                    }
+                };
+
+
+                $scope.parseDefVal = function (defaultVal) {
+                    if (defaultVal === null) {
+                        return 'null';
+                    } else if (typeof defaultVal === 'string') {
+                        return defaultVal;
+                    } else {
+                        return JSON.stringify(defaultVal);
+                    }
+                };
+
+                $scope.restoreDefault = function (paramName, defaultValue) {
+                    $scope.inputs[paramName] = $scope.parseDefVal(defaultValue);
+                };
 
                 // expose functions to test
                 $scope.validateJSON = _validateJSON;
                 $scope.validateJsonKeys = _validateJsonKeys;
                 $scope.rawToForm = _rawToForm;
                 $scope.validateInputsNotEmpty = _validateInputsNotEmpty;
+
             }
         };
     });

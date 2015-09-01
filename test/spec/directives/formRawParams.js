@@ -60,7 +60,16 @@ describe('Directive: formRawParams', function () {
             element.isolateScope().rawString = JSON.stringify({'foo': 'bar'});
 
             expect(element.isolateScope().validateJsonKeys()).toBe(false);
-            expect(scope.onError).toHaveBeenCalledWith('Missing hello key in JSON');
+            expect(scope.onError).toHaveBeenCalledWith('formRawParams.missingKeyInJson');
+
+
+        });
+
+        it('should return error and false if key is missing', function () {
+            element.isolateScope().rawString = JSON.stringify({'foo': undefined , 'hello': 'world'});
+
+            expect(element.isolateScope().validateJsonKeys(true)).toBe(false);
+            expect(scope.onError).toHaveBeenCalledWith(null);
         });
 
         it('should return true if all keys exist', function () {
@@ -70,11 +79,11 @@ describe('Directive: formRawParams', function () {
             expect(scope.onError).toHaveBeenCalledWith(null);
         });
 
-        it('should return error and false if key is missing', function () {
-            element.isolateScope().rawString = JSON.stringify({'foo': undefined , 'hello': 'world'});
+        it('should return error and false if addition unexpected key was added', function(){
+            element.isolateScope().rawString = JSON.stringify({'foo': 'bar','hello':'world','unexpected':'key'});
 
-            expect(element.isolateScope().validateJsonKeys(true)).toBe(false);
-            expect(scope.onError).toHaveBeenCalledWith(null);
+            expect(element.isolateScope().validateJsonKeys()).toBe(false);
+            expect(scope.onError).toHaveBeenCalledWith('formRawParams.unexpectedKeyInJson');
         });
     });
 
@@ -133,6 +142,32 @@ describe('Directive: formRawParams', function () {
         }));
     });
 
+    describe('restore-default button logic', function(){
+        it('should return value to default value', function(){
+            scope.params = { 'int_variable' : { 'default': 80 }, 'bool_variable' : { 'default': 'true' }, 'str_variable' : { 'default' : 'foo bar' }, 'null_variable' : { 'default': 'null'} };
+            scope.rawString = JSON.stringify(scope.params, null, 2);
+            scope.inputsState = 'raw';
+            scope.$digest();
+
+            element.isolateScope().inputs.int_variable = 'changed default';
+            element.isolateScope().inputs.bool_variable = 'changed default';
+            element.isolateScope().inputs.str_variable = 'changed default';
+            element.isolateScope().inputs.null_variable = 'changed default';
+            scope.$digest();
+
+            element.isolateScope().restoreDefault('int_variable',80);
+            element.isolateScope().restoreDefault('bool_variable','true' );
+            element.isolateScope().restoreDefault('str_variable','foo bar');
+            element.isolateScope().restoreDefault('null_variable','null');
+            scope.$digest();
+
+            expect(JSON.parse(scope.rawString).int_variable).toBe(80);
+            expect(JSON.parse(scope.rawString).bool_variable).toBe(true);
+            expect(JSON.parse(scope.rawString).str_variable).toBe('foo bar');
+            expect(JSON.parse(scope.rawString).null_variable).toBe(null);
+        });
+    });
+
     describe('views tests', function(){
 
         var content = null;
@@ -175,7 +210,7 @@ describe('Directive: formRawParams', function () {
                 scope.$digest();
                 content.append(element);
                 var inputParameters = element.find('li div');
-                expect(inputParameters[0].getAttribute('title')).toBe('A yummy snickers');
+                expect(inputParameters[0].getAttribute('title')).toBe('foo: A yummy snickers');
             });
 
             it('should show no description defined message as tooltip', function(){
@@ -183,7 +218,7 @@ describe('Directive: formRawParams', function () {
                 scope.$digest();
                 content.append(element);
                 var inputParameters = element.find('li div');
-                expect(inputParameters[0].getAttribute('title')).toBe('formRawParams.noDescriptionTooltip');
+                expect(inputParameters[0].getAttribute('title')).toBe('bar: formRawParams.noDescriptionTooltip');
             });
         });
 
@@ -209,6 +244,37 @@ describe('Directive: formRawParams', function () {
                 var input = element.find('li input');
 
                 expect(input[0].getAttribute('placeholder')).toBe('dialogs.deploy.value');
+            });
+        });
+
+        describe('restore-default button', function(){
+            it('should show default value as tooltip', function(){
+                scope.params = { 'array' : {'default':'[1,2,3,true]'},'object' : {'default':'{"key":"value"}'},'string': {'default':'bloop'},'null': {'default': 'null'} };
+                scope.$digest();
+                content.append(element);
+                var restoreDefault = element.find('.restore-default');
+                //Checking - Array, Object, String, Null
+                expect(restoreDefault[0].getAttribute('title')).toBe('[1,2,3,true]');
+                expect(restoreDefault[2].getAttribute('title')).toBe('{"key":"value"}');
+                expect(restoreDefault[3].getAttribute('title')).toBe('bloop');
+                expect(restoreDefault[1].getAttribute('title')).toBe('null');
+            });
+
+            it('should have restore-default button if has default', function(){
+                scope.params = { 'array' : {'default':'[1,2,3,true]'},'object' : {'default':'{"key":"value"}'},'string': {'default':'bloop'},'null': {'default': 'null'},
+                    'noDefault':{'description':'making sure not all has restore-default button'} };
+                scope.$digest();
+                content.append(element);
+                var restoreDefault = element.find('.restore-default');
+                expect(restoreDefault.length).toBe(4);
+            });
+
+            it('should not have restore-default button if has no default', function(){
+                scope.params = { 'foo' : {},'bar' : {},'bloop': {} };
+                scope.$digest();
+                content.append(element);
+                var restoreDefault = element.find('.restore-default');
+                expect(restoreDefault.length).toBe(0);
             });
         });
 

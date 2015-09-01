@@ -155,9 +155,12 @@ input[required] {
 
           .form-raw-item-name{
               display:inline-block;
-              max-width:150px;
+              max-width: 140px;
               text-overflow: ellipsis;
               overflow: hidden;
+              white-space: nowrap;
+              height: 37px;
+              line-height: 37px;
           }
 
           &.deployInputs {
@@ -175,26 +178,36 @@ input[required] {
               //restricting to 5 inputs,the rest is scrollable
               max-height: 200px;
               overflow-y: auto;
-              li:first-child{
-                margin-top:-5px;
-              }
-              li:last-child{
-                padding-bottom:3px;
+              line-height: normal;
+
+              li{
+                  clear: both;
               }
 
-              input {
-                  position: relative;
-                  border-radius: 3px;
-                  margin-top: 5px;
-                  background-clip: padding-box;
-                  background-color: $clr-base-05;
-                  border: 0;
-                  right: 5px;
-                  top: 3px;
+              .input-wrapper {
                   float: right;
-                  width: 50%;
-                  padding: 5px 10px;
-                  line-height: 20px;
+                  width: 55%;
+                  padding-top: 5px;
+                  padding-right: 5px;
+                  position: relative;
+              }
+
+              .param-input{
+                  width:100%;
+              }
+
+              .restore-default{
+                  opacity:0.5;
+                  top: 14px;
+                  position: absolute;
+                  right: 8px;
+              }
+              .restore-default:hover{
+                  opacity:1;
+              }
+
+              .rightPaddingText{
+                  padding-right:20px;
               }
           }
 
