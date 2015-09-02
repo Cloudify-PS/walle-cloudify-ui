@@ -787,7 +787,7 @@ module.exports = function (grunt) {
         // either read version.json file or from environment variables
 
         var envData = {
-            version: process.env.VERSION || 'dev',
+            version: process.env.VERSION || '3.3.0',
             prerelease: process.env.PRERELEASE || null,
             build: process.env.BUILD || new Date().getTime()
         };
