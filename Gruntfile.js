@@ -749,6 +749,7 @@ module.exports = function (grunt) {
 
         var tasks = [
             'clean:server',
+            'clean:dist',
             'useminPrepare',
             'concurrent:dist',
             'concat',
