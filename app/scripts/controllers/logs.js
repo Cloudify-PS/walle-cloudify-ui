@@ -27,22 +27,29 @@ angular.module('cosmoUiApp')
         $scope.updateData =function (tableState){
             var options = {
                 from: tableState.pagination.start,
-                size: tableState.pagination.number
+                size: tableState.pagination.number,
+                include_logs:true
                 ///*           query: {},
                 //           filters: [],
                 //*/
                 };
 
             if( Object.keys(tableState.sort ).length > 0){
+                //removing _source from the field for sorting
+                var sortField = tableState.sort.predicate.split('.');
+                sortField.shift();
+                sortField = sortField.join('.');
                 options.sort ={
-                    field: tableState.sort.predicate,
+                    field: sortField,
                     order: tableState.sort.reverse ? 'desc' : 'asc',
                     //field: "timestamp",
                     //order: 'asc'
                 };
+                //console.log(options.sort.order);
             }
-            console.log(tableState);
+            //console.log(tableState);
             console.log(options);
+
             EventsService.execute(options, function(error, response){
 
                 //console.log(response.data);
