@@ -191,7 +191,7 @@ angular.module('cosmoUiApp')
                     scope.inputs = {};
                     if (!!params) {
                         _.each(params, function (value, key) {
-                            scope.inputs[key] = value.default ? value.default : '';
+                            scope.inputs[key] = value.default !== undefined ? value.default : '';
                         });
                     }
                 });
@@ -212,14 +212,14 @@ angular.module('cosmoUiApp')
                     }
                 };
 
-
                 $scope.parseDefVal = function (defaultVal) {
+                    //since typeof null is 'object' yet I don't want it to be stringify
                     if (defaultVal === null) {
-                        return 'null';
-                    } else if (typeof defaultVal === 'string') {
-                        return defaultVal;
-                    } else {
+                        return null;
+                    } else if (typeof defaultVal === 'object') {
                         return JSON.stringify(defaultVal);
+                    } else {
+                        return defaultVal;
                     }
                 };
 
