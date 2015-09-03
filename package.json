@@ -36,7 +36,7 @@
         "lodash": "~2.4.1",
         "log4js": "~0.6.9",
         "request": "^2.51.0",
-        "tar": "^1.0.3",
+        "tar.gz": "^1.0.0",
         "express-http-proxy": "~0.6.0"
     },
     "devDependencies": {
