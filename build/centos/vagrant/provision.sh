@@ -18,6 +18,9 @@ else
     echo "git already installed"
 fi
 
+## a flag to identify this is the new build
+export NEW_BUILD="true"
+
 if [ ! -f /usr/bin/node ];then
     echo "installing node"
     NODEJS_VERSION=0.10.35

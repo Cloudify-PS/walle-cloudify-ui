@@ -820,31 +820,61 @@ module.exports = function (grunt) {
 
     });
 
+
+
+
+
     grunt.registerTask('overrideBuildVersion', function () {
-        var done = this.async();
 
+        if ( !process.env.NEW_BUILD ) {
 
-        var packageJson = grunt.file.readJSON('dist/package.json');
-
-
-
-        packageJson.version = grunt.config.data.cfy.metadata.fullVersion;
-
-
-        try {
-            require('fs').writeFile('dist/package.json', JSON.stringify(packageJson, {}, 4), function (err) {
-                if (!!err) {
-                    grunt.log.error('writing file failed', err);
-                    grunt.fail.fatal('writing version failed');
+            var done = this.async();
+            var versionFilename = 'VERSION';
+            var buildVersion = null;
+            if (grunt.file.exists(versionFilename)) {
+                var fs = require('fs');
+                buildVersion = grunt.file.readJSON(versionFilename).version;
+                grunt.log.ok('build version is ', buildVersion);
+                var packageJson = grunt.file.readJSON('dist/package.json');
+                packageJson.version = buildVersion;
+                try {
+                    fs.writeFile('dist/package.json', JSON.stringify(packageJson, {}, 4), function (err) {
+                        if (!!err) {
+                            grunt.log.error('writing file failed', err);
+                            grunt.fail.fatal('writing version failed');
+                        }
+                        grunt.log.ok('version changed successfully');
+                        done();
+                    });
+                } catch (e) {
+                    grunt.log.error('unable to write build version ', e);
+                    grunt.fail.fatal('unable to write build version ');
                 }
-                grunt.log.ok('version changed successfully');
-                done();
-            });
-        } catch (e) {
-            grunt.log.error('unable to write build version ', e);
-            grunt.fail.fatal('unable to write build version ');
+                grunt.log.ok('build version : ' + buildVersion);
+            } else {
+                grunt.log.ok(versionFilename + ' does not exist. skipping version manipulation');
+            }
+
+        }else {
+
+            var done = this.async();
+            var packageJson = grunt.file.readJSON('dist/package.json');
+            packageJson.version = grunt.config.data.cfy.metadata.fullVersion;
+            try {
+                require('fs').writeFile('dist/package.json', JSON.stringify(packageJson, {}, 4), function (err) {
+                    if (!!err) {
+                        grunt.log.error('writing file failed', err);
+                        grunt.fail.fatal('writing version failed');
+                    }
+                    grunt.log.ok('version changed successfully');
+                    done();
+                });
+            } catch (e) {
+                grunt.log.error('unable to write build version ', e);
+                grunt.fail.fatal('unable to write build version ');
+            }
+            grunt.log.ok('build version : ' + packageJson.version);
         }
-        grunt.log.ok('build version : ' + packageJson.version);
 
     });
 
