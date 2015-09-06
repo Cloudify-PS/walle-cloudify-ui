@@ -14,9 +14,6 @@ describe('BlueprintsController', function(){
     var res;
     var sandbox;
 
-    var _json = {
-        validURL: {'type' : 'url', 'opts' : '{"params": {"blueprint_archive_url": "http://some.url.com"}}'}
-    };
 
     beforeEach(function(){
         sandbox = sinon.sandbox.create();

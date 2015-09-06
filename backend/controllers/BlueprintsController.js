@@ -21,15 +21,12 @@ var fs = require('fs');
 var UploadTypes = function(){
 
     this.ids = {
-        FILE: 'file',
-        URL: 'url'
+        FILE: 'file'
     };
 
     this.types = [
         {
             id: this.ids.FILE
-        },{
-            id: this.ids.URL
         }
     ];
 
@@ -96,15 +93,5 @@ exports.upload = function( req, res ){
     if ( type === uploadTypes.ids.FILE ){
         var readStream = fs.createReadStream( req.files.application_archive.path, { bufferSize: 64 * 1024 });
         services.cloudify4node.uploadBlueprint( cloudifyConf, readStream, blueprintUploadData.opts , uploadCallback);
-    } else { // url
-        var opts = JSON.parse(blueprintUploadData.opts);
-        try {
-            req.cloudifyClient.blueprints.publish_archive(opts.params.blueprint_archive_url, opts.blueprint_id, opts.params.application_file_name, uploadCallback);
-        } catch(e) {
-            logger.error('unable to find blueprint_archive_url [' + opts.params.blueprint_archive_url + '] reason:', e);
-            res.status(500).send({'message' : e.message});
-            return;
-        }
     }
-
 };
