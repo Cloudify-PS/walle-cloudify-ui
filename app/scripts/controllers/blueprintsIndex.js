@@ -10,8 +10,8 @@ angular.module('cosmoUiApp')
 
         $scope.openAddDialog = function() {
             ngDialog.open({
-                template: 'views/dialogs/upload.html',
-                controller: 'FileSelectionDialogCtrl',
+                template: 'views/blueprint/uploadDialog.html',
+                controller: 'UploadBlueprintDialogCtrl',
                 scope: $scope,
                 className: 'upload-dialog'
             });

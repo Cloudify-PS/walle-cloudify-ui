@@ -1,8 +1,8 @@
 'use strict';
 
-describe('Controller: FileSelectionDialogCtrl', function () {
+describe('Controller: UploadBlueprintDialogCtrl', function () {
 
-    var FileSelectionDialogCtrl, _cloudifyService, scope;
+    var UploadBlueprintDialogCtrl, _cloudifyService, scope;
 
     // load the controller's module
     beforeEach(module('cosmoUiApp', 'ngMock', 'backend-mock'));
@@ -14,7 +14,7 @@ describe('Controller: FileSelectionDialogCtrl', function () {
         scope.closeThisDialog = jasmine.createSpy();
         _cloudifyService = CloudifyService;
 
-        FileSelectionDialogCtrl = $controller('FileSelectionDialogCtrl', {
+        UploadBlueprintDialogCtrl = $controller('UploadBlueprintDialogCtrl', {
             $scope: scope,
             CloudifyService: _cloudifyService
         });
@@ -23,23 +23,32 @@ describe('Controller: FileSelectionDialogCtrl', function () {
 
     describe('Controller tests', function () {
         it('should create a controller', function () {
-            expect(FileSelectionDialogCtrl).not.toBeUndefined();
+            expect(UploadBlueprintDialogCtrl).not.toBeUndefined();
         });
 
-        it('should show error message when error returns from backend', function () {
+        it('should show error message when error returns from backend', inject(function ( cloudifyClient ) {
             expect(scope.errorMessage).toBe('blueprintUpload.generalError'); // todo: verify with erez
             scope.selectedFile = {};
             scope.blueprintUploadOpts.blueprint_id = 'blueprint1';
 
-            spyOn(_cloudifyService.blueprints, 'add').andCallFake(function (data, success, error) {
-                error({
-                    'responseText': 'foo2'   // todo: verify with erez
-                });
+            spyOn(cloudifyClient.blueprints, 'publish_archive').andCallFake(function () {
+
+                return { // promise
+                    then: function( ){
+                        return {
+                            then:function(success, error){
+                                return error({ 'responseText' : 'foo2'});
+                            }
+                        };
+                    }
+
+                };
+
             });
 
             scope.publishArchive();
-            expect(scope.errorMessage).toBe('foo2'); // todo: verify with erez
-        });
+            expect(scope.errorMessage).toBe('foo2');
+        }));
 
         describe('$scope.$watch myFile', function () {
             it('should trigger a watch on myFile', function () {
@@ -126,23 +135,23 @@ describe('Controller: FileSelectionDialogCtrl', function () {
 
         });
 
-        it('should update upload type to url when url is entered', inject(function ( CloudifyService ) {
-            scope.inputText = 'http://some.kind/of/url.tar.gz';
-            spyOn(CloudifyService.blueprints,'add');
-            scope.uploadType = 'file';
-            spyOn(scope, 'isUploadEnabled').andCallFake(function () {
-                return true;
-            });
-            scope.uploadFile();
-            expect(scope.uploadType).toBe('url');
+        // should update upload type to url when url is entered - is not relevant anymore now that we are using cloudifyfClient
 
-        }));
+        it('should invoke cloudifyClient.blueprints.publish_archive with the correct values', inject(function ( cloudifyClient ) {
 
-        it('should get a blueprint archive file from a url', function () {
+            spyOn(cloudifyClient.blueprints, 'publish_archive').andCallFake(function () {
+                    return {
+                        then: function () {
+                            return {
+                                then: function () {
+                                }
+                            };
+                        }
+                    };
+                }
+            );
+
             scope.inputText = 'http://some.kind/of/url.tar.gz';
-            scope.uploadDone = function () {
-                scope.uploadInProcess = false;
-            };
             _cloudifyService.blueprints.add = function (data, successCallback) {
                 successCallback({id:'blueprint1'});
             };
@@ -152,10 +161,8 @@ describe('Controller: FileSelectionDialogCtrl', function () {
             });
 
             scope.publishArchive();
-
-            expect(scope.uploadInProcess).toBe(false);
-            expect(scope.blueprintUploadOpts.params.blueprint_archive_url).toBe('http://some.kind/of/url.tar.gz');
-        });
+            expect( cloudifyClient.blueprints.publish_archive ).toHaveBeenCalledWith('http://some.kind/of/url.tar.gz', '', '');
+        }));
     });
 
     describe('#onUploadSuccess', function(){
@@ -164,7 +171,7 @@ describe('Controller: FileSelectionDialogCtrl', function () {
         });
 
         it('should put id on scope.blueprintUploadOpts.blueprint_id ', function(){
-            FileSelectionDialogCtrl.onUploadSuccess({'id':'foo'});
+            UploadBlueprintDialogCtrl.onUploadSuccess({'id':'foo'});
             expect(scope.blueprintUploadOpts.blueprint_id).toBe('foo');
             expect(scope.closeThisDialog).toHaveBeenCalled();
         });
@@ -175,25 +182,25 @@ describe('Controller: FileSelectionDialogCtrl', function () {
 
         it('should put error on scope while supporting 3 formats for error', function(){
 
-            FileSelectionDialogCtrl.onUploadError('foo'); // format 1 - simple text
+            UploadBlueprintDialogCtrl.onUploadError('foo'); // format 1 - simple text
             expect(scope.errorMessage).toBe('foo');
 
-            FileSelectionDialogCtrl.onUploadError({'message' : 'bar'}); // format 2 - object with message
+            UploadBlueprintDialogCtrl.onUploadError({'message' : 'bar'}); // format 2 - object with message
             expect(scope.errorMessage).toBe('bar');
 
-            FileSelectionDialogCtrl.onUploadError({'statusText' : 'foo'}); // format 2 - object with message
+            UploadBlueprintDialogCtrl.onUploadError({'statusText' : 'foo'}); // format 2 - object with message
             expect(scope.errorMessage).toBe('foo');
 
         });
 
         it('should mark process is over', function(){
             scope.uploadInProcess = true;
-            FileSelectionDialogCtrl.onUploadError('foo');
+            UploadBlueprintDialogCtrl.onUploadError('foo');
             expect(scope.uploadInProcess).toBe(false);
         });
 
         it('handle HTML response that file is too big, and present a nice message to user', function(){
-            FileSelectionDialogCtrl.onUploadError('<html>Too Large</html>');
+            UploadBlueprintDialogCtrl.onUploadError('<html>Too Large</html>');
             expect(scope.errorMessage).toBe('blueprintUpload.tooBig');
         });
 

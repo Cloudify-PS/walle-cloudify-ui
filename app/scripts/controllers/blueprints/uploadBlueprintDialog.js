@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('cosmoUiApp')
-    .controller('FileSelectionDialogCtrl', function ($scope, $log, $upload, ngProgress, CloudifyService, $filter) {
+    .controller('UploadBlueprintDialogCtrl', function ($scope, $log, cloudifyClient, $q, $upload, ngProgress, CloudifyService, $filter) {
 
         var translate = $filter('translate');
         var selectedFile = null;
@@ -65,7 +65,6 @@ angular.module('cosmoUiApp')
         function onError(e) {
             // guy - todo - what the hell is going on here with the messages? we should try to uniform this
             // or at least document what/when
-
             var responseText = e && ( e.message || e.statusText || e.responseText || e );
 
             if (typeof(responseText) === 'string' && responseText.indexOf('Too Large') > 0) {
@@ -78,24 +77,24 @@ angular.module('cosmoUiApp')
         }
 
 
+        // handle upload without a file. upload with a url.
         $scope.publishArchive = function() {
-            $scope.uploadType = 'url';
-
-            var blueprintUploadForm = new FormData();
-
-            $scope.blueprintUploadOpts.params.blueprint_archive_url = $scope.inputText;
-
-            blueprintUploadForm.append('application_archive', $scope.selectedFile);
-            blueprintUploadForm.append('opts', JSON.stringify($scope.blueprintUploadOpts));
-            blueprintUploadForm.append('type', $scope.uploadType);
-
             $scope.uploadInProcess = true;
             $scope.uploadError = false;
 
-            CloudifyService.blueprints.add(blueprintUploadForm,
-                onSuccess,
-                onError
-                );
+            var blueprint_path = $scope.inputText;
+            var blueprint_id  = $scope.blueprintUploadOpts.blueprint_id;
+            var blueprint_filename = $scope.blueprintUploadOpts.params.application_file_name;
+
+            // the handlers expect the data, not the result, so lets strip away the result and return result.data
+            cloudifyClient.blueprints.publish_archive(blueprint_path, blueprint_id, blueprint_filename)
+                .then(function(result){
+                    return result.data;
+                },
+                function( result ){
+                    return $q.reject(result.data);
+                })
+                .then(onSuccess,onError);
         };
 
 
