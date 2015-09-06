@@ -19,22 +19,6 @@ angular.module('cosmoUiApp')
         $scope.itemToDelete = null;
 
 
-
-
-        $scope.showInputs = function(deployment){
-            $log.info('showing inputs');
-            var dialogScope = $scope.$new();
-            dialogScope.deployment = deployment;
-            ngDialog.open(
-                {
-                    template: 'views/dialogs/deploymentDetails.html' ,
-                    controller: 'DeploymentDetailsCtrl',
-                    scope: dialogScope
-                }
-            );
-        };
-
-
         $scope.getExecution = function(deployment){
             return _.first(runningExecutions[deployment.id]);
         };

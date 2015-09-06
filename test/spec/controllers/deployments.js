@@ -46,16 +46,6 @@ describe('Controller: DeploymentsCtrl', function () {
         });
     }
 
-    describe('#showInputs', function(){
-        beforeEach(_testSetup);
-
-        it('should call ngDialog', inject(function( ngDialog ){
-            spyOn(ngDialog, 'open' );
-            scope.showInputs({});
-            expect(ngDialog.open).toHaveBeenCalled();
-        }));
-    });
-
     describe('#loadExecutions', function(){
 
         var loadExecutions = null;

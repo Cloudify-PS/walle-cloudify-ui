@@ -17,7 +17,6 @@
         <div class="name">
             <input type="text" spellcheck="false" ng-model="blueprintUploadOpts.params.application_file_name" placeholder="{{ 'dialogs.upload.filename' | translate }}">
         </div>
-        <div id="mainFile" style="display:none">Application file: <input type="text" ng-model="mainFileName"></div>
         <div class="error-message" ng-show="isUploadError()">{{errorMessage}}</div>
         <div id="required-message">{{ 'dialogs.upload.required' | translate }}</div>
         <button id="uploadBtn" class="gs-btn" ng-disabled="!isUploadEnabled()" gs-spinner="{{uploadInProcess}}" ng-click="uploadFile()">{{ 'dialogs.upload.save' | translate }}</button>
