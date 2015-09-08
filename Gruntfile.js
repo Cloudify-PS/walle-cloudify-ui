@@ -145,7 +145,8 @@ module.exports = function (grunt) {
                             '.tmp',
                             '<%= yeoman.dist %>/*',
                             '<%= yeoman.distBlueprint %>/*',
-                            '!<%= yeoman.dist %>/.git*'
+                            '!<%= yeoman.dist %>/.git*',
+                            'artifacts'
                         ]
                     }
                 ]
