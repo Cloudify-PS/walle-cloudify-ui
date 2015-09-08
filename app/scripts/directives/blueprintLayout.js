@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('cosmoUiApp')
-    .directive('blueprintLayout', function ($location, CloudifyService, ngDialog, $routeParams) {
+    .directive('blueprintLayout', function ($location, cloudifyClient, ngDialog, $routeParams) {
         return {
             templateUrl: 'views/blueprint/blueprintLayout.html',
             restrict: 'C',
@@ -15,7 +15,8 @@ angular.module('cosmoUiApp')
                 $scope.blueprintId = $routeParams.blueprintId;
 
 
-                CloudifyService.blueprints.getBlueprintById({id: $scope.blueprintId})
+                cloudifyClient.blueprints.get($scope.blueprintId)
+                    .then(function( result ){ return result.data;  })// strip result // todo: handle error
                     .then(function(blueprintData) {
 
                         // Verify it's valid page, if not redirect to blueprints page

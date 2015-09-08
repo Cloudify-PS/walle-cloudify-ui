@@ -6,7 +6,7 @@
  */
 
 angular.module('cosmoUiApp')
-    .service('VersionService', function VersionService($q, $http) {
+    .service('VersionService', function VersionService($q, $http, cloudifyClient ) {
         var cachedVersion;
         var inProgress = false;
         var defers = [];
@@ -68,7 +68,7 @@ angular.module('cosmoUiApp')
          * @private
          */
         function _getManagerVersion() {
-            return $http.get('/backend/versions/manager');
+            return cloudifyClient.manager.get_version();
         }
 
         /**

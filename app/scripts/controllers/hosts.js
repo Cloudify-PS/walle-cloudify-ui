@@ -1,61 +1,67 @@
 'use strict';
 
 angular.module('cosmoUiApp')
-    .controller('HostsCtrl', function ($scope, $filter, NodeSearchService ) {
+    .controller('HostsCtrl', function ($scope, $filter, cloudifyClient ) {
 
 
         /**
          * Hosts
          */
         var _type = 'cloudify.nodes.Compute';
-        var _deployments = {};
         var _blueprint = null;
         var _currentBlueprint = null;
         var _deploymentsList = [];
         $scope.emptyReason = $filter('translate')('hosts.chooseBlueprint');
 
-        function getBlueprintsWithDeployments(blueprints, deployments){
-            var blueprintsWithDeployments = [];
-            blueprints.forEach(function(blueprint){
-                for(var i=0;i<deployments.length;i++){
-                    if (blueprint.value === deployments[i].parent) {
-                        blueprintsWithDeployments.push(blueprint);
-                        break;
-                    }
-                }
+
+        // keeps a map between deployment id to blueprint id
+        var deployments = {};
+
+
+
+
+        cloudifyClient.deployments.list('id,blueprint_id').then(function( result ){
+            deployments = result.data;
+            _.each(result.data, function(item){
+                deployments[item.id] = item.blueprint_id;
             });
-            return blueprintsWithDeployments;
+            $scope.blueprintsList = _.uniq(_.map(result.data, function( item ){ return { label : item.blueprint_id, value : item.blueprint_id } }, function(item){ return item.label; }));
+            $scope.deploymentsList = _.uniq(_.map(result.data, function( item ){ return { label : item.id, value : item.id } }, function(item){ return item.label; }));
+            console.log($scope.eventsFilter);
+            console.log($scope.eventsFilter);
+            loadNodeInstances();
+
+        });
+
+        function loadNodeInstances() {
+            cloudifyClient.nodeInstances.list().then(function (result) {
+
+                _.each(result.data, function(item){
+                    item.blueprint_id = deployments[item.deployment_id];
+                });
+                $scope.nodesList = result.data;
+                $scope.filterLoading = false;
+                console.log('this is nodeInstances', result.data);
+            });
         }
-
-        NodeSearchService.getNodeSearchData()
-            .then(function(data){
-                $scope.blueprintsList = getBlueprintsWithDeployments(data.blueprints,data.deployments);
-                _deploymentsList = data.deployments;
-            });
-
-        $scope.filterLoading = false;
-        $scope.eventsFilter = {
-            'blueprints': null,
-            'deployments': null
-        };
 
         function _execute() {
             $scope.emptyReason = null;
             $scope.filterLoading = true;
             $scope.nodesList = null;
-            NodeSearchService.execute(_type, _blueprint, _deployments)
-                .then(function(data){
-                    $scope.nodesList = data;
-                    _currentBlueprint = _blueprint;
-                    $scope.filterLoading = false;
-                });
+
+
         }
 
         $scope.getBlueprintId = function() {
             return _currentBlueprint;
         };
 
-        $scope.$watch('eventsFilter.blueprints', function(newValue){
+       $scope.$watch('hostsFilter', function(newValue){
+           console.log('hosts filter changed', newValue );
+           if ( !newValue ){
+               return;
+           }
             if(newValue !== null) {
                 $scope.deploymentsList = $filter('listByList')(_deploymentsList, [newValue]);
                 _blueprint = newValue.value;
@@ -66,9 +72,6 @@ angular.module('cosmoUiApp')
             }
         }, true);
 
-        $scope.$watch('eventsFilter.deployments', function(newValue){
-            _deployments = newValue;
-        }, true);
 
         $scope.execute = function() {
             if (!$scope.isSearchDisabled()) {
@@ -76,8 +79,10 @@ angular.module('cosmoUiApp')
             }
         };
 
+        $scope.hostsFilter = { blueprints : null, deployments : null  };
+
         $scope.isSearchDisabled = function() {
-            return $scope.eventsFilter.blueprints === null || $scope.eventsFilter.blueprints.length === 0;
+            return $scope.hostsFilter.blueprints === null || $scope.hostsFilter.blueprints.length === 0;
         };
 
     });

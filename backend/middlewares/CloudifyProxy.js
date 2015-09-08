@@ -16,6 +16,11 @@ module.exports = function (conf) {
                 intercept: function (rsp, data, req, res, callback) {
                     res.removeHeader('www-authenticate'); // we want a login page!
                     callback(null, data);
+                },
+                forwardPath: function( req, res ){
+
+                    console.log('in forward path', req.url, require('url').parse(req.url).path );
+                    return '/api/v2' + require('url').parse(req.url).path;
                 }
             })(req, res, next);
         } catch (e) {
