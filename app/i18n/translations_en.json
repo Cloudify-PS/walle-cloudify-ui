@@ -112,7 +112,8 @@
             "delete_deployment_environment": "Deleting",
             "install": "Install",
             "uninstall": "Uninstall"
-        }
+        },
+        "deleteBtn": "Delete"
     },
     "settingsToggles": {
         "title": "Select view"

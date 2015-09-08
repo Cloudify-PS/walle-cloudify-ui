@@ -1,6 +1,6 @@
 'use strict';
 
-describe('Directive: bpActionSelector', function () {
+describe('Directive: actionSelector', function () {
 
     // load the directive's module
     beforeEach(module('cosmoUiApp'));
@@ -13,7 +13,7 @@ describe('Directive: bpActionSelector', function () {
     }));
 
     it('should make hidden element visible', inject(function ($compile) {
-        element = angular.element('<bp-action-selector></bp-action-selector>');
+        element = angular.element('<action-selector></action-selector>');
         element = $compile(element)(scope);
         expect(element.text()).toBe('');
     }));

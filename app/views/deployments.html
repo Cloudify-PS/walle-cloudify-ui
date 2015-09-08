@@ -24,14 +24,7 @@
                 <td class="create" ng-click="redirectTo(deployment)">{{deployment.created_at | dateFormat: 'yyyy-MM-dd HH:mm:ss'}}</td>
                 <td class="description" ng-click="redirectTo(deployment)">{{deployment.updated_at | dateFormat: 'yyyy-MM-dd HH:mm:ss'}}</td>
                 <td class="actions" ng-click="layerRedirectTo(deployment, $event, 'td.actions')">
-
-                    <div class="workflow-selector"
-                         deployment="deployment"
-                         current-execution="getExecution(deployment)"></div>
-
-                </td>
-                <td class="delete" ng-click="layerRedirectTo(deployment, $event, 'td.delete')">
-                    <button class="gs-btn btn-sm" data-ng-click="deleteDeployment(deployment)">Delete</button>
+                    <div class="action-selector" type="workflow" deployment="deployment" current-execution="getExecution(deployment)"></div>
                 </td>
             </tr>
         </tbody>

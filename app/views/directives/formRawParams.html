@@ -12,7 +12,7 @@
             <li ng-repeat="(name, value) in params">
                 <div title="{{name}}{{': '+(value.description ||'formRawParams.noDescriptionTooltip'|translate)}}" class="form-raw-item-name">{{name}}:</div>
                 <span class="input-wrapper">
-                    <input type="text" class="param-input" spellcheck="false" ng-trim="false" ng-model="inputs[name]" ng-class="{'rightPaddingText': value.default}"
+                    <input name="{{name}}" type="text" class="param-input" spellcheck="false" ng-trim="false" ng-model="inputs[name]" ng-class="{'rightPaddingText': value.default}"
                            placeholder="{{ inputs[name]==null? 'null' : ('dialogs.deploy.value' | translate) }}">
                     <i class="restore-default fa fa-history" ng-if="value.default !== undefined" ng-click="restoreDefault(name,value.default)" title="{{parseDefVal(value.default)}}"></i>
                 </span>

@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('cosmoUiApp')
-    .controller('DeleteDialogCtrl', function ($scope, CloudifyService, DELETE_TYPES, $log ) {
+    .controller('DeleteDialogCtrl', function ($scope, CloudifyService, DELETE_TYPES, $log, DIALOG_EVENTS ) {
         $scope.ignoreLiveNodes = false;
         $scope.deleteState = {
             itemToDelete: $scope.itemToDelete,
@@ -31,8 +31,8 @@ angular.module('cosmoUiApp')
                                 $scope.deleteState.inProcess = false;
                                 $scope.deleteState.errorMessage = data.message;
                             } else {
+                                $scope.$emit(DIALOG_EVENTS.BLUEPRINT_DELETED);
                                 $scope.closeThisDialog();
-                                $scope.loadBlueprints();
                                 $scope.deleteState.inProcess = false;
                             }
                         }, function(e) {
@@ -52,8 +52,8 @@ angular.module('cosmoUiApp')
                                 $scope.deleteState.errorMessage = data.message;
                             }
                             else {
+                                $scope.$emit(DIALOG_EVENTS.DEPLOYMENT_DELETED);
                                 $scope.closeThisDialog();
-                                $scope.loadDeployments();
                             }
                         }, function(e) {
                             $scope.deleteState.inProcess = false;
