@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('cosmoUiApp')
-    .controller('BlueprintsIndexCtrl', function ($scope, $location, $cookieStore, $log, ngDialog, cloudifyClient) {
+    .controller('BlueprintsIndexCtrl', function ($scope, $location, $cookieStore, $log, ngDialog, cloudifyClient, DIALOG_EVENTS) {
         $scope.lastExecutedPlan = null;
         $scope.selectedBlueprint = null;
         $scope.managerError = false;
@@ -15,35 +15,6 @@ angular.module('cosmoUiApp')
                 scope: $scope,
                 className: 'upload-dialog'
             });
-        };
-
-        $scope.openDeployDialog = function(blueprint) {
-            $scope.selectedBlueprint = null;
-            ngDialog.open({
-                template: 'views/dialogs/deploy.html',
-                controller: 'DeployDialogCtrl',
-                scope: $scope,
-                className: 'deploy-dialog'
-            });
-
-            cloudifyClient.blueprints.get(blueprint.id, null).then(function(result){
-                $scope.selectedBlueprint = result.data || null;
-
-            }); // todo: add error handling
-        };
-
-        $scope.openDeleteDialog = function() {
-            ngDialog.open({
-                template: 'views/dialogs/delete.html',
-                controller: 'DeleteDialogCtrl',
-                scope: $scope,
-                className: 'delete-dialog'
-            });
-        };
-
-        $scope.deleteBlueprint = function(blueprint) {
-            $scope.itemToDelete = blueprint;
-            $scope.openDeleteDialog();
         };
 
         function loadBlueprints() {
@@ -91,6 +62,14 @@ angular.module('cosmoUiApp')
         $scope.redirectToDeployment = function(deployment_id) {
             $location.path('/deployment/' + deployment_id + '/topology');
         };
+
+        $scope.$on(DIALOG_EVENTS.DEPLOYMENT_CREATED, function(event, id){
+            $scope.redirectToDeployment(id);
+        });
+
+        $scope.$on(DIALOG_EVENTS.BLUEPRINT_DELETED, function(){
+            loadBlueprints();
+        });
 
 
         loadBlueprints();

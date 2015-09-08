@@ -1,0 +1,101 @@
+.action-selector {
+
+    display: flex;
+    align-items: center;
+
+    .btn-group {
+
+        display: flex;
+        border-radius: 5px;
+        border: 2px solid #cadbec;
+        background-color: #fff;
+
+        [dropdown-toggle] {
+            border-left: 1px solid #ccc;
+            border-top-right-radius: 3px !important;
+            border-bottom-right-radius: 3px !important;
+            span {
+                color: #ccc;
+            }
+        }
+
+        .btn + .btn {
+            margin-left: 0;
+        }
+    }
+
+    .btn {
+        border: 0 solid transparent;
+        border-radius: 3px;
+        background-color: #fff;
+        float: none;
+
+        &:hover {
+            background-color: #cce4f6;
+        }
+    }
+
+    #split-button {
+        min-width: 160px;
+        padding: 6px 0;
+        margin: 0;
+    }
+
+    ul {
+        padding: 0;
+        li {
+            button {
+                min-width: 160px;
+                padding: 6px 0;
+            }
+        }
+    }
+
+    .executingWorkflow {
+        display: none;
+    }
+}
+
+.action-selector.in-progress {
+
+    .btn-group {
+        display: none;
+    }
+
+    .executingWorkflow {
+        display: block;
+        min-width: 160px;
+        //max-width: 200px;
+        height: 32px;
+        color: $clr-base-11;
+        background-color: $clr-base-05;
+        font-weight: bold;
+        padding: 4px 10px 5px 10px;
+        margin-top: 1px;
+        border-radius: 5px;
+        border: 2px solid #cadbec;
+        float: left;
+        font-size: 14px;
+        box-shadow: none;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+        cursor: default;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        text-align: center;
+    }
+
+    .deployment-pause {
+        font-size: 30px;
+        color: #3aaeda;
+        text-align: center;
+        margin-left: 3px;
+        width: auto;
+
+        &:hover {
+            color: #136e9d;
+        }
+    }
+
+}

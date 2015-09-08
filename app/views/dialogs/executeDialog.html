@@ -3,20 +3,19 @@
 
 
 
-    <div class="dialogDescription" ng-show="confirmationType == 'execute'">{{ 'dialogs.confirm.descriptionExecute' | translate }} {{getSelectedWorkflow()}}?</div>
-    <div class="dialogDescription" ng-show="confirmationType == 'cancel'">{{ 'dialogs.confirm.descriptionCancel' | translate }} {{getSelectedWorkflow()}}?</div>
+    <div class="dialogDescription" ng-show="confirmationType == 'execute'">{{ 'dialogs.confirm.descriptionExecute' | translate }} {{workflow.name}}?</div>
+    <div class="dialogDescription" ng-show="confirmationType == 'cancel'">{{ 'dialogs.confirm.descriptionCancel' | translate }} {{workflow.name}}?</div>
 
 
     <div class="selected-workflow">
     <div form-raw-params
          ng-show="isParamsVisible()"
-         on-error="setErrorMessage(msg)"
+         on-error="confirmationType != 'cancel' && setErrorMessage(msg)"
          params="workflow.parameters"
          raw-string="rawString"
          valid="inputsValid"></div>
 
     </div>
-
     <div class="error-message" data-ng-show="!!executeErrorMessage">{{ executeErrorMessage }}</div>
 
     <div class="buttonsContainer confirmationButtons" ng-show="confirmationType == 'execute'">
