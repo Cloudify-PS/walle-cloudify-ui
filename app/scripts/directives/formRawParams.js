@@ -14,7 +14,7 @@
  *
  */
 angular.module('cosmoUiApp')
-    .directive('formRawParams', function (INPUT_STATE,$filter) {
+    .directive('formRawParams', function ($filter) {
         return {
             templateUrl: 'views/directives/formRawParams.html',
             restrict: 'A',
@@ -26,6 +26,9 @@ angular.module('cosmoUiApp')
             },
             link: function postLink(scope/*, element, attrs*/) {
                 var $scope = scope;
+
+                var INPUT_STATE = { RAW: 'raw',PARAMS:'params'};
+
                 $scope.inputsState = INPUT_STATE.PARAMS;
                 $scope.inputs = {};
 

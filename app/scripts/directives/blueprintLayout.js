@@ -64,7 +64,7 @@ angular.module('cosmoUiApp')
                 if ( !$scope.openDeployDialog ) { // allow tests to override this function..
                     $scope.openDeployDialog = function () {
                         ngDialog.open({
-                            template: 'views/dialogs/deploy.html',
+                            template: 'views/blueprint/deployBlueprintDialog.html',
                             controller: 'DeployDialogCtrl',
                             scope: $scope,
                             className: 'deploy-dialog'

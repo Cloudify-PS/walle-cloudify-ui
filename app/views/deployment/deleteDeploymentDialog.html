@@ -1,0 +1,11 @@
+<div id="deleteDialog" class="dialogBox">
+    <div class="dialogTitle"> {{ 'deployments.dialogs.delete.title' | translate }}</div>
+    <div class="dialogDescription"> {{ 'deployments.dialogs.delete.description' | translate:'{deployment: deployment.id}' }}</div>
+    <div class="error-message" data-ng-show="errorMessage">{{ errorMessage }}</div>
+    <div class="buttonsContainer confirmationButtons">
+
+        <button id="cancelBtnDelDep" class="gs-btn" ng-click="closeThisDialog()">{{ 'deployments.dialogs.delete.cancel' | translate }}</button>
+        <button class="gs-btn" gs-spinner="{{inProcess}}" ng-click="confirmDelete()">{{ 'deployments.dialogs.delete.confirm' | translate }}</button>
+        <button class="gs-btn" gs-spinner="{{inProcess}}" ng-click="confirmDelete(true)">{{ 'deployments.dialogs.delete.force' | translate }}</button>
+    </div>
+</div>

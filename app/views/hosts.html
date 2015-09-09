@@ -15,32 +15,57 @@
                      class="gs-select"
                      data-multiple="false"
                      data-options="blueprintsList"
-                     data-ng-model="hostsFilter.blueprints"
+                     data-ng-model="hostsFilter.blueprint"
                      data-init="{{ filterModel.blueprints }}"
                      data-listener="true"
                      name="blueprints"
                      data-text="{{'hosts.blueprintsFilterPlaceholder' | translate}}"></div>
             </div>
 
-            <div class="filter gs-selection-button" ng-show="deploymentsList.length">
+            <div class="filter gs-selection-button" >
                 {{'hosts.deploymentsFilter' | translate}}<br>
                 <div multi:select:menu
                      class="gs-select"
+                     ng-disabled="!hostsFilter.blueprint"
                      data-multiple="true"
                      data-options="deploymentsList"
                      data-ng-model="hostsFilter.deployments"
-                     data-filter="hostsFilter.blueprints"
                      data-init="{{ filterModel.deployments }}"
                      data-listener="true"
                      name="deployments"
                      data-text="{{'hosts.deploymentsFilterPlaceholder' | translate}}"></div>
             </div>
 
-            <button class="gs-btn" gs-spinner="{{filterLoading}}" data-ng-click="execute()" ng-disabled="isSearchDisabled()">Show</button>
-
-            <div class="search">
-                <input type="text" spellcheck="false" placeholder="Search" data-ng-model="searchFilter" />
+            <div class="filter gs-selection-button" >
+                {{'hosts.typesFilter' | translate}}<br>
+                <div multi:select:menu
+                     class="gs-select"
+                     data-multiple="true"
+                     data-options="typesList"
+                     data-ng-model="hostsFilter.types"
+                     data-init="{{ filterModel.types }}"
+                     data-listener="true"
+                     name="types"
+                     data-text="{{'hosts.typesFilterPlaceholder' | translate}}"></div>
             </div>
+
+            <div class="filter gs-selection-button" >
+                {{ 'hosts.searchFilter' | translate }}<br/>
+                <div>
+                    <input type="text" spellcheck="false" placeholder="Search" data-ng-model="hostsFilter.search" />
+                </div>
+            </div>
+
+            <div class="actions">
+                <!--<button class="gs-btn" gs-spinner="{{filterLoading}}" data-ng-click="execute()" ng-disabled="isSearchDisabled()">Show</button>-->
+                <button class="gs-btn"  data-ng-click="clearFilter()" >Clear Filter</button>
+            </div>
+
+            <div >
+            showing {{ nodesList.length }} out of {{ total() }} node instances
+            </div>
+
+
         </div>
 
         <div class="newHosts" data-ng-show="newHosts>0">
@@ -62,8 +87,8 @@
                 <!--<th class="">Flavor ID</th>-->
             </tr>
             </thead>
-            <tbody ng-repeat="row in nodesList | filter: searchFilter" ng-init="isOpen=false">
-            <tr>
+            <tbody ng-repeat="row in nodesList | filter:hostsFilter.search" ng-init="isOpen=false">
+            <tr ng-show="!row.hidden">
                 <td class="id">{{row.id == null && '-' || row.id }}</td>
                 <td class="state">{{row.state == null && '-' || row.state }}</td>
                 <td class="deploymentId">{{getBlueprintId() == null && '-' || getBlueprintId() }}</td>

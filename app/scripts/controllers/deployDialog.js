@@ -32,7 +32,7 @@ angular.module('cosmoUiApp')
             setDeployError(null);
 
             $scope.inProcess = true;
-            cloudifyClient.deployments.create(blueprintId, $scope.deployment_id, JSON.parse($scope.rawString))
+            cloudifyClient.deployments.create(blueprintId, $scope.deployment_id, $scope.rawString ? JSON.parse($scope.rawString) : null )
                 .then(function (result) {
                     var data = result.data;
                     $scope.inProcess = false;

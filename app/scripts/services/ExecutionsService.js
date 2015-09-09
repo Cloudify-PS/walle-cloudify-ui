@@ -22,7 +22,7 @@ angular.module('cosmoUiApp')
         };
 
         this.canPause = function(execution){
-            return execution && execution.workflow_id !== 'create_deployment_environment';
+            return !!execution;
         };
 
 

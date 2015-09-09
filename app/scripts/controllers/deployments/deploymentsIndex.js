@@ -16,7 +16,6 @@ angular.module('cosmoUiApp')
         $scope.inputs = {};
         $scope.managerError = false;
 
-        $scope.itemToDelete = null;
 
 
         $scope.getExecution = function(deployment){
@@ -74,12 +73,14 @@ angular.module('cosmoUiApp')
 
         $scope.deleteDeployment = function(deployment) {
 
-            $scope.itemToDelete = deployment;
+            var deleteScope = $scope.$new(true);
+            deleteScope.deployment = deployment;
+            deleteScope.onDone = $scope.loadDeployments;
 
             ngDialog.open({
-                template: 'views/dialogs/delete.html',
-                controller: 'DeleteDialogCtrl',
-                scope: $scope,
+                template: 'views/deployment/deleteDeploymentDialog.html',
+                controller: 'DeleteDeploymentDialogCtrl',
+                scope: deleteScope,
                 className: 'delete-dialog'
             });
         };

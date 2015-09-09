@@ -144,11 +144,6 @@ app.post('/backend/blueprints/upload', middlewares.cloudifyAuthentication, contr
 
 /* deployments */
 
-app.get('/backend/guy', function(req, res){
-    res.status(401).send('invalid!');
-});
-
-
 
 app.post('/backend/influx', function(request, response) {
 
