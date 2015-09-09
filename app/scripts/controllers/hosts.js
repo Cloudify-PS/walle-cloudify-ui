@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('cosmoUiApp')
-    .controller('HostsCtrl', function ($scope, $filter, cloudifyClient ) {
+    .controller('HostsCtrl', function ($scope, $filter, cloudifyClient) {
 
 
         /**
@@ -22,20 +22,24 @@ angular.module('cosmoUiApp')
         var allDeployments = [];
 
 
-        function resetTypesList(){
-            $scope.typesList = [ { 'value' : 'cloudify.nodes.Compute', 'label' : 'cloudify.nodes.Compute' } ];
+        function resetTypesList() {
+            $scope.typesList = [{'value': 'cloudify.nodes.Compute', 'label': 'cloudify.nodes.Compute'}];
         }
+
         resetTypesList();
 
 
+        cloudifyClient.deployments.list('id,blueprint_id').then(function (result) {
 
-        cloudifyClient.deployments.list('id,blueprint_id').then(function( result ){
-
-            _.each(result.data, function(item){
+            _.each(result.data, function (item) {
                 deployments[item.id] = item.blueprint_id;
             });
-            $scope.blueprintsList = _.map(_.uniq(result.data, 'blueprint_id' ), function( item ){ return { label : item.blueprint_id, value : item.blueprint_id } });
-            allDeployments = _.map(_.uniq(result.data, 'id'),function( item ){ return { label : item.id, value : item.id } });
+            $scope.blueprintsList = _.map(_.uniq(result.data, 'blueprint_id'), function (item) {
+                return {label: item.blueprint_id, value: item.blueprint_id};
+            });
+            allDeployments = _.map(_.uniq(result.data, 'id'), function (item) {
+                return {label: item.id, value: item.id};
+            });
             console.log($scope.eventsFilter);
             console.log($scope.eventsFilter);
             loadNodeInstances();
@@ -47,7 +51,7 @@ angular.module('cosmoUiApp')
          *  map blueprint_id to each node_instance
          */
         function loadNodeInstances() {
-            cloudifyClient.nodes.list().then(function(result){
+            cloudifyClient.nodes.list().then(function (result) {
 
                 var types = [];
 
@@ -55,21 +59,23 @@ angular.module('cosmoUiApp')
                 var typesByDeploymentAndNode = {};
 
 
-                _.each(_.groupBy(result.data,'deployment_id'), function(value, key){
+                _.each(_.groupBy(result.data, 'deployment_id'), function (value, key) {
                     typesByDeploymentAndNode[key] = _.indexBy(value, 'id');
                 });
-                console.log('this is types',typesByDeploymentAndNode);
+                console.log('this is types', typesByDeploymentAndNode);
 
-                _.each(result.data, function(item){
-                     types = types.concat(item.type_hierarchy);
+                _.each(result.data, function (item) {
+                    types = types.concat(item.type_hierarchy);
                 });
 
-                types = _.map(_.uniq(types), function(item){ return {'value' : item, 'label' : item }});
+                types = _.map(_.uniq(types), function (item) {
+                    return {'value': item, 'label': item};
+                });
                 $scope.typesList = types;
 
                 cloudifyClient.nodeInstances.list().then(function (result) {
 
-                    _.each(result.data, function(item){
+                    _.each(result.data, function (item) {
                         item.blueprint_id = deployments[item.deployment_id];
 
 
@@ -94,22 +100,22 @@ angular.module('cosmoUiApp')
 
         }
 
-        $scope.getBlueprintId = function() {
+        $scope.getBlueprintId = function () {
             return _currentBlueprint;
         };
 
-        $scope.total = function(){
+        $scope.total = function () {
             return allNodes.length;
         };
 
-        function filterItems(){
+        function filterItems() {
             buildMatchFilter();
-            $scope.nodesList = _.filter(allNodes, matchItem );
+            $scope.nodesList = _.filter(allNodes, matchItem);
 
 
         }
 
-        function  matchItem (item) {
+        function matchItem(item) {
             if (matchFilter.blueprint) { // filter by blueprint
                 if (item.blueprint_id !== matchFilter.blueprint) {
                     return false;
@@ -130,54 +136,56 @@ angular.module('cosmoUiApp')
 
             return true;
 
-        };
+        }
 
         /**
          * while the hosts filter is used for display, the matchFilter is used for matching each item
          */
-        function buildMatchFilter(){
-            matchFilter = { };
-            if ( !!$scope.hostsFilter.blueprint ){
+        function buildMatchFilter() {
+            matchFilter = {};
+            if (!!$scope.hostsFilter.blueprint) {
                 matchFilter.blueprint = $scope.hostsFilter.blueprint.value;
             }
 
-            if ( !!$scope.hostsFilter.deployments && $scope.hostsFilter.deployments.length > 0){
-                matchFilter.deployments = _.pluck($scope.hostsFilter.deployments,'value');
+            if (!!$scope.hostsFilter.deployments && $scope.hostsFilter.deployments.length > 0) {
+                matchFilter.deployments = _.pluck($scope.hostsFilter.deployments, 'value');
             }
 
-            if ( !!$scope.hostsFilter.types && $scope.hostsFilter.types.length > 0){
-                matchFilter.types = _.pluck($scope.hostsFilter.types,'value');
+            if (!!$scope.hostsFilter.types && $scope.hostsFilter.types.length > 0) {
+                matchFilter.types = _.pluck($scope.hostsFilter.types, 'value');
             }
         }
 
-       $scope.$watch('hostsFilter', function(newValue){
-           console.log('hosts filter changed', newValue );
-           if ( !newValue ){
-               return;
-           }
-           if(!!$scope.hostsFilter.blueprint) { //  todo: change only when blueprint changes..
-                $scope.deploymentsList = _.filter( allDeployments, function( item ){ return deployments[item.label] === $scope.hostsFilter.blueprint.label });
+        $scope.$watch('hostsFilter', function (newValue) {
+            console.log('hosts filter changed', newValue);
+            if (!newValue) {
+                return;
+            }
+            if (!!$scope.hostsFilter.blueprint) { //  todo: change only when blueprint changes..
+                $scope.deploymentsList = _.filter(allDeployments, function (item) {
+                    return deployments[item.label] === $scope.hostsFilter.blueprint.label;
+                });
                 _blueprint = newValue.value;
-           }
+            }
 
-           filterItems();
+            filterItems();
 
         }, true);
 
 
-        $scope.execute = function() {
+        $scope.execute = function () {
             if (!$scope.isSearchDisabled()) {
                 _execute();
             }
         };
 
-        $scope.clearFilter = function() {
-            $scope.hostsFilter = {blueprint: null, deployments: null, types:null, search: null};
+        $scope.clearFilter = function () {
+            $scope.hostsFilter = {blueprint: null, deployments: null, types: null, search: null};
         };
 
         $scope.clearFilter();
 
-        $scope.isSearchDisabled = function() {
+        $scope.isSearchDisabled = function () {
             return $scope.hostsFilter.blueprints === null || $scope.hostsFilter.blueprints.length === 0;
         };
 

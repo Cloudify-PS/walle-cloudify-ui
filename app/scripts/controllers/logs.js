@@ -4,7 +4,6 @@ angular.module('cosmoUiApp')
     .controller('LogsCtrl', function ($scope, cloudifyClient, EventsMap ){
         // guy - temporarily removing all features. They will be readded by another jira issue.
         cloudifyClient.events.get({ order : 'desc'}).then(function( result ) {
-            debugger;
             $scope.logsHits = result.data.hits.hits;
         });
 

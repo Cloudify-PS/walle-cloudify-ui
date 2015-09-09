@@ -17,7 +17,7 @@ module.exports = function (conf) {
                     res.removeHeader('www-authenticate'); // we want a login page!
                     callback(null, data);
                 },
-                forwardPath: function( req, res ){
+                forwardPath: function( req ){
 
                     console.log('in forward path', req.url, require('url').parse(req.url).path );
                     return '/api/v2' + require('url').parse(req.url).path;

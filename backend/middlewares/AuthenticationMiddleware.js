@@ -7,7 +7,7 @@
  * @type {function(): Client|exports}
  */
 
-var services = require('../services');
+//var services = require('../services');
 
 module.exports = function (req, res, next) {
     var creds = req.session.cloudifyCredentials;
