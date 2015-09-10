@@ -42,7 +42,7 @@
 
     </div>
 
-    <div id="deployment-content" ng-transclude></div>
+    <div id="deployment-content" ng-hide="isInitializing()" ng-transclude></div>
     </span>
     <div ng-show="!!deploymentNotFound" class="not-found-message">
 

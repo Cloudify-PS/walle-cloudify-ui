@@ -8,7 +8,273 @@ describe('Controller: SourceCtrl', function () {
     var SourceCtrl, scope;
 
 
-    var nodecellarSources = {'name':'root','children':[{'name':'cloudify-nodecellar-example-master','children':[{'name':'inputs','children':[{'name':'cloudstack-vpc.yaml.template','relativePath':'cloudify-nodecellar-example-master/inputs/cloudstack-vpc.yaml.template','path':'/tmp/blueprints/with_sources/1436009494572/cloudify-nodecellar-example-master/inputs/cloudstack-vpc.yaml.template','encoding':'ASCII'},{'name':'cloudstack.yaml.template','relativePath':'cloudify-nodecellar-example-master/inputs/cloudstack.yaml.template','path':'/tmp/blueprints/with_sources/1436009494572/cloudify-nodecellar-example-master/inputs/cloudstack.yaml.template','encoding':'ASCII'},{'name':'openstack-haproxy.yaml.template','relativePath':'cloudify-nodecellar-example-master/inputs/openstack-haproxy.yaml.template','path':'/tmp/blueprints/with_sources/1436009494572/cloudify-nodecellar-example-master/inputs/openstack-haproxy.yaml.template','encoding':'ASCII'},{'name':'openstack-nova-net.yaml.template','relativePath':'cloudify-nodecellar-example-master/inputs/openstack-nova-net.yaml.template','path':'/tmp/blueprints/with_sources/1436009494572/cloudify-nodecellar-example-master/inputs/openstack-nova-net.yaml.template','encoding':'ASCII'},{'name':'aws-ec2.yaml.template','relativePath':'cloudify-nodecellar-example-master/inputs/aws-ec2.yaml.template','path':'/tmp/blueprints/with_sources/1436009494572/cloudify-nodecellar-example-master/inputs/aws-ec2.yaml.template','encoding':'ASCII'},{'name':'openstack.yaml.template','relativePath':'cloudify-nodecellar-example-master/inputs/openstack.yaml.template','path':'/tmp/blueprints/with_sources/1436009494572/cloudify-nodecellar-example-master/inputs/openstack.yaml.template','encoding':'ASCII'},{'name':'singlehost.yaml.template','relativePath':'cloudify-nodecellar-example-master/inputs/singlehost.yaml.template','path':'/tmp/blueprints/with_sources/1436009494572/cloudify-nodecellar-example-master/inputs/singlehost.yaml.template','encoding':'ASCII'},{'name':'vcloud-fabric-blueprint.yaml.template','relativePath':'cloudify-nodecellar-example-master/inputs/vcloud-fabric-blueprint.yaml.template','path':'/tmp/blueprints/with_sources/1436009494572/cloudify-nodecellar-example-master/inputs/vcloud-fabric-blueprint.yaml.template','encoding':'ASCII'},{'name':'vcloud-haproxy.yaml.template','relativePath':'cloudify-nodecellar-example-master/inputs/vcloud-haproxy.yaml.template','path':'/tmp/blueprints/with_sources/1436009494572/cloudify-nodecellar-example-master/inputs/vcloud-haproxy.yaml.template','encoding':'ASCII'},{'name':'vcloud-without-agent.yaml.template','relativePath':'cloudify-nodecellar-example-master/inputs/vcloud-without-agent.yaml.template','path':'/tmp/blueprints/with_sources/1436009494572/cloudify-nodecellar-example-master/inputs/vcloud-without-agent.yaml.template','encoding':'ASCII'},{'name':'vcloud.yaml.template','relativePath':'cloudify-nodecellar-example-master/inputs/vcloud.yaml.template','path':'/tmp/blueprints/with_sources/1436009494572/cloudify-nodecellar-example-master/inputs/vcloud.yaml.template','encoding':'ASCII'}]},{'name':'resources','children':[{'name':'haproxy','children':[{'name':'haproxy.cfg.template','relativePath':'cloudify-nodecellar-example-master/resources/haproxy/haproxy.cfg.template','path':'/tmp/blueprints/with_sources/1436009494572/cloudify-nodecellar-example-master/resources/haproxy/haproxy.cfg.template','encoding':'ASCII'}]}]},{'name':'scripts','children':[{'name':'haproxy','children':[{'name':'haproxy.py','relativePath':'cloudify-nodecellar-example-master/scripts/haproxy/haproxy.py','path':'/tmp/blueprints/with_sources/1436009494572/cloudify-nodecellar-example-master/scripts/haproxy/haproxy.py','encoding':'ASCII'},{'name':'install-ubuntu.sh','relativePath':'cloudify-nodecellar-example-master/scripts/haproxy/install-ubuntu.sh','path':'/tmp/blueprints/with_sources/1436009494572/cloudify-nodecellar-example-master/scripts/haproxy/install-ubuntu.sh','encoding':'ASCII'}]},{'name':'mongo','children':[{'name':'install-mongo.sh','relativePath':'cloudify-nodecellar-example-master/scripts/mongo/install-mongo.sh','path':'/tmp/blueprints/with_sources/1436009494572/cloudify-nodecellar-example-master/scripts/mongo/install-mongo.sh','encoding':'ASCII'},{'name':'install-pymongo.sh','relativePath':'cloudify-nodecellar-example-master/scripts/mongo/install-pymongo.sh','path':'/tmp/blueprints/with_sources/1436009494572/cloudify-nodecellar-example-master/scripts/mongo/install-pymongo.sh','encoding':'ASCII'},{'name':'set-mongo-url.sh','relativePath':'cloudify-nodecellar-example-master/scripts/mongo/set-mongo-url.sh','path':'/tmp/blueprints/with_sources/1436009494572/cloudify-nodecellar-example-master/scripts/mongo/set-mongo-url.sh','encoding':'ASCII'},{'name':'start-mongo.sh','relativePath':'cloudify-nodecellar-example-master/scripts/mongo/start-mongo.sh','path':'/tmp/blueprints/with_sources/1436009494572/cloudify-nodecellar-example-master/scripts/mongo/start-mongo.sh','encoding':'ASCII'},{'name':'stop-mongo.sh','relativePath':'cloudify-nodecellar-example-master/scripts/mongo/stop-mongo.sh','path':'/tmp/blueprints/with_sources/1436009494572/cloudify-nodecellar-example-master/scripts/mongo/stop-mongo.sh','encoding':'ASCII'}]},{'name':'nodecellar','children':[{'name':'install-nodecellar-app.sh','relativePath':'cloudify-nodecellar-example-master/scripts/nodecellar/install-nodecellar-app.sh','path':'/tmp/blueprints/with_sources/1436009494572/cloudify-nodecellar-example-master/scripts/nodecellar/install-nodecellar-app.sh','encoding':'ASCII'},{'name':'start-nodecellar-app.sh','relativePath':'cloudify-nodecellar-example-master/scripts/nodecellar/start-nodecellar-app.sh','path':'/tmp/blueprints/with_sources/1436009494572/cloudify-nodecellar-example-master/scripts/nodecellar/start-nodecellar-app.sh','encoding':'ASCII'},{'name':'stop-nodecellar-app.sh','relativePath':'cloudify-nodecellar-example-master/scripts/nodecellar/stop-nodecellar-app.sh','path':'/tmp/blueprints/with_sources/1436009494572/cloudify-nodecellar-example-master/scripts/nodecellar/stop-nodecellar-app.sh','encoding':'ASCII'}]},{'name':'nodejs','children':[{'name':'install-nodejs.sh','relativePath':'cloudify-nodecellar-example-master/scripts/nodejs/install-nodejs.sh','path':'/tmp/blueprints/with_sources/1436009494572/cloudify-nodecellar-example-master/scripts/nodejs/install-nodejs.sh','encoding':'ASCII'},{'name':'set-nodejs-root.sh','relativePath':'cloudify-nodecellar-example-master/scripts/nodejs/set-nodejs-root.sh','path':'/tmp/blueprints/with_sources/1436009494572/cloudify-nodecellar-example-master/scripts/nodejs/set-nodejs-root.sh','encoding':'ASCII'}]},{'name':'withoutagent','children':[{'name':'install_mongo.py','relativePath':'cloudify-nodecellar-example-master/scripts/withoutagent/install_mongo.py','path':'/tmp/blueprints/with_sources/1436009494572/cloudify-nodecellar-example-master/scripts/withoutagent/install_mongo.py','encoding':'ASCII'},{'name':'install_nodecellar.py','relativePath':'cloudify-nodecellar-example-master/scripts/withoutagent/install_nodecellar.py','path':'/tmp/blueprints/with_sources/1436009494572/cloudify-nodecellar-example-master/scripts/withoutagent/install_nodecellar.py','encoding':'ASCII'},{'name':'install_nodejs.py','relativePath':'cloudify-nodecellar-example-master/scripts/withoutagent/install_nodejs.py','path':'/tmp/blueprints/with_sources/1436009494572/cloudify-nodecellar-example-master/scripts/withoutagent/install_nodejs.py','encoding':'ASCII'}]}]},{'name':'types','children':[{'name':'agentless-nodecellar.yaml','relativePath':'cloudify-nodecellar-example-master/types/agentless-nodecellar.yaml','path':'/tmp/blueprints/with_sources/1436009494572/cloudify-nodecellar-example-master/types/agentless-nodecellar.yaml','encoding':'ASCII'},{'name':'haproxy.yaml','relativePath':'cloudify-nodecellar-example-master/types/haproxy.yaml','path':'/tmp/blueprints/with_sources/1436009494572/cloudify-nodecellar-example-master/types/haproxy.yaml','encoding':'ASCII'},{'name':'nodecellar.yaml','relativePath':'cloudify-nodecellar-example-master/types/nodecellar.yaml','path':'/tmp/blueprints/with_sources/1436009494572/cloudify-nodecellar-example-master/types/nodecellar.yaml','encoding':'ASCII'}]},{'name':'LICENSE','relativePath':'cloudify-nodecellar-example-master/LICENSE','path':'/tmp/blueprints/with_sources/1436009494572/cloudify-nodecellar-example-master/LICENSE','encoding':'ASCII'},{'name':'README.md','relativePath':'cloudify-nodecellar-example-master/README.md','path':'/tmp/blueprints/with_sources/1436009494572/cloudify-nodecellar-example-master/README.md','encoding':'ASCII'},{'name':'aws-ec2-blueprint.yaml','relativePath':'cloudify-nodecellar-example-master/aws-ec2-blueprint.yaml','path':'/tmp/blueprints/with_sources/1436009494572/cloudify-nodecellar-example-master/aws-ec2-blueprint.yaml','encoding':'ASCII'},{'name':'cloudstack-blueprint.yaml','relativePath':'cloudify-nodecellar-example-master/cloudstack-blueprint.yaml','path':'/tmp/blueprints/with_sources/1436009494572/cloudify-nodecellar-example-master/cloudstack-blueprint.yaml','encoding':'ASCII'},{'name':'cloudstack-vpc-blueprint.yaml','relativePath':'cloudify-nodecellar-example-master/cloudstack-vpc-blueprint.yaml','path':'/tmp/blueprints/with_sources/1436009494572/cloudify-nodecellar-example-master/cloudstack-vpc-blueprint.yaml','encoding':'ASCII'},{'name':'host-pool-blueprint.yaml','relativePath':'cloudify-nodecellar-example-master/host-pool-blueprint.yaml','path':'/tmp/blueprints/with_sources/1436009494572/cloudify-nodecellar-example-master/host-pool-blueprint.yaml','encoding':'ASCII'},{'name':'local-blueprint.yaml','relativePath':'cloudify-nodecellar-example-master/local-blueprint.yaml','path':'/tmp/blueprints/with_sources/1436009494572/cloudify-nodecellar-example-master/local-blueprint.yaml','encoding':'ASCII'},{'name':'openstack-blueprint.yaml','relativePath':'cloudify-nodecellar-example-master/openstack-blueprint.yaml','path':'/tmp/blueprints/with_sources/1436009494572/cloudify-nodecellar-example-master/openstack-blueprint.yaml','encoding':'ASCII'},{'name':'openstack-haproxy-blueprint.yaml','relativePath':'cloudify-nodecellar-example-master/openstack-haproxy-blueprint.yaml','path':'/tmp/blueprints/with_sources/1436009494572/cloudify-nodecellar-example-master/openstack-haproxy-blueprint.yaml','encoding':'ASCII'},{'name':'openstack-nova-net-blueprint.yaml','relativePath':'cloudify-nodecellar-example-master/openstack-nova-net-blueprint.yaml','path':'/tmp/blueprints/with_sources/1436009494572/cloudify-nodecellar-example-master/openstack-nova-net-blueprint.yaml','encoding':'ASCII'},{'name':'singlehost-blueprint.yaml','relativePath':'cloudify-nodecellar-example-master/singlehost-blueprint.yaml','path':'/tmp/blueprints/with_sources/1436009494572/cloudify-nodecellar-example-master/singlehost-blueprint.yaml','encoding':'ASCII'},{'name':'softlayer-blueprint.yaml','relativePath':'cloudify-nodecellar-example-master/softlayer-blueprint.yaml','path':'/tmp/blueprints/with_sources/1436009494572/cloudify-nodecellar-example-master/softlayer-blueprint.yaml','encoding':'ASCII'},{'name':'vcloud-blueprint.yaml','relativePath':'cloudify-nodecellar-example-master/vcloud-blueprint.yaml','path':'/tmp/blueprints/with_sources/1436009494572/cloudify-nodecellar-example-master/vcloud-blueprint.yaml','encoding':'ASCII'},{'name':'vcloud-fabric-blueprint.yaml','relativePath':'cloudify-nodecellar-example-master/vcloud-fabric-blueprint.yaml','path':'/tmp/blueprints/with_sources/1436009494572/cloudify-nodecellar-example-master/vcloud-fabric-blueprint.yaml','encoding':'ASCII'},{'name':'vcloud-haproxy-blueprint.yaml','relativePath':'cloudify-nodecellar-example-master/vcloud-haproxy-blueprint.yaml','path':'/tmp/blueprints/with_sources/1436009494572/cloudify-nodecellar-example-master/vcloud-haproxy-blueprint.yaml','encoding':'ASCII'},{'name':'vcloud-without-agent-blueprint.yaml','relativePath':'cloudify-nodecellar-example-master/vcloud-without-agent-blueprint.yaml','path':'/tmp/blueprints/with_sources/1436009494572/cloudify-nodecellar-example-master/vcloud-without-agent-blueprint.yaml','encoding':'ASCII'}]}]};
+    var nodecellarSources = {
+        'name': 'root',
+        'children': [{
+            'name': 'cloudify-nodecellar-example-master',
+            'children': [{
+                'name': 'inputs',
+                'children': [{
+                    'name': 'cloudstack-vpc.yaml.template',
+                    'relativePath': 'cloudify-nodecellar-example-master/inputs/cloudstack-vpc.yaml.template',
+                    'path': '/tmp/blueprints/with_sources/1436009494572/cloudify-nodecellar-example-master/inputs/cloudstack-vpc.yaml.template',
+                    'encoding': 'ASCII'
+                }, {
+                    'name': 'cloudstack.yaml.template',
+                    'relativePath': 'cloudify-nodecellar-example-master/inputs/cloudstack.yaml.template',
+                    'path': '/tmp/blueprints/with_sources/1436009494572/cloudify-nodecellar-example-master/inputs/cloudstack.yaml.template',
+                    'encoding': 'ASCII'
+                }, {
+                    'name': 'openstack-haproxy.yaml.template',
+                    'relativePath': 'cloudify-nodecellar-example-master/inputs/openstack-haproxy.yaml.template',
+                    'path': '/tmp/blueprints/with_sources/1436009494572/cloudify-nodecellar-example-master/inputs/openstack-haproxy.yaml.template',
+                    'encoding': 'ASCII'
+                }, {
+                    'name': 'openstack-nova-net.yaml.template',
+                    'relativePath': 'cloudify-nodecellar-example-master/inputs/openstack-nova-net.yaml.template',
+                    'path': '/tmp/blueprints/with_sources/1436009494572/cloudify-nodecellar-example-master/inputs/openstack-nova-net.yaml.template',
+                    'encoding': 'ASCII'
+                }, {
+                    'name': 'aws-ec2.yaml.template',
+                    'relativePath': 'cloudify-nodecellar-example-master/inputs/aws-ec2.yaml.template',
+                    'path': '/tmp/blueprints/with_sources/1436009494572/cloudify-nodecellar-example-master/inputs/aws-ec2.yaml.template',
+                    'encoding': 'ASCII'
+                }, {
+                    'name': 'openstack.yaml.template',
+                    'relativePath': 'cloudify-nodecellar-example-master/inputs/openstack.yaml.template',
+                    'path': '/tmp/blueprints/with_sources/1436009494572/cloudify-nodecellar-example-master/inputs/openstack.yaml.template',
+                    'encoding': 'ASCII'
+                }, {
+                    'name': 'singlehost.yaml.template',
+                    'relativePath': 'cloudify-nodecellar-example-master/inputs/singlehost.yaml.template',
+                    'path': '/tmp/blueprints/with_sources/1436009494572/cloudify-nodecellar-example-master/inputs/singlehost.yaml.template',
+                    'encoding': 'ASCII'
+                }, {
+                    'name': 'vcloud-fabric-blueprint.yaml.template',
+                    'relativePath': 'cloudify-nodecellar-example-master/inputs/vcloud-fabric-blueprint.yaml.template',
+                    'path': '/tmp/blueprints/with_sources/1436009494572/cloudify-nodecellar-example-master/inputs/vcloud-fabric-blueprint.yaml.template',
+                    'encoding': 'ASCII'
+                }, {
+                    'name': 'vcloud-haproxy.yaml.template',
+                    'relativePath': 'cloudify-nodecellar-example-master/inputs/vcloud-haproxy.yaml.template',
+                    'path': '/tmp/blueprints/with_sources/1436009494572/cloudify-nodecellar-example-master/inputs/vcloud-haproxy.yaml.template',
+                    'encoding': 'ASCII'
+                }, {
+                    'name': 'vcloud-without-agent.yaml.template',
+                    'relativePath': 'cloudify-nodecellar-example-master/inputs/vcloud-without-agent.yaml.template',
+                    'path': '/tmp/blueprints/with_sources/1436009494572/cloudify-nodecellar-example-master/inputs/vcloud-without-agent.yaml.template',
+                    'encoding': 'ASCII'
+                }, {
+                    'name': 'vcloud.yaml.template',
+                    'relativePath': 'cloudify-nodecellar-example-master/inputs/vcloud.yaml.template',
+                    'path': '/tmp/blueprints/with_sources/1436009494572/cloudify-nodecellar-example-master/inputs/vcloud.yaml.template',
+                    'encoding': 'ASCII'
+                }]
+            }, {
+                'name': 'resources',
+                'children': [{
+                    'name': 'haproxy',
+                    'children': [{
+                        'name': 'haproxy.cfg.template',
+                        'relativePath': 'cloudify-nodecellar-example-master/resources/haproxy/haproxy.cfg.template',
+                        'path': '/tmp/blueprints/with_sources/1436009494572/cloudify-nodecellar-example-master/resources/haproxy/haproxy.cfg.template',
+                        'encoding': 'ASCII'
+                    }]
+                }]
+            }, {
+                'name': 'scripts',
+                'children': [{
+                    'name': 'haproxy',
+                    'children': [{
+                        'name': 'haproxy.py',
+                        'relativePath': 'cloudify-nodecellar-example-master/scripts/haproxy/haproxy.py',
+                        'path': '/tmp/blueprints/with_sources/1436009494572/cloudify-nodecellar-example-master/scripts/haproxy/haproxy.py',
+                        'encoding': 'ASCII'
+                    }, {
+                        'name': 'install-ubuntu.sh',
+                        'relativePath': 'cloudify-nodecellar-example-master/scripts/haproxy/install-ubuntu.sh',
+                        'path': '/tmp/blueprints/with_sources/1436009494572/cloudify-nodecellar-example-master/scripts/haproxy/install-ubuntu.sh',
+                        'encoding': 'ASCII'
+                    }]
+                }, {
+                    'name': 'mongo',
+                    'children': [{
+                        'name': 'install-mongo.sh',
+                        'relativePath': 'cloudify-nodecellar-example-master/scripts/mongo/install-mongo.sh',
+                        'path': '/tmp/blueprints/with_sources/1436009494572/cloudify-nodecellar-example-master/scripts/mongo/install-mongo.sh',
+                        'encoding': 'ASCII'
+                    }, {
+                        'name': 'install-pymongo.sh',
+                        'relativePath': 'cloudify-nodecellar-example-master/scripts/mongo/install-pymongo.sh',
+                        'path': '/tmp/blueprints/with_sources/1436009494572/cloudify-nodecellar-example-master/scripts/mongo/install-pymongo.sh',
+                        'encoding': 'ASCII'
+                    }, {
+                        'name': 'set-mongo-url.sh',
+                        'relativePath': 'cloudify-nodecellar-example-master/scripts/mongo/set-mongo-url.sh',
+                        'path': '/tmp/blueprints/with_sources/1436009494572/cloudify-nodecellar-example-master/scripts/mongo/set-mongo-url.sh',
+                        'encoding': 'ASCII'
+                    }, {
+                        'name': 'start-mongo.sh',
+                        'relativePath': 'cloudify-nodecellar-example-master/scripts/mongo/start-mongo.sh',
+                        'path': '/tmp/blueprints/with_sources/1436009494572/cloudify-nodecellar-example-master/scripts/mongo/start-mongo.sh',
+                        'encoding': 'ASCII'
+                    }, {
+                        'name': 'stop-mongo.sh',
+                        'relativePath': 'cloudify-nodecellar-example-master/scripts/mongo/stop-mongo.sh',
+                        'path': '/tmp/blueprints/with_sources/1436009494572/cloudify-nodecellar-example-master/scripts/mongo/stop-mongo.sh',
+                        'encoding': 'ASCII'
+                    }]
+                }, {
+                    'name': 'nodecellar',
+                    'children': [{
+                        'name': 'install-nodecellar-app.sh',
+                        'relativePath': 'cloudify-nodecellar-example-master/scripts/nodecellar/install-nodecellar-app.sh',
+                        'path': '/tmp/blueprints/with_sources/1436009494572/cloudify-nodecellar-example-master/scripts/nodecellar/install-nodecellar-app.sh',
+                        'encoding': 'ASCII'
+                    }, {
+                        'name': 'start-nodecellar-app.sh',
+                        'relativePath': 'cloudify-nodecellar-example-master/scripts/nodecellar/start-nodecellar-app.sh',
+                        'path': '/tmp/blueprints/with_sources/1436009494572/cloudify-nodecellar-example-master/scripts/nodecellar/start-nodecellar-app.sh',
+                        'encoding': 'ASCII'
+                    }, {
+                        'name': 'stop-nodecellar-app.sh',
+                        'relativePath': 'cloudify-nodecellar-example-master/scripts/nodecellar/stop-nodecellar-app.sh',
+                        'path': '/tmp/blueprints/with_sources/1436009494572/cloudify-nodecellar-example-master/scripts/nodecellar/stop-nodecellar-app.sh',
+                        'encoding': 'ASCII'
+                    }]
+                }, {
+                    'name': 'nodejs',
+                    'children': [{
+                        'name': 'install-nodejs.sh',
+                        'relativePath': 'cloudify-nodecellar-example-master/scripts/nodejs/install-nodejs.sh',
+                        'path': '/tmp/blueprints/with_sources/1436009494572/cloudify-nodecellar-example-master/scripts/nodejs/install-nodejs.sh',
+                        'encoding': 'ASCII'
+                    }, {
+                        'name': 'set-nodejs-root.sh',
+                        'relativePath': 'cloudify-nodecellar-example-master/scripts/nodejs/set-nodejs-root.sh',
+                        'path': '/tmp/blueprints/with_sources/1436009494572/cloudify-nodecellar-example-master/scripts/nodejs/set-nodejs-root.sh',
+                        'encoding': 'ASCII'
+                    }]
+                }, {
+                    'name': 'withoutagent',
+                    'children': [{
+                        'name': 'install_mongo.py',
+                        'relativePath': 'cloudify-nodecellar-example-master/scripts/withoutagent/install_mongo.py',
+                        'path': '/tmp/blueprints/with_sources/1436009494572/cloudify-nodecellar-example-master/scripts/withoutagent/install_mongo.py',
+                        'encoding': 'ASCII'
+                    }, {
+                        'name': 'install_nodecellar.py',
+                        'relativePath': 'cloudify-nodecellar-example-master/scripts/withoutagent/install_nodecellar.py',
+                        'path': '/tmp/blueprints/with_sources/1436009494572/cloudify-nodecellar-example-master/scripts/withoutagent/install_nodecellar.py',
+                        'encoding': 'ASCII'
+                    }, {
+                        'name': 'install_nodejs.py',
+                        'relativePath': 'cloudify-nodecellar-example-master/scripts/withoutagent/install_nodejs.py',
+                        'path': '/tmp/blueprints/with_sources/1436009494572/cloudify-nodecellar-example-master/scripts/withoutagent/install_nodejs.py',
+                        'encoding': 'ASCII'
+                    }]
+                }]
+            }, {
+                'name': 'types',
+                'children': [{
+                    'name': 'agentless-nodecellar.yaml',
+                    'relativePath': 'cloudify-nodecellar-example-master/types/agentless-nodecellar.yaml',
+                    'path': '/tmp/blueprints/with_sources/1436009494572/cloudify-nodecellar-example-master/types/agentless-nodecellar.yaml',
+                    'encoding': 'ASCII'
+                }, {
+                    'name': 'haproxy.yaml',
+                    'relativePath': 'cloudify-nodecellar-example-master/types/haproxy.yaml',
+                    'path': '/tmp/blueprints/with_sources/1436009494572/cloudify-nodecellar-example-master/types/haproxy.yaml',
+                    'encoding': 'ASCII'
+                }, {
+                    'name': 'nodecellar.yaml',
+                    'relativePath': 'cloudify-nodecellar-example-master/types/nodecellar.yaml',
+                    'path': '/tmp/blueprints/with_sources/1436009494572/cloudify-nodecellar-example-master/types/nodecellar.yaml',
+                    'encoding': 'ASCII'
+                }]
+            }, {
+                'name': 'LICENSE',
+                'relativePath': 'cloudify-nodecellar-example-master/LICENSE',
+                'path': '/tmp/blueprints/with_sources/1436009494572/cloudify-nodecellar-example-master/LICENSE',
+                'encoding': 'ASCII'
+            }, {
+                'name': 'README.md',
+                'relativePath': 'cloudify-nodecellar-example-master/README.md',
+                'path': '/tmp/blueprints/with_sources/1436009494572/cloudify-nodecellar-example-master/README.md',
+                'encoding': 'ASCII'
+            }, {
+                'name': 'aws-ec2-blueprint.yaml',
+                'relativePath': 'cloudify-nodecellar-example-master/aws-ec2-blueprint.yaml',
+                'path': '/tmp/blueprints/with_sources/1436009494572/cloudify-nodecellar-example-master/aws-ec2-blueprint.yaml',
+                'encoding': 'ASCII'
+            }, {
+                'name': 'cloudstack-blueprint.yaml',
+                'relativePath': 'cloudify-nodecellar-example-master/cloudstack-blueprint.yaml',
+                'path': '/tmp/blueprints/with_sources/1436009494572/cloudify-nodecellar-example-master/cloudstack-blueprint.yaml',
+                'encoding': 'ASCII'
+            }, {
+                'name': 'cloudstack-vpc-blueprint.yaml',
+                'relativePath': 'cloudify-nodecellar-example-master/cloudstack-vpc-blueprint.yaml',
+                'path': '/tmp/blueprints/with_sources/1436009494572/cloudify-nodecellar-example-master/cloudstack-vpc-blueprint.yaml',
+                'encoding': 'ASCII'
+            }, {
+                'name': 'host-pool-blueprint.yaml',
+                'relativePath': 'cloudify-nodecellar-example-master/host-pool-blueprint.yaml',
+                'path': '/tmp/blueprints/with_sources/1436009494572/cloudify-nodecellar-example-master/host-pool-blueprint.yaml',
+                'encoding': 'ASCII'
+            }, {
+                'name': 'local-blueprint.yaml',
+                'relativePath': 'cloudify-nodecellar-example-master/local-blueprint.yaml',
+                'path': '/tmp/blueprints/with_sources/1436009494572/cloudify-nodecellar-example-master/local-blueprint.yaml',
+                'encoding': 'ASCII'
+            }, {
+                'name': 'openstack-blueprint.yaml',
+                'relativePath': 'cloudify-nodecellar-example-master/openstack-blueprint.yaml',
+                'path': '/tmp/blueprints/with_sources/1436009494572/cloudify-nodecellar-example-master/openstack-blueprint.yaml',
+                'encoding': 'ASCII'
+            }, {
+                'name': 'openstack-haproxy-blueprint.yaml',
+                'relativePath': 'cloudify-nodecellar-example-master/openstack-haproxy-blueprint.yaml',
+                'path': '/tmp/blueprints/with_sources/1436009494572/cloudify-nodecellar-example-master/openstack-haproxy-blueprint.yaml',
+                'encoding': 'ASCII'
+            }, {
+                'name': 'openstack-nova-net-blueprint.yaml',
+                'relativePath': 'cloudify-nodecellar-example-master/openstack-nova-net-blueprint.yaml',
+                'path': '/tmp/blueprints/with_sources/1436009494572/cloudify-nodecellar-example-master/openstack-nova-net-blueprint.yaml',
+                'encoding': 'ASCII'
+            }, {
+                'name': 'singlehost-blueprint.yaml',
+                'relativePath': 'cloudify-nodecellar-example-master/singlehost-blueprint.yaml',
+                'path': '/tmp/blueprints/with_sources/1436009494572/cloudify-nodecellar-example-master/singlehost-blueprint.yaml',
+                'encoding': 'ASCII'
+            }, {
+                'name': 'softlayer-blueprint.yaml',
+                'relativePath': 'cloudify-nodecellar-example-master/softlayer-blueprint.yaml',
+                'path': '/tmp/blueprints/with_sources/1436009494572/cloudify-nodecellar-example-master/softlayer-blueprint.yaml',
+                'encoding': 'ASCII'
+            }, {
+                'name': 'vcloud-blueprint.yaml',
+                'relativePath': 'cloudify-nodecellar-example-master/vcloud-blueprint.yaml',
+                'path': '/tmp/blueprints/with_sources/1436009494572/cloudify-nodecellar-example-master/vcloud-blueprint.yaml',
+                'encoding': 'ASCII'
+            }, {
+                'name': 'vcloud-fabric-blueprint.yaml',
+                'relativePath': 'cloudify-nodecellar-example-master/vcloud-fabric-blueprint.yaml',
+                'path': '/tmp/blueprints/with_sources/1436009494572/cloudify-nodecellar-example-master/vcloud-fabric-blueprint.yaml',
+                'encoding': 'ASCII'
+            }, {
+                'name': 'vcloud-haproxy-blueprint.yaml',
+                'relativePath': 'cloudify-nodecellar-example-master/vcloud-haproxy-blueprint.yaml',
+                'path': '/tmp/blueprints/with_sources/1436009494572/cloudify-nodecellar-example-master/vcloud-haproxy-blueprint.yaml',
+                'encoding': 'ASCII'
+            }, {
+                'name': 'vcloud-without-agent-blueprint.yaml',
+                'relativePath': 'cloudify-nodecellar-example-master/vcloud-without-agent-blueprint.yaml',
+                'path': '/tmp/blueprints/with_sources/1436009494572/cloudify-nodecellar-example-master/vcloud-without-agent-blueprint.yaml',
+                'encoding': 'ASCII'
+            }]
+        }]
+    };
 
 
     // Initialize the controller and a mock scope
@@ -17,13 +283,7 @@ describe('Controller: SourceCtrl', function () {
         scope.id = 'blueprint1';
         scope.errorMessage = 'noPreview';
 
-        spyOn(BlueprintSourceService, 'get').andCallFake(function () {
-            return {
-                then: function (success) {
-                    success({});
-                }
-            };
-        });
+
 
         spyOn(CloudifyService.blueprints, 'browse').andCallFake(function () {
             return {
@@ -107,11 +367,12 @@ describe('Controller: SourceCtrl', function () {
 
     describe('#isSourceText', function(){
         it('should return true if file is a source file', function(){
-            expect(scope.isSourceText('foo')).toBe(false);
-            expect(scope.isSourceText('yaml')).toBe(true);
-            expect(scope.isSourceText('css')).toBe(true);
-            expect(scope.isSourceText('sh')).toBe(true);
-            expect(scope.isSourceText('txt')).toBe(true);
+            expect(scope.isSourceText('foo.foo')).toBe(false);
+            expect(scope.isSourceText('file.yaml')).toBe(true);
+            expect(scope.isSourceText('file.css')).toBe(true);
+            expect(scope.isSourceText('file.sh')).toBe(true);
+            expect(scope.isSourceText('file.txt')).toBe(true);
+            expect(scope.isSourceText('LICENSE')).toBe(true);
             expect(scope.isSourceText(null)).toBe(undefined);
         });
     });
@@ -122,7 +383,7 @@ describe('Controller: SourceCtrl', function () {
                 return {
                     then: function (success) { // todo: handle errors.
                         if (browseData.id === 'success') {
-                            success('this is content');
+                            success({ data : 'this is content' } );
                         }
                     }
                 };

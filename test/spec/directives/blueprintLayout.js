@@ -19,11 +19,16 @@ describe('Directive: blueprintLayout', function () {
         //scope.$digest(); -- do not digest here.. we need to override isolate scope functions. use $digest in inner describes.
     });
 
-    beforeEach(inject(function (CloudifyService) {
-        spyOn(CloudifyService.blueprints, 'getBlueprintById').andCallFake(function () {
+    beforeEach(inject(function (cloudifyClient) {
+        spyOn(cloudifyClient.blueprints, 'get').andCallFake(function () {
             return {
                 then: function (success) {
-                    success({id: 'foo', plan: {inputs: {}}});
+                    var result = success({ data : {id: 'foo', plan: {inputs: {}}} });
+                    return {
+                        then: function(success){
+                            success(result);
+                        }
+                    };
                 }
             };
         });

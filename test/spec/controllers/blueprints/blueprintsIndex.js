@@ -113,7 +113,6 @@ describe('Controller: BlueprintsIndexCtrl', function () {
 
             scope.deleteBlueprint(blueprintToDelete);
 
-            expect(scope.itemToDelete.id).toBe(blueprintToDelete.id);
             expect(_ngDialog.open).toHaveBeenCalled();
         });
     });

@@ -6,10 +6,9 @@
  */
 
 angular.module('cosmoUiApp')
-    .service('VersionService', function VersionService($q, $http) {
-        var cachedVersion;
-        var inProgress = false;
-        var defers = [];
+    .service('VersionService', function VersionService($q, $http, cloudifyClient ) {
+
+        var getLatestPromise = null;
 
         /**
          * Request the latest version available. To prevent multiple calls to the backend, the first latest version response of the current session is cached in teh service
@@ -17,59 +16,36 @@ angular.module('cosmoUiApp')
          * @returns Promise The latest UI version available
          * @private
          */
-        function _getLatest(uiVersion) {
-            if (!!cachedVersion) {  // if latest version already cached, return the cached version
-                var deferred = $q.defer();
-
-                deferred.resolve(cachedVersion);
-
-                return deferred.promise;
-
-            } else if (!!inProgress) {  // if latest version request is in progress, return the active promise
-                var defer = $q.defer();
-                // NO RESOLVE
-                defers.push(defer);
-
-                return defer.promise;
-
-            } else {    // if there is no cached version and there are no active requests, make a request to backend to load the latest version number
-                inProgress = true;
-
-                var callParams = {
+        this.getLatest = function(uiVersion) {
+            if ( getLatestPromise === null ){
+                getLatestPromise = $http({
                     url: '/backend/version/latest',
                     method: 'GET',
                     params: {
                         version: uiVersion
                     }
-                };
-
-                return $http(callParams).then(function(result) {
-                    _.each(defers, function(defer) {
-                        defer.resolve(result);
-                    });
-                    cachedVersion = result;
-                    return result;
                 });
             }
-        }
+            return getLatestPromise;
+        };
 
         /**
          * Request the local UI version available
          * @returns Promise The local UI version
          * @private
          */
-        function _getUiVersion() {
+        this.getUiVersion = function() {
             return $http.get('/backend/versions/ui');
-        }
+        };
 
         /**
          * Request the current Cloudify manager version
          * @returns Promise The current Cloudify version
          * @private
          */
-        function _getManagerVersion() {
-            return $http.get('/backend/versions/manager');
-        }
+        this.getManagerVersion = function() {
+            return cloudifyClient.manager.get_version();
+        };
 
         /**
          * Returns if the version is the most updated version available
@@ -77,15 +53,16 @@ angular.module('cosmoUiApp')
          * @example .then(function(boolean) {})
          * @private
          */
-        function _needUpdate() {
+        this.needUpdate = function() {
             var deferred = $q.defer();
 
-            _getUiVersion()
+            var me = this;
+            this.getUiVersion()
                 .then(function(data){
-                    if(!!data && data.data.hasOwnProperty('version')) {
+                    if(!!data && !!data.data && !!data.data.hasOwnProperty('version')) {
                         var currentVersion = data.data.version;
 
-                        _getLatest(currentVersion)
+                        me.getLatest(currentVersion)
                             .then(function(ver) {
                                 var _currentVer = parseInt(currentVersion, 10);
                                 var _ver = parseInt(ver.data, 10);
@@ -95,36 +72,32 @@ angular.module('cosmoUiApp')
                                     deferred.resolve(false);
                                 }
                             });
+                    }else{
+                        deferred.resolve(false);
                     }
                 });
             return deferred.promise;
-        }
+        };
 
         /**
          * Returns an object with the current ui & manager versions
          * @returns Promise An object with the current ui & manager versions
          * @private
          */
-        function _getVersions() {
-            var deferred =  $q.defer();
-            var versions = {};
+        var versionsPromise = null;
+        this.getVersions = function() {
+            if ( versionsPromise === null ) {
+                versionsPromise = $q.all([
+                    this.getUiVersion(),
+                    this.getManagerVersion()
+                ]).then(function (data) {
+                    return {
+                        ui: data[0].data.version,
+                        manager: data[1].data.version
+                    };
+                });
+            }
+            return versionsPromise;
+        };
 
-            $q.all([
-                _getUiVersion(),
-                _getManagerVersion()
-            ]).then(function(data) {
-                versions.ui = data[0].data.version;
-                versions.manager = data[1].data.version;
-
-                deferred.resolve(versions);
-            });
-
-            return deferred.promise;
-        }
-
-        this.getLatest = _getLatest;
-        this.getUiVersion = _getUiVersion;
-        this.getManagerVersion = _getManagerVersion;
-        this.needUpdate = _needUpdate;
-        this.getVersions = _getVersions;
     });

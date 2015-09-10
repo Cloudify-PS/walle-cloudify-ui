@@ -56,17 +56,30 @@ angular.module('cosmoUiApp')
                     });
                 });
 
-                function openDialog(confirmationType) {
-
-                    if (confirmationType === 'execute' && scope.model === null) {
-                        return;
-                    }
+                scope.onPlay = function () {
 
                     var isolatedScope = scope.$new(true);
-                    isolatedScope.confirmationType = confirmationType;
                     isolatedScope.executedErr = false;
                     isolatedScope.deploymentId = scope.deployment.id;
                     isolatedScope.workflow = scope.selectedWorkflow;
+
+                    isolatedScope.$on('ngDialog.closed', function () { // we want to poll for executions once the dialog is closed
+                        try {
+                            scope.onSubmit();
+                        } catch (e) {
+                        }
+                    });
+
+                    ngDialog.open({
+                        template: 'views/deployment/startExecutionDialog.html',
+                        controller: 'StartExecutionDialogCtrl',
+                        scope: isolatedScope,
+                        className: 'confirm-dialog'
+                    });
+                };
+                scope.onCancel = function () {
+
+                    var isolatedScope = scope.$new(true);
                     isolatedScope.currentExecution = scope.currentExecution;
 
                     isolatedScope.$on('ngDialog.closed', function () { // we want to poll for executions once the dialog is closed
@@ -77,18 +90,11 @@ angular.module('cosmoUiApp')
                     });
 
                     ngDialog.open({
-                        template: 'views/dialogs/executeDialog.html',
-                        controller: 'ExecuteDialogCtrl',
+                        template: 'views/deployment/cancelExecutionDialog.html',
+                        controller: 'CancelExecutionDialogCtrl',
                         scope: isolatedScope,
                         className: 'confirm-dialog'
                     });
-                }
-
-                scope.onPlay = function () {
-                    openDialog('execute');
-                };
-                scope.onCancel = function () {
-                    openDialog('cancel');
                 };
             }
         };

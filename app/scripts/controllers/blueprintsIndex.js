@@ -20,7 +20,7 @@ angular.module('cosmoUiApp')
         $scope.openDeployDialog = function(blueprint) {
             $scope.selectedBlueprint = null;
             ngDialog.open({
-                template: 'views/dialogs/deploy.html',
+                template: 'views/blueprint/deployBlueprintDialog.html',
                 controller: 'DeployDialogCtrl',
                 scope: $scope,
                 className: 'deploy-dialog'
@@ -29,21 +29,25 @@ angular.module('cosmoUiApp')
             cloudifyClient.blueprints.get(blueprint.id, null).then(function(result){
                 $scope.selectedBlueprint = result.data || null;
 
+
             }); // todo: add error handling
         };
 
-        $scope.openDeleteDialog = function() {
+        $scope.openDeleteDialog = function( blueprint ) {
+            var deleteDialogScope = $scope.$new(true);
+            deleteDialogScope.blueprint = blueprint;
+            deleteDialogScope.onDone = loadBlueprints;
             ngDialog.open({
-                template: 'views/dialogs/delete.html',
-                controller: 'DeleteDialogCtrl',
-                scope: $scope,
+                template: 'views/blueprint/deleteBlueprintDialog.html',
+                controller: 'DeleteBlueprintDialogCtrl',
+                scope: deleteDialogScope,
                 className: 'delete-dialog'
             });
         };
 
         $scope.deleteBlueprint = function(blueprint) {
-            $scope.itemToDelete = blueprint;
-            $scope.openDeleteDialog();
+
+            $scope.openDeleteDialog( blueprint );
         };
 
         function loadBlueprints() {

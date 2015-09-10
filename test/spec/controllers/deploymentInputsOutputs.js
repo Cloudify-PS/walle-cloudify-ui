@@ -3,7 +3,7 @@
 describe('Controller: InputsOutputsCtrl', function () {
 
     // load the controller's module
-    beforeEach(module('cosmoUiApp','templates-main',function($provide){
+    beforeEach(module('cosmoUiApp','templates-main','backend-mock',function($provide){
         $provide.factory('cosmoLayoutDirective', function () {
             return {};
         }); // mock cosmo layout
@@ -16,13 +16,10 @@ describe('Controller: InputsOutputsCtrl', function () {
         scope,html,$compile;
 
     // Initialize the controller and a mock scope
-    beforeEach(inject(function ($controller, $rootScope, $httpBackend,$templateCache, _$compile_) {
-        $httpBackend.whenGET(/\/backend\/deployments\/.*\/outputs/).respond(200);
-        $httpBackend.whenGET('/backend/deployments/get').respond(200);
-        $httpBackend.whenGET('/backend/configuration?access=all').respond(200);
-        $httpBackend.whenGET('/i18n/translations_en.json').respond(200);
+    beforeEach(inject(function ($controller, $rootScope, cloudifyClient ,$templateCache, _$compile_) {
 
-
+        spyOn(cloudifyClient.deployments,'get').andReturn({ then: function(){}});
+        spyOn(cloudifyClient.deployments.outputs,'get').andReturn({ then: function(){}});
         scope = $rootScope.$new();
         InputsOutputsCtrl = $controller('InputsOutputsCtrl', {
             $scope: scope

@@ -16,11 +16,11 @@ describe('Controller: BlueprintNetwork', function () {
         });
     }));
 
-    it('should have a blueprintData handler', inject(function ($rootScope, CloudifyService, NetworksService, bpNetworkService) {
-        spyOn(CloudifyService, 'getProviderContext').andCallFake(function () {
+    it('should have a blueprintData handler', inject(function ($rootScope, cloudifyClient, NetworksService, bpNetworkService) {
+        spyOn(cloudifyClient.manager, 'get_context').andCallFake(function () {
             return {
                 then: function (success) {
-                    success();
+                    success({data:{}});
                 }
             };
         });
@@ -33,7 +33,7 @@ describe('Controller: BlueprintNetwork', function () {
         $rootScope.$broadcast('blueprintData', {plan: {nodes: {}}});
 
 
-        expect(CloudifyService.getProviderContext).toHaveBeenCalled();
+        expect(cloudifyClient.manager.get_context).toHaveBeenCalled();
         expect(NetworksService.createNetworkTree).toHaveBeenCalled();
         expect(bpNetworkService.setMap).toHaveBeenCalled();
 

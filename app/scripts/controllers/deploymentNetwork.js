@@ -8,14 +8,15 @@
  * Controller of the cosmoUiApp
  */
 angular.module('cosmoUiApp')
-    .controller('DeploymentNetworkCtrl', function ($scope, $routeParams, $timeout, CloudifyService, bpNetworkService, NetworksService) {
+    .controller('DeploymentNetworkCtrl', function ($scope, $routeParams, $timeout, cloudifyClient, bpNetworkService, NetworksService) {
 
         $scope.deploymentId = $routeParams.deploymentId;
         $scope.page = {};
 
         $scope.$on('nodesList', function(e, nodesList){
-            CloudifyService.getProviderContext()
-                .then(function(providerData) {
+            cloudifyClient.manager.get_context()
+                .then(function(result) {
+                    var providerData = result.data;
                     $scope.networks = NetworksService.createNetworkTree(providerData, nodesList);
 
                     bpNetworkService.setMap($scope.networks.relations);
