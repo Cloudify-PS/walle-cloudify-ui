@@ -190,7 +190,7 @@ angular.module('cosmoUiApp')// todo : change to NodeCtrl
             if (!!$scope.hostsFilter.deployments && $scope.hostsFilter.deployments.length > 0) {
                 matchFilter.deployments = _.pluck($scope.hostsFilter.deployments, 'value');
             } else if (!!matchFilter.blueprint) { // get all selected deployments for blueprint
-                return _.pluck($scope.deploymentsList, 'value');
+                matchFilter.deployments =  _.pluck($scope.deploymentsList, 'value');
             }
 
             if (!!$scope.hostsFilter.types && $scope.hostsFilter.types.length > 0) {
