@@ -133,12 +133,12 @@ describe('Directive: formRawParams', function () {
             expect(element.isolateScope().inputs.hello).toBe('"null"');
         });
 
-        it('should handle invalid raw string and remain in raw mode', inject(function (INPUT_STATE) {
+        it('should handle invalid raw string and remain in raw mode', inject(function () {
             scope.$digest();
             element.isolateScope().rawString = '{ foo bar }';
             element.isolateScope().rawToForm();
             expect(scope.onError).toHaveBeenCalledWith('Invalid JSON: Unable to parse JSON string');
-            expect(element.isolateScope().inputsState).toBe(INPUT_STATE.RAW);
+            expect(element.isolateScope().inputsState).toBe('raw');
         }));
     });
 
