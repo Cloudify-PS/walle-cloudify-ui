@@ -7,7 +7,7 @@
  */
 
 
-var conf = require('../backend/appConf'); // todo: this class should not read directly from configuration
+var conf = require('../appConf'); // todo: this class should not read directly from configuration
 var log4js = require('log4js');
 log4js.configure(conf.log4js); // todo: no need for this here..
 var logger = log4js.getLogger('cloudify4node');
