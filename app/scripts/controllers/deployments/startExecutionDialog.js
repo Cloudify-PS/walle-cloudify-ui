@@ -22,7 +22,8 @@ angular.module('cosmoUiApp')
         $scope.executeWorkflow = function () {
             $scope.inProcess = true;
             cloudifyClient.executions.start( $scope.deploymentId, $scope.workflow.name, JSON.parse($scope.rawString) )
-                .then(function (data) {
+                .then(function (result) {
+                    var data = result.data;
                     $scope.inProcess = false;
                     if (data.hasOwnProperty('message')) {
                         $scope.setErrorMessage(data.message);

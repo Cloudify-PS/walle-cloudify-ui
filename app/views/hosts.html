@@ -86,7 +86,7 @@
             <tr ng-show="!row.hidden">
                 <td class="id">{{row.id == null && '-' || row.id }}</td>
                 <td class="state">{{row.state == null && '-' || row.state }}</td>
-                <td class="deploymentId">{{getBlueprintId() == null && '-' || getBlueprintId() }}</td>
+                <td class="deploymentId">{{row.blueprint_id}}</td>
                 <td class="deploymentId">{{row.deployment_id == null && '-' || row.deployment_id }}</td>
                 <td class="">{{row.host_id == null && '-' || row.host_id }}</td>
                 <td class="">{{row.runtime_properties.ips == null && '-' || row.runtime_properties.ips }}</td>

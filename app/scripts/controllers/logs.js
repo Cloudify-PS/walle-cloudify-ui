@@ -7,7 +7,6 @@ angular.module('cosmoUiApp')
             $scope.logsHits = result.data.hits.hits;
         });
 
-
         $scope.getEventIcon = function (event) {
             return EventsMap.getEventIcon(event);
         };
@@ -15,7 +14,5 @@ angular.module('cosmoUiApp')
         $scope.getEventText = function (event) {
             return EventsMap.getEventText(event);
         };
-
-
 
     });

@@ -152,8 +152,6 @@ describe('Controller: DeploymentsCtrl', function () {
 
             spyOn(ngDialog, 'open').andReturn({});
             scope.deleteDeployment({ id : 'foo'});
-
-            expect(scope.itemToDelete.id).toBe('foo');
             expect(ngDialog.open).toHaveBeenCalled();
         }));
     });

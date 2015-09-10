@@ -33,7 +33,6 @@ angular.module('cosmoUiApp')// todo : change to NodeCtrl
 
         $scope.typesList = [];
         var _blueprint = null;
-        var _currentBlueprint = null;
         var matchFilter = {};
         // { deployment_id : { node_id: hierarchy type } }
         var typesByDeploymentAndNode = {};
@@ -66,16 +65,15 @@ angular.module('cosmoUiApp')// todo : change to NodeCtrl
         }
 
 
-
         // since the api does not allow us to query for multiple deployments at once, we need to create a request per deployment
-        function getInstancesForDeployments(){
+        function getInstancesForDeployments() {
             // get node instances for each specific deployments. keep the promises.
-            var requests = _.map(matchFilter.deployments, function(dep){
+            var requests = _.map(matchFilter.deployments, function (dep) {
                 return cloudifyClient.nodeInstances.list(dep);
             });
             // wait for all promises and concatenate them.
-            return $q.all(requests).then( function(){
-                return { data : _.flatten(_.pluck(_.flatten(arguments),'data')) };
+            return $q.all(requests).then(function () {
+                return {data: _.flatten(_.pluck(_.flatten(arguments), 'data'))};
             });
         }
 
@@ -100,15 +98,16 @@ angular.module('cosmoUiApp')// todo : change to NodeCtrl
                 });
             });
         }
+
         loadDeploymentsAndBlueprints();
 
         /** load all node instances...
-        *  load nodes to get types
-        *  map blueprint_id to each node_instance
-        */
+         *  load nodes to get types
+         *  map blueprint_id to each node_instance
+         */
         function loadNodeInstances() {
             $scope.filterLoading = true;
-            $q.all([getInstancesForDeployments(),loadTypesData()]).then(function (result) {
+            $q.all([getInstancesForDeployments(), loadTypesData()]).then(function (result) {
 
                 result = result[0];
                 _.each(result.data, function (item) {
@@ -130,10 +129,10 @@ angular.module('cosmoUiApp')// todo : change to NodeCtrl
         var typeDataPromise = null;
         // we need type data to filter by type. lets make types a filter on the way
         // we want to access types by deployment + node_id .. so we will have to reconstruct the result to match our needs
-        function loadTypesData(){
-            if ( typeDataPromise === null ) { // if promise exists, returns existing promise.
+        function loadTypesData(reload) {
+            if (typeDataPromise === null || reload) { // if promise exists, returns existing promise.
                 // list all nodes. get only the required data
-                typeDataPromise = cloudifyClient.nodes.list(null,null,'deployment_id,id,type_hierarchy').then(function (result) {
+                typeDataPromise = cloudifyClient.nodes.list(null, null, 'deployment_id,id,type_hierarchy').then(function (result) {
                     var types = [];
                     // reconstruct the response to be by deployment_id and by type. allows easy access when we have a node instance.
                     _.each(_.groupBy(result.data, 'deployment_id'), function (value, key) {
@@ -156,23 +155,11 @@ angular.module('cosmoUiApp')// todo : change to NodeCtrl
             }
             return typeDataPromise;
         }
+
         loadTypesData();
 
-
-
-        $scope.getBlueprintId = function () {
-            return _currentBlueprint;
-        };
-
-        $scope.total = function () {
-            return allNodes ? allNodes.length : 0;
-        };
-
         function filterItems() {
-
             $scope.nodesList = _.filter(allNodes, matchItem);
-
-
         }
 
         /**
@@ -190,9 +177,9 @@ angular.module('cosmoUiApp')// todo : change to NodeCtrl
         }
 
         /**
-        * while the hosts filter is used for display, the matchFilter is used for matching each item
+         * while the hosts filter is used for display, the matchFilter is used for matching each item
          * this structure is much easier to use in functions
-        */
+         */
         function buildMatchFilter() {
             matchFilter = {};
             if (!!$scope.hostsFilter.blueprint) {
@@ -202,8 +189,8 @@ angular.module('cosmoUiApp')// todo : change to NodeCtrl
             // if deployments are selected, use them. otherwise get all deployments for blueprint
             if (!!$scope.hostsFilter.deployments && $scope.hostsFilter.deployments.length > 0) {
                 matchFilter.deployments = _.pluck($scope.hostsFilter.deployments, 'value');
-            }else if( !!matchFilter.blueprint ){ // get all selected deployments for blueprint
-                return _.pluck($scope.deploymentsList,'value');
+            } else if (!!matchFilter.blueprint) { // get all selected deployments for blueprint
+                return _.pluck($scope.deploymentsList, 'value');
             }
 
             if (!!$scope.hostsFilter.types && $scope.hostsFilter.types.length > 0) {
@@ -211,8 +198,7 @@ angular.module('cosmoUiApp')// todo : change to NodeCtrl
             }
         }
 
-        // on each change, lets rebuild the page
-        $scope.$watch('hostsFilter', function (newValue) {
+        function onHostsFilterChange(newValue) {
             if (!newValue) {
                 return;
             }
@@ -226,10 +212,37 @@ angular.module('cosmoUiApp')// todo : change to NodeCtrl
             buildMatchFilter();
             loadNodeInstances();
             filterItems();
+        }
 
-        }, true);
+        // on each change, lets rebuild the page
+        $scope.$watch('hostsFilter', onHostsFilterChange, true);
 
 
         $scope.clearFilter();
+
+        ///////////////////////
+        /// for test purposes. do not use
+        /////////////////////////
+
+        $scope.resetTypesFilter = resetTypesFilter;
+        $scope.getInstancesForDeployments = getInstancesForDeployments;
+        $scope.loadDeploymentsAndBlueprints = loadDeploymentsAndBlueprints;
+        $scope.loadNodeInstances = loadNodeInstances;
+        $scope.loadTypesData = loadTypesData;
+        $scope.matchItem = matchItem;
+        $scope.buildMatchFilter = buildMatchFilter;
+        $scope.onHostsFilterChange = onHostsFilterChange;
+        $scope.getDeployments = function () {
+            return deployments;
+        };
+        $scope.getTypesByDeploymentAndNode = function () {
+            return typesByDeploymentAndNode;
+        };
+        $scope.setMatchFilter = function (_matchFilter) {
+            matchFilter = _matchFilter;
+        };
+        $scope.getMatchFilter = function () {
+            return matchFilter;
+        };
 
     });

@@ -16,7 +16,8 @@ angular.module('cosmoUiApp')
             }
 
 
-            cloudifyClient.executions.cancel(execution.id, force ? 'cancel' : 'force-cancel').then(function (data) {
+            cloudifyClient.executions.cancel(execution.id, !!force).then(function (result) {
+                var data = result.data;
                 if (data.hasOwnProperty('error_code')) {
                     $scope.setErrorMessage(data.message);
                 }

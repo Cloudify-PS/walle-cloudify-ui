@@ -9,7 +9,8 @@ angular.module('cosmoUiApp')
             if (!!$scope.deployment) {
 
                 cloudifyClient.deployments.delete($scope.deployment.id, !!force )
-                    .then(function (data) {
+                    .then(function (result) {
+                        var data = result.data;
                         $scope.inProcess = false;
                         if (data.hasOwnProperty('message')) {
                             $scope.errorMessage = data.message;

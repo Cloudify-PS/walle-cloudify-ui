@@ -96,7 +96,7 @@ describe('Service: VersionService', function () {
                 latestVersion.data =  '8' ;
                 versionService.needUpdate();
                 expect(resolution).toBe(true);
-            })
+            });
         });
     });
 

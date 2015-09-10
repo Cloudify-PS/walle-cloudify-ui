@@ -10,7 +10,8 @@ angular.module('cosmoUiApp')
 
             if (!!$scope.blueprint) {
                 cloudifyClient.blueprints.delete( $scope.blueprint.id )
-                    .then(function (data) {
+                    .then(function (result) {
+                        var data = result.data;
                         if (data.error_code !== undefined) {
                             $scope.inProcess = false;
                             $scope.errorMessage = data.message;

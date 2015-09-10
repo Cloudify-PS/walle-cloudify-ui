@@ -16,7 +16,8 @@ angular.module('cosmoUiApp')
 
         $scope.$on('blueprintData', function(event, data){
             cloudifyClient.manager.get_context()
-                .then(function(providerData) {
+                .then(function(result) {
+                    var providerData = result.data;
                     $scope.networks = NetworksService.createNetworkTree(providerData, data.plan.nodes);
                     bpNetworkService.setMap($scope.networks.relations);
                     $scope.networkcoords = bpNetworkService.getCoordinates();
