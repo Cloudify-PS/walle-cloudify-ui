@@ -179,10 +179,12 @@ exports.downloadBlueprint = function( cloudifyClientConf, blueprint_id, last_upd
         var file = fs.createWriteStream(filepath);
 
         var requestDetails = {
-            url: cloudifyClientConf.endpoint + '/blueprints/' + blueprint_id + '/archive',
+            url: require('url').resolve(conf.cloudifyManagerEndpoint,'blueprints/' + blueprint_id + '/archive'),
             method: 'GET',
-            auth: cloudifyClientConf.cloudifyAuth
+            auth: cloudifyClientConf.authHeader
         };
+
+        console.log('this is requestDetails', requestDetails );
 
         var stream = request(requestDetails);
         stream.on('response',function(res){

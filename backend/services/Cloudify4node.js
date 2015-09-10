@@ -14,6 +14,7 @@ var logger = log4js.getLogger('cloudify4node');
 var querystring = require('querystring');
 
 
+
 /**
  *
  * @memberOf Cloudify4node
@@ -33,8 +34,11 @@ var querystring = require('querystring');
 // todo - Cloudify4node should be an instance.. why are we using static function declaration?
 exports.uploadBlueprint = function( cloudifyConf, streamReader, opts, callback) {
     var ajax = require('http');
-    if ( cloudifyConf.endpoint.indexOf('https')>=0){
+    var endpoint = require('url').parse(conf.cloudifyManagerEndpoint);
+
+    if ( endpoint.protocol && endpoint.protocol.indexOf('https') > 0 ){
         ajax = require('https');
+
     }
 
     opts = JSON.parse(opts);    // must parse opts from string to JSON, the FormData does not pass JSON objects, only as string
@@ -75,11 +79,11 @@ exports.uploadBlueprint = function( cloudifyConf, streamReader, opts, callback) 
     }
 
 
+    var querystr = querystring.stringify(opts.params);
 
     var requestOptions = {
-        hostname: conf.cosmoServer, // todo: remove this.. get configuration as parameter to constructor
-        port: conf.cosmoPort, // todo:remove this.. get configuration as parameter to constructor
-        path: '/blueprints/' + opts.blueprint_id + '?' + querystring.stringify(opts.params),
+        host: endpoint.host,
+        path: require('url').resolve(endpoint.path,'blueprints/' + opts.blueprint_id + ( querystr ?  '?'  + querystr : '' )) ,
         method: 'PUT',
         headers: {
             'Content-Type': 'application/octet-stream',
@@ -87,14 +91,15 @@ exports.uploadBlueprint = function( cloudifyConf, streamReader, opts, callback) 
         }
     };
 
+    console.log('this is requestOptions', requestOptions);
 
-    if ( cloudifyConf.cloudifyAuth ){
-        var user = cloudifyConf.cloudifyAuth.user;
-        var pass = cloudifyConf.cloudifyAuth.pass;
-        requestOptions.headers.Authorization = 'Basic ' + new Buffer(user + ':' + pass).toString('base64');
+
+    if (  cloudifyConf.authHeader  ){
+        console.log('auth header is', cloudifyConf.authHeader);
+        requestOptions.headers.Authorization = cloudifyConf.authHeader;
     }
 
-    logger.info('sending request', requestOptions);
+    //logger.info('sending request', requestOptions);
     var req = ajax.request(requestOptions, handleResponse);
 
     req.on('error', function(e) {
@@ -105,14 +110,14 @@ exports.uploadBlueprint = function( cloudifyConf, streamReader, opts, callback) 
 
     streamReader
         .on('readable', function () {
-            logger.info('stream is readable');
+            //logger.info('stream is readable');
 
             var chunk;
             while (null !== (chunk = streamReader.read())) {
-                logger.info('writing chunk', chunk);
+                //logger.info('writing chunk', chunk);
                 req.write(chunk);
             }
-            logger.info('chunk not writeable', chunk);
+            //logger.info('chunk not writeable', chunk);
         }).on('end', function () {
             logger.info('stream end');
             req.end();

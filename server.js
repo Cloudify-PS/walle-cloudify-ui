@@ -122,7 +122,7 @@ var defaultResponseCallback = function(response){
 };
 
 app.get('/backend/blueprints/browse', middlewares.cloudifyAuthentication, function(request, response) {
-   services.browseBlueprint.browseBlueprint( request.cloudifyClientConf, request.query.id,request.query.last_update, defaultResponseCallback(response) );
+   services.browseBlueprint.browseBlueprint( { authHeader : request.cloudifyAuthHeader }, request.query.id,request.query.last_update, defaultResponseCallback(response) );
 });
 
 app.get('/backend/blueprints/browse/file', middlewares.cloudifyAuthentication, function(request, response) {

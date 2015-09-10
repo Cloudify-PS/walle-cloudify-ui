@@ -367,11 +367,12 @@ describe('Controller: SourceCtrl', function () {
 
     describe('#isSourceText', function(){
         it('should return true if file is a source file', function(){
-            expect(scope.isSourceText('foo')).toBe(false);
-            expect(scope.isSourceText('yaml')).toBe(true);
-            expect(scope.isSourceText('css')).toBe(true);
-            expect(scope.isSourceText('sh')).toBe(true);
-            expect(scope.isSourceText('txt')).toBe(true);
+            expect(scope.isSourceText('foo.foo')).toBe(false);
+            expect(scope.isSourceText('file.yaml')).toBe(true);
+            expect(scope.isSourceText('file.css')).toBe(true);
+            expect(scope.isSourceText('file.sh')).toBe(true);
+            expect(scope.isSourceText('file.txt')).toBe(true);
+            expect(scope.isSourceText('LICENSE')).toBe(true);
             expect(scope.isSourceText(null)).toBe(undefined);
         });
     });
@@ -382,7 +383,7 @@ describe('Controller: SourceCtrl', function () {
                 return {
                     then: function (success) { // todo: handle errors.
                         if (browseData.id === 'success') {
-                            success('this is content');
+                            success({ data : 'this is content' } );
                         }
                     }
                 };
