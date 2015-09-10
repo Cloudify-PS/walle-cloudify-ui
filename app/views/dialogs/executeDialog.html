@@ -4,7 +4,7 @@
 
 
     <div class="dialogDescription" ng-show="confirmationType == 'execute'">{{ 'dialogs.confirm.descriptionExecute' | translate }} {{workflow.name}}?</div>
-    <div class="dialogDescription" ng-show="confirmationType == 'cancel'">{{ 'dialogs.confirm.descriptionCancel' | translate }} {{workflow.name}}?</div>
+    <div class="dialogDescription" ng-show="confirmationType == 'cancel'">{{ 'dialogs.confirm.descriptionCancel' | translate }} {{currentExecution.workflow_id}}?</div>
 
 
     <div class="selected-workflow">

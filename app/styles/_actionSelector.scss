@@ -1,4 +1,4 @@
-.action-selector {
+.bp-action-selector, .deployment-action-selector {
 
     display: flex;
     align-items: center;
@@ -30,23 +30,28 @@
         background-color: #fff;
         float: none;
 
+
         &:hover {
             background-color: #cce4f6;
         }
     }
 
     #split-button {
-        min-width: 160px;
+        width: 160px;
         padding: 6px 0;
         margin: 0;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
 
     ul {
         padding: 0;
         li {
             button {
-                min-width: 160px;
+                width: 160px;
                 padding: 6px 0;
+                overflow: hidden;
+                text-overflow: ellipsis;
             }
         }
     }
@@ -56,7 +61,7 @@
     }
 }
 
-.action-selector.in-progress {
+.bp-action-selector.in-progress, , .deployment-action-selector.in-progress {
 
     .btn-group {
         display: none;
@@ -65,7 +70,6 @@
     .executingWorkflow {
         display: block;
         min-width: 160px;
-        //max-width: 200px;
         height: 32px;
         color: $clr-base-11;
         background-color: $clr-base-05;

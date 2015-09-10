@@ -147,14 +147,6 @@ describe('Controller: DeploymentsCtrl', function () {
         }));
 
 
-        it('should toggle delete confirmation dialog when deleteBlueprint function is triggered', inject(function ( ngDialog  ) {
-            _testSetup();
 
-            spyOn(ngDialog, 'open').andReturn({});
-            scope.deleteDeployment({ id : 'foo'});
-
-            expect(scope.itemToDelete.id).toBe('foo');
-            expect(ngDialog.open).toHaveBeenCalled();
-        }));
     });
 });

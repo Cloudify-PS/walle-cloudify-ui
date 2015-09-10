@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('cosmoUiApp')
-    .controller('ExecuteDialogCtrl', function ($scope, CloudifyService, DIALOG_EVENTS) {
+    .controller('ExecuteDialogCtrl', function ($scope, CloudifyService) {
 
         $scope.executeErrorMessage = null;
         $scope.inputs = {};
@@ -21,7 +21,7 @@ angular.module('cosmoUiApp')
 
         $scope.executeWorkflow = function () {
             var params = {
-                deployment_id: $scope.deploymentId,
+                deployment_id: $scope.deployment.id,
                 workflow_id: $scope.workflow.name,
                 inputs: JSON.parse($scope.rawString)
             };
@@ -33,7 +33,7 @@ angular.module('cosmoUiApp')
                     if (data.hasOwnProperty('message')) {
                         $scope.setErrorMessage(data.message);
                     } else {
-                        $scope.$emit(DIALOG_EVENTS.EXECUTION_STARTED);
+                        $scope.onBegin();
                         $scope.closeThisDialog();
                     }
                 }, function (e) {
@@ -58,7 +58,7 @@ angular.module('cosmoUiApp')
                     $scope.setErrorMessage(data.message);
                 }
                 else {
-                    $scope.$emit(DIALOG_EVENTS.EXECUTION_CANCELED);
+                    $scope.onCancel();
                     $scope.closeThisDialog();
                 }
             }, function(e) {

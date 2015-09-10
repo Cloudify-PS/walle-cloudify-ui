@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('cosmoUiApp')
-    .controller('BlueprintsIndexCtrl', function ($scope, $location, $cookieStore, $log, ngDialog, cloudifyClient, DIALOG_EVENTS) {
+    .controller('BlueprintsIndexCtrl', function ($scope, $location, $cookieStore, $log, ngDialog, cloudifyClient) {
         $scope.lastExecutedPlan = null;
         $scope.selectedBlueprint = null;
         $scope.managerError = false;
@@ -17,7 +17,7 @@ angular.module('cosmoUiApp')
             });
         };
 
-        function loadBlueprints() {
+        $scope.loadBlueprints = function() {
             $scope.blueprints = null;
             $scope.managerError = false;
             cloudifyClient.blueprints.list('id,updated_at,created_at').then(function (result) {
@@ -31,7 +31,7 @@ angular.module('cosmoUiApp')
                 $scope.managerError = result.data || 'General Error';
                 $log.error('got error result', result.data);
             });
-        }
+        };
 
         // blueprintID to deployment count map
         var deploymentsCount = {};
@@ -49,8 +49,6 @@ angular.module('cosmoUiApp')
             });
         }
 
-
-
         $scope.countDeployments = function(blueprint){
             return deploymentsCount.hasOwnProperty(blueprint.id) ? deploymentsCount[blueprint.id] : 0;
         };
@@ -63,15 +61,6 @@ angular.module('cosmoUiApp')
             $location.path('/deployment/' + deployment_id + '/topology');
         };
 
-        $scope.$on(DIALOG_EVENTS.DEPLOYMENT_CREATED, function(event, id){
-            $scope.redirectToDeployment(id);
-        });
-
-        $scope.$on(DIALOG_EVENTS.BLUEPRINT_DELETED, function(){
-            loadBlueprints();
-        });
-
-
-        loadBlueprints();
+        $scope.loadBlueprints();
         loadDeployments();
     });

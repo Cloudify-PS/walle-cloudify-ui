@@ -90,14 +90,14 @@ describe('Controller: DeleteDialogCtrl', function () {
             describe('success handling', function () {
                 beforeEach(inject(function (DELETE_TYPES) {
                     scope.deleteState = {inProcess: true, itemToDelete: {id: 'success'}, type: DELETE_TYPES.BLUEPRINT};
+                    scope.onDelete = jasmine.createSpy('onDelete');
                 }));
 
                 it('should call `closeThisDialog`', function () {
                     scope.closeThisDialog = jasmine.createSpy('closeThisDialog');
-                    scope.loadBlueprints = jasmine.createSpy('loadBlueprints'); // todo: this should be handled with `onClose` event
                     scope.confirmDelete();
                     expect(scope.closeThisDialog).toHaveBeenCalled();
-                    expect(scope.loadBlueprints).toHaveBeenCalled();
+                    expect(scope.onDelete).toHaveBeenCalled();
                     expect(scope.deleteState.inProcess).toBe(false);
                 });
 
@@ -155,14 +155,14 @@ describe('Controller: DeleteDialogCtrl', function () {
             describe('success handling', function () {
                 beforeEach(inject(function (DELETE_TYPES) {
                     scope.deleteState = {inProcess: true, itemToDelete: {id: 'success'}, type: DELETE_TYPES.DEPLOYMENT};
+                    scope.onDelete = jasmine.createSpy('onDelete');
                 }));
 
                 it('should call `closeThisDialog`', function () {
                     scope.closeThisDialog = jasmine.createSpy('closeThisDialog');
-                    scope.loadDeployments = jasmine.createSpy('loadDeployments'); // todo: this should be handled with `onClose` event
                     scope.confirmDelete();
                     expect(scope.closeThisDialog).toHaveBeenCalled();
-                    expect(scope.loadDeployments).toHaveBeenCalled();
+                    expect(scope.onDelete).toHaveBeenCalled();
                     expect(scope.deleteState.inProcess).toBe(false);
                 });
 

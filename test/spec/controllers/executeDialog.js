@@ -59,6 +59,7 @@ describe('Controller: ExecuteDialogCtrl', function () {
             'bool_variable': false,
             'str_variable': 'some string'
         };
+        scope.onCancel = jasmine.createSpy('onCancel');
     });
 
     it('should create a controller', function () {
@@ -135,6 +136,7 @@ describe('Controller: ExecuteDialogCtrl', function () {
         beforeEach(function(){
             scope.workflow = { 'name': 'bar'};
             scope.rawString = '{}';
+            scope.deployment = {'id': 'foo'};
         });
         it('should call CloudifyService.deployments.execute', inject(function( CloudifyService ){
 
@@ -160,8 +162,10 @@ describe('Controller: ExecuteDialogCtrl', function () {
                 success({});
             }});
             scope.closeThisDialog = jasmine.createSpy();
+            scope.onBegin = jasmine.createSpy('onBegin');
             scope.executeWorkflow();
             expect(scope.closeThisDialog).toHaveBeenCalled();
+            expect(scope.onBegin).toHaveBeenCalled();
         }));
 
         it('should put error message if success result has message property', inject(function(CloudifyService){

@@ -15,4 +15,4 @@
     </span>
     {{ currentExecution.workflow_id != null ? 'deployment.process.' + currentExecution.workflow_id : 'deployment.process.wait' | translate }}
 </div>
-<i class="deployment-pause fa fa-times-circle" ng-show="canCancel()" ng-click="onCancel()"></i>
+<i class="deployment-pause fa fa-times-circle" ng-show="canCancel()" ng-click="cancel()"></i>

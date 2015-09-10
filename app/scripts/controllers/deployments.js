@@ -4,7 +4,7 @@
 angular.module('cosmoUiApp')
     .controller('DeploymentsCtrl', function ($scope, ExecutionsService,
                                              $location, $routeParams, $log,
-                                              ngDialog, cloudifyClient, DIALOG_EVENTS, $timeout ) {
+                                              ngDialog, cloudifyClient, $timeout ) {
 
         $scope.deployments = null;
         $scope.executedErr = false;
@@ -67,18 +67,13 @@ angular.module('cosmoUiApp')
                 });
         };
 
-        $scope.$on(DIALOG_EVENTS.DEPLOYMENT_DELETED, function() {
-            _loadExecutions();
-            $scope.loadDeployments();
-        });
-
-        $scope.$on(DIALOG_EVENTS.EXECUTION_STARTED, function() {
-            _loadExecutions();
-        });
-
-        $scope.$on(DIALOG_EVENTS.EXECUTION_CANCELED, function() {
+        $scope.onExecutionCancel = function() {
             $timeout(_loadExecutions, 3000);
-        });
+        };
+
+        $scope.onExecutionStart = function() {
+            _loadExecutions();
+        };
 
         $scope.registerTickerTask('deployments/loadExecutions', _loadExecutions, 10000);
 

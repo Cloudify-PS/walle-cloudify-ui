@@ -28,7 +28,7 @@
                 <td class="updated">{{ blueprint.updated_at | dateFormat: 'yyyy-MM-dd HH:mm:ss' }}</td>
                 <td class="deployments"><div class="deployments-number"><a href="#/deployments">{{ countDeployments(blueprint) }}</a></div></td>
                 <td class="actions">
-                    <div class="action-selector" type="blueprint" blueprint="blueprint"></div>
+                    <div class="bp-action-selector" on-create="redirectToDeployment(id)" on-delete="loadBlueprints()" blueprint="blueprint"></div>
                 </td>
             </tr>
         </tbody>

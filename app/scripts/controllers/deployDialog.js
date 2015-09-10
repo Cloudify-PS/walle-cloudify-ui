@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('cosmoUiApp')
-    .controller('DeployDialogCtrl', function ($scope, cloudifyClient, CloudifyService, DIALOG_EVENTS ) {
+    .controller('DeployDialogCtrl', function ($scope, cloudifyClient, CloudifyService ) {
         $scope.deployment_id = null;
         $scope.deployErrorMessage = null;
         $scope.inputsValid = true;
@@ -40,7 +40,7 @@ angular.module('cosmoUiApp')
                         setDeployError(data.message);
                     }
                     else {
-                        $scope.$emit(DIALOG_EVENTS.DEPLOYMENT_CREATED, $scope.deployment_id);
+                        $scope.onCreate({id: $scope.deployment_id});
                         $scope.closeThisDialog();
                     }
                 }, function (data) {
