@@ -7,13 +7,13 @@
  * # bpActionSelector
  */
 angular.module('cosmoUiApp')
-    .directive('bpActionSelector', ['ngDialog', 'cloudifyClient', '$routeParams', function (ngDialog, cloudifyClient, $routeParams) {
+    .directive('bpActionSelector', function (ngDialog, cloudifyClient, $routeParams, $location) {
         return {
             templateUrl: 'views/directives/actionSelector.html',
             restrict: 'C',
             scope: {
                 blueprint: '=',
-                onCreate: '&',
+
                 onDelete: '&'
             },
             controller: function ($scope) {
@@ -21,7 +21,7 @@ angular.module('cosmoUiApp')
                 function openDeployDialog(blueprintId) {
                     $scope.selectedBlueprint = null;
                     ngDialog.open({
-                        template: 'views/dialogs/deploy.html',
+                        template: 'views/blueprint/deployBlueprintDialog.html',
                         controller: 'DeployDialogCtrl',
                         scope: $scope,
                         className: 'deploy-dialog'
@@ -34,14 +34,18 @@ angular.module('cosmoUiApp')
                 }
 
                 function openDeleteDialog() {
-                    $scope.itemToDelete = $scope.blueprint;
+
                     ngDialog.open({
-                        template: 'views/dialogs/delete.html',
-                        controller: 'DeleteDialogCtrl',
+                        template: 'views/blueprint/deleteBlueprintDialog.html',
+                        controller: 'DeleteBlueprintDialogCtrl',
                         scope: $scope,
                         className: 'delete-dialog'
                     });
                 }
+
+                $scope.onCreate = function(deployment){
+                    $location.path('/deployment/' + deployment.id + '/topology');
+                };
 
                 $scope.selectAction = function (action) {
                     $scope.currentTask = action.name;
@@ -80,4 +84,4 @@ angular.module('cosmoUiApp')
 
             }
         };
-    }]);
+    });

@@ -7,7 +7,7 @@
  * # deploymentActionSelector
  */
 angular.module('cosmoUiApp')
-    .directive('deploymentActionSelector', ['ngDialog', 'cloudifyClient', 'ExecutionsService', function (ngDialog, cloudifyClient, ExecutionsService) {
+    .directive('deploymentActionSelector', ['ngDialog', 'cloudifyClient', 'ExecutionsService', function (ngDialog, cloudifyClient, ExecutionsService, $log) {
         return {
             templateUrl: 'views/directives/actionSelector.html',
             restrict: 'C',
@@ -20,18 +20,22 @@ angular.module('cosmoUiApp')
             },
             controller: function ($scope) {
 
-                function openDialog(confirmationType) {
 
-                    if (confirmationType === 'execute' && $scope.model === null) {
-                        return;
-                    }
 
-                    $scope.confirmationType = confirmationType;
-                    $scope.executedErr = false;
 
+                function openCancelExecutionDialog() {
                     ngDialog.open({
-                        template: 'views/dialogs/executeDialog.html',
-                        controller: 'ExecuteDialogCtrl',
+                        template: 'views/deployment/cancelExecutionDialog.html',
+                        controller: 'CancelExecutionDialogCtrl',
+                        scope: $scope,
+                        className: 'confirm-dialog'
+                    });
+                }
+
+                function openStartExecutionDialog(){
+                    ngDialog.open({
+                        template: 'views/deployment/startExecutionDialog.html',
+                        controller: 'StartExecutionDialogCtrl',
                         scope: $scope,
                         className: 'confirm-dialog'
                     });
@@ -40,8 +44,8 @@ angular.module('cosmoUiApp')
                 function openDeleteDialog() {
                     $scope.itemToDelete = $scope.deployment;
                     ngDialog.open({
-                        template: 'views/dialogs/delete.html',
-                        controller: 'DeleteDialogCtrl',
+                        template: 'views/deployment/deleteDeploymentDialog.html',
+                        controller: 'DeleteDeploymentDialogCtrl',
                         scope: $scope,
                         className: 'delete-dialog'
                     });
@@ -66,29 +70,22 @@ angular.module('cosmoUiApp')
                 };
 
                 $scope.cancel = function () {
-                    console.log($scope.currentExecution);
-                    openDialog('cancel');
+                    $log.debug($scope.currentExecution);
+                    openCancelExecutionDialog();
                 };
 
-                $scope.$watch('deployment', function(){
-                    if(typeof $scope.deployment !== 'undefined') {
-                        $scope.actions = _.map($scope.deployment.workflows, function (w) {
-                            return _.merge({
-                                value: w.name,
-                                label: w.name,
-                                task: function () {
-                                    $scope.workflow = w;
-                                    openDialog('execute');
-                                }
-                            }, w);
-                        });
-                        $scope.actions.push({
-                            name: 'deployments.deleteBtn',
-                            task: openDeleteDialog
-                        });
-                        $scope.defaultAction = $scope.actions[0];
+                $scope.actions = [
+                    {
+                        name: 'deployments.executeWorkflowBtn',
+                        task: openStartExecutionDialog
+                    },
+                    {
+                        name: 'deployments.deleteBtn',
+                        task: openDeleteDialog
                     }
-                });
+
+                ];
+                $scope.defaultAction = $scope.actions[0];
 
             },
             link: function postLink(scope, element) {

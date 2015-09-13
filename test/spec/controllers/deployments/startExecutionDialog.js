@@ -10,6 +10,7 @@ describe('Controller: StartExecutionDialogCtrl', function () {
     beforeEach(inject(function ($controller, $rootScope) {
         scope = $rootScope.$new();
 
+        scope.deployment = { workflows : [] };
         StartExecutionDialogCtrl = $controller('StartExecutionDialogCtrl', {
             $scope: scope
 
@@ -24,11 +25,14 @@ describe('Controller: StartExecutionDialogCtrl', function () {
 
 
     describe('#isExecuteEnabled', function () {
-        it('should return true if inputsValid is true', function () {
+        it('should return true if inputsValid is true and workflow exists', function () {
             scope.inputsValid = false;
             expect(scope.isExecuteEnabled()).toBe(false);
 
             scope.inputsValid = true;
+            expect(scope.isExecuteEnabled()).toBe(false);
+
+            scope.workflow = 'foo';
             expect(scope.isExecuteEnabled()).toBe(true);
         });
     });

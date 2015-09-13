@@ -39,8 +39,6 @@ describe('Directive: bpActionSelector', function () {
         spyOn(_ngDialog, 'open').andCallThrough();
         scope.$digest();
         element.isolateScope().selectAction(element.isolateScope().actions[1]);
-
-        expect(element.isolateScope().itemToDelete.id).toBe(element.isolateScope().blueprint.id);
         expect(_ngDialog.open).toHaveBeenCalled();
     });
 

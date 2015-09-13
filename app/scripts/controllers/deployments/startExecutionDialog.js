@@ -7,12 +7,30 @@ angular.module('cosmoUiApp')
         $scope.inputs = {};
         $scope.inputsValid = false;
 
+
+        // $scope.deployment.workflows --> expected to exist from parent scope
+        $scope.workflowsList = _.map($scope.deployment.workflows, function(w){
+            return { label : w.name , value : w.name };
+        });
+
+        $scope.workflowName = null;
+
+        $scope.$watch('workflowName', function(){
+            if ( $scope.workflowName ) {
+                $scope.workflow = _.find($scope.deployment.workflows, {name: $scope.workflowName.value});
+            }
+        });
+
+
+
         $scope.setErrorMessage = function(msg){
-            $scope.executeErrorMessage = msg;
+            if ( $scope.workflow ) {
+                $scope.executeErrorMessage = msg;
+            }
         };
 
         $scope.isExecuteEnabled = function() {
-            return $scope.inputsValid;
+            return !!$scope.inputsValid && !!$scope.workflow;
         };
 
         $scope.isParamsVisible = function() {
