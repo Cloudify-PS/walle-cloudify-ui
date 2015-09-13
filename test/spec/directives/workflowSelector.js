@@ -67,6 +67,10 @@ describe('Directive: workflowSelector', function () {
                 expect(result).toBe('deployment.process.wait'); // this translation is found at backend_mock.js..
             });
 
+            it('should return null if currentExecution does not exist', function(){
+                expect(isolateScope.getExecutionName()).toBe(null);
+            });
+
         });
 
         describe('dialogs', function(){

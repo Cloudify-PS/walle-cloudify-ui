@@ -75,6 +75,9 @@ angular.module('cosmoUiApp')
                 };
 
                 scope.getExecutionName = function( currentExecution ) {
+                    if ( !currentExecution ){
+                        return null;
+                    }
                     var translateKey = 'deployment.process.' + currentExecution.workflow_id;
                     var res = $filter('translate')( !!currentExecution.workflow_id ?translateKey : 'deployment.process.wait');
                     if ( res === translateKey ){
