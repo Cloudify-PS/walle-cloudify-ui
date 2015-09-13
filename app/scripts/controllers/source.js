@@ -96,6 +96,8 @@ angular.module('cosmoUiApp')
             'yaml' : 'yml',
             'yml' : 'yml',
             'py' : 'py',
+            'cfg' : 'text',
+            '': 'text',
             'md' : 'text',
             'html' : 'text',
             '_' : 'text' // default
@@ -107,8 +109,13 @@ angular.module('cosmoUiApp')
             if ( file.hasOwnProperty('name') ){
                 filename = file.name;
             }
-            var ext = filename.split('.');
-            ext = ext[ext.length-1];
+            var args = filename.split('.');
+            var ext = args.length > 1 ? args[args.length-1] : '';
+            if ( ext === 'template' && args.length > 2){ // support templates too (since 3.3)
+                try{
+                    ext = args[args.length-2];
+                }catch(e){}
+            }
             return ext;
         }
 
@@ -182,7 +189,7 @@ angular.module('cosmoUiApp')
             CloudifyService.blueprints.browseFile({id: $scope.selectedBlueprint.id, path: new Date($scope.selectedBlueprint.updated_at).getTime() + '/' + data.relativePath})
                 .then(function(fileContent) {
                     $scope.dataCode = {
-                        data: fileContent,
+                        data: fileContent.data,
                         brush: getBrushByFile(data.name),
                         path: data.path
                     };
@@ -194,7 +201,7 @@ angular.module('cosmoUiApp')
             if (!filename){
                 return;
             }
-            var textExt = ['yaml', 'js', 'css', 'sh', 'txt', 'bat', 'cmd', 'ps1', 'py', 'md', 'html'];
+            var textExt = ['yaml', 'js', 'css', 'sh', 'txt', 'bat', 'cmd', 'ps1', 'py', 'md', 'html'].concat(Object.keys(brushes));
             var fileExt = getExt(filename);
             return textExt.indexOf(fileExt) > -1;
 

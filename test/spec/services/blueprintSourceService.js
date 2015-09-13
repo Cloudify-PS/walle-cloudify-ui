@@ -1,46 +1,44 @@
 'use strict';
 
-describe('Service: BlueprintSourceService', function() {
-    var blueprintSourceService, cloudifyService;
+describe('Service: BlueprintSourceService', function () {
+    var blueprintSourceService;
 
-    describe('Test setup', function() {
-        it('Injecting required data & initializing a new instance', function() {
+    beforeEach(module('cosmoUiApp', 'backend-mock'));
 
-            // Load the app module
-            module('cosmoUiApp','backend-mock');
+    // Initialize a new instance of BlueprintSourceService
+    beforeEach(inject(function (BlueprintSourceService) {
+        blueprintSourceService = BlueprintSourceService;
+    }));
 
-            // Initialize a new instance of BlueprintSourceService
-            inject(function ($httpBackend, BlueprintSourceService, CloudifyService) {
-                $httpBackend.whenGET('/backend/blueprints/get?id=blueprint1').respond(200);
-                $httpBackend.whenGET('/backend/blueprints/browse?id=blueprint1&last_update=123').respond(200);
+    describe('#getBrowseData', function () {
+        var browseResponse = {};
 
-                blueprintSourceService = BlueprintSourceService;
-                cloudifyService = CloudifyService;
+        beforeEach(inject(function (CloudifyService) {
+            browseResponse = {children: [{}]};
+            spyOn(CloudifyService.blueprints, 'browse').andCallFake(function () {
+                return {
+                    then: function (success) {
+                        var result = success({data:browseResponse});
+                        return {
+                            then: function (success) {
+                                success(result);
+                            }
+                        };
+                    }
+                };
+            });
+        }));
+
+        it('should call CloudifyService.blueprint.browse', inject(function (CloudifyService) {
+            blueprintSourceService.getBrowseData('foo');
+            expect(CloudifyService.blueprints.browse).toHaveBeenCalled();
+        }));
+
+        it('should return object as is if object has error code', function () {
+            browseResponse.errCode = 'foo';
+            blueprintSourceService.getBrowseData('foo').then(function (result) {
+                expect(result).toBe(browseResponse);
             });
         });
-    });
-
-    describe('Unit tests', function() {
-
-        it('should create a new BlueprintSourceService instance', function() {
-            expect(blueprintSourceService).not.toBeUndefined();
-        });
-
-        it('should return a blueprint', function() {
-            spyOn(cloudifyService.blueprints, 'getBlueprintById').andCallThrough();
-
-            blueprintSourceService.get('blueprint1');
-
-            expect(cloudifyService.blueprints.getBlueprintById).toHaveBeenCalledWith({id: 'blueprint1'});
-        });
-
-        it('should return a browse data', function() {
-            spyOn(cloudifyService.blueprints, 'browse').andCallThrough();
-
-            blueprintSourceService.getBrowseData('blueprint1', 123);
-
-            expect(cloudifyService.blueprints.browse).toHaveBeenCalledWith({id: 'blueprint1', last_update: 123});
-        });
-
     });
 });

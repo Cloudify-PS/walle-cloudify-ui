@@ -4,7 +4,7 @@
 angular.module('cosmoUiApp')
     .controller('DeploymentsCtrl', function ($scope, ExecutionsService,
                                              $location, $routeParams, $log,
-                                              ngDialog, cloudifyClient, $timeout ) {
+                                              ngDialog, cloudifyClient ) {
 
         $scope.deployments = null;
         $scope.executedErr = false;
@@ -16,7 +16,6 @@ angular.module('cosmoUiApp')
         $scope.inputs = {};
         $scope.managerError = false;
 
-        $scope.itemToDelete = null;
 
 
         $scope.getExecution = function(deployment){
@@ -67,9 +66,6 @@ angular.module('cosmoUiApp')
                 });
         };
 
-        $scope.onExecutionCancel = function() {
-            $timeout(_loadExecutions, 3000);
-        };
 
         $scope.onExecutionStart = function() {
             _loadExecutions();
@@ -78,7 +74,6 @@ angular.module('cosmoUiApp')
         $scope.registerTickerTask('deployments/loadExecutions', _loadExecutions, 10000);
 
         $scope.loadDeployments();
-
 
 
     });

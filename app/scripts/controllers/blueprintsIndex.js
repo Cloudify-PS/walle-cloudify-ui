@@ -17,7 +17,40 @@ angular.module('cosmoUiApp')
             });
         };
 
-        $scope.loadBlueprints = function() {
+        $scope.openDeployDialog = function(blueprint) {
+            $scope.selectedBlueprint = null;
+            ngDialog.open({
+                template: 'views/blueprint/deployBlueprintDialog.html',
+                controller: 'DeployDialogCtrl',
+                scope: $scope,
+                className: 'deploy-dialog'
+            });
+
+            cloudifyClient.blueprints.get(blueprint.id, null).then(function(result){
+                $scope.selectedBlueprint = result.data || null;
+
+
+            }); // todo: add error handling
+        };
+
+        $scope.openDeleteDialog = function( blueprint ) {
+            var deleteDialogScope = $scope.$new(true);
+            deleteDialogScope.blueprint = blueprint;
+            deleteDialogScope.onDone = loadBlueprints;
+            ngDialog.open({
+                template: 'views/blueprint/deleteBlueprintDialog.html',
+                controller: 'DeleteBlueprintDialogCtrl',
+                scope: deleteDialogScope,
+                className: 'delete-dialog'
+            });
+        };
+
+        $scope.deleteBlueprint = function(blueprint) {
+
+            $scope.openDeleteDialog( blueprint );
+        };
+
+        function loadBlueprints() {
             $scope.blueprints = null;
             $scope.managerError = false;
             cloudifyClient.blueprints.list('id,updated_at,created_at').then(function (result) {
@@ -31,7 +64,7 @@ angular.module('cosmoUiApp')
                 $scope.managerError = result.data || 'General Error';
                 $log.error('got error result', result.data);
             });
-        };
+        }
 
         // blueprintID to deployment count map
         var deploymentsCount = {};
@@ -61,6 +94,7 @@ angular.module('cosmoUiApp')
             $location.path('/deployment/' + deployment_id + '/topology');
         };
 
-        $scope.loadBlueprints();
+
+        loadBlueprints();
         loadDeployments();
     });

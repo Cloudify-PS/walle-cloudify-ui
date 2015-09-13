@@ -175,7 +175,7 @@ module.exports = function (grunt) {
         },
         curl: {
             nodejs: {
-                src: 'http://nodejs.org/dist/v0.10.35/node-v0.10.35-linux-x64.tar.gz',
+                src: 'https://nodejs.org/dist/v0.10.35/node-v0.10.35-linux-x64.tar.gz',
                 dest: '<%= yeoman.dist %>/node-v0.10.35-linux-x64.tar.gz'
             }
 

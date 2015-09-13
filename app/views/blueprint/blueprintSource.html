@@ -10,6 +10,7 @@
             <h4 data-ng-show="filename">{{ filename }}</h4>
             <div class="pre" ng-show="isSourceText(filename)">
                 <p class="empty" data-ng-hide="dataCode.data">{{ 'blueprints.source.chooseFile' | translate }}</p>
+
                 <div code-highlight="yml" ng-model="dataCode"></div>
             </div>
             <div class="noPreview" ng-show="!isSourceText(filename)">

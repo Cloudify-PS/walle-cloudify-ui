@@ -6,222 +6,121 @@ describe('Controller: HostsCtrl', function () {
     var HostsCtrl, scope;
 
     // load the controller's module
-    beforeEach(module('cosmoUiApp','backend-mock'));
+    beforeEach(module('cosmoUiApp', 'backend-mock'));
 
     // Initialize the controller and a mock scope
-    beforeEach(inject(function ($controller, $rootScope, $httpBackend, $q, CloudifyService, NodeSearchService) {
+    beforeEach(inject(function ($controller, $rootScope, cloudifyClient) {
 
         scope = $rootScope.$new();
 
-        NodeSearchService.execute = function () {
-            var deferred = $q.defer();
-            var result = [{
-                'type_hierarchy': ['cloudify.nodes.Root', 'cloudify.nodes.Compute', 'cloudify.openstack.nodes.Server', 'vm_host'],
-                'node_id': 'nodejs_vm',
-                'state': 'uninitialized',
-                'host_id': 'nodejs_vm_6d2f0',
-                'deployment_id': 'deployment1',
-                'id': 'nodejs_vm_6d2f0',
-                'type': 'vm_host'
-            }, {
-                'type_hierarchy': ['cloudify.nodes.Root', 'cloudify.openstack.nodes.Server'],
-                'node_id': 'mongod_vm',
-                'state': 'uninitialized',
-                'host_id': 'mongod_vm_b9f82',
-                'deployment_id': 'deployment1',
-                'id': 'mongod_vm_b9f82',
-                'type': 'server'
-            }];
-
-            deferred.resolve(result);
-
-            return deferred.promise;
-        };
-
-        CloudifyService.deployments.getDeploymentNodes = function () {
-            var instances = [
-                {
-                    deployment_id: 'deployment1',
-                    host_id: 'mongod_vm_783c7',
-                    id: 'mongod_vm_0c2ae',
-                    node_id: 'mongod_vm',
-                    runtime_properties: null,
-                    state: 'uninitialized'
-                },
-                {
-                    deployment_id: 'deployment1',
-                    host_id: 'mongod_783c7',
-                    id: 'mongod_0c2ae',
-                    node_id: 'mongod',
-                    runtime_properties: null,
-                    state: 'uninitialized'
-                }
-            ];
-
-            return { then: function(success) { success(instances); } };
-        };
-
-        NodeSearchService.getNodeSearchData = function () {
-            var deferred = $q.defer();
-            deferred.resolve({
-                blueprints: [{
-                    'id': 'blueprint1',
-                    'deployments': [{
-                        'blueprint_id': 'blueprint1',
-                        'id': 'deployment1'
-                    }]
-                }],
-                deployments: [{
-                    'blueprint_id': 'blueprint1',
-                    'id': 'deployment1'
-                }]
-            });
-            return deferred.promise;
-        };
-
-        HostsCtrl = $controller('HostsCtrl', {
-            $scope: scope,
-            NodeSearchService: NodeSearchService
+        spyOn(cloudifyClient.deployments, 'list').andReturn({
+            then: function () {
+            }
+        });
+        spyOn(cloudifyClient.nodes, 'list').andReturn({
+            then: function () {
+            }
         });
 
-        scope.eventsFilter = {
-            'blueprints': {
-                label: 'blueprint1',
-                value: 'blueprint1'
-            },
-            'deployments': {
-                label: 'deployment1',
-                parent: 'blueprint1',
-                value: 'deployment1'
-            }
-        };
-
+        HostsCtrl = $controller('HostsCtrl', {
+            $scope: scope
+        });
         scope.$digest();
     }));
 
-    describe('#execute', function () {
-        it('should call to ModelSearchService.execute', inject(function (NodeSearchService) {
-            scope.eventsFilter = { blueprints: {value: 'bar'} };
-            scope.$digest();
-            spyOn(NodeSearchService, 'execute').andCallFake(function () {
-                return {
-                    then: function (success) {
-                        success('foo');
-                    }
-                };
-            });
-            scope.execute();
-
-            expect(scope.filterLoading).toBe(false);
-            expect(scope.nodesList).toBe('foo');
-            expect(scope.getBlueprintId()).toBe('bar');
-            expect(NodeSearchService.execute).toHaveBeenCalled();
-        }));
-
-        it('should do nothing if sort is disabled', inject(function (NodeSearchService) {
-            spyOn(scope, 'isSearchDisabled').andCallFake(function () {
-                return true;
-            });
-            spyOn(NodeSearchService, 'execute');
-            scope.execute();
-            expect(NodeSearchService.execute).not.toHaveBeenCalled();
-        }));
+    describe('#clearFilter', function () {
+        it('should reset hostsFilter on scope', function () {
+            scope.hostsFilter = 'foo';
+            scope.clearFilter();
+            expect(scope.hostsFilter.blueprint).toBe(null);
+        });
     });
 
-    describe('eventsFilter.blueprints watch listener', function(){
-        it('should reset values if newValue is null', inject(function(  ){
-            scope.eventsFilter = { blueprints: null };
-            scope.$digest();
-            expect(scope.deploymentsList.length).toBe(0);
 
-        }));
+    describe('#resetTypeFilter', function () {
+
+        it('should set Compute type on filter', function () {
+            scope.hostsFilter = {};
+            scope.resetTypesFilter();
+            expect(scope.hostsFilter.types.length).toBe(1);
+            expect(scope.hostsFilter.types[0].value).toBe('cloudify.nodes.Compute');
+        });
     });
 
-    describe('Controller tests', function() {
-
-        it('should create a controller', function () {
-            expect(HostsCtrl).not.toBeUndefined();
-        });
-
-        it('should filter the blueprints list to the selected blueprint', function () {
-            expect(scope.blueprintsList.length).toBe(1);
-        });
-
-        it('should set isSearchDisabled flag to true if no blueprints were selected', function() {
-            scope.eventsFilter.blueprints = [];
-
-            scope.$apply();
-
-            expect(scope.isSearchDisabled()).toBe(true);
-        });
-
-        it('should set isSearchDisabled flag to false if blueprints were selected', function() {
-            scope.eventsFilter.blueprints = [{
-                name: 'blueprint1'
-            }];
-
-            scope.$apply();
-
-            expect(scope.isSearchDisabled()).toBe(false);
-        });
-
-        it('should show only blueprints with deployments',inject(function (NodeSearchService,$q,$rootScope,$controller) {
-
-            NodeSearchService.getNodeSearchData = function() {
-                var deferred = $q.defer();
-                deferred.resolve({
-                    blueprints: [
-                        {
-                            'label': 'blueprint1',
-                            'value': 'blueprint1'
-                        },
-                        {
-                            'label': 'blueprint2',
-                            'value': 'blueprint2'
-                        },
-                        {
-                            'label': 'blueprint3',
-                            'value': 'blueprint3'
-                        }
-                    ],
-                    deployments: [
-                        {
-                            'label': 'deployment3',
-                            'parent': 'blueprint3',
-                            'value': 'deployment3'
-                        },
-                        {
-                            'label': 'deployment1',
-                            'parent': 'blueprint1',
-                            'value': 'deployment1'
-                        },
-                        {
-                            'label': 'deployment1Copy',
-                            'parent': 'blueprint1',
-                            'value': 'deploymentCopy'
-                        }
-                    ]
-                });
-                return deferred.promise;
-            };
-
-            var scope = $rootScope.$new();
-            HostsCtrl = $controller('HostsCtrl', {
-                $scope: scope,
-                NodeSearchService: NodeSearchService
-            });
-
-            scope.$digest();
-            expect(scope.blueprintsList).toEqual([
-                {
-                    'label': 'blueprint1',
-                    'value': 'blueprint1'
-                },
-                {
-                    'label': 'blueprint3',
-                    'value': 'blueprint3'
+    describe('#loadDeploymentsAndBlueprints', function () {
+        beforeEach(inject(function (cloudifyClient) {
+            cloudifyClient.deployments.list.andReturn({
+                then: function (success) {
+                    success({data: [{'id': 'foo', 'blueprint_id': 'bar'}]});
                 }
-            ]);
+            });
         }));
+
+        it('should map blueprint_id to deployment_id', function () {
+            scope.loadDeploymentsAndBlueprints();
+            expect(scope.getDeployments().foo).toBe('bar');
+        });
     });
+
+    describe('#loadNodeInstances', function () {
+
+    });
+
+    describe('#loadTypesData', function () {
+        beforeEach(inject(function (cloudifyClient) {
+            cloudifyClient.nodes.list.andReturn({
+                then: function (success) {
+                    success({
+                        data: [
+                            {
+                                'deployment_id': 'foo',
+                                'id': 'bar',
+                                'type_hierarchy': ['hello', 'world']
+                            }
+                        ]
+                    });
+                }
+            });
+        }));
+
+        it('should group types by deployment and node id', function () {
+            scope.loadTypesData(true);
+            expect(scope.getTypesByDeploymentAndNode().foo.bar.type_hierarchy[0]).toBe('hello');
+        });
+    });
+
+    describe('#matchItem', function () {
+
+        it('should return true if node instance is of required type', function () {
+            scope.setMatchFilter({types: ['foo']});
+            expect(scope.matchItem({type_hierarchy: ['foo']})).toBe(true);
+        });
+
+        it('should return false if node instance is of required type', function () {
+            scope.setMatchFilter({types: ['bar']});
+            expect(scope.matchItem({type_hierarchy: ['foo']})).toBe(false);
+        });
+
+    });
+
+    describe('#buildMatchFilter', function () {
+
+        it('should set construct the matchFilter to be used later for filtering', function () {
+            scope.hostsFilter = {
+                blueprint: {'value': 'foo'},
+                'deployments': [{'value': 'bar'}],
+                'types': [{'value': 'hello'}]
+            };
+            scope.buildMatchFilter();
+            expect(scope.getMatchFilter().blueprint).toBe('foo');
+            expect(scope.getMatchFilter().deployments[0]).toBe('bar');
+            expect(scope.getMatchFilter().types[0]).toBe('hello');
+        });
+    });
+
+    describe('#onHostsFilterChange', function () {
+
+    });
+
+
 });

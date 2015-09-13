@@ -4,7 +4,7 @@ var conf = require('../appConf');
 var request = require('request');
 var fs = require('fs.extra');
 var path = require('path');
-var compressSrv = require('./CompressService');
+var targz = require('tar.gz');
 var logger = require('log4js').getLogger('BrowseBlueprintService');
 
 // todo : why don't we have "last updated" here?? does this function actually work??
@@ -158,7 +158,6 @@ module.exports.Walker = function() {
 
 
 exports.downloadBlueprint = function( cloudifyClientConf, blueprint_id, last_update, callback) {
-    logger.trace('downloading blueprint');
 
     function alreadyExists( name ){
         return function(e) {
@@ -179,22 +178,27 @@ exports.downloadBlueprint = function( cloudifyClientConf, blueprint_id, last_upd
         var file = fs.createWriteStream(filepath);
 
         var requestDetails = {
-            url: cloudifyClientConf.endpoint + '/blueprints/' + blueprint_id + '/archive',
+            url: require('url').resolve(conf.cloudifyManagerEndpoint,'blueprints/' + blueprint_id + '/archive'),
             method: 'GET',
-            auth: cloudifyClientConf.cloudifyAuth
+            auth: cloudifyClientConf.authHeader
         };
+
+        console.log('this is requestDetails', requestDetails );
 
         var stream = request(requestDetails);
         stream.on('response',function(res){
             res.pipe(file);
             file.on('close', function(){
-                compressSrv.extract(blueprint_id, last_update, callback);
+                logger.info('extract');
+                targz().extract(conf.browseBlueprint.path + '/' + blueprint_id + '.archive', conf.browseBlueprint.path + '/' + blueprint_id + '/' + last_update, function(err){
+                    logger.info('problem with request: ' + err.message);
+                    callback(err.message, null);
+                });
             });
         });
 
-
         stream.on('error', function(e) {
-            logger.info('problem with request: ' + e.message);
+            logger.info('[stream] problem with request: ' + e.message);
             callback(e.message, null);
         });
     });

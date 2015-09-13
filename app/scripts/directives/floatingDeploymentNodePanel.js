@@ -7,7 +7,7 @@
  * # floatingNodePanel
  */
 angular.module('cosmoUiApp')
-    .directive('floatingDeploymentNodePanel', function (CloudifyService, NodeService, UpdateNodes) {
+    .directive('floatingDeploymentNodePanel', function (cloudifyClient, NodeService, UpdateNodes) {
         return {
             templateUrl: 'views/deployment/floatingNodePanel.html',
             restrict: 'EA',
@@ -57,7 +57,7 @@ angular.module('cosmoUiApp')
 
                 function _getInstances(nodeId) {
                     $scope.selectNodesArr = [];
-                    CloudifyService.getNodeInstances()
+                    cloudifyClient.nodeInstances.list($scope.id)
                         .then(function (instances) {
 
                             _updateNodes.runUpdate(instances, $scope.nodesList);

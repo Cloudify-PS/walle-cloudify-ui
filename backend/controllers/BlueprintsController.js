@@ -62,7 +62,7 @@ var uploadTypes = new UploadTypes();
  * @param {object} res response
  */
 exports.upload = function( req, res ){
-    var cloudifyConf = req.cloudifyClientConf;
+    var cloudifyConf = { authHeader :  req.cloudifyAuthHeader };
     var blueprintUploadData = req.body;
 
     if ( !blueprintUploadData ){
