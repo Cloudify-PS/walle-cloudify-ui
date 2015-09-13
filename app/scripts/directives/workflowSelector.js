@@ -7,7 +7,7 @@
  * # workflowSelector
  */
 angular.module('cosmoUiApp')
-    .directive('workflowSelector', function (ngDialog, ExecutionsService) {
+    .directive('workflowSelector', function (ngDialog, ExecutionsService, $filter) {
         return {
             templateUrl: 'views/directives/workflowSelector.html',
             restrict: 'C',
@@ -26,10 +26,6 @@ angular.module('cosmoUiApp')
                         element.removeClass('in-progress');
                     }
                 }, true);
-
-                scope.isExecuteEnabled = function () {
-                    return scope.model && scope.model.data;
-                };
 
                 scope.canCancel = function () {
                     return ExecutionsService.canPause(scope.currentExecution);
@@ -76,6 +72,16 @@ angular.module('cosmoUiApp')
                         scope: isolatedScope,
                         className: 'confirm-dialog'
                     });
+                };
+
+                scope.getExecutionName = function( currentExecution ) {
+                    var translateKey = 'deployment.process.' + currentExecution.workflow_id;
+                    var res = $filter('translate')( !!currentExecution.workflow_id ?translateKey : 'deployment.process.wait');
+                    if ( res === translateKey ){
+                        return currentExecution.workflow_id;
+                    }else{
+                        return res;
+                    }
                 };
                 scope.onCancel = function () {
 

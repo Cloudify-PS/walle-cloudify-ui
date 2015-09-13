@@ -8,11 +8,11 @@
          data-text="Select workflow"></div>
 </div>
 
-<div class="executingWorkflow" > <!-- only in progress -->
+<div class="executingWorkflow" title="{{getExecutionName(currentExecution)}}" > <!-- only in progress -->
     <span class="gs-spinner inline">
 
     </span>
-    {{ currentExecution.workflow_id != null ? 'deployment.process.' + currentExecution.workflow_id : 'deployment.process.wait' | translate }}
+    {{ getExecutionName(currentExecution) }}
 </div>
 
 <button class="deployment-play" ng-disabled="isDisabled()"  ng-click="onPlay()" ng-show="canPlay()"></button>
