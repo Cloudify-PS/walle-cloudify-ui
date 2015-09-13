@@ -4,32 +4,44 @@
 angular.module('cosmoUiApp')
     .controller('DeploymentsCtrl', function ($scope, ExecutionsService,
                                              $location, $routeParams, $log,
+                                             $filter,
                                               ngDialog, cloudifyClient ) {
 
         $scope.deployments = null;
-        $scope.executedErr = false;
         $scope.confirmationType = '';
 
         // holds currently running execution per deployment_id
         var runningExecutions = {};
 
-        $scope.inputs = {};
         $scope.managerError = false;
-
 
 
         $scope.getExecution = function(deployment){
             return _.first(runningExecutions[deployment.id]);
         };
 
-        $scope.canPause = function(deployment_id){
-            return ExecutionsService.canPause($scope.getExecution({ id : deployment_id }));
+        /*******************************************************************
+         *
+         *                      Execution Fetching Controls
+         *
+         *******************************************************************/
+
+        $scope.startedExecutionsOnly = true;
+
+        $scope.getExecutionsDisplayButtonLabel = function(){
+            if ( $scope.startedExecutionsOnly ){
+                return $filter('translate')('executions.changeFilter.startedOnly');
+            }else{
+                return $filter('translate')('executions.changeFilter.notStartedOnly');
+            }
         };
 
-        $scope.isExecuting = function(deployment_id) {
-            var execution = $scope.getExecution({'id' : deployment_id});
-            return !!execution;
+        $scope.changeExecutionDisplay = function(){
+            $scope.startedExecutionsOnly = !$scope.startedExecutionsOnly;
+            _loadExecutions();
         };
+
+        /********************************************************************/
 
 
         $scope.redirectTo = function (deployment) {
@@ -44,11 +56,18 @@ angular.module('cosmoUiApp')
 
         function _loadExecutions() {
 
+            var opts = { _include: 'id,workflow_id,status,deployment_id' };
 
-            return cloudifyClient.executions.list(null, 'id,workflow_id,status,deployment_id').then(function(result){
+            if ( $scope.startedExecutionsOnly ){
+                opts.status = 'started';
+            }
+
+
+            return cloudifyClient.executions.list(  opts ).then(function(result){
 
                 //  CFY-2238 - remove terminated workflows.
-                runningExecutions = _.groupBy(_.filter(result.data, function(exec){  return ExecutionsService.isRunning(exec); }), 'deployment_id');
+                runningExecutions = _.groupBy( _.filter(result.data, ExecutionsService.isRunning) , 'deployment_id');
+                debugger;
 
             },function(){
                 // todo: implement error handling

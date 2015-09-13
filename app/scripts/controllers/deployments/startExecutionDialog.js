@@ -19,9 +19,9 @@ angular.module('cosmoUiApp')
             return $scope.workflow && $scope.workflow.parameters && !_.isEmpty($scope.workflow.parameters);
         };
 
-        $scope.executeWorkflow = function () {
+        $scope.executeWorkflow = function ( force ) {
             $scope.inProcess = true;
-            cloudifyClient.executions.start( $scope.deploymentId, $scope.workflow.name, JSON.parse($scope.rawString) )
+            cloudifyClient.executions.start( $scope.deploymentId, $scope.workflow.name, JSON.parse($scope.rawString), false, force )
                 .then(function (result) {
                     var data = result.data;
                     $scope.inProcess = false;

@@ -4,6 +4,12 @@
         padding-right: 40px;
     }
 
+    .right-side-actions{
+        position:absolute;
+        top:0;
+        right:0;
+    }
+
 
     .disable {
         color: $COSMOUI_BUTTON_DISABLED_BACKGROUND;
