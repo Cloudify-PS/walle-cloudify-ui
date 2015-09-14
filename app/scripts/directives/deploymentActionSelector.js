@@ -20,9 +20,6 @@ angular.module('cosmoUiApp')
             },
             controller: function ($scope) {
 
-
-
-
                 function openCancelExecutionDialog() {
                     ngDialog.open({
                         template: 'views/deployment/cancelExecutionDialog.html',

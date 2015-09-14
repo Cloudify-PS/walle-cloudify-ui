@@ -39,7 +39,7 @@ angular.module('cosmoUiApp')
 
         $scope.executeWorkflow = function () {
             $scope.inProcess = true;
-            cloudifyClient.executions.start( $scope.deploymentId, $scope.workflow.name, JSON.parse($scope.rawString) )
+            cloudifyClient.executions.start( $scope.deployment.id, $scope.workflow.name, JSON.parse($scope.rawString) )
                 .then(function (result) {
                     var data = result.data;
                     $scope.inProcess = false;
@@ -47,6 +47,7 @@ angular.module('cosmoUiApp')
                         $scope.setErrorMessage(data.message);
                     } else {
                         $scope.closeThisDialog();
+                        $scope.onBegin();
                     }
                 }, function (e) {
                     $scope.setErrorMessage(e.data.message);
