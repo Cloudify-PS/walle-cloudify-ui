@@ -75,8 +75,10 @@ describe('Controller: StartExecutionDialogCtrl', function () {
                 }
             });
             scope.closeThisDialog = jasmine.createSpy('closeThisDialog');
+            scope.onBegin = jasmine.createSpy('onBegin');
             scope.executeWorkflow();
             expect(scope.closeThisDialog).toHaveBeenCalled();
+            expect(scope.onBegin).toHaveBeenCalled();
         }));
 
         it('should put error message if success result has message property', inject(function (cloudifyClient) {

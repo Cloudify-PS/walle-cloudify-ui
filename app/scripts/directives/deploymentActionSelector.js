@@ -7,7 +7,7 @@
  * # deploymentActionSelector
  */
 angular.module('cosmoUiApp')
-    .directive('deploymentActionSelector', ['ngDialog', 'cloudifyClient', 'ExecutionsService', function (ngDialog, cloudifyClient, ExecutionsService, $log) {
+    .directive('deploymentActionSelector', function (ngDialog, cloudifyClient, ExecutionsService, $log) {
         return {
             templateUrl: 'views/directives/actionSelector.html',
             restrict: 'C',
@@ -96,4 +96,4 @@ angular.module('cosmoUiApp')
                 }, true);
             }
         };
-    }]);
+    });
