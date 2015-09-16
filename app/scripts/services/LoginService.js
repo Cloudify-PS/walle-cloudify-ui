@@ -11,7 +11,7 @@ angular.module('cosmoUiApp')
     .service('LoginService', function LoginService( $http, $location) {
 
         this.login = function(data) {
-            $http({
+            return $http({
                 url: '/backend/login',
                 method: 'POST',
                 data: data
