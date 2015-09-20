@@ -8,10 +8,14 @@
     .source-content{
 
         .tree {
+            overflow-x:auto;
+            overflow-y:hidden;
             float:left;
-            width:30%;
+            width:20%;
             font-size: 13px;
             min-height: 20px;
+            padding-top:40px;
+            padding-left:20px;
             li {
                 list-style-type: none;
                 margin: -3px 0 -5px 25px;
@@ -71,7 +75,7 @@
 
         .sourcecode {
             float:right;
-            width:65%;
+            width:78%;
             .pre{
                 margin:0;
                 .syntaxhighlighter{
