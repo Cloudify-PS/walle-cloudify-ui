@@ -17,7 +17,7 @@ angular.module('cosmoUiApp')
                             $scope.errorMessage = data.message;
                         } else {
                             $scope.closeThisDialog();
-                            $scope.onDone();
+                            $scope.onDelete();
                             $scope.inProcess = false;
                         }
                     }, function (e) {

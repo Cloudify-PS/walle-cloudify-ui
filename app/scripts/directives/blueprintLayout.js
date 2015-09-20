@@ -76,9 +76,10 @@ angular.module('cosmoUiApp')
                     $location.path('/deployment/' + deployment_id + '/topology');
                 };
 
-                if ( $routeParams.deploy === 'true' ){
-                    $scope.openDeployDialog();
-                }
+                $scope.redirectToBlueprints = function() {
+                    $location.path('/blueprints');
+                };
+
             }
         };
     });

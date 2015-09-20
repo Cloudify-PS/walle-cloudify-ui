@@ -40,8 +40,8 @@ angular.module('cosmoUiApp')
                         setDeployError(data.message);
                     }
                     else {
+                        $scope.onCreate({id: $scope.deployment_id});
                         $scope.closeThisDialog();
-                        $scope.redirectToDeployment($scope.deployment_id);
                     }
                 }, function (data) {
                     $scope.inProcess = false;

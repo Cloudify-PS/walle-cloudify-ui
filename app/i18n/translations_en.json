@@ -129,7 +129,10 @@
                 "cancel" : "Cancel",
                 "force" : "Force"
             }
-        }
+        },
+        "deleteBtn": "Delete",
+        "executeWorkflowBtn" : "Execute Workflow",
+        "selectWorkflow" : "Select a workflow"
     },
     "settingsToggles": {
         "title": "Select view"
