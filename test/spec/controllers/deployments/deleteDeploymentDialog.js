@@ -14,7 +14,7 @@ describe('Controller: DeleteDeploymentDialogCtrl', function () {
         });
 
         scope = $rootScope.$new();
-        scope.onDone = jasmine.createSpy('onDone');
+        scope.onDelete = jasmine.createSpy('onDelete');
         DeleteDeploymentDialogCtrl = $controller('DeleteDeploymentDialogCtrl', {
             $scope: scope
         });
@@ -87,7 +87,7 @@ describe('Controller: DeleteDeploymentDialogCtrl', function () {
 
                 scope.confirmDelete();
                 expect(scope.closeThisDialog).toHaveBeenCalled();
-                expect(scope.onDone).toHaveBeenCalled();
+                expect(scope.onDelete).toHaveBeenCalled();
                 expect(scope.inProcess).toBe(false);
             });
 

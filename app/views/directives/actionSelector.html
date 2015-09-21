@@ -1,0 +1,18 @@
+<div class="btn-group" dropdown>
+    <button id="split-button" class="btn" type="button" ng-click="selectAction(defaultAction)">{{ defaultAction.name | translate }}</button>
+    <button type="button" class="btn" dropdown-toggle>
+        <span class="caret"></span>
+    </button>
+    <ul class="dropdown-menu" role="menu" aria-labelledby="split-button">
+        <li ng-repeat="action in actions" role="menuitem" ng-click="selectAction(action)">
+            <button class="btn" type="button">{{ action.name | translate }}</button>
+        </li>
+    </ul>
+</div>
+<div class="executingWorkflow" > <!-- only in progress -->
+    <span class="gs-spinner inline">
+
+    </span>
+    {{ currentExecution.workflow_id != null ? 'deployment.process.' + currentExecution.workflow_id : 'deployment.process.wait' | translate }}
+</div>
+<i class="deployment-pause fa fa-times-circle" ng-show="canCancel()" ng-click="cancel()"></i>

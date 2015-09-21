@@ -44,7 +44,6 @@ angular.module('cosmoUiApp')
 
         function _loadExecutions() {
 
-
             return cloudifyClient.executions.list(null, 'id,workflow_id,status,deployment_id').then(function(result){
 
                 //  CFY-2238 - remove terminated workflows.
@@ -67,22 +66,14 @@ angular.module('cosmoUiApp')
                 });
         };
 
+
+        $scope.onExecutionStart = function() {
+            _loadExecutions();
+        };
+
         $scope.registerTickerTask('deployments/loadExecutions', _loadExecutions, 10000);
 
         $scope.loadDeployments();
 
-        $scope.deleteDeployment = function(deployment) {
-
-            var deleteScope = $scope.$new(true);
-            deleteScope.deployment = deployment;
-            deleteScope.onDone = $scope.loadDeployments;
-
-            ngDialog.open({
-                template: 'views/deployment/deleteDeploymentDialog.html',
-                controller: 'DeleteDeploymentDialogCtrl',
-                scope: deleteScope,
-                className: 'delete-dialog'
-            });
-        };
 
     });

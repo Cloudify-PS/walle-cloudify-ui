@@ -14,7 +14,7 @@ describe('Controller: DeleteBlueprintDialogCtrl', function () {
         });
 
         scope = $rootScope.$new();
-        scope.onDone = jasmine.createSpy('onDone');
+        scope.onDelete = jasmine.createSpy('onDelete');
         scope.closeThisDialog = jasmine.createSpy('closeThisDialog');
         DeleteBlueprintDialogCtrl = $controller('DeleteBlueprintDialogCtrl', {
             $scope: scope
@@ -84,7 +84,7 @@ describe('Controller: DeleteBlueprintDialogCtrl', function () {
 
                 scope.confirmDelete();
                 expect(scope.closeThisDialog).toHaveBeenCalled();
-                expect(scope.onDone).toHaveBeenCalled();
+                expect(scope.onDelete).toHaveBeenCalled();
                 expect(scope.inProcess).toBe(false);
             });
 

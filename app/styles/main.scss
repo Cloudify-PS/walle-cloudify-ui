@@ -22,9 +22,10 @@
 @import './interface';
 @import './source';
 @import './topology';
-@import './workflowSelector';
-@import './bpActionSelector';
+@import './actionSelector';
 @import './sectionNavMenu';
+@import './startExecutionDialog';
+@import './SyntaxHighlighter/overwrites';
 
 
 $gs-infra-root:'../bower_components/gs-ui-infra';
