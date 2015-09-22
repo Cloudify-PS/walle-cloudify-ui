@@ -11,7 +11,7 @@ describe('Directive: deploymentLayout', function () {
         $provide.factory('cosmoLayoutDirective', function () {
             return {};
         }); // mock cosmo layout
-        $provide.factory('workflowSelectorDirective', function(){
+        $provide.factory('deploymentActionSelectorDirective', function(){
             return {};
         }); // mock workflow selector
     }));

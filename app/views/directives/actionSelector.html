@@ -9,10 +9,11 @@
         </li>
     </ul>
 </div>
-<div class="executingWorkflow" > <!-- only in progress -->
+<div class="executingWorkflow" ng-show="showProgress" title="{{getExecutionName(currentExecution)}}"> <!-- only in progress -->
     <span class="gs-spinner inline">
 
     </span>
-    {{ currentExecution.workflow_id != null ? 'deployment.process.' + currentExecution.workflow_id : 'deployment.process.wait' | translate }}
+    {{ getExecutionName(currentExecution) }}
+
 </div>
 <i class="deployment-pause fa fa-times-circle" ng-show="canCancel()" ng-click="cancel()"></i>
