@@ -3,7 +3,7 @@
  * Used for common backend calls we need to mock
  */
 angular.module('backend-mock',[]).config(function( $translateProvider){
-    $translateProvider.translations('en', { 'hosts' : {} });
+    $translateProvider.translations('en', { 'hosts' : {}, 'deployment' : { 'process' : { 'foo' : 'Foo Process'} } });
     $translateProvider.useMissingTranslationHandler('missingTranslationFactory');
 }).run(function( $httpBackend ){
     $httpBackend.whenGET('/backend/configuration?access=all').respond(200);

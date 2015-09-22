@@ -11,6 +11,9 @@ describe('Directive: deploymentLayout', function () {
         $provide.factory('cosmoLayoutDirective', function () {
             return {};
         }); // mock cosmo layout
+        $provide.factory('deploymentActionSelectorDirective', function(){
+            return {};
+        }); // mock workflow selector
     }));
 
     beforeEach(inject(function ($compile, $rootScope, cloudifyClient ) {
