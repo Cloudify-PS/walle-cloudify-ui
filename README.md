@@ -28,6 +28,11 @@ An [AngularJS][4] based UI for Cosmo.
 
 
 
+## How to contribute - Workflow
+
+ - ...
+ - commit message standard see : https://github.com/angular/angular.js/blob/master/CONTRIBUTING.md#commit-message-format
+
 
 
 ## White Labeling
