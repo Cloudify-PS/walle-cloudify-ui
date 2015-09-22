@@ -8,7 +8,31 @@ An [AngularJS][4] based UI for Cosmo.
 ===
 
 
-test
+## Setting up your development environment 
+
+ - install nodejs 0.10.35  with npm 
+ - run `sudo npm install -g bower grunt-cli`
+ - run `sudo npm cache clean && sudo bower cache clean` - this steps is necessary as your cache folders will require root permissions and this will fail the next step
+ - run `npm install && bower install` in project root
+ - bootstrap a manager - simplest way is to use a vagrantbox. 
+ - optional: override configuration
+   - create a file `dev/meConf.js` or `dev/meConf.json` (the below example uses json)
+   - configure the manager's location. for example:
+   ```json
+   {
+       "cloudifyManagerEndpoint" : "https://10.10.1.10/api/v2/"
+   }
+   ```
+ - run `node server.js` - with intellij you will need the nodejs plugin and then right click on `server.js` and run it.  
+ - run `grunt server` - this should open the browser and you can start working
+
+
+
+## How to contribute - Workflow
+
+ - ...
+ - commit message standard see : https://github.com/angular/angular.js/blob/master/CONTRIBUTING.md#commit-message-format
+
 
 
 ## White Labeling
