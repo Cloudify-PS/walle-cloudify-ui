@@ -18,9 +18,9 @@ An [AngularJS][4] based UI for Cosmo.
  - optional: override configuration
    - create a file `dev/meConf.js` or `dev/meConf.json` (the below example uses json)
    - configure the manager's location. for example:
-   ```
+   ```json
    {
-       "cloudifyManagerEndpoint" : "https://10.10.1.10/api/v2/",
+       "cloudifyManagerEndpoint" : "https://10.10.1.10/api/v2/"
    }
    ```
  - run `node server.js` - with intellij you will need the nodejs plugin and then right click on `server.js` and run it.  
