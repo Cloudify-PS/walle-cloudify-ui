@@ -107,6 +107,9 @@ angular.module('cosmoUiApp')
                 scope.$watch('currentExecution', function (executing) {
                     if (executing) {
                         element.addClass('in-progress');
+                        if (executing.workflow_id == 'delete_deployment_environment') {
+                            scope.onDelete();
+                        }
                     } else {
                         element.removeClass('in-progress');
                     }
