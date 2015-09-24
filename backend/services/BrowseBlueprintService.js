@@ -168,18 +168,17 @@ exports.extractArchive = function  ( type, path, dest, callback ){
     }
     try{
 
-        var decompress = new Decompress({mode: '755'})
+        var decompress = new Decompress()
             .src(path)
             .dest(dest);
         if ( ['tar.gz','tgz'].indexOf(type) >= 0 ) {
-            decompress.use(Decompress.targz);
-            targz().extract( path , dest , callback);
+            decompress.use(Decompress.targz());
         } else if ( type === 'tar' ){
-            decompress.use(Decompress.tar);
+            decompress.use(Decompress.tar());
         }  else if ( type === 'zip' ){
-            decompress.use(Decompress.zip);
+            decompress.use(Decompress.zip());
         } else if (type === 'tar.bz2' ){
-            decompress.use(Decompress.tarbz2);
+            decompress.use(Decompress.tarbz2());
         }else {
             callback(new Error('unknown compression type [' + type + ']'));
         }
@@ -191,7 +190,7 @@ exports.extractArchive = function  ( type, path, dest, callback ){
 };
 
 function normalizeExtension( filename ){ //
-    return _.find([ 'tar.gz','tgz','tar','zip'], function( type ){
+    return _.find([ 'tar.bz2','tar.gz','tgz','tar','zip'], function( type ){
         return _.endsWith(filename, type);
     });
 }
