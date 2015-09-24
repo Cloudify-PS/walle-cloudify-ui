@@ -262,7 +262,6 @@ describe('Controller: UploadBlueprintDialogCtrl', function () {
         it('should accept multiple file compressions', inject(function( $templateCache ){
             var templateUrl = 'views/blueprint/uploadDialog.html';
             var html = $templateCache.get(templateUrl);
-            debugger;
             var accepts = $(html).find('[accept]');
 
             expect(accepts.length > 0).toBe(true); // expect it to have elements
