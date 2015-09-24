@@ -44,7 +44,7 @@ describe.only('compression', function () {
     });
 
 
-    ['zip', 'tar', 'tar.gz'].forEach(function (type) {
+    ['zip', 'tar', 'tar.gz','tar.bz2'].forEach(function (type) {
         it('should decompress ' + type, function (done) {
             var file = path.join(__dirname, '../../../../resources/compression/test_file.' + type);
             BrowseBlueprintService.extractArchive(type, file, dest, function (err) {
