@@ -268,7 +268,7 @@ describe('Controller: UploadBlueprintDialogCtrl', function () {
 
             // NOTE : very important, gz type must appear here even though incorrect (should be tar.gz) because in mac it does not work properly
             // https://github.com/danialfarid/ng-file-upload/issues/1025
-            var multipleCompressions = $(html).find('[accept=".gz,.tar.gz,.tar,.tgz,.zip"]');
+            var multipleCompressions = $(html).find('[accept=".tar.bz2, .bz2, .gz,.tar.gz,.tar,.tgz,.zip"]');
             expect(multipleCompressions.length).toBe(accepts.length); // all of the items should have the same compression types
 
         }));

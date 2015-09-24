@@ -1,103 +1,102 @@
 {
-    "name": "cosmo-ui",
-    "version": "3.2.0-development",
-    "private": true,
-    "man": [
-        "./man/cosmoui.1"
-    ],
-    "bugs": {
-        "url": "http://cloudifysource.atlassian.net",
-        "email": "support@cloudifysource.org"
-    },
-    "licenses": [
-        {
-            "type": "GigaSpaces License",
-            "url": "http://gigaspaces.com"
-        }
-    ],
-    "scripts": {
-        "install_prereq": "npm install -g  bower grunt-cli phantomjs && npm cache clean ",
-        "build_linux": "rm -rf node_modules && rm -rf app/bower_components && npm cache clean && bower cache clean &&  npm install && bower install && grunt  clean buildArtifacts analyze $FORCE $NO_COLOR",
-        "build_and_publish": "npm run build_linux && grunt uploadArtifacts $NO_COLOR",
-        "clean_all": "rm -rf app/bower_components && rm -rf node_modules && bower cache clean && npm cache clean && bower install && npm install"
-    },
-    "description": "UI for Cloudify. code name is cosmo.",
-    "bin": {
-        "cosmoui": "cosmoui.js"
-    },
-    "dependencies": {
-        "express": "~3.4.2",
-        "express-http-proxy": "~0.6.0",
-        "express-params": "0.0.3",
-        "fs.extra": "^1.2.1",
-        "influx": "^1.0.1",
-        "jade": "~0.35.0",
-        "js-yaml": "~2.1.3",
-        "lodash": "~3.10.1",
-        "log4js": "~0.6.9",
-        "request": "^2.51.0",
-        "tar-fs": "^1.8.1",
-        "tar.gz": "^1.0.0",
-        "unzip": "^0.1.11"
-    },
-    "devDependencies": {
-        "connect-livereload": "^0.3.2",
-        "expect.js": "^0.3.1",
-        "grunt": "~0.4.2",
-        "grunt-available-tasks": "~0.5.7",
-        "grunt-aws-s3": "~0.11.1",
-        "grunt-concurrent": "~0.3.0",
-        "grunt-connect-proxy": "0.1.6",
-        "grunt-contrib-clean": "~0.4.1",
-        "grunt-contrib-coffee": "~0.7.0",
-        "grunt-contrib-compass": "~0.3.0",
-        "grunt-contrib-compress": "~0.13.0",
-        "grunt-contrib-concat": "~0.3.0",
-        "grunt-contrib-connect": "~0.3.0",
-        "grunt-contrib-copy": "~0.4.1",
-        "grunt-contrib-cssmin": "~0.6.0",
-        "grunt-contrib-htmlmin": "~0.1.3",
-        "grunt-contrib-imagemin": "~0.1.4",
-        "grunt-contrib-jshint": "~0.6.0",
-        "grunt-contrib-uglify": "~0.2.0",
-        "grunt-contrib-watch": "~0.4.0",
-        "grunt-curl": "^2.2.0",
-        "grunt-html2js": "^0.2.8",
-        "grunt-istanbul": "~0.3.0",
-        "grunt-jasmine-node": "^0.2.1",
-        "grunt-jscpd": "0.0.11",
-        "grunt-jscpd-reporter": "~0.1.3",
-        "grunt-jsdoc": "^0.6.7",
-        "grunt-karma": "~0.6.2",
-        "grunt-mocha-istanbul": "^2.2.0",
-        "grunt-mocha-test": "^0.12.4",
-        "grunt-ngmin": "~0.0.2",
-        "grunt-open": "~0.2.0",
-        "grunt-rev": "~0.1.0",
-        "grunt-sass": "~1.0.0",
-        "grunt-shell": "~1.1.2",
-        "grunt-update-json": "~0.2.1",
-        "grunt-usemin": "~0.1.11",
-        "istanbul": "^0.3.5",
-        "jshint-stylish": "~1.0.0",
-        "karma": "~0.10.2",
-        "karma-chrome-launcher": "~0.1.0",
-        "karma-coffee-preprocessor": "~0.1.0",
-        "karma-coverage": "~0.2.6",
-        "karma-failed-reporter": "0.0.2",
-        "karma-firefox-launcher": "~0.1.0",
-        "karma-jasmine": "~0.1.3",
-        "karma-junit-reporter": "^0.2.2",
-        "karma-phantomjs-launcher": "~0.1.0",
-        "karma-requirejs": "~0.2.0",
-        "karma-script-launcher": "~0.1.0",
-        "karma-spec-reporter": "0.0.13",
-        "matchdep": "~0.1.2",
-        "mocha": "^2.1.0",
-        "sinon": "^1.12.2",
-        "xunit-file": "0.0.6"
-    },
-    "engines": {
-        "node": ">=0.10.0"
+  "name": "cosmo-ui",
+  "version": "3.2.0-development",
+  "private": true,
+  "man": [
+    "./man/cosmoui.1"
+  ],
+  "bugs": {
+    "url": "http://cloudifysource.atlassian.net",
+    "email": "support@cloudifysource.org"
+  },
+  "licenses": [
+    {
+      "type": "GigaSpaces License",
+      "url": "http://gigaspaces.com"
     }
+  ],
+  "scripts": {
+    "install_prereq": "npm install -g  bower grunt-cli phantomjs && npm cache clean ",
+    "build_linux": "rm -rf node_modules && rm -rf app/bower_components && npm cache clean && bower cache clean &&  npm install && bower install && grunt  clean buildArtifacts analyze $FORCE $NO_COLOR",
+    "build_and_publish": "npm run build_linux && grunt uploadArtifacts $NO_COLOR",
+    "clean_all": "rm -rf app/bower_components && rm -rf node_modules && bower cache clean && npm cache clean && bower install && npm install"
+  },
+  "description": "UI for Cloudify. code name is cosmo.",
+  "bin": {
+    "cosmoui": "cosmoui.js"
+  },
+  "dependencies": {
+    "decompress": "^2.3.0",
+    "express": "~3.4.2",
+    "express-http-proxy": "~0.6.0",
+    "express-params": "0.0.3",
+    "fs.extra": "^1.2.1",
+    "influx": "^1.0.1",
+    "jade": "~0.35.0",
+    "js-yaml": "~2.1.3",
+    "lodash": "~3.10.1",
+    "log4js": "~0.6.9",
+    "request": "^2.51.0",
+    "tar-fs": "^1.8.1"
+  },
+  "devDependencies": {
+    "connect-livereload": "^0.3.2",
+    "expect.js": "^0.3.1",
+    "grunt": "~0.4.2",
+    "grunt-available-tasks": "~0.5.7",
+    "grunt-aws-s3": "~0.11.1",
+    "grunt-concurrent": "~0.3.0",
+    "grunt-connect-proxy": "0.1.6",
+    "grunt-contrib-clean": "~0.4.1",
+    "grunt-contrib-coffee": "~0.7.0",
+    "grunt-contrib-compass": "~0.3.0",
+    "grunt-contrib-compress": "~0.13.0",
+    "grunt-contrib-concat": "~0.3.0",
+    "grunt-contrib-connect": "~0.3.0",
+    "grunt-contrib-copy": "~0.4.1",
+    "grunt-contrib-cssmin": "~0.6.0",
+    "grunt-contrib-htmlmin": "~0.1.3",
+    "grunt-contrib-imagemin": "~0.1.4",
+    "grunt-contrib-jshint": "~0.6.0",
+    "grunt-contrib-uglify": "~0.2.0",
+    "grunt-contrib-watch": "~0.4.0",
+    "grunt-curl": "^2.2.0",
+    "grunt-html2js": "^0.2.8",
+    "grunt-istanbul": "~0.3.0",
+    "grunt-jasmine-node": "^0.2.1",
+    "grunt-jscpd": "0.0.11",
+    "grunt-jscpd-reporter": "~0.1.3",
+    "grunt-jsdoc": "^0.6.7",
+    "grunt-karma": "~0.6.2",
+    "grunt-mocha-istanbul": "^2.2.0",
+    "grunt-mocha-test": "^0.12.4",
+    "grunt-ngmin": "~0.0.2",
+    "grunt-open": "~0.2.0",
+    "grunt-rev": "~0.1.0",
+    "grunt-sass": "~1.0.0",
+    "grunt-shell": "~1.1.2",
+    "grunt-update-json": "~0.2.1",
+    "grunt-usemin": "~0.1.11",
+    "istanbul": "^0.3.5",
+    "jshint-stylish": "~1.0.0",
+    "karma": "~0.10.2",
+    "karma-chrome-launcher": "~0.1.0",
+    "karma-coffee-preprocessor": "~0.1.0",
+    "karma-coverage": "~0.2.6",
+    "karma-failed-reporter": "0.0.2",
+    "karma-firefox-launcher": "~0.1.0",
+    "karma-jasmine": "~0.1.3",
+    "karma-junit-reporter": "^0.2.2",
+    "karma-phantomjs-launcher": "~0.1.0",
+    "karma-requirejs": "~0.2.0",
+    "karma-script-launcher": "~0.1.0",
+    "karma-spec-reporter": "0.0.13",
+    "matchdep": "~0.1.2",
+    "mocha": "^2.1.0",
+    "sinon": "^1.12.2",
+    "xunit-file": "0.0.6"
+  },
+  "engines": {
+    "node": ">=0.10.0"
+  }
 }
