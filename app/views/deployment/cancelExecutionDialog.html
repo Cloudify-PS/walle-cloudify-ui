@@ -1,0 +1,16 @@
+<div id="confirmationDialogContainer" class="dialogBox">
+    <div><div class="dialogTitle"><label>{{ 'dialogs.execution.confirmCancel' | translate }}</label></div></div>
+
+
+
+    <div class="dialogDescription">{{ 'dialogs.execution.cancelDescription' | translate }}</div>
+
+    <div class="error-message" data-ng-show="!!executeErrorMessage">{{ executeErrorMessage }}</div>
+
+
+    <div class="buttonsContainer confirmationButtons" >
+        <button class="gs-btn" ng-click="closeThisDialog()">{{ 'dialogs.no' | translate }}</button>
+        <button class="gs-btn" ng-click="cancelWorkflow()">{{ 'dialogs.yes' | translate }}</button>
+        <button class="gs-btn" ng-click="cancelWorkflow(true)" title="force cancellation">{{ 'dialogs.execution.forceCancel' | translate }}</button>
+    </div>
+</div>

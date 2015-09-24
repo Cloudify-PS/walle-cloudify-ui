@@ -32,7 +32,7 @@ describe('Service: ExecutionsService', function () {
 
     describe('#canPause', function(){
         it('should return true if workflow_id is create_deployment_environment', function(){
-            expect(mExecutionsService.canPause({workflow_id:'create_deployment_environment'})).toBe(false);
+            expect(mExecutionsService.canPause({workflow_id:'create_deployment_environment'})).toBe(true); // guy - changed since you cannot delete a deployment that is stuck on init
             expect(mExecutionsService.canPause({workflow_id:'foo'})).toBe(true);
         });
     });

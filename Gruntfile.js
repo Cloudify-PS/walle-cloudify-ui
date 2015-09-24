@@ -145,7 +145,8 @@ module.exports = function (grunt) {
                             '.tmp',
                             '<%= yeoman.dist %>/*',
                             '<%= yeoman.distBlueprint %>/*',
-                            '!<%= yeoman.dist %>/.git*'
+                            '!<%= yeoman.dist %>/.git*',
+                            'artifacts'
                         ]
                     }
                 ]
@@ -174,7 +175,7 @@ module.exports = function (grunt) {
         },
         curl: {
             nodejs: {
-                src: 'http://nodejs.org/dist/v0.10.35/node-v0.10.35-linux-x64.tar.gz',
+                src: 'https://nodejs.org/dist/v0.10.35/node-v0.10.35-linux-x64.tar.gz',
                 dest: '<%= yeoman.dist %>/node-v0.10.35-linux-x64.tar.gz'
             }
 
@@ -397,13 +398,13 @@ module.exports = function (grunt) {
                         dot: true,
                         cwd: '<%= yeoman.dist %>',
                         dest: '<%= yeoman.artifacts %>',
-                        src: [ 'cloudify-ui-*.tgz', 'blueprint.tar.gz'],
+                        src: [ 'cosmo-ui-*.tgz','cloudify-ui-*.tgz', 'blueprint.tar.gz'],
                         rename: function( dest , src ){
                             var md = grunt.config.data.cfy.metadata;
                             console.log('renaming ', dest, src);
                             if ( src.indexOf('blueprint.tar.gz') >= 0){
                                 return require('path').join(dest , 'ui-blueprint-' + md.buildVersion + '.tar.gz');
-                            }else if ( src.indexOf('cloudify-ui') >= 0){
+                            }else if ( src.indexOf('cloudify-ui') >= 0 || src.indexOf('cosmo-ui') >= 0){
                                 return require('path').join(dest,'cloudify-ui-' + md.buildVersion + '.tgz');
                             }
                         }
@@ -424,7 +425,7 @@ module.exports = function (grunt) {
                         dot: true,
                         cwd: '<%= yeoman.dist %>',
                         dest: '<%= yeoman.distBlueprint%>',
-                        src: [ 'cloudify-ui*.tgz'],
+                        src: [ 'cosmo-ui-*.tgz','cloudify-ui*.tgz'],
                         rename: function( dest /*, src*/ ){
                             return path.join(dest ,'blueprint/node-application','app.tgz');
                         }
@@ -749,6 +750,7 @@ module.exports = function (grunt) {
 
         var tasks = [
             'clean:server',
+            'clean:dist',
             'useminPrepare',
             'concurrent:dist',
             'concat',
@@ -787,7 +789,7 @@ module.exports = function (grunt) {
         // either read version.json file or from environment variables
 
         var envData = {
-            version: process.env.VERSION || 'dev',
+            version: process.env.VERSION || '3.3.0',
             prerelease: process.env.PRERELEASE || null,
             build: process.env.BUILD || new Date().getTime()
         };
@@ -819,31 +821,61 @@ module.exports = function (grunt) {
 
     });
 
+
+
+
+
     grunt.registerTask('overrideBuildVersion', function () {
         var done = this.async();
-
-
         var packageJson = grunt.file.readJSON('dist/package.json');
 
+        if ( !process.env.NEW_BUILD ) {
 
+            var versionFilename = 'VERSION';
+            var buildVersion = null;
+            if (grunt.file.exists(versionFilename)) {
+                var fs = require('fs');
+                buildVersion = grunt.file.readJSON(versionFilename).version;
+                grunt.log.ok('build version is ', buildVersion);
 
-        packageJson.version = grunt.config.data.cfy.metadata.fullVersion;
-
-
-        try {
-            require('fs').writeFile('dist/package.json', JSON.stringify(packageJson, {}, 4), function (err) {
-                if (!!err) {
-                    grunt.log.error('writing file failed', err);
-                    grunt.fail.fatal('writing version failed');
+                packageJson.version = buildVersion;
+                try {
+                    fs.writeFile('dist/package.json', JSON.stringify(packageJson, {}, 4), function (err) {
+                        if (!!err) {
+                            grunt.log.error('writing file failed', err);
+                            grunt.fail.fatal('writing version failed');
+                        }
+                        grunt.log.ok('version changed successfully');
+                        done();
+                    });
+                } catch (e) {
+                    grunt.log.error('unable to write build version ', e);
+                    grunt.fail.fatal('unable to write build version ');
                 }
-                grunt.log.ok('version changed successfully');
-                done();
-            });
-        } catch (e) {
-            grunt.log.error('unable to write build version ', e);
-            grunt.fail.fatal('unable to write build version ');
+                grunt.log.ok('build version : ' + buildVersion);
+            } else {
+                grunt.log.ok(versionFilename + ' does not exist. skipping version manipulation');
+            }
+
+        }else {
+
+
+            packageJson.version = grunt.config.data.cfy.metadata.fullVersion;
+            try {
+                require('fs').writeFile('dist/package.json', JSON.stringify(packageJson, {}, 4), function (err) {
+                    if (!!err) {
+                        grunt.log.error('writing file failed', err);
+                        grunt.fail.fatal('writing version failed');
+                    }
+                    grunt.log.ok('version changed successfully');
+                    done();
+                });
+            } catch (e) {
+                grunt.log.error('unable to write build version ', e);
+                grunt.fail.fatal('unable to write build version ');
+            }
+            grunt.log.ok('build version : ' + packageJson.version);
         }
-        grunt.log.ok('build version : ' + packageJson.version);
 
     });
 

@@ -8,12 +8,12 @@
 * Controller of the cosmoUiApp
 */
 angular.module('cosmoUiApp')
-  .controller('InputsOutputsCtrl', function ($scope,$routeParams,CloudifyService) {
+  .controller('InputsOutputsCtrl', function ($scope, $routeParams, cloudifyClient ) {
 
         $scope.deploymentId = $routeParams.deploymentId;
 
         //get deployment inputs from deployment's data
-        CloudifyService.deployments.getDeploymentById($scope.deploymentId).then(function (deployment) {
+        cloudifyClient.deployments.get($scope.deploymentId).then(function (deployment) {
             if(!angular.equals({},deployment.inputs)){
                 $scope.inputs = deployment.inputs;
             }
@@ -22,7 +22,7 @@ angular.module('cosmoUiApp')
         });
 
         //get deployment outputs
-        CloudifyService.deployments.getOutputs($scope.deploymentId).then(function (httpResponse) {
+        cloudifyClient.deployments.outputs.get($scope.deploymentId).then(function (httpResponse) {
             if(!angular.equals({},httpResponse.data.outputs)) {
                 $scope.outputs = httpResponse.data.outputs;
             }

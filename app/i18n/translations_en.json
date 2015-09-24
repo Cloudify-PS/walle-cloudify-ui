@@ -32,6 +32,14 @@
         "actions": {
             "deployBtn": "Create Deployment",
             "deleteBtn": "Delete"
+        },
+        "dialogs": {
+            "delete" : {
+                "title" : "Delete blueprint?",
+                "description" : "Are you sure you want to delete '{{blueprint}}'?",
+                "cancel" : "Cancel",
+                "confirm" : "Confirm"
+            }
         }
     },
     "config": {
@@ -112,7 +120,19 @@
             "delete_deployment_environment": "Deleting",
             "install": "Install",
             "uninstall": "Uninstall"
-        }
+        },
+        "dialogs":{
+            "delete" : {
+                "title" : "Delete Deployment?",
+                "description" : "Are you sure you want to delete '{{deployment}}'?",
+                "confirm" : "Delete",
+                "cancel" : "Cancel",
+                "force" : "Force"
+            }
+        },
+        "deleteBtn": "Delete",
+        "executeWorkflowBtn" : "Execute Workflow",
+        "selectWorkflow" : "Select a workflow"
     },
     "settingsToggles": {
         "title": "Select view"
@@ -206,6 +226,15 @@
             "cancel": "Cancel",
             "delete": "Delete"
         },
+        "yes" : "Yes",
+        "no" : "No",
+        "execution" : {
+            "confirmCancel" : "Cancel execution?",
+            "confirmExecution" : "Start execution?",
+            "cancelDescription" : "Are you sure you want to cancel current execution?",
+            "forceCancel" : "Force"
+
+        },
         "upload": {
             "title": "Upload Blueprint",
             "description": "Select blueprint file to upload, and click 'Save'",
@@ -244,7 +273,10 @@
         "blueprintsFilter" : "Deployed Blueprints:",
         "deploymentsFilter" : "Deployments:",
         "blueprintsFilterPlaceholder" : "Choose a Blueprint",
-        "deploymentsFilterPlaceholder" : "Choose Deployments"
+        "deploymentsFilterPlaceholder" : "Choose Deployments",
+        "typesFilterPlaceholder" : "Choose Types",
+        "typesFilter" : "Types:",
+        "searchFilter" : "Free Text:"
     }
 }
 

@@ -8,10 +8,7 @@
         .filters {
             position: relative;
             margin: 0 0 10px 0;
-            .multiSelectMenu {
-                margin: 5px 10px 0 0px;
-                vertical-align: middle;
-            }
+
             .search {
                 position: absolute;
                 right: 0px;
@@ -57,6 +54,16 @@
             .filter {
                 display: inline-block;
                 margin: 0 0 10px 0;
+                vertical-align: middle;
+                & > div {
+                    margin: 5px 10px 0 0px;
+                    vertical-align: middle;
+                }
+            }
+
+            .actions{
+                float:right;
+                margin-top:8px;
             }
         }
 

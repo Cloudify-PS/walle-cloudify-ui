@@ -10,43 +10,15 @@ angular.module('cosmoUiApp')
 
         $scope.openAddDialog = function() {
             ngDialog.open({
-                template: 'views/dialogs/upload.html',
-                controller: 'FileSelectionDialogCtrl',
+                template: 'views/blueprint/uploadDialog.html',
+                controller: 'UploadBlueprintDialogCtrl',
                 scope: $scope,
                 className: 'upload-dialog'
             });
         };
 
-        $scope.openDeployDialog = function(blueprint) {
-            $scope.selectedBlueprint = null;
-            ngDialog.open({
-                template: 'views/dialogs/deploy.html',
-                controller: 'DeployDialogCtrl',
-                scope: $scope,
-                className: 'deploy-dialog'
-            });
 
-            cloudifyClient.blueprints.get(blueprint.id, null).then(function(result){
-                $scope.selectedBlueprint = result.data || null;
-
-            }); // todo: add error handling
-        };
-
-        $scope.openDeleteDialog = function() {
-            ngDialog.open({
-                template: 'views/dialogs/delete.html',
-                controller: 'DeleteDialogCtrl',
-                scope: $scope,
-                className: 'delete-dialog'
-            });
-        };
-
-        $scope.deleteBlueprint = function(blueprint) {
-            $scope.itemToDelete = blueprint;
-            $scope.openDeleteDialog();
-        };
-
-        function loadBlueprints() {
+        $scope.loadBlueprints = function() {
             $scope.blueprints = null;
             $scope.managerError = false;
             cloudifyClient.blueprints.list('id,updated_at,created_at').then(function (result) {
@@ -60,7 +32,7 @@ angular.module('cosmoUiApp')
                 $scope.managerError = result.data || 'General Error';
                 $log.error('got error result', result.data);
             });
-        }
+        };
 
         // blueprintID to deployment count map
         var deploymentsCount = {};
@@ -78,8 +50,6 @@ angular.module('cosmoUiApp')
             });
         }
 
-
-
         $scope.countDeployments = function(blueprint){
             return deploymentsCount.hasOwnProperty(blueprint.id) ? deploymentsCount[blueprint.id] : 0;
         };
@@ -88,11 +58,6 @@ angular.module('cosmoUiApp')
             $location.path('/blueprint/' + blueprint_id + '/topology');
         };
 
-        $scope.redirectToDeployment = function(deployment_id) {
-            $location.path('/deployment/' + deployment_id + '/topology');
-        };
-
-
-        loadBlueprints();
+        $scope.loadBlueprints();
         loadDeployments();
     });

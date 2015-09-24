@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('cosmoUiApp')
-    .directive('blueprintLayout', function ($location, CloudifyService, ngDialog, $routeParams) {
+    .directive('blueprintLayout', function ($location, cloudifyClient, ngDialog, $routeParams) {
         return {
             templateUrl: 'views/blueprint/blueprintLayout.html',
             restrict: 'C',
@@ -15,7 +15,8 @@ angular.module('cosmoUiApp')
                 $scope.blueprintId = $routeParams.blueprintId;
 
 
-                CloudifyService.blueprints.getBlueprintById({id: $scope.blueprintId})
+                cloudifyClient.blueprints.get($scope.blueprintId)
+                    .then(function( result ){ return result.data;  })// strip result // todo: handle error
                     .then(function(blueprintData) {
 
                         // Verify it's valid page, if not redirect to blueprints page
@@ -63,7 +64,7 @@ angular.module('cosmoUiApp')
                 if ( !$scope.openDeployDialog ) { // allow tests to override this function..
                     $scope.openDeployDialog = function () {
                         ngDialog.open({
-                            template: 'views/dialogs/deploy.html',
+                            template: 'views/blueprint/deployBlueprintDialog.html',
                             controller: 'DeployDialogCtrl',
                             scope: $scope,
                             className: 'deploy-dialog'
@@ -75,9 +76,10 @@ angular.module('cosmoUiApp')
                     $location.path('/deployment/' + deployment_id + '/topology');
                 };
 
-                if ( $routeParams.deploy === 'true' ){
-                    $scope.openDeployDialog();
-                }
+                $scope.redirectToBlueprints = function() {
+                    $location.path('/blueprints');
+                };
+
             }
         };
     });

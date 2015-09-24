@@ -17,11 +17,11 @@ describe('Controller: DeploymentNetworkCtrl', function () {
     }));
 
     // TODO: this is a copy paste from blueprintNetwork test.. obviously this code should be the same.
-    it('should have a blueprintData handler that paints after some timeout', inject(function ($rootScope, CloudifyService, $timeout, NetworksService, bpNetworkService) {
-        spyOn(CloudifyService, 'getProviderContext').andCallFake(function () {
+    it('should have a blueprintData handler that paints after some timeout', inject(function ($rootScope, cloudifyClient, $timeout, NetworksService, bpNetworkService) {
+        spyOn(cloudifyClient.manager, 'get_context').andCallFake(function () {
             return {
                 then: function (success) {
-                    success();
+                    success({data:{}});
                 }
             };
         });
@@ -38,7 +38,7 @@ describe('Controller: DeploymentNetworkCtrl', function () {
         $rootScope.$broadcast('nodesList', {plan: {nodes: {}}});
 
 
-        expect(CloudifyService.getProviderContext).toHaveBeenCalled();
+        expect(cloudifyClient.manager.get_context).toHaveBeenCalled();
         expect(NetworksService.createNetworkTree).toHaveBeenCalled();
         expect(bpNetworkService.setMap).toHaveBeenCalled();
 

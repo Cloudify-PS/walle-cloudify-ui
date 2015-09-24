@@ -404,20 +404,4 @@
         }
     }
 
-    .syntaxhighlighter {
-        .container {
-            &::before, &::after {
-                content: normal !important;
-                display: inline !important;
-            }
-        }
-        .gutter {
-            .line {
-                border-right: 3px solid #29aaee !important;
-            }
-        }
-        table {
-            overflow-x: hidden !important;
-        }
-    }
 }

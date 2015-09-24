@@ -8,68 +8,26 @@
  * Service in the cosmoUiApp.
  */
 angular.module('cosmoUiApp')
-    .service('CloudifyService', function Cloudifyservice($rootScope, $q, $log, $timeout, RestLoader, BlueprintsService, DeploymentsService, VersionService) {
-
-        function _load(rest, params){
-            return RestLoader.load(rest, params);
-        }
-
-        function _getNode(params) {
-            var callParams = {
-                url: '/backend/nodes/get',
-                method: 'POST',
-                data: params
-            };
-            return _load('nodes/get', callParams);
-        }
-
-        function _getNodes(params) {
-            var callParams = {
-                url: '/backend/nodes',
-                method: 'GET',
-                params: {'deployment_id': params}
-            };
-            return _load('/backend/nodes', callParams);
-        }
-
-        function _getNodeInstances(params) {
-            var callParams = {
-                url: '/backend/node-instances',
-                method: 'GET',
-                data: params
-            };
-            return _load('node-instances', callParams);
-        }
-
-        function _getProviderContext() {
-            return _load('provider/context');
-        }
+    .service('CloudifyService', function Cloudifyservice($rootScope, $log,  BlueprintsService, VersionService, $http ) {
 
         function _setSettings(data) {
-            var callParams = {
+            return $http({
                 url: '/backend/settings',
                 method: 'POST',
                 data: {settings: {'cosmoServer': data.cosmoServer, 'cosmoPort': data.cosmoPort}}
-            };
-            return _load('settings', callParams);
+            });
         }
 
         function _getSettings() {
-            return _load('settings');
+            return $http('/backend/settings');
         }
 
         function _getConfiguration(access) {
-            var callParams = {
-                url: '/backend/configuration',
-                method: 'GET',
-                params: {
-                    access: access || 'all'
-                }
-            };
-            return _load('configuration', callParams);
+            return $http({ url: '/backend/configuration', method: 'GET', params: { access: access || 'all'}});
         }
 
 
+        // this method translates error code from REST API.
         this.getErrorMessage = function( errResponse ){
             try {
                 return '[' + errResponse.data.error_code + '] : ' + errResponse.data.message;
@@ -82,18 +40,11 @@ angular.module('cosmoUiApp')
             }
         };
 
-        //this.autoPull = _autoPull;
-        //this.autoPullStop = _autoPullStop;
-        this.getNode = _getNode;
-        this.getNodes = _getNodes;
-        this.getNodeInstances = _getNodeInstances;
-        this.getProviderContext = _getProviderContext;
         this.setSettings = _setSettings;
         this.getSettings = _getSettings;
         this.getConfiguration = _getConfiguration;
 
         this.blueprints = BlueprintsService;
-        this.deployments = DeploymentsService;
         this.version = VersionService;
 
     });

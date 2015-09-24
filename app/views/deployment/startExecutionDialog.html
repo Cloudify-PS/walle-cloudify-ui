@@ -1,0 +1,41 @@
+<div id="confirmationDialogContainer" class="dialogBox start-execution-dialog">
+    <div> <div class="dialogTitle"><label>{{ 'dialogs.execution.confirmExecution' | translate }}</label></div></div>
+
+
+
+    <div class="dialogDescription">{{ 'dialogs.confirm.descriptionExecute' | translate }} {{getSelectedWorkflow()}}?</div>
+
+    <div class="select-workflow gs-selection-button">
+
+    <div multi-select-menu
+         class="gs-select"
+         data-multiple="false"
+         data-options="workflowsList"
+         data-ng-model="workflowName"
+         data-listener="true"
+         name="workflow"
+         data-text="{{'deployments.selectWorkflow' | translate}}"></div>
+    </div>
+
+    <div class="selected-workflow">
+    <div form-raw-params
+         ng-show="isParamsVisible()"
+         on-error="setErrorMessage(msg)"
+         params="workflow.parameters"
+         raw-string="rawString"
+         valid="inputsValid"></div>
+
+    </div>
+
+
+
+    <div class="error-message" data-ng-show="!!executeErrorMessage">{{ executeErrorMessage }}</div>
+
+    <div class="buttonsContainer confirmationButtons">
+        <button class="gs-btn" ng-click="closeThisDialog()" >{{ 'dialogs.confirm.cancel' | translate }}</button>
+        <button class="gs-btn" ng-enabled="isExecuteEnabled()" gs-spinner="{{inProcess}}" ng-click="executeWorkflow()">{{ 'dialogs.confirm.confirm' | translate }}</button>
+    </div>
+
+
+
+</div>

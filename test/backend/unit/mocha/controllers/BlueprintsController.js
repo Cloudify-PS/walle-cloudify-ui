@@ -14,9 +14,6 @@ describe('BlueprintsController', function(){
     var res;
     var sandbox;
 
-    var _json = {
-        validURL: {'type' : 'url', 'opts' : '{"params": {"blueprint_archive_url": "http://some.url.com"}}'}
-    };
 
     beforeEach(function(){
         sandbox = sinon.sandbox.create();
@@ -98,14 +95,7 @@ describe('BlueprintsController', function(){
             expect(res.send.calledWith('data')).to.be(true);
         });
 
-        it('should upload blueprint from url', function(){
-            req.body = _json.validURL;
-            sandbox.stub(req.cloudifyClient.blueprints, 'publish_archive', sinon.spy( function( cloudifyConf, stream, opts, callback ){
-                callback(null, 'data');
-            }));
-            BlueprintsController.upload(req,res);
-            expect(res.send.calledWith('data')).to.be(true);
-        });
+        // not relevant anymore -  should upload blueprint from url
 
 
     });

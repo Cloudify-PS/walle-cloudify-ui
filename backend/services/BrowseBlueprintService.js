@@ -4,15 +4,12 @@ var conf = require('../appConf');
 var request = require('request');
 var fs = require('fs.extra');
 var path = require('path');
-var compressSrv = require('./CompressService');
+var targz = require('tar.gz');
 var logger = require('log4js').getLogger('BrowseBlueprintService');
+var tar = require('tar-fs');
+var unzip = require('unzip');
+var _ = require('lodash');
 
-// todo : why don't we have "last updated" here?? does this function actually work??
-module.exports.isBlueprintExist = function ( id, callbackFn) {
-    fs.exists(path.join(conf.browseBlueprint.path, id), function (exists){
-        callbackFn(null, exists);
-    });
-};
 
 module.exports.walkBlueprint = function (  id, last_update, callbackFn){
     if(id.indexOf('.') !== -1 || id.indexOf('/') !== -1) {
@@ -118,6 +115,9 @@ module.exports.Walker = function() {
         logger.trace('walkFolder', rootFolder);
         counter++;
         fs.readdir(rootFolder, function (err, files) {
+            if ( !!err ){
+                logger.error('unable to walk folder', err);
+            }
             if (files.length === 0) {
                 doFinalCallback(true);
             }
@@ -156,9 +156,44 @@ module.exports.Walker = function() {
 };
 
 
+/**
+ * We assume we know the type of compression beforehand by some ridiculous convention
+ * @param {string} type - the type of compression. one of tar,tar.gz, tgz, zip. (gzip is not meant for directories and hence not used here: http://unix.stackexchange.com/questions/93139/can-i-zip-an-entire-folder-using-gzip )
+ * @param path - location of compressed file
+ * @param dest - destination folder for extraction
+ */
+exports.extractArchive = function  ( type, path, dest, callback ){
+    logger.debug('extracting', type, path,dest);
+    if ( !callback ){
+        callback = function(){};
+    }
+    try{
+
+        if ( ['tar.gz','tgz'].indexOf(type) >= 0 ) {
+            targz().extract( path , dest , callback);
+        } else if ( type === 'tar' ){
+            logger.debug('extracting tar');
+            fs.createReadStream(path).pipe(tar.extract(dest)).on('finish',callback);
+        }  else if ( type === 'zip' ){
+            logger.debug('extracting zip');
+            fs.createReadStream(path).pipe(unzip.Extract({ path: dest })).on('close',callback);
+        } else {
+            callback(new Error('unknown compression type [' + type + ']'));
+        }
+
+    }catch(e){
+        callback(e);
+    }
+};
+
+function normalizeExtension( filename ){ //
+    return _.find([ 'tar.gz','tgz','tar','zip'], function( type ){
+        return _.endsWith(filename, type);
+    });
+}
+
 
 exports.downloadBlueprint = function( cloudifyClientConf, blueprint_id, last_update, callback) {
-    logger.trace('downloading blueprint');
 
     function alreadyExists( name ){
         return function(e) {
@@ -175,26 +210,33 @@ exports.downloadBlueprint = function( cloudifyClientConf, blueprint_id, last_upd
                 fs.mkdir(pathToCreate, alreadyExists(pathParts[i]));
             }
         }
-        var filepath = path.join(conf.browseBlueprint.path, blueprint_id + '.archive');
-        var file = fs.createWriteStream(filepath);
 
         var requestDetails = {
-            url: cloudifyClientConf.endpoint + '/blueprints/' + blueprint_id + '/archive',
+            url: require('url').resolve(conf.cloudifyManagerEndpoint,'blueprints/' + blueprint_id + '/archive'),
             method: 'GET',
-            auth: cloudifyClientConf.cloudifyAuth
+            auth: cloudifyClientConf.authHeader
         };
+
+        console.log('this is requestDetails', requestDetails );
 
         var stream = request(requestDetails);
         stream.on('response',function(res){
+            var extension = normalizeExtension(res.headers['content-disposition']); // e.g. : 'content-disposition': 'attachment; filename=foo.tar',===> we want the extension
+
+            var filepath = path.join(conf.browseBlueprint.path, blueprint_id + '.' + extension);
+            var file = fs.createWriteStream(filepath);
+
             res.pipe(file);
             file.on('close', function(){
-                compressSrv.extract(blueprint_id, last_update, callback);
+                logger.info('extract');
+                // allow stream to close;
+                setTimeout(function(){ exports.extractArchive( extension, filepath, path.join(conf.browseBlueprint.path , blueprint_id , last_update ), callback ); }, 0);
+
             });
         });
 
-
         stream.on('error', function(e) {
-            logger.info('problem with request: ' + e.message);
+            logger.info('[stream] problem with request: ' + e.message);
             callback(e.message, null);
         });
     });
@@ -204,16 +246,9 @@ exports.downloadBlueprint = function( cloudifyClientConf, blueprint_id, last_upd
 
 exports.browseBlueprint = function( cloudifyConfig, blueprint_id, last_update, callback) {
     logger.trace('browsing blueprint', blueprint_id);
-    exports.isBlueprintExist(blueprint_id, function(err, isExist){
-        if(!isExist) {
-            exports.downloadBlueprint( cloudifyConfig, blueprint_id, last_update, function(err){
-                logger.trace('blueprint downloaded');
-                if(err) {
-                    callback({e: err, errCode: 'browseError'}, null);
-                } else {
-                    exports.walkBlueprint(blueprint_id, last_update, callback);
-                }
-            });
+    exports.downloadBlueprint(cloudifyConfig, blueprint_id, last_update, function (err) {
+        if (err) {
+            callback({e: err, errCode: 'browseError'}, null);
         } else {
             exports.walkBlueprint(blueprint_id, last_update, callback);
         }

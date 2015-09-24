@@ -50,10 +50,10 @@ var publicConfiguration = {
 };
 
 var privateConfiguration = {
-    cosmoServer: undefined,
-    cosmoPort: 80,
     autoDetectProtocol:true, // automatically detect if cloudify is listening on http or https
-    cloudifyManagerEndpoint: 'http://localhost:80',
+    
+    // IMPORTANT: the slash at the end is important !!
+    cloudifyManagerEndpoint: 'http://localhost:80/api/v2/', // require('url').parse(href) ==> protocol+hostname+port+pathname ... (hostname+port == host)
     cloudifyLicense: 'tempLicense',
     secretValue: 'WmLaL99qM95260zZE460d5t2BM4B34yo370447J3f8456F57wrq1Qd653g6s',
     log4js: {
@@ -166,6 +166,24 @@ exports.applyConfiguration = function (settings) {
 
 };
 
+
+var prConf = getPrivateConfiguration();
+if (prConf !== null) {
+    for (var i in prConf) {
+        if (prConf[i] === undefined) {
+
+//            throw new Error('undefined configuration [' + i + ']');
+        }
+        exports[i] = prConf[i];
+    }
+}
+
+
+
+exports.getPublicConfiguration = getPublicConfiguration;
+
+exports.getPrivateConfiguration = getPrivateConfiguration;
+
 function discoverProtocol( endpoint, usingPath, callback ){
     var prefix = endpoint.split(':')[0];
     var other = prefix === 'https' ? 'http' : 'https';
@@ -179,28 +197,17 @@ function discoverProtocol( endpoint, usingPath, callback ){
     });
 }
 
-discoverProtocol(privateConfiguration.cloudifyManagerEndpoint, '/blueprints',function( err, endpoint ){
-    if ( !err && !!endpoint ) {
-        logger.trace('setting endpoint protocol. new endpoint is', endpoint);
-        privateConfiguration.cloudifyManagerEndpoint = endpoint;
-    }else{
-        logger.error('unable to decide protocol',err);
-    }
-});
-
-var prConf = getPrivateConfiguration();
-if (prConf !== null) {
-    for (var i in prConf) {
-        if (prConf[i] === undefined) {
-
-//            throw new Error('undefined configuration [' + i + ']');
+if ( prConf.autoDetectProtocol ) {
+    discoverProtocol(privateConfiguration.cloudifyManagerEndpoint, '/blueprints', function (err, endpoint) {
+        if (!err && !!endpoint) {
+            logger.trace('setting endpoint protocol. new endpoint is', endpoint);
+            exports.cloudifyManagerEndpoint = privateConfiguration.cloudifyManagerEndpoint = endpoint;
+        } else {
+            logger.error('unable to decide protocol', err);
         }
-        exports[i] = prConf[i];
-    }
+    });
+}else{
+    logger.info('auto detect protocol off, will not detect');
 }
-
-exports.getPublicConfiguration = getPublicConfiguration;
-
-exports.getPrivateConfiguration = getPrivateConfiguration;
 
 

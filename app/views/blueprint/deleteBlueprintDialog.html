@@ -1,0 +1,10 @@
+<div id="deleteDialog" class="dialogBox">
+    <div class="dialogTitle"> {{ 'blueprints.dialogs.delete.title' | translate }}</div>
+
+    <div class="dialogDescription"> {{ 'blueprints.dialogs.delete.description' | translate:'{blueprint: blueprint.id}' }}</div>
+    <div class="error-message" data-ng-show="!!errorMessage">{{ errorMessage }}</div>
+    <div class="buttonsContainer confirmationButtons">
+        <button id="cancelBtnDelDep" class="gs-btn" ng-click="closeThisDialog()">{{ 'blueprints.dialogs.delete.cancel' | translate }}</button>
+        <button class="gs-btn" gs-spinner="{{inProcess}}" ng-click="confirmDelete()">{{ 'blueprints.dialogs.delete.confirm' | translate }}</button>
+    </div>
+</div>

@@ -70,12 +70,10 @@ describe('Directive: floatingDeploymentNodePanel', function () {
 
     beforeEach(module('cosmoUiApp', 'ngMock', 'templates-main', 'backend-mock'));
 
-    beforeEach(inject(function ($compile, $rootScope, $httpBackend) {
-        $httpBackend.whenGET('/backend/configuration?access=all').respond(200);
-        $httpBackend.whenGET('/backend/versions/ui').respond(200);
-        $httpBackend.whenGET('/backend/versions/manager').respond(200);
-        $httpBackend.whenGET('/backend/version/latest?version=00').respond('300');
-        $httpBackend.whenGET('/backend/node-instances').respond(200);
+    beforeEach(inject(function ($compile, $rootScope, cloudifyClient ) {
+
+        // by default, don't return a response. invokes unwanted update during tests
+        spyOn(cloudifyClient.nodeInstances,'list').andReturn( { then : function() { } } );
 
         scope = $rootScope.$new();
         scope.node = _nodeInstance;
@@ -88,51 +86,72 @@ describe('Directive: floatingDeploymentNodePanel', function () {
         scope = element.isolateScope();
         isolateScope = element.children().scope();
         scope.$apply();
+
+        scope.nodesList = _nodes;
+        scope.showProperties = undefined;
     }));
 
-    describe('the directive', function() {
-        beforeEach(function() {
-            scope.nodesList = _nodes;
-            scope.showProperties = undefined;
-        });
 
-        it('should create an element with nodeSelected function', function() {
-            expect(typeof(scope.nodeSelected)).toBe('function');
-        });
+    it('should create an element with nodeSelected function', function () {
+        expect(typeof(scope.nodeSelected)).toBe('function');
+    });
 
-        it('should create showProperties object with runtime properties', function() {
+    describe('#nodeSelected', function() {
+        it('should create showProperties object with runtime properties', function () {
             scope.nodeSelected(_nodeInstance);
-
-            waitsFor(function() {
-                return scope.showProperties !== undefined;
-            });
-            runs(function() {
-                expect(scope.showProperties.properties).toBeDefined();
-                expect(scope.showProperties.properties.ip).toBe('1.1.1.1');
-                expect(scope.showProperties.general.state).toBe('started');
-            });
+            expect(scope.showProperties.properties).toBeDefined();
+            expect(scope.showProperties.properties.ip).toBe('1.1.1.1');
+            expect(scope.showProperties.general.state).toBe('started');
         });
+    });
 
-        it('should show panel when node is set', function() {
+    describe('#showPanel', function(){
+        it('should show panel when node is set', function () {
             scope.node = _nodeInstance;
             scope.$apply();
             expect(isolateScope.showPanel).toBe(true);
         });
 
-        it('should hide panel when node is set to null', function() {
+        it('should hide panel when node is set to null', function () {
             scope.node = null;
             scope.$apply();
             expect(isolateScope.showPanel).toBe(false);
         });
+    });
 
-        it('should return public IPs instead of public ip\'s', function() {
+    describe('#hideProperties', function(){
+        it('should make node null', function(){
+            scope.node = 'foo';
+            scope.hideProperties();
+            expect(scope.node).toBe(null);
+        }) ;
+    });
+
+    describe('#showRelationship', function(){
+        it('should toggle value if different', function(){
+            scope.selectedRelationship = 'foo';
+            scope.showRelationship('foo');
+            expect(scope.selectedRelationship).toBe('');
+            scope.showRelationship('foo');
+            expect(scope.selectedRelationship).toBe('foo');
+
+        });
+    });
+
+
+    describe('#getPropertyKeyName', function(){
+
+        it('should return public IPs instead of public ip\'s', function () {
             expect(scope.getPropertyKeyName('ip_addresses')).toBe('public IPs');
+            expect(scope.getPropertyKeyName('ip')).toBe('private IP');
         });
 
-        it('should create showProperties object with node type (CFY-2428)', function() {
+        it('should create showProperties object with node type (CFY-2428)', function () {
             scope.nodeSelected(_nodeInstance);
             expect(scope.showProperties).not.toBe(undefined);
             expect(scope.showProperties.general.type).toBe('nodecellar.nodes.MonitoredServer');
         });
     });
+
+
 });

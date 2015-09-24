@@ -1,87 +1,108 @@
-.source {
-  display: table;
-  width: 100%;
-  .tree {
-    display: table-cell;
-    vertical-align: top;
-    font-size: 13px;
-    min-height: 20px;
-    margin-bottom: 20px;
-    margin-left: -40px;
-  }
-  .tree > ul {
-    margin-left: -10px;
-  }
-  .tree li {
-    list-style-type: none;
-    margin: -3px 0 -5px 25px;
-    padding: 10px 0px 0 0px;
-    position: relative;
-  }
-  .tree li::before, .tree li::after {
-    content: '';
-    left: -20px;
-    position: absolute;
-    right: auto;
-  }
-  .tree li::before {
-    border-left: 1px solid #999;
-    bottom: 50px;
-    height: 100%;
-    top: 0;
-    width: 1px;
-  }
-  .tree li::after {
-    border-top: 1px solid #999;
-    height: 20px;
-    top: 25px;
-    width: 20px;
-  }
-  .tree li span {
-    display: inline-block;
-    padding: 7px 0px 0px;
-    text-decoration: none;
-    white-space: nowrap;
-  }
-  .tree li span.current {
-    color: #4b6c8b;
-  }
-  .tree li span.cliclable {
-    cursor: pointer;
-    &:hover {
-      color: #53bbf1;
+
+#blueprint-source{
+
+
+
+    $TREE_WIDTH:300px;
+
+    .source-content{
+
+        .tree {
+            overflow-x:auto;
+            overflow-y:hidden;
+            float:left;
+            width:20%;
+            font-size: 13px;
+            min-height: 20px;
+            padding-top:40px;
+            padding-left:20px;
+            li {
+                list-style-type: none;
+                margin: -3px 0 -5px 25px;
+                padding: 10px 0px 0 0px;
+                position: relative;
+            }
+            li::before, li::after {
+                content: '';
+                left: -20px;
+                position: absolute;
+                right: auto;
+                border:0;
+            }
+
+            li::before {
+                border-left: 1px solid #999;
+                bottom: 50px;
+                height: 100%;
+                top: 0;
+                width: 1px;
+            }
+            li::after {
+                border-top: 1px solid #999;
+                height: 20px;
+                top: 25px;
+                width: 20px;
+            }
+            li span {
+                display: inline-block;
+                padding: 7px 0px 0px;
+                text-decoration: none;
+                white-space: nowrap;
+                &.current {
+                    color: #4b6c8b;
+                }
+                &.clickable {
+                    cursor: pointer;
+                    &:hover {
+                        color: #53bbf1;
+                    }
+                }
+            }
+
+            li:last-child::before {
+                height: 30px;
+            }
+
+            li.parent_li > span:hover{
+                &, &  + ul li span{
+                    background: #eee;
+                    border: 1px solid #94a0b4;
+                    color: #000;
+                }
+
+            }
+        }
+
+        .sourcecode {
+            float:right;
+            width:78%;
+            .pre{
+                margin:0;
+                .syntaxhighlighter{
+                    margin-bottom:0 !important;
+                }
+            }
+            //          p.empty {
+            //              display: block;
+            //              text-align: center;
+            //              margin: 70px 0;
+            //          }
+
+            //          .pre {
+            //              margin-left: 0;
+            //          }
+            //          .note {
+            //              position: absolute;
+            //              top: -20px;
+            //              right: -19px;
+            //              font-size: 12px;
+            //          }
+        }
+
     }
-  }
-  .tree > ul > li::before, .tree > ul > li::after {
-    border: 0;
-  }
-  .tree li:last-child::before {
-    height: 30px;
-  }
-  .tree li.parent_li > span:hover, .tree li.parent_li > span:hover + ul li span {
-    background: #eee;
-    border: 1px solid #94a0b4;
-    color: #000;
-  }
-  .sourcecode {
-    position: relative;
-    display: table-cell;
-    width: 100%;
-    p.empty {
-      display: block;
-      text-align: center;
-      margin: 70px 0;
-    }
-    .note {
-      position: absolute;
-      top: -20px;
-      right: -19px;
-      font-size: 12px;
-    }
-    h4 {
-      margin-left: 18px;
-    }
-  }
+
+
+
 }
 
 .syntaxhighlighter {

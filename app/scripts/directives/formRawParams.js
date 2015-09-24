@@ -14,7 +14,7 @@
  *
  */
 angular.module('cosmoUiApp')
-    .directive('formRawParams', function (INPUT_STATE,$filter) {
+    .directive('formRawParams', function ($filter) {
         return {
             templateUrl: 'views/directives/formRawParams.html',
             restrict: 'A',
@@ -26,6 +26,9 @@ angular.module('cosmoUiApp')
             },
             link: function postLink(scope/*, element, attrs*/) {
                 var $scope = scope;
+
+                var INPUT_STATE = { RAW: 'raw',PARAMS:'params'};
+
                 $scope.inputsState = INPUT_STATE.PARAMS;
                 $scope.inputs = {};
 
@@ -191,7 +194,7 @@ angular.module('cosmoUiApp')
                     scope.inputs = {};
                     if (!!params) {
                         _.each(params, function (value, key) {
-                            scope.inputs[key] = value.default ? value.default : '';
+                            scope.inputs[key] = value.default !== undefined ? value.default : '';
                         });
                     }
                 });
@@ -212,14 +215,14 @@ angular.module('cosmoUiApp')
                     }
                 };
 
-
                 $scope.parseDefVal = function (defaultVal) {
+                    //since typeof null is 'object' yet I don't want it to be stringify
                     if (defaultVal === null) {
-                        return 'null';
-                    } else if (typeof defaultVal === 'string') {
-                        return defaultVal;
-                    } else {
+                        return null;
+                    } else if (typeof defaultVal === 'object') {
                         return JSON.stringify(defaultVal);
+                    } else {
+                        return defaultVal;
                     }
                 };
 

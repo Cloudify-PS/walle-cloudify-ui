@@ -79,6 +79,9 @@ angular.module('cosmoUiApp')
                     return $scope.currentExecution && $scope.currentExecution.workflow_id === 'create_deployment_environment';
                 };
 
+                $scope.goToDeployments = function() {
+                    $location.path('/deployments');
+                };
 
                 $scope.registerTickerTask('deploymentLayout/loadExecutions', _loadExecutions, 1000);
 

@@ -2,168 +2,114 @@
 
 describe('Service: VersionService', function () {
     var versionService;
-    var latestUrl = '/backend/version/latest';
-    var managerUrl = '/backend/versions/manager';
-    var uiUrl = '/backend/versions/ui';
-    var ver = '310';
 
-    beforeEach(module('cosmoUiApp', 'ngMock','backend-mock'));
-    beforeEach(function() {
-        // load the filter's module
+    beforeEach(module('cosmoUiApp', 'ngMock', 'backend-mock'));
+    beforeEach(inject(function (VersionService) {
+        versionService = VersionService;
+    }));
 
 
-        // initialize a new instance of the filter
-        inject(function (VersionService, $httpBackend) {
-            $httpBackend.whenGET('/backend/configuration?access=all').respond(200);
-            $httpBackend.whenGET('/backend/version/latest?version=00').respond('300');
-
-            versionService = VersionService;
-        });
+    it('should create a new VersionService instance', function () {
+        expect(versionService).not.toBeUndefined();
     });
 
-    describe('Unit tests', function() {
+    describe('#getLatest', function(){
+        it('should call backend for latest version only once', inject(function ($httpBackend) {
+            $httpBackend.expectGET('/backend/version/latest?version=foo');
+            versionService.getLatest('foo');
+            versionService.getLatest('foo'); // don't fail
+            versionService.getLatest('foo');
+        }));
+    });
 
-        it('should create a new VersionService instance', function() {
-            expect(versionService).not.toBeUndefined();
-        });
-
-        it('should call backend for ui version', inject(function($httpBackend) {
-            $httpBackend.expectGET(uiUrl).respond(200, {version: 310});
-
+    describe('#getUiVersion', function(){
+        it('should call backend for ui version', inject(function ($http) {
+            spyOn($http,'get');
             versionService.getUiVersion();
-        }));
+            expect($http.get).toHaveBeenCalledWith('/backend/versions/ui');
 
-        it('should call backend for manager version', inject(function($httpBackend) {
-            $httpBackend.expectGET(managerUrl).respond(200, {version: 310});
-
-            versionService.getManagerVersion();
-        }));
-
-        it('should call backend for latest version', inject(function($httpBackend) {
-            $httpBackend.expectGET(latestUrl + '?version=' + ver).respond(200, '310');
-
-            versionService.getLatest(ver);
-        }));
-
-
-        it('should invoke only once when multiple calls for latest version are made', inject(function($httpBackend) {
-            $httpBackend.expectGET(latestUrl + '?version=' + ver).respond(200, '321');
-            var result;
-
-            versionService.getLatest(ver);
-            versionService.getLatest(ver).then(function(latest) {
-                result = latest.data;
-            });
-
-            waitsFor(function() {
-                return result !== undefined;
-            });
-            runs(function() {
-                expect(result).toBe('321');
-            });
-
-            $httpBackend.flush();
-        }));
-
-        it('should return false if latest version returns invalid', inject(function($httpBackend) {
-            $httpBackend.whenGET(uiUrl).respond(200, {version: 310});
-            $httpBackend.whenGET(latestUrl + '?version=' + ver).respond(200, 'aaa');
-            var result;
-
-            versionService.needUpdate().then(function(needUpdate) {
-                result = needUpdate;
-            });
-
-            waitsFor(function() {
-                return result !== undefined;
-            });
-            runs(function() {
-                expect(result).toBe(false);
-            });
-
-            $httpBackend.flush();
-        }));
-
-        it('should return false if UI requires an update', inject(function($httpBackend) {
-            $httpBackend.whenGET(uiUrl).respond(200, {version: 310});
-            $httpBackend.whenGET(latestUrl + '?version=' + ver).respond(200, '310');
-            var result;
-
-            versionService.needUpdate().then(function(needUpdate) {
-                result = needUpdate;
-            });
-
-            waitsFor(function() {
-                return result !== undefined;
-            });
-            runs(function() {
-                expect(result).toBe(false);
-            });
-
-            $httpBackend.flush();
-        }));
-
-        it('should return true if UI requires an update', inject(function($httpBackend) {
-            $httpBackend.whenGET(uiUrl).respond(200, {version: 310});
-            $httpBackend.whenGET(latestUrl + '?version=' + ver).respond(200, '320');
-            var result;
-
-            versionService.needUpdate().then(function(needUpdate) {
-                result = needUpdate;
-            });
-
-            waitsFor(function() {
-                return result !== undefined;
-            });
-            runs(function() {
-                expect(result).toBe(true);
-            });
-
-            $httpBackend.flush();
-        }));
-
-        it('should return an object holding the ui & manager current versions', inject(function($httpBackend) {
-            $httpBackend.whenGET(uiUrl).respond(200, {version: 310});
-            $httpBackend.whenGET(managerUrl).respond(200, {version: 320});
-            var result;
-
-            versionService.getVersions().then(function(versions) {
-                result = versions;
-            });
-
-            waitsFor(function() {
-                return result !== undefined;
-            });
-            runs(function() {
-                expect(result.ui).toBe(310);
-                expect(result.manager).toBe(320);
-            });
-
-            $httpBackend.flush();
-        }));
-
-        it('should return cached latest version from second call', inject(function($httpBackend) {
-            $httpBackend.expectGET(latestUrl + '?version=' + ver).respond(200, '320');
-            var result1;
-            var result2;
-
-            versionService.getLatest(ver).then(function(latest1) {
-                result1 =  latest1.data;
-                versionService.getLatest(ver).then(function(latest2) {
-                    result2 = latest2.data;
-                });
-            });
-
-
-            waitsFor(function() {
-                return result2 !== undefined;
-            });
-            runs(function() {
-                expect(result2).toEqual(result1);
-            });
-
-            $httpBackend.flush();
         }));
 
     });
+
+    describe('#getManagerVersion', function(){
+        it('should call backend for manager version', inject(function (cloudifyClient) {
+            spyOn(cloudifyClient.manager,'get_version');
+            versionService.getManagerVersion();
+            expect(cloudifyClient.manager.get_version).toHaveBeenCalled();
+        }));
+    });
+
+    describe('#needUpdate', function(){
+
+        var resolution = null;
+        var uiVersion = null;
+        var latestVersion = null;
+
+        beforeEach(inject(function ($q) {
+            resolution = null;
+            uiVersion = { data :  null } ;
+            latestVersion = { data :  null  };
+            spyOn($q, 'defer').andReturn({
+                promise: 'foo',
+                resolve: function (res) {
+                    resolution = res;
+                }
+            });
+            spyOn(versionService,'getUiVersion').andReturn({
+                then:function( success ){
+                    console.log('return uiVersion', uiVersion );
+                    success( uiVersion );
+                }
+            });
+            spyOn(versionService,'getLatest').andReturn({
+                then:function(success){
+                    success( latestVersion );
+                }
+            });
+        }));
+
+        describe('with corrupt data', function(){
+            it('should return false if ui version is corrupt', function () {
+                uiVersion.data = { version : 'foo' };
+                versionService.needUpdate();
+                expect(resolution).toBe(false);
+            });
+
+            it('should return false if ui version is missing completely', function(){
+                versionService.needUpdate();
+                expect(resolution).toBe(false);
+            });
+
+        });
+
+        describe('proper data', function(){
+            it('should return false if ui version >= latest', function(){
+                uiVersion.data = { version : '6' };
+                latestVersion.data = '5' ;
+                versionService.needUpdate();
+                expect(resolution).toBe(false);
+            });
+
+            it('should return true if ui version< latest', function(){
+                uiVersion.data = { version : '6' };
+                latestVersion.data =  '8' ;
+                versionService.needUpdate();
+                expect(resolution).toBe(true);
+            });
+        });
+    });
+
+    describe('#getVersions', function(){
+
+    });
+
+
+
+
+
+
+
+
+
 });

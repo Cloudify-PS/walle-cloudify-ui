@@ -1,13 +1,13 @@
 <div ng-switch="setBrowseType(data)">
-    <span class="cliclable" ng-switch-when="folder" ng-click="openTreeFolder(data)">
+    <span class="clickable" ng-switch-when="folder" ng-click="openTreeFolder(data)">
         <i class="fa " data-ng-class="isFolderOpen(data)"></i>
         {{data.name}}
     </span>
-    <span class="cliclable" data-ng-class="isSelected(data.name)" ng-switch-when="file-ASCII" ng-click="openSourceFile(data)">
+    <span class="clickable" data-ng-class="isSelected(data.name)" ng-switch-when="file-ASCII" ng-click="openSourceFile(data)">
         <i class="fa fa-file-code-o"></i>
         {{data.name}}
     </span>
-    <span class="cliclable" ng-switch-when="file-BINARY" ng-click="openSourceFile(data)">
+    <span class="clickable" ng-switch-when="file-BINARY" ng-click="openSourceFile(data)">
         <i class="fa fa-file-image-o"></i>
         {{data.name}}
     </span>
