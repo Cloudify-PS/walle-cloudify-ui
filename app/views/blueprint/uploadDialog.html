@@ -6,7 +6,7 @@
         <div class="browse">
             <div id="browseBtn" class="gs-btn">
                 <i class="icon-gs-add-file"></i>
-                <input type="file" name="fileInput" id="fileInput" accept=".tar.gz,.tar,.tgz,.zip" ng-file-select="onFileSelect($files)">
+                <input type="file" name="fileInput" id="fileInput" accept=".gz,.tar.gz,.tar,.tgz,.zip" ng-file-select="onFileSelect($files)">
             </div>
             <input type="text" spellcheck="false" class="browseTxt" ng-change="updatePath()" ng-model="inputText" placeholder="{{ 'dialogs.upload.browseText' | translate }}" required>
         </div>
