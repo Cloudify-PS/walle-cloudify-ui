@@ -19,7 +19,9 @@ angular.module('cosmoUiApp', [
     'jsbb.angularTicker',
     'cloudifyjs',
     'ui.bootstrap',
-    'smart-table'
+    'smart-table',
+    'angularMoment',
+    'datePicker'
 ]).config( function ($routeProvider, $httpProvider, $translateProvider) {
 
         //var isSettingsExists = window.isSettingsExists();

@@ -2,176 +2,183 @@
 
 describe('Controller: LogsCtrl', function () {
     var LogsCtrl, scope;
-    var anchorScroll = null;
+    var _CloudifyService, _cloudifyClient, _TableStateToRestApi, _EventsMap;
 
-    beforeEach(module('cosmoUiApp', 'ngMock','backend-mock', 'backend-mock'));
+    beforeEach(module('cosmoUiApp', 'backend-mock'));
 
+    var init = inject(function (CloudifyService, cloudifyClient, TableStateToRestApi, EventsMap) {
+        _CloudifyService = CloudifyService;
+        _cloudifyClient = cloudifyClient;
+        _TableStateToRestApi = TableStateToRestApi;
+        _EventsMap = EventsMap;
 
+        spyOnServices();
+        initCtrl();
 
-    function mockEventsService (){
-        return {
-            newInstance: function() {
-                return {
-                    filterRange: function() {},
-                    filterRemove: function() {},
-                    getExecuteLastFiftyOptions: function() {},
-                    filter: function() {},
-                    execute: function() {}
-                };
-            }
-        };
-    }
+    });
 
-    function mockCloudifyService( $q, CloudifyService ){
-
-        CloudifyService.getConfiguration = function () {
-            var deferred = $q.defer();
-
-            deferred.resolve({});
-
-            return deferred.promise;
-        };
-
-        CloudifyService.blueprints.list = function() {
-            var deferred = $q.defer();
-            var blueprints = [
-                {
-                    'id': 'blueprint1',
-                    'deployments': [
-                        {
-                            'blueprint_id': 'blueprint1',
-                            'id': 'firstDep'
-                        },
-                        {
-                            'blueprint_id': 'blueprint1',
-                            'id': 'secondDep'
-                        }
-                    ]
-                },
-                {
-                    'id': 'blueprint2',
-                    'deployments': [
-                        {
-                            'blueprint_id': 'blueprint2',
-                            'id': 'onlyOneDeployment'
-                        }
-                    ]
-                }
-            ];
-            deferred.resolve(blueprints);
-            return deferred.promise;
-        };
-
-        CloudifyService.deployments.getDeploymentExecutions = function() {
-            var deferred = $q.defer();
-            deferred.resolve([]);
-            return deferred.promise;
-        };
-
-        return CloudifyService;
-    }
-
-    var initializeController = inject(function( $controller, $q, CloudifyService ){
-        anchorScroll = jasmine.createSpy();
+    var initCtrl = inject(function ($rootScope, $controller) {
+        scope = $rootScope.$new();
         LogsCtrl = $controller('LogsCtrl', {
-            $scope: scope,
-            $anchorScroll : anchorScroll,
-            EventsService: mockEventsService(),
-            CloudifyService: mockCloudifyService( $q, CloudifyService)
+            $scope: scope
         });
     });
 
-    function setup() {
-        inject(function ($controller, $rootScope) {
-            scope = $rootScope.$new();
-            initializeController( );
+    var spyOnServices = function () {
+        spyOn(_CloudifyService.blueprints, 'list').andReturn({
+            then: function () {
+            }
         });
-    }
 
-    function flush(){
-        inject(function($httpBackend, $timeout){
-            try {
-                $httpBackend.flush();
-            }catch(e){}
-            try{
-                $timeout.flush();
-            }catch(e){}
+        spyOn(_cloudifyClient.events, 'get').andReturn({
+            then: function () {
+            }
         });
-    }
 
-    beforeEach(setup);
+        spyOn(_TableStateToRestApi, 'getOptions').andReturn({});
 
-    describe('Controller tests', function() {
+        spyOn(_EventsMap, 'getEventIcon').andReturn('');
+
+        spyOn(_EventsMap, 'getEventText').andReturn('');
+    };
+
+    beforeEach(init);
+
+    describe('Controller tests', function () {
 
         it('should create a controller', function () {
             expect(LogsCtrl).not.toBeUndefined();
         });
-
-        it('should select all blueprints and show their events from the last 5 minutes on first page entry', function() {
-            expect(JSON.stringify(scope.eventsFilter.blueprints)).toBe(JSON.stringify(scope.blueprintsList));
-        });
-
-        it('should set isSearchDisabled flag to true if no blueprints were selected', function() {
-            flush();
-            scope.isSearchDisabled = false;
-            scope.eventsFilter.blueprints = [];
-            scope.$apply();
-            expect(scope.isSearchDisabled).toBe(true);
-        });
-
-        it('should set isSearchDisabled flag to false if blueprints were selected', function(  ) {
-            flush();
-            scope.isSearchDisabled = true;
-            scope.eventsFilter.blueprints = [{
-                name: 'blueprint1'
-            }];
-            scope.$apply();
-            expect(scope.isSearchDisabled).toBe(false);
-        });
-    });
-
-    describe('scrollToTop', function(){
-        it('should call anchorScroll', function(){
-            scope.scrollToTop();
-            expect(anchorScroll).toHaveBeenCalled();
-        });
-    });
-
-    describe('execute', function(){
-        it('should execute logs if search is disabled', function(){
-            scope.filterLoading = false;
-            scope.execute();
-            expect(scope.filterLoading).toBe(false); // logs was not called
-
-            scope.isSearchDisabled = false;
-            scope.execute();
-            expect(scope.filterLoading).toBe(true); // logs was not called
-        });
-    });
-
-    describe('logs controller', function () {
-        describe('#first load', function () {
-            it('should not execute logs if no deployments were selected in filter', function () {
-                scope.eventsFilter.deployments = [];
-                spyOn(scope.events, 'execute').andCallThrough();
-
-                expect(scope.events.execute).not.toHaveBeenCalled();
+        describe('on first load', function () {
+            it('should define filter options', function () {
+                expect(scope.eventsFilter.blueprints).toEqual([]);
+                expect(scope.eventsFilter.deployments).toEqual([]);
             });
 
-            it('should execute logs if deployments were selected in filter', function () {
-                scope.eventsFilter.deployments = [
-                    {
-                        name: 'deployment1'
+            describe('mock blueprints list', function () {
+                beforeEach(function () {
+                    _CloudifyService.blueprints.list.andReturn({
+                        then: function (successCallback) {
+
+                            var blueprints = [
+                                {
+                                    'id': 'blueprint1',
+                                    'deployments': [
+                                        {
+                                            'blueprint_id': 'blueprint1',
+                                            'id': 'firstDep'
+                                        },
+                                        {
+                                            'blueprint_id': 'blueprint1',
+                                            'id': 'secondDep'
+                                        }
+                                    ]
+                                },
+                                {
+                                    'id': 'blueprint2',
+                                    'deployments': [
+                                        {
+                                            'blueprint_id': 'blueprint2',
+                                            'id': 'onlyOneDeployment'
+                                        }
+                                    ]
+                                }
+                            ];
+                            successCallback(blueprints);
+                        }
+                    });
+                });
+
+                it('should load blueprintsList', function () {
+                    initCtrl();
+
+                    expect(_CloudifyService.blueprints.list).toHaveBeenCalled();
+                    expect(scope.blueprintsList).toEqual([
+                        {
+                            'value': 'blueprint1',
+                            'label': 'blueprint1'
+                        },
+                        {
+                            'value': 'blueprint2',
+                            'label': 'blueprint2'
+                        }
+                    ]);
+                });
+
+                it('should load deploymentsList', function () {
+                    initCtrl();
+
+                    expect(_CloudifyService.blueprints.list).toHaveBeenCalled();
+                    expect(scope.deploymentsList).toEqual([
+                        {
+                            'value': 'firstDep',
+                            'label': 'firstDep',
+                            'parent': 'blueprint1'
+                        },
+                        {
+                            'value': 'secondDep',
+                            'label': 'secondDep',
+                            'parent': 'blueprint1'
+                        },
+                        {
+                            'value': 'onlyOneDeployment',
+                            'label': 'onlyOneDeployment',
+                            'parent': 'blueprint2'
+                        }
+                    ]);
+                });
+            });
+        });
+
+        describe('#updateData', function () {
+            var defaultMockTableState;
+            beforeEach(function () {
+                //setting default tableState settings object
+                defaultMockTableState = {
+                    pagination: {}
+                };
+            });
+
+            it('should update data on tableState change and not show error', function () {
+                //mocking success response data from events
+                _cloudifyClient.events.get.andReturn({
+                    then: function (successCallback) {
+                        var getLogsResponse = {
+                            data: {
+                                hits: {
+                                    hits: [],
+                                    total: 1
+                                }
+                            },
+                            status: 200
+                        };
+                        successCallback(getLogsResponse);
                     }
-                ];
-                spyOn(scope.events, 'execute').andCallThrough();
-                flush();
-                scope.$apply();
-                expect(scope.events.execute).toHaveBeenCalled();
+                });
+
+                expect(scope.logsHits).toBe(undefined);
+                scope.updateData(defaultMockTableState);
+                expect(scope.logsHits).not.toBe(undefined);
+                expect(scope.getLogsError).toBe(null);
+            });
+
+            it('should show error when failing to update data on tableState Change', function () {
+                //mocking failure response data from events
+                _cloudifyClient.events.get.andReturn({
+                    then: function (successCallback, failureCallback) {
+                        var getLogsResponse = {
+                            data: {
+                                message: 'Getting logs failed message'
+                            },
+                            status: 500
+                        };
+                        failureCallback(getLogsResponse);
+                    }
+                });
+
+                scope.updateData(defaultMockTableState);
+                expect(scope.getLogsError).toBe('Getting logs failed message');
             });
         });
     });
-
-
-
 });

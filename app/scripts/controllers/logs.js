@@ -1,9 +1,28 @@
 'use strict';
 
 angular.module('cosmoUiApp')
-    .controller('LogsCtrl', function ($scope, EventsService, CloudifyService, EventsMap) {
+    .controller('LogsCtrl', function ($scope, cloudifyClient, CloudifyService, EventsMap, $routeParams, TableStateToRestApi) {
 
         $scope.itemsPerPage = 9;
+        $scope.eventsFilter = {
+            'blueprints': [],
+            'deployments': []
+            //'timeRange':{
+            //    'lte': "",
+            //    'gte': ""
+            //}
+        };
+
+        //TODO: make url params and params effect each other
+        //loading filter options from the url params if given - enable us to present a specific event page by changing the url.
+        //if ($routeParams.filter) {
+        //    try {
+        //        $scope.eventsFilter = JSON.parse($routeParams.filter);
+        //    }
+        //    catch (exception) {
+        //        $scope.eventsFilter = null;
+        //    }
+        //}
 
         //Getting blueprint and deployments lists
         CloudifyService.blueprints.list()
@@ -24,39 +43,21 @@ angular.module('cosmoUiApp')
                 }
             });
 
-        $scope.updateData =function (tableState){
-            var options = {
-                from: tableState.pagination.start,
-                size: tableState.pagination.number,
-                include_logs:true
-                ///*           query: {},
-                //           filters: [],
-                //*/
-                };
+        /**
+         * @description  generate and execute a query based on tableState to receive results and render them to the table
+         * @param tableState - all the filters , sorts and pagination applied on the table
+         */
+        $scope.updateData = function (tableState) {
+            var options = TableStateToRestApi.getOptions(tableState);
 
-            if( Object.keys(tableState.sort ).length > 0){
-                //removing _source from the field for sorting
-                var sortField = tableState.sort.predicate.split('.');
-                sortField.shift();
-                sortField = sortField.join('.');
-                options.sort ={
-                    field: sortField,
-                    order: tableState.sort.reverse ? 'desc' : 'asc',
-                    //field: "timestamp",
-                    //order: 'asc'
-                };
-                //console.log(options.sort.order);
-            }
-            //console.log(tableState);
-            console.log(options);
-
-            EventsService.execute(options, function(error, response){
-
-                //console.log(response.data);
+            cloudifyClient.events.get(options).then(function (response) {
+                    $scope.getLogsError = null;
                     $scope.logsHits = response.data.hits.hits;
                     tableState.pagination.totalItemCount = response.data.hits.total;
-                    tableState.pagination.numberOfPages = Math.ceil(response.data.hits.total/options.size);
-            });
+                    tableState.pagination.numberOfPages = Math.ceil(response.data.hits.total / options.size);
+                },function(response){
+                    $scope.getLogsError = response.data.message;
+                });
         };
 
         //Mapping event_type text(returned from elasticsearch) to our desired css,text and icon
@@ -67,5 +68,10 @@ angular.module('cosmoUiApp')
 
         $scope.getEventText = function (event) {
             return EventsMap.getEventText(event);
+        };
+
+        //creating an Array of the values of the requested key
+        $scope.pluckArrayOfObjects = function (objectsArray, key) {
+            return _.pluck(objectsArray, key);
         };
     });
