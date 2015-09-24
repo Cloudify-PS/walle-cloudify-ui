@@ -2,12 +2,11 @@
 
 describe('Controller: LogsCtrl', function () {
     var LogsCtrl, scope;
-    var _CloudifyService, _cloudifyClient, _TableStateToRestApi, _EventsMap;
+    var _cloudifyClient, _TableStateToRestApi, _EventsMap;
 
     beforeEach(module('cosmoUiApp', 'backend-mock'));
 
-    var init = inject(function (CloudifyService, cloudifyClient, TableStateToRestApi, EventsMap) {
-        _CloudifyService = CloudifyService;
+    var init = inject(function (cloudifyClient, TableStateToRestApi, EventsMap) {
         _cloudifyClient = cloudifyClient;
         _TableStateToRestApi = TableStateToRestApi;
         _EventsMap = EventsMap;
@@ -25,7 +24,12 @@ describe('Controller: LogsCtrl', function () {
     });
 
     var spyOnServices = function () {
-        spyOn(_CloudifyService.blueprints, 'list').andReturn({
+        spyOn(_cloudifyClient.blueprints, 'list').andReturn({
+            then: function () {
+            }
+        });
+
+        spyOn(_cloudifyClient.deployments, 'list').andReturn({
             then: function () {
             }
         });
@@ -57,42 +61,50 @@ describe('Controller: LogsCtrl', function () {
 
             describe('mock blueprints list', function () {
                 beforeEach(function () {
-                    _CloudifyService.blueprints.list.andReturn({
+                    _cloudifyClient.blueprints.list.andReturn({
                         then: function (successCallback) {
+                            var response = {
+                                data: [
+                                    {
+                                        'id': 'blueprint1'
+                                    },
+                                    {
+                                        'id': 'blueprint2'
+                                    }
+                                ]
+                            };
+                            successCallback(response);
+                        }
+                    });
 
-                            var blueprints = [
-                                {
-                                    'id': 'blueprint1',
-                                    'deployments': [
-                                        {
-                                            'blueprint_id': 'blueprint1',
-                                            'id': 'firstDep'
-                                        },
-                                        {
-                                            'blueprint_id': 'blueprint1',
-                                            'id': 'secondDep'
-                                        }
-                                    ]
-                                },
-                                {
-                                    'id': 'blueprint2',
-                                    'deployments': [
-                                        {
-                                            'blueprint_id': 'blueprint2',
-                                            'id': 'onlyOneDeployment'
-                                        }
-                                    ]
-                                }
-                            ];
-                            successCallback(blueprints);
+                    _cloudifyClient.deployments.list.andReturn({
+                        then: function (successCallback) {
+                            var response = {
+                                data: [
+                                    {
+                                        'id': 'firstDep',
+                                        'blueprint_id': 'blueprint1'
+
+                                    },
+                                    {
+                                        'id': 'secondDep',
+                                        'blueprint_id': 'blueprint1'
+                                    },
+                                    {
+                                        'id': 'onlyOneDeployment',
+                                        'blueprint_id': 'blueprint2'
+
+                                    }
+                                ]
+                            };
+                            successCallback(response);
                         }
                     });
                 });
 
                 it('should load blueprintsList', function () {
                     initCtrl();
-
-                    expect(_CloudifyService.blueprints.list).toHaveBeenCalled();
+                    expect(_cloudifyClient.blueprints.list).toHaveBeenCalled();
                     expect(scope.blueprintsList).toEqual([
                         {
                             'value': 'blueprint1',
@@ -108,7 +120,7 @@ describe('Controller: LogsCtrl', function () {
                 it('should load deploymentsList', function () {
                     initCtrl();
 
-                    expect(_CloudifyService.blueprints.list).toHaveBeenCalled();
+                    expect(_cloudifyClient.deployments.list).toHaveBeenCalled();
                     expect(scope.deploymentsList).toEqual([
                         {
                             'value': 'firstDep',

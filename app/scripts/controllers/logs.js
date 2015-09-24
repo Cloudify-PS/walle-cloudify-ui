@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('cosmoUiApp')
-    .controller('LogsCtrl', function ($scope, cloudifyClient, CloudifyService, EventsMap, $routeParams, TableStateToRestApi) {
+    .controller('LogsCtrl', function ($scope, cloudifyClient, EventsMap, $routeParams, TableStateToRestApi) {
 
         $scope.itemsPerPage = 9;
         $scope.eventsFilter = {
@@ -24,23 +24,26 @@ angular.module('cosmoUiApp')
         //    }
         //}
 
-        //Getting blueprint and deployments lists
-        CloudifyService.blueprints.list()
-            .then(function (data) {
+        //Getting blueprints list
+        cloudifyClient.blueprints.list()
+            .then(function (response) {
                 $scope.blueprintsList = [];
-                $scope.deploymentsList = [];
-                for (var j in data) {
-                    var blueprint = data[j];
+                _.forEach(response.data, function(blueprint){
                     $scope.blueprintsList.push({'value': blueprint.id, 'label': blueprint.id});
-                    for (var i in blueprint.deployments) {
-                        var deployemnt = blueprint.deployments[i];
-                        $scope.deploymentsList.push({
-                            'value': deployemnt.id,
-                            'label': deployemnt.id,
-                            'parent': blueprint.id
-                        });
-                    }
-                }
+                });
+            });
+
+        //getting deployments list
+        cloudifyClient.deployments.list()
+            .then(function(response){
+                $scope.deploymentsList = [];
+                _.forEach(response.data, function(deployment){
+                    $scope.deploymentsList.push({
+                        'value': deployment.id,
+                        'label': deployment.id,
+                        'parent': deployment.blueprint_id
+                    });
+                });
             });
 
         /**
