@@ -66,7 +66,7 @@ exports.uploadBlueprint = function( cloudifyConf, streamReader, opts, callback) 
         });
 
         res.on('end', function() {
-            if (res.statusCode === 200) {
+            if (res.statusCode === 200 || res.statusCode === 201) {
                 callback(null, res.statusCode);
             } else {
                 try {
