@@ -65,15 +65,11 @@ exports.uploadBlueprint = function( cloudifyConf, streamReader, opts, callback) 
             logger.debug('chunk: ' + chunk.toString());
         });
 
-        res.on('end', function() {
-            if (res.statusCode === 200) {
-                callback(null, res.statusCode);
-            } else {
-                try {
-                    callback(JSON.parse(responseMessage), res.statusCode);
-                }catch(e){ // responseMessage might not be a JSON (nginx sometimes returns html)
-                    callback({'message' : responseMessage}, res.statusCode);
-                }
+        res.on('end', function () {
+            try {
+                callback(null, JSON.parse(responseMessage), res.statusCode);
+            } catch (e) { // responseMessage might not be a JSON (nginx sometimes returns html)
+                callback(null, {'message': responseMessage}, res.statusCode);
             }
         });
     }

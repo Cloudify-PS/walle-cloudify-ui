@@ -86,7 +86,7 @@ exports.upload = function( req, res ){
         logger.debug(type, 'is valid upload type');
     }
 
-    function uploadCallback( err, data ){
+    function uploadCallback( err, data, statusCode ){
         //logger.info('handling upload callback', err, data );
         if ( !!err ){
             if ( !!err.status ){
@@ -99,6 +99,9 @@ exports.upload = function( req, res ){
             return;
         }
 
+        if ( !!statusCode ){
+            res.status(statusCode);
+        }
         res.send(data);
     }
 
