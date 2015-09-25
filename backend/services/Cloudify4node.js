@@ -82,8 +82,9 @@ exports.uploadBlueprint = function( cloudifyConf, streamReader, opts, callback) 
     var querystr = querystring.stringify(opts.params);
 
     var requestOptions = {
-        host: endpoint.host,
-        path: require('url').resolve(endpoint.path,'blueprints/' + opts.blueprint_id + ( querystr ?  '?'  + querystr : '' )) ,
+        hostname: endpoint.hostname,
+        port: endpoint.port,
+        path: require('url').resolve(endpoint.path, 'blueprints/' + opts.blueprint_id + ( querystr ? '?' + querystr : '' )),
         method: 'PUT',
         headers: {
             'Content-Type': 'application/octet-stream',

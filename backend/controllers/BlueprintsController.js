@@ -87,7 +87,19 @@ exports.upload = function( req, res ){
     }
 
     function uploadCallback( err, data ){
-        res.send(err || data, err !== null ? data : 200);
+        //logger.info('handling upload callback', err, data );
+        if ( !!err ){
+            if ( !!err.status ){
+                res.status(err.status).send(err);
+                return;
+            }else{
+                res.status(500).send(err);
+                return;
+            }
+            return;
+        }
+
+        res.send(data);
     }
 
     if ( type === uploadTypes.ids.FILE ){
