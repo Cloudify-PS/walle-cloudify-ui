@@ -1,6 +1,11 @@
 <div class="blueprint-layout" id="blueprint">
 
     <div class="source clearfix" id="blueprint-source">
+
+        <div class="noPreview" ng-show="!isSourceText(filename)">
+            <p class="empty">{{'blueprints.source.' + errorMessage | translate}}</p>
+        </div>
+
         <div class="source-content">
             <div class="tree">
                 <ul>
@@ -15,9 +20,6 @@
                     <p class="empty" data-ng-hide="dataCode.data">{{ 'blueprints.source.chooseFile' | translate }}</p>
 
                     <div code-highlight="yml" ng-model="dataCode"></div>
-                </div>
-                <div class="noPreview" ng-show="!isSourceText(filename)">
-                    <p class="empty">{{'blueprints.source.' + errorMessage | translate}}</p>
                 </div>
             </div>
         </div>
