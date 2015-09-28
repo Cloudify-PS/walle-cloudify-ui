@@ -48,7 +48,8 @@ In the directory `conf/dev` create a file `meConf.js` containing the following c
 ```javascript
 var exports = module.exports = {  
     cosmoServer: '10.10.1.10',  
-    cloudifyManagerEndpoint: 'http://10.10.1.10:80'  
+    cloudifyManagerEndpoint: 'http://10.10.1.10',
+    port: '80'
 }  
 ```
 To launch a preview server run `grunt server` in the same directory. Launch `node server` in the root directory to connect frontend to cloudify.
