@@ -9,7 +9,6 @@ angular.module('cosmoUiApp', [
     'ngResource',
     'elasticjs.service',
     'ngAnimate',
-    'nvd3ChartDirectives',
     'ngStorage',
     'timer',
     'pascalprecht.translate',
