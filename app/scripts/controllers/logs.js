@@ -6,7 +6,8 @@ angular.module('cosmoUiApp')
         $scope.itemsPerPage = 9;
         $scope.eventsFilter = {
             'blueprints': [],
-            'deployments': []
+            'deployments': [],
+            'logLevels': []
             //'timeRange':{
             //    'lte': "",
             //    'gte': ""
@@ -23,6 +24,9 @@ angular.module('cosmoUiApp')
         //        $scope.eventsFilter = null;
         //    }
         //}
+
+        //Log levels List
+        $scope.logLevelsList = [{value:'error',label:'ERROR'},{value:'warning',label:'WARNING'},{value:'info',label:'INFO'}];
 
         //Getting blueprints list
         cloudifyClient.blueprints.list()

@@ -193,6 +193,10 @@
             "deployments": {
                 "title": "Deployments:",
                 "text": "Choose Deployments"
+            },
+            "logLevels": {
+                "title": "Log levels:",
+                "text": "Choose log levels"
             }
         }
     },
