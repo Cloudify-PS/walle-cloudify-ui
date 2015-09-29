@@ -18,7 +18,8 @@ angular.module('cosmoUiApp', [
     'angular-loading-bar',
     'jsbb.angularTicker',
     'cloudifyjs',
-    'ui.bootstrap'
+    'ui.bootstrap',
+    'smart-table'
 
 ]).config( function ($routeProvider, $httpProvider, $translateProvider) {
 
@@ -37,9 +38,10 @@ angular.module('cosmoUiApp', [
                 templateUrl: 'views/main.html',
                 controller: 'MainCtrl'
             })
-            .when('/blueprints', {
+            .when('/blueprints/', {
                 templateUrl: 'views/blueprintsIndex.html',
-                controller: 'BlueprintsIndexCtrl'
+                controller: 'BlueprintsIndexCtrl',
+                reloadOnSearch: false
             })
             .when('/blueprint/:blueprintId/topology', {
                 templateUrl: 'views/blueprint/blueprintTopology.html',

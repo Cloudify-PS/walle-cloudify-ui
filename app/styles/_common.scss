@@ -31,6 +31,26 @@
                         background-color: #D9EDFC;
                     }
                 }
+
+                &.st-sort-ascent:after {
+                    font-size: 10px;
+                    margin-left: 5px;
+                    position:relative;
+                    top: -3px;
+                    content: '\25B2';
+                }
+
+                &.st-sort-descent:after {
+                    font-size: 10px;
+                    margin-left: 5px;
+                    position:relative;
+                    top: -2px;
+                    content: '\25BC';
+                }
+
+                input {
+                    padding-left: 4px;
+                }
             }
         }
     }
