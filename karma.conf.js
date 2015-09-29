@@ -57,6 +57,7 @@ module.exports = function(config) {
             'app/bower_components/angular-loading-bar/build/loading-bar.js',
             'app/bower_components/angular-bootstrap/ui-bootstrap.js',
             'app/bower_components/angular-bootstrap/ui-bootstrap-tpls.js',
+            'app/bower_components/angular-smart-table/dist/smart-table.js',
             'app/scripts/*.js',
             'app/scripts/**/*.js',
             '.tmp/styles/main.css',

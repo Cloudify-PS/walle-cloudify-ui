@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('cosmoUiApp')
-    .controller('BlueprintsIndexCtrl', function ($scope, $location, $cookieStore, $log, ngDialog, cloudifyClient) {
+    .controller('BlueprintsIndexCtrl', function ($scope, $location, $log, ngDialog, cloudifyClient, $q) {
         $scope.lastExecutedPlan = null;
         $scope.selectedBlueprint = null;
         $scope.managerError = false;
@@ -22,7 +22,8 @@ angular.module('cosmoUiApp')
         $scope.loadBlueprints = function() {
             $scope.blueprints = null;
             $scope.managerError = false;
-            return cloudifyClient.blueprints.list('id,updated_at,created_at').then(function (result) {
+            var deferred = $q.defer();
+            cloudifyClient.blueprints.list('id,updated_at,created_at').then(function (result) {
 
                 if (result.data.length < 1) {
                     $scope.blueprints = [];
@@ -30,10 +31,13 @@ angular.module('cosmoUiApp')
                     $log.info('done');
                     $scope.blueprints = _.sortByOrder(result.data, ['updated_at'], [false]);
                 }
+                deferred.resolve();
             }, function (result) {
                 $scope.managerError = result.data || 'General Error';
                 $log.error('got error result', result.data);
+                deferred.reject();
             });
+            return deferred.promise;
         };
 
         function loadDeployments(){
@@ -61,7 +65,6 @@ angular.module('cosmoUiApp')
             $location.path('/blueprint/' + blueprint_id + '/topology');
         };
 
-        $scope.loadBlueprints()
-            .then(loadDeployments);
+        $scope.loadBlueprints().then(loadDeployments);
     });
 

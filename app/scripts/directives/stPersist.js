@@ -39,7 +39,7 @@ angular.module('cosmoUiApp')
                         setRoute({'pageNo': Math.floor(paginationState.start / paginationState.number) + 1 + ''});
                     }, true);
                     scope.$watch(function() {
-                        return ctrl.tableState().sort.predicate + " " + ctrl.tableState().sort.reverse;
+                        return ctrl.tableState().sort.predicate + ' ' + ctrl.tableState().sort.reverse;
                     }, function(){
                         var sort = ctrl.tableState().sort;
                         setRoute({'sortBy': sort.predicate, 'reverse': sort.reverse});
@@ -60,7 +60,7 @@ angular.module('cosmoUiApp')
 
                 function setFromRoute(){
                     // paging
-                    var pageNo = parseInt($routeParams.pageNo) || 1;
+                    var pageNo = parseInt($routeParams.pageNo, 10) || 1;
                     ctrl.slice((pageNo - 1) * scope.itemsByPage, scope.itemsByPage);
                     // sorting
                     ctrl.tableState().sort.predicate = $routeParams.sortBy || 'updated_at';

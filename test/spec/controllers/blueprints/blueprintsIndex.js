@@ -44,7 +44,7 @@ describe('Controller: BlueprintsIndexCtrl', function () {
     beforeEach(module('cosmoUiApp', 'ngMock', 'backend-mock', 'templates-main'));
 
     function _testSetup(deleteSuccess) {
-        inject(function ($controller, $rootScope, $httpBackend, $q, CloudifyService, ngDialog, cloudifyClient) {
+        inject(function ($controller, $rootScope, $httpBackend, $q, CloudifyService, ngDialog, cloudifyClient, $location, $log) {
 
             scope = $rootScope.$new();
             _cloudifyService = CloudifyService;
@@ -82,8 +82,11 @@ describe('Controller: BlueprintsIndexCtrl', function () {
 
             BlueprintsIndexCtrl = $controller('BlueprintsIndexCtrl', {
                 $scope: scope,
-                CloudifyService: _cloudifyService,
-                ngDialog: _ngDialog
+                $location: $location,
+                $log: $log,
+                ngDialog: _ngDialog,
+                cloudifyClient: _cloudifyClient,
+                $q: $q
             });
 
             scope.$digest();
