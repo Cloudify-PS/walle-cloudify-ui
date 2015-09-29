@@ -7,7 +7,7 @@
  * # deploymentActionSelector
  */
 angular.module('cosmoUiApp')
-    .directive('deploymentActionSelector', function (ngDialog, cloudifyClient, $filter, ExecutionsService, $log) {
+    .directive('deploymentActionSelector', function (ngDialog, cloudifyClient, $filter, ExecutionsService, $log, $interval) {
         return {
             templateUrl: 'views/directives/actionSelector.html',
             restrict: 'C',
@@ -103,12 +103,23 @@ angular.module('cosmoUiApp')
 
             },
             link: function postLink(scope, element) {
+                var interval;
+
+                function deploymentDeletedChecker(deployment_id) {
+                    interval = $interval(function() {
+                        cloudifyClient.deployments.get(deployment_id).then(null, function() {
+                            $interval.cancel(interval);
+                            scope.onDelete();
+                            $log.log('deployment "' + deployment_id + '" deleted.');
+                        });
+                    }, 1000);
+                }
 
                 scope.$watch('currentExecution', function (executing) {
                     if (executing) {
                         element.addClass('in-progress');
-                        if (executing.workflow_id === 'delete_deployment_environment') {
-                            scope.onDelete();
+                        if (executing.status + executing.workflow_id === 'starteddelete_deployment_environment') {
+                            deploymentDeletedChecker(executing.deployment_id);
                         }
                     } else {
                         element.removeClass('in-progress');
