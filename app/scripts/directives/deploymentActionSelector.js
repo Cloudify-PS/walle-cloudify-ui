@@ -103,10 +103,9 @@ angular.module('cosmoUiApp')
 
             },
             link: function postLink(scope, element) {
-                var interval;
 
                 function deploymentDeletedChecker(deployment_id) {
-                    interval = $interval(function() {
+                    var interval = $interval(function() {
                         cloudifyClient.deployments.get(deployment_id).then(null, function() {
                             $interval.cancel(interval);
                             scope.onDelete();
