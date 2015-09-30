@@ -181,9 +181,10 @@
             "timestamp": "Timestamp",
             "executionId": "Execution ID:",
             "nodeId": "Node ID:",
-            "taskId": "Task Name:",
+            "taskName": "Task Name:",
             "plugin": "Plugin:",
-            "operation": "Operation:"
+            "operation": "Operation:",
+            "messageText": "Message:"
         },
         "filters": {
             "blueprints": {
