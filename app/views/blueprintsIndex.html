@@ -11,7 +11,8 @@
         <button class="gs-btn" ng-click="openAddDialog()">{{ 'blueprints.uploadBtn' | translate }}</button>
         </div>
     </div>
-    <table st-table="displayedBlueprints" st-safe-src="blueprints" class="gs-table" ng-show="!managerError" st-persist items-by-page="itemsByPage" content-loaded="deploymentsCount">
+    <table id="bp1" st-table="displayedBlueprints" st-safe-src="blueprints" class="gs-table" ng-show="!managerError" cfy-st-persist items-by-page="itemsByPage" content-loaded="deploymentsCount">
+        {{pls}}
         <thead>
             <tr>
                 <th st-sort="id" st-skip-natural="true" class="name">{{ 'blueprints.table.heading.name' | translate }}</th>
@@ -51,7 +52,6 @@
             </tr>
         </tfoot>
     </table>
-
     <div class="connect-error-message" ng-show="managerError">{{ 'connectError' | translate }} - {{ managerError.message }} </div>
 
     <div  class="gs-spinner large" ng-show="blueprints == null && !managerError"></div>

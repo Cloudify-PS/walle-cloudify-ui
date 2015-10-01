@@ -10,7 +10,7 @@
  * # stPersist
  */
 angular.module('cosmoUiApp')
-    .directive('stPersist', function ($location, $routeParams) {
+    .directive('cfyStPersist', function ($location, $routeParams) {
         return {
             require: 'stTable',
             scope: {
@@ -18,6 +18,8 @@ angular.module('cosmoUiApp')
                 itemsByPage: '='
             },
             link: function postLink(scope, element, attr, ctrl) {
+
+                var id = element.attr('id');
 
                 var searchParams = [];
                 angular.element('[st-search]').each(function (){
@@ -36,13 +38,18 @@ angular.module('cosmoUiApp')
                         return ctrl.tableState().pagination;
                     }, function () {
                         var paginationState = ctrl.tableState().pagination;
-                        setRoute({'pageNo': Math.floor(paginationState.start / paginationState.number) + 1 + ''});
+                        var routeObject = {};
+                        routeObject['pageNo'+id] = Math.floor(paginationState.start / paginationState.number) + 1 + '';
+                        setRoute(routeObject);
                     }, true);
                     scope.$watch(function() {
                         return ctrl.tableState().sort.predicate + ' ' + ctrl.tableState().sort.reverse;
                     }, function(){
                         var sort = ctrl.tableState().sort;
-                        setRoute({'sortBy': sort.predicate, 'reverse': sort.reverse});
+                        var routeObject = {};
+                        routeObject['sortBy'+id] = sort.predicate;
+                        routeObject['reverse'+id] = sort.reverse;
+                        setRoute(routeObject);
                     });
                     scope.$watch(function() {
                         return ctrl.tableState().search;
@@ -60,11 +67,11 @@ angular.module('cosmoUiApp')
 
                 function setFromRoute(){
                     // paging
-                    var pageNo = parseInt($routeParams.pageNo, 10) || 1;
+                    var pageNo = parseInt($routeParams['pageNo'+id], 10) || 1;
                     ctrl.slice((pageNo - 1) * scope.itemsByPage, scope.itemsByPage);
                     // sorting
-                    ctrl.tableState().sort.predicate = $routeParams.sortBy || 'updated_at';
-                    ctrl.tableState().sort.reverse = $routeParams.hasOwnProperty('reverse') ? $routeParams.reverse : false;
+                    ctrl.tableState().sort.predicate = $routeParams['sortBy'+id] || 'updated_at';
+                    ctrl.tableState().sort.reverse = $routeParams.hasOwnProperty('reverse'+id) ? $routeParams['reverse'+id] : false;
                     ctrl.pipe();
                     // search
                     searchParams.forEach(function(param){
