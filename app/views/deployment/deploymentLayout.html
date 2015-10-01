@@ -15,8 +15,6 @@
         <div class="header-left">
             <div data-ng-hide="isInitializing()">
 
-                <div app-status-widget deployment-id="deploymentId" id="appStatus"></div>
-
                 <div class="content-header">
                     <div class="breadcrumbs">
                         <ul>
@@ -34,6 +32,8 @@
                 <div class="actions">
                     <div class="deployment-action-selector" deployment="deployment" on-delete="goToDeployments()" current-execution="currentExecution"></div>
                 </div>
+
+                <div app-status-widget deployment-id="deploymentId" id="appStatus"></div>
 
             </div>
         </div>

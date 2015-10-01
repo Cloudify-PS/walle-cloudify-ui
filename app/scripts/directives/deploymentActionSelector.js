@@ -7,7 +7,7 @@
  * # deploymentActionSelector
  */
 angular.module('cosmoUiApp')
-    .directive('deploymentActionSelector', function (ngDialog, cloudifyClient, ExecutionsService, $log) {
+    .directive('deploymentActionSelector', function (ngDialog, cloudifyClient, $filter, ExecutionsService, $log) {
         return {
             templateUrl: 'views/directives/actionSelector.html',
             restrict: 'C',
@@ -19,6 +19,8 @@ angular.module('cosmoUiApp')
                 onDelete: '&'
             },
             controller: function ($scope) {
+
+                $scope.showProgress = true;
 
                 function openCancelExecutionDialog() {
                     ngDialog.open({
@@ -66,9 +68,24 @@ angular.module('cosmoUiApp')
                     return !ExecutionsService.isRunning($scope.currentExecution);
                 };
 
+                // comment
+
                 $scope.cancel = function () {
                     $log.debug($scope.currentExecution);
                     openCancelExecutionDialog();
+                };
+
+                $scope.getExecutionName = function (currentExecution) {
+                    if (!currentExecution) {
+                        return null;
+                    }
+                    var translateKey = 'deployment.process.' + currentExecution.workflow_id;
+                    var res = $filter('translate')(!!currentExecution.workflow_id ? translateKey : 'deployment.process.wait');
+                    if (res === translateKey) {
+                        return currentExecution.workflow_id;
+                    } else {
+                        return res;
+                    }
                 };
 
                 $scope.actions = [

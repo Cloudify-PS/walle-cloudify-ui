@@ -398,13 +398,13 @@ module.exports = function (grunt) {
                         dot: true,
                         cwd: '<%= yeoman.dist %>',
                         dest: '<%= yeoman.artifacts %>',
-                        src: [ 'cloudify-ui-*.tgz', 'blueprint.tar.gz'],
+                        src: [ 'cosmo-ui-*.tgz','cloudify-ui-*.tgz', 'blueprint.tar.gz'],
                         rename: function( dest , src ){
                             var md = grunt.config.data.cfy.metadata;
                             console.log('renaming ', dest, src);
                             if ( src.indexOf('blueprint.tar.gz') >= 0){
                                 return require('path').join(dest , 'ui-blueprint-' + md.buildVersion + '.tar.gz');
-                            }else if ( src.indexOf('cloudify-ui') >= 0){
+                            }else if ( src.indexOf('cloudify-ui') >= 0 || src.indexOf('cosmo-ui') >= 0){
                                 return require('path').join(dest,'cloudify-ui-' + md.buildVersion + '.tgz');
                             }
                         }
@@ -425,7 +425,7 @@ module.exports = function (grunt) {
                         dot: true,
                         cwd: '<%= yeoman.dist %>',
                         dest: '<%= yeoman.distBlueprint%>',
-                        src: [ 'cloudify-ui*.tgz'],
+                        src: [ 'cosmo-ui-*.tgz','cloudify-ui*.tgz'],
                         rename: function( dest /*, src*/ ){
                             return path.join(dest ,'blueprint/node-application','app.tgz');
                         }

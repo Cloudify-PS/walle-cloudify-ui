@@ -31,7 +31,8 @@
 
             .actions {
                 display: inline-block;
-                margin-left: 30px;
+                float: right;
+                margin-right: 100px;
                 white-space: nowrap;
                 vertical-align: top;
                 .workflow-selector{

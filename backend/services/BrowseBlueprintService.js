@@ -4,11 +4,10 @@ var conf = require('../appConf');
 var request = require('request');
 var fs = require('fs.extra');
 var path = require('path');
-var targz = require('tar.gz');
 var logger = require('log4js').getLogger('BrowseBlueprintService');
-var tar = require('tar-fs');
-var unzip = require('unzip');
 var _ = require('lodash');
+var Decompress = require('decompress');
+
 
 
 module.exports.walkBlueprint = function (  id, last_update, callbackFn){
@@ -169,17 +168,21 @@ exports.extractArchive = function  ( type, path, dest, callback ){
     }
     try{
 
+        var decompress = new Decompress()
+            .src(path)
+            .dest(dest);
         if ( ['tar.gz','tgz'].indexOf(type) >= 0 ) {
-            targz().extract( path , dest , callback);
+            decompress.use(Decompress.targz());
         } else if ( type === 'tar' ){
-            logger.debug('extracting tar');
-            fs.createReadStream(path).pipe(tar.extract(dest)).on('finish',callback);
+            decompress.use(Decompress.tar());
         }  else if ( type === 'zip' ){
-            logger.debug('extracting zip');
-            fs.createReadStream(path).pipe(unzip.Extract({ path: dest })).on('close',callback);
-        } else {
+            decompress.use(Decompress.zip());
+        } else if (type === 'tar.bz2' ){
+            decompress.use(Decompress.tarbz2());
+        }else {
             callback(new Error('unknown compression type [' + type + ']'));
         }
+        decompress.run(callback);
 
     }catch(e){
         callback(e);
@@ -187,7 +190,7 @@ exports.extractArchive = function  ( type, path, dest, callback ){
 };
 
 function normalizeExtension( filename ){ //
-    return _.find([ 'tar.gz','tgz','tar','zip'], function( type ){
+    return _.find([ 'tar.bz2','tar.gz','tgz','tar','zip'], function( type ){
         return _.endsWith(filename, type);
     });
 }
