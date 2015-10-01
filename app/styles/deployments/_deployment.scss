@@ -20,8 +20,9 @@
         border-left: $COSMOUI_DEPLOYMENT_APP_STATUS_BORDER;
         border-bottom: $COSMOUI_DEPLOYMENT_APP_STATUS_BORDER;
         position: absolute;
-        right: 0px;
+        right: 0;
         top:0;
+        z-index: 1;
     }
 
 
@@ -579,10 +580,6 @@
             display: inline-block;
             vertical-align: top;
             text-align: left;
-        }
-
-        .error{
-            color:red;
         }
 
         #inputs{

@@ -438,3 +438,7 @@ input[type=text], input[type=password]{
 [ng-click],[data-ng-click]{
     cursor: $COSMOUI_CLICKABLE_CURSOR;
 }
+
+.error{
+    color:red;
+}
