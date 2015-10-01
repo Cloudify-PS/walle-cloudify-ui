@@ -7,17 +7,6 @@ angular.module('cosmoUiApp')
         $scope.managerError = false;
         $scope.itemToDelete = null;
 
-
-        $scope.openAddDialog = function() {
-            ngDialog.open({
-                template: 'views/blueprint/uploadDialog.html',
-                controller: 'UploadBlueprintDialogCtrl',
-                scope: $scope,
-                className: 'upload-dialog'
-            });
-        };
-
-
         $scope.loadBlueprints = function() {
             $scope.blueprints = null;
             $scope.managerError = false;
@@ -52,10 +41,6 @@ angular.module('cosmoUiApp')
 
         $scope.countDeployments = function(blueprint){
             return deploymentsCount.hasOwnProperty(blueprint.id) ? deploymentsCount[blueprint.id] : 0;
-        };
-
-        $scope.uploadDone = function(blueprint_id) {
-            $location.path('/blueprint/' + blueprint_id + '/topology');
         };
 
         $scope.loadBlueprints();

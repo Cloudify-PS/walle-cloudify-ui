@@ -16,7 +16,14 @@ angular.module('cosmoUiApp')
 
 
                 cloudifyClient.blueprints.get($scope.blueprintId)
-                    .then(function( result ){ return result.data;  })// strip result // todo: handle error
+                    .then(function( result ){
+                        return result.data;
+                    }, function(result){
+                        if(result.status === 404) {
+                            $scope.blueprintNotFound = true;
+                        }
+                        // todo: handle other errors, apart from 404
+                    })
                     .then(function(blueprintData) {
 
                         // Verify it's valid page, if not redirect to blueprints page
@@ -79,7 +86,6 @@ angular.module('cosmoUiApp')
                 $scope.redirectToBlueprints = function() {
                     $location.path('/blueprints');
                 };
-
             }
         };
     });
