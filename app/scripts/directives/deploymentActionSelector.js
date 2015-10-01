@@ -7,7 +7,7 @@
  * # deploymentActionSelector
  */
 angular.module('cosmoUiApp')
-    .directive('deploymentActionSelector', function (ngDialog, cloudifyClient, $filter, ExecutionsService, $log, $interval) {
+    .directive('deploymentActionSelector', function (ngDialog, cloudifyClient, $filter, ExecutionsService, $log) {
         return {
             templateUrl: 'views/directives/actionSelector.html',
             restrict: 'C',
