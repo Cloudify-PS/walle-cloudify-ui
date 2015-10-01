@@ -6,72 +6,81 @@
         </ul></div>
     </div>
 
-    <div class="content-section">
-<!--        <div class="filters">
+    <div class="content-section"  st-table="logsHits" st-pipe="updateData" >
+        <div class="filters">
 
             <div class="filter gs-selection-button" ng-show="blueprintsList.length">
-                Blueprints:<br>
+                {{'logs.filters.blueprints.title' | translate }}<br>
                 <div multi:select:menu
                      class="gs-select"
                      data-multiple="true"
                      data-options="blueprintsList"
                      data-ng-model="eventsFilter.blueprints"
-                     data-filter="eventsFilter.blueprints"
-                     data-init="{{ filterModel.blueprints }}"
-                     data-listener="true"
                      name="blueprints"
-                     data-text="Choose Blueprints"></div>
+                     cfy-st-search
+                     predicate="blueprint_id"
+                     match="{{pluckArrayOfObjects(eventsFilter.blueprints,'value')}}"
+                     data-text="{{'logs.filters.blueprints.text' | translate }}"></div>
             </div>
 
             <div class="filter gs-selection-button" ng-show="deploymentsList.length">
-                Deployments:<br>
+                {{'logs.filters.deployments.title' | translate }}<br>
                 <div multi:select:menu
                      class="gs-select"
                      data-multiple="true"
                      data-options="deploymentsList"
                      data-ng-model="eventsFilter.deployments"
-                     data-filter="eventsFilter.blueprints"
-                     data-init="{{ filterModel.deployments }}"
-                     data-listener="true"
                      name="deployments"
-                     data-text="Choose Deployments"></div>
+                     cfy-st-search
+                     predicate="deployment_id"
+                     match="{{pluckArrayOfObjects(eventsFilter.deployments,'value')}}"
+                     data-text="{{'logs.filters.deployments.text' | translate }}"></div>
             </div>
 
-            <div class="filter gs-selection-button">
-                Timeframe (from {{ timeframeFrom }}):<br>
-                <div multi:select:menu
-                     class="gs-select"
-                     data-multiple="false"
-                     data-options="timeframeList"
-                     data-ng-model="eventsFilter.timeframe"
-                     data-init="{{ filterModel.timeframe }}"
-                     data-listener="true"
-                     name="timeframe"
-                     data-text="Choose Timeframe"></div>
-            </div>
+            <!--timestamp Range filters-->
+            <!-- TODO : add support of i18n here-->
+            <!--<div class="gs-date-range-selection"-->
+                 <!--cfy-st-search-->
+                 <!--predicate="timestamp"-->
+                 <!--gte="{{eventsFilter.timeRange.gte}}"-->
+                 <!--lte="{{eventsFilter.timeRange.lte}}">-->
 
-            <button class="gs-btn" gs-spinner="{{filterLoading}}" data-ng-click="execute()" ng-disabled="!!isSearchDisabled">Show</button>
+                <!--<div class="filter gs-selection-button">-->
+                <!--Time range:<br>-->
+                <!--<input class="gs-select"-->
+                       <!--type="datetime"-->
+                       <!--placeholder="From"-->
+                       <!--date-time-->
+                       <!--auto-close="true"-->
+                       <!--data-ng-model="eventsFilter.timeRange.gte"/>-->
+            <!--</div>-->
+                <!--<div class="filter gs-selection-button">-->
+                    <!--<br>-->
+                    <!--<input class="gs-select"-->
+                           <!--type="datetime"-->
+                           <!--placeholder="To"-->
+                           <!--date-time-->
+                           <!--auto-close="true"-->
+                           <!--data-ng-model="eventsFilter.timeRange.lte"/>-->
+                <!--</div>-->
+            <!--</div>-->
+        </div>
 
-        </div>-->
-
-       <!-- <div class="newLogs" data-ng-show="newLogs>0">
-            <p data-ng-click="scrollToTop()">{{ newLogs }} new logs</p>
-        </div>-->
-
+        <div class="error" ng-if="getLogsError"><b>{{'logs.gettingLogsFailed' | translate}}</b><br/>{{getLogsError}}</div>
         <table class="gs-table gs-table-align-top eventsTable">
             <thead>
             <tr>
-                <th class="icon"><!-- icon --></th>
-                <th class="date sorting" data-ng-click="sortEvents('timestamp')" data-ng-class="isSorted('timestamp')">Timestamp</th>
-                <th class="type sorting" data-ng-click="sortEvents('eventType')" data-ng-class="isSorted('eventType')">{{ 'deployment.table.heading.eventType' | translate }}</th>
-                <th class="node sorting" data-ng-click="sortEvents('logLevel')" data-ng-class="isSorted('logLevel')">{{ 'deployment.table.heading.logLevel' | translate }}</th>
-                <th class="node sorting" data-ng-click="sortEvents('operation')" data-ng-class="isSorted('operation')">{{ 'deployment.table.heading.operation' | translate }}</th>
-                <th class="node sorting" data-ng-click="sortEvents('node')" data-ng-class="isSorted('node')">{{ 'deployment.table.heading.node' | translate }}</th>
-                <th class="node sorting" data-ng-click="sortEvents('nodeId')" data-ng-class="isSorted('nodeId')">{{ 'deployment.table.heading.nodeId' | translate }}</th>
-                <th class="task sorting" data-ng-click="sortEvents('message.text')" data-ng-class="isSorted('message.text')">{{ 'deployment.table.heading.message' | translate }}</th>
+                <th st-sort="_source.event_type" class="icon sorting"><!-- icon --></th>
+                <th st-sort="_source.timestamp" class="date sorting" >{{'logs.fields.timestamp' | translate}}</th>
+                <th st-sort="_source.event_type" class="type sorting">{{ 'deployment.table.heading.eventType' | translate }}</th>
+                <th st-sort="_source.level" class="node sorting">{{ 'deployment.table.heading.logLevel' | translate }}</th>
+                <th st-sort="_source.context.operation" class="node sorting">{{ 'deployment.table.heading.operation' | translate }}</th>
+                <th st-sort="_source.context.node_name" class="node sorting">{{ 'deployment.table.heading.node' | translate }}</th>
+                <th st-sort="_source.context.node_id" class="node sorting">{{ 'deployment.table.heading.nodeId' | translate }}</th>
+                <th st-sort="_source.message.text" class="task sorting">{{ 'deployment.table.heading.message' | translate }}</th>
             </tr>
             </thead>
-            <tbody class="animate-repeat" ng-repeat="log in logsHits" ng-init="isOpen=false">
+            <tbody  ng-repeat="log in logsHits" ng-init="isOpen=false">
             <tr data-ng-click="isOpen=!isOpen">
                 <td class="icon-events" ng-class="getEventIcon(log)"></td>
                 <td class="date">{{log._source.timestamp == undefined && '-' || log._source.timestamp}}</td>
@@ -85,33 +94,19 @@
             <tr class="details" data-ng-show="isOpen">
                 <td colspan="8">
                     <div class="group">
-                        <span><b>Execution ID:</b> {{ log._source.context.execution_id == undefined && 'N/A' || log._source.context.execution_id }}</span>
-                        <span><b>Node ID:</b> {{ log._source.context.node_id == undefined && 'N/A' || log._source.context.node_id }}</span>
+                        <span><b>{{'logs.fields.executionId' | translate}}</b> {{ log._source.context.execution_id == undefined && 'N/A' || log._source.context.execution_id }}</span>
+                        <span><b>{{'logs.fields.nodeId' | translate}}</b> {{ log._source.context.node_id == undefined && 'N/A' || log._source.context.node_id }}</span>
                     </div>
                     <div class="group">
-                        <span><b>Task Name:</b> {{ log._source.context.task_name == undefined && 'N/A' || log._source.context.task_name }}</span>
-                        <span><b>Plugin:</b> {{ log._source.context.plugin == undefined && 'N/A' || log._source.context.plugin }}</span>
-                        <span><b>Operation:</b> {{ log._source.context.operation == undefined && 'N/A' || log._source.context.operation }}</span>
+                        <span><b>{{'logs.fields.taskName' | translate}}</b> {{ log._source.context.task_name == undefined && 'N/A' || log._source.context.task_name }}</span>
+                        <span><b>{{'logs.fields.plugin' | translate}}</b> {{ log._source.context.plugin == undefined && 'N/A' || log._source.context.plugin }}</span>
+                        <span><b>{{'logs.fields.operation' | translate}}</b> {{ log._source.context.operation == undefined && 'N/A' || log._source.context.operation }}</span>
                     </div>
                 </td>
             </tr>
             </tbody>
         </table>
-        <div class="emptyTable" data-ng-hide="logsHits.length">There are no events at this moment...</div>
-    </div>
-
-    <div ng-show="isDialogVisible">
-        <div class="dialogBoxBg"></div>
-        <div id="confirmationDialogContainer" class="dialogBox">
-            <div class="dialogTitle">
-                <label>{{ 'logs.errorPopup.title' | translate }} {{blueprint.id}}</label>
-            </div>
-            <div class="dialogDescription">{{ 'logs.errorPopup.description' | translate }}</div>
-           <div class="error-message" data-ng-show="errorMsg">{{ errorMsg }}</div>
-            <div class="buttonsContainer confirmationButtons">
-                <button id="confirmBtn" class="gs-btn" ng-click="closeErrorDialog()">{{ 'logs.errorPopup.close' | translate }}</button>
-            </div>
+        <div class="pagination" st-pagination="" st-items-by-page="itemsPerPage" st-displayed-pages="9"></div>
+        <div class="emptyTable" data-ng-hide="logsHits.length">{{'logs.noLogs' | translate}}</div>
         </div>
     </div>
-
-</div>
