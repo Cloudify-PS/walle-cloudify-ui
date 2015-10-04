@@ -13,15 +13,63 @@ angular.module('cosmoUiApp')
             restrict: 'A',
             link: function postLink(scope, element, attrs, table) {
 
+                var skipQueries = [];
+
+                //watching querying search of predicate
+                scope.$watch(function() {
+                    return table.tableState().search.predicateObject[attrs.predicate];
+                }, function(query) {
+                    //This checks if the state was changed from outside of this directive, so the model didn't updated
+                    function isModelDifferentFromQuery(model, queryValues){
+                        //is ngModel different from the queried value?
+                        return !_.isEqual(_.pluck(model,'value'), queryValues);
+                    }
+
+                    function getSelectedOptions(queryValues){
+                        function getOptionObjectByValue(options, value){
+                            return _.find(options, 'value', value);
+                        }
+
+                        var selectedOptions = [];
+                        var options = _.get(scope,attrs.options);
+                        _.forEach(queryValues, function (queryValue) {
+                            selectedOptions.push(getOptionObjectByValue(options, queryValue));
+                        });
+                        return selectedOptions;
+                    }
+
+                    try {
+                        var queryValues = JSON.parse(query.matchAny);
+                        var ngModel = attrs.ngModel;
+                        if(!!queryValues) {
+                            //check if state is different
+                            if(isModelDifferentFromQuery(_.get(scope, ngModel),queryValues)){
+                                var selectedOptions = getSelectedOptions(queryValues);
+                                skipQueries.push(queryValues);
+                                _.set(scope, ngModel, selectedOptions);
+                            }
+                        }
+                    }
+                    catch(e)
+                    {
+                        console.log(e.message);
+                    }
+
+                });
+
                 if(attrs.match) {
                     attrs.$observe('match', function (value) {
-                            if(value) {
-                                var query = {};
-                                query.matchAny = value;
-                                if (query.matchAny.length === 0) {
-                                    query.matchAny = '[]';
+                            //skipping a query when the model has been changed from outside, so won't be queried twice
+                            if(skipQueries && skipQueries.length > 0){
+                            }else {
+                                if (value) {
+                                    var query = {};
+                                    query.matchAny = value;
+                                    if (query.matchAny.length === 0) {
+                                        query.matchAny = '[]';
+                                    }
+                                    queryTable(query);
                                 }
-                                queryTable(query);
                             }
                         }
                     );
@@ -40,9 +88,10 @@ angular.module('cosmoUiApp')
                     return query;
                 }
 
+                //TODO: consider the situation of a skipping query when a range time is queried
                 if(attrs.gte) {
                     attrs.$observe('gte', function (value) {
-                        if(value || value === ''){
+                        if (value || value === '') {
                             var query = createRangeQuery();
                             queryTable(query);
                         }
@@ -51,7 +100,7 @@ angular.module('cosmoUiApp')
 
                 if(attrs.lte) {
                     attrs.$observe('lte', function (value) {
-                        if(value || value === ''){
+                        if (value || value === '') {
                             var query = createRangeQuery();
                             queryTable(query);
                         }
@@ -61,6 +110,10 @@ angular.module('cosmoUiApp')
                 function queryTable(query) {
                     table.search(query, attrs.predicate || '');
                 }
+                setTimeout(function(){
+                    table.search({matchAny:'["all_types"]'},'blueprint_id');
+                },2000);
+
             }
         };
     });
