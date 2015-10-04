@@ -19,10 +19,10 @@
         </thead>
         <tbody ng-repeat="deployment in deployments">
             <tr>
-                <td class="id" ng-click="redirectTo(deployment)">{{deployment.id}}</td>
-                <td class="blueprint" ng-click="redirectTo(deployment)">{{deployment.blueprint_id}}</td>
-                <td class="create" ng-click="redirectTo(deployment)">{{deployment.created_at | dateFormat: 'yyyy-MM-dd HH:mm:ss'}}</td>
-                <td class="description" ng-click="redirectTo(deployment)">{{deployment.updated_at | dateFormat: 'yyyy-MM-dd HH:mm:ss'}}</td>
+                <td class="id"><a href="#/deployment/{{deployment.id}}/topology">{{deployment.id}}</a></td>
+                <td class="blueprint"><a href="#/blueprint/{{deployment.blueprint_id}}/topology">{{deployment.blueprint_id}}</a></td>
+                <td class="create">{{deployment.created_at | dateFormat: 'yyyy-MM-dd HH:mm:ss'}}</td>
+                <td class="description">{{deployment.updated_at | dateFormat: 'yyyy-MM-dd HH:mm:ss'}}</td>
                 <td class="actions" ng-click="layerRedirectTo(deployment, $event, 'td.actions')">
                     <div class="deployment-action-selector"
                          deployment="deployment"

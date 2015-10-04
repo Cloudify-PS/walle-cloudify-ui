@@ -31,14 +31,9 @@ angular.module('cosmoUiApp')
             return !!execution;
         };
 
-
-        $scope.redirectTo = function (deployment) {
-            $location.path('/deployment/' + deployment.id + '/topology');
-        };
-
         $scope.layerRedirectTo = function(deployment, event, matchElement) {
             if(event.target.tagName.toLowerCase() + '.' + event.target.className === matchElement) {
-                $scope.redirectTo(deployment);
+                $location.path('/deployment/' + deployment.id + '/topology');
             }
         };
 

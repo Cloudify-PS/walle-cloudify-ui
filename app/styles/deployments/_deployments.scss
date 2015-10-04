@@ -14,8 +14,6 @@
 
         tr {
             td {
-                cursor: $COSMOUI_DIALOG_CURSOR;
-
                 &.actions {
                     width: $COSMOUI_LIST_HOVER_ACTION_WIDTH;
                     overflow: initial;
