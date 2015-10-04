@@ -59,7 +59,7 @@ describe('Controller: LogsCtrl', function () {
                 expect(scope.eventsFilter.deployments).toEqual([]);
             });
 
-            describe('mock blueprints list', function () {
+            describe('mock getting filters info.', function () {
                 beforeEach(function () {
                     _cloudifyClient.blueprints.list.andReturn({
                         then: function (successCallback) {
