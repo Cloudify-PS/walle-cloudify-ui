@@ -93,16 +93,6 @@ describe('Controller: DeploymentsCtrl', function () {
         });
     });
 
-    describe('#redirectTo', function(){
-
-        it('should redirect to deployment', inject(function( $location ){
-            _testSetup();
-            spyOn($location,'path');
-            scope.redirectTo({'id' : 'foo'});
-            expect($location.path).toHaveBeenCalledWith('/deployment/foo/topology');
-        }));
-    });
-
     describe('canPause', function(){
         it('should call ExecutionsService.canPause', inject(function( ExecutionsService){
             _testSetup();
