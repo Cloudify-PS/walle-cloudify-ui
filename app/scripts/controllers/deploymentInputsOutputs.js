@@ -13,9 +13,9 @@ angular.module('cosmoUiApp')
         $scope.deploymentId = $routeParams.deploymentId;
 
         //get deployment inputs from deployment's data
-        cloudifyClient.deployments.get($scope.deploymentId).then(function (deployment) {
-            if(!angular.equals({},deployment.inputs)){
-                $scope.inputs = deployment.inputs;
+        cloudifyClient.deployments.get($scope.deploymentId).then(function (httpResponse) {
+            if(!angular.equals({},httpResponse.data.inputs)){
+                $scope.inputs = httpResponse.data.inputs;
             }
         }, function (result) {
             $scope.inputsError = result.data.info || 'General Error';
