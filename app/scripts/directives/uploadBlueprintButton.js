@@ -9,9 +9,12 @@
 angular.module('cosmoUiApp')
     .directive('uploadBlueprintButton', function (ngDialog, $location) {
         return {
-            template: '<button class="gs-btn" ng-click="openAddDialog()" ng-transclude></button>',
+            templateUrl: 'views/directives/uploadBlueprintButton.html',
             restrict: 'A',
             transclude: true,
+            scope: {
+
+            },
             link: function postLink(scope) {
 
                 scope.openAddDialog = function() {
