@@ -191,5 +191,22 @@ describe('Controller: LogsCtrl', function () {
                 expect(scope.getLogsError).toBe('Getting logs failed message');
             });
         });
+
+        describe('#clearFilters', function () {
+            it('should clear filters',function(){
+                initCtrl();
+                scope.eventsFilter = {
+                    'blueprints': ['blueprint1'],
+                    'deployments': ['deployment2','deployment1'],
+                    'logLevels': ['error','warning','info']
+                };
+                scope.clearFilters();
+                expect(scope.eventsFilter).toEqual({
+                    'blueprints': [],
+                    'deployments': [],
+                    'logLevels': []
+                });
+            });
+        });
     });
 });

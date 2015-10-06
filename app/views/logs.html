@@ -50,7 +50,6 @@
                      match="{{pluckArrayOfObjects(eventsFilter.logLevels,'value')}}"
                      data-text="{{'logs.filters.logLevels.text' | translate }}"></div>
             </div>
-
             <!--timestamp Range filters-->
             <!-- TODO : add support of i18n here-->
             <!--<div class="gs-date-range-selection"-->
@@ -78,6 +77,10 @@
                            <!--data-ng-model="eventsFilter.timeRange.lte"/>-->
                 <!--</div>-->
             <!--</div>-->
+
+            <div class="actions">
+                <button class="gs-btn" data-ng-click="clearFilters()" >Clear Filter</button>
+            </div>
         </div>
 
         <div class="error" ng-if="getLogsError"><b>{{'logs.gettingLogsFailed' | translate}}</b><br/>{{getLogsError}}</div>
