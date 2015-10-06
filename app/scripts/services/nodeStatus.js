@@ -121,6 +121,8 @@ angular.module('cosmoUiApp')
                     status = NODE_STATUS.FAILED;
                 } else if ( failed) { // some are completed. some are failed.. minor failure
                     status = NODE_STATUS.ALERT;
+                } else {
+                    status = NODE_STATUS.DONE;
                 }
             } else if(!failed) { // !failed - not a single instance failed!! everyone are completed !!! yey!!!! success!!! lets show this huge success whether we are in progress or not..
                 status = NODE_STATUS.DONE;
