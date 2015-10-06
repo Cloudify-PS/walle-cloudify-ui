@@ -37,6 +37,20 @@
                      data-text="{{'logs.filters.deployments.text' | translate }}"></div>
             </div>
 
+            <div class="filter gs-selection-button" ng-show="logLevelsList.length">
+                {{'logs.filters.logLevels.title' | translate }}<br>
+                <div multi:select:menu
+                     class="gs-select"
+                     data-multiple="true"
+                     data-options="logLevelsList"
+                     data-ng-model="eventsFilter.logLevels"
+                     name="logLevels"
+                     cfy-st-search
+                     predicate="level"
+                     match="{{pluckArrayOfObjects(eventsFilter.logLevels,'value')}}"
+                     data-text="{{'logs.filters.logLevels.text' | translate }}"></div>
+            </div>
+
             <!--timestamp Range filters-->
             <!-- TODO : add support of i18n here-->
             <!--<div class="gs-date-range-selection"-->
@@ -85,10 +99,10 @@
                 <td class="icon-events" ng-class="getEventIcon(log)"></td>
                 <td class="date">{{log._source.timestamp == undefined && '-' || log._source.timestamp}}</td>
                 <td class="type">{{getEventText(log._source.event_type) == undefined && '-' || getEventText(log._source.event_type)}}</td>
-                <td class="node">{{log._source.level == undefined && '-' || log._source.level | uppercase}}</td>
-                <td class="node">{{log._source.context.operation == undefined && '-' || log._source.context.operation}}</td>
-                <td class="node">{{log._source.context.node_name == undefined && '-' || log._source.context.node_name}}</td>
-                <td class="node">{{log._source.context.node_id == undefined && '-' || log._source.context.node_id}}</td>
+                <td class="level">{{log._source.level == undefined && '-' || log._source.level | uppercase}}</td>
+                <td class="operation">{{log._source.context.operation == undefined && '-' || log._source.context.operation}}</td>
+                <td class="node_name">{{log._source.context.node_name == undefined && '-' || log._source.context.node_name}}</td>
+                <td class="node_id">{{log._source.context.node_id == undefined && '-' || log._source.context.node_id}}</td>
                 <td class="task">{{log._source.message.text == undefined && '-' || log._source.message.text}}</td>
             </tr>
             <tr class="details" data-ng-show="isOpen">

@@ -3,7 +3,7 @@
 describe('Directive: cfyStSearch', function () {
 
     // load the directive's module
-    beforeEach(module('cosmoUiApp'));
+    beforeEach(module('cosmoUiApp','backend-mock'));
 
     var element,
         scope;
@@ -14,8 +14,6 @@ describe('Directive: cfyStSearch', function () {
         _$compile = $compile;
         element = null;
         scope = $rootScope.$new();
-
-        $httpBackend.whenGET('/i18n/translations_en.json').respond(200);
 
         //mock stTable controller
         stTableCtrl = {
