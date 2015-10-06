@@ -442,8 +442,8 @@ html, body, .layout {
 }
 
 
-button, input[type="button"], input[type="submit"] {
-  outline: none;
+button, input[type="button"], input[type="submit"], .btn.active:focus, .btn:active:focus {
+    outline: none;
 }
 
 

@@ -1,4 +1,5 @@
-
+/** Bootstap **/
+@import '../bower_components/bootstrap-sass-official/assets/stylesheets/_bootstrap';
 
 /** White Labeling **/
 @import './whitelabel';
@@ -47,9 +48,6 @@ $fa-font-path:'../bower_components/font-awesome/fonts';
 @import './logs';
 @import './login';
 @import './ngProgress';
-
-/** Bootstap **/
-@import '../bower_components/bootstrap-sass-official/assets/stylesheets/_bootstrap';
 
 .embeded {
     #header, #left-side-menu, #footer, .no-embed {

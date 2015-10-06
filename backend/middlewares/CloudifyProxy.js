@@ -11,9 +11,8 @@ module.exports = function (conf) {
             if(req.cloudifyAuthHeader) {
                 req.headers.authorization = req.cloudifyAuthHeader;
             }
-            proxy(function () {
-                return require('url').parse(conf.cloudifyManagerEndpoint).hostname; // recommended by express-proxy see code
-            }, {
+            var host = require('url').parse(conf.cloudifyManagerEndpoint).host;
+            proxy(host, {
                 intercept: function (rsp, data, req, res, callback) {
                     res.removeHeader('www-authenticate'); // we want a login page!
                     callback(null, data);
