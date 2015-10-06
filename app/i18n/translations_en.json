@@ -175,10 +175,30 @@
 
     },
     "logs": {
-        "errorPopup": {
-            "title": "Error",
-            "description": "Sorry, error occurred",
-            "close": "close"
+        "gettingLogsFailed": "Failed getting events:",
+        "noLogs": "There are no events at this moment...",
+        "fields": {
+            "timestamp": "Timestamp",
+            "executionId": "Execution ID:",
+            "nodeId": "Node ID:",
+            "taskName": "Task Name:",
+            "plugin": "Plugin:",
+            "operation": "Operation:",
+            "messageText": "Message:"
+        },
+        "filters": {
+            "blueprints": {
+                "title": "Blueprints:",
+                "text": "Choose Blueprints"
+            },
+            "deployments": {
+                "title": "Deployments:",
+                "text": "Choose Deployments"
+            },
+            "logLevels": {
+                "title": "Log levels:",
+                "text": "Choose log levels"
+            }
         }
     },
     "toggleSwitch": {

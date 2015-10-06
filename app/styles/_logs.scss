@@ -13,48 +13,13 @@
                 margin: 5px 10px 0 0px;
                 vertical-align: middle;
             }
-            .search {
-                display: inline-block;
-                vertical-align: middle;
-                input {
-                    border-style: solid;
-                    border-color: #ccc;
-                    border-width: 1px 1px 1px 1px;
-                    padding: 5px 10px;
-                    border-radius: 3px 0 0 3px;
-                    outline: none;
-                    &:focus {
-                        border-color: #29A9EE;
-                    }
-                }
-                button {
-                    background-color: #f5f5f5;
-                    border-style: solid;
-                    border-color: #ccc;
-                    border-width: 1px 1px 1px 0;
-                    padding: 5px 10px;
-                    border-radius: 0 3px 3px 0;
-                    outline: none;
-                    &:hover {
-                        border-color: #29A9EE;
-                        background-color: #29A9EE;
-                        color: #fff;
-                    }
-                }
-            }
-            .loading {
-                position: absolute;
-                top: 22px;
-                right: 0;
-                width: 120px;
-                height: 30px;
-                background-image: url('../images/loading-dots.gif');
-                background-repeat: no-repeat;
-                background-position: center center;
-            }
             .filter {
                 display: inline-block;
                 margin: 0 0 10px 0;
+            }
+            .actions{
+                margin-top: 27px;
+                float: right;
             }
         }
 
@@ -98,42 +63,21 @@
                     &.event-text-red {
                         color: $COSMOUI_EVENTS_LIST_TEXT_FAILED;
                     }
+                    .large-text-overflow{
+                        max-width: 510px;
+                        white-space: nowrap;
+                        text-overflow: ellipsis;
+                        overflow-x: hidden;
+                    }
+                    .message-text{
+                        padding-bottom: 10px;
+                        font-size: 13px;
+                        margin: 0 10px;
+                    }
                 }
             }
         }
-    }
-
-    .newLogs {
-        position: fixed;
-        top: 30px;
-        left: 0;
-        right: 0;
-        font-size: 15px;
-        text-align: center;
-        > p {
-            display: inline-block;
-            background-color: #049cdb;
-            color: #fff;
-            margin: 0 auto;
-            padding: 2px 10px;
-            border-radius: 13px;
-            box-shadow: 1px 1px 0px #0482c7;
-            cursor: pointer;
+        .pagination{
         }
-    }
-
-    .gs-btn {
-        margin-top: 19px;
-    }
-
-    @media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
-      .gs-btn {
-        position: relative;
-        top: 20px;
-      }
-    }
-
-    #confirmationDialogContainer {
-        width: 540px;
     }
 }

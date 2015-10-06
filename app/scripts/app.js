@@ -9,7 +9,6 @@ angular.module('cosmoUiApp', [
     'ngResource',
     'elasticjs.service',
     'ngAnimate',
-    'nvd3ChartDirectives',
     'ngStorage',
     'timer',
     'pascalprecht.translate',
@@ -19,8 +18,9 @@ angular.module('cosmoUiApp', [
     'jsbb.angularTicker',
     'cloudifyjs',
     'ui.bootstrap',
-    'smart-table'
-
+    'smart-table',
+    'angularMoment',
+    'datePicker'
 ]).config( function ($routeProvider, $httpProvider, $translateProvider) {
 
         //var isSettingsExists = window.isSettingsExists();
@@ -38,7 +38,7 @@ angular.module('cosmoUiApp', [
                 templateUrl: 'views/main.html',
                 controller: 'MainCtrl'
             })
-            .when('/blueprints/', {
+            .when('/blueprints', {
                 templateUrl: 'views/blueprintsIndex.html',
                 controller: 'BlueprintsIndexCtrl',
                 reloadOnSearch: false
