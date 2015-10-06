@@ -9,7 +9,6 @@ angular.module('cosmoUiApp', [
     'ngResource',
     'elasticjs.service',
     'ngAnimate',
-    'nvd3ChartDirectives',
     'ngStorage',
     'timer',
     'pascalprecht.translate',
@@ -18,8 +17,10 @@ angular.module('cosmoUiApp', [
     'angular-loading-bar',
     'jsbb.angularTicker',
     'cloudifyjs',
-    'ui.bootstrap'
-
+    'ui.bootstrap',
+    'smart-table',
+    'angularMoment',
+    'datePicker'
 ]).config( function ($routeProvider, $httpProvider, $translateProvider) {
 
         //var isSettingsExists = window.isSettingsExists();

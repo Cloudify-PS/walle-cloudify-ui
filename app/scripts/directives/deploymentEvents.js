@@ -7,7 +7,7 @@
  * # deploymentEvents
  */
 angular.module('cosmoUiApp')
-    .directive('deploymentEvents', function ($log, $filter, EventsService, EventsMap, $document, cloudifyClient) {
+    .directive('deploymentEvents', function ($log, $filter, EventsMap, $document, cloudifyClient) {
         return {
             templateUrl: 'views/deployment/deploymentEvents.html',
             restrict: 'EA',
@@ -33,7 +33,7 @@ angular.module('cosmoUiApp')
                         $scope.events = result.data.hits.hits;
                         $scope.lastEvent = _.first($scope.events);
                         _.each($scope.events, function(e){
-                            e._source.timestamp = EventsService.convertTimestamp( e._source.timestamp  );
+                            e._source.timestamp = $filter('dateFormat')(e._source.timestamp, 'yyyy-MM-dd HH:mm:ss');
                         });
                     }, true);
                 }
@@ -47,12 +47,10 @@ angular.module('cosmoUiApp')
                 });
 
                 // todo: use a directive for both instead of adding logic here..
-                // todo use EventsService to get the icon instead
                 $scope.getEventIcon = function (event) {
                     return EventsMap.getEventIcon(event);
                 };
 
-                // todo use EventsService to get the text instead
                 $scope.getEventText = function (event) {
                     return EventsMap.getEventText(event);
                 };
