@@ -26,7 +26,7 @@
         "emptyMessage": "No Blueprints",
         "source": {
             "chooseFile": "Please choose file to preview.",
-            "noPreview": "No preview available",
+            "noPreview": "Generating Blueprint Source View...",
             "browseError": "Error browsing blueprint files"
         },
         "actions": {

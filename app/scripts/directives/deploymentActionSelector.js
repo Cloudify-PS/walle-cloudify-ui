@@ -104,11 +104,21 @@ angular.module('cosmoUiApp')
             },
             link: function postLink(scope, element) {
 
-                scope.$watch('currentExecution', function (executing) {
+                function deploymentDeletedChecker(deployment_id) {
+                    cloudifyClient.deployments.get(deployment_id).then(null, function() {
+                        scope.onDelete();
+                        $log.log('deployment "' + deployment_id + '" deleted.');
+                    });
+                }
+
+                scope.$watch('currentExecution', function (executing, oldexecuting) {
                     if (executing) {
                         element.addClass('in-progress');
                     } else {
                         element.removeClass('in-progress');
+                        if (oldexecuting && oldexecuting.workflow_id === 'delete_deployment_environment') {
+                            deploymentDeletedChecker(oldexecuting.deployment_id);
+                        }
                     }
                 }, true);
             }

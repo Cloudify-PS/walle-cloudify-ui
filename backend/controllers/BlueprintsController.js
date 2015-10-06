@@ -86,8 +86,23 @@ exports.upload = function( req, res ){
         logger.debug(type, 'is valid upload type');
     }
 
-    function uploadCallback( err, data ){
-        res.send(err || data, err !== null ? data : 200);
+    function uploadCallback( err, data, statusCode ){
+        //logger.info('handling upload callback', err, data );
+        if ( !!err ){
+            if ( !!err.status ){
+                res.status(err.status).send(err);
+                return;
+            }else{
+                res.status(500).send(err);
+                return;
+            }
+            return;
+        }
+
+        if ( !!statusCode ){
+            res.status(statusCode);
+        }
+        res.send(data);
     }
 
     if ( type === uploadTypes.ids.FILE ){
