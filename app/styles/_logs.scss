@@ -69,13 +69,28 @@
                         text-overflow: ellipsis;
                         overflow-x: hidden;
                     }
-                    .message-text{
-                        padding-bottom: 10px;
-                        font-size: 13px;
-                        margin: 0 10px;
+                }
+                &.details{
+                    td{
+                        padding-left: 0px;
+                        .message-text{
+                            padding-bottom: 10px;
+                            font-size: 13px;
+                            margin: 0 10px;
+                        }
+                        .group{
+                            padding-left: 6px;
+                        }
+                        pre{
+                            max-width: 1380px;
+                            margin-left: auto;
+                            margin-right: auto;
+                            margin-top:5px;
+                        }
                     }
                 }
             }
+
         }
         .pagination{
         }
