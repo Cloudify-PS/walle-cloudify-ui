@@ -27,7 +27,6 @@ module.exports = function(config) {
             'app/bower_components/angular-animate/angular-animate.js',
             'app/bower_components/ngstorage/ngStorage.js',
             'app/bower_components/angular-timer/dist/angular-timer.js',
-            'app/bower_components/angularjs-nvd3-directives/dist/angularjs-nvd3-directives.js',
             'app/bower_components/elastic.js/dist/elastic-angular-client.js',
             'app/bower_components/gs-ui-infra/app/templates/all.js',
             'app/bower_components/gs-ui-infra/app/scripts/app.js',

@@ -15,8 +15,6 @@
     "angular": "~1.2.14",
     "angular-animate": "~1.2.14",
     "SyntaxHighlighter": "alexgorbatchev/syntaxhighlighter",
-    "nvd3": "~1.1.15-beta",
-    "angularjs-nvd3-directives": "~0.0.7",
     "ngstorage": "~0.3.0",
     "angular-timer": "~1.1.5",
     "grafana": "grafana/grafana#~1.6.1",
