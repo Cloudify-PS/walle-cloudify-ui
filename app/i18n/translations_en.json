@@ -282,6 +282,9 @@
         "typesFilterPlaceholder" : "Choose Types",
         "typesFilter" : "Types:",
         "searchFilter" : "Free Text:"
+    },
+    "columnsOrganizer" : {
+        "buttonText" : "Organize Columns"
     }
 }
 
