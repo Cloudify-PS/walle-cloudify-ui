@@ -4,7 +4,7 @@
  * @ngdoc directive
  * @name cosmoUiApp.directive:stPersist
  * @description responsible for keeping the smart-table state using the route search queries
- * HOW TO USE: put st-persist attribute to st-table element. Be sure to provide items-by-page and content-loaded attributes as well.
+ * HOW TO USE: put st-persist attribute to a child of st-table element. Be sure to provide items-by-page and content-loaded attributes as well.
  * content-loaded is informing the directive that table data has been loaded and we can apply filters and sorting to the table;
  * otherwise smart-table will apply it's default settings once the data has been loaded and write these default settings to route params
  * # stPersist
@@ -12,14 +12,14 @@
 angular.module('cosmoUiApp')
     .directive('cfyStPersist', function ($location, $routeParams) {
         return {
-            require: 'stTable',
+            require: '^stTable',
             scope: {
                 contentLoaded: '=',
                 itemsByPage: '='
             },
             link: function postLink(scope, element, attr, ctrl) {
 
-                var id = element.attr('id');
+                var id = element.parent().attr('id');
 
                 var searchParams = [];
                 angular.element('[st-search]').each(function (){
@@ -49,13 +49,17 @@ angular.module('cosmoUiApp')
                         var routeObject = {};
                         routeObject['sortBy'+id] = sort.predicate;
                         routeObject['reverse'+id] = sort.reverse;
-                        setRoute(routeObject);
+                        if(sort.predicate && typeof sort.reverse !== 'undefined'){
+                            setRoute(routeObject);
+                        }
                     });
                     scope.$watch(function() {
                         return ctrl.tableState().search;
                     }, function(val){
                         searchParams = _.keys(val);
-                        var prObj = val.predicateObject;
+                        var prObj = _.mapKeys(val.predicateObject, function(value, key){
+                            return key + id;
+                        });
                         setRoute(prObj);
                     }, true);
                 }
@@ -70,7 +74,7 @@ angular.module('cosmoUiApp')
                     var pageNo = parseInt($routeParams['pageNo'+id], 10) || 1;
                     ctrl.slice((pageNo - 1) * scope.itemsByPage, scope.itemsByPage);
                     // sorting
-                    ctrl.tableState().sort.predicate = $routeParams['sortBy'+id] || 'updated_at';
+                    ctrl.tableState().sort.predicate = $routeParams['sortBy'+id];
                     ctrl.tableState().sort.reverse = $routeParams.hasOwnProperty('reverse'+id) ? $routeParams['reverse'+id] : false;
                     ctrl.pipe();
                     // search

@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('cosmoUiApp')
-    .controller('BlueprintsIndexCtrl', function ($scope, $location, $log, ngDialog, cloudifyClient, $q) {
+    .controller('BlueprintsIndexCtrl', function ($scope, $location, $log, ngDialog, cloudifyClient) {
         $scope.lastExecutedPlan = null;
         $scope.selectedBlueprint = null;
         $scope.managerError = false;
@@ -22,8 +22,7 @@ angular.module('cosmoUiApp')
         $scope.loadBlueprints = function() {
             $scope.blueprints = null;
             $scope.managerError = false;
-            var deferred = $q.defer();
-            cloudifyClient.blueprints.list('id,updated_at,created_at').then(function (result) {
+            return cloudifyClient.blueprints.list('id,updated_at,created_at').then(function (result) {
 
                 if (result.data.length < 1) {
                     $scope.blueprints = [];
@@ -31,29 +30,19 @@ angular.module('cosmoUiApp')
                     $log.info('done');
                     $scope.blueprints = _.sortByOrder(result.data, ['updated_at'], [false]);
                 }
-                deferred.resolve();
             }, function (result) {
                 $scope.managerError = result.data || 'General Error';
                 $log.error('got error result', result.data);
-                deferred.reject();
             });
-            return deferred.promise;
         };
 
         function loadDeployments(){
 
-            _.map($scope.blueprints, function(b) {
-                b.deploymentsCount = 0;
-                return b;
-            });
-
             cloudifyClient.deployments.list('blueprint_id').then(function( result ){
-                _.each(result.data, function( dep ){
-                    $log.info( dep );
-                    var blueprint = _.find($scope.blueprints, function(b){
-                        return b.id === dep.blueprint_id;
-                    });
-                    blueprint.deploymentsCount++;
+                console.log(result.data);
+                var deploymentsPerBlueprint = _.groupBy( result.data, 'blueprint_id' );
+                _.each($scope.blueprints, function(b){
+                    b.deploymentsCount = deploymentsPerBlueprint.hasOwnProperty(b.id) ? deploymentsPerBlueprint[b.id].length : 0;
                 });
                 $scope.deploymentsCount = true;
             }, function(/*result*/){
