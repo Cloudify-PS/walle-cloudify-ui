@@ -2,7 +2,7 @@
 
 describe('Controller: BlueprintsIndexCtrl', function () {
 
-    var BlueprintsIndexCtrl, scope, _cloudifyService, _ngDialog, _cloudifyClient;
+    var BlueprintsIndexCtrl, scope;
     var blueprints = [
         {
             'updated_at': '2014-08- 21 00:54:04.878540',
@@ -44,17 +44,15 @@ describe('Controller: BlueprintsIndexCtrl', function () {
     beforeEach(module('cosmoUiApp', 'ngMock', 'backend-mock', 'templates-main'));
 
     function _testSetup(deleteSuccess) {
-        inject(function ($controller, $rootScope, $httpBackend, $q, CloudifyService, ngDialog, cloudifyClient) {
+        inject(function ($controller, $rootScope, $q, CloudifyService, cloudifyClient) {
 
             scope = $rootScope.$new();
-            _cloudifyService = CloudifyService;
-            _cloudifyClient = cloudifyClient;
-            _ngDialog = ngDialog;
 
             spyOn(cloudifyClient.blueprints, 'list').andCallFake(function () {
                 return {
                     then: function (success/*, error*/) {
                         success({ data : blueprints});
+                        return $q.defer().promise;
                     }
                 };
             });
@@ -67,7 +65,7 @@ describe('Controller: BlueprintsIndexCtrl', function () {
                 };
             });
 
-            _cloudifyService.blueprints.delete = function () {
+            CloudifyService.blueprints.delete = function () {
                 return {
                     then: function (success, error) {
                         if (!deleteSuccess) {
@@ -81,9 +79,7 @@ describe('Controller: BlueprintsIndexCtrl', function () {
             };
 
             BlueprintsIndexCtrl = $controller('BlueprintsIndexCtrl', {
-                $scope: scope,
-                CloudifyService: _cloudifyService,
-                ngDialog: _ngDialog
+                $scope: scope
             });
 
             scope.$digest();

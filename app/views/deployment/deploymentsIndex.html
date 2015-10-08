@@ -23,7 +23,7 @@
                 <td class="blueprint" ng-click="redirectTo(deployment)">{{deployment.blueprint_id}}</td>
                 <td class="create" ng-click="redirectTo(deployment)">{{deployment.created_at | dateFormat: 'yyyy-MM-dd HH:mm:ss'}}</td>
                 <td class="description" ng-click="redirectTo(deployment)">{{deployment.updated_at | dateFormat: 'yyyy-MM-dd HH:mm:ss'}}</td>
-                <td class="actions" ng-click="layerRedirectTo(deployment, $event, 'td.actions')">
+                <td cla ss="actions" ng-click="layerRedirectTo(deployment, $event, 'td.actions')">
                     <div class="deployment-action-selector"
                          deployment="deployment"
                          on-begin="onExecutionStart()"

@@ -4,14 +4,18 @@ angular.module('cosmoUiApp')
     .controller('LogsCtrl', function ($scope, cloudifyClient, EventsMap, $routeParams, TableStateToRestApi) {
 
         $scope.itemsPerPage = 9;
-        $scope.eventsFilter = {
-            'blueprints': [],
-            'deployments': []
-            //'timeRange':{
-            //    'lte': "",
-            //    'gte': ""
-            //}
+        var initFilters = function() {
+            $scope.eventsFilter = {
+                'blueprints': [],
+                'deployments': [],
+                'logLevels': []
+                //'timeRange':{
+                //    'lte': "",
+                //    'gte': ""
+                //}
+            };
         };
+        initFilters();
 
         //TODO: make url params and params effect each other
         //loading filter options from the url params if given - enable us to present a specific event page by changing the url.
@@ -23,6 +27,9 @@ angular.module('cosmoUiApp')
         //        $scope.eventsFilter = null;
         //    }
         //}
+
+        //Log levels List
+        $scope.logLevelsList = [{value:'error',label:'ERROR'},{value:'warning',label:'WARNING'},{value:'info',label:'INFO'}];
 
         //Getting blueprints list
         cloudifyClient.blueprints.list()
@@ -45,6 +52,10 @@ angular.module('cosmoUiApp')
                     });
                 });
             });
+
+        $scope.clearFilters = function(){
+            initFilters();
+        };
 
         /**
          * @description  generate and execute a query based on tableState to receive results and render them to the table
