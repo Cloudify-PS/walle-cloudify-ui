@@ -9,16 +9,6 @@ angular.module('cosmoUiApp')
 
         $scope.itemsByPage = 5;
 
-        $scope.openAddDialog = function() {
-            ngDialog.open({
-                template: 'views/blueprint/uploadDialog.html',
-                controller: 'UploadBlueprintDialogCtrl',
-                scope: $scope,
-                className: 'upload-dialog'
-            });
-        };
-
-
         $scope.loadBlueprints = function() {
             $scope.blueprints = null;
             $scope.managerError = false;
@@ -27,7 +17,6 @@ angular.module('cosmoUiApp')
                 if (result.data.length < 1) {
                     $scope.blueprints = [];
                 } else {
-                    $log.info('done');
                     $scope.blueprints = _.sortByOrder(result.data, ['updated_at'], [false]);
                 }
             }, function (result) {
@@ -37,9 +26,7 @@ angular.module('cosmoUiApp')
         };
 
         function loadDeployments(){
-
             cloudifyClient.deployments.list('blueprint_id').then(function( result ){
-                console.log(result.data);
                 var deploymentsPerBlueprint = _.groupBy( result.data, 'blueprint_id' );
                 _.each($scope.blueprints, function(b){
                     b.deploymentsCount = deploymentsPerBlueprint.hasOwnProperty(b.id) ? deploymentsPerBlueprint[b.id].length : 0;
@@ -50,10 +37,5 @@ angular.module('cosmoUiApp')
             });
         }
 
-        $scope.uploadDone = function(blueprint_id) {
-            $location.path('/blueprint/' + blueprint_id + '/topology');
-        };
-
         $scope.loadBlueprints().then(loadDeployments);
     });
-

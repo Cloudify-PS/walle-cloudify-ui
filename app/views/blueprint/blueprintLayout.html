@@ -1,4 +1,5 @@
 <div id="blueprint-header" class="cosmo-layout">
+    <span ng-show="!blueprintNotFound">
     <div class="header-left">
 
         <div class="content-header">
@@ -23,4 +24,17 @@
     </div>
 
     <div ng-transclude></div>
+    </span>
+    <div ng-show="!!blueprintNotFound" class="not-found-message">
+
+        <div class="message">
+            {{'blueprints.missingMessages.indication' | translate}}
+        </div>
+        <div>
+            <a class="gs-btn" href="#/blueprints">{{'blueprints.missingMessages.goBack' | translate }}</a>
+            <span upload-blueprint-button>{{'blueprints.missingMessages.uploadBlueprint' | translate}}</span>
+        </div>
+
+    </div>
+
 </div>
