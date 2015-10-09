@@ -7,7 +7,7 @@ angular.module('cosmoUiApp')
         $scope.managerError = false;
         $scope.itemToDelete = null;
 
-        $scope.itemsByPage = 5;
+        $scope.itemsByPage = 9;
 
         $scope.loadBlueprints = function() {
             $scope.blueprints = null;

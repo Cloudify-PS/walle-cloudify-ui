@@ -7,6 +7,7 @@
  * HOW TO USE: put st-persist attribute to a child of st-table element. Be sure to provide items-by-page and content-loaded attributes as well.
  * content-loaded is informing the directive that table data has been loaded and we can apply filters and sorting to the table;
  * otherwise smart-table will apply it's default settings once the data has been loaded and write these default settings to route params
+ * The last attribute is table-id which will identify a table in route params - useful when multiple tables are show on one page
  * # stPersist
  */
 angular.module('cosmoUiApp')
@@ -15,11 +16,10 @@ angular.module('cosmoUiApp')
             require: '^stTable',
             scope: {
                 contentLoaded: '=',
-                itemsByPage: '='
+                itemsByPage: '=',
+                tableId: '@'
             },
             link: function postLink(scope, element, attr, ctrl) {
-
-                var id = element.parent().attr('id');
 
                 var searchParams = [];
                 angular.element('[st-search]').each(function (){
@@ -39,7 +39,7 @@ angular.module('cosmoUiApp')
                     }, function () {
                         var paginationState = ctrl.tableState().pagination;
                         var routeObject = {};
-                        routeObject['pageNo'+id] = Math.floor(paginationState.start / paginationState.number) + 1 + '';
+                        routeObject['pageNo'+scope.tableId] = Math.floor(paginationState.start / paginationState.number) + 1 + '';
                         setRoute(routeObject);
                     }, true);
                     scope.$watch(function() {
@@ -47,8 +47,8 @@ angular.module('cosmoUiApp')
                     }, function(){
                         var sort = ctrl.tableState().sort;
                         var routeObject = {};
-                        routeObject['sortBy'+id] = sort.predicate;
-                        routeObject['reverse'+id] = sort.reverse;
+                        routeObject['sortBy'+scope.tableId] = sort.predicate;
+                        routeObject['reverse'+scope.tableId] = sort.reverse;
                         if(sort.predicate && typeof sort.reverse !== 'undefined'){
                             setRoute(routeObject);
                         }
@@ -58,7 +58,7 @@ angular.module('cosmoUiApp')
                     }, function(val){
                         searchParams = _.keys(val);
                         var prObj = _.mapKeys(val.predicateObject, function(value, key){
-                            return key + id;
+                            return key + scope.tableId;
                         });
                         setRoute(prObj);
                     }, true);
@@ -71,11 +71,11 @@ angular.module('cosmoUiApp')
 
                 function setFromRoute(){
                     // paging
-                    var pageNo = parseInt($routeParams['pageNo'+id], 10) || 1;
+                    var pageNo = parseInt($routeParams['pageNo'+scope.tableId], 10) || 1;
                     ctrl.slice((pageNo - 1) * scope.itemsByPage, scope.itemsByPage);
                     // sorting
-                    ctrl.tableState().sort.predicate = $routeParams['sortBy'+id];
-                    ctrl.tableState().sort.reverse = $routeParams.hasOwnProperty('reverse'+id) ? $routeParams['reverse'+id] : false;
+                    ctrl.tableState().sort.predicate = $routeParams['sortBy'+scope.tableId];
+                    ctrl.tableState().sort.reverse = $routeParams.hasOwnProperty('reverse'+scope.tableId) ? $routeParams['reverse'+scope.tableId] : false;
                     ctrl.pipe();
                     // search
                     searchParams.forEach(function(param){
