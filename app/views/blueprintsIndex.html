@@ -14,10 +14,6 @@
                 <label for="searchBlueprintByName">{{'blueprints.filters.blueprint.title' | translate}}:</label>
                 <input id="searchBlueprintByName" st-search="id" placeholder="search by name" class="form-control" type="search"/>
             </div>
-            <div class="form-group search">
-                <label for="searchBlueprintByName">{{'blueprints.filters.deploymentsCount.title' | translate}}:</label>
-                <input id="searchByDeploymentsCount" st-search="deploymentsCount" placeholder="search by deployments" class="form-control" type="search"/>
-            </div>
             <div class="form-group uploadBtn">
                 <div upload-blueprint-button>{{ 'blueprints.uploadBtn' | translate }}</div>
             </div>
@@ -29,7 +25,7 @@
                     <th st-sort="id" class="name sorting">{{ 'blueprints.table.heading.name' | translate }}</th>
                     <th st-sort="created_at" class="created sorting">{{ 'blueprints.table.heading.created' | translate }}</th>
                     <th st-sort="updated_at" class="updated sorting">{{ 'blueprints.table.heading.updated' | translate }}</th>
-                    <th st-sort="deploymentsCount" class="deployments sorting">{{ 'blueprints.table.heading.deployments' | translate }}</th>
+                    <th class="deployments">{{ 'blueprints.table.heading.deployments' | translate }}</th>
                     <th class="actions"></th>
                 </tr>
             </thead>
