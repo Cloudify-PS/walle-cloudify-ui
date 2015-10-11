@@ -23,14 +23,14 @@ describe('Controller: CancelExecutionDialogCtrl', function () {
 
 
     it('should cancel execution by its id', inject(function (cloudifyClient) {
-        spyOn(cloudifyClient.executions,'cancel').andReturn({ then: function(){}});
+        spyOn(cloudifyClient.executions,'cancel').andReturn( window.mockPromise() );
         scope.currentExecution = {'id': '123'};
         scope.cancelWorkflow();
         expect(cloudifyClient.executions.cancel).toHaveBeenCalledWith('123', false);
     }));
 
     it('should force cancel execution if asked for', inject(function(cloudifyClient){
-        spyOn(cloudifyClient.executions,'cancel').andReturn({ then: function(){}});
+        spyOn(cloudifyClient.executions,'cancel').andReturn( window.mockPromise());
         scope.currentExecution = {'id': '123'};
         scope.cancelWorkflow(true);
         expect(cloudifyClient.executions.cancel).toHaveBeenCalledWith('123', true);
