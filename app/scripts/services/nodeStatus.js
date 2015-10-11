@@ -10,6 +10,7 @@
 angular.module('cosmoUiApp')
     .service('nodeStatus', function () {
 
+        var me = this;
         var statesIndex = ['uninitialized', 'initializing', 'creating', 'created', 'configuring', 'configured', 'starting', 'started', 'deleted'];
 
         // use this instead of numbers
@@ -70,6 +71,10 @@ angular.module('cosmoUiApp')
             }
         };
 
+        this.getNodeStatusEnum = function(){
+            return NODE_STATUS;
+        };
+
         this.getCompleteProgress = function( instances ){
             var stateNum = this.stateToNum( { state: 'started' } ); // started is the complete
             return stateNum * _.size(instances); // this is our 100%.
@@ -81,11 +86,22 @@ angular.module('cosmoUiApp')
         };
 
         this.stateToNum = function( instance ){
+
             return statesIndex.indexOf(instance.state);
         };
 
+
+        this.getStateWeight = function( instance ){
+            return me.isDeleted(instance) ? 0 : Math.max(me.stateToNum(instance),0);
+        };
+
+
+        this.isDeleted = function( instance ){
+            return instance.state === 'deleted';
+        };
+
         this.isInProgress = function( instance ){ // todo: consider using !uninitialized.. single source of truth
-            var stateNum = this.stateToNum( instance );
+            var stateNum = me.stateToNum( instance );
             return stateNum > 0 && stateNum <= 7;
         };
 
@@ -115,17 +131,25 @@ angular.module('cosmoUiApp')
                 return me.isCompleted(instance);
             });
 
-            //
-            if ( !inProgress ) {
-                if ( !completed ) { // not even one node is completed. this is a total failure!!!
-                    status = NODE_STATUS.FAILED;
-                } else if ( failed) { // some are completed. some are failed.. minor failure
-                    status = NODE_STATUS.ALERT;
-                } else {
+            var initialized = _.find(instances, function( instance ){
+                return !me.isUninitialized(instance);
+            });
+
+
+
+            if ( initialized ) { // did someone even try to install the blueprint?? - if not, there's nothing to talk about
+                if (!inProgress) {
+                    if (!completed) { // not even one node is completed. this is a total failure!!!
+                        status = NODE_STATUS.FAILED;
+                    } else if (failed) { // some are completed. some are failed.. minor failure
+                        status = NODE_STATUS.ALERT;
+                    }
+                } // else in progress, then status is loading. since it is already set.. we do nothing here..
+
+                // no regardless if in progress or not, if everything is ok, show success
+                if ( completed && !failed ){ // if all nodes completed and nothing failed, then everything is working. yey!!!!
                     status = NODE_STATUS.DONE;
                 }
-            } else if(!failed) { // !failed - not a single instance failed!! everyone are completed !!! yey!!!! success!!! lets show this huge success whether we are in progress or not..
-                status = NODE_STATUS.DONE;
             }
 
             return status;
@@ -150,16 +174,21 @@ angular.module('cosmoUiApp')
          * @return {number} the deployment's progress in percentage. (0 - 100)
          */
         this.calculateProgress = function (nodeInstances) {
-
             var me = this;
 
             var total = 0;
 
             _.each(nodeInstances, function(instance){
-                total += me.stateToNum(instance);
+                total += me.getStateWeight(instance);
             });
 
-            return  ( total / this.getCompleteProgress( nodeInstances ) ) * 100;
+            var result =  ( total / this.getCompleteProgress( nodeInstances ) ) * 100;
+
+            // normalize so it won't show stupid numbers like -8 or 114..
+            result = Math.max(0,result);
+            result = Math.min(100,result);
+
+            return result;
 
         };
 

@@ -3,20 +3,23 @@
 describe('Directive: bpTopologyNodes', function () {
 
 
-    var element, scope;
+    var element,
+        isolatedScope,
+        scope;
     beforeEach(module('cosmoUiApp', 'ngMock', 'backend-mock', 'templates-main'));
 
     function compileDirective(opts) {
-        inject(function($compile, $rootScope) {
+        return inject(function($compile, $rootScope) {
             if (!opts || !opts.scope) {
                 scope = $rootScope.$new();
             } else {
                 scope = opts.scope;
             }
             element = $compile(angular.element('<div bp-topology-nodes map="map"></div>'))(scope);
-
             scope.$digest();
+            isolatedScope = element.isolateScope();
         });
+
     }
 
     describe('Directive tests', function() {
@@ -43,6 +46,24 @@ describe('Directive: bpTopologyNodes', function () {
 
         it('should not have cloudify-types-base class', function() {
             expect(element.find('i.gs-node-icon').hasClass('cloudify-types-base')).toBe(false);
+        });
+
+        describe('#shouldShowBadge', function(){
+            beforeEach(compileDirective());
+
+            it('should return true if in progress', function(){
+                expect( isolatedScope.shouldShowBadge()).toBe(false);
+                isolatedScope.inProgress = true;
+                expect( isolatedScope.shouldShowBadge()).toBe(true);
+
+            });
+
+            it('should return true if there is an initialized node instance', function(){
+                isolatedScope.nodeInstances = { 'foo' : [{ state: 'started' }] };
+                expect(isolatedScope.shouldShowBadge({id:'foo'})).toBe(true);
+                isolatedScope.nodeInstances = { 'foo' : [{ state: 'uninitialized' }] };
+                expect(isolatedScope.shouldShowBadge({id:'foo'})).toBe(false);
+            });
         });
 
 
