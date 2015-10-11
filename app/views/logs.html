@@ -100,7 +100,7 @@
             <tbody  ng-repeat="log in logsHits" ng-init="isOpen=false">
             <tr data-ng-click="isOpen=!isOpen">
                 <td class="icon-events" ng-class="getEventIcon(log)"></td>
-                <td class="date"><p>{{log._source.timestamp == undefined && '-' || log._source.timestamp}}</p></td>
+                <td class="date"><p>{{log._source.timestamp == undefined && '-' || (log._source.timestamp | dateFormat:'yyyy-MM-dd HH:mm:ss')}}</p></td>
                 <td class="type"><p>{{getEventText(log._source.event_type) == undefined && '-' || getEventText(log._source.event_type)}}</p></td>
                 <td class="level"><p>{{log._source.level == undefined && '-' || log._source.level | uppercase}}</p></td>
                 <td class="operation"><p>{{log._source.context.operation == undefined && '-' || log._source.context.operation}}</p></td>
