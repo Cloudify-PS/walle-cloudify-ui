@@ -43,7 +43,6 @@
     "angular": "~1.2.14",
     "d3": "~3.4.1",
     "jquery": "~2.1.4",
-    "angular-mocks": "~1.2.14",
-    "cloudify-js": "master"
+    "angular-mocks": "~1.2.14"
   }
 }
