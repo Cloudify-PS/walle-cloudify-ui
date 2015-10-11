@@ -37,6 +37,19 @@
                      data-text="{{'logs.filters.deployments.text' | translate }}"></div>
             </div>
 
+            <div class="filter gs-selection-button" ng-show="logLevelsList.length">
+                {{'logs.filters.logLevels.title' | translate }}<br>
+                <div multi:select:menu
+                     class="gs-select"
+                     data-multiple="true"
+                     data-options="logLevelsList"
+                     data-ng-model="eventsFilter.logLevels"
+                     name="logLevels"
+                     cfy-st-search
+                     predicate="level"
+                     match="{{pluckArrayOfObjects(eventsFilter.logLevels,'value')}}"
+                     data-text="{{'logs.filters.logLevels.text' | translate }}"></div>
+            </div>
             <!--timestamp Range filters-->
             <!-- TODO : add support of i18n here-->
             <!--<div class="gs-date-range-selection"-->
@@ -64,10 +77,14 @@
                            <!--data-ng-model="eventsFilter.timeRange.lte"/>-->
                 <!--</div>-->
             <!--</div>-->
+
+            <div class="actions">
+                <button class="gs-btn" data-ng-click="clearFilters()" >Clear Filter</button>
+            </div>
         </div>
 
         <div class="error" ng-if="getLogsError"><b>{{'logs.gettingLogsFailed' | translate}}</b><br/>{{getLogsError}}</div>
-        <table class="gs-table gs-table-align-top eventsTable">
+        <table class="gs-table eventsTable">
             <thead>
             <tr>
                 <th st-sort="_source.event_type" class="icon sorting"><!-- icon --></th>
@@ -83,16 +100,19 @@
             <tbody  ng-repeat="log in logsHits" ng-init="isOpen=false">
             <tr data-ng-click="isOpen=!isOpen">
                 <td class="icon-events" ng-class="getEventIcon(log)"></td>
-                <td class="date">{{log._source.timestamp == undefined && '-' || log._source.timestamp}}</td>
-                <td class="type">{{getEventText(log._source.event_type) == undefined && '-' || getEventText(log._source.event_type)}}</td>
-                <td class="node">{{log._source.level == undefined && '-' || log._source.level | uppercase}}</td>
-                <td class="node">{{log._source.context.operation == undefined && '-' || log._source.context.operation}}</td>
-                <td class="node">{{log._source.context.node_name == undefined && '-' || log._source.context.node_name}}</td>
-                <td class="node">{{log._source.context.node_id == undefined && '-' || log._source.context.node_id}}</td>
-                <td class="task">{{log._source.message.text == undefined && '-' || log._source.message.text}}</td>
+                <td class="date"><p>{{log._source.timestamp == undefined && '-' || log._source.timestamp}}</p></td>
+                <td class="type"><p>{{getEventText(log._source.event_type) == undefined && '-' || getEventText(log._source.event_type)}}</p></td>
+                <td class="level"><p>{{log._source.level == undefined && '-' || log._source.level | uppercase}}</p></td>
+                <td class="operation"><p>{{log._source.context.operation == undefined && '-' || log._source.context.operation}}</p></td>
+                <td class="node_name"><p>{{log._source.context.node_name == undefined && '-' || log._source.context.node_name}}</p></td>
+                <td class="node_id"><p>{{log._source.context.node_id == undefined && '-' || log._source.context.node_id}}</p></td>
+                <td class="task"><p class="large-text-overflow">{{log._source.message.text == undefined && '-' || log._source.message.text}}</p></td>
             </tr>
             <tr class="details" data-ng-show="isOpen">
                 <td colspan="8">
+                    <div class="message-text">
+                        <span><b>{{'logs.fields.messageText' | translate}}</b><br/>{{log._source.message.text == undefined && 'N/A' || log._source.message.text}}</span>
+                    </div>
                     <div class="group">
                         <span><b>{{'logs.fields.executionId' | translate}}</b> {{ log._source.context.execution_id == undefined && 'N/A' || log._source.context.execution_id }}</span>
                         <span><b>{{'logs.fields.nodeId' | translate}}</b> {{ log._source.context.node_id == undefined && 'N/A' || log._source.context.node_id }}</span>

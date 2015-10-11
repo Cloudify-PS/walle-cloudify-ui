@@ -24,6 +24,11 @@
             }
         },
         "emptyMessage": "No Blueprints",
+        "missingMessages": {
+            "indication": "Blueprint not found",
+            "goBack": "Go back to blueprints",
+            "uploadBlueprint": "Let's upload a blueprint"
+        },
         "source": {
             "chooseFile": "Please choose file to preview.",
             "noPreview": "Generating Blueprint Source View...",
@@ -181,9 +186,10 @@
             "timestamp": "Timestamp",
             "executionId": "Execution ID:",
             "nodeId": "Node ID:",
-            "taskId": "Task Name:",
+            "taskName": "Task Name:",
             "plugin": "Plugin:",
-            "operation": "Operation:"
+            "operation": "Operation:",
+            "messageText": "Message:"
         },
         "filters": {
             "blueprints": {
@@ -193,6 +199,10 @@
             "deployments": {
                 "title": "Deployments:",
                 "text": "Choose Deployments"
+            },
+            "logLevels": {
+                "title": "Log levels:",
+                "text": "Choose log levels"
             }
         }
     },

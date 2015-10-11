@@ -17,6 +17,10 @@
                 display: inline-block;
                 margin: 0 0 10px 0;
             }
+            .actions{
+                margin-top: 27px;
+                float: right;
+            }
         }
 
         .emptyTable {
@@ -58,6 +62,17 @@
                     }
                     &.event-text-red {
                         color: $COSMOUI_EVENTS_LIST_TEXT_FAILED;
+                    }
+                    .large-text-overflow{
+                        max-width: 510px;
+                        white-space: nowrap;
+                        text-overflow: ellipsis;
+                        overflow-x: hidden;
+                    }
+                    .message-text{
+                        padding-bottom: 10px;
+                        font-size: 13px;
+                        margin: 0 10px;
                     }
                 }
             }

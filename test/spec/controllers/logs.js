@@ -6,18 +6,17 @@ describe('Controller: LogsCtrl', function () {
 
     beforeEach(module('cosmoUiApp', 'backend-mock'));
 
-    var init = inject(function (cloudifyClient, TableStateToRestApi, EventsMap) {
+    var init = inject(function ($rootScope, cloudifyClient, TableStateToRestApi, EventsMap) {
         _cloudifyClient = cloudifyClient;
         _TableStateToRestApi = TableStateToRestApi;
         _EventsMap = EventsMap;
-
-        spyOnServices();
-        initCtrl();
+        scope = $rootScope.$new();
+        spyOnServices(); // default spies that you can later override
+        initCtrl(); // default creation, you can later recreate..
 
     });
 
-    var initCtrl = inject(function ($rootScope, $controller) {
-        scope = $rootScope.$new();
+    var initCtrl = inject(function ($controller) {
         LogsCtrl = $controller('LogsCtrl', {
             $scope: scope
         });
@@ -59,7 +58,7 @@ describe('Controller: LogsCtrl', function () {
                 expect(scope.eventsFilter.deployments).toEqual([]);
             });
 
-            describe('mock blueprints list', function () {
+            describe('mock getting filters info.', function () {
                 beforeEach(function () {
                     _cloudifyClient.blueprints.list.andReturn({
                         then: function (successCallback) {
@@ -190,6 +189,23 @@ describe('Controller: LogsCtrl', function () {
 
                 scope.updateData(defaultMockTableState);
                 expect(scope.getLogsError).toBe('Getting logs failed message');
+            });
+        });
+
+        describe('#clearFilters', function () {
+            it('should clear filters',function(){
+                initCtrl();
+                scope.eventsFilter = {
+                    'blueprints': ['blueprint1'],
+                    'deployments': ['deployment2','deployment1'],
+                    'logLevels': ['error','warning','info']
+                };
+                scope.clearFilters();
+                expect(scope.eventsFilter).toEqual({
+                    'blueprints': [],
+                    'deployments': [],
+                    'logLevels': []
+                });
             });
         });
     });
