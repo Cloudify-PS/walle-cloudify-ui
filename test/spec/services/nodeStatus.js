@@ -10,82 +10,137 @@ describe('Service: nodeStatus', function () {
         nodeStatus = _nodeStatus_;
     }));
 
-    it('should have nodeStatus service available', function () {
-        expect(!!nodeStatus).toBe(true);
+
+    describe('get states index', function(){
+        it('should return statesIndex', function(){
+            expect(nodeStatus.getStatesIndex().length > 0).toBe(true);
+        });
     });
 
-    it('should return the states index', function () {
-        var statesIndex = nodeStatus.getStatesIndex();
-
-        expect(statesIndex).not.toBe(undefined);
-        expect(statesIndex.length).toEqual(9);
+    describe('getStateByIndex', function(){
+        it('should return state by index' ,function(){
+            expect(nodeStatus.getStateByIndex(7)).toBe('started');
+        });
     });
 
-    it('should return the state by index', function () {
-        expect(nodeStatus.getStateByIndex(0)).toBe('uninitialized');
-        expect(nodeStatus.getStateByIndex(1)).toBe('initializing');
-        expect(nodeStatus.getStateByIndex(2)).toBe('creating');
-        expect(nodeStatus.getStateByIndex(3)).toBe('created');
-        expect(nodeStatus.getStateByIndex(4)).toBe('configuring');
-        expect(nodeStatus.getStateByIndex(5)).toBe('configured');
-        expect(nodeStatus.getStateByIndex(6)).toBe('starting');
-        expect(nodeStatus.getStateByIndex(7)).toBe('started');
-        expect(nodeStatus.getStateByIndex(8)).toBe('deleted');
+    describe('getNodeStatus', function(){
+        it('should return 0 if no process', function(){
+            expect(nodeStatus.getNodeStatus(null,null,false)).toBe(0);
+            expect(nodeStatus.getNodeStatus(null,null,0)).toBe(0);
+        });
+
+        it('should return 1 if process is 100', function(){
+            expect(nodeStatus.getNodeStatus(null,null,100)).toBe(1);
+        });
+
+        it('should return undefined if process is negative or over 100', function(){
+            expect(nodeStatus.getNodeStatus(null,null,101)).toBe(undefined);
+            expect(nodeStatus.getNodeStatus(null,null,-1)).toBe(undefined);
+        });
+
+        describe('other values of process ', function(){
+            var process = 80;
+            it('should return 0 if deploymentInProgress ', function(){
+                expect(nodeStatus.getNodeStatus(null,true, process)).toBe(0);
+            });
+
+            it('should return 3 if not in progress and completed=0', function(){
+                expect(nodeStatus.getNodeStatus({completed:0}, false, process)).toBe(3);
+            });
+
+            it('should return 2 if deployment completed is not 0 and not in progress', function(){
+                expect(nodeStatus.getNodeStatus({completed:1}, false, process)).toBe(2);
+            });
+        });
     });
 
-    it('should have install status in status id 0', function () {
-        expect(nodeStatus.getStatusClass(0)).toBe('install');
+    describe('#getCompleteProgress', function(){
+        it('should return the number that represents all instances started', function(){
+            expect(nodeStatus.getCompleteProgress([{},{},{}])).toBe(21);
+        });
     });
 
-    it('should have done status in status id 1', function () {
-        expect(nodeStatus.getStatusClass(1)).toBe('done');
+    describe('#iscompleted', function(){
+        it('should do the same as isStarted', function(){
+            spyOn(nodeStatus,'isStarted');
+            nodeStatus.isCompleted();
+            expect(nodeStatus.isStarted).toHaveBeenCalled();
+        });
     });
 
-    it('should have alerts status in status id 2', function () {
-        expect(nodeStatus.getStatusClass(2)).toBe('alerts');
+    describe('#getStateWeight', function(){
+        it('should return 0 if node is deleted', function(){
+            expect(nodeStatus.getStateWeight({state:'deleted'})).toBe(0);
+        });
+
+        it('should return a value of status by index otherwise', function(){
+            expect(nodeStatus.getStateWeight({state:'started'})).toBe(7);
+        });
     });
 
-    it('should have failed status in status id 3', function () {
-        expect(nodeStatus.getStatusClass(3)).toBe('failed');
+    describe('#isDeleted', function(){
+        it('should return if node is deleted', function(){
+            expect(nodeStatus.isDeleted({state:'deleted'})).toBe(true);
+        });
     });
 
-    it('should return empty status as default', function () {
-        expect(nodeStatus.getStatusClass()).toBe('');
+    describe('#isInProgress', function(){
+        it('should return true if node is not uninitialized or deleted', function(){
+            expect(nodeStatus.isInProgress({state:'deleted'})).toBe(false,'not in progress because deleted');
+            expect(nodeStatus.isInProgress({state:'uninitialized'})).toBe(false,'not in progress because uninitialized');
+            expect(nodeStatus.isInProgress({state:'started'})).toBe(true, 'in progress because started');
+        });
     });
 
-    it('should return loading icon in status id 0', function () {
-        expect(nodeStatus.getIconClass(0)).toBe(' icon-gs-node-status-loading');
+    describe('#isUninitialized',function(){
+        it('should return true if instance is not in progress', function(){
+            expect(nodeStatus.isUninitialized({state:'deleted'})).toBe(true,'uninitialized because deleted');
+            expect(nodeStatus.isUninitialized({state:'uninitialized'})).toBe(true,'uninitialized because uninitialized');
+            expect(nodeStatus.isUninitialized({state:'started'})).toBe(false, 'in progress because started');
+        });
     });
 
-    it('should return success icon in status id 1', function () {
-        expect(nodeStatus.getIconClass(1)).toBe(' icon-gs-node-status-success');
+    describe('#getStatus', function(){
+
+        var NODE_STATUS = null;
+
+        beforeEach(function () {
+            NODE_STATUS = nodeStatus.getNodeStatusEnum();
+        });
+        it('should return failed if not in progress and none completed', function(){
+            expect(nodeStatus.getStatus(false, [{state:'starting'}])).toBe( NODE_STATUS.FAILED );
+        });
+
+        it('should return alert if not in progress and some completed but some did not', function(){
+            expect(nodeStatus.getStatus(false, [{state:'starting'},{state:'started'}])).toBe(NODE_STATUS.ALERT);
+        });
+
+        it('should return DONE if all completed (none failed)', function(){
+            expect(nodeStatus.getStatus(false, [{state:'started'}])).toBe(NODE_STATUS.DONE);
+        });
+
+        it('should be loading if in progress and not all nodes completed', function(){
+            expect(nodeStatus.getStatus(true, [{state:'starting'}])).toBe(NODE_STATUS.LOADING);
+        });
     });
 
-    it('should return alerts icon in status id 2', function () {
-        expect(nodeStatus.getIconClass(2)).toBe(' icon-gs-node-status-alert');
+    describe('#isStarted', function(){
+        it('should return true if instance started', function(){
+            expect(nodeStatus.isStarted({state:'started'})).toBe(true);
+        });
     });
 
-    it('should return failed icon in status id 3', function () {
-        expect(nodeStatus.getIconClass(3)).toBe(' icon-gs-node-status-fail');
+    describe('calculateProgress', function(){
+        it('should return overall progress of installation', function(){
+
+            expect(nodeStatus.calculateProgress([{state:'started'}])).toBe(100);
+            expect(Math.floor(nodeStatus.calculateProgress([{state:'starting'}]))).toBe(85);
+            expect(Math.floor(nodeStatus.calculateProgress([{state:'starting'}, {state:'started'}]))).toBe(92);
+            expect(nodeStatus.calculateProgress([{state:'deleted'}, {state:'deleted'}])).toBe(0);
+
+        });
     });
 
-    it('should return no icon in status as default', function () {
-        expect(nodeStatus.getIconClass()).toBe('');
-    });
 
-    it('should test getNodeStatus', function () {
-        var deployment = {
-            completed: 0
-        };
 
-        expect(nodeStatus.getNodeStatus(deployment, undefined, false)).toBe(0);
-        expect(nodeStatus.getNodeStatus(deployment, undefined, 100)).toBe(1);
-        expect(nodeStatus.getNodeStatus(deployment, {}, 55)).toBe(0);
-        expect(nodeStatus.getNodeStatus(deployment, undefined, 55)).toBe(3);
-
-        deployment.completed = 2;
-        expect(nodeStatus.getNodeStatus(deployment, undefined, 55)).toBe(2);
-        expect(nodeStatus.getNodeStatus(deployment, undefined, 0)).toBe(0);
-
-    });
 });
