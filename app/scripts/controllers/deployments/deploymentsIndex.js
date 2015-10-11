@@ -31,12 +31,6 @@ angular.module('cosmoUiApp')
             return !!execution;
         };
 
-        $scope.layerRedirectTo = function(deployment, event, matchElement) {
-            if(event.target.tagName.toLowerCase() + '.' + event.target.className === matchElement) {
-                $location.path('/deployment/' + deployment.id + '/topology');
-            }
-        };
-
         function _loadExecutions() {
 
             return cloudifyClient.executions.list(null, 'id,workflow_id,status,deployment_id').then(function(result){
