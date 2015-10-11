@@ -45,6 +45,14 @@
                 "cancel" : "Cancel",
                 "confirm" : "Confirm"
             }
+        },
+        "filters": {
+            "blueprint": {
+                "title": "Blueprint name"
+            },
+            "deploymentsCount": {
+                "title": "Number Of Deployments"
+            }
         }
     },
     "config": {

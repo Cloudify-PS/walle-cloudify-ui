@@ -20,7 +20,9 @@ describe('Directive: cfyStPersist', function () {
         scope.myPipe = function () {
             scope.displayed = new Array(100);
         };
-        element = angular.element('<div id="' + tableId + '" st-table="displayed" st-pipe="myPipe"><div cfy-st-persist content-loaded="loaded" items-by-page="25"><div st-search="searchId"</div></div></div>');
+        element = angular.element(  '<div id="' + tableId + '" st-table="displayed" st-pipe="myPipe">'+
+                                    '<div cfy-st-persist content-loaded="loaded" items-by-page="25" table-id="'+tableId+'">'+
+                                    '<div st-search="searchId"</div></div></div>');
         element = $compile(element)(scope);
         controller = element.controller('stTable');
         rootScope = $rootScope;
