@@ -1,8 +1,8 @@
 <div class="btn-group" dropdown>
     <button type="button" class="gs-btn" dropdown-toggle>
-        {{'columnsOrganizer.buttonText' | translate}} <span class="caret"></span>
+        <i class="fa fa-cog"></i><span class="caret"></span>
     </button>
-    <ul class="dropdown-menu columns-dnd-list" dnd-list="columns" ng-if="columns">
+    <ul class="dropdown-menu columns-dnd-list dropdown-menu-right" dnd-list="columns" ng-if="columns">
         <li ng-repeat="column in columns"
             dnd-draggable="column"
             dnd-moved="columns.splice($index, 1)"
