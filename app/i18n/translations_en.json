@@ -24,6 +24,11 @@
             }
         },
         "emptyMessage": "No Blueprints",
+        "missingMessages": {
+            "indication": "Blueprint not found",
+            "goBack": "Go back to blueprints",
+            "uploadBlueprint": "Let's upload a blueprint"
+        },
         "source": {
             "chooseFile": "Please choose file to preview.",
             "noPreview": "Generating Blueprint Source View...",
