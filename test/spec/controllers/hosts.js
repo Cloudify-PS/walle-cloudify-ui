@@ -13,14 +13,8 @@ describe('Controller: HostsCtrl', function () {
 
         scope = $rootScope.$new();
 
-        spyOn(cloudifyClient.deployments, 'list').andReturn({
-            then: function () {
-            }
-        });
-        spyOn(cloudifyClient.nodes, 'list').andReturn({
-            then: function () {
-            }
-        });
+        spyOn(cloudifyClient.deployments, 'list').andReturn(window.mockPromise());
+        spyOn(cloudifyClient.nodes, 'list').andReturn(window.mockPromise());
 
         HostsCtrl = $controller('HostsCtrl', {
             $scope: scope

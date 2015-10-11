@@ -9,7 +9,7 @@ describe('Controller: DeploymentTopologyCtrl', function () {
 
     beforeEach(inject(function ($controller, $rootScope, cloudifyClient) {
         scope = $rootScope.$new();
-        spyOn(cloudifyClient.deployments, 'get').andReturn({ 'then' : function( success ){ success({ data : { blueprint_id : 'foo' } }); }});
+        spyOn(cloudifyClient.deployments, 'get').andReturn(window.mockPromise({ data : { blueprint_id : 'foo' } }));
         DeploymentTopologyCtrl = $controller('DeploymentTopologyCtrl', {
             $scope: scope
         });
