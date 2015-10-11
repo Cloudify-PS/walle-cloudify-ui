@@ -287,7 +287,10 @@
         "typesFilterPlaceholder" : "Choose Types",
         "typesFilter" : "Types:",
         "searchFilter" : "Free Text:"
-    }
+    },
+     "columnsOrganizer" : {
+         "buttonTitle" : "Customize Columns"
+     }
 }
 
 
