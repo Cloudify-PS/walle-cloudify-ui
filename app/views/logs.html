@@ -116,7 +116,7 @@
             <tr class="details" data-ng-show="isOpen && isAnyColumnSelected()">
                 <td colspan="8">
                     <div class="message-text">
-                        <span><b>{{'logs.fields.messageText' | translate}}</b><br/>{{log._source.message.text == undefined && 'N/A' || log._source.message.text}}</span>
+                        <pre>{{log._source.message.text == undefined && 'N/A' || log._source.message.text}}</pre>
                     </div>
                     <div class="group">
                         <span><b>{{'logs.fields.executionId' | translate}}</b> {{ log._source.context.execution_id == undefined && 'N/A' || log._source.context.execution_id }}</span>
