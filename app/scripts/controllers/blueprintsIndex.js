@@ -1,27 +1,18 @@
 'use strict';
 
 angular.module('cosmoUiApp')
-    .controller('BlueprintsIndexCtrl', function ($scope, $location, $cookieStore, $log, ngDialog, cloudifyClient) {
+    .controller('BlueprintsIndexCtrl', function ($scope, $location, $log, ngDialog, cloudifyClient) {
         $scope.lastExecutedPlan = null;
         $scope.selectedBlueprint = null;
         $scope.managerError = false;
         $scope.itemToDelete = null;
 
-
-        $scope.openAddDialog = function() {
-            ngDialog.open({
-                template: 'views/blueprint/uploadDialog.html',
-                controller: 'UploadBlueprintDialogCtrl',
-                scope: $scope,
-                className: 'upload-dialog'
-            });
-        };
-
+        $scope.itemsByPage = 9;
 
         $scope.loadBlueprints = function() {
             $scope.blueprints = null;
             $scope.managerError = false;
-            cloudifyClient.blueprints.list('id,updated_at,created_at').then(function (result) {
+            return cloudifyClient.blueprints.list('id,updated_at,created_at').then(function (result) {
 
                 if (result.data.length < 1) {
                     $scope.blueprints = [];
@@ -34,30 +25,17 @@ angular.module('cosmoUiApp')
             });
         };
 
-        // blueprintID to deployment count map
-        var deploymentsCount = {};
         function loadDeployments(){
             cloudifyClient.deployments.list('blueprint_id').then(function( result ){
-                _.each(result.data, function( dep ){
-                    $log.info( dep );
-                    if ( !deploymentsCount.hasOwnProperty(dep.blueprint_id)){
-                        deploymentsCount[dep.blueprint_id] = 0;
-                    }
-                    deploymentsCount[dep.blueprint_id]++;
+                var deploymentsPerBlueprint = _.groupBy( result.data, 'blueprint_id' );
+                _.each($scope.blueprints, function(b){
+                    b.deploymentsCount = deploymentsPerBlueprint.hasOwnProperty(b.id) ? deploymentsPerBlueprint[b.id].length : 0;
                 });
+                $scope.deploymentsCount = true;
             }, function(/*result*/){
                 // alert on error somewhere. todo.
             });
         }
 
-        $scope.countDeployments = function(blueprint){
-            return deploymentsCount.hasOwnProperty(blueprint.id) ? deploymentsCount[blueprint.id] : 0;
-        };
-
-        $scope.uploadDone = function(blueprint_id) {
-            $location.path('/blueprint/' + blueprint_id + '/topology');
-        };
-
-        $scope.loadBlueprints();
-        loadDeployments();
+        $scope.loadBlueprints().then(loadDeployments);
     });

@@ -24,6 +24,11 @@
             }
         },
         "emptyMessage": "No Blueprints",
+        "missingMessages": {
+            "indication": "Blueprint not found",
+            "goBack": "Go back to blueprints",
+            "uploadBlueprint": "Let's upload a blueprint"
+        },
         "source": {
             "chooseFile": "Please choose file to preview.",
             "noPreview": "Generating Blueprint Source View...",
@@ -39,6 +44,14 @@
                 "description" : "Are you sure you want to delete '{{blueprint}}'?",
                 "cancel" : "Cancel",
                 "confirm" : "Confirm"
+            }
+        },
+        "filters": {
+            "blueprint": {
+                "title": "Blueprint name"
+            },
+            "deploymentsCount": {
+                "title": "Number Of Deployments"
             }
         }
     },
@@ -196,8 +209,8 @@
                 "text": "Choose Deployments"
             },
             "logLevels": {
-                "title": "Log levels:",
-                "text": "Choose log levels"
+                "title": "Log Levels:",
+                "text": "Choose Log Levels"
             }
         }
     },
@@ -282,7 +295,10 @@
         "typesFilterPlaceholder" : "Choose Types",
         "typesFilter" : "Types:",
         "searchFilter" : "Free Text:"
-    }
+    },
+     "columnsOrganizer" : {
+         "buttonTitle" : "Customize Columns"
+     }
 }
 
 

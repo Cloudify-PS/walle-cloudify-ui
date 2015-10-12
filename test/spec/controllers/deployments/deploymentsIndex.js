@@ -62,7 +62,7 @@ describe('Controller: DeploymentsCtrl', function () {
 
             _testSetup();
             executions = [{'deployment_id' : 'foo', name : 'bar', is_running: true }];
-            cloudifyClient.executions.list.andReturn({ then : function(success/*, error*/){ success( { data : executions  } );}});
+            cloudifyClient.executions.list.andReturn( window.mockPromise( { data : executions  } ));
 
             spyOn(ExecutionsService,'isRunning').andCallFake(function( e){
                 return !!e.is_running;
@@ -91,16 +91,6 @@ describe('Controller: DeploymentsCtrl', function () {
             _testSetup();
             expect(scope.isExecuting()).toBe(false);
         });
-    });
-
-    describe('#redirectTo', function(){
-
-        it('should redirect to deployment', inject(function( $location ){
-            _testSetup();
-            spyOn($location,'path');
-            scope.redirectTo({'id' : 'foo'});
-            expect($location.path).toHaveBeenCalledWith('/deployment/foo/topology');
-        }));
     });
 
     describe('canPause', function(){

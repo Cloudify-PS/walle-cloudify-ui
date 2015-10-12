@@ -18,6 +18,10 @@
 
             th {
               height: $COSMOUI_LIST_HEADER_HEIGHT;
+
+                .sorting {
+                    cursor: pointer;
+                }
             }
 
             td {
@@ -80,6 +84,21 @@
                 }
             }
         }
+    }
+
+    .search {
+        display:inline-block;
+        label {
+            font-weight: inherit;
+        }
+        input {
+            width: auto;
+        }
+    }
+
+    .uploadBtn {
+        margin-top: 27px;
+        float: right;
     }
 
   .connect-error-message {

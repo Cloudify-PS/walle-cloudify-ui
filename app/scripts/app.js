@@ -18,7 +18,8 @@ angular.module('cosmoUiApp', [
     'jsbb.angularTicker',
     'cloudifyjs',
     'ui.bootstrap',
-    'smart-table'
+    'smart-table',
+    'dndLists'
 ]).config( function ($routeProvider, $httpProvider, $translateProvider) {
 
         //var isSettingsExists = window.isSettingsExists();
@@ -38,7 +39,8 @@ angular.module('cosmoUiApp', [
             })
             .when('/blueprints', {
                 templateUrl: 'views/blueprintsIndex.html',
-                controller: 'BlueprintsIndexCtrl'
+                controller: 'BlueprintsIndexCtrl',
+                reloadOnSearch: false
             })
             .when('/blueprint/:blueprintId/topology', {
                 templateUrl: 'views/blueprint/blueprintTopology.html',
