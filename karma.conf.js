@@ -59,6 +59,7 @@ module.exports = function(config) {
             'app/bower_components/angular-smart-table/dist/smart-table.js',
             'app/bower_components/angular-moment/angular-moment.js',
             'app/bower_components/angular-datepicker/dist/angular-datepicker.js',
+            'app/bower_components/dndLists/angular-drag-and-drop-lists.js',
             'app/scripts/*.js',
             'app/scripts/**/*.js',
             '.tmp/styles/main.css',

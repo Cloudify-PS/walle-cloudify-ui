@@ -1,0 +1,17 @@
+<div class="btn-group" dropdown>
+    <button type="button" class="gs-btn" title="{{'columnsOrganizer.buttonTitle' | translate}}" dropdown-toggle>
+        <i class="fa fa-cog"></i><span class="caret"></span>
+    </button>
+    <ul class="dropdown-menu columns-dnd-list dropdown-menu-right" dnd-list="columns" ng-if="columns">
+        <li ng-repeat="column in columns"
+            dnd-draggable="column"
+            dnd-moved="columns.splice($index, 1)"
+            dnd-selected="column.isSelected = !column.isSelected"
+            ng-class="{'selected': column.isSelected}"
+            class="dnd-list-item">
+            <i class="fa" ng-class="{'fa-check-square': column.isSelected, 'fa-square-o': !column.isSelected}"></i>
+            <span>{{column.name}}</span>
+            <i class="fa fa-ellipsis-v draggable-icon"></i>
+        </li>
+    </ul>
+</div>

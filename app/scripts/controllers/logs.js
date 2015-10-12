@@ -3,6 +3,17 @@
 angular.module('cosmoUiApp')
     .controller('LogsCtrl', function ($scope, cloudifyClient, EventsMap, $routeParams, TableStateToRestApi) {
 
+        $scope.columns = [
+            {name:'Event Type Icon',isSelected:true},
+            {name:'Timestamp',isSelected:true},
+            {name:'Event Type',isSelected:true},
+            {name:'Log Level',isSelected:true},
+            {name:'Operation',isSelected:true},
+            {name:'Node Name',isSelected:true},
+            {name:'Node Id',isSelected:true},
+            {name:'Message',isSelected:true}
+        ];
+
         $scope.itemsPerPage = 9;
         var initFilters = function() {
             $scope.eventsFilter = {
@@ -91,5 +102,9 @@ angular.module('cosmoUiApp')
         //creating an Array of the values of the requested key
         $scope.pluckArrayOfObjects = function (objectsArray, key) {
             return _.pluck(objectsArray, key);
+        };
+
+        $scope.isAnyColumnSelected = function(){
+            return _.some($scope.columns, 'isSelected', true);
         };
     });

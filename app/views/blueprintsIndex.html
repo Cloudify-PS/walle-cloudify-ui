@@ -7,53 +7,51 @@
                 <li><span>{{ 'breadcrumb.blueprints' | translate }}</span></li>
             </ul>
         </div>
-        <div class="right">
-            <div upload-blueprint-button>{{ 'blueprints.uploadBtn' | translate }}</div>
-        </div>
     </div>
-    <table id="bp1" st-table="displayedBlueprints" st-safe-src="blueprints" class="gs-table" ng-show="!managerError">
-        <thead cfy-st-persist items-by-page="itemsByPage" content-loaded="deploymentsCount">
-            <tr>
-                <th st-sort="id" st-skip-natural="true" class="name">{{ 'blueprints.table.heading.name' | translate }}</th>
-                <th st-sort="created_at" st-skip-natural="true" class="created">{{ 'blueprints.table.heading.created' | translate }}</th>
-                <th st-sort="updated_at" st-skip-natural="true" class="updated">{{ 'blueprints.table.heading.updated' | translate }}</th>
-                <th st-sort="deploymentsCount" st-skip-natural="true" class="deployments">{{ 'blueprints.table.heading.deployments' | translate }}</th>
-                <th class="actions"></th>
-            </tr>
-            <tr>
-                <th>
-                    <input st-search="id" placeholder="search by name" class="form-control" type="search"/>
-                </th>
-                <th></th>
-                <th></th>
-                <th>
-                    <input st-search="deploymentsCount" placeholder="search by deployments" class="form-control" type="search"/>
-                </th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody ng-repeat="blueprint in displayedBlueprints">
-            <tr>
-                <td class="name"><a href="#/blueprint/{{ blueprint.id }}/topology">{{ blueprint.id }}</a></td>
-                <td class="created">{{ blueprint.created_at | dateFormat: 'yyyy-MM-dd HH:mm:ss' }}</td>
-                <td class="updated">{{ blueprint.updated_at | dateFormat: 'yyyy-MM-dd HH:mm:ss' }}</td>
-                <td class="deployments"><div class="deployments-number"><a href="#/deployments">{{blueprint.deploymentsCount}}</a></div></td>
-                <td class="actions">
-                    <div class="bp-action-selector" on-delete="loadBlueprints()" blueprint="blueprint"></div>
-                </td>
-            </tr>
-        </tbody>
-        <tfoot>
-            <tr>
-                <td colspan="5" class="text-center">
-                    <div id="pagination" st-pagination st-items-by-page="itemsByPage"></div>
-                </td>
-            </tr>
-        </tfoot>
-    </table>
-    <div class="connect-error-message" ng-show="managerError">{{ 'connectError' | translate }} - {{ managerError.message }} </div>
+    <div class="content-section" id="bp1" st-table="displayedBlueprints" st-safe-src="blueprints">
+        <form>
+            <div class="form-group search">
+                <label for="searchBlueprintByName">{{'blueprints.filters.blueprint.title' | translate}}:</label>
+                <input id="searchBlueprintByName" st-search="id" placeholder="search by name" class="form-control" type="search"/>
+            </div>
+            <div class="form-group uploadBtn">
+                <div upload-blueprint-button>{{ 'blueprints.uploadBtn' | translate }}</div>
+            </div>
+        </form>
 
-    <div  class="gs-spinner large" ng-show="blueprints == null && !managerError"></div>
+        <table class="gs-table" ng-show="!managerError">
+            <thead cfy-st-persist items-by-page="itemsByPage" content-loaded="deploymentsCount" table-id="bp1">
+                <tr>
+                    <th st-sort="id" class="name sorting">{{ 'blueprints.table.heading.name' | translate }}</th>
+                    <th st-sort="created_at" class="created sorting">{{ 'blueprints.table.heading.created' | translate }}</th>
+                    <th st-sort="updated_at" class="updated sorting">{{ 'blueprints.table.heading.updated' | translate }}</th>
+                    <th class="deployments">{{ 'blueprints.table.heading.deployments' | translate }}</th>
+                    <th class="actions"></th>
+                </tr>
+            </thead>
+            <tbody ng-repeat="blueprint in displayedBlueprints">
+                <tr>
+                    <td class="name"><a href="#/blueprint/{{ blueprint.id }}/topology">{{ blueprint.id }}</a></td>
+                    <td class="created">{{ blueprint.created_at | dateFormat: 'yyyy-MM-dd HH:mm:ss' }}</td>
+                    <td class="updated">{{ blueprint.updated_at | dateFormat: 'yyyy-MM-dd HH:mm:ss' }}</td>
+                    <td class="deployments"><div class="deployments-number"><a href="#/deployments">{{blueprint.deploymentsCount}}</a></div></td>
+                    <td class="actions">
+                        <div class="bp-action-selector" on-delete="loadBlueprints()" blueprint="blueprint"></div>
+                    </td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="5" class="text-center">
+                        <div id="pagination" st-pagination st-items-by-page="itemsByPage"></div>
+                    </td>
+                </tr>
+            </tfoot>
+        </table>
+        <div class="connect-error-message" ng-show="managerError">{{ 'connectError' | translate }} - {{ managerError.message }} </div>
 
-    <div class="no-blueprints-message" ng-show="blueprints.length == 0">{{ 'blueprints.emptyMessage' | translate }}</div>
+        <div  class="gs-spinner large" ng-show="blueprints == null && !managerError"></div>
+
+        <div class="no-blueprints-message" ng-show="blueprints.length == 0">{{ 'blueprints.emptyMessage' | translate }}</div>
+    </div>
 </div>
