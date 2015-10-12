@@ -61,7 +61,8 @@ angular.module('cosmoUiApp', [
             })
             .when('/deployments',{
                 templateUrl: 'views/deployment/deploymentsIndex.html',
-                controller: 'DeploymentsCtrl'
+                controller: 'DeploymentsCtrl',
+                reloadOnSearch: false
             })
             .when('/deployment/:deploymentId/monitoring', {
                 templateUrl: 'views/deployment/deploymentMonitoring.html',

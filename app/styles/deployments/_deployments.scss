@@ -44,4 +44,19 @@
         margin-top: 20px;
     }
 
+    form {
+        margin-bottom: 10px;
+
+        .form-group {
+            display: inline-block;
+            vertical-align: top;
+        }
+
+        label {
+            font-weight: inherit;
+        }
+        input {
+            width: auto;
+        }
+    }
 }
