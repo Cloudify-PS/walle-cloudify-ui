@@ -6,7 +6,7 @@
         </ul></div>
     </div>
 
-    <div class="content-section"  st-table="logsHits" st-pipe="updateData" >
+    <div class="content-section"  st-table="logsHits" st-pipe="updateData" id="Logs">
         <div class="filters">
 
             <div class="filter gs-selection-button" ng-show="blueprintsList.length">
@@ -85,7 +85,7 @@
         </div>
 
         <div class="error" ng-if="getLogsError"><b>{{'logs.gettingLogsFailed' | translate}}</b><br/>{{getLogsError}}</div>
-        <table class="gs-table eventsTable">
+        <table class="gs-table eventsTable" cfy-st-persist items-by-page="itemsPerPage" content-loaded="logsHits" table-id="Logs">
             <thead>
             <tr>
                 <th ng-repeat="column in columns | filter:true">

@@ -105,13 +105,13 @@ angular.module('cosmoUiApp')
                 function queryTable(query) {
                     table.search(query, attrs.predicate || '');
                 }
-                setTimeout(function(){
-                    table.search({matchAny:'["blop"]'},'blueprint_id');
-                },2000);
-
-                 setTimeout(function(){
-                    table.search({matchAny:'[]'},'blueprint_id');
-                },8000);
+                //setTimeout(function(){
+                //    table.search({matchAny:'["blop"]'},'blueprint_id');
+                //},2000);
+                //
+                // setTimeout(function(){
+                //    table.search({matchAny:'[]'},'blueprint_id');
+                //},8000);
 
             }
         };

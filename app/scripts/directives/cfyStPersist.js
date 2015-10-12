@@ -74,9 +74,11 @@ angular.module('cosmoUiApp')
                     var pageNo = parseInt($routeParams['pageNo'+scope.tableId], 10) || 1;
                     ctrl.slice((pageNo - 1) * scope.itemsByPage, scope.itemsByPage);
                     // sorting
-                    ctrl.tableState().sort.predicate = $routeParams['sortBy'+scope.tableId];
-                    ctrl.tableState().sort.reverse = $routeParams.hasOwnProperty('reverse'+scope.tableId) ? $routeParams['reverse'+scope.tableId] : false;
-                    ctrl.pipe();
+                    if($routeParams.hasOwnProperty('sortBy' + scope.tableId)){
+                        ctrl.tableState().sort.predicate = $routeParams['sortBy' + scope.tableId];
+                        ctrl.tableState().sort.reverse = $routeParams.hasOwnProperty('reverse' + scope.tableId) ? $routeParams['reverse' + scope.tableId] : false;
+                        ctrl.pipe();
+                    }
                     // search
                     searchParams.forEach(function(param){
                         if($routeParams.hasOwnProperty(param)){
