@@ -7,7 +7,7 @@
  * # cfyStSearch
  */
 angular.module('cosmoUiApp')
-    .directive('cfyStSearch', function () {
+    .directive('cfyStSearch', function ($log) {
         return {
             require: '^stTable',
             restrict: 'A',
@@ -120,7 +120,7 @@ angular.module('cosmoUiApp')
                     }
                     catch(e)
                     {
-                        console.error(e.message);
+                        $log.error(e.message);
                     }
                 }, true);
 
