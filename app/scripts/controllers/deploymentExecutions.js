@@ -16,7 +16,7 @@ angular.module('cosmoUiApp')
         cloudifyClient.executions.list($scope.deploymentId)
             .then(function(httpResponse){
                 $scope.executionsList = httpResponse.data;
-        },function(httpResponse){
+            },function(httpResponse){
                 console.error(httpResponse);
             });
     });
