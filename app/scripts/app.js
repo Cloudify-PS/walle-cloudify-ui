@@ -21,7 +21,8 @@ angular.module('cosmoUiApp', [
     'smart-table',
     'angularMoment',
     'datePicker',
-    'dndLists'
+    'dndLists',
+    'cfy.topology'
 ]).config( function ($routeProvider, $httpProvider, $translateProvider) {
 
         //var isSettingsExists = window.isSettingsExists();
@@ -130,6 +131,10 @@ angular.module('cosmoUiApp', [
             .when('/login', {
                 templateUrl: 'views/login.html',
                 controller: 'LoginCtrl'
+            })
+            .when('/newtopology', {
+                templateUrl : 'views/newTopology.html',
+                controller: 'NewTopologyCtrl'
             })
             .otherwise({
                 redirectTo: '/blueprints'
