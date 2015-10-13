@@ -58,7 +58,7 @@ angular.module('cosmoUiApp')
                 _.forEach(response.data, function(deployment){
                     $scope.deploymentsList.push({
                         'value': deployment.id,
-                        'label': deployment.id,
+                        'label': deployment.id+' ['+deployment.blueprint_id+']',
                         'parent': deployment.blueprint_id
                     });
                 });
