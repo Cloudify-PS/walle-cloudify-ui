@@ -17,7 +17,7 @@
                     <div class="icon-events" ng-class="getEventIcon(event)"></div>
                 </td>
                 <td class="type">{{ getEventText(event._source.event_type) }} {{ event._source.context.node_name ? ' - ' + event._source.context.node_name : '' }}</td>
-                <td class="time">{{ event._source.timestamp }}</td>
+                <td class="time">{{ event.formattedTimestamp }}</td>
                 <td class="message">
                     <div class="brief">{{ event._source.message.text }}</div>
                 </td>

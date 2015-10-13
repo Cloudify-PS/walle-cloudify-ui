@@ -42,6 +42,7 @@ var log4js = require('log4js');
 var request = require('request');
 var logger = log4js.getLogger('appConf');
 var os = require('os');
+var url = require('url');
 
 var publicConfiguration = {
     i18n: {
@@ -51,7 +52,7 @@ var publicConfiguration = {
 
 var privateConfiguration = {
     autoDetectProtocol:true, // automatically detect if cloudify is listening on http or https
-    
+
     // IMPORTANT: the slash at the end is important !!
     cloudifyManagerEndpoint: 'http://localhost:80/api/v2/', // require('url').parse(href) ==> protocol+hostname+port+pathname ... (hostname+port == host)
     cloudifyLicense: 'tempLicense',
@@ -187,18 +188,20 @@ exports.getPrivateConfiguration = getPrivateConfiguration;
 function discoverProtocol( endpoint, usingPath, callback ){
     var prefix = endpoint.split(':')[0];
     var other = prefix === 'https' ? 'http' : 'https';
-
-    request({'url' : endpoint + usingPath }, function(err){
+    var checkUrl = url.resolve(endpoint , usingPath);
+    request({'url' : checkUrl }, function(err){
         if ( !err ){
+
             callback(null, endpoint);
         }else{
+            logger.trace('changing protocols based on error ', checkUrl, err);
             callback(null, endpoint.replace(prefix,other));
         }
     });
 }
 
 if ( prConf.autoDetectProtocol ) {
-    discoverProtocol(privateConfiguration.cloudifyManagerEndpoint, '/blueprints', function (err, endpoint) {
+    discoverProtocol(privateConfiguration.cloudifyManagerEndpoint, 'blueprints', function (err, endpoint) {
         if (!err && !!endpoint) {
             logger.trace('setting endpoint protocol. new endpoint is', endpoint);
             exports.cloudifyManagerEndpoint = privateConfiguration.cloudifyManagerEndpoint = endpoint;
