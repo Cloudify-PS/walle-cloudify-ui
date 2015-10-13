@@ -123,17 +123,17 @@ describe('Controller: LogsCtrl', function () {
                     expect(scope.deploymentsList).toEqual([
                         {
                             'value': 'firstDep',
-                            'label': 'firstDep',
+                            'label': 'firstDep [blueprint1]',
                             'parent': 'blueprint1'
                         },
                         {
                             'value': 'secondDep',
-                            'label': 'secondDep',
+                            'label': 'secondDep [blueprint1]',
                             'parent': 'blueprint1'
                         },
                         {
                             'value': 'onlyOneDeployment',
-                            'label': 'onlyOneDeployment',
+                            'label': 'onlyOneDeployment [blueprint2]',
                             'parent': 'blueprint2'
                         }
                     ]);
