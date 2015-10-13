@@ -32,26 +32,26 @@ describe('Controller: DeploymentExecutions', function () {
     it('should load deployment"s executions',function(){
         var executionsMock = [
             {
-                blueprint_id: "bomber",
-                created_at: "2015-10-13 08:42:08.970700",
-                deployment_id: "bombera",
-                error: "",
-                id: "b18136f5-dd9c-4177-b231-4fde464ca793",
+                blueprint_id: 'bomber',
+                created_at: '2015-10-13 08:42:08.970700',
+                deployment_id: 'bombera',
+                error: '',
+                id: 'b18136f5-dd9c-4177-b231-4fde464ca793',
                 is_system_workflow: false,
                 parameters: Object,
-                status: "terminated",
-                workflow_id: "create_deployment_environment"
+                status: 'terminated',
+                workflow_id: 'create_deployment_environment'
             },
             {
-                blueprint_id: "bomber",
-                created_at: "2015-10-13 08:42:55.606661",
-                deployment_id: "bombera",
-                error: "",
-                id: "c93b1b68-97eb-468a-b1e2-3471df173f3c",
+                blueprint_id: 'bomber',
+                created_at: '2015-10-13 08:42:55.606661',
+                deployment_id: 'bombera',
+                error: '',
+                id: 'c93b1b68-97eb-468a-b1e2-3471df173f3c',
                 is_system_workflow: false,
                 parameters: Object,
-                status: "terminated",
-                workflow_id: "install"
+                status: 'terminated',
+                workflow_id: 'install'
             }
         ];
         _cloudifyClient.executions.list.andReturn(window.mockPromise({data:executionsMock}));
