@@ -72,9 +72,7 @@ angular.module('cosmoUiApp')
         };
 
         $scope.pluckArrayOfObjects = function (objectsArray, key) {
-            var pl = _.pluck(objectsArray, key);
-            //console.log($scope.deploymentsFilter, pl);
-            return pl;
+            return _.pluck(objectsArray, key);
         };
 
         $scope.registerTickerTask('deployments/loadExecutions', _loadExecutions, 10000);
@@ -108,11 +106,7 @@ angular.module('cosmoUiApp')
                 if (angular.isObject(expected)) {
                     //exact match
                     if (expected.distinct) {
-                        if (!actual || actual.toLowerCase() !== expected.distinct.toLowerCase()) {
-                            return false;
-                        }
-
-                        return true;
+                        return !(!actual || actual.toLowerCase() !== expected.distinct.toLowerCase());
                     }
 
                     if (!Array.isArray(expected.matchAny)) {
@@ -145,7 +139,6 @@ angular.module('cosmoUiApp')
                 return standardComparator(actual, expected);
             }
 
-            var output = filterFilter(array, expression, customComparator);
-            return output;
+            return filterFilter(array, expression, customComparator);
         };
     });
