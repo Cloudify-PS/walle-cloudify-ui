@@ -3,6 +3,17 @@
 angular.module('cosmoUiApp')
     .controller('LogsCtrl', function ($scope, cloudifyClient, EventsMap, $routeParams, TableStateToRestApi) {
 
+        $scope.columns = [
+            {name:'Event Type Icon',isSelected:true},
+            {name:'Timestamp',isSelected:true},
+            {name:'Event Type',isSelected:true},
+            {name:'Log Level',isSelected:true},
+            {name:'Operation',isSelected:true},
+            {name:'Node Name',isSelected:true},
+            {name:'Node Id',isSelected:true},
+            {name:'Message',isSelected:true}
+        ];
+
         $scope.itemsPerPage = 9;
         var initFilters = function() {
             $scope.eventsFilter = {
@@ -47,7 +58,7 @@ angular.module('cosmoUiApp')
                 _.forEach(response.data, function(deployment){
                     $scope.deploymentsList.push({
                         'value': deployment.id,
-                        'label': deployment.id,
+                        'label': deployment.id+' ['+deployment.blueprint_id+']',
                         'parent': deployment.blueprint_id
                     });
                 });
@@ -67,6 +78,10 @@ angular.module('cosmoUiApp')
             cloudifyClient.events.get(options).then(function (response) {
                     $scope.getLogsError = null;
                     $scope.logsHits = response.data.hits.hits;
+                    //Formatting the timestamp
+                    _.each($scope.logsHits, function(log){
+                        log.formattedTimestamp = EventsMap.getFormattedTimestamp(log._source.timestamp);
+                    });
                     tableState.pagination.totalItemCount = response.data.hits.total;
                     tableState.pagination.numberOfPages = Math.ceil(response.data.hits.total / options.size);
                 },function(response){
@@ -87,5 +102,9 @@ angular.module('cosmoUiApp')
         //creating an Array of the values of the requested key
         $scope.pluckArrayOfObjects = function (objectsArray, key) {
             return _.pluck(objectsArray, key);
+        };
+
+        $scope.isAnyColumnSelected = function(){
+            return _.some($scope.columns, 'isSelected', true);
         };
     });

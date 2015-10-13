@@ -80,6 +80,7 @@
 
             <div class="actions">
                 <button class="gs-btn" data-ng-click="clearFilters()" >Clear Filter</button>
+                <columns-organizer columns="columns" ></columns-organizer>
             </div>
         </div>
 
@@ -87,31 +88,35 @@
         <table class="gs-table eventsTable">
             <thead>
             <tr>
-                <th st-sort="_source.event_type" class="icon sorting"><!-- icon --></th>
-                <th st-sort="_source.timestamp" class="date sorting" >{{'logs.fields.timestamp' | translate}}</th>
-                <th st-sort="_source.event_type" class="type sorting">{{ 'deployment.table.heading.eventType' | translate }}</th>
-                <th st-sort="_source.level" class="node sorting">{{ 'deployment.table.heading.logLevel' | translate }}</th>
-                <th st-sort="_source.context.operation" class="node sorting">{{ 'deployment.table.heading.operation' | translate }}</th>
-                <th st-sort="_source.context.node_name" class="node sorting">{{ 'deployment.table.heading.node' | translate }}</th>
-                <th st-sort="_source.context.node_id" class="node sorting">{{ 'deployment.table.heading.nodeId' | translate }}</th>
-                <th st-sort="_source.message.text" class="task sorting">{{ 'deployment.table.heading.message' | translate }}</th>
+                <th ng-repeat="column in columns | filter:true">
+                    <span ng-if='column.name === "Event Type Icon"' st-sort="_source.event_type" class="icon sorting"><!-- icon --></span>
+                    <span ng-if='column.name === "Timestamp"' st-sort="_source.timestamp" class="date sorting" >{{'logs.fields.timestamp' | translate}}</span>
+                    <span ng-if='column.name === "Event Type"' st-sort="_source.event_type" class="type sorting">{{ 'deployment.table.heading.eventType' | translate }}</span>
+                    <span ng-if='column.name === "Log Level"' st-sort="_source.level" class="node sorting">{{ 'deployment.table.heading.logLevel' | translate }}</span>
+                    <span ng-if='column.name === "Operation"' st-sort="_source.context.operation" class="node sorting">{{ 'deployment.table.heading.operation' | translate }}</span>
+                    <span ng-if='column.name === "Node Name"' st-sort="_source.context.node_name" class="node sorting">{{ 'deployment.table.heading.node' | translate }}</span>
+                    <span ng-if='column.name === "Node Id"' st-sort="_source.context.node_id" class="node sorting">{{ 'deployment.table.heading.nodeId' | translate }}</span>
+                    <span ng-if='column.name === "Message"' st-sort="_source.message.text" class="task sorting">{{ 'deployment.table.heading.message' | translate }}</span>
+                </th>
             </tr>
             </thead>
             <tbody  ng-repeat="log in logsHits" ng-init="isOpen=false">
             <tr data-ng-click="isOpen=!isOpen">
-                <td class="icon-events" ng-class="getEventIcon(log)"></td>
-                <td class="date"><p>{{log._source.timestamp == undefined && '-' || log._source.timestamp}}</p></td>
-                <td class="type"><p>{{getEventText(log._source.event_type) == undefined && '-' || getEventText(log._source.event_type)}}</p></td>
-                <td class="level"><p>{{log._source.level == undefined && '-' || log._source.level | uppercase}}</p></td>
-                <td class="operation"><p>{{log._source.context.operation == undefined && '-' || log._source.context.operation}}</p></td>
-                <td class="node_name"><p>{{log._source.context.node_name == undefined && '-' || log._source.context.node_name}}</p></td>
-                <td class="node_id"><p>{{log._source.context.node_id == undefined && '-' || log._source.context.node_id}}</p></td>
-                <td class="task"><p class="large-text-overflow">{{log._source.message.text == undefined && '-' || log._source.message.text}}</p></td>
+                <td ng-repeat="column in columns | filter:true">
+                    <i ng-if='column.name === "Event Type Icon"' class="icon-events" ng-class="getEventIcon(log)"></i>
+                    <p ng-if='column.name === "Timestamp"' class="date">{{log._source.timestamp == undefined && '-' || log.formattedTimestamp}}</p>
+                    <p ng-if='column.name === "Event Type"' class="type">{{getEventText(log._source.event_type) == undefined && '-' || getEventText(log._source.event_type)}}</p>
+                    <p ng-if='column.name === "Log Level"' class="level">{{log._source.level == undefined && '-' || log._source.level | uppercase}}</p>
+                    <p ng-if='column.name === "Operation"' class="operation">{{log._source.context.operation == undefined && '-' || log._source.context.operation}}</p>
+                    <p ng-if='column.name === "Node Name"' class="node_name">{{log._source.context.node_name == undefined && '-' || log._source.context.node_name}}</p>
+                    <p ng-if='column.name === "Node Id"'  class="node_id">{{log._source.context.node_id == undefined && '-' || log._source.context.node_id}}</p>
+                    <p ng-if='column.name === "Message"'  class="task large-text-overflow">{{log._source.message.text == undefined && '-' || log._source.message.text}}</p>
+                </td>
             </tr>
-            <tr class="details" data-ng-show="isOpen">
+            <tr class="details" data-ng-show="isOpen && isAnyColumnSelected()">
                 <td colspan="8">
                     <div class="message-text">
-                        <span><b>{{'logs.fields.messageText' | translate}}</b><br/>{{log._source.message.text == undefined && 'N/A' || log._source.message.text}}</span>
+                        <pre>{{log._source.message.text == undefined && 'N/A' || log._source.message.text}}</pre>
                     </div>
                     <div class="group">
                         <span><b>{{'logs.fields.executionId' | translate}}</b> {{ log._source.context.execution_id == undefined && 'N/A' || log._source.context.execution_id }}</span>

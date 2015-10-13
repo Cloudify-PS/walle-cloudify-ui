@@ -51,8 +51,8 @@ angular.module('cosmoUiApp')
                 };
 
 
-                $scope.shouldShowBadge = function () {
-                    return scope.initialized;
+                $scope.shouldShowBadge = function ( node ) {
+                    return !!scope.inProgress || !!_.find(getInstances(node), NodeService.status.isInProgress);
                 };
 
                 $scope.shouldShowBadgeTitle = function (node) {

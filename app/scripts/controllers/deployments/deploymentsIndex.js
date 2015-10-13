@@ -33,34 +33,21 @@ angular.module('cosmoUiApp')
             return !!execution;
         };
 
-        $scope.redirectTo = function (deployment) {
-            $location.search({});
-            $location.path('/deployment/' + deployment.id + '/topology');
-        };
-
-        $scope.layerRedirectTo = function (deployment, event, matchElement) {
-            if (event.target.tagName.toLowerCase() + '.' + event.target.className === matchElement) {
-                $scope.redirectTo(deployment);
-            }
-        };
-
         function _loadExecutions() {
 
-            return cloudifyClient.executions.list(null, 'id,workflow_id,status,deployment_id').then(function (result) {
+            return cloudifyClient.executions.list(null, 'id,workflow_id,status,deployment_id').then(function(result){
 
                 //  CFY-2238 - remove terminated workflows.
-                runningExecutions = _.groupBy(_.filter(result.data, function (exec) {
-                    return ExecutionsService.isRunning(exec);
-                }), 'deployment_id');
+                runningExecutions = _.groupBy(_.filter(result.data, function(exec){  return ExecutionsService.isRunning(exec); }), 'deployment_id');
 
-            }, function () {
+            },function(){
                 // todo: implement error handling
             });
         }
 
-        $scope.loadDeployments = function () {
+        $scope.loadDeployments = function() {
             cloudifyClient.deployments.list('id,blueprint_id,created_at,updated_at,workflows,inputs,outputs')
-                .then(function (result) {
+                .then(function(result) {
 
                     $scope.managerError = false;
                     $scope.deployments = result.data;
@@ -74,13 +61,13 @@ angular.module('cosmoUiApp')
                     $scope.blueprints = _.values($scope.blueprints);
                     $scope.deploymentsLoaded = true;
                 },
-                function () {
+                function() {
                     $scope.managerError = true;
                 });
         };
 
 
-        $scope.onExecutionStart = function () {
+        $scope.onExecutionStart = function() {
             _loadExecutions();
         };
 

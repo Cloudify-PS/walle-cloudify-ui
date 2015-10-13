@@ -7,7 +7,7 @@
  * # deploymentEvents
  */
 angular.module('cosmoUiApp')
-    .directive('deploymentEvents', function ($log, $filter, EventsMap, $document, cloudifyClient) {
+    .directive('deploymentEvents', function ($log, EventsMap, $document, cloudifyClient) {
         return {
             templateUrl: 'views/deployment/deploymentEvents.html',
             restrict: 'EA',
@@ -32,8 +32,9 @@ angular.module('cosmoUiApp')
                     return cloudifyClient.events.get( { 'deployment_id' :  $scope.id ,  'from_event': 0, 'batch_size' : 50 , 'include_logs' :  false , 'order' : 'desc' }).then(function (result) {
                         $scope.events = result.data.hits.hits;
                         $scope.lastEvent = _.first($scope.events);
+                        //Formatting the timestamp
                         _.each($scope.events, function(e){
-                            e._source.timestamp = $filter('dateFormat')(e._source.timestamp, 'yyyy-MM-dd HH:mm:ss');
+                            e.formattedTimestamp = EventsMap.getFormattedTimestamp(e._source.timestamp);
                         });
                     }, true);
                 }

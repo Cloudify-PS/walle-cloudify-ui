@@ -40,11 +40,11 @@
             </thead>
             <tbody ng-repeat="deployment in displayedDeployments">
                 <tr>
-                    <td class="id" ng-click="redirectTo(deployment)">{{deployment.id}}</td>
-                    <td class="blueprint" ng-click="redirectTo(deployment)">{{deployment.blueprint_id}}</td>
-                    <td class="create" ng-click="redirectTo(deployment)">{{deployment.created_at | dateFormat: 'yyyy-MM-dd HH:mm:ss'}}</td>
-                    <td class="description" ng-click="redirectTo(deployment)">{{deployment.updated_at | dateFormat: 'yyyy-MM-dd HH:mm:ss'}}</td>
-                    <td class="actions" ng-click="layerRedirectTo(deployment, $event, 'td.actions')">
+                    <td class="id"><a href="#/deployment/{{deployment.id}}/topology">{{deployment.id}}</a></td>
+                    <td class="blueprint"><a href="#/blueprint/{{deployment.blueprint_id}}/topology">{{deployment.blueprint_id}}</a></td>
+                    <td class="create">{{deployment.created_at | dateFormat: 'yyyy-MM-dd HH:mm:ss'}}</td>
+                    <td class="description">{{deployment.updated_at | dateFormat: 'yyyy-MM-dd HH:mm:ss'}}</td>
+                    <td class="actions">
                         <div class="deployment-action-selector"
                              deployment="deployment"
                              on-begin="onExecutionStart()"
@@ -63,10 +63,6 @@
                 </tr>
             </tfoot>
         </table>
-
-        <div class="no-blueprints-message" ng-show="deployments.length == 0">{{ 'deployments.emptyMessage' | translate }}</div>
-        <div class="gs-spinner large" ng-show="deployments == null && !managerError"></div>
-
         <div class="connect-error-message" ng-show="managerError">{{ 'connectError' | translate }}</div>
     </div>
 </div>

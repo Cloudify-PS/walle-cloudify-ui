@@ -45,6 +45,14 @@
                 "cancel" : "Cancel",
                 "confirm" : "Confirm"
             }
+        },
+        "filters": {
+            "blueprint": {
+                "title": "Blueprint name"
+            },
+            "deploymentsCount": {
+                "title": "Number Of Deployments"
+            }
         }
     },
     "config": {
@@ -209,8 +217,8 @@
                 "text": "Choose Deployments"
             },
             "logLevels": {
-                "title": "Log levels:",
-                "text": "Choose log levels"
+                "title": "Log Levels:",
+                "text": "Choose Log Levels"
             }
         }
     },
@@ -295,7 +303,10 @@
         "typesFilterPlaceholder" : "Choose Types",
         "typesFilter" : "Types:",
         "searchFilter" : "Free Text:"
-    }
+    },
+     "columnsOrganizer" : {
+         "buttonTitle" : "Customize Columns"
+     }
 }
 
 
