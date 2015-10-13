@@ -8,13 +8,15 @@
  * Controller of the cosmoUiApp
  */
 angular.module('cosmoUiApp')
-    .controller('DeploymentExecutionsCtrl', function ($scope, $routeParams) {
+    .controller('DeploymentExecutionsCtrl', function ($scope, $routeParams, cloudifyClient) {
 
         $scope.deploymentId = $routeParams.deploymentId;
         $scope.executionsList = [];
 
-        $scope.$on('deploymentExecution', function(event, deploymentExecution){
-            $scope.executionsList = deploymentExecution.executionsList;
-        });
-
+        cloudifyClient.executions.list($scope.deploymentId)
+            .then(function(httpResponse){
+                $scope.executionsList = httpResponse.data;
+        },function(httpResponse){
+                console.error(httpResponse);
+            });
     });
