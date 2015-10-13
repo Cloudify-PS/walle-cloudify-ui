@@ -20,9 +20,7 @@ describe('Directive: cfyStPersist', function () {
         scope.myPipe = function () {
             scope.displayed = new Array(100);
         };
-        element = angular.element(  '<div id="' + tableId + '" st-table="displayed" st-pipe="myPipe">'+
-                                    '<div cfy-st-persist content-loaded="loaded" items-by-page="25" table-id="'+tableId+'">'+
-                                    '<div st-search="searchId"</div></div></div>');
+        element = angular.element('<div id="' + tableId + '" st-table="displayed" st-pipe="myPipe"><div cfy-st-persist content-loaded="loaded" items-by-page="25" st-table-id="'+tableId+'"><div st-search="searchId"</div></div></div>');
         element = $compile(element)(scope);
         controller = element.controller('stTable');
         rootScope = $rootScope;
@@ -57,7 +55,7 @@ describe('Directive: cfyStPersist', function () {
         controller.tableState().sort.reverse = q['reverse' + tableId];
 
         scope.$digest();
-
+        q['reverse'+tableId] = q['reverse'+tableId].toString();
         expect($location.search).toHaveBeenCalledWith(q);
 
     }));

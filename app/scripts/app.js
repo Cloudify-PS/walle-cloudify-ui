@@ -99,7 +99,8 @@ angular.module('cosmoUiApp', [
             })
             .when('/logs',{
                 templateUrl: 'views/logs.html',
-                controller: 'LogsCtrl'
+                controller: 'LogsCtrl',
+                reloadOnSearch: false
             })
             .when('/hosts',{
                 templateUrl: 'views/hosts.html',

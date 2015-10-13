@@ -85,20 +85,18 @@
         </div>
 
         <div class="error" ng-if="getLogsError"><b>{{'logs.gettingLogsFailed' | translate}}</b><br/>{{getLogsError}}</div>
-        <table class="gs-table eventsTable" cfy-st-persist items-by-page="itemsPerPage" content-loaded="logsHits" table-id="Logs">
+        <table class="gs-table eventsTable" cfy-st-persist items-by-page="itemsPerPage" content-loaded="blueprintsList && deploymentsList" st-table-id="Logs">
             <thead>
-            <tr>
-                <th ng-repeat="column in columns | filter:true">
-                    <span ng-if='column.name === "Event Type Icon"' st-sort="_source.event_type" class="icon sorting"><!-- icon --></span>
-                    <span ng-if='column.name === "Timestamp"' st-sort="_source.timestamp" class="date sorting" >{{'logs.fields.timestamp' | translate}}</span>
-                    <span ng-if='column.name === "Event Type"' st-sort="_source.event_type" class="type sorting">{{ 'deployment.table.heading.eventType' | translate }}</span>
-                    <span ng-if='column.name === "Log Level"' st-sort="_source.level" class="node sorting">{{ 'deployment.table.heading.logLevel' | translate }}</span>
-                    <span ng-if='column.name === "Operation"' st-sort="_source.context.operation" class="node sorting">{{ 'deployment.table.heading.operation' | translate }}</span>
-                    <span ng-if='column.name === "Node Name"' st-sort="_source.context.node_name" class="node sorting">{{ 'deployment.table.heading.node' | translate }}</span>
-                    <span ng-if='column.name === "Node Id"' st-sort="_source.context.node_id" class="node sorting">{{ 'deployment.table.heading.nodeId' | translate }}</span>
-                    <span ng-if='column.name === "Message"' st-sort="_source.message.text" class="task sorting">{{ 'deployment.table.heading.message' | translate }}</span>
-                </th>
-            </tr>
+                <tr>
+                    <th ng-repeat="column in columns | filter:true" class="sorting" ng-if='column.name === "Event Type Icon"' st-sort="_source.event_type" st-skip-natural="true" class="icon"><!-- icon --></th>
+                    <th ng-repeat="column in columns | filter:true" class="sorting" ng-if='column.name === "Timestamp"' st-sort="_source.timestamp" st-skip-natural="true" class="date" >{{'logs.fields.timestamp' | translate}}</th>
+                    <th ng-repeat="column in columns | filter:true" class="sorting" ng-if='column.name === "Event Type"' st-sort="_source.event_type" st-skip-natural="true" class="type">{{ 'deployment.table.heading.eventType' | translate }}</th>
+                    <th ng-repeat="column in columns | filter:true" class="sorting" ng-if='column.name === "Log Level"' st-sort="_source.level" st-skip-natural="true" class="node">{{ 'deployment.table.heading.logLevel' | translate }}</th>
+                    <th ng-repeat="column in columns | filter:true" class="sorting" ng-if='column.name === "Operation"' st-sort="_source.context.operation" st-skip-natural="true" class="node">{{ 'deployment.table.heading.operation' | translate }}</th>
+                    <th ng-repeat="column in columns | filter:true" class="sorting" ng-if='column.name === "Node Name"' st-sort="_source.context.node_name" st-skip-natural="true" class="node">{{ 'deployment.table.heading.node' | translate }}</th>
+                    <th ng-repeat="column in columns | filter:true" class="sorting" ng-if='column.name === "Node Id"' st-sort="_source.context.node_id" st-skip-natural="true" class="node">{{ 'deployment.table.heading.nodeId' | translate }}</th>
+                    <th ng-repeat="column in columns | filter:true" class="sorting" ng-if='column.name === "Message"' st-sort="_source.message.text" st-skip-natural="true" class="task">{{ 'deployment.table.heading.message' | translate }}</th>
+                </tr>
             </thead>
             <tbody  ng-repeat="log in logsHits" ng-init="isOpen=false">
             <tr data-ng-click="isOpen=!isOpen">
