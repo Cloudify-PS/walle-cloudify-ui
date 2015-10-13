@@ -61,6 +61,10 @@ angular.module('cosmoUiApp', [
                 templateUrl: 'views/blueprint/blueprintSource.html',
                 controller: 'SourceCtrl'
             })
+            .when('/newtopology', {
+                templateUrl : 'views/blueprint/newTopology.html',
+                controller: 'BlueprintNewTopologyCtrl'
+            })
             .when('/deployments',{
                 templateUrl: 'views/deployment/deploymentsIndex.html',
                 controller: 'DeploymentsCtrl'
@@ -132,10 +136,7 @@ angular.module('cosmoUiApp', [
                 templateUrl: 'views/login.html',
                 controller: 'LoginCtrl'
             })
-            .when('/newtopology', {
-                templateUrl : 'views/newTopology.html',
-                controller: 'NewTopologyCtrl'
-            })
+
             .otherwise({
                 redirectTo: '/blueprints'
             });

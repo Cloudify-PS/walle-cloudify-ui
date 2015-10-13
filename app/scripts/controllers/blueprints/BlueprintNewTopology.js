@@ -8,7 +8,7 @@
  * Controller of the cosmoUiApp
  */
 angular.module('cosmoUiApp')
-    .controller('NewTopologyCtrl', function ($scope, cloudifyClient, $routeParams, DataProcessingService) {
+    .controller('BlueprintNewTopologyCtrl', function ($scope, cloudifyClient, $routeParams, DataProcessingService) {
         var blueprintId = $routeParams.blueprintId;
 
         $scope.topologyLoading = true;
