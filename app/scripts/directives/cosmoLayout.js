@@ -28,10 +28,11 @@ angular.module('cosmoUiApp')
 
                 $(document).on('scroll', function(){
                     var newValue =  $('body').scrollTop();
+                    $('#left-side-menu').css('bottom', $('#footer').innerHeight() - newValue );
                     var $left = $('#left-side-menu');
                     if ( newValue > 80 ){
                         $left.addClass('fix-to-top');
-                    }else if ( $('body')[0].scrollHeight > 1000 ){ // fix flicker when  body is small.. this will make the scroll disappear, but at least we will not flicker
+                    }else {
                         $left.removeClass('fix-to-top');
                     }
                 });
