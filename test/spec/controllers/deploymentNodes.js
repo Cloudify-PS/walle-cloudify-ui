@@ -4,20 +4,48 @@
 describe('Controller: DeploymentNodesCtrl', function () {
 
     // load the controller's module
-    beforeEach(module('cosmoUiApp', 'ngMock', 'backend-mock'));
+    beforeEach(module('cosmoUiApp', 'backend-mock'));
 
     var DeploymentNodesCtrl, scope;
+    var _cloudifyClient,_NodeService;
 
-    // Initialize the controller and a mock scope
-    beforeEach(inject(function ($controller, $rootScope) {
-        scope = $rootScope.$new();
+    var initCtrl = inject(function($controller){
         DeploymentNodesCtrl = $controller('DeploymentNodesCtrl', {
             $scope: scope
         });
+    });
+
+    // Initialize the controller and a mock scope
+    beforeEach(inject(function ($rootScope ,cloudifyClient ,NodeService ) {
+        _cloudifyClient = cloudifyClient;
+        _NodeService = NodeService;
+        scope = $rootScope.$new();
+        spyOn(cloudifyClient.nodes, 'list').andReturn(window.mockPromise([])); //default implementation can be override
+        spyOn(NodeService, 'createNodesTree').andCallFake(function(){});
+        initCtrl();
     }));
 
     it('should create a controller', function () {
         expect(DeploymentNodesCtrl).not.toBeUndefined();
+    });
+
+    describe('initial load', function(){
+        it('should load deployment"s nodes', function(){
+            var nodesMock = [
+                {
+                    blueprint_id: 'bomber',
+                    deploy_number_of_instances: '1',
+                    deployment_id: 'bombera',
+                    host_id: null,
+                    id: 'bomber',
+                    number_of_instances: '1'
+                }
+            ];
+            _cloudifyClient.nodes.list.andReturn(window.mockPromise({data:nodesMock}));
+            initCtrl();
+            expect(scope.dataTable).toBe(nodesMock);
+            expect(_NodeService.createNodesTree).toHaveBeenCalled();
+        });
     });
 
     describe('#getRelationshipByType', function(){
@@ -29,17 +57,6 @@ describe('Controller: DeploymentNodesCtrl', function () {
             expect(scope.getRelationshipByType({}, 'foo').length).toBe(0);
         });
     });
-
-    describe('#blueprintDataHandler', function(){
-        it('it should listen on blueprintData event', inject(function( NodeService, $rootScope ){
-            spyOn(NodeService,'createNodesTree');
-            $rootScope.$broadcast('nodesList', { plan : { nodes : 'foo' }});
-
-            expect(NodeService.createNodesTree).toHaveBeenCalled();
-            expect(scope.dataTable.plan.nodes).toBe('foo');
-        }));
-    });
-
 
     describe('#getNodeById', function(){
         it('should find node in list', function(){
