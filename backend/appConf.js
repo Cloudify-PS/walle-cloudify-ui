@@ -188,7 +188,7 @@ exports.getPrivateConfiguration = getPrivateConfiguration;
 function discoverProtocol( endpoint, usingPath, callback ){
     var prefix = endpoint.split(':')[0];
     var other = prefix === 'https' ? 'http' : 'https';
-    var checkUrl = url.resolve(endpoint , usingPath)
+    var checkUrl = url.resolve(endpoint , usingPath);
     request({'url' : checkUrl }, function(err){
         if ( !err ){
 
