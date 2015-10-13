@@ -28,7 +28,6 @@ angular.module('cosmoUiApp')
         };
         initFilters();
 
-
         //TODO: make url params and params effect each other
         //loading filter options from the url params if given - enable us to present a specific event page by changing the url.
         //if ($routeParams.filter) {
