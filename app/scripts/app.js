@@ -3,10 +3,8 @@
 angular.module('cosmoUiApp', [
     'gsUiInfraApp',
     'angularFileUpload',
-    'ngCookies',
     'ngRoute',
     'ngSanitize',
-    'ngResource',
     'elasticjs.service',
     'ngAnimate',
     'ngStorage',

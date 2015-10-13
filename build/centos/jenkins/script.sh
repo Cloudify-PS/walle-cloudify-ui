@@ -74,6 +74,12 @@ if [ -f ${JENKINS_CREDENTIALS_FILE} ]; then
      sed -i.bak s#__S3_FOLDER__#$AWS_S3_BUCKET_PATH#g $CONFIG_FILE
 
 
+     PEM_FILE=$VCONFIG/centos-ireland-keyfile.pem
+     chmod 600  $PEM_FILE
+     sed -i.bak s#__PEM_FILE__#$PEM_FILE#g $CONFIG_FILE
+
+
+
      echo "overriding version"
      sed -i.bak s/__VERSION__/$VERSION/g $CONFIG_FILE
      echo "overriding prerelease"
@@ -94,10 +100,6 @@ else
     export CONFIG_FILE=$VCONFIG/centos-build-config.json
 fi
 
-
-
-chmod 600 $VCONFIG/centos-ireland-keyfile.pem
-cp -f $VCONFIG/centos-ireland-keyfile.pem /tmp/automations/centos-cloudify-ui-build.pem
 
 cp -Rf $SOURCES/build/centos/vagrant/* $VAM/
 
@@ -122,7 +124,7 @@ cat $CONFIG_FILE
 FAILED="false"
 vagrant destroy -f || echo "no need to teardown the machine because it was not running"
 
-vagrant up --provider=$CLOUD || FAILED="true"
+vagrant up --debug --provider=$CLOUD || FAILED="true"
 
 # copy the file
 SCP_PLUGIN=`vagrant plugin list | grep vagrant-scp | wc -l`
