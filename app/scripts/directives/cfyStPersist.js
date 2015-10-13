@@ -21,22 +21,11 @@ angular.module('cosmoUiApp')
             },
             link: function postLink(scope, element, attr, ctrl) {
 
-                var searchParams = [];
-
-                /**
-                 * looking for search directives inside relevant st-table element
-                 */
-                angular.element('#'+scope.stTableId+' [st-search]').each(function (){
-                    searchParams.push(angular.element(this).attr('st-search'));
-                });
-                angular.element('#'+scope.stTableId+' [cfy-st-search]').each(function (){
-                    searchParams.push(angular.element(this).attr('predicate'));
-                });
-
-                scope.$watch('contentLoaded', function(val){
+                var stopWatchingContentLoaded = scope.$watch('contentLoaded', function(val){
                     if(val) {
                         setFromRoute();
                         startWatch();
+                        stopWatchingContentLoaded();
                     }
                 });
 
@@ -91,16 +80,26 @@ angular.module('cosmoUiApp')
                     var pageNo = parseInt($routeParams['pageNo'+scope.stTableId], 10) || 1;
                     ctrl.slice((pageNo - 1) * scope.itemsByPage, scope.itemsByPage);
                     //search
-                    searchParams.forEach(function(param){
-                        if($routeParams.hasOwnProperty(param+scope.stTableId)){
+
+                    var re = new RegExp(scope.stTableId+'$'), index, fieldName;
+                    var reservedKeys = ['pageNo', 'sortBy', 'reverse'];
+
+                    _.forIn($routeParams, function(value, key){
+
+                        index = key.search(re);
+                        fieldName = key.substr(0, index);
+
+                        if(index !== -1 && !_.contains(reservedKeys, fieldName)) {
                             var query;
                             try {
-                                query = JSON.parse(decodeURIComponent($routeParams[param+scope.stTableId]));
+                                query = JSON.parse(decodeURIComponent(value));
                             }catch(e) {
-                                query = $routeParams[param+scope.stTableId];
+                                query = value;
                             }
-                            ctrl.tableState().search.predicateObject[param] = query;
+                            ctrl.tableState().search.predicateObject = ctrl.tableState().search.predicateObject || {};
+                            ctrl.tableState().search.predicateObject[fieldName] = query;
                         }
+
                     });
                     ctrl.pipe();
                 }

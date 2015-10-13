@@ -103,11 +103,7 @@ angular.module('cosmoUiApp')
                 }, true);
 
                 function queryTable(query) {
-                    if(typeof table.tableState().search.predicateObject === 'undefined') {
-                        table.tableState().search.predicateObject = {};
-                    }
-                    table.tableState().search.predicateObject[attrs.predicate] = query;
-                    table.pipe();
+                    table.search(query, attrs.predicate || '');
                 }
             }
         };
