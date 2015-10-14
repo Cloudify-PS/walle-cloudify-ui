@@ -124,7 +124,7 @@ cat $CONFIG_FILE
 FAILED="false"
 vagrant destroy -f || echo "no need to teardown the machine because it was not running"
 
-vagrant up --provider=$CLOUD || FAILED="true"
+vagrant up --debug --provider=$CLOUD || FAILED="true"
 
 # copy the file
 SCP_PLUGIN=`vagrant plugin list | grep vagrant-scp | wc -l`
