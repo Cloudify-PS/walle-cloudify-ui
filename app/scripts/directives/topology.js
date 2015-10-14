@@ -13,7 +13,7 @@
  * # blueprintTopology
  */
 angular.module('cosmoUiApp')
-    .directive('topology', function (cloudifyClient, NodeService, blueprintCoordinateService, $log, $q ) {
+    .directive('uiTopology', function (cloudifyClient, NodeService, blueprintCoordinateService, $log, $q ) {
         return {
             templateUrl: 'views/directives/topology.html',
             restrict: 'A',
