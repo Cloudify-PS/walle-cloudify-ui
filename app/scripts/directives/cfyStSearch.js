@@ -13,9 +13,10 @@ angular.module('cosmoUiApp')
             restrict: 'A',
             link: function postLink(scope, element, attrs, table) {
 
-                if(attrs.match) {
+
+                if (attrs.match) {
                     attrs.$observe('match', function (value) {
-                            if(value) {
+                            if (value) {
                                 var query = {};
                                 query.matchAny = value;
                                 if (query.matchAny.length === 0) {
@@ -57,6 +58,49 @@ angular.module('cosmoUiApp')
                         }
                     });
                 }
+
+                scope.$watch(function () {
+                    return table.tableState().search.predicateObject[attrs.predicate];
+                }, function (query) {
+
+                    //This checks if the state was changed from outside of this directive, so the model didn't updated
+                    function isModelDifferentFromQuery(model, queryValues){
+                        //is ngModel different from the queried value?
+                        return !_.isEqual(_.pluck(model,'value'), queryValues);
+                    }
+
+                    function getSelectedOptions(queryValues){
+                        function getOptionObjectByValue(options, value){
+                            return _.find(options, 'value', value);
+                        }
+
+                        var selectedOptions = [];
+                        var options = _.get(scope,attrs.options);
+                        _.forEach(queryValues, function (queryValue) {
+                            var option = getOptionObjectByValue(options, queryValue);
+                            if(!!option){
+                                selectedOptions.push(option);
+                            }
+                        });
+                        return selectedOptions;
+                    }
+
+                    try {
+                        var queryValues = Array.isArray(query.matchAny) ? query.matchAny : JSON.parse(query.matchAny);
+                        var ngModel = attrs.ngModel;
+                        if(!!queryValues) {
+                            //check if state is different
+                            if(isModelDifferentFromQuery(_.get(scope, ngModel),queryValues)){
+                                var selectedOptions = getSelectedOptions(queryValues);
+                                _.set(scope, ngModel, selectedOptions);
+                            }
+                        }
+                    }
+                    catch(e)
+                    {
+                        console.log(e.message);
+                    }
+                }, true);
 
                 function queryTable(query) {
                     table.search(query, attrs.predicate || '');

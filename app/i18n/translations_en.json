@@ -143,6 +143,14 @@
                 "force" : "Force"
             }
         },
+        "filters": {
+            "deployment": {
+                "title": "Deployment name"
+            },
+            "blueprint": {
+                "title": "Blueprint"
+            }
+        },
         "deleteBtn": "Delete",
         "executeWorkflowBtn" : "Execute Workflow",
         "selectWorkflow" : "Select a workflow"
