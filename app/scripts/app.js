@@ -3,10 +3,8 @@
 angular.module('cosmoUiApp', [
     'gsUiInfraApp',
     'angularFileUpload',
-    'ngCookies',
     'ngRoute',
     'ngSanitize',
-    'ngResource',
     'elasticjs.service',
     'ngAnimate',
     'ngStorage',
@@ -19,7 +17,8 @@ angular.module('cosmoUiApp', [
     'cloudifyjs',
     'ui.bootstrap',
     'smart-table',
-    'dndLists'
+    'dndLists',
+    'cfy.topology'
 ]).config( function ($routeProvider, $httpProvider, $translateProvider) {
 
         //var isSettingsExists = window.isSettingsExists();
@@ -58,9 +57,14 @@ angular.module('cosmoUiApp', [
                 templateUrl: 'views/blueprint/blueprintSource.html',
                 controller: 'SourceCtrl'
             })
+            .when('/blueprint/:blueprintId/newtopology', {
+                templateUrl : 'views/blueprint/newTopology.html',
+                controller: 'BlueprintNewTopologyCtrl'
+            })
             .when('/deployments',{
                 templateUrl: 'views/deployment/deploymentsIndex.html',
-                controller: 'DeploymentsCtrl'
+                controller: 'DeploymentsCtrl',
+                reloadOnSearch: false
             })
             .when('/deployment/:deploymentId/monitoring', {
                 templateUrl: 'views/deployment/deploymentMonitoring.html',

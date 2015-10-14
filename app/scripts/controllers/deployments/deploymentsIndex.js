@@ -2,9 +2,7 @@
 
 // TODO: this code should be much more testable
 angular.module('cosmoUiApp')
-    .controller('DeploymentsCtrl', function ($scope, ExecutionsService,
-                                             $location, $routeParams, $log,
-                                              ngDialog, cloudifyClient ) {
+    .controller('DeploymentsCtrl', function ($scope, ExecutionsService, $location, $log, cloudifyClient) {
 
         $scope.deployments = null;
         $scope.executedErr = false;
@@ -16,18 +14,22 @@ angular.module('cosmoUiApp')
         $scope.inputs = {};
         $scope.managerError = false;
 
+        $scope.itemsByPage = 9;
+        $scope.blueprints = {};
+        $scope.deploymentsFilter = {
+            blueprints: []
+        };
 
-
-        $scope.getExecution = function(deployment){
+        $scope.getExecution = function (deployment) {
             return _.first(runningExecutions[deployment.id]);
         };
 
-        $scope.canPause = function(deployment_id){
-            return ExecutionsService.canPause($scope.getExecution({ id : deployment_id }));
+        $scope.canPause = function (deployment_id) {
+            return ExecutionsService.canPause($scope.getExecution({id: deployment_id}));
         };
 
-        $scope.isExecuting = function(deployment_id) {
-            var execution = $scope.getExecution({'id' : deployment_id});
+        $scope.isExecuting = function (deployment_id) {
+            var execution = $scope.getExecution({'id': deployment_id});
             return !!execution;
         };
 
@@ -49,6 +51,15 @@ angular.module('cosmoUiApp')
 
                     $scope.managerError = false;
                     $scope.deployments = result.data;
+
+                    _.each($scope.deployments, function (d) {
+                        $scope.blueprints[d.blueprint_id] = {
+                            'label': d.blueprint_id,
+                            'value': d.blueprint_id
+                        };
+                    });
+                    $scope.blueprints = _.values($scope.blueprints);
+                    $scope.deploymentsLoaded = true;
                 },
                 function() {
                     $scope.managerError = true;
@@ -60,9 +71,74 @@ angular.module('cosmoUiApp')
             _loadExecutions();
         };
 
+        $scope.pluckArrayOfObjects = function (objectsArray, key) {
+            return _.pluck(objectsArray, key);
+        };
+
         $scope.registerTickerTask('deployments/loadExecutions', _loadExecutions, 10000);
 
         $scope.loadDeployments();
 
 
+    })
+    .filter('customFilter', function($filter) {
+        var filterFilter = $filter('filter');
+        var standardComparator = function standardComparator(obj, text) {
+            text = ('' + text).toLowerCase();
+            return ('' + obj).toLowerCase().indexOf(text) > -1;
+        };
+
+        return function customFilter(array, expression) {
+            function customComparator(actual, expected) {
+
+                if (!angular.isObject(expected)) {
+                    var evaluated;
+                    try {
+                        evaluated = JSON.parse(expected);
+                    }catch(e) {
+                        evaluated = expected;
+                    }
+                    if(typeof evaluated !== 'undefined'){
+                        expected = evaluated;
+                    }
+                }
+
+                if (angular.isObject(expected)) {
+                    //exact match
+                    if (expected.distinct) {
+                        return !(!actual || actual.toLowerCase() !== expected.distinct.toLowerCase());
+                    }
+
+                    if (!Array.isArray(expected.matchAny)) {
+                        expected.matchAny = JSON.parse(expected.matchAny);
+                    }
+
+                    //matchAny
+                    if (expected.matchAny) {
+
+                        if (!actual) {
+                            return false;
+                        }
+
+                        if (expected.matchAny.length === 0) {
+                            return true;
+                        }
+
+                        for (var i = 0; i < expected.matchAny.length; i++) {
+                            if (actual.toLowerCase() === expected.matchAny[i].toLowerCase()) {
+                                return true;
+                            }
+                        }
+
+                        return false;
+                    }
+
+                    return true;
+
+                }
+                return standardComparator(actual, expected);
+            }
+
+            return filterFilter(array, expression, customComparator);
+        };
     });

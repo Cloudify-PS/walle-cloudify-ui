@@ -1,43 +1,68 @@
-<div class="cosmo-layout" id="deployments">
+<div class="cosmo-layout" id="deployments" xmlns:multi="http://www.w3.org/1999/xhtml">
 
     <div class="content-header no-border">
         <div class="breadcrumbs"><ul>
             <li><span>{{'breadcrumb.deployments'|translate}}</span></li>
         </ul></div>
     </div>
-
-    <table ng-show="!managerError" id="deploymentTable" class="gs-table">
-        <thead>
-            <tr>
-                <th class="id">{{ 'deployments.table.heading.id' | translate }}</th>
-                <th class="blueprint">{{ 'deployments.table.heading.blueprint' | translate }}</th>
-                <th class="create">{{ 'deployments.table.heading.createDate' | translate }}</th>
-                <th class="update">{{ 'deployments.table.heading.updated' | translate }}</th>
-                <th class="actions">{{ 'deployments.table.heading.action' | translate }}</th>
-                <th class="delete">{{ 'deployments.table.heading.delete' | translate }}</th>
-            </tr>
-        </thead>
-        <tbody ng-repeat="deployment in deployments">
-            <tr>
-                <td class="id"><a href="#/deployment/{{deployment.id}}/topology">{{deployment.id}}</a></td>
-                <td class="blueprint"><a href="#/blueprint/{{deployment.blueprint_id}}/topology">{{deployment.blueprint_id}}</a></td>
-                <td class="create">{{deployment.created_at | dateFormat: 'yyyy-MM-dd HH:mm:ss'}}</td>
-                <td class="description">{{deployment.updated_at | dateFormat: 'yyyy-MM-dd HH:mm:ss'}}</td>
-                <td class="actions">
-                    <div class="deployment-action-selector"
-                         deployment="deployment"
-                         on-begin="onExecutionStart()"
-                         on-cancel="onExecutionCancel()"
-                         on-delete="loadDeployments()"
-                         current-execution="getExecution(deployment)">
-                    </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-
-    <div class="no-blueprints-message" ng-show="deployments.length == 0">{{ 'deployments.emptyMessage' | translate }}</div>
-    <div class="gs-spinner large" ng-show="deployments == null && !managerError"></div>
-
-    <div class="connect-error-message" ng-show="managerError">{{ 'connectError' | translate }}</div>
+    <div id="dp1" class="content-section" st-table="displayedDeployments" st-safe-src="deployments" st-set-filter="customFilter">
+        <form>
+            <div class="form-group">
+                <label for="searchByName">{{'deployments.filters.deployment.title' | translate}}</label>
+                <input id="searchByName" st-search="id" placeholder="search by name" class="form-control" type="search"/>
+            </div>
+            <div class="form-group">
+                <label>{{'deployments.filters.blueprint.title' | translate}}</label>
+                <div class="filter gs-selection-button">
+                    <div multi-select-menu
+                         class="gs-select"
+                         data-multiple="true"
+                         options="blueprints"
+                         data-ng-model="deploymentsFilter.blueprints"
+                         name="blueprints"
+                         cfy-st-search
+                         predicate="blueprint_id"
+                         match="{{pluckArrayOfObjects(deploymentsFilter.blueprints,'value')}}"
+                         data-text="{{'logs.filters.blueprints.text' | translate }}"></div>
+                </div>
+            </div>
+        </form>
+        <table ng-show="!managerError" id="deploymentTable" class="gs-table" cfy-st-persist items-by-page="itemsByPage" content-loaded="deploymentsLoaded" st-table-id="dp1">
+            <thead>
+                <tr>
+                    <th st-sort="id" class="id sorting">{{ 'deployments.table.heading.id' | translate }}</th>
+                    <th st-sort="blueprint_id" class="blueprint sorting">{{ 'deployments.table.heading.blueprint' | translate }}</th>
+                    <th st-sort="created_at" class="create sorting">{{ 'deployments.table.heading.createDate' | translate }}</th>
+                    <th st-sort="updated_at" class="update sorting">{{ 'deployments.table.heading.updated' | translate }}</th>
+                    <th class="actions">{{ 'deployments.table.heading.action' | translate }}</th>
+                    <th class="delete">{{ 'deployments.table.heading.delete' | translate }}</th>
+                </tr>
+            </thead>
+            <tbody ng-repeat="deployment in displayedDeployments">
+                <tr>
+                    <td class="id"><a href="#/deployment/{{deployment.id}}/topology">{{deployment.id}}</a></td>
+                    <td class="blueprint"><a href="#/blueprint/{{deployment.blueprint_id}}/topology">{{deployment.blueprint_id}}</a></td>
+                    <td class="create">{{deployment.created_at | dateFormat: 'yyyy-MM-dd HH:mm:ss'}}</td>
+                    <td class="description">{{deployment.updated_at | dateFormat: 'yyyy-MM-dd HH:mm:ss'}}</td>
+                    <td class="actions">
+                        <div class="deployment-action-selector"
+                             deployment="deployment"
+                             on-begin="onExecutionStart()"
+                             on-cancel="onExecutionCancel()"
+                             on-delete="loadDeployments()"
+                             current-execution="getExecution(deployment)">
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="5" class="text-center">
+                        <div id="pagination" st-pagination st-items-by-page="itemsByPage"></div>
+                    </td>
+                </tr>
+            </tfoot>
+        </table>
+        <div class="connect-error-message" ng-show="managerError">{{ 'connectError' | translate }}</div>
+    </div>
 </div>
