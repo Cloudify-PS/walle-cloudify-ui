@@ -59,13 +59,22 @@ html, body, .layout {
 
 //        margin-bottom:-1000px;
         .main-content-display {
-            padding: 20px;
+            $MAIN_PADDING:20px;
+            padding: $MAIN_PADDING;
             background: white;
+            min-height:100%;
+            position:relative;
             & > div {
                 background:transparent;
                 height: 100%;
                 position: relative;
                 width: 100%
+            }
+
+            .try-beta{ // temporary fix to issue (see on html)
+                position:absolute;
+                right:$MAIN_PADDING;
+                bottom:$MAIN_PADDING;
             }
         }
         .layout-fix-push{
@@ -430,6 +439,7 @@ html, body, .layout {
             border-left: none;
         }
     }
+
 }
 
 .right-panel {

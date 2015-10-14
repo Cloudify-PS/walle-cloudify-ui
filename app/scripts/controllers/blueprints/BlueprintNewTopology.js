@@ -9,13 +9,13 @@
  */
 angular.module('cosmoUiApp')
     .controller('BlueprintNewTopologyCtrl', function ($scope, cloudifyClient, $routeParams, DataProcessingService) {
+
         var blueprintId = $routeParams.blueprintId;
 
-        $scope.topologyLoading = true;
+        $scope.page = {};
+        $scope.page.topologyLoading = true;
         if ( blueprintId ) {
             cloudifyClient.blueprints.get(blueprintId).then(function (result) {
-                console.log('hello world', result.data);
-
                 var data = result.data;
 
                 var topologyData = {
@@ -25,8 +25,9 @@ angular.module('cosmoUiApp')
                     offset: [0, 29]
                 };
 
-                $scope.topologyData = DataProcessingService.encodeTopologyFromRest(topologyData);
-                $scope.topologyLoading = false;
+                $scope.page.topologyData = DataProcessingService.encodeTopologyFromRest(topologyData);
+
+                $scope.page.topologyLoading = false;
             });
         }
     });

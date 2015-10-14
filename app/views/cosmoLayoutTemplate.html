@@ -17,6 +17,8 @@
                 <div ng-transclude>
 
                 </div>
+                <!-- this hsould be here.. but css has a bug -- http://stackoverflow.com/questions/8468066/child-inside-parent-with-min-height-100-not-inheriting-height/8468131#8468131 -->
+                <a ng-show="showTryBeta" href="#/blueprint/{{blueprintId}}/newtopology" class="try-beta">Try Beta</a>
             </div>
 
             <div class="layout-fix-push"></div>
@@ -30,6 +32,9 @@
 
         </div>
         <div deployment-events="deploymentId" show-deployment-events="showDeploymentEvents"></div>
+
+
+
 
         <!--  a fix for footer position. -->
 

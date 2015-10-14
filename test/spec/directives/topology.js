@@ -12,7 +12,7 @@ describe('Directive: topology', function () {
     beforeEach(inject(function ($rootScope, $compile) {
         scope = $rootScope.$new();
         spyOn(scope,'registerTickerTask');
-        element = angular.element('<div topology blueprint-id="blueprintId"></div>');
+        element = angular.element('<div ui-topology blueprint-id="blueprintId"></div>');
         element = $compile(element)(scope);
 
     }));

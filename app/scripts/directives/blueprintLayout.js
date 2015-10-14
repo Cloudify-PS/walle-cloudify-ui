@@ -6,11 +6,7 @@ angular.module('cosmoUiApp')
             templateUrl: 'views/blueprint/blueprintLayout.html',
             restrict: 'C',
             transclude: true,
-            scope: {
-                section: '@',
-                selectview: '@'
-            },
-            link: function postLink($scope) {
+            link: function postLink($scope, attrs) {
 
                 $scope.blueprintId = $routeParams.blueprintId;
 
@@ -32,9 +28,6 @@ angular.module('cosmoUiApp')
                             $location.path('/blueprints');
                         }
 
-                        // Emit deployment data
-                        $scope.$emit('blueprintData', blueprintData);
-                        $scope.selectedBlueprint = blueprintData;
 
                         // Add breadcrumbs for the current deployment
                         $scope.breadcrumb = [
@@ -65,19 +58,9 @@ angular.module('cosmoUiApp')
                 });
 
                 $scope.isSectionActive = function (section) {
-                    return section.name === $scope.section ? 'active' : '';
+                    return section.name === attrs.section ? 'active' : '';
                 };
 
-                if ( !$scope.openDeployDialog ) { // allow tests to override this function..
-                    $scope.openDeployDialog = function () {
-                        ngDialog.open({
-                            template: 'views/blueprint/deployBlueprintDialog.html',
-                            controller: 'DeployDialogCtrl',
-                            scope: $scope,
-                            className: 'deploy-dialog'
-                        });
-                    };
-                }
 
                 $scope.redirectToDeployment = function(deployment_id) {
                     $location.path('/deployment/' + deployment_id + '/topology');
