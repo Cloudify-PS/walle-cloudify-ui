@@ -148,11 +148,11 @@ angular.module('cosmoUiApp')
             // Emit deployment data
             BlueprintSourceService.getBrowseData(blueprint.id, blueprint.updated_at)
                 .then(function(browseData) {
-                    if (browseData.errCode) {
-                        $scope.errorMessage = browseData.errCode;
-                    }
                     $scope.browseData = browseData;
                     $scope.openSourceFile(autoSelectFile(browseData[0]));
+                }, function(err) {
+                    $scope.errorMessage = err.data.error.errCode || 'browseError';
+                    $scope.downloadLink = err.data.error.e.path;
                 });
         };
 

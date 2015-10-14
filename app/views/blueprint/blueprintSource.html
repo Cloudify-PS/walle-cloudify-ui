@@ -4,6 +4,7 @@
 
         <div class="noPreview" ng-show="!isSourceText(filename)">
             <p class="empty">{{'blueprints.source.' + errorMessage | translate}}</p>
+            <p class="empty" ng-show="downloadLink"><a ng-href="{{downloadLink}}" target="_blank">{{'blueprints.source.downloadLink' | translate}}</a></p>
         </div>
 
         <div class="source-content">

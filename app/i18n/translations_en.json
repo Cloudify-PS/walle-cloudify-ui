@@ -32,7 +32,8 @@
         "source": {
             "chooseFile": "Please choose file to preview.",
             "noPreview": "Generating Blueprint Source View...",
-            "browseError": "Error browsing blueprint files"
+            "browseError": "Error browsing blueprint files",
+            "downloadLink": "Download blueprint"
         },
         "actions": {
             "deployBtn": "Create Deployment",
