@@ -591,7 +591,7 @@ module.exports = function (grunt) {
             },
             unit: {
                 options: {
-                    reporter: 'xunit-file'
+                    reporter: 'xunit-file' // NOTE: this reporter will make task not fail. to see it fail use `develop` goal
                 },
                 src: ['test/backend/unit/mocha/**/*js']
             },
