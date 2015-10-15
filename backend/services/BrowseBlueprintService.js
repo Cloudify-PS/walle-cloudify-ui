@@ -6,6 +6,7 @@ var fs = require('fs.extra');
 var path = require('path');
 var logger = require('log4js').getLogger('BrowseBlueprintService');
 var _ = require('lodash');
+var unzip = require('unzip');
 var Decompress = require('decompress');
 
 
@@ -176,7 +177,10 @@ exports.extractArchive = function  ( type, path, dest, callback ){
         } else if ( type === 'tar' ){
             decompress.use(Decompress.tar());
         }  else if ( type === 'zip' ){
-            decompress.use(Decompress.zip());
+
+            fs.createReadStream(path).pipe(unzip.Extract({ path: dest })).on('close',callback);
+            return; // FIX CFY-3772.. Decompress-unzip has a bug.. THIS DOES NOT REPRODUCE IN UNIT TESTS BUT IT DOES AT RUNTIME!
+            //decompress.use(Decompress.zip());
         } else if (type === 'tar.bz2' ){
             decompress.use(Decompress.tarbz2());
         }else {
