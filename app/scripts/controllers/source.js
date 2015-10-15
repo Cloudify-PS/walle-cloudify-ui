@@ -152,7 +152,7 @@ angular.module('cosmoUiApp')
                     $scope.openSourceFile(autoSelectFile(browseData[0]));
                 }, function(err) {
                     $scope.errorMessage = err.data.error.errCode || 'browseError';
-                    $scope.downloadLink = err.data.error.e.path;
+                    //$scope.downloadLink = err.data.error.e.path;
                 });
         };
 
