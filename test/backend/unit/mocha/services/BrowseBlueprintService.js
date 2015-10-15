@@ -57,7 +57,7 @@ describe('compression', function () {
 
                 function testFileExistance() {
                     if ( ( type !== 'zip' && fs.existsSync(path.join(dest, 'test_file.txt') ) ||
-                        (type === 'zip' && fs.existsSync(path.join(dest, 'test-compression-resource/foo.txt'))) // CFY-3772 add test for zip, resource should have a folder
+                        (type === 'zip' && fs.existsSync(path.join(dest, 'cloudify-nodecellar-example-master/LICENSE'))) // CFY-3772 add test for zip, resource should have a folder
                         )) {
                         done();
                     } else {
