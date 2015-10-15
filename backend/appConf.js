@@ -43,6 +43,7 @@ var request = require('request');
 var logger = log4js.getLogger('appConf');
 var os = require('os');
 var url = require('url');
+var async = require('async');
 
 var publicConfiguration = {
     i18n: {
@@ -185,23 +186,81 @@ exports.getPublicConfiguration = getPublicConfiguration;
 
 exports.getPrivateConfiguration = getPrivateConfiguration;
 
-function discoverProtocol( endpoint, usingPath, callback ){
-    var prefix = endpoint.split(':')[0];
-    var other = prefix === 'https' ? 'http' : 'https';
-    var checkUrl = url.resolve(endpoint , usingPath);
-    request({'url' : checkUrl }, function(err){
-        if ( !err ){
+/**
+ * @description
+ * will send a request to REST service on 2 protocols (http and https)
+ * @param {object} opts
+ * @param {string} opts.endpoint e.g. http://localhost:80/api/v2/
+ * @param {string} opts.usingPath e.g. blueprints
+ * @param callback
+ */
+function checkRestService( opts, callback ){
 
-            callback(null, endpoint);
-        }else{
-            logger.trace('changing protocols based on error ', checkUrl, err);
-            callback(null, endpoint.replace(prefix,other));
-        }
+    var endpoint = opts.endpoint;
+    var current = url.parse(endpoint).protocol;
+    var httpEndpoint = endpoint.replace(current,'http:');
+    var httpsEndpoint = endpoint.replace(current,'https:');
+
+
+    /**
+     *
+     * @type {{success: string|boolean}} false if no endpoint checked well, otherwise the endpoint string e.g. http://localhost:80/api/v2/
+     */
+    var results = { success: false };
+    // will generate a function to check a single endpoint
+    function checkEndpoint( endpoint ){
+
+        return function(callback){
+            try {
+                var checkUrl = url.resolve(endpoint, opts.usingPath);
+                logger.trace('checking url [' +  checkUrl  + ']');
+                request({'url': checkUrl, timeout: 1500}, function (err) {
+                    logger.trace('got response');
+                    if (!err) {
+                        logger.trace('url [' + checkUrl + '] returned successfully');
+                        results.success = endpoint;
+                    } else {
+                        logger.trace('url [' + checkUrl + '] generated error = ', err);
+                    }
+                    callback();
+                });
+            }catch(e){
+                logger.error('got error when checking url',e);
+                callback(e);
+            }
+        };
+    }
+
+
+    async.parallel([
+        checkEndpoint(httpEndpoint),
+        checkEndpoint(httpsEndpoint)
+    ], function(error){
+        callback(error, results );
     });
 }
 
+function pollRestService(opts, callback){
+
+    logger.trace('polling rest service');
+    checkRestService(opts, function( error , results ){
+        if ( !!error ){
+            callback(error);
+            return;
+        }
+
+        if ( results.success ){
+            callback(null, results.success);
+        }else{ // poll again
+            setTimeout(function(){pollRestService(opts,callback); }, 5000);
+        }
+
+    });
+}
+
+
 if ( prConf.autoDetectProtocol ) {
-    discoverProtocol(privateConfiguration.cloudifyManagerEndpoint, 'blueprints', function (err, endpoint) {
+    pollRestService( { endpoint: privateConfiguration.cloudifyManagerEndpoint, usingPath: 'blueprints' }, function (err, endpoint) {
         if (!err && !!endpoint) {
             logger.trace('setting endpoint protocol. new endpoint is', endpoint);
             exports.cloudifyManagerEndpoint = privateConfiguration.cloudifyManagerEndpoint = endpoint;

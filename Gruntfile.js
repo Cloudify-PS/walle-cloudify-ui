@@ -508,6 +508,9 @@ module.exports = function (grunt) {
                 'compass:dist',
                 'imagemin',
                 'htmlmin'
+            ],
+            mochaTestUnit: [ // fix for mochaTest getting stuck..
+                'mochaTest:unit'
             ]
         },
         karma: {
@@ -583,9 +586,12 @@ module.exports = function (grunt) {
             }
         },
         mochaTest: {
+            options: {
+                clearRequireCache: true
+            },
             unit: {
                 options: {
-                    reporter: 'xunit-file'
+                    reporter: 'xunit-file' // NOTE: this reporter will make task not fail. to see it fail use `develop` goal
                 },
                 src: ['test/backend/unit/mocha/**/*js']
             },
@@ -600,6 +606,9 @@ module.exports = function (grunt) {
         /*jshint camelcase: false */
         mocha_istanbul: {
             coverage: {
+                options: {
+                    coverageFolder:'<%= reportsBase %>/backend-coverage'
+                },
                 'src' : 'test/backend/unit/mocha/**/*'
             }
         },
@@ -652,7 +661,7 @@ module.exports = function (grunt) {
             //testBackend: { path: 'test/backend', output: 'dev/jscpd.testBackend.output.txt' , threshold: 1 },
             all : {
                 path: '.',
-                output: 'reports/jscpd/jscpd.output.txt',
+                output: '<%= reportsBase %>/jscpd/jscpd.output.txt',
                 exclude: [
                     '**/*.html',
                     'coverage/**',
@@ -673,8 +682,8 @@ module.exports = function (grunt) {
         },
         'jscpdreporter': {
             options: {
-                sourcefile: 'reports/jscpd/jscpd.output.txt',
-                outputDir: 'reports/jscpd/html-report/'
+                sourcefile: '<%= reportsBase %>/jscpd/jscpd.output.txt',
+                outputDir: '<%= reportsBase %>/jscpd/html-report/'
             }
         },
         aws_s3: {
@@ -741,8 +750,9 @@ module.exports = function (grunt) {
         if( testBackend === undefined || testBackend === '' || testBackend === 'all' || testBackend === 'backend') {
             // guy - we always use code coverage in grunt.. when debug from the IDE so no need for no instrumented mode in grunt.
 
-            tasks = tasks.concat([ 'mocha_istanbul','mochaTest:unit']);
-            tasks = tasks.concat( ['clean:coverageBackend','instrument', 'copy:backendCoverageTests', /*'jasmine_node:unitInstrument', 'storeCoverage',*/ 'makeReport','clean:instrumentBackend']);
+            // IMPORTANT: using concurrent to run mochaTest because otherwise grunt will get stuck as we mock modules.
+            tasks = tasks.concat([ 'concurrent:mochaTestUnit','mocha_istanbul']);
+            //tasks = tasks.concat( ['clean:coverageBackend','instrument', 'copy:backendCoverageTests', /*'jasmine_node:unitInstrument', 'storeCoverage',*/ 'makeReport','clean:instrumentBackend']);
         }
         grunt.task.run(tasks);
     });

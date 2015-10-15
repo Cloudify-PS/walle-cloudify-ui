@@ -1,15 +1,17 @@
 'use strict';
 var expect = require('expect.js');
-var conf = require('../../../../../backend/appConf');
+var conf = null;
 var path = require('path');
 var fs = require('fs.extra');
-var BrowseBlueprintService = require('../../../../../backend/services/BrowseBlueprintService');
+
 var logger = require('log4js').getLogger('BrowseBlueprintService');
 
 
 describe('BrowseBlueprintService', function () {
-
+    var BrowseBlueprintService = null;
     beforeEach(function () {
+        conf = require('../../../../../backend/appConf');
+        BrowseBlueprintService = require('../../../../../backend/services/BrowseBlueprintService');
         conf.browseBlueprint.path = path.join(__dirname, '../../../resources/');
     });
 
@@ -32,11 +34,13 @@ describe('BrowseBlueprintService', function () {
 });
 
 
-describe.only('compression', function () {
+describe('compression', function () {
     var dest = path.join(__dirname, '../../../../../dev/test_resources/tmp');
-
+    var BrowseBlueprintService = null;
     beforeEach(function () {
         fs.removeSync(dest);
+        conf = require('../../../../../backend/appConf');
+        BrowseBlueprintService = require('../../../../../backend/services/BrowseBlueprintService');
     });
 
     afterEach(function () {
@@ -52,10 +56,12 @@ describe.only('compression', function () {
                 expect(!err).to.be(true);
 
                 function testFileExistance() {
-                    if (!fs.existsSync(path.join(dest, 'test_file.txt'))) {
-                        setTimeout(testFileExistance, 100);
-                    } else {
+                    if ( ( type !== 'zip' && fs.existsSync(path.join(dest, 'test_file.txt') ) ||
+                        (type === 'zip' && fs.existsSync(path.join(dest, 'cloudify-nodecellar-example-master/LICENSE'))) // CFY-3772 add test for zip, resource should have a folder
+                        )) {
                         done();
+                    } else {
+                        setTimeout(testFileExistance, 100);
                     }
                 }
 

@@ -1,5 +1,6 @@
 'use strict';
 var proxy = require('express-http-proxy');
+var logger = require('log4js').getLogger('CloudifyProxy');
 module.exports = function (conf) {
     return function (req, res, next) {
 
@@ -20,12 +21,12 @@ module.exports = function (conf) {
                 forwardPath: function( req ){
                     var endpoint = require('url').parse(conf.cloudifyManagerEndpoint);
                     var res = require('url').resolve(endpoint.path, require('url').parse(req.url).path.substring(1));
-                    console.log('this is forward', res);
+                    logger.trace('this is forward', res);
                     return res;
                 }
             })(req, res, next);
         } catch (e) {
-            console.log('unable to proxy', e);
+            logger.error('unable to proxy', e);
             next(e);
         }
     };
