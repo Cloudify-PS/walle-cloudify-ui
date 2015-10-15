@@ -20,7 +20,7 @@ module.exports = function (conf) {
                 forwardPath: function( req ){
                     var endpoint = require('url').parse(conf.cloudifyManagerEndpoint);
                     var res = require('url').resolve(endpoint.path, require('url').parse(req.url).path.substring(1));
-                    console.log('this is forward', res);
+                    console.trace('this is forward', res);
                     return res;
                 }
             })(req, res, next);
