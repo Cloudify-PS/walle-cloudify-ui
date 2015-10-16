@@ -151,8 +151,11 @@ angular.module('cosmoUiApp')
                     $scope.browseData = browseData;
                     $scope.openSourceFile(autoSelectFile(browseData[0]));
                 }, function(err) {
-                    $scope.errorMessage = err.data.error.errCode || 'browseError';
-                    //$scope.downloadLink = err.data.error.e.path;
+                    $scope.errorMessage = 'browseError';
+                    try {
+                        $scope.errorMessage = err.data.error.errCode;
+                    } catch (e) {}
+                    //$scope.downloadLink = '/blueprints/' + $scope.selectedBlueprint.id + '/archive';
                 });
         };
 
