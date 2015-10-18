@@ -27,7 +27,7 @@
     },
     "dependencies": {
         "async": "^1.4.2",
-        "decompress": "2.2.0",
+        "decompress": "guy-mograbi-at-gigaspaces/decompress#master",
         "express": "~3.4.2",
         "express-http-proxy": "~0.6.0",
         "express-params": "0.0.3",
@@ -40,6 +40,7 @@
         "request": "^2.51.0",
         "tar-fs": "^1.8.1",
         "unzip": "^0.1.11"
+
     },
     "devDependencies": {
         "connect-livereload": "^0.3.2",
