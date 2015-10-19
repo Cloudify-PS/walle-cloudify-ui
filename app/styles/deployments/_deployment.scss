@@ -79,13 +79,11 @@
                         td {
                             min-width: 120px;
                             vertical-align: middle;
-                            padding: 5px;
+                            padding-left: 5px;
 //                            word-break: break-all;
-                            vertical-align: top;
 
                             table {
                                 tr:first-child td {
-                                    background: #E5EFF7;
                                     color: $COSMOUI_LIST_COLUMN_HEADER_TEXT_COLOR;
                                     border-bottom: 2px solid #fff;
                                 }
@@ -104,7 +102,6 @@
 
                                     td {
                                         vertical-align: middle;
-                                        height: 60px;
                                         color: #333;
                                     }
                                     &:not(:first-child) td.actions {

@@ -1,13 +1,22 @@
-.blueprint-layout{
-    height:100%;
+.blueprint-layout {
+    height: 100%;
 
-    .not-found-message{
+    .not-found-message {
         text-align: center;
         vertical-align: middle;
-        .message{
-            margin-top:100px;
-            padding:20px;
+        .message {
+            margin-top: 100px;
+            padding: 20px;
         }
     }
 
+    #right-side-menu {
+        .content {
+            .content-section {
+                position: relative;
+                padding-left: 0px;
+                top: 30px;
+            }
+        }
+    }
 }
