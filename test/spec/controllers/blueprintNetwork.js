@@ -21,9 +21,9 @@ describe('Controller: BlueprintNetwork', function () {
         bpNetworkService = _bpNetworkService_;
         NetworksService = _NetworksService_;
 
-        spyOn(cloudifyClient.manager,'get_context').andReturn(mockPromise({}));
-        spyOn(cloudifyClient.blueprints,'get').andReturn(mockPromise({data:{ plan: {nodes: []}}}));
-        spyOn($q, 'all').andReturn(mockPromise([{},{data:'foo'}]));
+        spyOn(cloudifyClient.manager,'get_context').andReturn(window.mockPromise({}));
+        spyOn(cloudifyClient.blueprints,'get').andReturn(window.mockPromise({data:{ plan: {nodes: []}}}));
+        spyOn($q, 'all').andReturn(window.mockPromise([{},{data:'foo'}]));
         spyOn(NetworksService,'createNetworkTree').andReturn({});
         spyOn(bpNetworkService, 'setMap').andReturn({});
 
