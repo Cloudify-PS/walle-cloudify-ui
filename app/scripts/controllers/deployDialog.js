@@ -40,7 +40,7 @@ angular.module('cosmoUiApp')
                         setDeployError(data.message);
                     }
                     else {
-                        $scope.onCreate({id: $scope.deployment_id});
+                        $scope.onCreate({id: result.data.id});
                         $scope.closeThisDialog();
                     }
                 }, function (data) {
