@@ -6,38 +6,40 @@ describe('Controller: BlueprintNetwork', function () {
     beforeEach(module('cosmoUiApp', 'backend-mock'));
 
     var BlueprintNetworkCtrl,
+        cloudifyClient,
+        $rootScope,
+        NetworksService,
+        bpNetworkService,
+        $q,
         scope;
 
     // Initialize the controller and a mock scope
-    beforeEach(inject(function ($controller, $rootScope) {
+    beforeEach(inject(function ($controller, _$rootScope_, _cloudifyClient_, _$q_ , _NetworksService_, _bpNetworkService_ ) {
+        cloudifyClient = _cloudifyClient_;
+        $rootScope = _$rootScope_;
+        $q = _$q_;
+        bpNetworkService = _bpNetworkService_;
+        NetworksService = _NetworksService_;
+
+        spyOn(cloudifyClient.manager,'get_context').andReturn(mockPromise({}));
+        spyOn(cloudifyClient.blueprints,'get').andReturn(mockPromise({data:{ plan: {nodes: []}}}));
+        spyOn($q, 'all').andReturn(mockPromise([{},{data:'foo'}]));
+        spyOn(NetworksService,'createNetworkTree').andReturn({});
+        spyOn(bpNetworkService, 'setMap').andReturn({});
+
         scope = $rootScope.$new();
         BlueprintNetworkCtrl = $controller('BlueprintNetworkCtrl', {
             $scope: scope
         });
     }));
 
-    it('should have a blueprintData handler', inject(function ($rootScope, cloudifyClient, NetworksService, bpNetworkService) {
-        spyOn(cloudifyClient.manager, 'get_context').andCallFake(function () {
-            return {
-                then: function (success) {
-                    success({data:{}});
-                }
-            };
-        });
-        spyOn(NetworksService, 'createNetworkTree').andCallFake(function () {
-            return {};
-        });
-        spyOn(bpNetworkService, 'setMap').andCallFake(function () {
-        });
-
-        $rootScope.$broadcast('blueprintData', {plan: {nodes: {}}});
-
+    it('should have a blueprintData handler', function () {
 
         expect(cloudifyClient.manager.get_context).toHaveBeenCalled();
         expect(NetworksService.createNetworkTree).toHaveBeenCalled();
         expect(bpNetworkService.setMap).toHaveBeenCalled();
 
-    }));
+    });
 
     it('put viewNode on page', function () {
         scope.viewNodeDetails('foo');
