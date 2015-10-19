@@ -27,7 +27,7 @@
     },
     "dependencies": {
         "async": "^1.4.2",
-        "decompress": "2.2.0",
+        "decompress": "guy-mograbi-at-gigaspaces/decompress#master",
         "express": "~3.4.2",
         "express-http-proxy": "~0.6.0",
         "express-params": "0.0.3",
