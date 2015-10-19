@@ -8,10 +8,11 @@ angular.module('cosmoUiApp')
             transclude: true,
             link: function postLink($scope, attrs) {
 
-                $scope.blueprintId = $routeParams.blueprintId;
+                $scope.blueprint = {
+                    id:$routeParams.blueprintId
+                };
 
-
-                cloudifyClient.blueprints.get($scope.blueprintId)
+                cloudifyClient.blueprints.get($scope.blueprint.id)
                     .then(function( result ){
                         return result.data;
                     }, function(result){
@@ -54,7 +55,7 @@ angular.module('cosmoUiApp')
                     if ( $location.path().indexOf(nm.href) >= 0){
                         nm.active = true;
                     }
-                    nm.href='#/blueprint/' + $scope.blueprintId + nm.href;
+                    nm.href='#/blueprint/' + $scope.blueprint.id + nm.href;
                 });
 
                 $scope.isSectionActive = function (section) {
