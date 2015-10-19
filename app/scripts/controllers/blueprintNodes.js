@@ -15,6 +15,7 @@ angular.module('cosmoUiApp')
         $scope.page = {};
 
         cloudifyClient.blueprints.get($scope.blueprintId).then(function (result) {
+            NodeService.createNodesTree(result.data.plan.nodes);
             $scope.dataTable = result.data.plan.nodes;
         });
 
