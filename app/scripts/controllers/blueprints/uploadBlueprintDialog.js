@@ -58,6 +58,7 @@ angular.module('cosmoUiApp')
                 $scope.blueprintUploadOpts.blueprint_id = data.id;
             }
             $scope.uploadError = false;
+            ngProgress.reset();
             $scope.uploadDone($scope.blueprintUploadOpts.blueprint_id);
             $scope.closeThisDialog();
         }
