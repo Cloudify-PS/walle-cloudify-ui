@@ -6,47 +6,48 @@ describe('Controller: DeploymentNetworkCtrl', function () {
     beforeEach(module('cosmoUiApp', 'backend-mock'));
 
     var DeploymentnetworkCtrl,
+        $rootScope,
+        cloudifyClient,
+        $timeout,
+        $q,
+        NetworksService,
+        bpNetworkService,
         scope;
 
     // Initialize the controller and a mock scope
-    beforeEach(inject(function ($controller, $rootScope) {
+    beforeEach(inject(function ($controller, _$rootScope_, _cloudifyClient_, _$timeout_, _NetworksService_, _bpNetworkService_, _$q_) {
+        $rootScope = _$rootScope_;
+        cloudifyClient = _cloudifyClient_;
+        $timeout = _$timeout_;
+        $q = _$q_;
+        NetworksService = _NetworksService_;
+        bpNetworkService = _bpNetworkService_;
+
+        spyOn(cloudifyClient.manager, 'get_context').andReturn(window.mockPromise({data:{}}));
+        spyOn(cloudifyClient.deployments,'get').andReturn(window.mockPromise({data:{}}));
+        spyOn(cloudifyClient.blueprints,'get').andReturn(window.mockPromise({data:{ plan : { nodes: [] }  }}));
+        spyOn($q,'all').andReturn(window.mockPromise([{},{ data: {} }]));
+
+        spyOn(NetworksService, 'createNetworkTree').andReturn({});
+        spyOn(bpNetworkService, 'setMap').andReturn();
+        spyOn(bpNetworkService, 'getCoordinates').andReturn('foo');
+
         scope = $rootScope.$new();
+
         DeploymentnetworkCtrl = $controller('DeploymentNetworkCtrl', {
             $scope: scope
         });
     }));
 
     // TODO: this is a copy paste from blueprintNetwork test.. obviously this code should be the same.
-    it('should have a blueprintData handler that paints after some timeout', inject(function ($rootScope, cloudifyClient, $timeout, NetworksService, bpNetworkService) {
-        spyOn(cloudifyClient.manager, 'get_context').andCallFake(function () {
-            return {
-                then: function (success) {
-                    success({data:{}});
-                }
-            };
-        });
-        spyOn(NetworksService, 'createNetworkTree').andCallFake(function () {
-            return {};
-        });
-        spyOn(bpNetworkService, 'setMap').andCallFake(function () {
-        });
-
-        spyOn(bpNetworkService, 'getCoordinates').andCallFake(function () {
-            return 'foo';
-        });
-
-        $rootScope.$broadcast('nodesList', {plan: {nodes: {}}});
-
-
+    it('should have a blueprintData handler that paints after some timeout', function () {
         expect(cloudifyClient.manager.get_context).toHaveBeenCalled();
         expect(NetworksService.createNetworkTree).toHaveBeenCalled();
         expect(bpNetworkService.setMap).toHaveBeenCalled();
 
-        $timeout.flush();
-
         expect(scope.networkcoords).toBe('foo');
 
-    }));
+    });
 
     it('put viewNode on page', function () {
         scope.viewNodeDetails('foo');
