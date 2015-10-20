@@ -8,25 +8,27 @@
  * Controller of the cosmoUiApp
  */
 angular.module('cosmoUiApp')
-    .controller('DeploymentNetworkCtrl', function ($scope, $routeParams, $timeout, cloudifyClient, bpNetworkService, NetworksService) {
+    .controller('DeploymentNetworkCtrl', function ($scope, $routeParams, $timeout, cloudifyClient, bpNetworkService, NetworksService, $q) {
 
         $scope.deploymentId = $routeParams.deploymentId;
         $scope.page = {};
 
-        $scope.$on('nodesList', function(e, nodesList){
-            cloudifyClient.manager.get_context()
-                .then(function(result) {
-                    var providerData = result.data;
-                    $scope.networks = NetworksService.createNetworkTree(providerData, nodesList);
 
-                    bpNetworkService.setMap($scope.networks.relations);
-                    $timeout(function(){
-                        $scope.networkcoords = bpNetworkService.getCoordinates();
-                        bpNetworkService.render();
-                    }, 100);
-                });
+        var blueprintPromise = cloudifyClient.deployments.get($scope.deploymentId, 'blueprint_id').then(function(result){
+            return cloudifyClient.blueprints.get(result.data.blueprint_id).then(function( result ){
+                $scope.blueprint =  result.data;
+            });
         });
 
+        $q.all([blueprintPromise, cloudifyClient.manager.get_context()]).then(function (results) {
+            var result = results[1];
+            var providerData = result.data;
+            $scope.networks = NetworksService.createNetworkTree(providerData, $scope.blueprint.plan.nodes);
+
+            bpNetworkService.setMap($scope.networks.relations);
+            $scope.networkcoords = bpNetworkService.getCoordinates();
+            //bpNetworkService.render();
+        });
 
 
         $scope.viewNodeDetails = function (viewNode) {
