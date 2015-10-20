@@ -16,10 +16,10 @@ describe('Directive: blueprintLayout', function () {
 
         scope = $rootScope.$new( );
         element = $compile(element)(scope);
-        //scope.$digest(); -- do not digest here.. we need to override isolate scope functions. use $digest in inner describes.
+        scope.$digest();
     });
 
-    beforeEach(inject(function (cloudifyClient) {
+    beforeEach(inject(function (cloudifyClient,$routeParams) {
         spyOn(cloudifyClient.blueprints, 'get').andCallFake(function () {
             return {
                 then: function (success) {
@@ -32,7 +32,12 @@ describe('Directive: blueprintLayout', function () {
                 }
             };
         });
-        compileElement();
+        $routeParams.blueprintId = 'hello'; // default blueprint id can be override
     }));
+
+    it('should get the blueprint id from the routeParams', function(){
+        compileElement();
+        expect(scope.blueprint).toEqual({id:'hello'});
+    });
 
 });

@@ -5,15 +5,17 @@ describe('Controller: BlueprintNodesCtrl', function () {
     // load the controller's module
     beforeEach(module('cosmoUiApp', 'ngMock', 'backend-mock'));
 
-    var DeploymentNodesCtrl, scope;
+    var DeploymentNodesCtrl, scope,
+        cloudifyClient, NodeService;
 
     // Initialize the controller and a mock scope
-    beforeEach(inject(function ($controller, $rootScope, cloudifyClient ) {
-        spyOn(cloudifyClient.blueprints, 'get').andReturn({
-            then: function (success) {
-                success({'data': {'plan': {'nodes': 'foo'}}});
-            }
-        });
+    beforeEach(inject(function ($controller, $rootScope, _cloudifyClient_, _NodeService_ ) {
+        cloudifyClient = _cloudifyClient_;
+        NodeService = _NodeService_;
+        spyOn(cloudifyClient.blueprints, 'get').andReturn(
+            window.mockPromise({ 'data': { 'plan': { 'nodes': 'foo' } } }));
+        spyOn(NodeService, 'createNodesTree').andCallFake(function(){});
+
         scope = $rootScope.$new();
         DeploymentNodesCtrl = $controller('BlueprintNodesCtrl', {
             $scope: scope
@@ -35,9 +37,10 @@ describe('Controller: BlueprintNodesCtrl', function () {
     });
 
     describe('#blueprintDataHandler', function(){
-        it('is should get blueprintId from route params and call get blueprint on cloudify client', inject(function( cloudifyClient ){
+        it('is should get blueprintId from route params and call get blueprint on cloudify client', function(){
             expect(cloudifyClient.blueprints.get).toHaveBeenCalled();
-        }));
+            expect(NodeService.createNodesTree).toHaveBeenCalled();
+        });
     });
 
 

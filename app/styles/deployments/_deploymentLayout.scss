@@ -14,7 +14,7 @@
         }
 
         .header-left {
-            min-height: 112px;
+            margin-bottom: 10px;
 
             #settings-button {
                 display: inline-block;
@@ -167,6 +167,7 @@
                                     td {
                                         height: 30px;
                                         border-bottom: 1px solid #cadbec;
+                                        padding-left: 0px !important;
 
                                         table {
 
