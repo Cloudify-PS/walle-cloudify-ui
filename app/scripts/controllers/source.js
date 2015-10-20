@@ -155,7 +155,7 @@ angular.module('cosmoUiApp')
                     try {
                         $scope.errorMessage = err.data.error.errCode;
                     } catch (e) {}
-                    $scope.downloadLink = ($location.$$host == 'localhost' ? 'http://10.10.1.10' : '') + '/blueprints/' + $scope.selectedBlueprint.id + '/archive';
+                    $scope.downloadLink = ($location.$$host === 'localhost' ? 'http://10.10.1.10' : '') + '/blueprints/' + $scope.selectedBlueprint.id + '/archive';
                 });
         };
 
