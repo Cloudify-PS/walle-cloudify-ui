@@ -6,7 +6,7 @@
         </ul></div>
     </div>
 
-    <div class="content-section"  st-table="logsHits" st-pipe="updateData" >
+    <div class="content-section"  st-table="logsHits" st-pipe="updateData" id="Logs">
         <div class="filters">
 
             <div class="filter gs-selection-button" ng-show="blueprintsList.length">
@@ -85,20 +85,20 @@
         </div>
 
         <div class="error" ng-if="getLogsError"><b>{{'logs.gettingLogsFailed' | translate}}</b><br/>{{getLogsError}}</div>
-        <table class="gs-table eventsTable">
+        <table class="gs-table eventsTable" cfy-st-persist items-by-page="itemsPerPage" content-loaded="blueprintsList && deploymentsList" st-table-id="Logs">
             <thead>
-            <tr>
-                <th ng-repeat="column in columns | filter:true">
-                    <span ng-if='column.name === "Event Type Icon"' st-sort="_source.event_type" class="icon sorting"><!-- icon --></span>
-                    <span ng-if='column.name === "Timestamp"' st-sort="_source.timestamp" class="date sorting" >{{'logs.fields.timestamp' | translate}}</span>
-                    <span ng-if='column.name === "Event Type"' st-sort="_source.event_type" class="type sorting">{{ 'deployment.table.heading.eventType' | translate }}</span>
-                    <span ng-if='column.name === "Log Level"' st-sort="_source.level" class="node sorting">{{ 'deployment.table.heading.logLevel' | translate }}</span>
-                    <span ng-if='column.name === "Operation"' st-sort="_source.context.operation" class="node sorting">{{ 'deployment.table.heading.operation' | translate }}</span>
-                    <span ng-if='column.name === "Node Name"' st-sort="_source.context.node_name" class="node sorting">{{ 'deployment.table.heading.node' | translate }}</span>
-                    <span ng-if='column.name === "Node Id"' st-sort="_source.context.node_id" class="node sorting">{{ 'deployment.table.heading.nodeId' | translate }}</span>
-                    <span ng-if='column.name === "Message"' st-sort="_source.message.text" class="task sorting">{{ 'deployment.table.heading.message' | translate }}</span>
-                </th>
-            </tr>
+                <tr>
+                    <th ng-repeat="column in columns | filter:true">
+                        <span ng-if='column.name === "Event Type Icon"' class="icon header"><!-- icon --></span>
+                        <span ng-if='column.name === "Timestamp"' class="date sorting header"><span st-sort="_source.timestamp" class="header-text" >{{'logs.fields.timestamp' | translate}}</span></span>
+                        <span ng-if='column.name === "Event Type"' class="type sorting header"><span st-sort="_source.event_type" class="header-text">{{ 'deployment.table.heading.eventType' | translate }}</span></span>
+                        <span ng-if='column.name === "Log Level"' class="level sorting header"><span st-sort="_source.level" class="header-text">{{ 'deployment.table.heading.logLevel' | translate }}</span></span>
+                        <span ng-if='column.name === "Operation"' class="operation sorting header"><span st-sort="_source.context.operation" class="header-text">{{ 'deployment.table.heading.operation' | translate }}</span></span>
+                        <span ng-if='column.name === "Node Name"' class="node-name sorting header"><span st-sort="_source.context.node_name" class="header-text">{{ 'deployment.table.heading.node' | translate }}</span></span>
+                        <span ng-if='column.name === "Node Id"' class="node-id sorting header"><span st-sort="_source.context.node_id" class="header-text">{{ 'deployment.table.heading.nodeId' | translate }}</span></span>
+                        <span ng-if='column.name === "Message"' class="task sorting header"><span st-sort="_source.message.text" class="header-text">{{ 'deployment.table.heading.message' | translate }}</span></span>
+                    </th>
+                </tr>
             </thead>
             <tbody  ng-repeat="log in logsHits" ng-init="isOpen=false">
             <tr data-ng-click="isOpen=!isOpen">

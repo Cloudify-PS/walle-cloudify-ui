@@ -17,8 +17,6 @@ angular.module('cosmoUiApp', [
     'cloudifyjs',
     'ui.bootstrap',
     'smart-table',
-    'angularMoment',
-    'datePicker',
     'dndLists',
     'cfy.topology'
 ]).config( function ($routeProvider, $httpProvider, $translateProvider) {
@@ -105,7 +103,8 @@ angular.module('cosmoUiApp', [
             })
             .when('/logs',{
                 templateUrl: 'views/logs.html',
-                controller: 'LogsCtrl'
+                controller: 'LogsCtrl',
+                reloadOnSearch: false
             })
             .when('/hosts',{
                 templateUrl: 'views/hosts.html',
@@ -135,7 +134,6 @@ angular.module('cosmoUiApp', [
                 templateUrl: 'views/login.html',
                 controller: 'LoginCtrl'
             })
-
             .otherwise({
                 redirectTo: '/blueprints'
             });
