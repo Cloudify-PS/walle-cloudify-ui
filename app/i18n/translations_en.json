@@ -196,7 +196,7 @@
 
     },
     "logs": {
-        "gettingLogsFailed": "Failed getting events:",
+        "gettingLogsFailed": "Failed getting logs & events",
         "noLogs": "There are no events at this moment...",
         "fields": {
             "timestamp": "Timestamp",
