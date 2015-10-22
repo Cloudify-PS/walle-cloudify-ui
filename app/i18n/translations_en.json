@@ -138,8 +138,8 @@
             "delete" : {
                 "title" : "Delete Deployment?",
                 "description" : "Are you sure you want to delete '{{deployment}}'?",
-                "confirm" : "Delete",
-                "cancel" : "Cancel",
+                "confirm" : "Yes",
+                "no" : "No",
                 "force" : "Force"
             }
         },
