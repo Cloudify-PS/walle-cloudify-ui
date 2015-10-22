@@ -32,28 +32,79 @@ describe('Controller: DeleteDeploymentDialogCtrl', function () {
         expect(cloudifyClient.deployments.delete).toHaveBeenCalledWith('foo', true);
     }));
 
+    describe('test template', function(){
 
-    it('should close dialog when pressing the cancel button', inject(function (ngDialog, $timeout) {
-        var id = ngDialog.open({
-            template: 'views/deployment/deleteDeploymentDialog.html',
-            controller: 'DeleteDeploymentDialogCtrl',
-            scope: scope,
-            className: 'delete-dialog'
-        }).id;
-        $timeout.flush();
-        var elemsQuery = '#' + id + ' #cancelBtnDelDep[ng-click="closeThisDialog()"]';
-        var elems = $(elemsQuery);
-        expect(elems.length).toBe(1);
+        var dialogId;
 
-        $('#' + id).remove(); // https://github.com/likeastore/ngDialog/issues/263
-        ngDialog.closeAll();
+        beforeEach(inject(function (ngDialog, $timeout) {
+            dialogId = ngDialog.open({
+                template: 'views/deployment/deleteDeploymentDialog.html',
+                controller: 'DeleteDeploymentDialogCtrl',
+                scope: scope,
+                className: 'delete-dialog'
+            }).id;
+            $timeout.flush();
+        }));
 
-        elems = $(elemsQuery);
-        expect(elems.length).toBe(0);
-    }));
+        afterEach(inject(function(ngDialog){
+            $('#'+dialogId).remove();
+            ngDialog.closeAll();
+        }));
 
+        it('should set spinner only on \'Yes\' button when pressed', function(){
 
+            scope.confirmDelete(false);
+            scope.$digest();
 
+            expect($('[ng-click="confirmDelete()"]').attr('gs-spinner')).toEqual('true');
+            expect($('[ng-click="confirmDelete(true)"]').attr('gs-spinner')).toEqual('false');
+
+        });
+
+        it('should set spinner only on \'Force\' button when pressed', function(){
+
+            scope.confirmDelete(true);
+            scope.$digest();
+
+            expect($('[ng-click="confirmDelete()"]').attr('gs-spinner')).toEqual('false');
+            expect($('[ng-click="confirmDelete(true)"]').attr('gs-spinner')).toEqual('true');
+
+        });
+
+        it('should disable all the buttons when  \'Yes\' button was pressed', function(){
+
+            scope.confirmDelete(false);
+            scope.$digest();
+
+            expect($('[ng-click="closeThisDialog()"]').attr('disabled')).toEqual('disabled');
+            expect($('[ng-click="confirmDelete()"]').attr('disabled')).toEqual('disabled');
+            expect($('[ng-click="confirmDelete(true)"]').attr('disabled')).toEqual('disabled');
+
+        });
+
+        it('should disable all the buttons when  \'Force\' button was pressed', function(){
+
+            scope.confirmDelete(false);
+            scope.$digest();
+
+            expect($('[ng-click="closeThisDialog()"]').attr('disabled')).toEqual('disabled');
+            expect($('[ng-click="confirmDelete()"]').attr('disabled')).toEqual('disabled');
+            expect($('[ng-click="confirmDelete(true)"]').attr('disabled')).toEqual('disabled');
+
+        });
+
+        it('should close dialog when pressing the cancel button', inject(function (ngDialog) {
+            var elemsQuery = '#' + dialogId + ' #cancelBtnDelDep[ng-click="closeThisDialog()"]';
+            var elems = $(elemsQuery);
+            expect(elems.length).toBe(1);
+
+            $('#' + dialogId).remove(); // https://github.com/likeastore/ngDialog/issues/263
+            ngDialog.closeAll();
+
+            elems = $(elemsQuery);
+            expect(elems.length).toBe(0);
+        }));
+    });
 
     describe('#delete deployment handler', function () {
         beforeEach(inject(function (cloudifyClient) {
