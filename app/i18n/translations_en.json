@@ -219,7 +219,8 @@
             "logLevels": {
                 "title": "Log Levels:",
                 "text": "Choose Log Levels"
-            }
+            },
+            "clearFilterButton" : "Clear Filter"
         }
     },
     "toggleSwitch": {
