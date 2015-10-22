@@ -29,6 +29,18 @@
             padding: 20px;
         }
 
+        .logs-error-message{
+            margin-bottom: 10px;
+            a{
+                color: red;
+            }
+            a:hover{
+                color: crimson;
+            }
+            a, a:hover{
+              font-weight: bold;
+            }
+        }
         .gs-table {
             width: 100%;
             margin: 0px;

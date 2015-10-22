@@ -84,7 +84,13 @@
             </div>
         </div>
 
-        <div class="error" ng-if="getLogsError"><b>{{'logs.gettingLogsFailed' | translate}}</b><br/>{{getLogsError}}</div>
+        <div class="logs-error-message error" ng-if="getLogsError" ng-init="showErrorDetails = true">
+            <a ng-click="showErrorDetails = !showErrorDetails">{{'logs.gettingLogsFailed' | translate}}
+                <i ng-hide='showErrorDetails' class="fa fa-caret-up"></i>
+                <i ng-show='showErrorDetails' class="fa fa-caret-down"></i>
+            </a>
+            <div ng-hide="showErrorDetails">{{getLogsError}}</div>
+        </div>
         <table class="gs-table eventsTable" cfy-st-persist items-by-page="itemsPerPage" content-loaded="blueprintsList && deploymentsList" st-table-id="Logs">
             <thead>
                 <tr>
