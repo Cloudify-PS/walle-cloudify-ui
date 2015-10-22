@@ -9,7 +9,7 @@ angular.module('cosmoUiApp')
 
         $scope.itemsByPage = 9;
 
-        $scope.loadBlueprints = function() {
+        function loadBlueprints() {
             $scope.blueprints = null;
             $scope.managerError = false;
             return cloudifyClient.blueprints.list('id,updated_at,created_at').then(function (result) {
@@ -23,7 +23,7 @@ angular.module('cosmoUiApp')
                 $scope.managerError = result.data || 'General Error';
                 $log.error('got error result', result.data);
             });
-        };
+        }
 
         function loadDeployments(){
             cloudifyClient.deployments.list('blueprint_id').then(function( result ){
@@ -37,5 +37,9 @@ angular.module('cosmoUiApp')
             });
         }
 
-        $scope.loadBlueprints().then(loadDeployments);
+        $scope.loadBlueprints = function(){
+            loadBlueprints().then(loadDeployments);
+        };
+
+        $scope.loadBlueprints();
     });
