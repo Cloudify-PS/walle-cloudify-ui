@@ -6,10 +6,12 @@
 
     <div class="content">
         <div class="gs-selection-button" ng-show="selectNodesArr.length > 0">
+            <!--Listener is important, So It will watch any change in options - which occurs for every node clicked -->
             <div multi-select-menu
                  class="gs-select"
                  options="selectNodesArr"
                  ng-model="selectedNode"
+                 listener="true"
                  onchange="nodeSelected(selectedNode)"></div>
         </div>
 
