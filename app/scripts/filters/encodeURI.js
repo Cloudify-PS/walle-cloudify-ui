@@ -9,8 +9,8 @@
  * Filter in the cosmoUiApp.
  */
 angular.module('cosmoUiApp')
-  .filter('encodeURI', function () {
-    return function (uri) {
-      return encodeURIComponent(uri);
-    };
-  });
+    .filter('encodeURI', function () {
+        return function (uri) {
+            return encodeURIComponent(uri);
+        };
+    });
