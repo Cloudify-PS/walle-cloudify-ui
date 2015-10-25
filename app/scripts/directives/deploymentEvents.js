@@ -19,6 +19,7 @@ angular.module('cosmoUiApp')
 
                 $scope.events = [];
                 $scope.minimizeMode = false;
+                $scope.logsDeploymentsParam = '{"matchAny":"[\\"'+$scope.id+'\\"]"}';
 
                 var dragFromY = 0; // indicates which Y value drag started
                 var dragFromHeight = 0;
