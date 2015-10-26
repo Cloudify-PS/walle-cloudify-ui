@@ -28,17 +28,6 @@ angular.module('cosmoUiApp')
         };
         initFilters();
 
-        //TODO: make url params and params effect each other
-        //loading filter options from the url params if given - enable us to present a specific event page by changing the url.
-        //if ($routeParams.filter) {
-        //    try {
-        //        $scope.eventsFilter = JSON.parse($routeParams.filter);
-        //    }
-        //    catch (exception) {
-        //        $scope.eventsFilter = null;
-        //    }
-        //}
-
         //Log levels List
         $scope.logLevelsList = [{value:'error',label:'ERROR'},{value:'warning',label:'WARNING'},{value:'info',label:'INFO'}];
 
@@ -74,9 +63,9 @@ angular.module('cosmoUiApp')
          */
         $scope.updateData = function (tableState) {
             var options = TableStateToRestApi.getOptions(tableState);
+            $scope.getLogsError = null;
 
             cloudifyClient.events.get(options).then(function (response) {
-                    $scope.getLogsError = null;
                     $scope.logsHits = response.data.hits.hits;
                     //Formatting the timestamp
                     _.each($scope.logsHits, function(log){

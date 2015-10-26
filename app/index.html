@@ -20,7 +20,6 @@
     <link rel="stylesheet" href="bower_components/gs-ui-infra/assets/fonts/gigaspaces/style.css" />
     <link rel="stylesheet" href="bower_components/angular-loading-bar/build/loading-bar.css"/>
     <link rel="stylesheet" href="bower_components/ngDialog/css/ngDialog.min.css" />
-    <link rel="stylesheet" href="bower_components/angular-datepicker/dist/angular-datepicker.css" />
     <link rel="stylesheet" href="bower_components/cloudify-blueprint-topology/dist/styles/blueprint-topology.css"/>
     <!-- endbuild -->
 
@@ -84,6 +83,39 @@
         }
     </script>
 
+    <script>
+//        http://stackoverflow.com/questions/20174955/requestanimationframe-not-working-in-safari-opera-tearing-my-hair-out
+//          required for phantomjs tests.. :(
+        try {
+            (function () {
+                var lastTime = 0;
+                var vendors = ['ms', 'moz', 'webkit', 'o'];
+                for (var x = 0; x < vendors.length && !window.requestAnimationFrame; ++x) {
+                    window.requestAnimationFrame = window[vendors[x] + 'RequestAnimationFrame'];
+                    window.cancelAnimationFrame = window[vendors[x] + 'CancelAnimationFrame']
+                    || window[vendors[x] + 'CancelRequestAnimationFrame'];
+                }
+
+                if (!window.requestAnimationFrame)
+                    window.requestAnimationFrame = function (callback, element) {
+                        var currTime = new Date().getTime();
+                        var timeToCall = Math.max(0, 16 - (currTime - lastTime));
+                        var id = window.setTimeout(function () {
+                                callback(currTime + timeToCall);
+                            },
+                            timeToCall);
+                        lastTime = currTime + timeToCall;
+                        return id;
+                    };
+
+                if (!window.cancelAnimationFrame)
+                    window.cancelAnimationFrame = function (id) {
+                        clearTimeout(id);
+                    };
+            }());
+        }catch(e){}
+    </script>
+
 
     <!--[if lt IE 7]>
     <p class="chromeframe">You are using an outdated browser. <a href="http://browsehappy.com/">Upgrade your browser
@@ -143,9 +175,6 @@
 
     <script src="bower_components/dndLists/angular-drag-and-drop-lists.js"></script>
     <script src="bower_components/angular-smart-table/dist/smart-table.js"></script>
-    <script src="bower_components/moment/moment.js"></script>
-    <script src="bower_components/angular-moment/angular-moment.js"></script>
-    <script src="bower_components/angular-datepicker/dist/angular-datepicker.js"></script>
 
     <script src="bower_components/cloudify-js/dist/cloudify.angular.js"></script>
     <script src="bower_components/angular-bootstrap/ui-bootstrap.min.js"></script>

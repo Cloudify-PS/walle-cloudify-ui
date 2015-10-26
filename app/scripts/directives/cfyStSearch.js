@@ -7,57 +7,78 @@
  * # cfyStSearch
  */
 angular.module('cosmoUiApp')
-    .directive('cfyStSearch', function () {
+    .directive('cfyStSearch', function ($log) {
         return {
             require: '^stTable',
             restrict: 'A',
             link: function postLink(scope, element, attrs, table) {
 
+                var skipSearches = {
+                    blueprint_id:false,
+                    deployment_id: false,
+                    log_level: false
+                };
 
-                if (attrs.match) {
+                function isSkipSearchMatch(){
+                    if(skipSearches[attrs.predicate]){
+                        skipSearches[attrs.predicate] = false;
+                        return true;
+                    }
+                    return false;
+                }
+
+                if(attrs.match) {
                     attrs.$observe('match', function (value) {
-                            if (value) {
-                                var query = {};
-                                query.matchAny = value;
-                                if (query.matchAny.length === 0) {
-                                    query.matchAny = '[]';
-                                }
-                                queryTable(query);
-                            }
+                        if(isSkipSearchMatch()){
+                            return;
                         }
-                    );
+                        if (value) {
+                            var query = {};
+                            query.matchAny = value;
+                            if (query.matchAny.length === 0) {
+                                query.matchAny = '[]';
+                            }
+                            queryTable(query);
+                        }
+                    });
                 }
 
                 //Please notice that in order for range query to work both, lte and gte must be on the same element
-                function createRangeQuery(){
-                    var query = {};
-                    if(attrs.gte && attrs.gte.length>0) {
-                        query.gte = attrs.gte;
-                    }
-                    if(attrs.lte && attrs.lte.length>0)
-                    {
-                        query.lte = attrs.lte;
-                    }
-                    return query;
-                }
+                //function createRangeQuery(){
+                //    var query = {};
+                //    if(attrs.gte && attrs.gte.length>0) {
+                //        query.gte = attrs.gte;
+                //    }
+                //    if(attrs.lte && attrs.lte.length>0)
+                //    {
+                //        query.lte = attrs.lte;
+                //    }
+                //    return query;
+                //}
 
-                if(attrs.gte) {
-                    attrs.$observe('gte', function (value) {
-                        if(value || value === ''){
-                            var query = createRangeQuery();
-                            queryTable(query);
-                        }
-                    });
-                }
-
-                if(attrs.lte) {
-                    attrs.$observe('lte', function (value) {
-                        if(value || value === ''){
-                            var query = createRangeQuery();
-                            queryTable(query);
-                        }
-                    });
-                }
+                //if(attrs.gte) {
+                //    attrs.$observe('gte', function (value) {
+                //        if(isSkipSearchMatch){
+                //            return;
+                //        }
+                //        if(value || value === ''){
+                //            var query = createRangeQuery();
+                //            queryTable(query);
+                //        }
+                //    });
+                //}
+                //
+                //if(attrs.lte) {
+                //    attrs.$observe('lte', function (value) {
+                //        if(isSkipSearchMatch){
+                //            return;
+                //        }
+                //        if(value || value === ''){
+                //            var query = createRangeQuery();
+                //            queryTable(query);
+                //        }
+                //    });
+                //}
 
                 scope.$watch(function () {
                     return table.tableState().search.predicateObject[attrs.predicate];
@@ -92,13 +113,14 @@ angular.module('cosmoUiApp')
                             //check if state is different
                             if(isModelDifferentFromQuery(_.get(scope, ngModel),queryValues)){
                                 var selectedOptions = getSelectedOptions(queryValues);
+                                skipSearches[attrs.predicate] = true;
                                 _.set(scope, ngModel, selectedOptions);
                             }
                         }
                     }
                     catch(e)
                     {
-                        console.log(e.message);
+                        $log.error(e.message);
                     }
                 }, true);
 

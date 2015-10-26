@@ -29,10 +29,37 @@
             padding: 20px;
         }
 
+        .logs-error-message{
+            margin-bottom: 10px;
+            a{
+                color: red;
+            }
+            a:hover{
+                color: crimson;
+            }
+            a, a:hover{
+              font-weight: bold;
+            }
+        }
         .gs-table {
             width: 100%;
             margin: 0px;
             tr {
+                th{
+                    padding:0;
+                    .header{
+                        display: table;
+                        height: 100%;
+                        width: 100%;
+                        display: table;
+                        .header-text{
+                            vertical-align: middle;
+                            display:table-cell;
+                            padding: 5px 0px 5px 10px;
+                        }
+                    }
+                }
+
                 td {
                     &.type {
                         width: 150px;
