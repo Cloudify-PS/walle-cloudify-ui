@@ -138,8 +138,8 @@
             "delete" : {
                 "title" : "Delete Deployment?",
                 "description" : "Are you sure you want to delete '{{deployment}}'?",
-                "confirm" : "Delete",
-                "cancel" : "Cancel",
+                "confirm" : "Yes",
+                "no" : "No",
                 "force" : "Force"
             }
         },
@@ -196,7 +196,7 @@
 
     },
     "logs": {
-        "gettingLogsFailed": "Failed getting events:",
+        "gettingLogsFailed": "Failed getting logs & events",
         "noLogs": "There are no events at this moment...",
         "fields": {
             "timestamp": "Timestamp",
@@ -219,7 +219,8 @@
             "logLevels": {
                 "title": "Log Levels:",
                 "text": "Choose Log Levels"
-            }
+            },
+            "clearFilterButton" : "Clear Filter"
         }
     },
     "toggleSwitch": {
