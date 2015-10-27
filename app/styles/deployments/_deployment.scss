@@ -320,6 +320,7 @@
         }
         &[status='0'] {
 
+            // scss-lint:disable ImportantRule
             .circle[state='0'] {
                 @extend %pieInProgress;
                 background-color: #dddddd !important;
@@ -348,6 +349,7 @@
                 @extend %pieInProgress;
                 background-color: #136e9d !important;
             }
+            // scss-lint:enable ImportantRule
         }
     }
     .networksContainer {
@@ -681,7 +683,9 @@
                                 background-clip: padding-box;
                                 background-color: #f4fbff;
                                 border: 1px solid #ccc;
+                                // scss-lint:disable ImportantRule
                                 margin: 5px 0 0 0 !important;
+                                // scss-lint:enable ImportantRule
                             }
                             textarea {
                                 height: 50px;
@@ -714,6 +718,7 @@
                 cursor: default;
 
                 //.workflow { }
+                // scss-lint:disable ImportantRule
                 .id {
                     min-width: 290px !important;
                 }
@@ -728,6 +733,7 @@
                     max-width: 210px !important;
                     overflow: hidden;
                 }
+                // scss-lint:enable ImportantRule
             }
         }
     }

@@ -13,8 +13,6 @@ linters:
     enabled: false
   SelectorFormat:
     enabled: false
-  ImportantRule:
-    enabled: false
   ColorVariable:
     enabled: false
   SelectorDepth:

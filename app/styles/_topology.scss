@@ -66,9 +66,10 @@
     }
     .boxHover {
         &, > .holder {
+            // scss-lint:disable ImportantRule
             background-color: $clr-base-30 !important;
+            // scss-lint:enable ImportantRule
         }
-
     }
 
     .box {

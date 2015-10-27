@@ -102,6 +102,7 @@
 }
 .syntaxhighlighter {
 
+    // scss-lint:disable ImportantRule
     .container {
 
         &::before, &::after {
@@ -117,4 +118,5 @@
     table {
         overflow-x: hidden !important;
     }
+    // scss-lint:enable ImportantRule
 }

@@ -12,10 +12,12 @@
     thead {
         tr {
             th {
-                border: 0 !important;
                 background: $COSMOUI_LIST_COLUMN_HEADER_BACKGROUND;
                 color: $COSMOUI_LIST_COLUMN_HEADER_TEXT_COLOR;
+                // scss-lint:disable ImportantRule
+                border: 0 !important;
                 vertical-align: middle !important;
+                // scss-lint:enable ImportantRule
                 height: 32px;
                 font-weight: normal;
                 padding: 5px 0 5px 10px;
@@ -49,7 +51,9 @@
         }
     }
     tbody {
+        // scss-lint:disable ImportantRule
         border: 0 !important;
+        // scss-lint:enable ImportantRule
 
         tr {
 
@@ -341,7 +345,9 @@ $failed: #d54931;
     z-index: 1;
     min-width: 20px;
     border-radius: 10px;
+    // scss-lint:disable ImportantRule
     padding: 3px !important; // this is here to override bootstrap's own .badge class definition
+    // scss-lint:enable ImportantRule
     vertical-align: baseline;
     white-space: nowrap;
     text-align: center;
