@@ -1,0 +1,11 @@
+linters:
+  Compass::*:
+    enabled: true
+  Indentation:
+    width: 4
+  SingleLinePerSelector:
+    enabled: false
+  IdSelector:
+    enabled: false
+  EmptyLineBetweenBlocks:
+    enabled: false

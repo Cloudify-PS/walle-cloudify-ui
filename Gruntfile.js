@@ -290,6 +290,11 @@ module.exports = function (grunt) {
 
             }
         },
+        scsslint: {
+            allFiles: [
+                '<%= yeoman.app %>/styles/*.scss'
+            ]
+        },
        /* compass: {
             options: {
                 sassDir: '<%= yeoman.app %>/styles',
@@ -968,4 +973,5 @@ module.exports = function (grunt) {
 
     grunt.registerTask('help', ['availabletasks:help']);
 
+    grunt.loadNpmTasks('grunt-scss-lint');
 };

@@ -77,6 +77,7 @@
         "grunt-open": "~0.2.0",
         "grunt-rev": "~0.1.0",
         "grunt-sass": "~1.0.0",
+        "grunt-scss-lint": "^0.3.8",
         "grunt-shell": "~1.1.2",
         "grunt-update-json": "~0.2.1",
         "grunt-usemin": "~0.1.11",
