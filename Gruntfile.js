@@ -59,7 +59,7 @@ module.exports = function (grunt) {
             },
             compass: {
                 files: ['<%= yeoman.app %>/styles/**/*.{scss,sass}', 'app/bower_components/gs-ui-infra/**/*.scss'],
-                tasks: ['compass:server']
+                tasks: ['compass:server', 'postcss']
             },
             livereload: {
                 options: {
@@ -236,7 +236,7 @@ module.exports = function (grunt) {
         },
         scsslint: {
             allFiles: [
-                '<%= yeoman.app %>/styles/*.scss'
+                '<%= yeoman.app %>/styles/*.scss', '<%= yeoman.app %>/styles/*/*.scss'
             ],
             options: {
                 config: 'test/spec/.scss-lint.yml'
@@ -296,6 +296,18 @@ module.exports = function (grunt) {
                     '.tmp/styles/main.css' : '<%= yeoman.app %>/styles/main.scss'
                 }
 
+            }
+        },
+        // Post-processing css
+        postcss: {
+            options: {
+                map: true,
+                processors: [
+                    require('autoprefixer')({browsers: 'last 2 versions'}) // add vendor prefixes
+                ]
+            },
+            dist: {
+                src: '.tmp/styles/main.css'
             }
         },
        /* compass: {

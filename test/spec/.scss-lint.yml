@@ -13,3 +13,20 @@ linters:
     enabled: false
   SelectorFormat:
     enabled: false
+  ImportantRule:
+    enabled: false
+  ColorVariable:
+    enabled: false
+  SelectorDepth:
+    enabled: false
+  NestingDepth:
+    enabled: false
+  QualifyingElement:
+    allow_element_with_attribute: true
+    allow_element_with_class: true
+  HexLength:
+    enabled: false
+  BorderZero:
+    enabled: false
+  Shorthand:
+    enabled: false
