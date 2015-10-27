@@ -24,7 +24,7 @@ angular.module('cosmoUiApp')
 
         $scope.$watch('blueprintId', function(newValue){
             if ( !!newValue ) {
-                cloudifyClient.blueprints.get(newValue, 'id,updated_at').then(function( result ){
+                cloudifyClient.blueprints.get(newValue, 'id,updated_at,main_file_name').then(function( result ){
                     $scope.setData(result.data);
                 });
             }
@@ -56,9 +56,10 @@ angular.module('cosmoUiApp')
          * http://stackoverflow.com/a/18008336
          *
          * @param data
+         * @param fileName
          * @returns {*}
          */
-        function autoSelectFile(data) {
+        function autoSelectFile(data, fileName) {
 
             var list = [];
 
@@ -80,7 +81,11 @@ angular.module('cosmoUiApp')
 
             list = _.flatten(list);
 
-            var result = _.find(list, function(item){ return isDefaultCandidate(item.name); });
+            // if fileName was provided then choose it, otherwise check default
+            var result = fileName ?
+                _.find(list, function(item) { return item.name === fileName; }) :
+                _.find(list, function(item) { return isDefaultCandidate(item.name); });
+
             if ( !result ){
                 result = _.first(list);
             }
@@ -149,13 +154,13 @@ angular.module('cosmoUiApp')
             BlueprintSourceService.getBrowseData(blueprint.id, blueprint.updated_at)
                 .then(function(browseData) {
                     $scope.browseData = browseData;
-                    $scope.openSourceFile(autoSelectFile(browseData[0]));
+                    $scope.openSourceFile(autoSelectFile(browseData[0], blueprint.main_file_name));
                 }, function(err) {
                     $scope.errorMessage = 'browseError';
                     try {
                         $scope.errorMessage = err.data.error.errCode;
                     } catch (e) {}
-                    $scope.downloadLink = '/blueprints/' + $scope.selectedBlueprint.id + '/archive';
+                    $scope.downloadLink = '/backend/cloudify-api/blueprints/' + $scope.selectedBlueprint.id + '/archive';
                 });
         };
 
