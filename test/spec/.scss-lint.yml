@@ -1,6 +1,4 @@
 linters:
-  Compass::*:
-    enabled: true
   Indentation:
     width: 4
   SingleLinePerSelector:
@@ -8,4 +6,10 @@ linters:
   IdSelector:
     enabled: false
   EmptyLineBetweenBlocks:
+    enabled: false
+  NameFormat:
+    enabled: false
+  PropertySortOrder:
+    enabled: false
+  SelectorFormat:
     enabled: false

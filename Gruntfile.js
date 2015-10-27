@@ -234,6 +234,14 @@ module.exports = function (grunt) {
                 }
             }
         },
+        scsslint: {
+            allFiles: [
+                '<%= yeoman.app %>/styles/*.scss'
+            ],
+            options: {
+                config: 'test/spec/.scss-lint.yml'
+            }
+        },
         coffee: {
             dist: {
                 files: [
@@ -289,11 +297,6 @@ module.exports = function (grunt) {
                 }
 
             }
-        },
-        scsslint: {
-            allFiles: [
-                '<%= yeoman.app %>/styles/*.scss'
-            ]
         },
        /* compass: {
             options: {
@@ -744,6 +747,7 @@ module.exports = function (grunt) {
         if ( testBackend === undefined || testBackend === '' || testBackend === 'all' || testBackend === 'frontend') { // default
             tasks = [
                 'jshint',
+                'scsslint',
                 'clean:server',
                 'concurrent:test',
                 'connect:test',
@@ -973,5 +977,4 @@ module.exports = function (grunt) {
 
     grunt.registerTask('help', ['availabletasks:help']);
 
-    grunt.loadNpmTasks('grunt-scss-lint');
 };
