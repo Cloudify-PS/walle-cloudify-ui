@@ -113,26 +113,41 @@ module.exports.Walker = function() {
 
     function walkFolder(rootFolder, _list) {
         logger.trace('walkFolder', rootFolder);
-        counter++;
+
+
+        // readdir will throw a 'catchall' error... there's nothing we can do about it
+        // however in the end, we will catch
+        // http://stackoverflow.com/questions/33365765/how-to-avoid-errors-thrown-from-readdir
         fs.readdir(rootFolder, function (err, files) {
-            if ( !!err ){
-                logger.error('unable to walk folder', err);
-            }
-            if (files.length === 0) {
-                doFinalCallback(true);
-            }
-            counter += files.length;
-            counter--;
-            for (var i in files) {
-                if(files.hasOwnProperty(i)) {
-                    addChild(rootFolder, _list, files[i]);
+            try {
+                if (!!err) {
+                    logger.error('unable to walk folder', err);
+                    doFinalCallback(err);
+                    return;
                 }
-                else{
-                    counter--;
+                if (files.length === 0) {
+                    doFinalCallback(true);
                 }
+
+                counter += files.length;
+
+                counter--;
+                for (var i in files) {
+                //
+                    if (files.hasOwnProperty(i)) {
+                        addChild(rootFolder, _list, files[i]);
+                    }
+                    else {
+                        counter--;
+                    }
+                }
+            }catch(e){
+                doFinalCallback(e);
             }
         });
+        counter++; // leave here in case of an error..
     }
+
 
     function fileIsAscii(filename, callback) {
         require('fs').readFile(filename, function(err, buf) {
@@ -148,7 +163,7 @@ module.exports.Walker = function() {
     }
 
     this.walk = function (rootFolder, callback) {
-        _finalCallback = callback;
+        _finalCallback = _.once(callback);
         origRoot = path.resolve(rootFolder);
         walkFolder(rootFolder, root.children);
     };
@@ -202,6 +217,7 @@ function normalizeExtension( filename ){ //
 
 exports.downloadBlueprint = function( cloudifyClientConf, blueprint_id, last_update, callback) {
 
+    logger.debug('downloading blueprint');
     function alreadyExists( name ){
         return function(e) {
             logger.debug('folder' + name + ' already exist :: ', e);
@@ -209,14 +225,18 @@ exports.downloadBlueprint = function( cloudifyClientConf, blueprint_id, last_upd
     }
 
     fs.exists(conf.browseBlueprint.path, function (exists) {
-        if (!exists) {
-            var pathParts = conf.browseBlueprint.path.split('/');
-            var pathToCreate = '';
-            for (var i = 0; i < pathParts.length; i++) {
-                pathToCreate += pathParts[i] + '/';
-                fs.mkdir(pathToCreate, alreadyExists(pathParts[i]));
-            }
+        logger.debug('blueprint download exists', exists);
+        if (exists) { // assume also extracted as operation is 'atomic'
+            callback();
+            return;
         }
+        var pathParts = conf.browseBlueprint.path.split('/');
+        var pathToCreate = '';
+        for (var i = 0; i < pathParts.length; i++) {
+            pathToCreate += pathParts[i] + '/';
+            fs.mkdir(pathToCreate, alreadyExists(pathParts[i]));
+        }
+
 
         var requestDetails = {
             url: require('url').resolve(conf.cloudifyManagerEndpoint,'blueprints/' + blueprint_id + '/archive'),
@@ -224,7 +244,7 @@ exports.downloadBlueprint = function( cloudifyClientConf, blueprint_id, last_upd
             auth: cloudifyClientConf.authHeader
         };
 
-        console.log('this is requestDetails', requestDetails );
+        logger.debug('this is requestDetails', JSON.stringify(requestDetails) );
 
         var stream = request(requestDetails);
         stream.on('response',function(res){
