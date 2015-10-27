@@ -1,7 +1,12 @@
 'use strict';
 
 angular.module('cosmoUiApp')
-    .controller('LogsCtrl', function ($scope, cloudifyClient, EventsMap, $routeParams, TableStateToRestApi) {
+    .controller('LogsCtrl', function ($scope, cloudifyClient, EventsMap, $routeParams, TableStateToRestApi, $location) {
+
+        //default sorting desc timestamp - when there is not a specific query
+        if(Object.keys($routeParams).length === 0){
+            $location.search({sortByLogs: 'timestamp', reverseLogs: 'true'});
+        }
 
         $scope.columns = [
             {name:'Event Type Icon',isSelected:true},

@@ -23,7 +23,7 @@ describe('Service: tableStateToRestApi', function () {
                 },
                 search:{},
                 sort: {
-                    predicate: '_source.timestamp',
+                    predicate: 'timestamp',
                     reverse: false
                 }
             };

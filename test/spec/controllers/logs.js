@@ -2,23 +2,24 @@
 
 describe('Controller: LogsCtrl', function () {
     var LogsCtrl, scope;
-    var _cloudifyClient, _TableStateToRestApi, _EventsMap;
+    var _cloudifyClient, _TableStateToRestApi, _EventsMap, _$routeParams, _$location;
 
     beforeEach(module('cosmoUiApp', 'backend-mock'));
 
-    var init = inject(function ($rootScope, cloudifyClient, TableStateToRestApi, EventsMap) {
+    var init = inject(function ($rootScope, cloudifyClient, TableStateToRestApi, EventsMap, $location ) {
         _cloudifyClient = cloudifyClient;
         _TableStateToRestApi = TableStateToRestApi;
         _EventsMap = EventsMap;
+        _$location = $location;
+        _$routeParams = {}; //default route params object , can be override
         scope = $rootScope.$new();
         spyOnServices(); // default spies that you can later override
-        initCtrl(); // default creation, you can later recreate..
-
     });
 
     var initCtrl = inject(function ($controller) {
         LogsCtrl = $controller('LogsCtrl', {
-            $scope: scope
+            $scope: scope,
+            $routeParams: _$routeParams
         });
     });
 
@@ -43,6 +44,8 @@ describe('Controller: LogsCtrl', function () {
         spyOn(_EventsMap, 'getEventIcon').andReturn('');
 
         spyOn(_EventsMap, 'getEventText').andReturn('');
+
+        spyOn(_$location, 'search').andCallFake(function(){});
     };
 
     beforeEach(init);
@@ -50,10 +53,27 @@ describe('Controller: LogsCtrl', function () {
     describe('Controller tests', function () {
 
         it('should create a controller', function () {
+            initCtrl();
             expect(LogsCtrl).not.toBeUndefined();
         });
         describe('on first load', function () {
+            it('should search url with timestamp desc when no parameter was given', function(){
+                _$routeParams = {};
+                initCtrl();
+
+                expect(_$location.search).toHaveBeenCalledWith({ sortByLogs : 'timestamp', reverseLogs : 'true' });
+            });
+
+            it('should search url with timestamp desc when no parameter was given', function(){
+                _$routeParams = {someKey:'someValue'};
+                initCtrl();
+
+                expect(_$location.search).not.toHaveBeenCalled();
+            });
+
+
             it('should define filter options', function () {
+                initCtrl();
                 expect(scope.eventsFilter.blueprints).toEqual([]);
                 expect(scope.eventsFilter.deployments).toEqual([]);
             });
@@ -151,6 +171,8 @@ describe('Controller: LogsCtrl', function () {
             });
 
             it('should update data on tableState change and not show error', function () {
+                initCtrl();
+
                 //mocking success response data from events
                 _cloudifyClient.events.get.andReturn({
                     then: function (successCallback) {
@@ -174,6 +196,8 @@ describe('Controller: LogsCtrl', function () {
             });
 
             it('should show error when failing to update data on tableState Change', function () {
+                initCtrl();
+
                 //mocking failure response data from events
                 _cloudifyClient.events.get.andReturn({
                     then: function (successCallback, failureCallback) {

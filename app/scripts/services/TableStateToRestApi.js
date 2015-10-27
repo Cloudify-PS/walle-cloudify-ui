@@ -19,12 +19,8 @@ angular.module('cosmoUiApp')
 
             //sorting
             if (Object.keys(tableState.sort).length > 0) {
-                //removing _source from the field for sorting
-                var sortField = tableState.sort.predicate.split('.');
-                sortField.shift();
-                sortField = sortField.join('.');
                 options.sort = {
-                    field: sortField,
+                    field: tableState.sort.predicate,
                     order: tableState.sort.reverse ? 'desc' : 'asc'
                 };
             }
