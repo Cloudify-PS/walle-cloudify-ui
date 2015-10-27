@@ -1,10 +1,8 @@
 .bp-action-selector, .deployment-action-selector {
-
     display: flex;
     align-items: center;
 
     .btn-group {
-
         display: flex;
         border-radius: 5px;
         border: 2px solid #cadbec;
@@ -20,12 +18,10 @@
                 color: #ccc;
             }
         }
-
         .btn + .btn {
             margin-left: 0;
         }
     }
-
     .btn {
         border: 0 solid transparent;
         border-radius: 3px;
@@ -36,7 +32,6 @@
             background-color: #cce4f6;
         }
     }
-
     #split-button {
         width: 160px;
         padding: 6px 0;
@@ -44,10 +39,11 @@
         overflow: hidden;
         text-overflow: ellipsis;
     }
-
     ul {
         padding: 0;
+
         li {
+
             button {
                 width: 160px;
                 padding: 6px 0;
@@ -56,7 +52,6 @@
             }
         }
     }
-
     .executingWorkflow {
         display: none;
     }

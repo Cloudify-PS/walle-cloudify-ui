@@ -303,7 +303,7 @@ module.exports = function (grunt) {
             options: {
                 map: true,
                 processors: [
-                    require('autoprefixer')({browsers: 'last 2 versions'}) // add vendor prefixes
+                    require('autoprefixer')({browsers: 'last 2 versions'}) // add vendor prefixes according to http://caniuse.com/
                 ]
             },
             dist: {
