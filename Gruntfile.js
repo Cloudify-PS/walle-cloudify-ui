@@ -307,7 +307,7 @@ module.exports = function (grunt) {
                 ]
             },
             dist: {
-                src: '.tmp/styles/main.css'
+                src: ['.tmp/styles/main.css', '<%= yeoman.dist %>/styles/main.css']
             }
         },
        /* compass: {
@@ -792,6 +792,7 @@ module.exports = function (grunt) {
             'overrideBuildVersion',
             'bundle',
             'ngmin',
+            'postcss',
             'cssmin',
             'uglify',
             'rev',
