@@ -221,7 +221,7 @@ exports.downloadBlueprint = function( cloudifyClientConf, blueprint_id, last_upd
         var requestDetails = {
             url: require('url').resolve(conf.cloudifyManagerEndpoint,'blueprints/' + blueprint_id + '/archive'),
             method: 'GET',
-            auth: cloudifyClientConf.authHeader
+            headers: {authorization: cloudifyClientConf.authHeader}
         };
 
         console.log('this is requestDetails', requestDetails );
