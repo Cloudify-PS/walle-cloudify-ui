@@ -1,269 +1,238 @@
+// scss-lint:disable VendorPrefix
 @mixin placeholder {
-  ::-webkit-input-placeholder {@content}
-  :-moz-placeholder           {@content}
-  ::-moz-placeholder          {@content}
-  :-ms-input-placeholder      {@content}
+    ::-webkit-input-placeholder { @content }
+    :-moz-placeholder { @content }
+    ::-moz-placeholder { @content }
+    :-ms-input-placeholder { @content }
 }
 
 @include placeholder {
-  font-style: italic;
-  color: #496685;
+    font-style: italic;
+    color: #496685;
 }
 
 input[required] {
-  &::-webkit-input-placeholder:before {
-    content:'* ';
-  }
-
-  &:-moz-placeholder:before {
-    content:'* ';
-  }
-
-  &::-moz-placeholder:before {
-    content:'* ';
-  }
-
-  &:-ms-input-placeholder:before {
-    content:'* ';
-  }
-
-  &::-moz-selection:before {
-    content:'* ';
-  }
+    &::-webkit-input-placeholder:before { content: '* '; }
+    &:-moz-placeholder:before { content: '* '; }
+    &::-moz-placeholder:before { content: '* '; }
+    &:-ms-input-placeholder:before { content: '* '; }
+    &::-moz-selection:before { content: '* '; }
 }
+// scss-lint:enable VendorPrefix
 
 .ngdialog {
-  padding-top: 80px;
-  padding-bottom: 80px;
+    padding-top: 80px;
+    padding-bottom: 80px;
 
+    .ngdialog-overlay {
+        background: $COSMOUI_DIALOG_OVERLAY;
+    }
+    .ngdialog-content {
+        border: 2px solid $COSMOUI_DIALOG_BORDER_COLOR;
+        border-radius: 4px;
+        box-shadow: 0 0 5px $COSMOUI_DIALOG_SHADOW_COLOR;
+        background: $COSMOUI_DIALOG_BACKGROUND;
+        position: relative;
+        margin: 0 auto;
+        font-family: 'OpenSansLight', sans-serif;
+        width: 430px; // default width
 
+        .ngdialog-close {
+            float: right;
+            position: absolute;
+            right: 0;
+            top: 5px;
+            background: url('/images/x_idle.png') no-repeat center center;
+            width: 32px;
+            height: 32px;
+            cursor: pointer;
+            background-color: transparent;
+            border: none;
+            padding-right: 0;
 
-  .ngdialog-overlay {
-    background: $COSMOUI_DIALOG_OVERLAY;
-  }
+            &:hover {
+                background: url('/images/x_hover.png') no-repeat center center;
+            }
+            &:active {
+                background: url('/images/x_pressed.png') no-repeat center center;
+            }
+            &.disabled {
+                background: url('/images/x_idle.png') no-repeat center center;
+            }
+            &:before {
+                content: '';
+            }
+        }
+        .dialogTitle {
+            display: block;
+            width: 100%;
+            height: 40px;
+            color: $COSMOUI_DIALOG_TITLE_COLOR;
+            line-height: 31px;
+            font-size: 18px;
+            padding-left: 20px;
+            padding-top: 5px;
+            background-color: $clr-base-00;
 
-  .ngdialog-content {
-      border: 2px solid $COSMOUI_DIALOG_BORDER_COLOR;
-      border-radius: 4px;
-      box-shadow: 0px 0px 5px $COSMOUI_DIALOG_SHADOW_COLOR;
-      background: $COSMOUI_DIALOG_BACKGROUND;
-      position: relative;
-      margin: 0 auto;
-      font-family: "OpenSansLight";
-      width: 430px; /* default width */
+            label {
+                width: 90%;
+                height: 100%;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+                overflow: hidden;
+                display: inline-block;
+                max-width: 100%;
+                margin-bottom: 5px;
+                font-weight: 700;
+            }
+        }
 
-      .ngdialog-close {
-          float: right;
-          position: absolute;
-          right: 0px;
-          top: 5px;
-          background: url("/images/x_idle.png") no-repeat center center;
-          width: 32px;
-          height: 32px;
-          cursor: pointer;
-          background-color: transparent;
-          border: none;
-          padding-right: 0px;
+        .dialogDeploymentName {
+            position: relative;
+            width: 100%;
+            text-align: center;
+            margin: 0 0 15px;
 
-          &:hover {
-              background: url("/images/x_hover.png") no-repeat center center;
-          }
+            input {
+                position: relative;
+                width: 310px;
+                border-radius: 3px;
+                padding-left: 10px;
+                background-clip: padding-box;
+                background-color: $COSMOUI_INPUT_BACKGROUND;
+                border: 0;
+                padding: 5px 10px;
+                line-height: 22px;
+            }
+        }
 
-          &:active {
-              background: url("/images/x_pressed.png") no-repeat center center;
-          }
+        .dialogDescription {
+            display: block;
+            width: 100%;
+            text-align: center;
+            font-size: 16px;
+            font-family: 'OpenSansRegular', sans-serif;
+            margin: 11px 0;
+        }
 
-          &.disabled {
-              background: url("/images/x_idle.png") no-repeat center center;
-          }
+        .dialogInputs {
+            position: relative;
+            margin: 0 auto;
+            text-align: left;
 
-          &:before {
-              content: '';
-          }
-      }
+            &.deployInputs {
+                width: 330px;
+            }
 
-      .dialogTitle {
-          display: block;
-          width: 100%;
-          height: 40px;
-          color: $COSMOUI_DIALOG_TITLE_COLOR;
-          line-height: 31px;
-          font-size: 18px;
-          padding-left: 20px;
-          padding-top: 5px;
-          background-color: $clr-base-00;
+            &.executeInputs {
+                width: 405px;
+            }
 
-          label {
-              width: 90%;
-              height: 100%;
-              text-overflow: ellipsis;
-              white-space: nowrap;
-              overflow: hidden;
-              display: inline-block;
-              max-width: 100%;
-              margin-bottom: 5px;
-              font-weight: 700;
-          }
-      }
+            .type-toggle {
+                text-align: center;
 
-      .dialogDeploymentName {
-          position: relative;
-          width: 100%;
-          text-align: center;
-          margin: 0 0 15px;
+                button {
+                    width: 120px;
+                }
+                .section-nav-menu-class {
+                    margin-left: -6px;
+                }
+            }
+            .inputsParameters {
+                margin-top: 20px;
+            }
+            .form-raw-item-name {
+                display: inline-block;
+                max-width: 140px;
+                text-overflow: ellipsis;
+                overflow: hidden;
+                white-space: nowrap;
+                height: 37px;
+                line-height: 37px;
+            }
+            ul {
+                list-style-type: none;
+                //restricting to 5 inputs,the rest is scrollable
+                max-height: 200px;
+                overflow-y: auto;
+                line-height: normal;
 
-          input {
-              position: relative;
-              width: 310px;
-              border-radius: 3px;
-              padding-left: 10px;
-              background-clip: padding-box;
-              background-color: $COSMOUI_INPUT_BACKGROUND;
-              border: 0;
-              padding: 5px 10px;
-              line-height: 22px;
-          }
-      }
+                li {
+                    clear: both;
+                }
+                .input-wrapper {
+                    float: right;
+                    width: 55%;
+                    padding-top: 5px;
+                    padding-right: 5px;
+                    position: relative;
+                }
+                .param-input {
+                    width: 100%;
+                }
+                .restore-default {
+                    opacity: .5;
+                    top: 14px;
+                    position: absolute;
+                    right: 8px;
+                }
+                .restore-default:hover {
+                    opacity: 1;
+                }
+                .rightPaddingText {
+                    padding-right: 20px;
+                }
+            }
+            textarea {
+                width: 100%;
+                height: 150px;
+                line-height: normal;
+                resize: none;
+            }
+        }
+        .error-message {
+            display: block;
+            color: $clr-base-26;
+            margin: 10px 0;
+            padding: 10px 20px;
+            word-break: normal;
+            background-color: #f5f5f5;
+            max-height: 300px;
+            line-height: 20px;
+            word-wrap: break-word;
+            overflow-x: auto;
+        }
+        .buttonsContainer {
+            display: block;
+            text-align: right;
+            line-height: 20px;
+            margin: 10px;
+        }
+        .dialogCheckbox {
+            float: left;
+            display: inline-block;
+            margin: 5px 0 0 10px;
 
-      .dialogDescription {
-          display: block;
-          width: 100%;
-          text-align: center;
-          font-size: 16px;
-          font-family: 'OpenSansRegular';
-          margin: 11px 0;
-      }
-
-      .dialogInputs {
-
-          position: relative;
-          margin:0 auto;
-          text-align: left;
-
-          .type-toggle{
-              text-align:center;
-              button{ width:120px; }
-              .section-nav-menu-class{
-                  margin-left:-6px; /*  */
-              }
-          }
-
-          .inputsParameters{
-              margin-top:20px;
-          }
-
-          .form-raw-item-name{
-              display:inline-block;
-              max-width: 140px;
-              text-overflow: ellipsis;
-              overflow: hidden;
-              white-space: nowrap;
-              height: 37px;
-              line-height: 37px;
-          }
-
-          &.deployInputs {
-              width: 330px;
-          }
-
-          &.executeInputs {
-              width: 405px;
-          }
-
-
-
-          ul {
-              list-style-type: none;
-              //restricting to 5 inputs,the rest is scrollable
-              max-height: 200px;
-              overflow-y: auto;
-              line-height: normal;
-
-              li{
-                  clear: both;
-              }
-
-              .input-wrapper {
-                  float: right;
-                  width: 55%;
-                  padding-top: 5px;
-                  padding-right: 5px;
-                  position: relative;
-              }
-
-              .param-input{
-                  width:100%;
-              }
-
-              .restore-default{
-                  opacity:0.5;
-                  top: 14px;
-                  position: absolute;
-                  right: 8px;
-              }
-              .restore-default:hover{
-                  opacity:1;
-              }
-
-              .rightPaddingText{
-                  padding-right:20px;
-              }
-          }
-
-          textarea {
-              width: 100%;
-              height: 150px;
-              line-height: normal;
-              resize: none;
-          }
-
-      }
-
-      .error-message {
-          display: block;
-          color: $clr-base-26;
-          margin: 10px 0;
-          padding: 10px 20px;
-          word-break: normal;
-          background-color: #f5f5f5;
-          max-height: 300px;
-          line-height: 20px;
-          word-wrap: break-word;
-          overflow-x: auto;
-      }
-
-      .buttonsContainer {
-          display: block;
-          text-align: right;
-          line-height: 20px;
-          margin: 10px;
-      }
-
-      .dialogCheckbox {
-          float: left;
-          display: inline-block;
-          margin: 5px 0 0 10px;
-          label {
-              cursor: pointer;
-          }
-      }
-  }
-
-
-}
-#uploadDialogContainer {
-    &.dialogBox{
-        .dialogDescription{
-            margin:0;
-            line-height:56px;
+            label {
+                cursor: pointer;
+            }
         }
     }
 
-    .dialogDescription.dragover{
+}
 
-        font-weight:bold;
+#uploadDialogContainer {
+
+    &.dialogBox {
+        .dialogDescription {
+            margin: 0;
+            line-height: 56px;
+        }
     }
 
+    .dialogDescription.dragover {
+        font-weight: bold;
+    }
     #uploadForm {
         position: relative;
         display: block;
@@ -275,9 +244,9 @@ input[required] {
             #fileInput {
                 position: absolute;
                 opacity: 0;
-                left: 0px;
+                left: 0;
                 z-index: 9998;
-                top: 0px;
+                top: 0;
                 width: 35px;
                 height: 35px;
                 cursor: pointer;
@@ -288,7 +257,7 @@ input[required] {
                 right: 22px;
                 height: 32px;
                 font-size: 30px;
-                padding: 0px 8px 0px 9px;
+                padding: 0 8px 0 9px;
                 line-height: 33px;
                 cursor: pointer;
             }
@@ -306,8 +275,9 @@ input[required] {
 
                 &.url {
                     width: 385px;
+
                     &.disabled {
-                        color: red;
+                        color: #f00;
                     }
                 }
             }
@@ -318,6 +288,11 @@ input[required] {
             position: relative;
             top: 15px;
             height: 48px;
+
+            &.browseUrl {
+                left: 10px;
+            }
+
             input {
                 position: relative;
                 left: 20px;
@@ -328,10 +303,6 @@ input[required] {
                 background-clip: padding-box;
                 background-color: $COSMOUI_INPUT_BACKGROUND;
                 border: 0;
-            }
-
-            &.browseUrl {
-                left: 10px;
             }
         }
 
@@ -352,7 +323,7 @@ input[required] {
         .upload-process-anim {
             width: 25px;
             height: 25px;
-            background: url("/images/progress.gif") no-repeat center center;
+            background: url('/images/progress.gif') no-repeat center center;
             background-color: $clr-base-01;
             border-radius: 25px;
             position: absolute;
@@ -387,14 +358,13 @@ input[required] {
         line-height: 28px;
         color: $clr-base-00;
     }
-
     .confirmationButtons {
 
         #cancelBtn {
             color: $COSMOUI_BUTTON_BACKGROUND;
             font-weight: bold;
             padding: 5px 10px 5px 10px;
-            margin: 0px 10px 0px 10px;
+            margin: 0 10px 0 10px;
             background-color: $clr-base-10;
             border-bottom: 1px solid $COSMOUI_BUTTON_BACKGROUND;
             border-right: 1px solid $COSMOUI_BUTTON_BACKGROUND;
@@ -414,32 +384,29 @@ input[required] {
         height: auto;
         color: $clr-base-00;
     }
-
-
-
     .confirmationButtons {
+
         #cancelBtnDelDep {
             display: inline-block;
             color: $COSMOUI_BUTTON_BACKGROUND;
             font-weight: bold;
             padding: 5px 10px 5px 10px;
-            margin: 0px 0px 0px 10px;
+            margin: 0 0 0 10px;
             background-color: $clr-base-10;
             border-bottom: 1px solid $COSMOUI_BUTTON_BACKGROUND;
             border-right: 1px solid $COSMOUI_BUTTON_BACKGROUND;
 
             &[disabled] {
-              background: $COSMOUI_BUTTON_DISABLED_BACKGROUND;
-              border-bottom: 1px solid $COSMOUI_BUTTON_DISABLED_BORDER_COLOR;
-              border-right: 1px solid $COSMOUI_BUTTON_DISABLED_BORDER_COLOR;
-              color: $clr-base-24;
-              cursor: default;
+                background: $COSMOUI_BUTTON_DISABLED_BACKGROUND;
+                border-bottom: 1px solid $COSMOUI_BUTTON_DISABLED_BORDER_COLOR;
+                border-right: 1px solid $COSMOUI_BUTTON_DISABLED_BORDER_COLOR;
+                color: $clr-base-24;
+                cursor: default;
             }
         }
     }
 }
 
-
-.dialog-content{
-    padding:0 30px;
+.dialog-content {
+    padding: 0 30px;
 }

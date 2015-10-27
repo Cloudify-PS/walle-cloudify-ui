@@ -1,9 +1,8 @@
-.ng-enter, .ng-leave { }
-.ng-enter { }        /* starting animations for enter */
-.ng-enter-active { } /* terminal animations for enter */
-.ng-leave { }        /* starting animations for leave */
-.ng-leave-active { } /* terminal animations for leave */
-
+//.ng-enter, .ng-leave { }
+//.ng-enter { }        // starting animations for enter
+//.ng-enter-active { } // terminal animations for enter
+//.ng-leave { }        // starting animations for leave
+//.ng-leave-active { } // terminal animations for leave
 
 .animate-repeat {
     list-style: none;
@@ -14,7 +13,6 @@
 .animate-repeat.ng-move,
 .animate-repeat.ng-enter,
 .animate-repeat.ng-leave {
-    -webkit-transition: all linear 1s;
     transition: all linear 1s;
 }
 

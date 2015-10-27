@@ -1,20 +1,20 @@
 .piProgress {
     position: relative;
     display: inline-block;
+
     .circle {
         position: absolute;
-        display: box;
-        box-pack: center;
-        box-align: center;
+        display: flex;
         background-color: #46b8da;
-        color: white;
+        color: #fff;
         font-size: 100%;
         z-index: 3;
+
         p {
-            margin: 0px;
+            margin: 0;
         }
         p::after {
-            content: "%";
+            content: '%';
         }
     }
     .background {

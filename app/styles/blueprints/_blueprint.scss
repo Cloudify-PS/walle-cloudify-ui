@@ -1,20 +1,18 @@
 #plans, #blueprint, .blueprint-layout {
-
-    #main-content-panel {
-        padding-right: 40px;
-    }
-
     $install: #2f3334;
     $done: #8eaf26;
     $alerts: #feb300;
     $failed: #d54931;
 
+    #main-content-panel {
+        padding-right: 40px;
+    }
     #right-side-menu {
         position: fixed;
         // reuse constants
         top: 83px;
         right: 20px;
-        bottom:60px;
+        bottom: 60px;
         width: 600px;
         height: auto;
         border-left: 4px solid $COSMOUI_BLUEPRINT_DETAILS_LEFT_BORDER_COLOR;
@@ -27,29 +25,26 @@
         .close-properties-button {
             cursor: pointer;
         }
-
         .title {
             padding-bottom: $COSMOUI_BLUEPRINT_DETAILS_TITLE_PADDING_BOTTOM;
             line-height: $COSMOUI_BLUEPRINT_DETAILS_TITLE_LINE_HEIGHT;
             color: $COSMOUI_BLUEPRINT_DETAILS_TITLE_COLOR;
             font-size: $COSMOUI_BLUEPRINT_DETAILS_TITLE_FONT_SIZE;
             border-bottom: 1px solid $COSMOUI_BLUEPRINT_DETAILS_TITLE_BOTTOM_BORDER_COLOR;
+
             i {
                 float: right;
                 cursor: pointer;
             }
         }
-
         .content {
             margin-top: $COSMOUI_BLUEPRINT_DETAILS_CONTENT_MARGIN_TOP;
 
-
-
             .content-section {
-                .no-relationships {
-                  display: block;
-                }
 
+                .no-relationships {
+                    display: block;
+                }
                 table {
                     padding: 9.5px;
                     font-size: 13px;
@@ -70,12 +65,12 @@
                             padding-left: 5px;
 
                             table {
+
                                 tr:first-child td {
-                                    background: #E5EFF7;
+                                    background: #e5eff7;
                                     color: $COSMOUI_LIST_COLUMN_HEADER_TEXT_COLOR;
                                     border-bottom: 2px solid #fff;
                                 }
-
                                 tr {
                                     &:hover:not(:first-child) td {
                                         background-color: $COSMOUI_LIST_HOVER_BACKGROUND;
@@ -86,12 +81,6 @@
                                         i {
                                             font-weight: $COSMOUI_LIST_HOVER_ACTION_FONT_WEIGHT;
                                         }
-                                    }
-
-                                    td {
-                                        vertical-align: middle;
-                                        height: 60px;
-                                        color: #333;
                                     }
                                     &:not(:first-child) td.actions {
                                         width: $COSMOUI_LIST_HOVER_ACTION_WIDTH;
@@ -105,7 +94,7 @@
                                             font-size: 14px;
                                             box-shadow: none;
                                             border: none;
-                                            border-radius: 0px;
+                                            border-radius: 0;
                                             -webkit-appearance: none;
                                             -moz-appearance: none;
                                             appearance: none;
@@ -118,6 +107,12 @@
                                             }
                                         }
                                     }
+
+                                    td {
+                                        vertical-align: middle;
+                                        height: 60px;
+                                        color: #333;
+                                    }
                                 }
                             }
                         }
@@ -126,16 +121,14 @@
             }
         }
     }
-
     #settings-button {
         display: inline-block;
         position: relative;
         left: 10px;
         vertical-align: middle;
     }
-
     .deploy-button {
-        color: white;
+        color: #fff;
         font-weight: bold;
         padding: 5px 10px 5px 10px;
         background-color: #29aaee;
@@ -151,27 +144,24 @@
         &.disabled {
             background: $COSMOUI_BUTTON_DISABLED_BACKGROUND;
         }
-
         &.enabled {
             background: $COSMOUI_BUTTON_BACKGROUND;
         }
     }
-
     .toggles-bar {
         display: inline-block;
     }
-
     .content-header {
         border-bottom: 3px solid #d3dfe2;
         margin-bottom: 10px;
         overflow: hidden;
     }
-
     .networksContainer {
         position: relative;
         white-space: nowrap;
         margin: 40px 0 0 20px;
         height: 600px;
+
         .relations {
             position: absolute;
             top: 0;
@@ -183,14 +173,16 @@
             display: inline-block;
             text-align: center;
             min-width: 150px;
+
             .line {
                 position: relative;
                 display: inline-block;
                 vertical-align: top;
+
                 .name {
                     display: block;
                     width: 150px;
-                    background-color: #797B86;
+                    background-color: #797b86;
                     color: #fff;
                     padding: 2px 6px;
                     border-radius: 5px;
@@ -213,25 +205,8 @@
                     color: #fff;
                     border-radius: 5px;
                     vertical-align: top;
-                    margin: 0px 10px 0 0;
-                    > p {
-                        position: absolute;
-                        display: block;
-                        transform: rotate(90deg);
-                        -ms-transform: rotate(90deg); /* IE 9 */
-                        -webkit-transform: rotate(90deg); /* Safari and Chrome */
-                        white-space: nowrap;
-                        top: 5px;
-                        right: 0;
-                        left: 1px;
-                    }
-                    > p.cidr {
-                        width: 200px;
-                        top: auto;
-                        left: -90px;
-                        bottom: 85px;
-                        text-align: right;
-                    }
+                    margin: 0 10px 0 0;
+
                     &.red {
                         background-color: #d54931;
                     }
@@ -239,7 +214,25 @@
                         background-color: #f89406;
                     }
                     &.external {
-                      height: 533px;
+                        height: 533px;
+                    }
+
+                    > p {
+                        position: absolute;
+                        display: block;
+                        transform: rotate(90deg);
+                        white-space: nowrap;
+                        top: 5px;
+                        right: 0;
+                        left: 1px;
+
+                        &.cidr {
+                            width: 200px;
+                            top: auto;
+                            left: -90px;
+                            bottom: 85px;
+                            text-align: right;
+                        }
                     }
                 }
                 .subnet:last-child {
@@ -251,12 +244,13 @@
                 width: 150px;
                 height: 500px;
                 vertical-align: top;
+
                 > .device, > .router {
                     display: block;
-                    color: #797B86;
+                    color: #797b86;
                     border-radius: 20px;
                     vertical-align: top;
-                    margin: 47px auto;
+
                     .inner {
                         display: inline-block;
                         position: relative;
@@ -265,30 +259,30 @@
                         display: block;
                         background-color: #000;
                         color: #fff;
-                        margin: 0px;
+                        margin: 0;
                         font-weight: normal;
                     }
                     > p {
                         margin: 5px;
                     }
                     i.gs-node-icon:after {
-                      position: relative;
-                      top: 6px;
+                        position: relative;
+                        top: 6px;
                     }
                     i.topology-glyph {
-                      display: inline-block;
-                      color: inherit;
-                      width: 21px;
-                      height: 30px;
-                      font-size: 60px;
-                      line-height: 5px;
-
-                      &:before {
+                        display: inline-block;
+                        color: inherit;
+                        width: 21px;
+                        height: 30px;
                         font-size: 60px;
-                        position: absolute;
-                        top: -26px;
-                        left: 0px;
-                      }
+                        line-height: 5px;
+
+                        &:before {
+                            font-size: 60px;
+                            position: absolute;
+                            top: -26px;
+                            left: 0;
+                        }
                     }
                     .portarea {
                         position: relative;
@@ -303,12 +297,18 @@
                         left: -75px;
                         background: #fff;
                         i.port {
-                            line-height: 0px;
+                            line-height: 0;
                         }
                     }
                 }
+                > .router {
+                    margin: 92px auto 47px;
+                }
+                > .device {
+                    margin: 52px auto 47px;
+                }
                 > .router:last-child {
-                    margin-bottom: 0px;
+                    margin-bottom: 0;
                 }
                 .buttons {
                     display: none;
@@ -316,12 +316,14 @@
                     top: 2px;
                     left: -30px;
                     z-index: 100;
+
                     > ul {
                         display: inline-block;
                         list-style-type: none;
                         white-space: nowrap;
                         margin: 0;
                         padding: 0;
+
                         li {
                             display: inline-block;
                             width: 36px;
@@ -332,6 +334,7 @@
                             background-color: #fff;
                             cursor: pointer;
                             position: relative;
+
                             &:after {
                                 position: absolute;
                                 top: -2px;
@@ -355,43 +358,35 @@
                 }
             }
         }
-        .network {
-            .devices {
-                > .router {
-                  margin: 92px auto 47px;
-                }
-
-                > .device {
-                  margin: 52px auto 47px;
-                }
-            }
-        }
     }
 
     .gs-table {
+
         tr {
             cursor: default;
-          td i {
-            margin-top: 9px;
-          }
+
+            td i {
+                margin-top: 9px;
+            }
         }
         .node-details {
             cursor: pointer;
         }
         .topology-glyph {
             display: inline-block;
-            line-height: 0.7;
+            line-height: .7;
             color: #53bbf1;
+
             &.fa {
                 display: inline-block;
                 width: 30px;
                 height: 30px;
                 font-size: 30px;
+
                 &:before {
                     font-size: 30px;
                 }
             }
         }
     }
-
 }

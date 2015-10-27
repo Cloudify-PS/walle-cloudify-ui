@@ -30,7 +30,6 @@
         background-color: #fff;
         float: none;
 
-
         &:hover {
             background-color: #cce4f6;
         }
@@ -61,7 +60,7 @@
     }
 }
 
-.bp-action-selector.in-progress, , .deployment-action-selector.in-progress {
+.bp-action-selector.in-progress, .deployment-action-selector.in-progress {
 
     .btn-group {
         display: none;
@@ -103,5 +102,4 @@
             color: #136e9d;
         }
     }
-
 }
