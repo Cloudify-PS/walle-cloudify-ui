@@ -1,9 +1,5 @@
-// scss-lint:disable VendorPrefix
 @mixin placeholder {
-    ::-webkit-input-placeholder { @content }
-    :-moz-placeholder { @content }
-    ::-moz-placeholder { @content }
-    :-ms-input-placeholder { @content }
+    ::placeholder { @content }
 }
 
 @include placeholder {
@@ -12,13 +8,8 @@
 }
 
 input[required] {
-    &::-webkit-input-placeholder:before { content: '* '; }
-    &:-moz-placeholder:before { content: '* '; }
-    &::-moz-placeholder:before { content: '* '; }
-    &:-ms-input-placeholder:before { content: '* '; }
-    &::-moz-selection:before { content: '* '; }
+    &::placeholder:before { content: '* '; }
 }
-// scss-lint:enable VendorPrefix
 
 .ngdialog {
     padding-top: 80px;
