@@ -154,14 +154,13 @@ angular.module('cosmoUiApp')
             BlueprintSourceService.getBrowseData(blueprint.id, blueprint.updated_at)
                 .then(function(browseData) {
                     $scope.browseData = browseData;
-                    $scope.openSourceFile(autoSelectFile(browseData[0]));
+                    $scope.openSourceFile(autoSelectFile(browseData[0], blueprint.main_file_name));
                 }, function(err) {
                     $scope.errorMessage = 'browseError';
                     try {
                         $scope.errorMessage = err.data.error.errCode;
                     } catch (e) {}
-                    $scope.downloadLink = '/blueprints/' + $scope.selectedBlueprint.id + '/archive';
-                    $scope.openSourceFile(autoSelectFile(browseData[0], blueprint.main_file_name));
+                    $scope.downloadLink = '/backend/cloudify-api/blueprints/' + $scope.selectedBlueprint.id + '/archive';
                 });
         };
 
