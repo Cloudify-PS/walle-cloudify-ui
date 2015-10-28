@@ -15,9 +15,10 @@ angular.module('cosmoUiApp')
             replace: false,
             link: function postLink($scope/*, $element, $attrs*/) {
 
+                var dialog;
+
                 $scope.deploymentId = $routeParams.deploymentId;
-
-
+                $scope.errorMessage = '';
 
                 // Set Navigation Menu - Need to set only after blueprint id available for source page href
                 $scope.navMenu = [
@@ -64,11 +65,34 @@ angular.module('cosmoUiApp')
 
                         },
                         function (result) {
-                            // todo: need to lets user know the deployments was deleted somehow.
-                            if ( result.status === 404 ){
-                                $location.path('#/deployments');
-                            }else {
-                                // todo add proper erorr feedback for user
+                            if (result.status === 404) {
+                                if (!dialog) {
+                                    $scope.errorMessage = 'Executions list was not found, perhaps deployment was deleted';
+                                    dialog = ngDialog.openConfirm({
+
+                                        // todo: uncomment this part when 'dialogs as directives' is merged
+                                        //template: '\
+                                        //    <div dialog dialog-title="\'Oops\'" dialog-error="errorMessage">\
+                                        //        <div class="dialogButtons"><button class="gs-btn" ng-click="confirm()">Go to deployments list</button></div>\
+                                        //    </div>',
+
+                                        // todo: remove this part when 'dialogs as directives' is merged
+                                        template: '\
+                                            <div class="dialogBox">\
+                                                <div class="dialogTitle">Oops</div>\
+                                                <div class="error-message">{{ errorMessage }}</div>\
+                                                <div class="buttonsContainer"><button class="gs-btn" ng-click="goToDeployments();closeThisDialog();">Go to deployments list</button></div>\
+                                            </div>',
+
+                                        plain: true,
+                                        scope: $scope,
+                                        className: 'alert-dialog'
+                                    }).then(function() {
+                                        $scope.goToDeployments();
+                                    });
+                                }
+                            } else {
+                                $scope.errorMessage = 'Unable to get executions list';
                                 $log.error('unable to get executions', result.data);
                             }
                         });

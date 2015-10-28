@@ -1,7 +1,9 @@
 <div class="deployment-layout" id="deployment">
     <div class="executions">
 
-        <table class="gs-table gs-table-align-top">
+        <div class="error" ng-show="errorMessage">{{ errorMessage }}</div>
+
+        <table class="gs-table gs-table-align-top" ng-hide="errorMessage">
             <thead>
             <tr>
                 <th class="workflow">Workflow</th>
