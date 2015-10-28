@@ -7,7 +7,9 @@
  * # deploymentLayout
  */
 angular.module('cosmoUiApp')
-    .directive('deploymentLayout', function ($location, nodeStatus, ngDialog, cloudifyClient, ExecutionsService, $routeParams, $log ) {
+    .directive('deploymentLayout', function ($location, nodeStatus, ngDialog, cloudifyClient, ExecutionsService, $routeParams, $log, $filter) {
+        var translate = $filter('translate');
+
         return {
             templateUrl: 'views/deployment/deploymentLayout.html',
             restrict: 'C',
@@ -67,22 +69,22 @@ angular.module('cosmoUiApp')
                         function (result) {
                             if (result.status === 404) {
                                 if (!dialog) {
-                                    $scope.errorMessage = 'Executions list was not found, perhaps deployment was deleted';
+                                    $scope.errorMessage = translate('deployment.executions.error_404');
                                     dialog = ngDialog.openConfirm({
 
                                         // todo: uncomment this part when 'dialogs as directives' is merged
-                                        //template: '\
-                                        //    <div dialog dialog-title="\'Oops\'" dialog-error="errorMessage">\
-                                        //        <div class="dialogButtons"><button class="gs-btn" ng-click="confirm()">Go to deployments list</button></div>\
-                                        //    </div>',
+                                        //template:
+                                        //    '<div dialog dialog-title="\'Oops\'" dialog-error="errorMessage">' +
+                                        //        '<div class="dialogButtons"><button class="gs-btn" ng-click="confirm()">Go to deployments list</button></div>' +
+                                        //    '</div>',
 
                                         // todo: remove this part when 'dialogs as directives' is merged
-                                        template: '\
-                                            <div class="dialogBox">\
-                                                <div class="dialogTitle">Oops</div>\
-                                                <div class="error-message">{{ errorMessage }}</div>\
-                                                <div class="buttonsContainer"><button class="gs-btn" ng-click="goToDeployments();closeThisDialog();">Go to deployments list</button></div>\
-                                            </div>',
+                                        template:
+                                            '<div class="dialogBox">' +
+                                                '<div class="dialogTitle">Oops</div>' +
+                                                '<div class="error-message">{{ errorMessage }}</div>' +
+                                                '<div class="buttonsContainer"><button class="gs-btn" ng-click="confirm()">Go to deployments list</button></div>' +
+                                            '</div>',
 
                                         plain: true,
                                         scope: $scope,
@@ -92,7 +94,7 @@ angular.module('cosmoUiApp')
                                     });
                                 }
                             } else {
-                                $scope.errorMessage = 'Unable to get executions list';
+                                $scope.errorMessage = translate('deployment.executions.error');
                                 $log.error('unable to get executions', result.data);
                             }
                         });
