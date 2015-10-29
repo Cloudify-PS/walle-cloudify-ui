@@ -74,7 +74,7 @@ angular.module('cosmoUiApp')
 
                                         // todo: uncomment this part when 'dialogs as directives' is merged
                                         //template:
-                                        //    '<div dialog dialog-title="\'Oops\'" dialog-error="errorMessage">' +
+                                        //    '<div dialog dialog-title="Oops" dialog-description="{{ errorMessage }}">' +
                                         //        '<div class="dialogButtons"><button class="gs-btn" ng-click="confirm()">Go to deployments list</button></div>' +
                                         //    '</div>',
 
