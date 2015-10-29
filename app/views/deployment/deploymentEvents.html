@@ -2,7 +2,7 @@
     <div class="bg"></div>
     <div class="head" data-ng-mousedown="dragIt($event)">
         <div class="title">Events</div>
-        <a id="logs-page-link" href="#/logs?deployment_idLogs={{logsDeploymentsParam | encodeURI}}">View on logs & events</a>
+        <a id="logs-page-link" href="#/logs?deployment_idLogs={{logsDeploymentsParam | encodeURI}}&sortByLogs=timestamp&reverseLogs=true">View on logs & events</a>
         <div class="lastEvent" data-ng-show="!!lastEvent && minimizeMode">
             <div class="icon">
                 <div class="icon-events" ng-class="getEventIcon(lastEvent)"></div>
