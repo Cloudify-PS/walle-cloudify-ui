@@ -90,7 +90,12 @@ describe('Controller: UploadBlueprintDialogCtrl', function () {
                 return {
                     progress: function(){
                         return {
-                            success: function(callback){ callback( { id: 'foo' }); return { error: function(){}}; }
+                            success: function(callback){
+                                callback( { id: 'foo' });
+                                return { error: function(){
+                                    return {finally: function(){}};
+                                }};
+                            }
                         };
                     }
                 };
@@ -218,6 +223,9 @@ describe('Controller: UploadBlueprintDialogCtrl', function () {
                             success: function () {
                                 return {
                                     error: function () {
+                                        return {
+                                            finally: function(){}
+                                        };
                                     }
                                 };
                             }
