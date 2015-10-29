@@ -22,12 +22,15 @@ angular.module('cosmoUiApp')
                 'deploymentId': '=',
                 'currentExecution' : '=',
                 'onNodeSelect': '&',
-                'onRelationSelect': '&'
+                'onRelationSelect': '&',
+                'trackInstances' : '@'
 
             },
             link: function postLink(scope) {
                 var $scope = scope;
 
+
+                $scope.topologyLoading = true;
                 // for lack of a better word, we are using initialized
                 // it means whether there's an execution right now, or all nodes are either deleted or uninitialized.
                 // we are trying to let the user know if the system is : 1) changing state, 2) up, 3) down
@@ -53,16 +56,23 @@ angular.module('cosmoUiApp')
                  };*/
 
 
+                var nodes = [];
                 $scope.loadBlueprint = function() {
                     $log.info('getting blueprint');
                     cloudifyClient.blueprints.get(scope.blueprintId).then(function (result) {
 
-                        $log.info('got blueprint');
-                        scope.nodes = NodeService.createNodesTree(result.data.plan.nodes);
-                        blueprintCoordinateService.resetCoordinates();
-                        blueprintCoordinateService.setMap(NodeService.getConnections(result.data.plan.nodes, 'connected_to'));
-                        scope.coordinates = blueprintCoordinateService.getCoordinates();
+                        var data = result.data;
 
+                        nodes = data.plan.nodes;
+                        var topologyData = {
+                            data: data,
+                            networkBarLocation: 316,
+                            scale: 1,
+                            offset: [0, 0]
+                        };
+
+                        $scope.topologyData = DataProcessingService.encodeTopologyFromRest(topologyData);
+                        $scope.topologyLoading = false;
                     });
                 };
 

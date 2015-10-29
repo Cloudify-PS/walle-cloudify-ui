@@ -1,0 +1,23 @@
+#blueprint-topology.blueprint-layout .layout .main-content{
+    $MAIN_PADDING:20px;
+    .main-content-display{
+        &>[ng-transclude]{
+            right: $MAIN_PADDING;
+            left: $MAIN_PADDING;
+            top: $MAIN_PADDING;
+            bottom:$MAIN_PADDING;
+            position:absolute;
+            height:auto;
+            width:auto;
+
+            &>span >[ng-transclude]{
+                position: absolute;
+                top: 100px;
+                right: 0;
+                bottom: 0;
+                left: 0;
+            }
+
+        }
+    }
+}
