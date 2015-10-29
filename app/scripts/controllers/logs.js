@@ -1,7 +1,12 @@
 'use strict';
 
 angular.module('cosmoUiApp')
-    .controller('LogsCtrl', function ($scope, cloudifyClient, EventsMap, $routeParams, TableStateToRestApi) {
+    .controller('LogsCtrl', function ($scope, cloudifyClient, EventsMap, $routeParams, TableStateToRestApi, $location) {
+
+        //default sorting desc timestamp - when there is not a specific query
+        if(Object.keys($routeParams).length === 0){
+            $location.search({sortByLogs: 'timestamp', reverseLogs: 'true'});
+        }
 
         $scope.columns = [
             {name:'Event Type Icon',isSelected:true},
@@ -27,17 +32,6 @@ angular.module('cosmoUiApp')
             };
         };
         initFilters();
-
-        //TODO: make url params and params effect each other
-        //loading filter options from the url params if given - enable us to present a specific event page by changing the url.
-        //if ($routeParams.filter) {
-        //    try {
-        //        $scope.eventsFilter = JSON.parse($routeParams.filter);
-        //    }
-        //    catch (exception) {
-        //        $scope.eventsFilter = null;
-        //    }
-        //}
 
         //Log levels List
         $scope.logLevelsList = [{value:'error',label:'ERROR'},{value:'warning',label:'WARNING'},{value:'info',label:'INFO'}];
@@ -74,9 +68,9 @@ angular.module('cosmoUiApp')
          */
         $scope.updateData = function (tableState) {
             var options = TableStateToRestApi.getOptions(tableState);
+            $scope.getLogsError = null;
 
             cloudifyClient.events.get(options).then(function (response) {
-                    $scope.getLogsError = null;
                     $scope.logsHits = response.data.hits.hits;
                     //Formatting the timestamp
                     _.each($scope.logsHits, function(log){

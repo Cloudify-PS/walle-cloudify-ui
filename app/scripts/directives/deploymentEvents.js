@@ -30,7 +30,7 @@ angular.module('cosmoUiApp')
                     if ( !$scope.id || !$scope.showDeploymentEvents ){
                         return { then:function(){}};
                     }
-                    return cloudifyClient.events.get( { 'deployment_id' :  $scope.id ,  'from_event': 0, 'batch_size' : 50 , 'include_logs' :  false , 'order' : 'desc' }).then(function (result) {
+                    return cloudifyClient.events.get( { 'deployment_id' :  $scope.id ,  'from': 0, 'size' : 50 , 'include_logs' :  false , sort:{'field' : '@timestamp','order' : 'desc' }}).then(function (result) {
                         $scope.events = result.data.hits.hits;
                         $scope.lastEvent = _.first($scope.events);
                         //Formatting the timestamp

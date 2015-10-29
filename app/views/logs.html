@@ -79,24 +79,30 @@
             <!--</div>-->
 
             <div class="actions">
-                <button class="gs-btn" data-ng-click="clearFilters()" >Clear Filter</button>
+                <button class="gs-btn" data-ng-click="clearFilters()" >{{'logs.filters.clearFilterButton' | translate}}</button>
                 <columns-organizer columns="columns" ></columns-organizer>
             </div>
         </div>
 
-        <div class="error" ng-if="getLogsError"><b>{{'logs.gettingLogsFailed' | translate}}</b><br/>{{getLogsError}}</div>
+        <div class="logs-error-message error" ng-if="getLogsError" ng-init="showErrorDetails = true">
+            <a ng-click="showErrorDetails = !showErrorDetails">{{'logs.gettingLogsFailed' | translate}}
+                <i ng-hide='showErrorDetails' class="fa fa-caret-up"></i>
+                <i ng-show='showErrorDetails' class="fa fa-caret-down"></i>
+            </a>
+            <div ng-hide="showErrorDetails">{{getLogsError}}</div>
+        </div>
         <table class="gs-table eventsTable" cfy-st-persist items-by-page="itemsPerPage" content-loaded="blueprintsList && deploymentsList" st-table-id="Logs">
             <thead>
                 <tr>
                     <th ng-repeat="column in columns | filter:true">
                         <span ng-if='column.name === "Event Type Icon"' class="icon header"><!-- icon --></span>
-                        <span ng-if='column.name === "Timestamp"' class="date sorting header"><span st-sort="_source.timestamp" class="header-text" >{{'logs.fields.timestamp' | translate}}</span></span>
-                        <span ng-if='column.name === "Event Type"' class="type sorting header"><span st-sort="_source.event_type" class="header-text">{{ 'deployment.table.heading.eventType' | translate }}</span></span>
-                        <span ng-if='column.name === "Log Level"' class="level sorting header"><span st-sort="_source.level" class="header-text">{{ 'deployment.table.heading.logLevel' | translate }}</span></span>
-                        <span ng-if='column.name === "Operation"' class="operation sorting header"><span st-sort="_source.context.operation" class="header-text">{{ 'deployment.table.heading.operation' | translate }}</span></span>
-                        <span ng-if='column.name === "Node Name"' class="node-name sorting header"><span st-sort="_source.context.node_name" class="header-text">{{ 'deployment.table.heading.node' | translate }}</span></span>
-                        <span ng-if='column.name === "Node Id"' class="node-id sorting header"><span st-sort="_source.context.node_id" class="header-text">{{ 'deployment.table.heading.nodeId' | translate }}</span></span>
-                        <span ng-if='column.name === "Message"' class="task sorting header"><span st-sort="_source.message.text" class="header-text">{{ 'deployment.table.heading.message' | translate }}</span></span>
+                        <span ng-if='column.name === "Timestamp"' class="date sorting header"><span st-sort="timestamp" class="header-text" >{{'logs.fields.timestamp' | translate}}</span></span>
+                        <span ng-if='column.name === "Event Type"' class="type sorting header"><span st-sort="event_type" class="header-text">{{ 'deployment.table.heading.eventType' | translate }}</span></span>
+                        <span ng-if='column.name === "Log Level"' class="level sorting header"><span st-sort="level" class="header-text">{{ 'deployment.table.heading.logLevel' | translate }}</span></span>
+                        <span ng-if='column.name === "Operation"' class="operation sorting header"><span st-sort="context.operation" class="header-text">{{ 'deployment.table.heading.operation' | translate }}</span></span>
+                        <span ng-if='column.name === "Node Name"' class="node-name sorting header"><span st-sort="context.node_name" class="header-text">{{ 'deployment.table.heading.node' | translate }}</span></span>
+                        <span ng-if='column.name === "Node Id"' class="node-id sorting header"><span st-sort="context.node_id" class="header-text">{{ 'deployment.table.heading.nodeId' | translate }}</span></span>
+                        <span ng-if='column.name === "Message"' class="task sorting header"><span st-sort="message.text" class="header-text">{{ 'deployment.table.heading.message' | translate }}</span></span>
                     </th>
                 </tr>
             </thead>
