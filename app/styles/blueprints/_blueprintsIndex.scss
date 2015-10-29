@@ -10,26 +10,15 @@
     }
 
     .gs-table {
+
         .blueprintDeployed {
             color: $COSMOUI_BLUEPRINTS_DEPLOY_COLOR;
         }
         tr {
-          color: $text-color;
-
-            th {
-              height: $COSMOUI_LIST_HEADER_HEIGHT;
-
-                .sorting {
-                    cursor: pointer;
-                }
-            }
-
-            td {
-              height: $COSMOUI_LIST_LINE_HEIGHT;
-            }
+            color: $text-color;
 
             td, th {
-              border: none;
+                border: none;
 
                 &.icon {
                     width: 40px;
@@ -39,11 +28,11 @@
                     width: 33%;
                 }
                 &.deployments {
-                  min-width: 160px;
+                    min-width: 160px;
                 }
                 &.actions {
                     min-width: 230px;
-                    overflow:visible;
+                    overflow: visible;
                 }
                 &.description {
                     padding-right: 30px;
@@ -58,22 +47,21 @@
                     float: left;
 
                     &.disabled {
-                      background: $COSMOUI_BUTTON_DISABLED_BACKGROUND;
+                        background: $COSMOUI_BUTTON_DISABLED_BACKGROUND;
                     }
-
                     &.enabled {
-                      background: $COSMOUI_BUTTON_BACKGROUND;
+                        background: $COSMOUI_BUTTON_BACKGROUND;
                     }
                 }
                 .delete-button {
-                  color: #5a82a2;
-                  font-size: 30px;
-                  padding-left: 7px;
-                  padding-top: 2px;
+                    color: #5a82a2;
+                    font-size: 30px;
+                    padding-left: 7px;
+                    padding-top: 2px;
                 }
                 .deployments-number {
-                    margin: auto;
-                    border: 2px solid #CADBEC;
+                    display: inline-block;
+                    border: 2px solid #cadbec;
                     background-color: $clr-base-01;
                     width: 32px;
                     height: 32px;
@@ -81,6 +69,20 @@
                     text-align: center;
                     color: $clr-base-20;
                     padding-top: 4px;
+                }
+            }
+            th {
+                height: $COSMOUI_LIST_HEADER_HEIGHT;
+
+                .sorting {
+                    cursor: pointer;
+                }
+            }
+            td {
+                height: $COSMOUI_LIST_LINE_HEIGHT;
+
+                &.deployments {
+                    text-align: center;
                 }
             }
         }
