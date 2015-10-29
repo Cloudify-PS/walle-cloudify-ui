@@ -8,23 +8,21 @@
     list-style: none;
     box-sizing: border-box;
     overflow: hidden;
-}
 
-.animate-repeat.ng-move,
-.animate-repeat.ng-enter,
-.animate-repeat.ng-leave {
-    transition: all linear 1s;
-}
-
-.animate-repeat.ng-leave.ng-leave-active,
-.animate-repeat.ng-move,
-.animate-repeat.ng-enter {
-    max-height: 0;
-}
-
-.animate-repeat.ng-leave,
-.animate-repeat.ng-move.ng-move-active,
-.animate-repeat.ng-enter.ng-enter-active {
-    max-height: 40px;
-    color: #049cdb;
+    &.ng-move,
+    &.ng-enter,
+    &.ng-leave {
+        transition: all linear 1s;
+    }
+    &.ng-leave.ng-leave-active,
+    &.ng-move,
+    &.ng-enter {
+        max-height: 0;
+    }
+    .ng-leave,
+    &.ng-move.ng-move-active,
+    &.ng-enter.ng-enter-active {
+        max-height: 40px;
+        color: #049cdb;
+    }
 }

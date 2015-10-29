@@ -30,12 +30,11 @@
 @import './startExecutionDialog';
 @import './SyntaxHighlighter/overwrites';
 
-
-$gs-infra-root:'../bower_components/gs-ui-infra';
+$gs-infra-root: '../bower_components/gs-ui-infra';
 @import '../bower_components/gs-ui-infra/app/styles/main';
 
 // Fonts
-$fa-font-path:'../bower_components/font-awesome/fonts';
+$fa-font-path: '../bower_components/font-awesome/fonts';
 @import '../bower_components/font-awesome/scss/font-awesome';
 
 // Pages
@@ -53,9 +52,7 @@ $fa-font-path:'../bower_components/font-awesome/fonts';
 
 .embeded {
     #header, #left-side-menu, #footer, .no-embed {
-        // scss-lint:disable ImportantRule
         display: none !important;
-        // scss-lint:enable ImportantRule
     }
     .layout, #main-content {
         background-color: transparent;

@@ -12,9 +12,10 @@
 
         p {
             margin: 0;
-        }
-        p::after {
-            content: '%';
+
+            &::after {
+                content: '%';
+            }
         }
     }
     .background {
@@ -34,16 +35,10 @@
         position: relative;
         z-index: 2;
     }
-    path.progress {
-        fill: #cce80b;
-    }
-    path.succeed {
-        fill: #cce80b;
-    }
-    path.error {
-        fill: #d54931;
-    }
-    path.warning {
-        fill: #feb300;
+    path {
+        &.progress { fill: #cce80b; }
+        &.succeed { fill: #cce80b; }
+        &.error { fill: #d54931; }
+        &.warning { fill: #feb300; }
     }
 }

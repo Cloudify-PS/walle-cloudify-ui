@@ -10,10 +10,8 @@
 
         [dropdown-toggle] {
             border-left: 1px solid #ccc;
-            // scss-lint:disable ImportantRule
             border-top-right-radius: 3px !important;
             border-bottom-right-radius: 3px !important;
-            // scss-lint:enable ImportantRule
             span {
                 color: #ccc;
             }

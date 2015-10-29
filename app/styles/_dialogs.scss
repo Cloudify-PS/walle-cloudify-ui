@@ -38,7 +38,7 @@ input[required] {
             height: 32px;
             cursor: pointer;
             background-color: transparent;
-            border: none;
+            border: 0;
             padding-right: 0;
 
             &:hover {
@@ -221,8 +221,11 @@ input[required] {
         }
     }
 
-    .dialogDescription.dragover {
-        font-weight: bold;
+    .dialogDescription {
+
+        .dragover {
+            font-weight: bold;
+        }
     }
     #uploadForm {
         position: relative;
@@ -242,7 +245,6 @@ input[required] {
                 height: 35px;
                 cursor: pointer;
             }
-
             #browseBtn {
                 position: absolute;
                 right: 22px;
@@ -252,7 +254,6 @@ input[required] {
                 line-height: 33px;
                 cursor: pointer;
             }
-
             .browseTxt {
                 position: absolute;
                 left: 20px;
@@ -273,7 +274,6 @@ input[required] {
                 }
             }
         }
-
         .name {
             display: block;
             position: relative;
@@ -296,7 +296,6 @@ input[required] {
                 border: 0;
             }
         }
-
         #mainFile {
             position: relative;
             float: left;
@@ -310,7 +309,6 @@ input[required] {
                 margin-left: 10px;
             }
         }
-
         .upload-process-anim {
             width: 25px;
             height: 25px;
@@ -321,14 +319,12 @@ input[required] {
             right: 81px;
             bottom: 13px;
         }
-
         #uploadBtn {
             position: relative;
             margin: 10px 0;
             left: 355px;
             line-height: 20px;
         }
-
         #required-message {
             display: inline-block;
             color: $clr-base-06;
@@ -354,8 +350,8 @@ input[required] {
         #cancelBtn {
             color: $COSMOUI_BUTTON_BACKGROUND;
             font-weight: bold;
-            padding: 5px 10px 5px 10px;
-            margin: 0 10px 0 10px;
+            padding: 5px 10px;
+            margin: 0 10px;
             background-color: $clr-base-10;
             border-bottom: 1px solid $COSMOUI_BUTTON_BACKGROUND;
             border-right: 1px solid $COSMOUI_BUTTON_BACKGROUND;
@@ -381,7 +377,7 @@ input[required] {
             display: inline-block;
             color: $COSMOUI_BUTTON_BACKGROUND;
             font-weight: bold;
-            padding: 5px 10px 5px 10px;
+            padding: 5px 10px;
             margin: 0 0 0 10px;
             background-color: $clr-base-10;
             border-bottom: 1px solid $COSMOUI_BUTTON_BACKGROUND;

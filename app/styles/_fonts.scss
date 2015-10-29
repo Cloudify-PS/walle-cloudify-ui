@@ -15,79 +15,37 @@
             display: inline-block;
         }
     }
-    &.deployments {
-        background-position: -40px 0;
-    }
-    &.events {
-        background-position: -80px 0;
-    }
-    &.monitoring {
-        background-position: -120px 0;
-    }
-    &.logs {
-        background-position: -160px 0;
-    }
-    &.hosts {
-        background-position: -200px 0;
-    }
-    &.networks {
-        background-position: -237px 0;
-    }
-    &.floating-ips {
-        background-position: -277px 0;
-    }
-    &.storage {
-        background-position: -316px 0;
-    }
-
+    &.deployments { background-position: -40px 0; }
+    &.events { background-position: -80px 0; }
+    &.monitoring { background-position: -120px 0; }
+    &.logs { background-position: -160px 0; }
+    &.hosts { background-position: -200px 0; }
+    &.networks { background-position: -237px 0; }
+    &.floating-ips { background-position: -277px 0; }
+    &.storage { background-position: -316px 0; }
 }
 
-$gs-icon-prefix: 'gs-icon';
-[class^=#{$gs-icon-prefix}], [class*=' #{$gs-icon-prefix}'] {
+[class^='gs-icon'], [class*=' gs-icon'] {
     font-size: 50px;
     line-height: 10px;
     font-family: 'gigaspaces', sans-serif;
     font-style: normal;
     display: inline-block;
 }
-.#{$gs-icon-prefix}-question-mark-sign:before {
-    content: '\e60f';
-}
-.#{$gs-icon-prefix}-question-mark:before {
-    content: '\e610';
-}
-.#{$gs-icon-prefix}-closed-envelope:before {
-    content: '\e611';
-}
-.#{$gs-icon-prefix}-events:before {
-    content: '\e612';
-}
-.#{$gs-icon-prefix}-floating-ips:before {
-    content: '\e61a';
-}
-.#{$gs-icon-prefix}-hosts:before {
-    content: '\e61b';
-}
-.#{$gs-icon-prefix}-logs:before {
-    content: '\e624';
-}
-.#{$gs-icon-prefix}-monitoring:before {
-    content: '\e628';
-}
-.#{$gs-icon-prefix}-networks:before {
-    content: '\e62f';
-}
-.#{$gs-icon-prefix}-plans:before {
-    content: '\e60d';
-}
-.#{$gs-icon-prefix}-deployments:before {
-    content: '\e60e';
-}
-.#{$gs-icon-prefix}-storage:before {
-    content: '\e620';
-}
+.gs-icon-question-mark-sign:before { content: '\e60f'; }
+.gs-icon-question-mark:before { content: '\e610'; }
+.gs-icon-closed-envelope:before { content: '\e611'; }
+.gs-icon-events:before { content: '\e612'; }
+.gs-icon-floating-ips:before { content: '\e61a'; }
+.gs-icon-hosts:before { content: '\e61b'; }
+.gs-icon-logs:before { content: '\e624'; }
+.gs-icon-monitoring:before { content: '\e628'; }
+.gs-icon-networks:before { content: '\e62f'; }
+.gs-icon-plans:before { content: '\e60d'; }
+.gs-icon-deployments:before { content: '\e60e'; }
+.gs-icon-storage:before { content: '\e620'; }
 
-i.gs-node-icon {
+.gs-node-icon {
 
     &.topology-glyph {
 

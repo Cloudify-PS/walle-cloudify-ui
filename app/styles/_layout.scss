@@ -39,9 +39,9 @@ html, body, .layout {
             position: fixed;
             top: 0;
         }
-        //        ul{
-        //            position:fixed;
-        //        }
+        //ul{
+        //    position:fixed;
+        //}
     }
     .main-content {
         position: absolute;
@@ -51,9 +51,8 @@ html, body, .layout {
         top: 83px;
         background: #fff;
         overflow: visible;
-        //        min-height:1000px;
-
-        //        margin-bottom:-1000px;
+        //min-height:1000px;
+        //margin-bottom:-1000px;
 
         .main-content-display {
             $MAIN_PADDING: 20px;
@@ -68,7 +67,6 @@ html, body, .layout {
                 position: relative;
                 width: 100%;
             }
-
             .try-beta {
                 // temporary fix to issue (see on html)
                 position: absolute;
@@ -89,7 +87,7 @@ html, body, .layout {
 
     }
     #footer {
-        //        position: absolute;
+        //position: absolute;
         position: fixed;
         background: $COSMOUI_BACKGROUND;
         left: 0;
@@ -117,6 +115,7 @@ html, body, .layout {
                 &, a {
                     height: 35px;
                     text-align: left;
+
                     .side-menu-icon {
                         margin-left: 5px;
                         font-size: 25px;
@@ -140,7 +139,6 @@ html, body, .layout {
                 }
             }
         }
-
     }
 }
 
@@ -157,7 +155,7 @@ html, body, .layout {
 
         * {
             color: #cadbec;
-            font-family: "OpenSansCondLight", Helvetica, Arial, sans-serif;
+            font-family: 'OpenSansCondLight', Helvetica, Arial, sans-serif;
 
         }
         .user-icon {
@@ -214,7 +212,7 @@ html, body, .layout {
     color: #ccc;
     font-size: 11px;
 
-    ul.links {
+    .links {
         float: right;
         list-style-type: none;
 
@@ -227,6 +225,7 @@ html, body, .layout {
                 border: 0;
                 padding-right: 0;
             }
+
             a {
                 color: #fff;
             }
@@ -254,7 +253,7 @@ html, body, .layout {
     height: 75px;
     background-position: 50% 50%;
     background-repeat: no-repeat;
-    background-image: url("#{$img-cloudify-logo}");
+    background-image: url('#{$img-cloudify-logo}');
     background-size: contain;
 }
 
@@ -290,17 +289,17 @@ html, body, .layout {
         top: 0;
         border-radius: 5px;
         padding-left: 30px;
-        border: none;
+        border: 0;
     }
 
     #search-submit {
         width: 20px;
         height: 20px;
-        background: url("#{$img-search}") no-repeat center center;
+        background: url('#{$img-search}') no-repeat center center;
         position: absolute;
         top: 5px;
         left: 5px;
-        border: none;
+        border: 0;
     }
 }
 
@@ -315,7 +314,7 @@ html, body, .layout {
     #user-icon {
         width: 18px;
         height: 18px;
-        background: url("#{$img-user}") no-repeat center center;
+        background: url('#{$img-user}') no-repeat center center;
         position: relative;
         top: 0;
         left: 0;
@@ -337,7 +336,7 @@ html, body, .layout {
         position: relative;
         top: 0;
         right: 5px;
-        background: url("#{$img-logout}") no-repeat center center;
+        background: url('#{$img-logout}') no-repeat center center;
         float: right;
         cursor: pointer;
     }
@@ -372,7 +371,7 @@ html, body, .layout {
     margin-bottom: 10px;
 
     &.no-border {
-        border: none;
+        border: 0;
     }
 
     .breadcrumbs {
@@ -426,11 +425,10 @@ html, body, .layout {
             border-radius: 3px;
             border-bottom: 1px solid $COSMOUI_BUTTON_BOTTOM_BORDER_COLOR;
             border-right: 1px solid $COSMOUI_BUTTON_RIGHT_BORDER_COLOR;
-            border-top: none;
-            border-left: none;
+            border-top: 0;
+            border-left: 0;
         }
     }
-
 }
 
 .right-panel {
@@ -442,7 +440,7 @@ html, body, .layout {
     display: none;
 }
 
-button, input[type="button"], input[type="submit"], .btn.active:focus, .btn:active:focus {
+button, input[type='button'], input[type='submit'], .btn.active:focus, .btn:active:focus {
     outline: none;
 }
 

@@ -234,13 +234,11 @@ module.exports = function (grunt) {
                 }
             }
         },
-        scsslint: {
-            allFiles: [
-                '<%= yeoman.app %>/styles/*.scss', '<%= yeoman.app %>/styles/*/*.scss'
-            ],
+        sasslint: {
             options: {
-                config: 'test/spec/.scss-lint.yml'
-            }
+                configFile: 'test/spec/.sass-lint.yml'
+            },
+            target: ['<%= yeoman.app %>/styles/*.scss', '<%= yeoman.app %>/styles/*/*.scss']
         },
         coffee: {
             dist: {
@@ -303,7 +301,7 @@ module.exports = function (grunt) {
             options: {
                 map: true,
                 processors: [
-                    require('autoprefixer')({browsers: 'last 2 versions'}) // add vendor prefixes according to http://caniuse.com/
+                    require('autoprefixer')({browsers: 'last 3 versions'}) // add vendor prefixes according to http://caniuse.com/
                 ]
             },
             dist: {
@@ -759,7 +757,7 @@ module.exports = function (grunt) {
         if ( testBackend === undefined || testBackend === '' || testBackend === 'all' || testBackend === 'frontend') { // default
             tasks = [
                 'jshint',
-                'scsslint',
+                'sasslint',
                 'clean:server',
                 'concurrent:test',
                 'connect:test',

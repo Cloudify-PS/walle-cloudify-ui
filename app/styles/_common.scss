@@ -14,10 +14,8 @@
             th {
                 background: $COSMOUI_LIST_COLUMN_HEADER_BACKGROUND;
                 color: $COSMOUI_LIST_COLUMN_HEADER_TEXT_COLOR;
-                // scss-lint:disable ImportantRule
                 border: 0 !important;
                 vertical-align: middle !important;
-                // scss-lint:enable ImportantRule
                 height: 32px;
                 font-weight: normal;
                 padding: 5px 0 5px 10px;
@@ -51,9 +49,7 @@
         }
     }
     tbody {
-        // scss-lint:disable ImportantRule
         border: 0 !important;
-        // scss-lint:enable ImportantRule
 
         tr {
 
@@ -89,7 +85,7 @@
             td {
                 vertical-align: middle;
                 height: 53px;
-                border: none;
+                border: 0;
                 background-color: transparent;
                 padding: 5px 0 5px 10px;
 
@@ -118,13 +114,13 @@
 .gs-btn {
     $GS_BUTTON_COLOR: #fff;
     color: $GS_BUTTON_COLOR;
-    padding: 5px 10px 5px 10px;
+    padding: 5px 10px;
     background-color: $COSMOUI_BUTTON_BACKGROUND;
     border-radius: 3px;
     border-bottom: 1px solid $COSMOUI_BUTTON_BOTTOM_BORDER_COLOR;
     border-right: 1px solid $COSMOUI_BUTTON_RIGHT_BORDER_COLOR;
-    border-top: none;
-    border-left: none;
+    border-top: 0;
+    border-left: 0;
     vertical-align: middle;
     background: $COSMOUI_BUTTON_BACKGROUND;
     cursor: pointer;
@@ -162,7 +158,7 @@
         height: 32px;
         cursor: pointer;
         background-color: transparent;
-        border: none;
+        border: 0;
         padding-right: 0;
 
         &:hover {
@@ -223,9 +219,9 @@
         t {
             padding-left: 5px;
         }
-        div.button {
+        .button {
             background-color: $clr-base-01;
-            border: none;
+            border: 0;
 
             label {
                 padding: 0;
@@ -271,40 +267,20 @@
     color: #2c4b68;
 
     // some classes are left empty as placeholders for color changes for the icon.
-    &.icon-gs-policy-failed:before {
-        color: #d64b34;
-    }
-    &.icon-gs-policy-success:before {
-        color: #9abc2e;
-    }
-    &.icon-gs-task-failed:before {
-        color: #d64b34;
-    }
-    &.icon-gs-task-retried:before {
-        color: #f9b71b;
-    }
-    &.icon-gs-task-sent:before {
-        color: #049cdb;
-    }
+    &.icon-gs-policy-failed:before { color: #d64b34; }
+    &.icon-gs-policy-success:before { color: #9abc2e; }
+    &.icon-gs-task-failed:before { color: #d64b34; }
+    &.icon-gs-task-retried:before { color: #f9b71b; }
+    &.icon-gs-task-sent:before { color: #049cdb; }
     //&.icon-gs-task-started:before { }
-    &.icon-gs-task-success:before {
-        color: #9abc2e;
-    }
+    &.icon-gs-task-success:before { color: #9abc2e; }
     //&.icon-gs-workflow-stage:before { }
-    &.icon-gs-workflow-cancelled:before {
-        color: #d64b34;
-    }
-    &.icon-gs-workflow-failed:before {
-        color: #d64b34;
-    }
+    &.icon-gs-workflow-cancelled:before { color: #d64b34; }
+    &.icon-gs-workflow-failed:before { color: #d64b34; }
     //&.icon-gs-workflow-started:before { }
-    &.icon-gs-workflow-success:before {
-        color: #9abc2e;
-    }
+    &.icon-gs-workflow-success:before { color: #9abc2e; }
     //&.icon-gs-task-sent:before { }
-    &.gs-icon-logs:before {
-        color: #049cdb;
-    }
+    &.gs-icon-logs:before { color: #049cdb; }
 }
 
 $install: #2f3334;
@@ -343,9 +319,7 @@ $failed: #d54931;
     z-index: 1;
     min-width: 20px;
     border-radius: 10px;
-    // scss-lint:disable ImportantRule
     padding: 3px !important; // this is here to override bootstrap's own .badge class definition
-    // scss-lint:enable ImportantRule
     vertical-align: baseline;
     white-space: nowrap;
     text-align: center;
@@ -408,6 +382,7 @@ input[type=text], input[type=password] {
     }
     &.inline {
         display: inline-block;
+
         i, i:before {
             height: 14px;
             width: 14px;
