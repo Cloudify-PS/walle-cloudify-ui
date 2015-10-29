@@ -1,21 +1,13 @@
 
-<div class="deployment-layout" id="deployment" >
+<div class="deployment-layout deployment-topology-page" id="deployment" >
 
 
-    <topology-directive
-        topology="page.topologyData"
-        loading="page.topologyLoading"
-        auto-scale="true"
-        enable-node-click="true"
-        enable-zoom="true"
-        on-node-selected="showNode"
-        enable-drag="true"
-        enable-drop="true"
-        enable-drag-edit="true"
-        enable-network-bar-drag="true"
-        auto-layout="true"
-        />
 
+    <div ui-topology
+         deployment-id="deploymentId"
+         blueprint-id="blueprintId"
+         current-execution="currentExecution"
+         on-node-select="showNode(node)"></div>
 
 
 

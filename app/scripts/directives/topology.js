@@ -13,7 +13,7 @@
  * # blueprintTopology
  */
 angular.module('cosmoUiApp')
-    .directive('uiTopology', function (cloudifyClient, NodeService, blueprintCoordinateService, $log, $q ) {
+    .directive('uiTopology', function (cloudifyClient, NodeService, blueprintCoordinateService, DataProcessingService, $log, $q ) {
         return {
             templateUrl: 'views/directives/topology.html',
             restrict: 'A',
@@ -56,33 +56,82 @@ angular.module('cosmoUiApp')
                  };*/
 
 
+                /**
+                 * @typedef {object} TopologyItem
+                 * @property {string} id - an identifier
+                 */
+
+                /**
+                 * We use a cached version of the nodes because the topology will modify them
+                 * and we get an error of infinite loop.
+                 *
+                 * @type {Array<TopologyItem>}
+                 */
                 var nodes = [];
+
+                var blueprint = null;
+
+                var topologyScale = {
+                    networkBarLocation: 316,
+                    scale: 1,
+                    offset: [0, 0]
+                };
+
+                $scope.onScaleChange = function(scale,xOffset,yOffset) {
+                    topologyScale.offset = [xOffset,yOffset];
+                    topologyScale.scale = scale;
+
+                    // Here you can save the scale
+                };
+
+                $scope.onNetworkBarChange = function(newYLocation) {
+                    topologyScale.networkBarLocation = newYLocation;
+                    // Here you can save the scale
+                };
+
                 $scope.loadBlueprint = function() {
                     $log.info('getting blueprint');
-                    cloudifyClient.blueprints.get(scope.blueprintId).then(function (result) {
+                    blueprint = cloudifyClient.blueprints.get(scope.blueprintId).then(function (result) {
 
                         var data = result.data;
 
-                        nodes = data.plan.nodes;
-                        var topologyData = {
-                            data: data,
-                            networkBarLocation: 316,
-                            scale: 1,
-                            offset: [0, 0]
-                        };
+                        nodes =data.plan.nodes;
+
+
+                        var topologyData = _.merge({},topologyScale, {
+                            data: data
+
+                        });
 
                         $scope.topologyData = DataProcessingService.encodeTopologyFromRest(topologyData);
                         $scope.topologyLoading = false;
+                        return result;
                     });
                 };
 
                 function loadInstances() {
-                    if ( !!scope.deploymentId ) {
-                        return cloudifyClient.nodeInstances.list(scope.deploymentId).then(function (result) {
-                            $scope.initialized = $scope.currentExecution || !!_.find(result.data, function (i) {
+                    if ( !!scope.deploymentId && blueprint  ) {// only poll if blueprint exists and deployment exists
+                        return $q.all([blueprint, cloudifyClient.nodeInstances.list(scope.deploymentId)]).then(function (results) {
+
+                            var data = results[0].data;
+                            var instances = results[1].data;
+                            var executions = $scope.currentExecution;
+
+
+                            $scope.initialized = $scope.currentExecution || !!_.find(instances, function (i) {
                                 return NodeService.status.isInProgress(i);
                             });
-                            scope.nodeInstances = _.groupBy(result.data, 'node_id');
+
+
+                            var topologyData = _.merge({}, topologyScale, {
+                                data: data,
+                                instances: instances,
+                                executions: executions
+
+                            });
+
+                            $scope.topologyData = DataProcessingService.encodeTopologyFromRest(topologyData);
+
                         });
                     }else{
                         return $q.defer().promise;
@@ -97,6 +146,21 @@ angular.module('cosmoUiApp')
                 if ( !!$scope.deploymentId ){
                     loadInstances();
                 }
+
+                $scope.onNodeSelected = function( node ){
+
+                    if ( node && node.side1 ){ // relation
+
+                        // currently not supported.. need to discuss in 3.4
+
+                    }else{ // node
+                        node = { node : _.find(nodes,{id:node.id || node.name}) };
+                        if ( !node ){
+                            return; // fail silently;
+                        }
+                        $scope.onNodeSelect(node);
+                    }
+                };
 
                 //console.log('blueprintId', scope.blueprintId);
                 ////

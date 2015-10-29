@@ -25,22 +25,24 @@ describe('Controller: DeploymentTopologyCtrl', function () {
             expect(scope.blueprintId).toBe('foo');
         }));
 
-        describe('#showNode', function () {
-            it('should update scope with node and type', function () {
-                var node = {'name': 'foo'};
-                scope.showNode(node);
-                expect(node.nodeType).toBe('node');
-                expect(scope.page.viewNode.name).toBe('foo');
-            });
-        });
 
-        describe('#showRelationship', function () {
-            it('should update scope with node and type', function () {
-                var node = {'name': 'foo'};
-                scope.showRelationship(node);
-                expect(node.nodeType).toBe('relationship');
-                expect(scope.page.viewNode.name).toBe('foo');
-            });
-        });
+        // depreacted. to be removed in 3.4
+        //describe('#showNode', function () {
+        //    it('should update scope with node and type', function () {
+        //        var node = {'name': 'foo'};
+        //        scope.showNode(node);
+        //        expect(node.nodeType).toBe('node');
+        //        expect(scope.page.viewNode.name).toBe('foo');
+        //    });
+        //});
+        //
+        //describe('#showRelationship', function () {
+        //    it('should update scope with node and type', function () {
+        //        var node = {'name': 'foo'};
+        //        scope.showRelationship(node);
+        //        expect(node.nodeType).toBe('relationship');
+        //        expect(scope.page.viewNode.name).toBe('foo');
+        //    });
+        //});
     });
 });

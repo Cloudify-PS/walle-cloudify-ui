@@ -4,21 +4,9 @@
 
     <div floating-blueprint-node-panel node="page.viewNode" node-lists="planNodes" class="floating-panel" id="right-side-menu"></div>
 
-
-    <topology-directive
-        topology="page.topologyData"
-        loading="page.topologyLoading"
-        auto-scale="true"
-        enable-node-click="true"
-        enable-zoom="true"
-        on-node-selected="onNodeSelected"
-        enable-drag="true"
-        enable-drop="true"
-        enable-drag-edit="true"
-        enable-network-bar-drag="true"
-        auto-layout="true"
-        />
-
+    <div ui-topology
+         blueprint-id="blueprintId"
+         on-node-select="onNodeSelect(node)"></div>
 
 
 </div>

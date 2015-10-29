@@ -1,14 +1,20 @@
 
 <div class="bpContainer gs-topology">
 
-    <div bp-topology-nodes
-         map="nodes"
-         node-instances="nodeInstances"
-         initialized="initialized"
-         in-progress="!!currentExecution"
-         selected="onNodeSelect({'node' : node})"></div>
-
-    <div class="coordinates" blueprint-arrows="coordinates" blueprint-resize arrow="true" color="#7A7A7A"></div>
-
+    <topology-directive
+        topology="topologyData"
+        loading="topologyLoading"
+        auto-scale="false"
+        enable-node-click="true"
+        enable-zoom="false"
+        on-node-selected="onNodeSelected"
+        on-scale-change="onScaleChange"
+        on-network-bar-change="onNetworkBarChange"
+        enable-drag="false"
+        enable-drop="false"
+        enable-drag-edit="false"
+        enable-network-bar-drag="true"
+        auto-layout="true"
+        />
 </div>
 
