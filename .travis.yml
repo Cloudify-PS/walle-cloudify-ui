@@ -8,7 +8,6 @@ install :
   - 'bower install'
   - 'bower update'
   - 'npm install'
-  - 'gem install scss_lint'
 # before_script:
 #  - export CHROME_BIN=chromium-browser
 #  - export DISPLAY=:99.0
