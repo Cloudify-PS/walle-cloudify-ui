@@ -127,7 +127,10 @@ angular.module('cosmoUiApp')
                     $log.error(e);
                 }
             }).success(onSuccess)
-                .error(onError);
+                .error(onError)
+                .finally(function(){
+                    ngProgress.reset();
+                });
         };
 
         $scope.uploadFile = function() {
