@@ -270,33 +270,29 @@ input[required] {
 
         .browse {
             display: block;
-            height: 33px;
+            height: 32px;
 
             #fileInput {
-                position: absolute;
-                opacity: 0;
-                left: 0px;
-                z-index: 9998;
-                top: 0px;
-                width: 35px;
-                height: 35px;
-                cursor: pointer;
+                display: none;
             }
 
             #browseBtn {
-                position: absolute;
-                right: 22px;
-                height: 32px;
                 font-size: 30px;
-                padding: 0px 8px 0px 9px;
-                line-height: 33px;
+                float: right;
+                margin: 0 22px 0 0;
+                padding: 0;
+                width: 50px;
+                height: 32px;
+                line-height: 32px;
+                vertical-align: middle;
+                text-align: center;
                 cursor: pointer;
             }
 
             .browseTxt {
                 position: absolute;
                 left: 20px;
-                width: 340px;
+                width: 318px;
                 height: 32px;
                 border-radius: 3px;
                 padding-left: 10px;
