@@ -31,7 +31,7 @@
             </thead>
             <tbody ng-repeat="blueprint in displayedBlueprints">
                 <tr>
-                    <td class="name"><a href="#/blueprint/{{ blueprint.id }}/topology">{{ blueprint.id }}</a></td>
+                    <td class="name"><a href="#/blueprint/{{ blueprint.id }}/topology" title="{{ blueprint.description }}">{{ blueprint.id }}</a></td>
                     <td class="created">{{ blueprint.created_at | dateFormat: 'yyyy-MM-dd HH:mm:ss' }}</td>
                     <td class="updated">{{ blueprint.updated_at | dateFormat: 'yyyy-MM-dd HH:mm:ss' }}</td>
                     <td class="deployments"><div class="deployments-number"><a href="#/deployments">{{blueprint.deploymentsCount}}</a></div></td>

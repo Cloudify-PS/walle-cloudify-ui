@@ -14,6 +14,7 @@ angular.module('cosmoUiApp')
 
                 cloudifyClient.blueprints.get($scope.blueprint.id)
                     .then(function( result ){
+                        angular.extend($scope.blueprint, result.data);
                         return result.data;
                     }, function(result){
                         if(result.status === 404) {
