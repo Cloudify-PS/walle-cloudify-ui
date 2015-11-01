@@ -41,7 +41,12 @@ describe('Directive: deploymentEvents', function () {
         });
 
         it('should define logsDeploymentsParam', function(){
-            expect(scope.logsDeploymentsParam).toBe('{"matchAny":"[\\"id\\"]"}');
+            expect(scope.logsSearchParams).toEqual(
+                {
+                    deployment_Id: '{"matchAny":"[\\"id\\"]"}',
+                    sortBy:'timestamp',
+                    reverseOrder:true
+                });
         });
 
         it('should have events-widget div', function () {
