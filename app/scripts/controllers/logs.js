@@ -74,7 +74,7 @@ angular.module('cosmoUiApp')
                     $scope.logsHits = response.data.hits.hits;
                     //Formatting the timestamp
                     _.each($scope.logsHits, function(log){
-                        log.formattedTimestamp = EventsMap.getFormattedTimestamp(log._source.timestamp);
+                        log.formattedTimestamp = EventsMap.getFormattedTimestamp(log._source['@timestamp']);
                     });
                     tableState.pagination.totalItemCount = response.data.hits.total;
                     tableState.pagination.numberOfPages = Math.ceil(response.data.hits.total / options.size);
