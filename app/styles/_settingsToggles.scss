@@ -17,8 +17,8 @@
         background: $clr-base-01;
         border: 2px solid $clr-base-04;
         border-radius: 5px;
-        border-top-left-radius: 0px;
-        border-top-right-radius: 0px;
+        border-top-left-radius: 0;
+        border-top-right-radius: 0;
         padding-top: 5px;
         z-index: 9998; // TO BE REMOVED!!
 
@@ -30,27 +30,24 @@
             border-bottom: 1px solid $clr-base-04;
         }
 
-      ul {
-        -moz-user-select: none;
-        -webkit-user-select: none;
-        -ms-user-select:none;
-        user-select:none;
+        ul {
+            user-select: none;
 
-        li {
-          list-style: none;
-          height: 20px;
+            li {
+                list-style: none;
+                height: 20px;
 
-          .toggle-switch {
-            float: none;
-            margin-left: 5px;
-            width: 145px;
+                .toggle-switch {
+                    float: none;
+                    margin-left: 5px;
+                    width: 145px;
 
-            #toggle-switch-button {
-              float: right;
-              margin-right: -3px;
+                    #toggle-switch-button {
+                        float: right;
+                        margin-right: -3px;
+                    }
+                }
             }
-          }
         }
-      }
     }
 }

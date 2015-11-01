@@ -40,9 +40,9 @@
         "request": "^2.51.0",
         "tar-fs": "^1.8.1",
         "unzip": "^0.1.11"
-
     },
     "devDependencies": {
+        "autoprefixer": "^6.0.3",
         "connect-livereload": "^0.3.2",
         "expect.js": "^0.3.1",
         "grunt": "~0.4.2",
@@ -75,8 +75,10 @@
         "grunt-mocha-test": "0.12.4",
         "grunt-ngmin": "~0.0.2",
         "grunt-open": "~0.2.0",
+        "grunt-postcss": "^0.7.0",
         "grunt-rev": "~0.1.0",
         "grunt-sass": "~1.0.0",
+        "grunt-sass-lint": "0.1.0-beta.4",
         "grunt-shell": "~1.1.2",
         "grunt-update-json": "~0.2.1",
         "grunt-usemin": "~0.1.11",

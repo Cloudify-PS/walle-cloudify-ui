@@ -1,64 +1,59 @@
 #configView h3 {
-  position: relative;
-  top: $COSMOUI_CONFIG_H3_TOP;
-  margin-left: $COSMOUI_CONFIG_MARGIN_LEFT;
-  margin-right: $COSMOUI_CONFIG_MARGIN_RIGHT;
-  width: $COSMOUI_CONFIG_H3_WIDTH;
-  color: $COSMOUI_CONFIG_H3_COLOR;
+    position: relative;
+    top: $COSMOUI_CONFIG_H3_TOP;
+    margin-left: $COSMOUI_CONFIG_MARGIN_LEFT;
+    margin-right: $COSMOUI_CONFIG_MARGIN_RIGHT;
+    width: $COSMOUI_CONFIG_H3_WIDTH;
+    color: $COSMOUI_CONFIG_H3_COLOR;
 }
 
 #configForm {
-  position: relative;
-  top: $COSMOUI_CONFIG_FORM_CONTAINER_TOP;
-  margin-left: $COSMOUI_CONFIG_MARGIN_LEFT;
-  margin-right: $COSMOUI_CONFIG_MARGIN_RIGHT;
-  width: $COSMOUI_CONFIG_FORM_CONTAINER_WIDTH;
-  height: $COSMOUI_CONFIG_FORM_CONTAINER_HEIGHT;
-  background-color: $COSMOUI_CONFIG_FORM_CONTAINER_BACKGROUND;
-  padding: $COSMOUI_CONFIG_FORM_CONTAINER_PADDING;
-
-  #text {
-    font-size: $COSMOUI_CONFIG_FORM_TEXT_SIZE;
-    font-weight: $COSMOUI_CONFIG_FORM_TEXT_WEIGHT;
-    margin-bottom: $COSMOUI_CONFIG_FORM_TEXT_MARGIN_BOTTOM;
-    margin-left: $COSMOUI_CONFIG_MARGIN_LEFT;
-    margin-right: $COSMOUI_CONFIG_MARGIN_RIGHT;
-    width: $COSMOUI_CONFIG_FORM_TEXT_WIDTH;
-  }
-
-  form {
     position: relative;
-    width: $COSMOUI_CONFIG_FORM_WIDTH;
-    height: $COSMOUI_CONFIG_FORM_HEIGHT;
+    top: $COSMOUI_CONFIG_FORM_CONTAINER_TOP;
     margin-left: $COSMOUI_CONFIG_MARGIN_LEFT;
     margin-right: $COSMOUI_CONFIG_MARGIN_RIGHT;
+    width: $COSMOUI_CONFIG_FORM_CONTAINER_WIDTH;
+    height: $COSMOUI_CONFIG_FORM_CONTAINER_HEIGHT;
+    background-color: $COSMOUI_CONFIG_FORM_CONTAINER_BACKGROUND;
+    padding: $COSMOUI_CONFIG_FORM_CONTAINER_PADDING;
 
-    label {
-      float: left;
-      margin-right: $COSMOUI_CONFIG_FORM_LABEL_MARGIN_RIGHT;
+    #text {
+        font-size: $COSMOUI_CONFIG_FORM_TEXT_SIZE;
+        font-weight: $COSMOUI_CONFIG_FORM_TEXT_WEIGHT;
+        margin-bottom: $COSMOUI_CONFIG_FORM_TEXT_MARGIN_BOTTOM;
+        margin-left: $COSMOUI_CONFIG_MARGIN_LEFT;
+        margin-right: $COSMOUI_CONFIG_MARGIN_RIGHT;
+        width: $COSMOUI_CONFIG_FORM_TEXT_WIDTH;
     }
+    form {
+        position: relative;
+        width: $COSMOUI_CONFIG_FORM_WIDTH;
+        height: $COSMOUI_CONFIG_FORM_HEIGHT;
+        margin-left: $COSMOUI_CONFIG_MARGIN_LEFT;
+        margin-right: $COSMOUI_CONFIG_MARGIN_RIGHT;
 
-    input {
-      float: left;
-      margin-bottom: $COSMOUI_CONFIG_FORM_INPUT_MARGIN_BOTTOM;
+        label {
+            float: left;
+            margin-right: $COSMOUI_CONFIG_FORM_LABEL_MARGIN_RIGHT;
+        }
+        input {
+            float: left;
+            margin-bottom: $COSMOUI_CONFIG_FORM_INPUT_MARGIN_BOTTOM;
+        }
+        button {
+            height: $COSMOUI_BLUEPRINT_DETAILS_BUTTON_HEIGHT;
+            font-size: $COSMOUI_BLUEPRINT_DETAILS_BUTTON_FONT_SIZE;
+            padding: $COSMOUI_BLUEPRINT_DETAILS_BUTTON_PADDING;
+            color: $COSMOUI_BLUEPRINT_BUTTON_GROUP_BACKGROUND;
+            border: $COSMOUI_BLUEPRINT_BUTTON_GROUP_BORDER_COLOR;
+            bottom: $COSMOUI_CONFIG_FORM_BUTTON_BOTTOM;
+            position: absolute;
+            left: $COSMOUI_CONFIG_FORM_BUTTON_LEFT;
+        }
+        ul {
+            width: 200px;
+            color: #f00;
+            float: left;
+        }
     }
-
-    button{
-      height: $COSMOUI_BLUEPRINT_DETAILS_BUTTON_HEIGHT;
-      font-size: $COSMOUI_BLUEPRINT_DETAILS_BUTTON_FONT_SIZE;
-      padding: $COSMOUI_BLUEPRINT_DETAILS_BUTTON_PADDING;
-      color: $COSMOUI_BLUEPRINT_BUTTON_GROUP_BACKGROUND;
-      border: $COSMOUI_BLUEPRINT_BUTTON_GROUP_BORDER_COLOR;
-      bottom: $COSMOUI_CONFIG_FORM_BUTTON_BOTTOM;
-      position: absolute;
-      left: $COSMOUI_CONFIG_FORM_BUTTON_LEFT;
-    }
-
-    ul {
-      width: 200px;
-      color: red;
-      float: left;
-    }
-  }
-
 }

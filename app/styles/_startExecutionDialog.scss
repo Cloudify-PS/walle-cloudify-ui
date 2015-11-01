@@ -1,16 +1,15 @@
-.start-execution-dialog{ /** better use id here **/
+.start-execution-dialog { // better use id here
 
-    .select-workflow{
-        display:block;
-        padding:10px;
+    .select-workflow {
+        display: block;
+        padding: 10px;
         text-align: center;
 
-        .gs-select{
-            float:none;
-            text-align:left;
+        .gs-select {
+            float: none;
+            text-align: left;
         }
     }
-
     .multiSelectMenu {
         vertical-align: top;
     }

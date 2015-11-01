@@ -11,7 +11,7 @@
 
             <div class="filter gs-selection-button" ng-show="blueprintsList.length">
                 {{'logs.filters.blueprints.title' | translate }}<br>
-                <div multi:select:menu
+                <div multi-select-menu
                      class="gs-select"
                      data-multiple="true"
                      data-options="blueprintsList"
@@ -25,7 +25,7 @@
 
             <div class="filter gs-selection-button" ng-show="deploymentsList.length">
                 {{'logs.filters.deployments.title' | translate }}<br>
-                <div multi:select:menu
+                <div multi-select-menu
                      class="gs-select"
                      data-multiple="true"
                      data-options="deploymentsList"
@@ -39,7 +39,7 @@
 
             <div class="filter gs-selection-button" ng-show="logLevelsList.length">
                 {{'logs.filters.logLevels.title' | translate }}<br>
-                <div multi:select:menu
+                <div multi-select-menu
                      class="gs-select"
                      data-multiple="true"
                      data-options="logLevelsList"
@@ -111,7 +111,7 @@
                 <!-- All of the next filtering of properties is documented in logs&events properties.md file-->
                 <td ng-repeat="column in columns | filter:true">
                     <i ng-if='column.name === "Event Type Icon"' class="icon-events" ng-class="getEventIcon(log)"></i>
-                    <p ng-if='column.name === "Timestamp"' class="date">{{log.formattedTimestamp == undefined && '-' || log.formattedTimestamp}}</p>
+                    <p ng-if='column.name === "Timestamp"' class="date">{{log._source.timestamp == undefined && '-' || log.formattedTimestamp}}</p>
                     <p ng-if='column.name === "Event Type"' class="type">{{getEventText(log._source.event_type) == undefined && '-' || getEventText(log._source.event_type)}}</p>
                     <p ng-if='column.name === "Log Level"' class="level">{{log._source.level == undefined && '-' || log._source.level | uppercase}}</p>
                     <p ng-if='column.name === "Operation"' class="operation">{{log._source.context.operation == undefined && '-' || log._source.context.operation}}</p>
