@@ -214,9 +214,9 @@ function checkRestService( opts, callback ){
             try {
                 var checkUrl = url.resolve(endpoint, opts.usingPath);
                 logger.trace('checking url [' +  checkUrl  + ']');
-                request({'url': checkUrl, timeout: 1500}, function (err) {
-                    logger.trace('got response');
-                    if (!err) {
+                request({'url': checkUrl, timeout: 1500}, function (err, res) {
+                    logger.trace('got response', res ? res.toJSON() : null );
+                    if (!err && res && (~~(res.statusCode/100)) !== 5 ) { // responses with 5xx are errors. otherwise all is good.
                         logger.trace('url [' + checkUrl + '] returned successfully');
                         results.success = endpoint;
                     } else {
