@@ -1,20 +1,21 @@
 .piProgress {
     position: relative;
     display: inline-block;
+
     .circle {
         position: absolute;
-        display: box;
-        box-pack: center;
-        box-align: center;
+        display: flex;
         background-color: #46b8da;
-        color: white;
+        color: #fff;
         font-size: 100%;
         z-index: 3;
+
         p {
-            margin: 0px;
-        }
-        p::after {
-            content: "%";
+            margin: 0;
+
+            &::after {
+                content: '%';
+            }
         }
     }
     .background {
@@ -34,16 +35,10 @@
         position: relative;
         z-index: 2;
     }
-    path.progress {
-        fill: #cce80b;
-    }
-    path.succeed {
-        fill: #cce80b;
-    }
-    path.error {
-        fill: #d54931;
-    }
-    path.warning {
-        fill: #feb300;
+    path {
+        &.progress { fill: #cce80b; }
+        &.succeed { fill: #cce80b; }
+        &.error { fill: #d54931; }
+        &.warning { fill: #feb300; }
     }
 }
