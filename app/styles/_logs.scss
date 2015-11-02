@@ -1,6 +1,7 @@
 #logs {
+
     #main-content-panel {
-        padding-right: 0px;
+        padding-right: 0;
     }
     .content-section {
         display: block;
@@ -8,16 +9,17 @@
 
         .filters {
             position: relative;
-            margin: 0 0 10px 0;
+            margin: 0 0 10px;
+
             .multiSelectMenu {
-                margin: 5px 10px 0 0px;
+                margin: 5px 10px 0 0;
                 vertical-align: middle;
             }
             .filter {
                 display: inline-block;
-                margin: 0 0 10px 0;
+                margin: 0 0 10px;
             }
-            .actions{
+            .actions {
                 margin-top: 27px;
                 float: right;
             }
@@ -29,97 +31,96 @@
             padding: 20px;
         }
 
-        .logs-error-message{
+        .logs-error-message {
             margin-bottom: 10px;
-            a{
-                color: red;
+
+            a, a:hover {
+                font-weight: bold;
             }
-            a:hover{
-                color: crimson;
+            a {
+                color: #f00;
             }
-            a, a:hover{
-              font-weight: bold;
+            a:hover {
+                color: #dc143c;
             }
         }
         .gs-table {
             width: 100%;
-            margin: 0px;
-            tr {
-                th{
-                    padding:0;
-                    .header{
-                        display: table;
-                        height: 100%;
-                        width: 100%;
-                        display: table;
-                        .header-text{
-                            vertical-align: middle;
-                            display:table-cell;
-                            padding: 5px 0px 5px 10px;
-                        }
-                    }
-                }
+            margin: 0;
 
-                td {
-                    &.type {
-                        width: 150px;
-                    }
-                    &.icon-events {
-                        width: 60px;
-                        min-width: 45px;
-                        &.gs-icon-logs {
-                            padding-left: 6px;
-                            font-size: 40px;
-                            line-height:40px;
-                        }
-                    }
-                    &.node, &.task, &.workflow {
-                        width: 110px;
-                    }
-                    &.task {
-                        width: auto;
-                        min-width: 330px;
-                        word-break: break-word;
-                    }
-                    &.date {
-                        width: 200px;
-                    }
-                    &.event-text-green {
-                        color: $COSMOUI_EVENTS_LIST_TEXT_SUCCESS;
-                    }
-                    &.event-text-red {
-                        color: $COSMOUI_EVENTS_LIST_TEXT_FAILED;
-                    }
-                    .large-text-overflow{
-                        max-width: 510px;
-                        white-space: nowrap;
-                        text-overflow: ellipsis;
-                        overflow-x: hidden;
-                    }
-                }
-                &.details{
-                    td{
-                        padding-left: 0px;
-                        .message-text{
-                            padding-bottom: 10px;
-                            font-size: 13px;
-                            margin: 0 10px;
-                        }
-                        .group{
-                            padding-left: 6px;
-                        }
-                        pre{
-                            max-width: 1380px;
-                            margin-left: auto;
-                            margin-right: auto;
-                            margin-top:5px;
-                        }
+            th {
+                padding: 0;
+
+                .header {
+                    display: table;
+                    height: 100%;
+                    width: 100%;
+
+                    .header-text {
+                        vertical-align: middle;
+                        display: table-cell;
+                        padding: 5px 0 5px 10px;
                     }
                 }
             }
+            td {
 
-        }
-        .pagination{
+                &.type {
+                    width: 150px;
+                }
+                &.icon-events {
+                    width: 60px;
+                    min-width: 45px;
+
+                    &.gs-icon-logs {
+                        padding-left: 6px;
+                        font-size: 40px;
+                        line-height: 40px;
+                    }
+                }
+                &.node, &.task, &.workflow {
+                    width: 110px;
+                }
+                &.task {
+                    width: auto;
+                    min-width: 330px;
+                    word-break: break-word;
+                }
+                &.date {
+                    width: 200px;
+                }
+                &.event-text-green {
+                    color: $COSMOUI_EVENTS_LIST_TEXT_SUCCESS;
+                }
+                &.event-text-red {
+                    color: $COSMOUI_EVENTS_LIST_TEXT_FAILED;
+                }
+                &.details {
+                    padding-left: 0;
+
+                    .message-text {
+                        padding-bottom: 10px;
+                        font-size: 13px;
+                        margin: 0 10px;
+                    }
+                    .group {
+                        padding-left: 6px;
+                    }
+                    pre {
+                        max-width: 1380px;
+                        margin-left: auto;
+                        margin-right: auto;
+                        margin-top: 5px;
+                    }
+                }
+
+                .large-text-overflow {
+                    max-width: 510px;
+                    white-space: nowrap;
+                    text-overflow: ellipsis;
+                    overflow-x: hidden;
+                }
+            }
         }
     }
 }

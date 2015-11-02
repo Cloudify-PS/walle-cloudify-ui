@@ -11,7 +11,7 @@
 
             <div class="filter gs-selection-button" ng-show="blueprintsList.length">
                 {{'logs.filters.blueprints.title' | translate }}<br>
-                <div multi:select:menu
+                <div multi-select-menu
                      class="gs-select"
                      data-multiple="true"
                      data-options="blueprintsList"
@@ -25,7 +25,7 @@
 
             <div class="filter gs-selection-button" ng-show="deploymentsList.length">
                 {{'logs.filters.deployments.title' | translate }}<br>
-                <div multi:select:menu
+                <div multi-select-menu
                      class="gs-select"
                      data-multiple="true"
                      data-options="deploymentsList"
@@ -39,7 +39,7 @@
 
             <div class="filter gs-selection-button" ng-show="logLevelsList.length">
                 {{'logs.filters.logLevels.title' | translate }}<br>
-                <div multi:select:menu
+                <div multi-select-menu
                      class="gs-select"
                      data-multiple="true"
                      data-options="logLevelsList"
@@ -110,13 +110,13 @@
             <tr data-ng-click="isOpen=!isOpen">
                 <td ng-repeat="column in columns | filter:true">
                     <i ng-if='column.name === "Event Type Icon"' class="icon-events" ng-class="getEventIcon(log)"></i>
-                    <p ng-if='column.name === "Timestamp"' class="date">{{log._source.timestamp == undefined && '-' || log.formattedTimestamp}}</p>
-                    <p ng-if='column.name === "Event Type"' class="type">{{getEventText(log._source.event_type) == undefined && '-' || getEventText(log._source.event_type)}}</p>
-                    <p ng-if='column.name === "Log Level"' class="level">{{log._source.level == undefined && '-' || log._source.level | uppercase}}</p>
-                    <p ng-if='column.name === "Operation"' class="operation">{{log._source.context.operation == undefined && '-' || log._source.context.operation}}</p>
-                    <p ng-if='column.name === "Node Name"' class="node_name">{{log._source.context.node_name == undefined && '-' || log._source.context.node_name}}</p>
-                    <p ng-if='column.name === "Node Id"'  class="node_id">{{log._source.context.node_id == undefined && '-' || log._source.context.node_id}}</p>
-                    <p ng-if='column.name === "Message"'  class="task large-text-overflow">{{log._source.message.text == undefined && '-' || log._source.message.text}}</p>
+                    <p ng-if='column.name === "Timestamp"' class="date">{{log.formattedTimestamp}}</p>
+                    <p ng-if='column.name === "Event Type"' class="type">{{getEventText(log._source.event_type)}}</p>
+                    <p ng-if='column.name === "Log Level"' class="level">{{log._source.level | uppercase}}</p>
+                    <p ng-if='column.name === "Operation"' class="operation">{{log._source.context.operation}}</p>
+                    <p ng-if='column.name === "Node Name"' class="node_name">{{log._source.context.node_name}}</p>
+                    <p ng-if='column.name === "Node Id"'  class="node_id">{{log._source.context.node_id}}</p>
+                    <p ng-if='column.name === "Message"'  class="task large-text-overflow">{{log._source.message.text}}</p>
                 </td>
             </tr>
             <tr class="details" data-ng-show="isOpen && isAnyColumnSelected()">

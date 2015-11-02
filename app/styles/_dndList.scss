@@ -1,20 +1,18 @@
 ul[dnd-list] {
-    & > li {
+
+    > li {
         position: relative;
         min-height: 42px;
-        padding-left: 0px;
+        padding-left: 0;
     }
-
     .dndDraggingSource {
         display: none;
     }
-
     .dndPlaceholder {
         display: block;
         background-color: #ddd;
         min-height: 42px;
     }
-
     li {
         background-color: #fff;
         border: 1px solid #ddd;
@@ -23,10 +21,10 @@ ul[dnd-list] {
         display: block;
         padding: 10px 15px;
         margin-bottom: -1px;
-    }
 
-    li.selected {
-        background-color: #cce4f6;
-        color: #234e71;
+        &.selected {
+            background-color: #cce4f6;
+            color: #234e71;
+        }
     }
 }
