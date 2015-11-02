@@ -35,12 +35,18 @@ describe('ConfService',function(){
         mockRequire('request', function( opts , callback ){
 
             if ( opts.url.indexOf(successProtocol) === 0){
-                callback(null);
+                callback(null, {
+                    statusCode: 200,
+                    toJSON: function () {
+                        return JSON.stringify({'key': 'mock_JSON'});
+                    }
+                });
             }else {
                 callback('error');
             }
         });
         loadService();
+        console.log('this is endpoint',conf.cloudifyManagerEndpoint);
         expect(conf.cloudifyManagerEndpoint.indexOf(successProtocol)).to.be(0);
         unloadService();
         successProtocol = 'http://';
