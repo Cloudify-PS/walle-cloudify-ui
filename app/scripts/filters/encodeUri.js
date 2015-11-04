@@ -2,14 +2,14 @@
 
 /**
  * @ngdoc filter
- * @name cosmoUiApp.filter:encodeURI
+ * @name cosmoUiApp.filter:encodeUri
  * @function
  * @description
- * # encodeURI
+ * # encodeUri
  * Filter in the cosmoUiApp.
  */
 angular.module('cosmoUiApp')
-    .filter('encodeURI', function () {
+    .filter('encodeUri', function () {
         return function (uri) {
             return encodeURIComponent(uri);
         };
