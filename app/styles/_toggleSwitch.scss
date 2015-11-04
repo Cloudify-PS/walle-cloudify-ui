@@ -7,7 +7,6 @@
         color: $clr-base-11;
         font-size: 13px;
     }
-
     #toggle-switch-button {
         display: inline-block;
         vertical-align: middle;
@@ -24,7 +23,6 @@
             margin-right: 2px;
             margin-left: 2px;
         }
-
         #toggle-switch-button-circle {
             background: $clr-base-20;
             width: 15px;
@@ -32,21 +30,17 @@
             border-radius: 10px;
             margin: 1px;
         }
-
         .true {
             float: right;
         }
-
         .false {
             float: left;
         }
     }
-
     .true {
         background: transparent;
         color: $clr-base-11;
     }
-
     .false {
         background: $clr-base-06;
         color: $clr-base-01;

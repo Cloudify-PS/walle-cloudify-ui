@@ -1,35 +1,22 @@
-#blueprints-index{
+#blueprints-index {
 
-    #ngProgress-container{
-        position:relative;
-        top:auto;
+    #ngProgress-container {
+        position: relative;
+        top: auto;
     }
-
     #main-content-panel {
-      padding-right: 40px;
+        padding-right: 40px;
     }
-
     .gs-table {
+
         .blueprintDeployed {
             color: $COSMOUI_BLUEPRINTS_DEPLOY_COLOR;
         }
         tr {
-          color: $text-color;
-
-            th {
-              height: $COSMOUI_LIST_HEADER_HEIGHT;
-
-                .sorting {
-                    cursor: pointer;
-                }
-            }
-
-            td {
-              height: $COSMOUI_LIST_LINE_HEIGHT;
-            }
+            color: $text-color;
 
             td, th {
-              border: none;
+                border: none;
 
                 &.icon {
                     width: 40px;
@@ -39,11 +26,11 @@
                     width: 33%;
                 }
                 &.deployments {
-                  min-width: 160px;
+                    min-width: 160px;
                 }
                 &.actions {
                     min-width: 230px;
-                    overflow:visible;
+                    overflow: visible;
                 }
                 &.description {
                     padding-right: 30px;
@@ -58,22 +45,21 @@
                     float: left;
 
                     &.disabled {
-                      background: $COSMOUI_BUTTON_DISABLED_BACKGROUND;
+                        background: $COSMOUI_BUTTON_DISABLED_BACKGROUND;
                     }
-
                     &.enabled {
-                      background: $COSMOUI_BUTTON_BACKGROUND;
+                        background: $COSMOUI_BUTTON_BACKGROUND;
                     }
                 }
                 .delete-button {
-                  color: #5a82a2;
-                  font-size: 30px;
-                  padding-left: 7px;
-                  padding-top: 2px;
+                    color: #5a82a2;
+                    font-size: 30px;
+                    padding-left: 7px;
+                    padding-top: 2px;
                 }
                 .deployments-number {
                     margin: auto;
-                    border: 2px solid #CADBEC;
+                    border: 2px solid #cadbec;
                     background-color: $clr-base-01;
                     width: 32px;
                     height: 32px;
@@ -83,11 +69,21 @@
                     padding-top: 4px;
                 }
             }
+            th {
+                height: $COSMOUI_LIST_HEADER_HEIGHT;
+
+                .sorting {
+                    cursor: pointer;
+                }
+            }
+            td {
+                height: $COSMOUI_LIST_LINE_HEIGHT;
+            }
         }
     }
-
     .search {
-        display:inline-block;
+        display: inline-block;
+
         label {
             font-weight: inherit;
         }
@@ -95,22 +91,18 @@
             width: auto;
         }
     }
-
     .uploadBtn {
         margin-top: 27px;
         float: right;
     }
-
-  .connect-error-message {
-    color: #f00;
-    margin-left: 20px;
-    margin-top: 20px;
-  }
-
-  .no-blueprints-message {
-    color: #000;
-    margin-left: 20px;
-    margin-top: 20px;
-  }
-
+    .connect-error-message {
+        color: #f00;
+        margin-left: 20px;
+        margin-top: 20px;
+    }
+    .no-blueprints-message {
+        color: #000;
+        margin-left: 20px;
+        margin-top: 20px;
+    }
 }
