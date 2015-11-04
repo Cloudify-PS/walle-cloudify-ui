@@ -1,14 +1,12 @@
-#blueprints-index{
+#blueprints-index {
 
-    #ngProgress-container{
-        position:relative;
-        top:auto;
+    #ngProgress-container {
+        position: relative;
+        top: auto;
     }
-
     #main-content-panel {
-      padding-right: 40px;
+        padding-right: 40px;
     }
-
     .gs-table {
 
         .blueprintDeployed {
@@ -90,11 +88,21 @@
                     text-align: center;
                 }
             }
+            th {
+                height: $COSMOUI_LIST_HEADER_HEIGHT;
+
+                .sorting {
+                    cursor: pointer;
+                }
+            }
+            td {
+                height: $COSMOUI_LIST_LINE_HEIGHT;
+            }
         }
     }
-
     .search {
-        display:inline-block;
+        display: inline-block;
+
         label {
             font-weight: inherit;
         }
@@ -102,22 +110,18 @@
             width: auto;
         }
     }
-
     .uploadBtn {
         margin-top: 27px;
         float: right;
     }
-
-  .connect-error-message {
-    color: #f00;
-    margin-left: 20px;
-    margin-top: 20px;
-  }
-
-  .no-blueprints-message {
-    color: #000;
-    margin-left: 20px;
-    margin-top: 20px;
-  }
-
+    .connect-error-message {
+        color: #f00;
+        margin-left: 20px;
+        margin-top: 20px;
+    }
+    .no-blueprints-message {
+        color: #000;
+        margin-left: 20px;
+        margin-top: 20px;
+    }
 }

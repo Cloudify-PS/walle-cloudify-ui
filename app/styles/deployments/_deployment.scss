@@ -21,18 +21,15 @@
         border-bottom: $COSMOUI_DEPLOYMENT_APP_STATUS_BORDER;
         position: absolute;
         right: 0;
-        top:0;
+        top: 0;
         z-index: 1;
     }
 
-
     #right-side-menu {
         position: fixed;
-
         top: 83px;
-        bottom:60px; // todo: should use variable
+        bottom: 60px; // todo: should use variable
         right: 20px;
-
         width: 600px;
         border-left: 4px solid $COSMOUI_BLUEPRINT_DETAILS_LEFT_BORDER_COLOR;
         background-color: $COSMOUI_BLUEPRINT_DETAILS_BACKGROUND;
@@ -40,7 +37,7 @@
         padding-right: 13px;
         padding-top: 5px;
         z-index: 10001;
-        height:auto;
+        height: auto;
 
         .title {
             padding-bottom: $COSMOUI_BLUEPRINT_DETAILS_TITLE_PADDING_BOTTOM;
@@ -48,6 +45,7 @@
             color: $COSMOUI_BLUEPRINT_DETAILS_TITLE_COLOR;
             font-size: $COSMOUI_BLUEPRINT_DETAILS_TITLE_FONT_SIZE;
             border-bottom: 1px solid $COSMOUI_BLUEPRINT_DETAILS_TITLE_BOTTOM_BORDER_COLOR;
+
             i {
                 float: right;
                 margin-top: 8px;
@@ -57,9 +55,8 @@
         .content {
             margin-top: $COSMOUI_BLUEPRINT_DETAILS_CONTENT_MARGIN_TOP;
 
-
-
             .content-section {
+
                 table {
                     padding: 9.5px;
                     font-size: 13px;
@@ -80,14 +77,14 @@
                             min-width: 120px;
                             vertical-align: middle;
                             padding-left: 5px;
-//                            word-break: break-all;
+                            //                            word-break: break-all;
 
                             table {
+
                                 tr:first-child td {
                                     color: $COSMOUI_LIST_COLUMN_HEADER_TEXT_COLOR;
                                     border-bottom: 2px solid #fff;
                                 }
-
                                 tr {
                                     &:hover:not(:first-child) td {
                                         background-color: $COSMOUI_LIST_HOVER_BACKGROUND;
@@ -98,11 +95,6 @@
                                         i {
                                             font-weight: $COSMOUI_LIST_HOVER_ACTION_FONT_WEIGHT;
                                         }
-                                    }
-
-                                    td {
-                                        vertical-align: middle;
-                                        color: #333;
                                     }
                                     &:not(:first-child) td.actions {
                                         width: $COSMOUI_LIST_HOVER_ACTION_WIDTH;
@@ -116,9 +108,7 @@
                                             font-size: 14px;
                                             box-shadow: none;
                                             border: none;
-                                            border-radius: 0px;
-                                            -webkit-appearance: none;
-                                            -moz-appearance: none;
+                                            border-radius: 0;
                                             appearance: none;
                                             padding: 7px;
                                             cursor: pointer;
@@ -129,6 +119,11 @@
                                             }
                                         }
                                     }
+
+                                    td {
+                                        vertical-align: middle;
+                                        color: #333;
+                                    }
                                 }
                             }
                         }
@@ -137,14 +132,10 @@
             }
         }
     }
-
-
-
     .events {
-        padding: 0px 20px;
+        padding: 0 20px;
         margin: 10px 0 0;
     }
-
     .content-section, .events {
         width: 100%;
         height: 100%;
@@ -152,6 +143,7 @@
         .filters {
             position: relative;
             margin: 0 0 10px 0;
+
             .multiSelectMenu {
                 margin: 0 15px 0 5px;
                 vertical-align: middle;
@@ -160,6 +152,7 @@
                 position: relative;
                 display: inline-block;
                 vertical-align: middle;
+
                 input {
                     border-style: solid;
                     border-color: #ccc;
@@ -167,8 +160,9 @@
                     padding: 5px 25px 5px 10px;
                     border-radius: 3px 0 0 3px;
                     outline: none;
+
                     &:focus {
-                        border-color: #29A9EE;
+                        border-color: #29a9ee;
                     }
                 }
                 button {
@@ -179,9 +173,10 @@
                     padding: 5px 10px;
                     border-radius: 0 3px 3px 0;
                     outline: none;
+
                     &:hover {
-                        border-color: #29A9EE;
-                        background-color: #29A9EE;
+                        border-color: #29a9ee;
+                        background-color: #29a9ee;
                         color: #fff;
                     }
                 }
@@ -193,90 +188,86 @@
                     font-size: 17px;
                 }
             }
-
             > span {
                 margin: 0 0 10px 0;
                 display: inline-block;
-            }
-            > span.autopull {
-                border: 1px solid #ccc;
-                border-radius: 3px;
-                vertical-align: bottom;
-                float: right;
-                label {
-                    padding: 5px 10px;
-                    border-right: 1px dotted #ccc;
-                    margin: 0px;
-                    font-weight: normal;
-                    background-color: #f5f5f5;
-                }
-                > span {
-                    padding: 5px 10px;
-                    &.off {
-                        color: #ccc;
+
+                &.autopull {
+                    border: 1px solid #ccc;
+                    border-radius: 3px;
+                    vertical-align: bottom;
+                    float: right;
+
+                    label {
+                        padding: 5px 10px;
+                        border-right: 1px dotted #ccc;
+                        margin: 0;
+                        font-weight: normal;
+                        background-color: #f5f5f5;
                     }
-                    &.on {
-                        color: #29aaee;
-                        font-weight: bold;
+                    > span {
+                        padding: 5px 10px;
+
+                        &.off {
+                            color: #ccc;
+                        }
+                        &.on {
+                            color: #29aaee;
+                            font-weight: bold;
+                        }
                     }
                 }
             }
         }
-
         [ng-switch-when='events'] {
             padding: 10px 20px;
         }
-
         .emptyTable {
             display: block;
             text-align: center;
             padding: 20px;
         }
-
         .gs-table {
             width: 100%;
-            margin: 0px;
-            tr {
+            margin: 0;
+
+            &.eventsTable {
                 td {
-                    &.type {
-                        width: 150px;
-                    }
-                    &.icon-events {
-                        width: 60px;
-                    }
-                    &.node, &.task, &.workflow {
-                        width: 110px;
-                    }
-                    &.task {
-                        width: auto;
-                    }
-                    &.action {
-                        width: 75px;
-                    }
-                    &.date {
-                        width: 200px;
-                    }
-                    &.cliclable {
-                        cursor: pointer;
-                    }
-                    &.event-text-green {
-                        color: $COSMOUI_EVENTS_LIST_TEXT_SUCCESS;
-                    }
-                    &.event-text-red {
-                        color: $COSMOUI_EVENTS_LIST_TEXT_FAILED;
+                    vertical-align: top;
+
+                    .icon {
+                        background-position: top center;
                     }
                 }
             }
 
-            &.eventsTable {
-                tr {
-                    td {
-                        vertical-align: top;
-
-                        .icon {
-                          background-position: top center;
-                        }
-                    }
+            td {
+                &.type {
+                    width: 150px;
+                }
+                &.icon-events {
+                    width: 60px;
+                }
+                &.node, &.task, &.workflow {
+                    width: 110px;
+                }
+                &.task {
+                    width: auto;
+                }
+                &.action {
+                    width: 75px;
+                }
+                &.date {
+                    width: 200px;
+                }
+                &.cliclable {
+                    cursor: pointer;
+                }
+                &.event-text-green {
+                    color: $COSMOUI_EVENTS_LIST_TEXT_SUCCESS;
+                }
+                &.event-text-red {
+                    color: $COSMOUI_EVENTS_LIST_TEXT_FAILED;
                 }
             }
         }
@@ -289,6 +280,7 @@
         right: 0;
         font-size: 15px;
         text-align: center;
+
         > p {
             display: inline-block;
             background-color: #049cdb;
@@ -296,25 +288,27 @@
             margin: 0 auto;
             padding: 2px 10px;
             border-radius: 13px;
-            box-shadow: 1px 1px 0px #0482c7;
+            box-shadow: 1px 1px 0 #0482c7;
             cursor: pointer;
         }
     }
 
     .piProgress {
+
         .percents {
             display: none;
             text-align: center;
             position: relative;
             top: 10px;
             font-size: 11px;
+
             &::after {
-                content: "%";
+                content: '%';
             }
         }
-        .pieInProgress {
-            -webkit-transition: background-color 0.5s;
-            transition: background-color 0.5s;
+        .pieInProgress, %pieInProgress {
+            transition: background-color .5s;
+
             i {
                 display: none;
             }
@@ -323,44 +317,43 @@
             }
         }
         &[status='0'] {
+
             .circle[state='0'] {
-                @extend .pieInProgress;
+                @extend %pieInProgress;
                 background-color: #dddddd !important;
             }
             .circle[state='1'] {
-                @extend .pieInProgress;
+                @extend %pieInProgress;
                 background-color: #bebebe !important;
             }
             .circle[state='2'] {
-                @extend .pieInProgress;
+                @extend %pieInProgress;
                 background-color: #3aaaed !important;
             }
             .circle[state='3'] {
-                @extend .pieInProgress;
+                @extend %pieInProgress;
                 background-color: #66a2c5 !important;
             }
             .circle[state='4'] {
-                @extend .pieInProgress;
+                @extend %pieInProgress;
                 background-color: #136e9d !important;
             }
             .circle[state='5'] {
-                @extend .pieInProgress;
+                @extend %pieInProgress;
                 background-color: #136e9d !important;
             }
             .circle[state='6'] {
-                @extend .pieInProgress;
+                @extend %pieInProgress;
                 background-color: #136e9d !important;
             }
         }
     }
-
-
-
     .networksContainer {
         position: relative;
         white-space: nowrap;
         margin: 40px 0 0 20px;
         height: 600px;
+
         .relations {
             position: absolute;
             top: 0;
@@ -372,14 +365,16 @@
             display: inline-block;
             text-align: center;
             min-width: 150px;
+
             .line {
                 position: relative;
                 display: inline-block;
                 vertical-align: top;
+
                 .name {
                     display: block;
                     width: 150px;
-                    background-color: #797B86;
+                    background-color: #797b86;
                     color: #fff;
                     padding: 2px 6px;
                     border-radius: 5px;
@@ -402,31 +397,8 @@
                     color: #fff;
                     border-radius: 5px;
                     vertical-align: top;
-                    margin: 0px 10px 0 0;
-                    > p {
-                        position: absolute;
-                        display: block;
-                        transform: rotate(90deg);
-                        -ms-transform: rotate(90deg); /* IE 9 */
-                        -webkit-transform: rotate(90deg); /* Safari and Chrome */
-                        white-space: nowrap;
-                        top: 5px;
-                        right: 0;
-                        left: 1px;
-                    }
-                    > p.cidr {
-                        width: 200px;
-                        top: auto;
-                        left: -90px;
-                        bottom: 85px;
-                        text-align: right;
-                    }
-                    .network-badge {
-                        position: absolute;
-                        top: -5px;
-                        left: 15px;
-                        z-index: 900;
-                    }
+                    margin: 0 10px 0 0;
+
                     &.red {
                         background-color: #d54931;
                     }
@@ -434,7 +406,31 @@
                         background-color: #f89406;
                     }
                     &.external {
-                      height: 533px;
+                        height: 533px;
+                    }
+
+                    > p {
+                        position: absolute;
+                        display: block;
+                        transform: rotate(90deg);
+                        white-space: nowrap;
+                        top: 5px;
+                        right: 0;
+                        left: 1px;
+
+                        &.cidr {
+                            width: 200px;
+                            top: auto;
+                            left: -90px;
+                            bottom: 85px;
+                            text-align: right;
+                        }
+                    }
+                    .network-badge {
+                        position: absolute;
+                        top: -5px;
+                        left: 15px;
+                        z-index: 900;
                     }
                 }
                 .subnet:last-child {
@@ -446,13 +442,14 @@
                 width: 160px;
                 height: 500px;
                 vertical-align: top;
+
                 > .device, > .router {
-//                    position: relative;
+                    //                    position: relative;
                     display: block;
-                    color: #797B86;
+                    color: #797b86;
                     border-radius: 20px;
                     vertical-align: top;
-                    margin: 47px auto;
+
                     .inner {
                         display: inline-block;
                         position: relative;
@@ -461,15 +458,15 @@
                         display: block;
                         background-color: #000;
                         color: #fff;
-                        margin: 0px;
+                        margin: 0;
                         font-weight: normal;
                     }
                     > p {
                         margin: 5px;
                     }
                     i.gs-node-icon:after {
-                      position: relative;
-                      top: 6px;
+                        position: relative;
+                        top: 6px;
                     }
                     i.topology-glyph {
                         display: inline-block;
@@ -479,12 +476,12 @@
                         font-size: 60px;
                         line-height: 5px;
 
-                      &:before {
-                        font-size: 60px;
-                        position: absolute;
-                        top: -26px;
-                        left: 0px;
-                      }
+                        &:before {
+                            font-size: 60px;
+                            position: absolute;
+                            top: -26px;
+                            left: 0;
+                        }
                     }
                     .portarea {
                         display: inline-block;
@@ -504,8 +501,14 @@
                         left: 20px;
                     }
                 }
+                > .router {
+                    margin: 92px auto 47px;
+                }
+                > .device {
+                    margin: 52px auto 47px;
+                }
                 > .router:last-child {
-                    margin-bottom: 0px;
+                    margin-bottom: 0;
                 }
                 .buttons {
                     display: none;
@@ -513,12 +516,14 @@
                     top: 2px;
                     left: -30px;
                     z-index: 100;
+
                     > ul {
                         display: inline-block;
                         list-style-type: none;
                         white-space: nowrap;
                         margin: 0;
                         padding: 0;
+
                         li {
                             display: inline-block;
                             width: 36px;
@@ -529,6 +534,7 @@
                             background-color: #fff;
                             cursor: pointer;
                             position: relative;
+
                             &:after {
                                 position: absolute;
                                 top: -2px;
@@ -552,50 +558,35 @@
                 }
             }
         }
-        .network {
-          .devices {
-              > .router {
-                margin: 92px auto 47px;
-              }
-              > .device {
-                margin: 52px auto 47px;
-              }
-          }
-        }
     }
-
     .deployment-progress {
         width: 100%;
     }
-
-    .inputsOutputs{
+    .inputsOutputs {
         margin: 30px 0 0;
         padding: 0 20px 20px;
 
-        .splitContainer{
+        .splitContainer {
             width: 50%;
             display: inline-block;
             vertical-align: top;
             text-align: left;
         }
-
-        #inputs{
-            float:left;
+        #inputs {
+            float: left;
             padding-right: 20px;
         }
-
-        #outputs{
-            float:right;
+        #outputs {
+            float: right;
             padding-left: 20px;
         }
-
-        .gs-table{
-            margin:0;
+        .gs-table {
+            margin: 0;
         }
     }
-
     .monitor {
         margin: 20px 20px 0;
+
         .navigate {
             position: relative;
             display: block;
@@ -604,24 +595,28 @@
             padding: 10px;
             border-top: 3px solid #136e9d;
             margin: 0 0 2%;
+
             .arrowBtn {
                 position: absolute;
-                top: 0px;
+                top: 0;
                 width: 39px;
                 height: 39px;
                 cursor: pointer;
+
                 &.left {
-                    left: 0px;
+                    left: 0;
                 }
                 &.right {
-                    right: 0px;
+                    right: 0;
                 }
                 &:hover {
-                    background-color: #0099FF;
+                    background-color: #0099ff;
+
                     i {
                         color: #fff;
                     }
                 }
+
                 i {
                     position: absolute;
                     top: 10px;
@@ -630,21 +625,22 @@
                 }
             }
         }
-
         .pagesFrame {
             position: relative;
             display: block;
             overflow-x: hidden;
             height: 905px;
+
             .pages {
                 display: block;
                 position: relative;
-                left: 0px;
-                -webkit-transition: left linear 0.5s;
-                transition: left linear 0.5s;
+                left: 0;
+                transition: left linear .5s;
+
                 .page {
                     display: inline-block;
                     vertical-align: top;
+
                     .chart {
                         position: relative;
                         display: inline-block;
@@ -655,21 +651,24 @@
                         background-color: #f5f5f5;
                         border: 1px solid #ccc;
                         vertical-align: top;
+
                         &:nth-child(even) {
-                            margin-right: 0px;
+                            margin-right: 0;
                         }
                         &.newChart {
                             background-color: #fff;
                             border: 1px dotted #ccc;
                             padding: 25px;
-                            margin-right: 0px;
+                            margin-right: 0;
+
                             h3 {
-                                margin-top: 0px;
+                                margin-top: 0;
                             }
                             label {
                                 display: block;
                                 font-weight: normal;
                                 margin: 0 0 10px 0;
+
                                 &.checkbox {
                                     display: inline-block;
                                 }
@@ -699,7 +698,6 @@
             }
         }
     }
-
     .executions, .nodesTable {
         display: block;
         max-width: 100%;
@@ -708,29 +706,29 @@
         overflow: hidden;
 
         .gs-table {
-            margin: 0px;
+            margin: 0;
+
             tr {
                 cursor: default;
 
-                .workflow {}
+                //.workflow { }
                 .id {
-                  min-width: 290px !important;
+                    min-width: 290px !important;
                 }
                 .created {
-                  min-width: 150px !important;
+                    min-width: 150px !important;
                 }
                 .status {
-                  min-width: 80px !important;
+                    min-width: 80px !important;
                 }
                 .error {
-                  min-width: 210px !important;
-                  max-width: 210px !important;
-                  overflow: hidden;
+                    min-width: 210px !important;
+                    max-width: 210px !important;
+                    overflow: hidden;
                 }
             }
         }
     }
-
     div[ng-switch-when="nodes"], div[ng-switch-when="executions"], .executions, .nodesTable {
         margin: 30px 0 0;
         padding: 0 20px 20px;
@@ -738,8 +736,9 @@
         .gs-table {
             tr {
                 cursor: default;
+
                 td i {
-                  margin-top: 9px;
+                    margin-top: 9px;
                 }
             }
             .node-details {
@@ -747,13 +746,15 @@
             }
             .topology-glyph {
                 display: inline-block;
-                line-height: 0.7;
+                line-height: .7;
                 color: #53bbf1;
+
                 &.fa {
                     display: inline-block;
                     width: 30px;
                     height: 30px;
                     font-size: 30px;
+
                     &:before {
                         font-size: 30px;
                     }
@@ -761,7 +762,6 @@
             }
         }
     }
-
     .grafanaLoader {
         position: absolute;
         width: 100%;
@@ -774,33 +774,28 @@
             margin: 10px 0 0 0;
         }
     }
-
     .deploymentLoader {
         position: absolute;
         width: 100%;
-//        height: 100%;
-        background-color: white;
+        //        height: 100%;
+        background-color: #fff;
         text-align: center;
-        top: 0px;
+        top: 0;
         z-index: 1000;
 
         .gs-loader {
             height: 128px;
-
             margin-top: 133px;
         }
-
         p {
             font-size: 24px;
             margin: 10px 0 0 0;
         }
     }
-
     .monitoringIframe {
         width: 100%;
         height: 700px;
-        border: 0px;
+        border: 0;
         margin-top: 5px;
     }
-
 }

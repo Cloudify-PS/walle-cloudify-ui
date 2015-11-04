@@ -1,85 +1,85 @@
 .side-menu {
-  color: $COSMOUI_MENU_ITEM_COLOR;
-  font-family: $COSMOUI_MENU_FONT_FAMILY;
+    color: $COSMOUI_MENU_ITEM_COLOR;
+    font-family: $COSMOUI_MENU_FONT_FAMILY;
 
-  .menu {
-    font-size: $COSMOUI_MENU_FONT_SIZE;
-//    min-height: 500px;
-    background: $COSMOUI_MENU_BACKGROUND;
+    .menu {
+        font-size: $COSMOUI_MENU_FONT_SIZE;
+        //    min-height: 500px;
+        background: $COSMOUI_MENU_BACKGROUND;
 
-    ul {
-      padding: $COSMOUI_MENU_PADDING;
+        ul {
+            padding: $COSMOUI_MENU_PADDING;
 
-      li {
-        list-style: none;
-        border-bottom: 1px solid $COSMOUI_MENU_ITEM_SEPERATOR;
-        text-align: center;
-        height: $COSMOUI_MENU_ITEM_HEIGHT;
+            li {
+                list-style: none;
+                border-bottom: 1px solid $COSMOUI_MENU_ITEM_SEPERATOR;
+                text-align: center;
+                height: $COSMOUI_MENU_ITEM_HEIGHT;
 
-        &.selected {
-          a {
-            color: $COSMOUI_MENU_ITEM_COLOR_SELECTED;
-            background-color: $COSMOUI_MENU_ITEM_BACKGROUND_COLOR_SELECTED;
-          }
+                &.selected {
 
-          &:after{
-            content: "";
-            display: inline-block;
-            border-style: solid;
-            border-top-width: 10px;
-            border-right-width: 10px;
-            border-left-width: 10px;
-            border-bottom-width: 10px;
-            border-top-color: transparent;
-            border-right-color: transparent;
-            border-bottom-color: transparent;
-            border-left-color: $clr-base-05;
-            position: relative;
-            left: 94px;
-            top: -50px;
-            z-index: 1;
-            width: 25px;
-          }
+                    &:after {
+                        content: '';
+                        display: inline-block;
+                        border-style: solid;
+                        border-top-width: 10px;
+                        border-right-width: 10px;
+                        border-left-width: 10px;
+                        border-bottom-width: 10px;
+                        border-top-color: transparent;
+                        border-right-color: transparent;
+                        border-bottom-color: transparent;
+                        border-left-color: $clr-base-05;
+                        position: relative;
+                        left: 94px;
+                        top: -50px;
+                        z-index: 1;
+                        width: 25px;
+                    }
+
+                    a {
+                        color: $COSMOUI_MENU_ITEM_COLOR_SELECTED;
+                        background-color: $COSMOUI_MENU_ITEM_BACKGROUND_COLOR_SELECTED;
+                    }
+                }
+
+                a {
+                    vertical-align: top;
+                    color: $COSMOUI_MENU_ITEM_COLOR;
+                    display: block;
+                    text-decoration: none;
+                    height: $COSMOUI_MENU_ITEM_HEIGHT;
+                    cursor: pointer;
+
+                    //&:hover:not(.disabled){
+                    //  color: $COSMOUI_MENU_ITEM_COLOR_HOVER;
+                    //}
+
+                    &.disabled {
+                        color: $COSMOUI_MENU_ITEM_COLOR_DISABLED;
+                        pointer-events: none;
+                        cursor: default;
+                    }
+
+                    .side-menu-icon {
+                        font-size: $COSMOUI_MENU_ICON_FONT_SIZE;
+                        width: $COSMOUI_MENU_ICON_WIDTH;
+                        height: $COSMOUI_MENU_ICON_HEIGHT;
+                        position: relative;
+                        top: $COSMOUI_MENU_ICON_TOP;
+                    }
+                    .side-menu-title {
+                        height: $COSMOUI_MENU_TITLE_HEIGHT;
+                        position: relative;
+                        top: $COSMOUI_MENU_TITLE_TOP;
+                        font-size: $COSMOUI_MENU_TITLE_FONT_SIZE;
+                    }
+                }
+            }
         }
-
-        a {
-          vertical-align: top;
-          color: $COSMOUI_MENU_ITEM_COLOR;
-          display: block;
-          text-decoration: none;
-          height: $COSMOUI_MENU_ITEM_HEIGHT;
-          cursor: pointer;
-
-          //&:hover:not(.disabled){
-          //  color: $COSMOUI_MENU_ITEM_COLOR_HOVER;
-          //}
-
-          &.disabled {
-            color: $COSMOUI_MENU_ITEM_COLOR_DISABLED;
-            pointer-events: none;
-            cursor: default;
-          }
-
-          .side-menu-icon {
-            font-size: $COSMOUI_MENU_ICON_FONT_SIZE;
-            width: $COSMOUI_MENU_ICON_WIDTH;
-            height: $COSMOUI_MENU_ICON_HEIGHT;
-            position: relative;
-            top: $COSMOUI_MENU_ICON_TOP;
-          }
-
-          .side-menu-title {
-            height: $COSMOUI_MENU_TITLE_HEIGHT;
-            position: relative;
-            top: $COSMOUI_MENU_TITLE_TOP;
-            font-size: $COSMOUI_MENU_TITLE_FONT_SIZE;
-          }
-        }
-      }
     }
-  }
 }
 
 #left-side-menu {
-  background-color: $COSMOUI_MENU_BACKGROUND;
+    background-color: $COSMOUI_MENU_BACKGROUND;
 }

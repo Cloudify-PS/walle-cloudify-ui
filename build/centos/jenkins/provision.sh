@@ -1,4 +1,4 @@
 export VERSION="3.3.0"
-export PRERELEASE="m7"
-export BUILD="277"
-export CORE_TAG_NAME="3.3m7"
+export PRERELEASE="rc1"
+export BUILD="278"
+export CORE_TAG_NAME="3.3rc1"
