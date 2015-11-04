@@ -215,57 +215,40 @@ function normalizeExtension( filename ){ //
 }
 
 
-exports.downloadBlueprint = function( cloudifyClientConf, blueprint_id, last_update, callback) {
+exports.downloadBlueprint = function (cloudifyClientConf, blueprint_id, last_update, callback) {
 
     logger.debug('downloading blueprint');
-    function alreadyExists( name ){
-        return function(e) {
-            logger.debug('folder' + name + ' already exist :: ', e);
-        };
-    }
+    fs.mkdirsSync(conf.browseBlueprint.path); // make sure path exists
 
-    fs.exists(conf.browseBlueprint.path, function (exists) {
-        logger.debug('blueprint download exists', exists);
-        if (exists) { // assume also extracted as operation is 'atomic'
-            callback();
-            return;
-        }
-        var pathParts = conf.browseBlueprint.path.split('/');
-        var pathToCreate = '';
-        for (var i = 0; i < pathParts.length; i++) {
-            pathToCreate += pathParts[i] + '/';
-            fs.mkdir(pathToCreate, alreadyExists(pathParts[i]));
-        }
+    var requestDetails = {
+        url: require('url').resolve(conf.cloudifyManagerEndpoint, 'blueprints/' + blueprint_id + '/archive'),
+        method: 'GET',
+        headers: {authorization: cloudifyClientConf.authHeader}
+    };
 
+    logger.debug('this is requestDetails', JSON.stringify(requestDetails));
 
-        var requestDetails = {
-            url: require('url').resolve(conf.cloudifyManagerEndpoint,'blueprints/' + blueprint_id + '/archive'),
-            method: 'GET',
-            headers: {authorization: cloudifyClientConf.authHeader}
-        };
+    var stream = request(requestDetails);
+    stream.on('response', function (res) {
+        var extension = normalizeExtension(res.headers['content-disposition']); // e.g. : 'content-disposition': 'attachment; filename=foo.tar',===> we want the extension
 
-        logger.debug('this is requestDetails', JSON.stringify(requestDetails) );
+        var filepath = path.join(conf.browseBlueprint.path, blueprint_id + '.' + extension);
+        var file = fs.createWriteStream(filepath);
 
-        var stream = request(requestDetails);
-        stream.on('response',function(res){
-            var extension = normalizeExtension(res.headers['content-disposition']); // e.g. : 'content-disposition': 'attachment; filename=foo.tar',===> we want the extension
+        res.pipe(file);
+        file.on('close', function () {
+            logger.info('extract');
+            // allow stream to close;
+            setTimeout(function () {
+                exports.extractArchive(extension, filepath, path.join(conf.browseBlueprint.path, blueprint_id, last_update), callback);
+            }, 0);
 
-            var filepath = path.join(conf.browseBlueprint.path, blueprint_id + '.' + extension);
-            var file = fs.createWriteStream(filepath);
-
-            res.pipe(file);
-            file.on('close', function(){
-                logger.info('extract');
-                // allow stream to close;
-                setTimeout(function(){ exports.extractArchive( extension, filepath, path.join(conf.browseBlueprint.path , blueprint_id , last_update ), callback ); }, 0);
-
-            });
         });
+    });
 
-        stream.on('error', function(e) {
-            logger.info('[stream] problem with request: ' + e.message);
-            callback(e.message, null);
-        });
+    stream.on('error', function (e) {
+        logger.info('[stream] problem with request: ' + e.message);
+        callback(e.message, null);
     });
 };
 
