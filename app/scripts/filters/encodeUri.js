@@ -10,7 +10,5 @@
  */
 angular.module('cosmoUiApp')
     .filter('encodeUri', function () {
-        return function (uri) {
-            return encodeURIComponent(uri);
-        };
+        return encodeURIComponent;
     });
