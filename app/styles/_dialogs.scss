@@ -239,11 +239,11 @@ input[required] {
                 display: none;
             }
             #browseBtn {
-                font-size: 30px;
+                font-size: 28px;
                 float: right;
                 margin: 0 22px 0 0;
-                padding: 0;
-                width: 50px;
+                padding: 2px 0 0 2px;
+                width: 35px;
                 height: 32px;
                 line-height: 32px;
                 vertical-align: middle;
@@ -253,7 +253,7 @@ input[required] {
             .browseTxt {
                 position: absolute;
                 left: 20px;
-                width: 320px;
+                width: 340px;
                 height: 32px;
                 border-radius: 3px;
                 padding-left: 10px;
