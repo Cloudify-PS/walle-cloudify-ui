@@ -8,11 +8,22 @@
         "title": "App Status",
         "time": "Time left"
     },
+
     "version": {
         "updated": "Your version is up to date",
         "updateAvailable": "New version is available:",
         "download": "Download"
     },
+
+    "executions" : {
+        "changeFilter": {
+            "title" : "Click to change how we filter executions",
+            "startedOnly": "Started Only Executions",
+            "notStartedOnly": "All Running Executions"
+        }
+
+    },
+
     "blueprints": {
         "uploadBtn": "Upload Blueprint",
         "table": {
@@ -98,6 +109,7 @@
             "started": "Started",
             "cancelling": "Cancelling",
             "force_cancelling": "Force cancelling"
+
         },
         "process": {
             "create_deployment_environment": "Initializing",
@@ -284,7 +296,8 @@
             "confirmCancel" : "Cancel execution?",
             "confirmExecution" : "Start execution?",
             "cancelDescription" : "Are you sure you want to cancel current execution?",
-            "forceCancel" : "Force"
+            "forceCancel" : "Force",
+            "forceStart":  "Force"
 
         },
         "upload": {

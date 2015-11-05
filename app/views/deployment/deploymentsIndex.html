@@ -4,6 +4,12 @@
         <div class="breadcrumbs"><ul>
             <li><span>{{'breadcrumb.deployments'|translate}}</span></li>
         </ul></div>
+
+        <div class="right-side-actions">
+
+            <button class="gs-btn" title="{{ 'executions.changeFilter.title' | translate }}" ng-click="changeExecutionDisplay()">{{ getExecutionsDisplayButtonLabel() }}</button>
+
+        </div>
     </div>
     <div id="dp1" class="content-section" st-table="displayedDeployments" st-safe-src="deployments" st-set-filter="customFilter">
         <form>
