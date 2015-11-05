@@ -4,16 +4,15 @@ var logger = require('log4js').getLogger('CloudifyProxy');
 module.exports = function (conf) {
     return function (req, res, next) {
 
-
-
         // guy - we cannot use decorate request here, because decorate does not pass express request object
         // and we need express request object because we placed cloudifyAuthHeader on it..
         try {
             if(req.cloudifyAuthHeader) {
                 req.headers.authorization = req.cloudifyAuthHeader;
             }
-            var host = require('url').parse(conf.cloudifyManagerEndpoint).host;
-            proxy(host, {
+            var urlArgs = require('url').parse(conf.cloudifyManagerEndpoint);
+            var host = urlArgs.protocol + '//' + urlArgs.host;
+            proxy( host , {
                 intercept: function (rsp, data, req, res, callback) {
                     res.removeHeader('www-authenticate'); // we want a login page!
                     callback(null, data);
