@@ -59,14 +59,14 @@ describe('Directive: deploymentEvents', function () {
     });
 
     describe('events view', function(){ // tests for the HTML
-        it('should identify events by id when painting CFY-3071', function(){
+        it('should identify events by $index when painting CFY-3071', function(){
 
-            scope.events = [{ 'hello' : 'world', _source: { event_type: 'install'} }];
+            scope.events = [{ event_type: 'install'}];
             scope.$digest();
 
 
-            // use track by event._id so angular will know not to repaint old events, only new ones.
-            expect(element.find('[ng-repeat="event in events track by event._id"]').length).toBe(1);
+            // use track by $index so angular will know not to repaint old events, only new ones.
+            expect(element.find('[ng-repeat="event in events track by $index"]').length).toBe(1);
         });
     });
 

@@ -71,17 +71,17 @@ angular.module('cosmoUiApp')
             $scope.getLogsError = null;
 
             cloudifyClient.events.get(options).then(function (response) {
-                    $scope.logsHits = response.data.items;
-                    //Formatting the timestamp
-                    _.each($scope.logsHits, function(log){
-                        log.formattedTimestamp = EventsMap.getFormattedTimestamp(log['@timestamp']);
-                    });
-                var totalHits = response.data.metadata.pagination.total;
-                    tableState.pagination.totalItemCount = totalHits;
-                    tableState.pagination.numberOfPages = Math.ceil(totalHits / options.size);
-                },function(response){
-                    $scope.getLogsError = response.data.message;
+                $scope.logsHits = response.data.items;
+                //Formatting the timestamp
+                _.each($scope.logsHits, function(log){
+                    log.formattedTimestamp = EventsMap.getFormattedTimestamp(log['@timestamp']);
                 });
+                var totalHits = response.data.metadata.pagination.total;
+                tableState.pagination.totalItemCount = totalHits;
+                tableState.pagination.numberOfPages = Math.ceil(totalHits / options._size);
+            },function(response){
+                $scope.getLogsError = response.data.message;
+            });
         };
 
         //Mapping event_type text(returned from elasticsearch) to our desired css,text and icon

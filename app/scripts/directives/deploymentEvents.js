@@ -29,12 +29,12 @@ angular.module('cosmoUiApp')
                     if ( !$scope.id || !$scope.showDeploymentEvents ){
                         return { then:function(){}};
                     }
-                    return cloudifyClient.events.get( { 'deployment_id' :  $scope.id ,  'from': 0, 'size' : 50 , 'include_logs' :  false , sort:{'field' : '@timestamp','order' : 'desc' }}).then(function (result) {
-                        $scope.events = result.data.hits.hits;
+                    return cloudifyClient.events.get( { 'deployment_id' :  $scope.id ,  '_offset': 0, '_size' : 50 , _sort:'-@timestamp' } ).then(function (result) {
+                        $scope.events = result.data.items;
                         $scope.lastEvent = _.first($scope.events);
                         //Formatting the timestamp
-                        _.each($scope.events, function(e){
-                            e.formattedTimestamp = EventsMap.getFormattedTimestamp(e._source.timestamp);
+                        _.each($scope.events, function(event){
+                            event.formattedTimestamp = EventsMap.getFormattedTimestamp(event['@timestamp']);
                         });
                     }, true);
                 }

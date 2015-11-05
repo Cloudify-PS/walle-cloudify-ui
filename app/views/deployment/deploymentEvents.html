@@ -6,20 +6,20 @@
             <div class="icon">
                 <div class="icon-events" ng-class="getEventIcon(lastEvent)"></div>
             </div>
-            <div class="type">{{ getEventText(lastEvent._source.event_type) }} {{ lastEvent._source.context.node_name ? ' - ' + lastEvent._source.context.node_name : '' }}</div>
+            <div class="type">{{ getEventText(lastEvent.event_type) }} {{ lastEvent.context.node_name ? ' - ' + lastEvent.context.node_name : '' }}</div>
         </div>
         <div class="dragBtn" data-ng-mousedown="dragIt($event)"></div>
     </div>
     <div class="containList" wheel-propagation="true">
         <table class="eventsList">
-            <tr class="animate-repeat" data-ng-class="{'openRow' : isOpen }" ng-repeat="event in events track by event._id" data-ng-click="isOpen=!isOpen" ng-init="isOpen=false">
+            <tr class="animate-repeat" ng-repeat="event in events track by $index">
                 <td class="icon">
                     <div class="icon-events" ng-class="getEventIcon(event)"></div>
                 </td>
-                <td class="type">{{ getEventText(event._source.event_type) }} {{ event._source.context.node_name ? ' - ' + event._source.context.node_name : '' }}</td>
+                <td class="type">{{ getEventText(event.event_type) }} {{ event.context.node_name ? ' - ' + event.context.node_name : '' }}</td>
                 <td class="time">{{ event.formattedTimestamp }}</td>
                 <td class="message">
-                    <div class="brief">{{ event._source.message.text }}</div>
+                    <div class="brief">{{ event.message.text }}</div>
                 </td>
             </tr>
         </table>
