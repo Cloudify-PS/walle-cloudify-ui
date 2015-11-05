@@ -35,9 +35,8 @@ angular.module('cosmoUiApp')
 
         function _loadExecutions() {
 
-            var statusFilter = {status:['pending', 'started', 'cancelling', 'force_cancelling']};
-            return cloudifyClient.executions.list(null, 'id,workflow_id,status,deployment_id', statusFilter).then(function(result){
-
+            var statusFilter = ['pending', 'started', 'cancelling', 'force_cancelling'];
+            return cloudifyClient.executions.list({_include: 'id,workflow_id,status,deployment_id', status: statusFilter}).then(function(result){
                 runningExecutions = _.groupBy(result.data, 'deployment_id');
             },function(){
                 // todo: implement error handling

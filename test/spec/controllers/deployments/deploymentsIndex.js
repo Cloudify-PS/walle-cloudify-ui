@@ -3,13 +3,10 @@
 describe('Controller: DeploymentsCtrl', function () {
     var DeploymentsCtrl, scope;
 
-
     beforeEach(module('cosmoUiApp', 'templates-main', 'backend-mock'));
 
     function _testSetup() {
-        inject(function ($controller, $rootScope, $httpBackend, $q,
-                          cloudifyClient) {
-
+        inject(function ($controller, $rootScope, $httpBackend, $q, cloudifyClient) {
 
             scope = $rootScope.$new();
 
@@ -26,9 +23,6 @@ describe('Controller: DeploymentsCtrl', function () {
                     }
                 };
             });
-
-
-
 
             spyOn(cloudifyClient.blueprints,'list').andCallFake(function () {
                 return {
@@ -63,20 +57,18 @@ describe('Controller: DeploymentsCtrl', function () {
             _testSetup();
             executions = [{'deployment_id' : 'foo', name : 'bar', is_running: true }];
             cloudifyClient.executions.list.andReturn( window.mockPromise( { data : executions  } ));
-
-            spyOn(ExecutionsService,'isRunning').andCallFake(function( e){
-                return !!e.is_running;
-            });
         }));
 
-        it('should reset execution on each iteration CFY-2238', function(){
+        it('should get only running executions', inject(function(cloudifyClient) {
+            var expectedParameters = {
+                _include: 'id,workflow_id,status,deployment_id',
+                status: ['pending', 'started', 'cancelling', 'force_cancelling']
+            };
 
             loadExecutions();
-            expect(scope.getExecution({ 'id' : 'foo' } ).name).toBe('bar');
-            executions[0].is_running = false;
-            loadExecutions();
-            expect(!scope.getExecution({ 'id' : 'foo' } )).toBe(true);
-        });
+
+            expect(cloudifyClient.executions.list).toHaveBeenCalledWith(expectedParameters);
+        }));
     });
 
     describe('managerError', function () {
@@ -94,7 +86,7 @@ describe('Controller: DeploymentsCtrl', function () {
     });
 
     describe('canPause', function(){
-        it('should call ExecutionsService.canPause', inject(function( ExecutionsService){
+        it('should call ExecutionsService.canPause', inject(function( ExecutionsService ){
             _testSetup();
             spyOn(ExecutionsService,'canPause');
             spyOn(scope,'getExecution');
