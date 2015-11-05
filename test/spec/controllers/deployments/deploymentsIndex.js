@@ -86,7 +86,7 @@ describe('Controller: DeploymentsCtrl', function () {
     });
 
     describe('canPause', function(){
-        it('should call ExecutionsService.canPause', inject(function( ExecutionsService ){
+        it('should call ExecutionsService.canPause', inject(function(ExecutionsService){
             _testSetup();
             spyOn(ExecutionsService,'canPause');
             spyOn(scope,'getExecution');

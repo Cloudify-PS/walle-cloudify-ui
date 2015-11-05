@@ -15,15 +15,6 @@
         "download": "Download"
     },
 
-    "executions" : {
-        "changeFilter": {
-            "title" : "Click to change how we filter executions",
-            "startedOnly": "Started Only Executions",
-            "notStartedOnly": "All Running Executions"
-        }
-
-    },
-
     "blueprints": {
         "uploadBtn": "Upload Blueprint",
         "table": {

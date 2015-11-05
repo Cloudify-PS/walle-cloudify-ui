@@ -34,7 +34,6 @@
     <div class="buttonsContainer confirmationButtons">
         <button class="gs-btn" ng-click="closeThisDialog()" >{{ 'dialogs.confirm.cancel' | translate }}</button>
         <button class="gs-btn" ng-enabled="isExecuteEnabled()" gs-spinner="{{inProcess}}" ng-click="executeWorkflow()">{{ 'dialogs.confirm.confirm' | translate }}</button>
-        <button class="gs-btn" ng-enabled="isExecuteEnabled()" gs-spinner="{{inProcess}}" ng-click="executeWorkflow(true)">{{ 'dialogs.execution.forceStart' | translate }}</button>
     </div>
 
 
