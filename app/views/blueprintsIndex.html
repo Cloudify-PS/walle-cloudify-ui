@@ -34,7 +34,7 @@
                     <td class="name"><a href="#/blueprint/{{ blueprint.id }}/topology">{{ blueprint.id }}</a></td>
                     <td class="created">{{ blueprint.created_at | dateFormat: 'yyyy-MM-dd HH:mm:ss' }}</td>
                     <td class="updated">{{ blueprint.updated_at | dateFormat: 'yyyy-MM-dd HH:mm:ss' }}</td>
-                    <td class="deployments"><a ng-href="#/deployments?blueprint_iddp1={{ {matchAny:[blueprint.id]} | stringify | encodeURIComponent }}" class="deployments-number">{{blueprint.deploymentsCount}}</a></td>
+                    <td class="deployments"><a ng-href="#/deployments?blueprint_iddp1={{ {matchAny:[blueprint.id]} | stringify | encodeUri }}" class="deployments-number">{{blueprint.deploymentsCount}}</a></td>
                     <td class="actions">
                         <div class="bp-action-selector" on-delete="loadBlueprints()" blueprint="blueprint"></div>
                     </td>

@@ -59,19 +59,11 @@
                 }
                 .deployments-number {
                     display: inline-block;
-                    border: 2px solid #cadbec;
-                    background-color: $clr-base-01;
-                    border-radius: 5px;
                     width: 48px;
                     height: 33px;
                     line-height: 32px;
                     text-align: center;
                     color: $clr-base-20;
-                    text-decoration: none;
-
-                    &:hover {
-                        background-color: $clr-base-05;
-                    }
                 }
             }
             th {
