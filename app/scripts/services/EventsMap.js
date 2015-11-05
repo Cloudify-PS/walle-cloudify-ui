@@ -95,13 +95,13 @@ angular.module('cosmoUiApp')
             // todo: CFY-2437
             // this is a hack fix for 3.2 and should be refactored properly when the core can provide more info on the task context so there
             // won't be the need to search the message text.
-            if (event._source.message.text.indexOf('NonRecoverable') !== -1) {
+            if (event.message.text.indexOf('NonRecoverable') !== -1) {
                 // this is a non recoverable failed task - return the default task_failed icon
                 return eventsMap.task_failed.icon;
             }
 
             // if we got here, this is a recoverable failed task so we need to check it's context for retries
-            if (event._source.context.task_total_retries === -1 || event._source.context.task_total_retries - event._source.context.task_current_retries > 0) {
+            if (event.context.task_total_retries === -1 || event.context.task_total_retries - event.context.task_current_retries > 0) {
                 // task will be retried, return the task_retried icon
                 return eventsMap.task_retried.icon;
             } else {
@@ -132,7 +132,7 @@ angular.module('cosmoUiApp')
                 return 'gs-icon-logs';
             }
 
-            var eventType = event._source.event_type;
+            var eventType = event.event_type;
 
             if(eventsMap.hasOwnProperty(eventType)) {
                 if (eventType === 'task_failed') {

@@ -107,34 +107,34 @@
                 </tr>
             </thead>
             <tbody  ng-repeat="log in logsHits" ng-init="isOpen=false">
-            <tr data-ng-click="isOpen=!isOpen">
-                <td ng-repeat="column in columns | filter:true">
-                    <i ng-if='column.name === "Event Type Icon"' class="icon-events" ng-class="getEventIcon(log)"></i>
-                    <p ng-if='column.name === "Timestamp"' class="date">{{log.formattedTimestamp}}</p>
-                    <p ng-if='column.name === "Event Type"' class="type">{{getEventText(log._source.event_type)}}</p>
-                    <p ng-if='column.name === "Log Level"' class="level">{{log._source.level | uppercase}}</p>
-                    <p ng-if='column.name === "Operation"' class="operation">{{log._source.context.operation}}</p>
-                    <p ng-if='column.name === "Node Name"' class="node_name">{{log._source.context.node_name}}</p>
-                    <p ng-if='column.name === "Node Id"'  class="node_id">{{log._source.context.node_id}}</p>
-                    <p ng-if='column.name === "Message"'  class="task large-text-overflow">{{log._source.message.text}}</p>
-                </td>
-            </tr>
-            <tr class="details" data-ng-show="isOpen && isAnyColumnSelected()">
-                <td colspan="8">
-                    <div class="message-text">
-                        <pre>{{log._source.message.text == undefined && 'N/A' || log._source.message.text}}</pre>
-                    </div>
-                    <div class="group">
-                        <span><b>{{'logs.fields.executionId' | translate}}</b> {{ log._source.context.execution_id == undefined && 'N/A' || log._source.context.execution_id }}</span>
-                        <span><b>{{'logs.fields.nodeId' | translate}}</b> {{ log._source.context.node_id == undefined && 'N/A' || log._source.context.node_id }}</span>
-                    </div>
-                    <div class="group">
-                        <span><b>{{'logs.fields.taskName' | translate}}</b> {{ log._source.context.task_name == undefined && 'N/A' || log._source.context.task_name }}</span>
-                        <span><b>{{'logs.fields.plugin' | translate}}</b> {{ log._source.context.plugin == undefined && 'N/A' || log._source.context.plugin }}</span>
-                        <span><b>{{'logs.fields.operation' | translate}}</b> {{ log._source.context.operation == undefined && 'N/A' || log._source.context.operation }}</span>
-                    </div>
-                </td>
-            </tr>
+                <tr data-ng-click="isOpen=!isOpen">
+                    <td ng-repeat="column in columns | filter:true">
+                        <i ng-if='column.name === "Event Type Icon"' class="icon-events" ng-class="getEventIcon(log)"></i>
+                        <p ng-if='column.name === "Timestamp"' class="date">{{log.formattedTimestamp}}</p>
+                        <p ng-if='column.name === "Event Type"' class="type">{{getEventText(log.event_type)}}</p>
+                        <p ng-if='column.name === "Log Level"' class="level">{{log.level | uppercase}}</p>
+                        <p ng-if='column.name === "Operation"' class="operation">{{log.context.operation}}</p>
+                        <p ng-if='column.name === "Node Name"' class="node_name">{{log.context.node_name}}</p>
+                        <p ng-if='column.name === "Node Id"'  class="node_id">{{log.context.node_id}}</p>
+                        <p ng-if='column.name === "Message"'  class="task large-text-overflow">{{log.message.text}}</p>
+                    </td>
+                </tr>
+                <tr class="details" data-ng-show="isOpen && isAnyColumnSelected()">
+                    <td colspan="8">
+                        <div class="message-text">
+                            <pre>{{log.message.text == undefined && 'N/A' || log.message.text}}</pre>
+                        </div>
+                        <div class="group">
+                            <span><b>{{'logs.fields.executionId' | translate}}</b> {{ log.context.execution_id == undefined && 'N/A' || log.context.execution_id }}</span>
+                            <span><b>{{'logs.fields.nodeId' | translate}}</b> {{ log.context.node_id == undefined && 'N/A' || log.context.node_id }}</span>
+                        </div>
+                        <div class="group">
+                            <span><b>{{'logs.fields.taskName' | translate}}</b> {{ log.context.task_name == undefined && 'N/A' || log.context.task_name }}</span>
+                            <span><b>{{'logs.fields.plugin' | translate}}</b> {{ log.context.plugin == undefined && 'N/A' || log.context.plugin }}</span>
+                            <span><b>{{'logs.fields.operation' | translate}}</b> {{ log.context.operation == undefined && 'N/A' || log.context.operation }}</span>
+                        </div>
+                    </td>
+                </tr>
             </tbody>
         </table>
         <div class="pagination" st-pagination="" st-items-by-page="itemsPerPage" st-displayed-pages="9"></div>

@@ -71,13 +71,14 @@ angular.module('cosmoUiApp')
             $scope.getLogsError = null;
 
             cloudifyClient.events.get(options).then(function (response) {
-                    $scope.logsHits = response.data.hits.hits;
+                    $scope.logsHits = response.data.items;
                     //Formatting the timestamp
                     _.each($scope.logsHits, function(log){
-                        log.formattedTimestamp = EventsMap.getFormattedTimestamp(log._source.timestamp);
+                        log.formattedTimestamp = EventsMap.getFormattedTimestamp(log['@timestamp']);
                     });
-                    tableState.pagination.totalItemCount = response.data.hits.total;
-                    tableState.pagination.numberOfPages = Math.ceil(response.data.hits.total / options.size);
+                var totalHits = response.data.metadata.pagination.total;
+                    tableState.pagination.totalItemCount = totalHits;
+                    tableState.pagination.numberOfPages = Math.ceil(totalHits / options.size);
                 },function(response){
                     $scope.getLogsError = response.data.message;
                 });
