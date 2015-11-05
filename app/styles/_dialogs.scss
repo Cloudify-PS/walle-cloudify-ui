@@ -233,25 +233,21 @@ input[required] {
 
         .browse {
             display: block;
-            height: 33px;
+            height: 32px;
 
             #fileInput {
-                position: absolute;
-                opacity: 0;
-                left: 0;
-                z-index: 9998;
-                top: 0;
-                width: 35px;
-                height: 35px;
-                cursor: pointer;
+                display: none;
             }
             #browseBtn {
-                position: absolute;
-                right: 22px;
+                font-size: 28px;
+                float: right;
+                margin: 0 22px 0 0;
+                padding: 2px 0 0 2px;
+                width: 35px;
                 height: 32px;
-                font-size: 30px;
-                padding: 0 8px 0 9px;
-                line-height: 33px;
+                line-height: 32px;
+                vertical-align: middle;
+                text-align: center;
                 cursor: pointer;
             }
             .browseTxt {
