@@ -35,6 +35,13 @@
             line-height: 28px;
         }
 
+        #logs-page-link{
+            position: absolute;
+            top: 10.5px;
+            right: 50px;
+            cursor: $COSMOUI_CLICKABLE_CURSOR;
+        }
+
         .lastEvent {
             display: inline-block;
             border-left: 1px dotted #4b6b8b;
