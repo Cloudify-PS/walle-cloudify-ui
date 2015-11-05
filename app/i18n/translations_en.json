@@ -8,13 +8,11 @@
         "title": "App Status",
         "time": "Time left"
     },
-
     "version": {
         "updated": "Your version is up to date",
         "updateAvailable": "New version is available:",
         "download": "Download"
     },
-
     "blueprints": {
         "uploadBtn": "Upload Blueprint",
         "table": {
@@ -287,8 +285,7 @@
             "confirmCancel" : "Cancel execution?",
             "confirmExecution" : "Start execution?",
             "cancelDescription" : "Are you sure you want to cancel current execution?",
-            "forceCancel" : "Force",
-            "forceStart":  "Force"
+            "forceCancel" : "Force"
 
         },
         "upload": {
