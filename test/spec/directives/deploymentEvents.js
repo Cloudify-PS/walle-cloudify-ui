@@ -13,7 +13,7 @@ describe('Directive: deploymentEvents', function () {
         });
 
         scope = $rootScope.$new();
-        element = $compile(angular.element('<div deployment-events></div>'))(scope);
+        element = $compile(angular.element('<div deployment-events="\'id\'"></div>'))(scope);
 
         $rootScope.$apply();
 
@@ -40,6 +40,15 @@ describe('Directive: deploymentEvents', function () {
             expect(typeof(scope.dragIt)).toBe('function');
         });
 
+        it('should define logsDeploymentsParam', function(){
+            expect(scope.logsSearchParams).toEqual(
+                {
+                    deployment_Id: '{"matchAny":"[\\"id\\"]"}',
+                    sortBy:'timestamp',
+                    reverseOrder:true
+                });
+        });
+
         it('should have events-widget div', function () {
             expect(element.find('div.events-widget').length).toBe(1);
         });
@@ -55,7 +64,6 @@ describe('Directive: deploymentEvents', function () {
         it('should have containList div', function () {
             expect(element.find('div.containList').length).toBe(1);
         });
-
     });
 
     describe('events view', function(){ // tests for the HTML

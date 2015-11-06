@@ -59,7 +59,7 @@ module.exports = function (grunt) {
             },
             compass: {
                 files: ['<%= yeoman.app %>/styles/**/*.{scss,sass}', 'app/bower_components/gs-ui-infra/**/*.scss'],
-                tasks: ['compass:server']
+                tasks: ['compass:server', 'postcss']
             },
             livereload: {
                 options: {
@@ -234,6 +234,12 @@ module.exports = function (grunt) {
                 }
             }
         },
+        sasslint: {
+            options: {
+                configFile: 'test/spec/.sass-lint.yml'
+            },
+            target: ['<%= yeoman.app %>/styles/*.scss', '<%= yeoman.app %>/styles/*/*.scss']
+        },
         coffee: {
             dist: {
                 files: [
@@ -288,6 +294,18 @@ module.exports = function (grunt) {
                     '.tmp/styles/main.css' : '<%= yeoman.app %>/styles/main.scss'
                 }
 
+            }
+        },
+        // Post-processing css
+        postcss: {
+            options: {
+                map: true,
+                processors: [
+                    require('autoprefixer')({browsers: 'last 3 versions'}) // add vendor prefixes according to http://caniuse.com/
+                ]
+            },
+            dist: {
+                src: ['.tmp/styles/main.css', '<%= yeoman.dist %>/styles/main.css']
             }
         },
        /* compass: {
@@ -739,6 +757,7 @@ module.exports = function (grunt) {
         if ( testBackend === undefined || testBackend === '' || testBackend === 'all' || testBackend === 'frontend') { // default
             tasks = [
                 'jshint',
+                'sasslint',
                 'clean:server',
                 'concurrent:test',
                 'connect:test',
@@ -771,6 +790,7 @@ module.exports = function (grunt) {
             'overrideBuildVersion',
             'bundle',
             'ngmin',
+            'postcss',
             'cssmin',
             'uglify',
             'rev',
