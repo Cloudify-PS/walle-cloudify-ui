@@ -83,14 +83,16 @@ describe('Controller: LogsCtrl', function () {
                     _cloudifyClient.blueprints.list.andReturn({
                         then: function (successCallback) {
                             var response = {
-                                data: [
-                                    {
-                                        'id': 'blueprint1'
-                                    },
-                                    {
-                                        'id': 'blueprint2'
-                                    }
-                                ]
+                                data: {
+                                    items: [
+                                        {
+                                            'id': 'blueprint1'
+                                        },
+                                        {
+                                            'id': 'blueprint2'
+                                        }
+                                    ]
+                                }
                             };
                             successCallback(response);
                         }
@@ -99,22 +101,22 @@ describe('Controller: LogsCtrl', function () {
                     _cloudifyClient.deployments.list.andReturn({
                         then: function (successCallback) {
                             var response = {
-                                data: [
-                                    {
-                                        'id': 'firstDep',
-                                        'blueprint_id': 'blueprint1'
-
-                                    },
-                                    {
-                                        'id': 'secondDep',
-                                        'blueprint_id': 'blueprint1'
-                                    },
-                                    {
-                                        'id': 'onlyOneDeployment',
-                                        'blueprint_id': 'blueprint2'
-
-                                    }
-                                ]
+                                data: {
+                                    items: [
+                                        {
+                                            'id': 'firstDep',
+                                            'blueprint_id': 'blueprint1'
+                                        },
+                                        {
+                                            'id': 'secondDep',
+                                            'blueprint_id': 'blueprint1'
+                                        },
+                                        {
+                                            'id': 'onlyOneDeployment',
+                                            'blueprint_id': 'blueprint2'
+                                        }
+                                    ]
+                                }
                             };
                             successCallback(response);
                         }

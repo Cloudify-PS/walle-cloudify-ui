@@ -62,7 +62,7 @@ describe('Controller: DeploymentsCtrl', function () {
 
             _testSetup();
             executions = [{'deployment_id' : 'foo', name : 'bar', is_running: true }];
-            cloudifyClient.executions.list.andReturn( window.mockPromise( { data : executions  } ));
+            cloudifyClient.executions.list.andReturn( window.mockPromise( { data : {items: executions  }} ));
 
             spyOn(ExecutionsService,'isRunning').andCallFake(function( e){
                 return !!e.is_running;

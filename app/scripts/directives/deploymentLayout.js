@@ -55,7 +55,7 @@ angular.module('cosmoUiApp')
                     }
                     return cloudifyClient.executions.list($scope.deploymentId, 'id,workflow_id,status')
                         .then(function (result) {
-                            $scope.currentExecution = _.first(_.filter(result.data, function (execution) {
+                            $scope.currentExecution = _.first(_.filter(result.data.items, function (execution) {
                                 return ExecutionsService.isRunning(execution);
                             }));
 

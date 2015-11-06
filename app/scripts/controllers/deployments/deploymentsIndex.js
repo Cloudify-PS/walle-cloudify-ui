@@ -38,7 +38,7 @@ angular.module('cosmoUiApp')
             return cloudifyClient.executions.list(null, 'id,workflow_id,status,deployment_id').then(function(result){
 
                 //  CFY-2238 - remove terminated workflows.
-                runningExecutions = _.groupBy(_.filter(result.data, function(exec){  return ExecutionsService.isRunning(exec); }), 'deployment_id');
+                runningExecutions = _.groupBy(_.filter(result.data.items, function(exec){  return ExecutionsService.isRunning(exec); }), 'deployment_id');
 
             },function(){
                 // todo: implement error handling
@@ -50,7 +50,7 @@ angular.module('cosmoUiApp')
                 .then(function(result) {
 
                     $scope.managerError = false;
-                    $scope.deployments = result.data;
+                    $scope.deployments = result.data.items;
 
                     _.each($scope.deployments, function (d) {
                         $scope.blueprints[d.blueprint_id] = {

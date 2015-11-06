@@ -16,8 +16,8 @@ angular.module('cosmoUiApp')
         cloudifyClient.nodes.list($scope.deploymentId)
             .then(function(httpResponse){
                 //TODO: This function is changing the Model directly! We should not allow this! CFY-3798
-                NodeService.createNodesTree(httpResponse.data);
-                $scope.dataTable = httpResponse.data;
+                NodeService.createNodesTree(httpResponse.data.items);
+                $scope.dataTable = httpResponse.data.items;
             },function(httpResponse){
                 $log.error(httpResponse);
             });

@@ -51,7 +51,7 @@ describe('Controller: BlueprintsIndexCtrl', function () {
             spyOn(cloudifyClient.blueprints, 'list').andCallFake(function () {
                 return {
                     then: function (success/*, error*/) {
-                        success({ data : blueprints});
+                        success({ data : {items: blueprints}});
                         return $q.defer().promise;
                     }
                 };

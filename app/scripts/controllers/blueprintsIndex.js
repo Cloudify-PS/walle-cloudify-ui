@@ -13,15 +13,14 @@ angular.module('cosmoUiApp')
             $scope.blueprints = null;
             $scope.managerError = false;
             return cloudifyClient.blueprints.list('id,updated_at,created_at').then(function (result) {
-
-                if (result.data.length < 1) {
+                if (result.data.items.length < 1) {
                     $scope.blueprints = [];
                 } else {
-                    $scope.blueprints = _.sortByOrder(result.data, ['updated_at'], [false]);
+                    $scope.blueprints = _.sortByOrder(result.data.items, ['updated_at'], [false]);
                 }
             }, function (result) {
-                $scope.managerError = result.data || 'General Error';
-                $log.error('got error result', result.data);
+                $scope.managerError = result.data.items || 'General Error';
+                $log.error('got error result', result.data.items);
             });
         }
 

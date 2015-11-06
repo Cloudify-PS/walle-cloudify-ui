@@ -80,7 +80,7 @@ describe('Directive: deploymentLayout', function () {
             });
             spyOn(cloudifyClient.executions,'list').andReturn({
                 then:function( success ){
-                    success({ data :  executions });
+                    success({ data : {items: executions } });
                 }
             });
             scope.loadExecutions();

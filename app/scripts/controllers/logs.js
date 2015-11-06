@@ -40,7 +40,7 @@ angular.module('cosmoUiApp')
         cloudifyClient.blueprints.list()
             .then(function (response) {
                 $scope.blueprintsList = [];
-                _.forEach(response.data, function(blueprint){
+                _.forEach(response.data.items, function(blueprint){
                     $scope.blueprintsList.push({'value': blueprint.id, 'label': blueprint.id});
                 });
             });
@@ -49,7 +49,7 @@ angular.module('cosmoUiApp')
         cloudifyClient.deployments.list()
             .then(function(response){
                 $scope.deploymentsList = [];
-                _.forEach(response.data, function(deployment){
+                _.forEach(response.data.items, function(deployment){
                     $scope.deploymentsList.push({
                         'value': deployment.id,
                         'label': deployment.id+' ['+deployment.blueprint_id+']',
