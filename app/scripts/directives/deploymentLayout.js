@@ -7,8 +7,7 @@
  * # deploymentLayout
  */
 angular.module('cosmoUiApp')
-    .directive('deploymentLayout', function ($location, nodeStatus, ngDialog, cloudifyClient, ExecutionsService, $routeParams, $log, $filter) {
-        var translate = $filter('translate');
+    .directive('deploymentLayout', function ($location, nodeStatus, cloudifyClient, ExecutionsService, $routeParams) {
 
         return {
             templateUrl: 'views/deployment/deploymentLayout.html',
@@ -17,10 +16,7 @@ angular.module('cosmoUiApp')
             replace: false,
             link: function postLink($scope/*, $element, $attrs*/) {
 
-                var dialog;
-
                 $scope.deploymentId = $routeParams.deploymentId;
-                $scope.errorMessage = '';
 
                 // Set Navigation Menu - Need to set only after blueprint id available for source page href
                 $scope.navMenu = [
@@ -64,40 +60,7 @@ angular.module('cosmoUiApp')
 
                             // mock.... remove!!!
                             //$scope.currentExecution = {"status":"started","workflow_id":"uninstall","id":"fa56b8a1-04b5-43b9-894e-8ae4f44321f3"}
-
-                        },
-                        function (result) {
-                            if (result.status === 404) {
-                                if (!dialog) {
-                                    $scope.errorMessage = translate('deployment.executions.error_404');
-                                    dialog = ngDialog.openConfirm({
-
-                                        // todo: uncomment this part when 'dialogs as directives' is merged
-                                        //template:
-                                        //    '<div dialog dialog-title="Oops" dialog-description="{{ errorMessage }}">' +
-                                        //        '<div class="dialogButtons"><button class="gs-btn" ng-click="confirm()">Go to deployments list</button></div>' +
-                                        //    '</div>',
-
-                                        // todo: remove this part when 'dialogs as directives' is merged
-                                        template:
-                                            '<div class="dialogBox">' +
-                                                '<div class="dialogTitle">Oops</div>' +
-                                                '<div class="error-message">{{ errorMessage }}</div>' +
-                                                '<div class="buttonsContainer"><button class="gs-btn" ng-click="confirm()">Go to deployments list</button></div>' +
-                                            '</div>',
-
-                                        plain: true,
-                                        scope: $scope,
-                                        className: 'alert-dialog'
-                                    }).then(function() {
-                                        $scope.goToDeployments();
-                                    });
-                                }
-                            } else {
-                                $scope.errorMessage = translate('deployment.executions.error');
-                                $log.error('unable to get executions', result.data);
-                            }
-                        });
+                        }, function() {});
                 }
 
 

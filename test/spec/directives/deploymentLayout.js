@@ -59,47 +59,6 @@ describe('Directive: deploymentLayout', function () {
     });
 
     describe('#loadExecution', function(){
-        beforeEach(inject(function (ngDialog) {
-            spyOn(ngDialog, 'openConfirm').andReturn({
-                then: function (success) {
-                    success();
-                }
-            });
-        }));
-
-        it('should show error if result returned 500', inject(function (cloudifyClient) {
-            spyOn(cloudifyClient.executions, 'list').andReturn({
-                then: function (success, error) {
-                    error({status: 500});
-                }
-            });
-            scope.loadExecutions();
-            expect(scope.errorMessage).toBe('deployment.executions.error');
-        }));
-
-        it('should show error and alert dialog if result returned 404', inject(function (cloudifyClient, ngDialog) {
-            spyOn(cloudifyClient.executions, 'list').andReturn({
-                then: function (success, error) {
-                    error({status: 404});
-                }
-            });
-            scope.loadExecutions();
-            expect(scope.errorMessage).toBe('deployment.executions.error_404');
-            expect(ngDialog.openConfirm).toHaveBeenCalled();
-        }));
-
-        it('should redirect back to deployments if result returned 404 and user confirmed in dialog', inject(function ($location, cloudifyClient) {
-            spyOn($location, 'path');
-            spyOn(cloudifyClient.executions, 'list').andReturn({
-                then: function (success, error) {
-                    error({status: 404});
-                }
-            });
-            scope.loadExecutions();
-            angular.element(document.querySelector('.alert-dialog button')).click();
-            expect($location.path).toHaveBeenCalledWith('/deployments');
-        }));
-
         it('should put first running execution on scope.currentExecution', inject(function( cloudifyClient, ExecutionsService ) {
 
             var executions = [ { 'id' : 'foo' } , { 'id' : 'bar'}, { 'id' : 'running' }, { 'id' : 'not_running'}  ];

@@ -99,7 +99,11 @@
             "cancelling": "Cancelling",
             "force_cancelling": "Force cancelling",
             "error": "Unable to get executions list",
-            "error_404": "Executions list was not found, perhaps deployment was deleted"
+            "error_404": {
+                "title": "Oops",
+                "description": "Executions list was not found, perhaps deployment has been deleted",
+                "button": "Go to deployments list"
+            }
         },
         "process": {
             "create_deployment_environment": "Initializing",
