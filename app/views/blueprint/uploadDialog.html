@@ -4,10 +4,10 @@
     <div class="dialogDescription" ng-file-drop ng-model="myFile"  drag-over-class="dragover">{{ 'dialogs.upload.description' | translate }}</div>
     <form id="uploadForm" name="uploadForm">
         <div class="browse">
-            <div id="browseBtn" class="gs-btn">
+            <label id="browseBtn" class="gs-btn">
                 <i class="icon-gs-add-file"></i>
                 <input type="file" name="fileInput" id="fileInput" accept=".tar.bz2, .bz2, .gz,.tar.gz,.tar,.tgz,.zip" ng-file-select="onFileSelect($files)">
-            </div>
+            </label>
             <input type="text" spellcheck="false" class="browseTxt" ng-change="updatePath()" ng-model="inputText" placeholder="{{ 'dialogs.upload.browseText' | translate }}" required>
         </div>
 

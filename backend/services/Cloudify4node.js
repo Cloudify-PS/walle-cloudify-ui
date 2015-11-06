@@ -36,7 +36,7 @@ exports.uploadBlueprint = function( cloudifyConf, streamReader, opts, callback) 
     var ajax = require('http');
     var endpoint = require('url').parse(conf.cloudifyManagerEndpoint);
 
-    if ( endpoint.protocol && endpoint.protocol.indexOf('https') > 0 ){
+    if ( endpoint.protocol && endpoint.protocol.indexOf('https') >= 0 ){
         ajax = require('https');
 
     }

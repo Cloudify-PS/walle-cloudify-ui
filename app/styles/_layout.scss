@@ -10,6 +10,10 @@ html, body, .layout {
     background-color: #2c4a67;
 }
 
+body {
+    overflow-x: hidden;
+}
+
 .layout {
     $FOOTER_HEIGHT: 60px;
 
@@ -50,23 +54,14 @@ html, body, .layout {
         bottom: $FOOTER_HEIGHT;
         top: 83px;
         background: #fff;
-        overflow: visible;
-        //min-height:1000px;
-        //margin-bottom:-1000px;
 
         .main-content-display {
             $MAIN_PADDING: 20px;
             padding: $MAIN_PADDING;
             background: #fff;
             min-height: 100%;
-            position: relative;
+            overflow-x: auto;
 
-            > div {
-                background: transparent;
-                height: 100%;
-                position: relative;
-                width: 100%;
-            }
             .try-beta {
                 // temporary fix to issue (see on html)
                 position: absolute;
