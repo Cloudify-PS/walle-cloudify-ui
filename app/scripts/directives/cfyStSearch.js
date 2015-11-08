@@ -16,7 +16,9 @@ angular.module('cosmoUiApp')
                 var skipSearches = {
                     blueprint_id:false,
                     deployment_id: false,
-                    log_level: false
+                    log_level: false,
+                    gte: false,
+                    lte: false
                 };
 
                 function isSkipSearchMatch(){
@@ -44,41 +46,41 @@ angular.module('cosmoUiApp')
                 }
 
                 //Please notice that in order for range query to work both, lte and gte must be on the same element
-                //function createRangeQuery(){
-                //    var query = {};
-                //    if(attrs.gte && attrs.gte.length>0) {
-                //        query.gte = attrs.gte;
-                //    }
-                //    if(attrs.lte && attrs.lte.length>0)
-                //    {
-                //        query.lte = attrs.lte;
-                //    }
-                //    return query;
-                //}
+                function createRangeQuery(){
+                    var query = {};
+                    if(attrs.gte && attrs.gte.length>0) {
+                        query.gte = attrs.gte;
+                    }
+                    if(attrs.lte && attrs.lte.length>0)
+                    {
+                        query.lte = attrs.lte;
+                    }
+                    return query;
+                }
 
-                //if(attrs.gte) {
-                //    attrs.$observe('gte', function (value) {
-                //        if(isSkipSearchMatch){
-                //            return;
-                //        }
-                //        if(value || value === ''){
-                //            var query = createRangeQuery();
-                //            queryTable(query);
-                //        }
-                //    });
-                //}
-                //
-                //if(attrs.lte) {
-                //    attrs.$observe('lte', function (value) {
-                //        if(isSkipSearchMatch){
-                //            return;
-                //        }
-                //        if(value || value === ''){
-                //            var query = createRangeQuery();
-                //            queryTable(query);
-                //        }
-                //    });
-                //}
+                if(attrs.gte !== undefined) {
+                    attrs.$observe('gte', function (value) {
+                        if(isSkipSearchMatch()){
+                            return;
+                        }
+                        if(value || value === ""){
+                            var query = createRangeQuery();
+                            queryTable(query);
+                        }
+                    });
+                }
+
+                if(attrs.lte !== undefined) {
+                    attrs.$observe('lte', function (value) {
+                        if(isSkipSearchMatch()){
+                            return;
+                        }
+                        if(value || value === ""){
+                            var query = createRangeQuery();
+                            queryTable(query);
+                        }
+                    });
+                }
 
                 scope.$watch(function () {
                     return table.tableState().search.predicateObject[attrs.predicate];

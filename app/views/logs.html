@@ -63,7 +63,14 @@
 <!--//TODO:-->
 
             <!--<div date-picker ng-model="timeFrame.gte" min-view="hours" format="YYYY-MM-DD HH:mm"></div>-->
-            <input date-time type="text" ng-model="timeFrame.lte" min-view="hours" format="YYYY-MM-DD HH:mm"/>
+            <div cfy-st-search predicate="timestamp" gte="{{eventsFilter.timeRange.gte}}"  lte="{{eventsFilter.timeRange.lte}}" style="display: inline-block">
+                <span style="display: inline-block">
+                    <input date-time type="text" data-ng-model="eventsFilter.timeRange.gte" format="YYYY-MM-DD HH:mm" placeholder="From Time"/>
+                </span>
+                <span style="display: inline-block">
+                    <input date-time type="text" data-ng-model="eventsFilter.timeRange.lte" format="YYYY-MM-DD HH:mm" placeholder="To Time"/>
+                </span>
+            </div>
 
 
 
