@@ -13,7 +13,7 @@
  * # blueprintTopology
  */
 angular.module('cosmoUiApp')
-    .directive('uiTopology', function (cloudifyClient, NodeService, blueprintCoordinateService, DataProcessingService, $log, $q ) {
+    .directive('uiTopology', function (cloudifyClient, NodeService, blueprintCoordinateService, DataProcessingService, $log, $q, $rootScope ) {
         return {
             templateUrl: 'views/directives/topology.html',
             restrict: 'A',
@@ -130,7 +130,7 @@ angular.module('cosmoUiApp')
 
                             });
 
-                            $scope.topologyData = DataProcessingService.encodeTopologyFromRest(topologyData);
+                            $rootScope.$broadcast('topology::refresh', DataProcessingService.encodeTopologyFromRest(topologyData) );
 
                         });
                     }else{
