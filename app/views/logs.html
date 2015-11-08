@@ -6,7 +6,7 @@
         </ul></div>
     </div>
 
-    <div class="content-section"  st-table="logsHits" st-pipe="updateData" id="Logs">
+    <div class="content-section" st-table="logsHits" st-pipe="updateData" id="Logs">
         <div class="filters">
 
             <div class="filter gs-selection-button" ng-show="blueprintsList.length">
@@ -50,15 +50,24 @@
                      match="{{pluckArrayOfObjects(eventsFilter.logLevels,'value')}}"
                      data-text="{{'logs.filters.logLevels.text' | translate }}"></div>
             </div>
-            <div class="dropdown">
-            <a class="dropdown-toggle" id="dropdown2" role="button" data-toggle="dropdown">
-                <div class="input-group"><input type="text" class="form-control" data-ng-model="data.dateDropDownInput"><span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
-                </div>
-            </a>
-            <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
-                <datetimepicker data-ng-model="data.dateDropDownInput" data-datetimepicker-config="{ dropdownSelector: '#dropdown2' }"/>
-            </ul>
-        </div>
+                <!--<div class="input-group" id="dropdown2" data-toggle="dropdown">-->
+                    <!--&lt;!&ndash;<input type="text" class="form-control" data-ng-model="data.dateDropDownInput">&ndash;&gt;-->
+                    <!--<input type="text" class="form-control" data-ng-model="data.eden">-->
+                    <!--<span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>-->
+                <!--</div>-->
+                <!--<ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">-->
+                    <!--<datetimepicker data-ng-model="data.eden" data-datetimepicker-config="{ dropdownSelector: '#dropdown2' }"/>-->
+                <!--</ul>-->
+            <!--<p>Selected Date: {{ data.dateDropDownInput | date:'yyyy-MM-dd HH:mm' }}</p>-->
+
+<!--//TODO:-->
+
+            <!--<div date-picker ng-model="timeFrame.gte" min-view="hours" format="YYYY-MM-DD HH:mm"></div>-->
+            <input date-time type="text" ng-model="timeFrame.lte" min-view="hours" format="YYYY-MM-DD HH:mm"/>
+
+
+
+            <!--</div>-->
             <!--timestamp Range filters-->
             <!-- TODO : add support of i18n here-->
             <!--<div class="gs-date-range-selection"-->
@@ -189,5 +198,5 @@
         </table>
         <div class="pagination" st-pagination="" st-items-by-page="itemsPerPage" st-displayed-pages="9"></div>
         <div class="emptyTable" data-ng-hide="logsHits.length">{{'logs.noLogs' | translate}}</div>
-        </div>
     </div>
+</div>
