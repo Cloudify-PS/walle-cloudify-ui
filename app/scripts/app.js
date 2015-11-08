@@ -18,7 +18,8 @@ angular.module('cosmoUiApp', [
     'ui.bootstrap',
     'smart-table',
     'dndLists',
-    'cfy.topology'
+    'cfy.topology',
+    'ui.bootstrap.datetimepicker'
 ]).config( function ($routeProvider, $httpProvider, $translateProvider) {
 
         //var isSettingsExists = window.isSettingsExists();
