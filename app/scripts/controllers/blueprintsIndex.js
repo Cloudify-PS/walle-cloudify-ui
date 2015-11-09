@@ -22,6 +22,9 @@ angular.module('cosmoUiApp')
             }, function (result) {
                 $scope.managerError = result.data || 'General Error';
                 $log.error('got error result', result.data);
+                if(result.status === 403){
+                    $scope.permissionDenied = true;
+                }
             });
         }
 

@@ -81,6 +81,9 @@ angular.module('cosmoUiApp')
                 tableState.pagination.numberOfPages = Math.ceil(totalHits / options._size);
             },function(response){
                 $scope.getLogsError = response.data.message;
+                if(response.status === 403){
+                    $scope.permissionDenied = true;
+                }
             });
         };
 

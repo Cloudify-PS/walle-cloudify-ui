@@ -6,7 +6,8 @@
         </ul></div>
     </div>
 
-    <div class="content-section">
+    <div ng-show="!!permissionDenied" class="error">{{'permissionError' | translate}}</div>
+    <div class="content-section" ng-show="!permissionDenied">
         <div class="filters">
 
             <div class="filter gs-selection-button">

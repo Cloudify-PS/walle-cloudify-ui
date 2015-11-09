@@ -8,7 +8,8 @@
             </ul>
         </div>
     </div>
-    <div class="content-section" id="bp1" st-table="displayedBlueprints" st-safe-src="blueprints">
+    <div ng-show="!!permissionDenied" class="error">{{'permissionError' | translate}}</div>
+    <div class="content-section" id="bp1" st-table="displayedBlueprints" st-safe-src="blueprints" ng-show="!permissionDenied">
         <form>
             <div class="form-group search">
                 <label for="searchBlueprintByName">{{'blueprints.filters.blueprint.title' | translate}}:</label>

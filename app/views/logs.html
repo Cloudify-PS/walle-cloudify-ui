@@ -6,7 +6,8 @@
         </ul></div>
     </div>
 
-    <div class="content-section"  st-table="logsHits" st-pipe="updateData" id="Logs">
+    <div ng-show="!!permissionDenied" class="error">{{'permissionError' | translate}}</div>
+    <div class="content-section"  st-table="logsHits" st-pipe="updateData" id="Logs" ng-show="!permissionDenied">
         <div class="filters">
 
             <div class="filter gs-selection-button" ng-show="blueprintsList.length">

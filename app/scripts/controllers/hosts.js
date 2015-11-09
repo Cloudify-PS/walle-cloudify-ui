@@ -120,6 +120,10 @@ angular.module('cosmoUiApp')// todo : change to NodeCtrl
 
                 $scope.filterLoading = false;
                 filterItems();
+            }, function(result){
+                if(result.status === 403){
+                    $scope.permissionDenied = true;
+                }
             });
 
         }
