@@ -1,0 +1,16 @@
+#deployBlueprintDialog {
+
+    .error-message {
+        font-family: 'OpenSansRegular', sans-serif;
+
+        > div {
+
+            &:nth-child(1), &:nth-child(2) {
+                font-family: monospace;
+            }
+            &:first-child, &:last-child {
+                margin-top: 10px;
+            }
+        }
+    }
+}
