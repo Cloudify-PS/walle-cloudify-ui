@@ -19,11 +19,11 @@ angular.module('cosmoUiApp')
                 $scope.executionsList = httpResponse.data;
             },
             function (error) {
+                $log.error(error);
                 if (error.status === 404) {
-                    $scope.errorMessage = 'deployment.executions.error_404';
+                    $scope.deploymentNotFound = true;
                 } else {
                     $scope.errorMessage = 'deployment.executions.error';
                 }
-                $log.error(error);
             });
     });

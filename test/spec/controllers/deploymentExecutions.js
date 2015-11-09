@@ -71,7 +71,7 @@ describe('Controller: DeploymentExecutions', function () {
             expect(scope.errorMessage).toBe('deployment.executions.error');
         }));
 
-        it('should show error if result returned 404', inject(function (cloudifyClient) {
+        it('should show Deployment not found view if result returned 404', inject(function (cloudifyClient) {
             spyOn(cloudifyClient.executions, 'list').andReturn({
                 then: function (success, error) {
                     error({status: 404});
@@ -79,7 +79,7 @@ describe('Controller: DeploymentExecutions', function () {
             });
             initCtrl();
             scope.$digest();
-            expect(scope.errorMessage).toBe('deployment.executions.error_404');
+            expect(scope.deploymentNotFound).toBeTruthy();
         }));
     });
 
