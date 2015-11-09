@@ -53,36 +53,36 @@ describe('Directive: cfyStSearch', function () {
 
     it('should query table on gte attribute change', function () {
         scope.predicate = 'predicate';
-        scope.gte = 'now';
+        scope.gte = new moment('2015-10-16T16:30:00.000Z');
         element = angular.element('<table st-table=""><div cfy-st-search gte="{{gte}}" predicate="{{predicate}}"></div></table>');
         initDirective();
-        scope.gte = 'yesterday';
+        scope.gte = new moment('2016-11-17T17:40:00.000Z');
         scope.$digest();
-        expect(stTableCtrl.search).toHaveBeenCalledWith( { gte : 'now' }, 'predicate' );
-        expect(stTableCtrl.search).toHaveBeenCalledWith( { gte : 'yesterday' }, 'predicate' );
+        expect(stTableCtrl.search).toHaveBeenCalledWith( { gte : '"2015-10-16T16:30:00.000Z"' }, 'predicate' );
+        expect(stTableCtrl.search).toHaveBeenCalledWith( { gte : '"2016-11-17T17:40:00.000Z"' }, 'predicate' );
     });
 
     it('should query table on lte attribute change', function () {
         scope.predicate = 'predicate';
-        scope.lte = 'now';
+        scope.lte = new moment('2010-10-10T10:10:00.000Z');
         element = angular.element('<table st-table=""><div cfy-st-search lte="{{lte}}" predicate="{{predicate}}"></div></table>');
         initDirective();
-        scope.lte = 'tomorrow';
+        scope.lte = new moment('2011-11-11T11:11:00.000Z');
         scope.$digest();
-        expect(stTableCtrl.search).toHaveBeenCalledWith( { lte : 'now' }, 'predicate' );
-        expect(stTableCtrl.search).toHaveBeenCalledWith( { lte : 'tomorrow' }, 'predicate' );
+        expect(stTableCtrl.search).toHaveBeenCalledWith( { lte : '"2010-10-10T10:10:00.000Z"' }, 'predicate' );
+        expect(stTableCtrl.search).toHaveBeenCalledWith( { lte : '"2011-11-11T11:11:00.000Z"' }, 'predicate' );
     });
 
     it('should query table with lte and gte', function () {
         scope.predicate = 'predicate';
-        scope.lte = 'now';
-        scope.gte = 'now';
+        scope.gte = new moment('2015-10-16T16:30:00.000Z');
+        scope.lte = new moment('2010-10-10T10:10:00.000Z');
         element = angular.element('<table st-table=""><div cfy-st-search gte={{gte}} lte="{{lte}}" predicate="{{predicate}}"></div></table>');
         initDirective();
-        scope.lte = 'tomorrow';
-        scope.gte = 'yesterday';
+        scope.gte = new moment('2016-11-17T17:40:00.000Z');
+        scope.lte = new moment('2011-11-11T11:11:00.000Z');
         scope.$digest();
-        expect(stTableCtrl.search).toHaveBeenCalledWith( { gte : 'now', lte : 'now' }, 'predicate' );
-        expect(stTableCtrl.search).toHaveBeenCalledWith( { gte : 'yesterday', lte : 'tomorrow' }, 'predicate' );
+        expect(stTableCtrl.search).toHaveBeenCalledWith( { gte : '"2015-10-16T16:30:00.000Z"', lte : '"2010-10-10T10:10:00.000Z"' }, 'predicate' );
+        expect(stTableCtrl.search).toHaveBeenCalledWith( { gte : '"2016-11-17T17:40:00.000Z"', lte : '"2011-11-11T11:11:00.000Z"' }, 'predicate' );
     });
 });

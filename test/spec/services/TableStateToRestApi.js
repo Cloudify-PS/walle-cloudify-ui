@@ -75,7 +75,7 @@ describe('Service: tableStateToRestApi', function () {
                 search: {
                     predicateObject: {
                         timestamp: {
-                            gte: '2015-09-17T05:05:00.000Z'
+                            gte: '"2015-09-17T05:05:00.000Z"'
                         }
                     }
                 },
@@ -102,7 +102,7 @@ describe('Service: tableStateToRestApi', function () {
                 search: {
                     predicateObject: {
                         timestamp: {
-                            lte: '2015-10-15T14:30:00.000Z'
+                            lte: '"2015-10-15T14:30:00.000Z"'
                         }
                     }
                 },
@@ -129,8 +129,8 @@ describe('Service: tableStateToRestApi', function () {
                 search: {
                     predicateObject: {
                         timestamp: {
-                            lte: '2015-10-15T14:30:00.000Z',
-                            gte: '2015-10-16T16:30:00.000Z'
+                            lte: '"2015-10-15T14:30:00.000Z"',
+                            gte: '"2015-10-16T16:30:00.000Z"'
                         }
                     }
                 },

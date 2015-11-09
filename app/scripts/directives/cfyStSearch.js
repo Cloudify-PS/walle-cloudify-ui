@@ -63,7 +63,7 @@ angular.module('cosmoUiApp')
                         if(isSkipSearchMatch()){
                             return;
                         }
-                        if(value || value === ""){
+                        if(value || value === ''){
                             var query = createRangeQuery();
                             queryTable(query);
                         }
@@ -75,7 +75,7 @@ angular.module('cosmoUiApp')
                         if(isSkipSearchMatch()){
                             return;
                         }
-                        if(value || value === ""){
+                        if(value || value === ''){
                             var query = createRangeQuery();
                             queryTable(query);
                         }
@@ -89,7 +89,7 @@ angular.module('cosmoUiApp')
                     //This checks if the state was changed from outside of this directive, so the model didn't updated
                     function isModelDifferentFromQuery(model, queryValues){
                         //is ngModel different from the queried value?
-                        return !_.isEqual(_.pluck(model,'value'), queryValues);
+                        return !_.isEqual(model, queryValues);
                     }
 
                     function getSelectedOptions(queryValues){
@@ -109,14 +109,38 @@ angular.module('cosmoUiApp')
                     }
 
                     try {
-                        var queryValues = Array.isArray(query.matchAny) ? query.matchAny : JSON.parse(query.matchAny);
-                        var ngModel = attrs.ngModel;
-                        if(!!queryValues) {
+                        if(query.matchAny !== undefined) {
+                            var queryValues = Array.isArray(query.matchAny) ? query.matchAny : JSON.parse(query.matchAny);
+                            var ngModel = attrs.ngModel;
+                            if (!!queryValues) {
+                                //check if state is different
+                                if (isModelDifferentFromQuery(_.pluck(_.get(scope, ngModel),'value'), queryValues)) {
+                                    var selectedOptions = getSelectedOptions(queryValues);
+                                    skipSearches[attrs.predicate] = true;
+                                    _.set(scope, ngModel, selectedOptions);
+                                }
+                            }
+                        }
+                        if(query.gte !== undefined){
+                            var gte = JSON.parse(query.gte);
+                            var gteModel = 'eventsFilter.timeRange.gte';
                             //check if state is different
-                            if(isModelDifferentFromQuery(_.get(scope, ngModel),queryValues)){
-                                var selectedOptions = getSelectedOptions(queryValues);
-                                skipSearches[attrs.predicate] = true;
-                                _.set(scope, ngModel, selectedOptions);
+                            if (!angular.isFunction(_.get(scope, gteModel).toISOString) || isModelDifferentFromQuery(_.get(scope, gteModel).toISOString(), gte)) {
+                                if (query.gte !== undefined) {
+                                    skipSearches.gte = true;
+                                    _.set(scope, gteModel, new moment(gte));
+                                }
+                            }
+                        }
+                        if(query.lte !== undefined) {
+                            var lte = JSON.parse(query.lte);
+                            var lteModel = 'eventsFilter.timeRange.lte';
+                            //check if state is different
+                            if (!angular.isFunction(_.get(scope, lteModel).toISOString) || isModelDifferentFromQuery(_.get(scope, lteModel).toISOString(), lte)) {
+                                if (query.lte !== undefined) {
+                                    skipSearches.lte = true;
+                                    _.set(scope, lteModel, new moment(lte));
+                                }
                             }
                         }
                     }

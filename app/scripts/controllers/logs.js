@@ -26,8 +26,8 @@ angular.module('cosmoUiApp')
                 'deployments': [],
                 'logLevels': [],
                 'timeRange':{
-                    'gte': "",
-                    'lte': ""
+                    'gte': '',
+                    'lte': ''
                 }
             };
         };

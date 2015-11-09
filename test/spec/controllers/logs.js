@@ -226,8 +226,8 @@ describe('Controller: LogsCtrl', function () {
                     'deployments': ['deployment2','deployment1'],
                     'logLevels': ['error','warning','info'],
                     'timeRange': {
-                        'gte': '2015-06-17 15:50',
-                        'lte': '2015-06-18 16:50'
+                        'gte': new moment('2015-06-17T15:50:00.000Z'),
+                        'lte': new moment('2015-06-18T16:50:00.000Z')
                     }
                 };
                 scope.clearFilters();
