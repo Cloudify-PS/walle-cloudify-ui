@@ -97,9 +97,8 @@
             "pending": "Pending",
             "started": "Started",
             "cancelling": "Cancelling",
-            "force_cancelling": "Force cancelling",
-            "error": "Unable to get executions list",
-            "error_404": "Executions list was not found, perhaps deployment was deleted"
+            "force_cancelling": "Force cancelling"
+
         },
         "process": {
             "create_deployment_environment": "Initializing",

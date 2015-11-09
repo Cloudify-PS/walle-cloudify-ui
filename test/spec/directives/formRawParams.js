@@ -52,7 +52,7 @@ describe('Directive: formRawParams', function () {
         var textarea;
         scope.$digest();
         textarea = element.find('#rawString');
-        expect(textarea.hasClass('resize-vertical')).toBe(true);
+        expect(textarea.hasClass('resize-vertical')).toBeTruthy();
     });
 
     describe('#validateJsonKeys', function () {
