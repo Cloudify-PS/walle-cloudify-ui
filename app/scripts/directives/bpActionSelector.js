@@ -30,7 +30,11 @@ angular.module('cosmoUiApp')
                     cloudifyClient.blueprints.get(blueprintId, null).then(function (result) {
                         $scope.selectedBlueprint = result.data || null;
 
-                    }); // todo: add error handling
+                    }, function(result) {
+                        if(result.status === 403) {
+                            $scope.permissionDenied = true;
+                        }
+                    });
                 }
 
                 function openDeleteDialog() {

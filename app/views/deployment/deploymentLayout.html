@@ -1,6 +1,7 @@
 <div class="deployments-layout-display cosmo-layout">
 
-    <span ng-show="!deploymentNotFound">
+    <div ng-show="!!permissionDenied" class="error">{{'permissionError' | translate}}</div>
+    <span ng-show="!deploymentNotFound && !permissionDenied">
 
 
     <div id="deployment-header">

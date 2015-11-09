@@ -55,14 +55,15 @@ angular.module('cosmoUiApp')
 
                 $scope.loadBlueprint = function() {
                     $log.info('getting blueprint');
-                    cloudifyClient.blueprints.get(scope.blueprintId).then(function (result) {
+                    cloudifyClient.blueprints.get(scope.blueprintId).then(function (result, second) {
 
-                        $log.info('got blueprint');
-                        scope.nodes = NodeService.createNodesTree(result.data.plan.nodes);
+                        $log.info('got blueprint', result, second); scope.nodes = NodeService.createNodesTree(result.data.plan.nodes);
                         blueprintCoordinateService.resetCoordinates();
                         blueprintCoordinateService.setMap(NodeService.getConnections(result.data.plan.nodes, 'connected_to'));
                         scope.coordinates = blueprintCoordinateService.getCoordinates();
 
+                    }, function(res){
+                        console.log('whats that now?', res);
                     });
                 };
 

@@ -18,6 +18,8 @@ angular.module('cosmoUiApp')
                     }, function(result){
                         if(result.status === 404) {
                             $scope.blueprintNotFound = true;
+                        } else if(result.status === 403) {
+                            $scope.permissionDenied = true;
                         }
                         // todo: handle other errors, apart from 404
                     })

@@ -43,9 +43,11 @@ angular.module('cosmoUiApp')
                         $scope.blueprintId = result.data.blueprint_id;
                         $scope.deployment = result.data;
                     }, function( result ){
+                        $scope.showDeploymentEvents = false;
                         if ( result.status === 404 ){
                             $scope.deploymentNotFound = true;
-                            $scope.showDeploymentEvents = false;
+                        }else if(result.status === 403) {
+                            $scope.permissionDenied = true;
                         }
                     });
 

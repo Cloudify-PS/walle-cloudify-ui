@@ -1,6 +1,7 @@
 <div id="blueprint-header" class="cosmo-layout">
 
-    <span ng-show="!blueprintNotFound">
+    <div ng-show="!!permissionDenied" class="error">{{'permissionError' | translate}}</div>
+    <span ng-show="!blueprintNotFound && !permissionDenied">
     <div class="header-left">
 
         <div class="content-header">
@@ -37,6 +38,7 @@
         </div>
 
     </div>
+
 
 
 

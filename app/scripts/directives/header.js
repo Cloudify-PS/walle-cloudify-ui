@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('cosmoUiApp')
-    .directive('header', function ($log, CloudifyService, LoginService ) {
+    .directive('header', function ($log, CloudifyService, LoginService, user ) {
         return {
             templateUrl: 'views/headerTemplate.html',
             restrict: 'A',
@@ -25,6 +25,7 @@ angular.module('cosmoUiApp')
                 LoginService.isLoggedIn().then(function(result){
                     scope.isLoggedIn = result.data.result;
                     scope.username = result.data.username;
+                    user.loggedIn = result.data.result;
                 });
             }
         };

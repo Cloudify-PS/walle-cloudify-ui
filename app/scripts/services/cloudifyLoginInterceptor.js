@@ -8,7 +8,7 @@
  * Factory in the cosmoUiAppApp.
  */
 angular.module('cosmoUiApp')
-    .factory('cloudifyLoginInterceptor', function ( $log , $q ) {
+    .factory('cloudifyLoginInterceptor', function ( $log , $q, user ) {
         return {
             'responseError': function (rejection) {
 
@@ -26,10 +26,16 @@ angular.module('cosmoUiApp')
                 }
 
                 if (rejection.status === 401 && errorCode === 'unauthorized_error') { // this is a cloudify standard response for authentication.lets redirect to login
-                    $log.info('redirecting to login page');
-                    // we cannot use $http or anything here.
-                    window.location.hash = '#/login';
-                    return;
+
+                    if(user.loggedIn){
+                        $log.info('you\'ve wronged me');
+                        rejection.status = 403;
+                    }else {
+                        $log.info('redirecting to login page');
+                        // we cannot use $http or anything here.
+                        window.location.hash = '#/login';
+                        return;
+                    }
                 }
 
                 return $q.reject(rejection);

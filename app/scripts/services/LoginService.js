@@ -8,7 +8,7 @@
  * Service in the cosmoUiApp.
  */
 angular.module('cosmoUiApp')
-    .service('LoginService', function LoginService( $http, $location) {
+    .service('LoginService', function LoginService( $http, $location, user) {
 
         this.login = function(data) {
             return $http({

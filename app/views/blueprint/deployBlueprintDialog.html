@@ -1,27 +1,32 @@
 <div id="deployDialogContainer" class="dialogBox">
-        <div class="dialogTitle">
-            <label>{{ 'dialogs.deploy.title' | translate }} {{selectedBlueprint.id}}</label>
-        </div>
+    <div class="dialogTitle">
+        <label>{{ 'dialogs.deploy.title' | translate }} {{selectedBlueprint.id}}</label>
+    </div>
+    <div ng-show="!permissionDenied">
         <div class="dialogDescription">{{ 'dialogs.deploy.description' | translate }}</div>
-    <div ng-show="!selectedBlueprint" class="gs-spinner large"></div>
+        <div ng-show="!selectedBlueprint" class="gs-spinner large"></div>
 
-    <div ng-show="selectedBlueprint">
+        <div ng-show="selectedBlueprint">
 
-        <div class="dialogDeploymentName">
-            <input type="text" spellcheck="false" ng-model="deployment_id" ng-enter="deployBlueprint(selectedBlueprint.id)" placeholder="{{ 'dialogs.deploy.name' | translate }}">
+            <div class="dialogDeploymentName">
+                <input type="text" spellcheck="false" ng-model="deployment_id" ng-enter="deployBlueprint(selectedBlueprint.id)" placeholder="{{ 'dialogs.deploy.name' | translate }}">
+            </div>
+
+            <div form-raw-params
+                 ng-show="isParamsVisible()"
+                 on-error="setDeployError(msg)"
+                 params="selectedBlueprint.plan.inputs"
+                 raw-string="rawString"
+                 valid="inputsValid"></div>
+
         </div>
 
-        <div form-raw-params
-             ng-show="isParamsVisible()"
-             on-error="setDeployError(msg)"
-             params="selectedBlueprint.plan.inputs"
-             raw-string="rawString"
-             valid="inputsValid"></div>
-
+        <div class="error-message" ng-show="!!deployErrorMessage">{{deployErrorMessage}}</div>
+        <div class="buttonsContainer deployButtons">
+            <button id="deployBtn" class="gs-btn" ng-disabled="!isDeployEnabled()" gs-spinner="{{inProcess}}" ng-click="deployBlueprint(selectedBlueprint.id)">{{ 'dialogs.deploy.create' | translate }}</button>
+        </div>
     </div>
-
-    <div class="error-message" ng-show="!!deployErrorMessage">{{deployErrorMessage}}</div>
-    <div class="buttonsContainer deployButtons">
-        <button id="deployBtn" class="gs-btn" ng-disabled="!isDeployEnabled()" gs-spinner="{{inProcess}}" ng-click="deployBlueprint(selectedBlueprint.id)">{{ 'dialogs.deploy.create' | translate }}</button>
-    </div>
+    <p ng-show="permissionDenied" class="error-message">
+        {{'permissionError' | translate}}
+    </p>
 </div>

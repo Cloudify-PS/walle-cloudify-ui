@@ -29,6 +29,7 @@ angular.module('cosmoUiApp')
 
         // this method translates error code from REST API.
         this.getErrorMessage = function( errResponse ){
+            console.log('ererrr', errResponse);
             try {
                 return '[' + errResponse.data.error_code + '] : ' + errResponse.data.message;
             }catch(e){

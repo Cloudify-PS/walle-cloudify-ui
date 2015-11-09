@@ -4,6 +4,7 @@
         "loading" : "Loading..."
     },
     "connectError": "Error connecting to Cloudify server",
+    "permissionError": "Access denied",
     "appStatus": {
         "title": "App Status",
         "time": "Time left"
