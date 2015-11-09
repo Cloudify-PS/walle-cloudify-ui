@@ -59,7 +59,7 @@ describe('Directive: deploymentLayout', function () {
     });
 
     describe('#loadExecution', function(){
-        it('should put first running execution on scope.currentExecution', inject(function( cloudifyClient, ExecutionsService ) {
+        it('should put first running execution on scope.currentExecution', inject(function( cloudifyClient ) {
 
             var executions = [ { 'id' : 'foo' } , { 'id' : 'bar'}, { 'id' : 'running' }, { 'id' : 'not_running'}  ];
 
