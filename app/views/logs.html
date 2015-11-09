@@ -136,67 +136,67 @@
                 <!-- All of the next filtering of properties is documented in logs_and_events_properties.md file-->
                 <td ng-repeat="column in columns | filter:true">
                     <i ng-if='column.name === "Event Type Icon"' class="icon-events" ng-class="getEventIcon(log)"></i>
-                    <p ng-if='column.name === "Timestamp"' class="date">{{log._source.timestamp == undefined && '-' || log.formattedTimestamp}}</p>
-                    <p ng-if='column.name === "Event Type"' class="type">{{getEventText(log._source.event_type) == undefined && '-' || getEventText(log._source.event_type)}}</p>
-                    <p ng-if='column.name === "Log Level"' class="level">{{log._source.level == undefined && '-' || log._source.level | uppercase}}</p>
-                    <p ng-if='column.name === "Operation"' class="operation">{{log._source.context.operation == undefined && '-' || log._source.context.operation}}</p>
-                    <p ng-if='column.name === "Node Name"' class="node_name">{{log._source.context.node_name == undefined && '-' || log._source.context.node_name}}</p>
-                    <p ng-if='column.name === "Node Id"'  class="node_id">{{log._source.context.node_id == undefined && '-' || log._source.context.node_id}}</p>
-                    <p ng-if='column.name === "Message"'  class="task large-text-overflow">{{log._source.message.text == undefined && '-' || log._source.message.text}}</p>
+                    <p ng-if='column.name === "Timestamp"' class="date">{{log.timestamp == undefined && '-' || log.formattedTimestamp}}</p>
+                    <p ng-if='column.name === "Event Type"' class="type">{{getEventText(log.event_type) == undefined && '-' || getEventText(log.event_type)}}</p>
+                    <p ng-if='column.name === "Log Level"' class="level">{{log.level == undefined && '-' || log.level | uppercase}}</p>
+                    <p ng-if='column.name === "Operation"' class="operation">{{log.context.operation == undefined && '-' || log.context.operation}}</p>
+                    <p ng-if='column.name === "Node Name"' class="node_name">{{log.context.node_name == undefined && '-' || log.context.node_name}}</p>
+                    <p ng-if='column.name === "Node Id"'  class="node_id">{{log.context.node_id == undefined && '-' || log.context.node_id}}</p>
+                    <p ng-if='column.name === "Message"'  class="task large-text-overflow">{{log.message.text == undefined && '-' || log.message.text}}</p>
                 </td>
             </tr>
             <tr class="details" data-ng-show="isOpen && isAnyColumnSelected()">
                 <td colspan="8">
                     <div class="message-text">
-                        <pre>{{log._source.message.text == undefined && 'N/A' || log._source.message.text}}</pre>
+                        <pre>{{log.message.text == undefined && 'N/A' || log.message.text}}</pre>
                     </div>
                     <div class="group">
-                        <span><b>{{'logs.fields.auditTimestamp' | translate}}:</b> {{ log._source['@timestamp'] == undefined && 'N/A' || (log._source['@timestamp'] | dateFormat:'yyyy-MM-dd HH:mm:ss.ms')}}</span>
-                        <span><b>{{'logs.fields.timestamp' | translate}}:</b> {{ log._source.timestamp == undefined && 'N/A' || (log._source.timestamp | dateFormat:'yyyy-MM-dd HH:mm:ss.ms')}}</span>
-                        <span><b>{{'logs.fields.type' | translate}}:</b> {{ log._source.type == undefined && 'N/A' || log._source.type }}</span>
-                        <span ng-if="log._source.type === 'cloudify_log'">
-                            <span><b>{{'logs.fields.logger' | translate}}:</b> {{ log._source.logger == undefined && 'N/A' || log.logger }}</span>
-                            <span><b>{{'logs.fields.level' | translate}}:</b> {{ log._source.level == undefined && 'N/A' || log._source.level }}</span>
+                        <span><b>{{'logs.fields.auditTimestamp' | translate}}:</b> {{ log['@timestamp'] == undefined && 'N/A' || (log['@timestamp'] | dateFormat:'yyyy-MM-dd HH:mm:ss.ms')}}</span>
+                        <span><b>{{'logs.fields.timestamp' | translate}}:</b> {{ log.timestamp == undefined && 'N/A' || (log.timestamp | dateFormat:'yyyy-MM-dd HH:mm:ss.ms')}}</span>
+                        <span><b>{{'logs.fields.type' | translate}}:</b> {{ log.type == undefined && 'N/A' || log.type }}</span>
+                        <span ng-if="log.type === 'cloudify_log'">
+                            <span><b>{{'logs.fields.logger' | translate}}:</b> {{ log.logger == undefined && 'N/A' || log.logger }}</span>
+                            <span><b>{{'logs.fields.level' | translate}}:</b> {{ log.level == undefined && 'N/A' || log.level }}</span>
                         </span>
-                        <span ng-if="log._source.type === 'cloudify_event'">
-                            <span><b>{{'logs.fields.eventType' | translate}}:</b> {{ log._source.event_type == undefined && 'N/A' || log._source.event_type }}</span>
+                        <span ng-if="log.type === 'cloudify_event'">
+                            <span><b>{{'logs.fields.eventType' | translate}}:</b> {{ log.event_type == undefined && 'N/A' || log.event_type }}</span>
                         </span>
                     </div>
                     <div class="group">
-                        <span><b>{{'logs.fields.blueprintId' | translate}}:</b> {{ log._source.context.blueprint_id == undefined && 'N/A' || log._source.context.blueprint_id }}</span>
-                        <span><b>{{'logs.fields.deploymentId' | translate}}:</b> {{ log._source.context.deployment_id == undefined && 'N/A' || log._source.context.deployment_id }}</span>
-                        <span><b>{{'logs.fields.executionId' | translate}}:</b> {{ log._source.context.execution_id == undefined && 'N/A' || log._source.context.execution_id }}</span>
-                        <span><b>{{'logs.fields.workflowId' | translate}}:</b> {{ log._source.context.workflow_id == undefined && 'N/A' || log._source.context.workflow_id }}</span>
+                        <span><b>{{'logs.fields.blueprintId' | translate}}:</b> {{ log.context.blueprint_id == undefined && 'N/A' || log.context.blueprint_id }}</span>
+                        <span><b>{{'logs.fields.deploymentId' | translate}}:</b> {{ log.context.deployment_id == undefined && 'N/A' || log.context.deployment_id }}</span>
+                        <span><b>{{'logs.fields.executionId' | translate}}:</b> {{ log.context.execution_id == undefined && 'N/A' || log.context.execution_id }}</span>
+                        <span><b>{{'logs.fields.workflowId' | translate}}:</b> {{ log.context.workflow_id == undefined && 'N/A' || log.context.workflow_id }}</span>
                     </div>
-                    <span ng-if="log._source.context.task_name || log._source.context.task_id || log._source.context.task_queue || log._source.context.task_target || log._source.context.operation || log._source.context.plugin || log._source.context.task_current_retries || log._source.context.task_total_retries">
+                    <span ng-if="log.context.task_name || log.context.task_id || log.context.task_queue || log.context.task_target || log.context.operation || log.context.plugin || log.context.task_current_retries || log.context.task_total_retries">
                         <div class="group">
-                            <span><b>{{'logs.fields.taskName' | translate}}:</b> {{ log._source.context.task_name == undefined && 'N/A' || log._source.context.task_name }}</span>
-                            <span><b>{{'logs.fields.taskId' | translate}}:</b> {{ log._source.context.task_id == undefined && 'N/A' || log._source.context.task_id }}</span>
-                            <span><b>{{'logs.fields.taskQueue' | translate}}:</b> {{ log._source.context.task_queue == undefined && 'N/A' || log._source.context.task_queue }}</span>
-                            <span><b>{{'logs.fields.taskTarget' | translate}}:</b> {{ log._source.context.task_target == undefined && 'N/A' || log._source.context.task_target }}</span>
+                            <span><b>{{'logs.fields.taskName' | translate}}:</b> {{ log.context.task_name == undefined && 'N/A' || log.context.task_name }}</span>
+                            <span><b>{{'logs.fields.taskId' | translate}}:</b> {{ log.context.task_id == undefined && 'N/A' || log.context.task_id }}</span>
+                            <span><b>{{'logs.fields.taskQueue' | translate}}:</b> {{ log.context.task_queue == undefined && 'N/A' || log.context.task_queue }}</span>
+                            <span><b>{{'logs.fields.taskTarget' | translate}}:</b> {{ log.context.task_target == undefined && 'N/A' || log.context.task_target }}</span>
                         </div>
                         <div class="group">
-                            <span><b>{{'logs.fields.operation' | translate}}:</b> {{ log._source.context.operation == undefined && 'N/A' || log._source.context.operation }}</span>
-                            <span><b>{{'logs.fields.plugin' | translate}}:</b> {{ log._source.context.plugin == undefined && 'N/A' || log._source.context.plugin }}</span>
-                            <span><b>{{'logs.fields.taskCurrentRetries' | translate}}:</b> {{ log._source.context.task_current_retries == undefined && 'N/A' || log._source.context.task_current_retries }}</span>
-                            <span><b>{{'logs.fields.taskTotalRetries' | translate}}:</b> {{ log._source.context.task_total_retries == undefined && 'N/A' || log._source.context.task_total_retries }}</span>
+                            <span><b>{{'logs.fields.operation' | translate}}:</b> {{ log.context.operation == undefined && 'N/A' || log.context.operation }}</span>
+                            <span><b>{{'logs.fields.plugin' | translate}}:</b> {{ log.context.plugin == undefined && 'N/A' || log.context.plugin }}</span>
+                            <span><b>{{'logs.fields.taskCurrentRetries' | translate}}:</b> {{ log.context.task_current_retries == undefined && 'N/A' || log.context.task_current_retries }}</span>
+                            <span><b>{{'logs.fields.taskTotalRetries' | translate}}:</b> {{ log.context.task_total_retries == undefined && 'N/A' || log.context.task_total_retries }}</span>
                         </div>
                     </span>
-                    <div class="group" ng-if="log._source.context.source_name || log._source.context.source_id || log._source.context.target_name || log._source.context.target_id">
-                        <span><b>{{'logs.fields.sourceName' | translate}}:</b> {{ log._source.context.source_name == undefined && 'N/A' || log._source.context.source_name }}</span>
-                        <span><b>{{'logs.fields.sourceId' | translate}}:</b> {{ log._source.context.source_id == undefined && 'N/A' || log._source.context.source_id }}</span>
-                        <span><b>{{'logs.fields.targetName' | translate}}:</b> {{ log._source.context.target_name == undefined && 'N/A' || log._source.context.target_name }}</span>
-                        <span><b>{{'logs.fields.targetId' | translate}}:</b> {{ log._source.context.target_id == undefined && 'N/A' || log._source.context.target_id }}</span>
+                    <div class="group" ng-if="log.context.source_name || log.context.source_id || log.context.target_name || log.context.target_id">
+                        <span><b>{{'logs.fields.sourceName' | translate}}:</b> {{ log.context.source_name == undefined && 'N/A' || log.context.source_name }}</span>
+                        <span><b>{{'logs.fields.sourceId' | translate}}:</b> {{ log.context.source_id == undefined && 'N/A' || log.context.source_id }}</span>
+                        <span><b>{{'logs.fields.targetName' | translate}}:</b> {{ log.context.target_name == undefined && 'N/A' || log.context.target_name }}</span>
+                        <span><b>{{'logs.fields.targetId' | translate}}:</b> {{ log.context.target_id == undefined && 'N/A' || log.context.target_id }}</span>
                     </div>
-                    <div class="group" ng-if="log._source.context.node_id || log._source.context.node_name">
-                        <span><b>{{'logs.fields.nodeName' | translate}}:</b> {{ log._source.context.node_name == undefined && 'N/A' || log._source.context.node_name }}</span>
-                        <span><b>{{'logs.fields.nodeId' | translate}}:</b> {{ log._source.context.node_id == undefined && 'N/A' || log._source.context.node_id }}</span>
+                    <div class="group" ng-if="log.context.node_id || log.context.node_name">
+                        <span><b>{{'logs.fields.nodeName' | translate}}:</b> {{ log.context.node_name == undefined && 'N/A' || log.context.node_name }}</span>
+                        <span><b>{{'logs.fields.nodeId' | translate}}:</b> {{ log.context.node_id == undefined && 'N/A' || log.context.node_id }}</span>
                     </div>
-                    <div class="group" ng-if="log._source.context.group || log._source.context.policy || log._source.context.trigger || log._source.context.trigger_parameters">
-                        <span><b>{{'logs.fields.group' | translate}}:</b> {{ log._source.context.group == undefined && 'N/A' || log._source.context.group }}</span>
-                        <span><b>{{'logs.fields.policy' | translate}}:</b> {{ log._source.context.policy == undefined && 'N/A' || log._source.context.policy }}</span>
-                        <span><b>{{'logs.fields.trigger' | translate}}:</b> {{ log._source.context.trigger == undefined && 'N/A' || log._source.context.trigger }}</span>
-                        <span><b>{{'logs.fields.triggerParameters' | translate}}:</b> {{ log._source.context.trigger-parameters == undefined && 'N/A' || log._source.context.trigger-parameters }}</span>
+                    <div class="group" ng-if="log.context.group || log.context.policy || log.context.trigger || log.context.trigger_parameters">
+                        <span><b>{{'logs.fields.group' | translate}}:</b> {{ log.context.group == undefined && 'N/A' || log.context.group }}</span>
+                        <span><b>{{'logs.fields.policy' | translate}}:</b> {{ log.context.policy == undefined && 'N/A' || log.context.policy }}</span>
+                        <span><b>{{'logs.fields.trigger' | translate}}:</b> {{ log.context.trigger == undefined && 'N/A' || log.context.trigger }}</span>
+                        <span><b>{{'logs.fields.triggerParameters' | translate}}:</b> {{ log.context.trigger-parameters == undefined && 'N/A' || log.context.trigger-parameters }}</span>
                     </div>
 
                 </td>
