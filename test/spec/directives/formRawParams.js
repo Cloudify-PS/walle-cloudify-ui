@@ -1,6 +1,6 @@
 'use strict';
 
-describe('Directive: formRawParams', function () {
+ddescribe('Directive: formRawParams', function () {
 
     // load the directive's module
     beforeEach(module('cosmoUiApp','backend-mock','templates-main'));
@@ -46,6 +46,13 @@ describe('Directive: formRawParams', function () {
         expect(typeof(JSON.parse(scope.rawString).webserver_port)).toBe('number');
         expect(typeof(JSON.parse(scope.rawString).bool_variable)).toBe('boolean');
         expect(typeof(JSON.parse(scope.rawString).str_variable)).toBe('string');
+    });
+
+    it('should not let resize #rawString textarea', function () {
+        var textarea;
+        scope.$digest();
+        textarea = element.find('#rawString');
+        expect(textarea.hasClass('resize-vertical')).toBe(true);
     });
 
     describe('#validateJsonKeys', function () {
