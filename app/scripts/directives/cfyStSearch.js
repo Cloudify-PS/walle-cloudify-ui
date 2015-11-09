@@ -14,17 +14,16 @@ angular.module('cosmoUiApp')
             link: function postLink(scope, element, attrs, table) {
 
                 var skipSearches = {
-                    blueprint_id:false,
-                    deployment_id: false,
-                    log_level: false,
-                    gte: false,
-                    lte: false,
-                    message: false
+                    blueprint_id: 0,
+                    deployment_id: 0,
+                    log_level: 0,
+                    timestamp: 0,
+                    message: 0
                 };
 
                 function isSkipSearchMatch(){
-                    if(skipSearches[attrs.predicate]){
-                        skipSearches[attrs.predicate] = false;
+                    if(skipSearches[attrs.predicate] > 0){
+                        skipSearches[attrs.predicate]--;
                         return true;
                     }
                     return false;
@@ -130,7 +129,7 @@ angular.module('cosmoUiApp')
                                 //check if state is different
                                 if (isModelDifferentFromQuery(_.pluck(_.get(scope, ngModel),'value'), queryValues)) {
                                     var selectedOptions = getSelectedOptions(queryValues);
-                                    skipSearches[attrs.predicate] = true;
+                                    skipSearches[attrs.predicate]++;
                                     _.set(scope, ngModel, selectedOptions);
                                 }
                             }
@@ -141,7 +140,7 @@ angular.module('cosmoUiApp')
                             //check if state is different
                             if (!angular.isFunction(_.get(scope, gteModel).toISOString) || isModelDifferentFromQuery(_.get(scope, gteModel).toISOString(), gte)) {
                                 if (query.gte !== undefined) {
-                                    skipSearches.gte = true;
+                                    skipSearches[attrs.predicate]++;
                                     _.set(scope, gteModel, new moment(gte));
                                 }
                             }
@@ -152,7 +151,7 @@ angular.module('cosmoUiApp')
                             //check if state is different
                             if (!angular.isFunction(_.get(scope, lteModel).toISOString) || isModelDifferentFromQuery(_.get(scope, lteModel).toISOString(), lte)) {
                                 if (query.lte !== undefined) {
-                                    skipSearches.lte = true;
+                                    skipSearches[attrs.predicate]++;
                                     _.set(scope, lteModel, new moment(lte));
                                 }
                             }
@@ -163,7 +162,7 @@ angular.module('cosmoUiApp')
                             if (!!equalQuery) {
                                 //check if state is different
                                 if (isModelDifferentFromQuery(_.get(scope, equalNgModel), equalQuery)) {
-                                    skipSearches[attrs.predicate] = true;
+                                    skipSearches[attrs.predicate]++;
                                     _.set(scope, equalNgModel, equalQuery);
                                 }
                             }
