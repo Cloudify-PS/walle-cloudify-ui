@@ -35,11 +35,9 @@ angular.module('cosmoUiApp')
 
         function _loadExecutions() {
 
-            return cloudifyClient.executions.list(null, 'id,workflow_id,status,deployment_id').then(function(result){
-
-                //  CFY-2238 - remove terminated workflows.
-                runningExecutions = _.groupBy(_.filter(result.data, function(exec){  return ExecutionsService.isRunning(exec); }), 'deployment_id');
-
+            var statusFilter = ['pending', 'started', 'cancelling', 'force_cancelling'];
+            return cloudifyClient.executions.list({_include: 'id,workflow_id,status,deployment_id', status: statusFilter}).then(function(result){
+                runningExecutions = _.groupBy(result.data, 'deployment_id');
             },function(){
                 // todo: implement error handling
             });
