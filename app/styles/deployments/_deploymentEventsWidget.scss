@@ -106,7 +106,6 @@
         tr {
             height: 50px;
             border-bottom: 1px solid #ffffff;
-            cursor: pointer;
 
             td {
                 border-bottom: 2px solid #e8edf2;
@@ -147,20 +146,6 @@
                         text-overflow: ellipsis;
                         white-space: nowrap;
                         margin-right: 20px;
-                    }
-                }
-            }
-
-            &.openRow {
-                td {
-                    height: auto;
-                    &.message {
-                        overflow: visible;
-                        .brief {
-                            height: auto;
-                            overflow: visible;
-                            white-space: normal;
-                        }
                     }
                 }
             }
