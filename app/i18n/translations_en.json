@@ -251,6 +251,10 @@
                 "from": "From Time",
                 "to": "To Time"
             },
+            "messageText": {
+                "title": "Message Text:",
+                "text": "Search By Message Text"
+            },
             "clearFilterButton" : "Clear Filter"
         }
     },

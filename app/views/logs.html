@@ -53,15 +53,18 @@
 
             <div class="filter" cfy-st-search predicate="timestamp" gte="{{eventsFilter.timeRange.gte}}"  lte="{{eventsFilter.timeRange.lte}}">
                 {{'logs.filters.timeRange.title' | translate }}<br/>
-                <span class="filter time-range">
+                <span class="filter input-container">
                     <input class="form-control filter-input" date-time ng-model="eventsFilter.timeRange.gte" format="YYYY-MM-DD HH:mm" view="date" placeholder="{{'logs.filters.timeRange.from' | translate}}"/>
                 </span>
-                <span class="filter time-range">
+                <span class="filter input-container">
                     <input class="form-control filter-input" date-time data-ng-model="eventsFilter.timeRange.lte" format="YYYY-MM-DD HH:mm" view="date" placeholder="{{'logs.filters.timeRange.to' | translate}}"/>
                 </span>
             </div>
 
-
+            <div class="filter" >
+                {{'logs.filters.messageText.title' | translate }}<br>
+                <input class="form-control filter-input input-container" ng-model="eventsFilter.messageText" cfy-st-search predicate="message" equal="{{eventsFilter.messageText}}" placeholder="{{'logs.filters.messageText.text' | translate}}"/>
+            </div>
 
             <!--</div>-->
             <!--timestamp Range filters-->
