@@ -71,33 +71,16 @@ describe('Controller: DeploymentExecutions', function () {
             expect(scope.errorMessage).toBe('deployment.executions.error');
         }));
 
-        describe('404', function () {
-            beforeEach(inject(function (ngDialog, cloudifyClient, $location) {
-                spyOn(ngDialog, 'openConfirm').andReturn({
-                    then: function (success) {
-                        success();
-                    }
-                });
-                spyOn(cloudifyClient.executions, 'list').andReturn({
-                    then: function (success, error) {
-                        error({status: 404});
-                    }
-                });
-                spyOn($location, 'path');
-                initCtrl();
-                scope.$digest();
-            }));
-
-            it('should show error and alert dialog if result returned 404', inject(function (ngDialog) {
-                expect(scope.errorMessage).toBe('deployment.executions.error_404.description');
-                expect(ngDialog.openConfirm).toHaveBeenCalled();
-            }));
-
-            it('should redirect back to deployments if result returned 404 and user confirmed in dialog', inject(function ($location) {
-                angular.element(document.querySelector('.alert-dialog button')).click();
-                expect($location.path).toHaveBeenCalledWith('/deployments');
-            }));
-        });
+        it('should show error if result returned 404', inject(function (cloudifyClient) {
+            spyOn(cloudifyClient.executions, 'list').andReturn({
+                then: function (success, error) {
+                    error({status: 404});
+                }
+            });
+            initCtrl();
+            scope.$digest();
+            expect(scope.errorMessage).toBe('deployment.executions.error_404');
+        }));
     });
 
 });
