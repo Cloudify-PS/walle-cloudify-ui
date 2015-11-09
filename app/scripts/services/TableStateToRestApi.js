@@ -12,45 +12,49 @@ angular.module('cosmoUiApp')
 
         this.getOptions = function(tableState){
             var options = {
-                from: tableState.pagination.start,
-                size: tableState.pagination.number,
-                include_logs: true
+            //paginating
+                _offset: tableState.pagination.start,
+                _size: tableState.pagination.number
             };
 
             //sorting
             if (Object.keys(tableState.sort).length > 0) {
-                options.sort = {
-                    field: tableState.sort.predicate,
-                    order: tableState.sort.reverse ? 'desc' : 'asc'
-                };
+                var sortOrder = tableState.sort.reverse ? '-' : '+' ;
+                var sortField = tableState.sort.predicate;
+
+                //HACK: changing timestamp to @timestamp
+                if(sortField === 'timestamp'){
+                    sortField = '@timestamp';
+                }
+
+                options._sort = sortOrder+sortField;
             }
 
             //searching
             if (Object.keys(tableState.search).length > 0) {
-                options.searches = [];
                 _.forEach(tableState.search.predicateObject, function (predicateObjectValue, predicateObjectKey) {
-                    var currentSearchOptions = {};
                     if(predicateObjectKey !== '$'){
-                        currentSearchOptions.predicate = predicateObjectKey;
+
+                        //HACK: changing timestamp to @timestamp
+                        if(predicateObjectKey === 'timestamp'){
+                            predicateObjectKey = '@timestamp';
+                        }
+
                         if (predicateObjectValue.matchAny) {
-                            try {
-                                currentSearchOptions.matchAny = JSON.parse(predicateObjectValue.matchAny);
-                                if(currentSearchOptions.matchAny.length > 0) {
-                                    options.searches.push(currentSearchOptions);
+                            try{
+                                var matchList = JSON.parse(predicateObjectValue.matchAny);
+                                if(matchList.length > 0){
+                                    options[predicateObjectKey] = matchList;
                                 }
                             }
                             catch(e){
+
                             }
-                        }else {
-                            if(predicateObjectValue.gte){
-                                currentSearchOptions.gte = predicateObjectValue.gte;
-                            }
-                            if(predicateObjectValue.lte){
-                                currentSearchOptions.lte = predicateObjectValue.lte;
-                            }
-                            if(Object.keys(currentSearchOptions).length>1){
-                                options.searches.push(currentSearchOptions);
-                            }
+                        }
+                        else if(predicateObjectValue.gte || predicateObjectValue.lte){
+                            var gte = predicateObjectValue.gte || '';
+                            var lte = predicateObjectValue.lte || '';
+                            options._range = predicateObjectKey+','+gte+','+lte;
                         }
                     }
                 });

@@ -178,9 +178,11 @@ describe('Controller: LogsCtrl', function () {
                     then: function (successCallback) {
                         var getLogsResponse = {
                             data: {
-                                hits: {
-                                    hits: [],
-                                    total: 1
+                                items: [],
+                                metadata: {
+                                    pagination:{
+                                        total: 1
+                                    }
                                 }
                             },
                             status: 200
