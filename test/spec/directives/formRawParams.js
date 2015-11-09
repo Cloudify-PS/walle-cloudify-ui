@@ -1,6 +1,6 @@
 'use strict';
 
-ddescribe('Directive: formRawParams', function () {
+describe('Directive: formRawParams', function () {
 
     // load the directive's module
     beforeEach(module('cosmoUiApp','backend-mock','templates-main'));
