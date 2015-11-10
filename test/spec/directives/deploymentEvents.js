@@ -13,7 +13,7 @@ describe('Directive: deploymentEvents', function () {
         });
 
         scope = $rootScope.$new();
-        element = $compile(angular.element('<div deployment-events></div>'))(scope);
+        element = $compile(angular.element('<div deployment-events="\'id\'"></div>'))(scope);
 
         $rootScope.$apply();
 
@@ -40,6 +40,15 @@ describe('Directive: deploymentEvents', function () {
             expect(typeof(scope.dragIt)).toBe('function');
         });
 
+        it('should define logsDeploymentsParam', function(){
+            expect(scope.logsSearchParams).toEqual(
+                {
+                    deployment_Id: '{"matchAny":"[\\"id\\"]"}',
+                    sortBy:'timestamp',
+                    reverseOrder:true
+                });
+        });
+
         it('should have events-widget div', function () {
             expect(element.find('div.events-widget').length).toBe(1);
         });
@@ -55,18 +64,17 @@ describe('Directive: deploymentEvents', function () {
         it('should have containList div', function () {
             expect(element.find('div.containList').length).toBe(1);
         });
-
     });
 
     describe('events view', function(){ // tests for the HTML
-        it('should identify events by id when painting CFY-3071', function(){
+        it('should identify events by $index when painting CFY-3071', function(){
 
-            scope.events = [{ 'hello' : 'world', _source: { event_type: 'install'} }];
+            scope.events = [{ event_type: 'install'}];
             scope.$digest();
 
 
-            // use track by event._id so angular will know not to repaint old events, only new ones.
-            expect(element.find('[ng-repeat="event in events track by event._id"]').length).toBe(1);
+            // use track by $index so angular will know not to repaint old events, only new ones.
+            expect(element.find('[ng-repeat="event in events track by $index"]').length).toBe(1);
         });
     });
 

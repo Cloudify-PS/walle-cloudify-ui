@@ -1,7 +1,12 @@
 'use strict';
 
 angular.module('cosmoUiApp')
-    .controller('LogsCtrl', function ($scope, cloudifyClient, EventsMap, $routeParams, TableStateToRestApi) {
+    .controller('LogsCtrl', function ($scope, cloudifyClient, EventsMap, $routeParams, TableStateToRestApi, $location) {
+
+        //default sorting desc timestamp - when there is not a specific query
+        if(Object.keys($routeParams).length === 0){
+            $location.search({sortByLogs: 'timestamp', reverseLogs: 'true'});
+        }
 
         $scope.columns = [
             {name:'Event Type Icon',isSelected:true},
@@ -66,16 +71,17 @@ angular.module('cosmoUiApp')
             $scope.getLogsError = null;
 
             cloudifyClient.events.get(options).then(function (response) {
-                    $scope.logsHits = response.data.hits.hits;
-                    //Formatting the timestamp
-                    _.each($scope.logsHits, function(log){
-                        log.formattedTimestamp = EventsMap.getFormattedTimestamp(log._source.timestamp);
-                    });
-                    tableState.pagination.totalItemCount = response.data.hits.total;
-                    tableState.pagination.numberOfPages = Math.ceil(response.data.hits.total / options.size);
-                },function(response){
-                    $scope.getLogsError = response.data.message;
+                $scope.logsHits = response.data.items;
+                //Formatting the timestamp
+                _.each($scope.logsHits, function(log){
+                    log.formattedTimestamp = EventsMap.getFormattedTimestamp(log['@timestamp']);
                 });
+                var totalHits = response.data.metadata.pagination.total;
+                tableState.pagination.totalItemCount = totalHits;
+                tableState.pagination.numberOfPages = Math.ceil(totalHits / options._size);
+            },function(response){
+                $scope.getLogsError = response.data.message;
+            });
         };
 
         //Mapping event_type text(returned from elasticsearch) to our desired css,text and icon

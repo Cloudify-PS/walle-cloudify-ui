@@ -113,26 +113,41 @@ module.exports.Walker = function() {
 
     function walkFolder(rootFolder, _list) {
         logger.trace('walkFolder', rootFolder);
-        counter++;
+
+
+        // readdir will throw a 'catchall' error... there's nothing we can do about it
+        // however in the end, we will catch
+        // http://stackoverflow.com/questions/33365765/how-to-avoid-errors-thrown-from-readdir
         fs.readdir(rootFolder, function (err, files) {
-            if ( !!err ){
-                logger.error('unable to walk folder', err);
-            }
-            if (files.length === 0) {
-                doFinalCallback(true);
-            }
-            counter += files.length;
-            counter--;
-            for (var i in files) {
-                if(files.hasOwnProperty(i)) {
-                    addChild(rootFolder, _list, files[i]);
+            try {
+                if (!!err) {
+                    logger.error('unable to walk folder', err);
+                    doFinalCallback(err);
+                    return;
                 }
-                else{
-                    counter--;
+                if (files.length === 0) {
+                    doFinalCallback(true);
                 }
+
+                counter += files.length;
+
+                counter--;
+                for (var i in files) {
+                //
+                    if (files.hasOwnProperty(i)) {
+                        addChild(rootFolder, _list, files[i]);
+                    }
+                    else {
+                        counter--;
+                    }
+                }
+            }catch(e){
+                doFinalCallback(e);
             }
         });
+        counter++; // leave here in case of an error..
     }
+
 
     function fileIsAscii(filename, callback) {
         require('fs').readFile(filename, function(err, buf) {
@@ -148,7 +163,7 @@ module.exports.Walker = function() {
     }
 
     this.walk = function (rootFolder, callback) {
-        _finalCallback = callback;
+        _finalCallback = _.once(callback);
         origRoot = path.resolve(rootFolder);
         walkFolder(rootFolder, root.children);
     };
@@ -200,52 +215,40 @@ function normalizeExtension( filename ){ //
 }
 
 
-exports.downloadBlueprint = function( cloudifyClientConf, blueprint_id, last_update, callback) {
+exports.downloadBlueprint = function (cloudifyClientConf, blueprint_id, last_update, callback) {
 
-    function alreadyExists( name ){
-        return function(e) {
-            logger.debug('folder' + name + ' already exist :: ', e);
-        };
-    }
+    logger.debug('downloading blueprint');
+    fs.mkdirsSync(conf.browseBlueprint.path); // make sure path exists
 
-    fs.exists(conf.browseBlueprint.path, function (exists) {
-        if (!exists) {
-            var pathParts = conf.browseBlueprint.path.split('/');
-            var pathToCreate = '';
-            for (var i = 0; i < pathParts.length; i++) {
-                pathToCreate += pathParts[i] + '/';
-                fs.mkdir(pathToCreate, alreadyExists(pathParts[i]));
-            }
-        }
+    var requestDetails = {
+        url: require('url').resolve(conf.cloudifyManagerEndpoint, 'blueprints/' + blueprint_id + '/archive'),
+        method: 'GET',
+        headers: {authorization: cloudifyClientConf.authHeader}
+    };
 
-        var requestDetails = {
-            url: require('url').resolve(conf.cloudifyManagerEndpoint,'blueprints/' + blueprint_id + '/archive'),
-            method: 'GET',
-            auth: cloudifyClientConf.authHeader
-        };
+    logger.debug('this is requestDetails', JSON.stringify(requestDetails));
 
-        console.log('this is requestDetails', requestDetails );
+    var stream = request(requestDetails);
+    stream.on('response', function (res) {
+        var extension = normalizeExtension(res.headers['content-disposition']); // e.g. : 'content-disposition': 'attachment; filename=foo.tar',===> we want the extension
 
-        var stream = request(requestDetails);
-        stream.on('response',function(res){
-            var extension = normalizeExtension(res.headers['content-disposition']); // e.g. : 'content-disposition': 'attachment; filename=foo.tar',===> we want the extension
+        var filepath = path.join(conf.browseBlueprint.path, blueprint_id + '.' + extension);
+        var file = fs.createWriteStream(filepath);
 
-            var filepath = path.join(conf.browseBlueprint.path, blueprint_id + '.' + extension);
-            var file = fs.createWriteStream(filepath);
+        res.pipe(file);
+        file.on('close', function () {
+            logger.info('extract');
+            // allow stream to close;
+            setTimeout(function () {
+                exports.extractArchive(extension, filepath, path.join(conf.browseBlueprint.path, blueprint_id, last_update), callback);
+            }, 0);
 
-            res.pipe(file);
-            file.on('close', function(){
-                logger.info('extract');
-                // allow stream to close;
-                setTimeout(function(){ exports.extractArchive( extension, filepath, path.join(conf.browseBlueprint.path , blueprint_id , last_update ), callback ); }, 0);
-
-            });
         });
+    });
 
-        stream.on('error', function(e) {
-            logger.info('[stream] problem with request: ' + e.message);
-            callback(e.message, null);
-        });
+    stream.on('error', function (e) {
+        logger.info('[stream] problem with request: ' + e.message);
+        callback(e.message, null);
     });
 };
 

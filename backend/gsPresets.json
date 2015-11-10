@@ -22,7 +22,7 @@
         "bindPort" : 9001,
         "cosmoServer": "localhost",
         "cosmoPort": 80,
-        "cloudifyManagerEndpoint": "http://localhost:80",
+        "cloudifyManagerEndpoint": "http://localhost",
         "log4js": {
             "appenders": [
                 { "type":"console" },

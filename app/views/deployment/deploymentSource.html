@@ -3,7 +3,8 @@
     <div class="source clearfix" id="deployment-source">
 
         <div class="noPreview" ng-show="!isSourceText(filename)">
-            <p class="empty">{{'blueprints.source.' + errorMessage | translate}}</p>
+            <p>{{'blueprints.source.' + errorMessage | translate}}</p>
+            <p ng-show="downloadLink"><a ng-href="{{downloadLink}}" target="_blank">{{'blueprints.source.downloadLink' | translate}}</a></p>
         </div>
 
         <div class="source-content">

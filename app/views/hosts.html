@@ -11,7 +11,7 @@
 
             <div class="filter gs-selection-button">
                 {{'hosts.blueprintsFilter' | translate}}<br>
-                <div multi:select:menu
+                <div multi-select-menu
                      class="gs-select"
                      data-multiple="false"
                      data-options="blueprintsList"
@@ -24,7 +24,7 @@
 
             <div class="filter gs-selection-button" >
                 {{'hosts.deploymentsFilter' | translate}}<br>
-                <div multi:select:menu
+                <div multi-select-menu
                      class="gs-select"
                      ng-disabled="!hostsFilter.blueprint"
                      data-multiple="true"
@@ -38,7 +38,7 @@
 
             <div class="filter gs-selection-button" >
                 {{'hosts.typesFilter' | translate}}<br>
-                <div multi:select:menu
+                <div multi-select-menu
                      class="gs-select"
                      data-multiple="true"
                      data-options="typesList"
@@ -84,13 +84,13 @@
             </thead>
             <tbody ng-repeat="row in nodesList | filter:hostsFilter.search" ng-init="isOpen=false">
             <tr ng-show="!row.hidden">
-                <td class="id">{{row.id == null && '-' || row.id }}</td>
-                <td class="state">{{row.state == null && '-' || row.state }}</td>
+                <td class="id">{{row.id }}</td>
+                <td class="state">{{row.state }}</td>
                 <td class="deploymentId">{{row.blueprint_id}}</td>
-                <td class="deploymentId">{{row.deployment_id == null && '-' || row.deployment_id }}</td>
-                <td class="">{{row.host_id == null && '-' || row.host_id }}</td>
-                <td class="">{{row.runtime_properties.ips == null && '-' || row.runtime_properties.ips }}</td>
-                <td class="">{{row.runtime_properties.ip_addresses == null && '-' || row.runtime_properties.ip_addresses.join(', ') }}</td>
+                <td class="deploymentId">{{row.deployment_id }}</td>
+                <td class="">{{row.host_id }}</td>
+                <td class="">{{row.runtime_properties.ips }}</td>
+                <td class="">{{row.runtime_properties.ip_addresses.join(', ') }}</td>
                 <!--<td class="">{{row.runtime_properties.security_groups == null && '-' || row.runtime_properties.security_groups }}</td>-->
                 <!--<td class="">{{row.runtime_properties.image_id == null && '-' || row.runtime_properties.image_id }}</td>-->
                 <!--<td class="">{{row.runtime_properties.flavor_id == null && '-' || row.runtime_properties.flavor_id }}</td>-->
