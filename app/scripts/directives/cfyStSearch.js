@@ -16,7 +16,7 @@ angular.module('cosmoUiApp')
                 var skipSearches = {
                     blueprint_id: 0,
                     deployment_id: 0,
-                    log_level: 0,
+                    level: 0,
                     timestamp: 0,
                     message: 0
                 };
