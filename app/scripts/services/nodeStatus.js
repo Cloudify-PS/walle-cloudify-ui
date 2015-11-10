@@ -11,7 +11,10 @@ angular.module('cosmoUiApp')
     .service('nodeStatus', function () {
 
         var me = this;
-        var statesIndex = ['uninitialized', 'initializing', 'creating', 'created', 'configuring', 'configured', 'starting', 'started', 'deleted'];
+        // see all states at:
+        // https://github.com/cloudify-cosmo/cloudify-plugins-common/blob/master/cloudify/plugins/lifecycle.py#L137
+        // https://github.com/cloudify-cosmo/cloudify-plugins-common/blob/master/cloudify/plugins/lifecycle.py#L188
+        var statesIndex = ['uninitialized', 'initializing', 'creating', 'created', 'configuring', 'configured', 'starting', 'started', 'deleting','deleted','stopping','stopped'];
 
         // use this instead of numbers
         var NODE_STATUS = {
