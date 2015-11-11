@@ -246,16 +246,26 @@
                 "title": "Log Levels:",
                 "text": "Choose Log Levels"
             },
+            "eventTypes": {
+                "title": "Event Types",
+                "text": "Choose Event Types"
+            },
             "timeRange": {
                 "title": "Time Range:",
-                "from": "From Time",
-                "to": "To Time"
+                "from":{
+                    "title": "From Time",
+                    "placeholder": "YYYY-MM-DD HH:MM"
+                } ,
+                "to": {
+                    "title": "To Time",
+                    "placeholder": "YYYY-MM-DD HH:MM"
+                }
             },
             "messageText": {
                 "title": "Message Text:",
                 "text": "Search By Message Text"
             },
-            "clearFilterButton" : "Clear Filter"
+            "clearFilterButton" : "Clear Filters"
         }
     },
     "toggleSwitch": {
