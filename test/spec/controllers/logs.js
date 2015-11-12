@@ -247,18 +247,18 @@ describe('Controller: LogsCtrl', function () {
             });
         });
         describe('#isValidTime' , function(){
-           it('should check if value is an expected time', function(){
-               initCtrl();
-               expect(scope.isValidTime(undefined)).toBe(false);
-               expect(scope.isValidTime('')).toBe(false);
-               expect(scope.isValidTime('any string')).toBe(false);
-               expect(scope.isValidTime('123456789')).toBe(false);
-               //a number of characters expected as date
-               expect(scope.isValidTime('1234567890123456')).toBe(false);
-               expect(scope.isValidTime('2015/10/12 10:10')).toBe(false);
-               expect(scope.isValidTime('2015-10-12 10:10')).toBe(true);
-               expect(scope.isValidTime(new moment())).toBe(true);
-           })
+            it('should check if value is an expected time', function(){
+                initCtrl();
+                expect(scope.isValidTime(undefined)).toBe(false);
+                expect(scope.isValidTime('')).toBe(false);
+                expect(scope.isValidTime('any string')).toBe(false);
+                expect(scope.isValidTime('123456789')).toBe(false);
+                //a number of characters expected as date
+                expect(scope.isValidTime('1234567890123456')).toBe(false);
+                expect(scope.isValidTime('2015/10/12 10:10')).toBe(false);
+                expect(scope.isValidTime('2015-10-12 10:10')).toBe(true);
+                expect(scope.isValidTime(new moment())).toBe(true);
+            });
         });
     });
 });
