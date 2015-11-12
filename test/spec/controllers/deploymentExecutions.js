@@ -18,7 +18,7 @@ describe('Controller: DeploymentExecutions', function () {
     beforeEach(inject(function ($rootScope ,cloudifyClient) {
         scope = $rootScope.$new();
         _cloudifyClient = cloudifyClient;
-        spyOn(cloudifyClient.executions, 'list').andReturn(window.mockPromise([])); //default implementation can be override
+        spyOn(cloudifyClient.executions, 'list').andReturn(window.mockPromise({data : {items : []}})); //default implementation can be override
         initCtrl();
     }));
 
@@ -54,7 +54,7 @@ describe('Controller: DeploymentExecutions', function () {
                 workflow_id: 'install'
             }
         ];
-        _cloudifyClient.executions.list.andReturn(window.mockPromise({data:executionsMock}));
+        _cloudifyClient.executions.list.andReturn(window.mockPromise({data : {items : executionsMock}}));
         initCtrl();
         expect(scope.executionsList).toBe(executionsMock);
     });
