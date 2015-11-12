@@ -12,7 +12,7 @@ angular.module('cosmoUiApp')
         function loadBlueprints() {
             $scope.blueprints = null;
             $scope.managerError = false;
-            return cloudifyClient.blueprints.list('id,updated_at,created_at, description').then(function (result) {
+            return cloudifyClient.blueprints.list('id,updated_at,created_at,description').then(function (result) {
                 if (result.data.items.length < 1) {
                     $scope.blueprints = [];
                 } else {
