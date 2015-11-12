@@ -67,7 +67,6 @@ describe('Controller: DeploymentExecutions', function () {
                 }
             });
             initCtrl();
-            scope.$digest();
             expect(scope.errorMessage).toBe('deployment.executions.error');
         }));
 

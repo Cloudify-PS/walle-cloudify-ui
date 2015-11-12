@@ -8,7 +8,7 @@
  * Controller of the cosmoUiApp
  */
 angular.module('cosmoUiApp')
-    .controller('DeploymentExecutionsCtrl', function ($scope, $routeParams, cloudifyClient, $log) {
+    .controller('DeploymentExecutionsCtrl', function ($scope, $routeParams, cloudifyClient, CloudifyService, $log) {
 
         $scope.deploymentId = $routeParams.deploymentId;
         $scope.executionsList = [];
@@ -23,7 +23,7 @@ angular.module('cosmoUiApp')
                 if (error.status === 404) {
                     $scope.deploymentNotFound = true;
                 } else {
-                    $scope.errorMessage = error.data || 'deployment.executions.error';
+                    $scope.errorMessage = CloudifyService.getErrorMessage(error) ||  'deployment.executions.error';
                 }
             });
     });
