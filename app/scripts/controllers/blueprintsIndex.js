@@ -26,7 +26,7 @@ angular.module('cosmoUiApp')
 
         function loadDeployments(){
             cloudifyClient.deployments.list('blueprint_id').then(function( result ){
-                var deploymentsPerBlueprint = _.groupBy( result.data, 'blueprint_id' );
+                var deploymentsPerBlueprint = _.groupBy( result.data.items, 'blueprint_id' );
                 _.each($scope.blueprints, function(b){
                     b.deploymentsCount = deploymentsPerBlueprint.hasOwnProperty(b.id) ? deploymentsPerBlueprint[b.id].length : 0;
                 });
