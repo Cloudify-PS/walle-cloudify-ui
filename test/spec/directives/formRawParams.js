@@ -48,6 +48,13 @@ describe('Directive: formRawParams', function () {
         expect(typeof(JSON.parse(scope.rawString).str_variable)).toBe('string');
     });
 
+    it('should not let resize #rawString textarea', function () {
+        var textarea;
+        scope.$digest();
+        textarea = element.find('#rawString');
+        expect(textarea.hasClass('resize-vertical')).toBeTruthy();
+    });
+
     describe('#validateJsonKeys', function () {
         beforeEach(function () {
             scope.params = {

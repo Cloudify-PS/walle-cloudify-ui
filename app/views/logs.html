@@ -6,7 +6,7 @@
         </ul></div>
     </div>
 
-    <div class="content-section"  st-table="logsHits" st-pipe="updateData" id="Logs">
+    <div class="content-section" st-table="logsHits" st-pipe="updateData" id="Logs">
         <div class="filters">
 
             <div class="filter gs-selection-button" ng-show="blueprintsList.length">
@@ -50,6 +50,23 @@
                      match="{{pluckArrayOfObjects(eventsFilter.logLevels,'value')}}"
                      data-text="{{'logs.filters.logLevels.text' | translate }}"></div>
             </div>
+
+            <div class="filter" cfy-st-search predicate="timestamp" gte="{{eventsFilter.timeRange.gte}}"  lte="{{eventsFilter.timeRange.lte}}">
+                {{'logs.filters.timeRange.title' | translate }}<br/>
+                <span class="filter input-container">
+                    <input class="form-control filter-input" date-time ng-model="eventsFilter.timeRange.gte" format="YYYY-MM-DD HH:mm" view="date" placeholder="{{'logs.filters.timeRange.from' | translate}}"/>
+                </span>
+                <span class="filter input-container">
+                    <input class="form-control filter-input" date-time data-ng-model="eventsFilter.timeRange.lte" format="YYYY-MM-DD HH:mm" view="date" placeholder="{{'logs.filters.timeRange.to' | translate}}"/>
+                </span>
+            </div>
+
+            <div class="filter" >
+                {{'logs.filters.messageText.title' | translate }}<br>
+                <input class="form-control filter-input input-container" ng-model="eventsFilter.messageText" cfy-st-search predicate="message" equal="{{eventsFilter.messageText}}" placeholder="{{'logs.filters.messageText.text' | translate}}"/>
+            </div>
+
+            <!--</div>-->
             <!--timestamp Range filters-->
             <!-- TODO : add support of i18n here-->
             <!--<div class="gs-date-range-selection"-->
@@ -180,5 +197,5 @@
         </table>
         <div class="pagination" st-pagination="" st-items-by-page="itemsPerPage" st-displayed-pages="9"></div>
         <div class="emptyTable" data-ng-hide="logsHits.length">{{'logs.noLogs' | translate}}</div>
-        </div>
     </div>
+</div>

@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('cosmoUiApp')
-    .controller('BlueprintsIndexCtrl', function ($scope, $location, $log, ngDialog, cloudifyClient) {
+    .controller('BlueprintsIndexCtrl', function ($scope, $log, cloudifyClient) {
         $scope.lastExecutedPlan = null;
         $scope.selectedBlueprint = null;
         $scope.managerError = false;
@@ -12,7 +12,7 @@ angular.module('cosmoUiApp')
         function loadBlueprints() {
             $scope.blueprints = null;
             $scope.managerError = false;
-            return cloudifyClient.blueprints.list('id,updated_at,created_at').then(function (result) {
+            return cloudifyClient.blueprints.list('id,updated_at,created_at,description').then(function (result) {
 
                 if (result.data.length < 1) {
                     $scope.blueprints = [];

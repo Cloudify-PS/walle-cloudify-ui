@@ -360,6 +360,26 @@ input[type=text], input[type=password] {
     border: 0;
 }
 
+.filter-input{
+    border: 2px solid #cadbec;
+    &::-webkit-input-placeholder {
+        color: #4b6c8b;
+        font-style: normal;
+    }
+    &:-moz-placeholder { /* Firefox 18- */
+        color: #4b6c8b;
+        font-style: normal;
+    }
+    &::-moz-placeholder {  /* Firefox 19+ */
+        color: #4b6c8b;
+        font-style: normal;
+    }
+    &:-ms-input-placeholder {
+        color: #4b6c8b;
+        font-style: normal;
+    }
+}
+
 .hidden-thing {
     width: 0;
     height: 0;
@@ -415,4 +435,50 @@ input[type=text], input[type=password] {
 
 .error {
     color: #f00;
+}
+
+[date-picker-wrapper] {
+    border: 1px solid  lighten(#cce4f6, 50%);
+    top: 61px;
+    border-radius: 5px;
+
+    [date-picker] {
+        background-color: #cce4f6;
+
+        table{
+            margin: 0 auto;
+            tbody{
+                th, span {
+                    &.active {
+                        background-image: linear-gradient(to bottom, #29aaee, #29aaee);
+                    }
+                    &.now {
+                        background-image: linear-gradient(to bottom, #2c4a67, #2c4a67);
+                    }
+                    &:hover {
+                        background-image: linear-gradient(to bottom, #29aaee, #29aaee);
+                        color: white;
+                    }
+                }
+            }
+            thead{
+                tr:first-child th {
+                    &.switch{
+
+                    }
+                    &:hover{
+                        background-color: #29aaee;
+                        color: white;
+                    }
+                }
+
+                tr:nth-child(2) th {
+                    &:hover {
+                        background-color: #cce4f6;
+                        cursor: auto;
+                    }
+                }
+            }
+        }
+    }
 }

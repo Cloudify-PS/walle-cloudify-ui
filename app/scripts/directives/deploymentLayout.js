@@ -15,6 +15,8 @@ angular.module('cosmoUiApp')
             replace: false,
             link: function postLink($scope/*, $element, $attrs*/) {
 
+                var url = $location.url();
+
                 $scope.deploymentId = $routeParams.deploymentId;
 
 
@@ -79,7 +81,9 @@ angular.module('cosmoUiApp')
                 };
 
                 $scope.goToDeployments = function() {
-                    $location.path('/deployments');
+                    if($location.url() === url) {
+                        $location.path('/deployments');
+                    }
                 };
 
                 $scope.registerTickerTask('deploymentLayout/loadExecutions', _loadExecutions, 1000);
