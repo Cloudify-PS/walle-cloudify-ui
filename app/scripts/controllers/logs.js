@@ -19,16 +19,17 @@ angular.module('cosmoUiApp')
             {name:'Message',isSelected:true}
         ];
 
-        $scope.itemsPerPage = 9;
+        $scope.itemsPerPage = 50;
         var initFilters = function() {
             $scope.eventsFilter = {
                 'blueprints': [],
                 'deployments': [],
-                'logLevels': []
-                //'timeRange':{
-                //    'lte': "",
-                //    'gte': ""
-                //}
+                'logLevels': [],
+                'timeRange':{
+                    'gte': '',
+                    'lte': ''
+                },
+                'messageText': ''
             };
         };
         initFilters();
