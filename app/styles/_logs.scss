@@ -16,12 +16,16 @@
                 vertical-align: middle;
             }
             .filter {
-                display: inline-block;
+                display: inline-table;
                 margin: 0 0 10px;
             }
             .actions {
                 margin-top: 27px;
                 float: right;
+            }
+            .input-container {
+                margin: 5px 10px 0 0;
+                vertical-align: middle;
             }
         }
 
