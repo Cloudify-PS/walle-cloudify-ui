@@ -14,25 +14,27 @@ angular.module('cosmoUiApp')
             link: function postLink(scope, element, attrs, table) {
 
                 var skipSearches = {
-                    blueprint_id:false,
-                    deployment_id: false,
-                    log_level: false
+                    blueprint_id: 0,
+                    deployment_id: 0,
+                    level: 0,
+                    timestamp: 0,
+                    message: 0
                 };
 
                 function isSkipSearchMatch(){
-                    if(skipSearches[attrs.predicate]){
-                        skipSearches[attrs.predicate] = false;
+                    if(skipSearches[attrs.predicate] > 0){
+                        skipSearches[attrs.predicate]--;
                         return true;
                     }
                     return false;
                 }
 
-                if(attrs.match) {
+                if(attrs.match !== undefined) {
                     attrs.$observe('match', function (value) {
                         if(isSkipSearchMatch()){
                             return;
                         }
-                        if (value) {
+                        if (value || value === '') {
                             var query = {};
                             query.matchAny = value;
                             if (query.matchAny.length === 0) {
@@ -43,42 +45,55 @@ angular.module('cosmoUiApp')
                     });
                 }
 
-                //Please notice that in order for range query to work both, lte and gte must be on the same element
-                //function createRangeQuery(){
-                //    var query = {};
-                //    if(attrs.gte && attrs.gte.length>0) {
-                //        query.gte = attrs.gte;
-                //    }
-                //    if(attrs.lte && attrs.lte.length>0)
-                //    {
-                //        query.lte = attrs.lte;
-                //    }
-                //    return query;
-                //}
+                if(attrs.equal !== undefined) {
+                    attrs.$observe('equal', function (value) {
+                        if(isSkipSearchMatch()){
+                            return;
+                        }
+                        if (value || value === '') {
+                            var query = {};
+                            query.equalTo = value;
+                            queryTable(query);
+                        }
+                    });
+                }
 
-                //if(attrs.gte) {
-                //    attrs.$observe('gte', function (value) {
-                //        if(isSkipSearchMatch){
-                //            return;
-                //        }
-                //        if(value || value === ''){
-                //            var query = createRangeQuery();
-                //            queryTable(query);
-                //        }
-                //    });
-                //}
-                //
-                //if(attrs.lte) {
-                //    attrs.$observe('lte', function (value) {
-                //        if(isSkipSearchMatch){
-                //            return;
-                //        }
-                //        if(value || value === ''){
-                //            var query = createRangeQuery();
-                //            queryTable(query);
-                //        }
-                //    });
-                //}
+                //Please notice that in order for range query to work both, lte and gte must be on the same element
+                function createRangeQuery(){
+                    var query = {};
+                    if(attrs.gte && attrs.gte.length>0) {
+                        query.gte = attrs.gte;
+                    }
+                    if(attrs.lte && attrs.lte.length>0)
+                    {
+                        query.lte = attrs.lte;
+                    }
+                    return query;
+                }
+
+                if(attrs.gte !== undefined) {
+                    attrs.$observe('gte', function (value) {
+                        if(isSkipSearchMatch()){
+                            return;
+                        }
+                        if(value || value === ''){
+                            var query = createRangeQuery();
+                            queryTable(query);
+                        }
+                    });
+                }
+
+                if(attrs.lte !== undefined) {
+                    attrs.$observe('lte', function (value) {
+                        if(isSkipSearchMatch()){
+                            return;
+                        }
+                        if(value || value === ''){
+                            var query = createRangeQuery();
+                            queryTable(query);
+                        }
+                    });
+                }
 
                 scope.$watch(function () {
                     return table.tableState().search.predicateObject[attrs.predicate];
@@ -87,7 +102,7 @@ angular.module('cosmoUiApp')
                     //This checks if the state was changed from outside of this directive, so the model didn't updated
                     function isModelDifferentFromQuery(model, queryValues){
                         //is ngModel different from the queried value?
-                        return !_.isEqual(_.pluck(model,'value'), queryValues);
+                        return !_.isEqual(model, queryValues);
                     }
 
                     function getSelectedOptions(queryValues){
@@ -107,14 +122,49 @@ angular.module('cosmoUiApp')
                     }
 
                     try {
-                        var queryValues = Array.isArray(query.matchAny) ? query.matchAny : JSON.parse(query.matchAny);
-                        var ngModel = attrs.ngModel;
-                        if(!!queryValues) {
+                        if(query.matchAny !== undefined) {
+                            var queryValues = Array.isArray(query.matchAny) ? query.matchAny : JSON.parse(query.matchAny);
+                            var ngModel = attrs.ngModel;
+                            if (!!queryValues) {
+                                //check if state is different
+                                if (isModelDifferentFromQuery(_.pluck(_.get(scope, ngModel),'value'), queryValues)) {
+                                    var selectedOptions = getSelectedOptions(queryValues);
+                                    skipSearches[attrs.predicate]++;
+                                    _.set(scope, ngModel, selectedOptions);
+                                }
+                            }
+                        }
+                        if(query.gte !== undefined){
+                            var gte = JSON.parse(query.gte);
+                            var gteModel = 'eventsFilter.timeRange.gte';
                             //check if state is different
-                            if(isModelDifferentFromQuery(_.get(scope, ngModel),queryValues)){
-                                var selectedOptions = getSelectedOptions(queryValues);
-                                skipSearches[attrs.predicate] = true;
-                                _.set(scope, ngModel, selectedOptions);
+                            if (!angular.isFunction(_.get(scope, gteModel).toISOString) || isModelDifferentFromQuery(_.get(scope, gteModel).toISOString(), gte)) {
+                                if (query.gte !== undefined) {
+                                    skipSearches[attrs.predicate]++;
+                                    _.set(scope, gteModel, new moment(gte));
+                                }
+                            }
+                        }
+                        if(query.lte !== undefined) {
+                            var lte = JSON.parse(query.lte);
+                            var lteModel = 'eventsFilter.timeRange.lte';
+                            //check if state is different
+                            if (!angular.isFunction(_.get(scope, lteModel).toISOString) || isModelDifferentFromQuery(_.get(scope, lteModel).toISOString(), lte)) {
+                                if (query.lte !== undefined) {
+                                    skipSearches[attrs.predicate]++;
+                                    _.set(scope, lteModel, new moment(lte));
+                                }
+                            }
+                        }
+                        if(query.equalTo !== undefined){
+                            var equalQuery = query.equalTo;
+                            var equalNgModel = attrs.ngModel;
+                            if (!!equalQuery) {
+                                //check if state is different
+                                if (isModelDifferentFromQuery(_.get(scope, equalNgModel), equalQuery)) {
+                                    skipSearches[attrs.predicate]++;
+                                    _.set(scope, equalNgModel, equalQuery);
+                                }
                             }
                         }
                     }

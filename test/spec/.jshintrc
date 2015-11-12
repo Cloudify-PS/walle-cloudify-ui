@@ -34,7 +34,8 @@
     "spyOn": false,
     "waitsFor": false,
     "runs" : false,
-      "$" :false
+    "$" :false,
+    "moment": false
   }
 }
 

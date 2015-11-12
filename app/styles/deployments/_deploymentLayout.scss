@@ -19,10 +19,6 @@
                 cursor: pointer;
                 vertical-align: middle;
             }
-            [app-status-widget] {
-                margin-top: -20px;
-                margin-right: -20px;
-            }
             .actions {
                 display: inline-block;
                 float: right;
@@ -175,6 +171,9 @@
                 }
             }
         }
+    }
+    #deployment-content {
+        clear: both;
     }
     .not-found-message {
         text-align: center;

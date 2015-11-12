@@ -30,10 +30,9 @@ describe('Service: tableStateToRestApi', function () {
 
             expect(_TableStateToRestApi.getOptions(tableStateMock)).toEqual(
                 {
-                    from: 0,
-                    size: 9,
-                    include_logs: true,
-                    sort: {field: 'timestamp', order: 'asc'}
+                    _offset: 0,
+                    _size: 9,
+                    _sort: '+@timestamp'
                 }
             );
         });
@@ -58,15 +57,9 @@ describe('Service: tableStateToRestApi', function () {
 
             expect(_TableStateToRestApi.getOptions(tableStateMock)).toEqual(
                 {
-                    from: 0,
-                    size: 9,
-                    include_logs: true,
-                    searches: [
-                        {
-                            predicate: 'blueprint_id',
-                            matchAny: ['hello']
-                        }
-                    ]
+                    _offset: 0,
+                    _size: 9,
+                    blueprint_id: ['hello']
                 }
             );
         });
@@ -82,7 +75,7 @@ describe('Service: tableStateToRestApi', function () {
                 search: {
                     predicateObject: {
                         timestamp: {
-                            gte: '2015-09-17T05:05:00.000Z'
+                            gte: '"2015-09-17T05:05:00.000Z"'
                         }
                     }
                 },
@@ -91,15 +84,9 @@ describe('Service: tableStateToRestApi', function () {
 
             expect(_TableStateToRestApi.getOptions(tableStateMock)).toEqual(
                 {
-                    from: 0,
-                    size: 9,
-                    include_logs: true,
-                    searches: [
-                        {
-                            predicate: 'timestamp',
-                            gte: '2015-09-17T05:05:00.000Z',
-                        }
-                    ]
+                    _offset: 0,
+                    _size: 9,
+                    _range: '@timestamp,2015-09-17T05:05:00.000Z,'
                 }
             );
         });
@@ -115,24 +102,18 @@ describe('Service: tableStateToRestApi', function () {
                 search: {
                     predicateObject: {
                         timestamp: {
-                            lte: '2015-10-15T14:30:00.000Z'
+                            lte: '"2015-10-15T14:30:00.000Z"'
                         }
                     }
                 },
-                sort:{}
+                sort: {}
             };
 
             expect(_TableStateToRestApi.getOptions(tableStateMock)).toEqual(
                 {
-                    from: 0,
-                    size: 9,
-                    include_logs: true,
-                    searches: [
-                        {
-                            predicate: 'timestamp',
-                            lte: '2015-10-15T14:30:00.000Z'
-                        }
-                    ]
+                    _offset: 0,
+                    _size: 9,
+                    _range: '@timestamp,,2015-10-15T14:30:00.000Z'
                 }
             );
         });
@@ -148,8 +129,8 @@ describe('Service: tableStateToRestApi', function () {
                 search: {
                     predicateObject: {
                         timestamp: {
-                            lte: '2015-10-15T14:30:00.000Z',
-                            gte: '2015-10-16T16:30:00.000Z'
+                            lte: '"2015-10-15T14:30:00.000Z"',
+                            gte: '"2015-10-16T16:30:00.000Z"'
                         }
                     }
                 },
@@ -158,16 +139,67 @@ describe('Service: tableStateToRestApi', function () {
 
             expect(_TableStateToRestApi.getOptions(tableStateMock)).toEqual(
                 {
-                    from: 0,
-                    size: 9,
-                    include_logs: true,
-                    searches: [
-                        {
-                            predicate: 'timestamp',
-                            lte: '2015-10-15T14:30:00.000Z',
-                            gte: '2015-10-16T16:30:00.000Z'
+                    _offset: 0,
+                    _size: 9,
+                    _range: '@timestamp,2015-10-16T16:30:00.000Z,2015-10-15T14:30:00.000Z'
+                }
+            );
+        });
+
+        it('should parse tableState search - equalTo', function () {
+            var tableStateMock = {
+                pagination: {
+                    number: 9,
+                    numberOfPages: 0,
+                    start: 0,
+                    totalItemCount: 0
+                },
+                search: {
+                    predicateObject: {
+                        freeText: {
+                            equalTo: 'free text'
                         }
-                    ]
+                    }
+                },
+                sort:{}
+            };
+
+            expect(_TableStateToRestApi.getOptions(tableStateMock)).toEqual(
+                {
+                    _offset: 0,
+                    _size: 9,
+                    freeText: 'free text'
+                }
+            );
+        });
+
+        it('should parse tableState search - hacks', function () {
+            var tableStateMock = {
+                pagination: {
+                    number: 9,
+                    numberOfPages: 0,
+                    start: 0,
+                    totalItemCount: 0
+                },
+                search: {
+                    predicateObject: {
+                        message: {
+                            equalTo: 'free text'
+                        },
+                        timestamp:{
+                            gte: '"2015-10-16T16:30:00.000Z"'
+                        }
+                    }
+                },
+                sort:{}
+            };
+
+            expect(_TableStateToRestApi.getOptions(tableStateMock)).toEqual(
+                {
+                    _offset: 0,
+                    _size: 9,
+                    'message.text': 'free text',
+                    _range: '@timestamp,2015-10-16T16:30:00.000Z,'
                 }
             );
         });
