@@ -228,7 +228,8 @@ describe('Controller: LogsCtrl', function () {
                     'timeRange': {
                         'gte': new moment('2015-06-17T15:50:00.000Z'),
                         'lte': new moment('2015-06-18T16:50:00.000Z')
-                    }
+                    },
+                    'messageText': 'free text'
                 };
                 scope.clearFilters();
                 expect(scope.eventsFilter).toEqual({
@@ -238,7 +239,8 @@ describe('Controller: LogsCtrl', function () {
                     'timeRange': {
                         'gte': '',
                         'lte': ''
-                    }
+                    },
+                    'messageText': ''
                 });
             });
         });

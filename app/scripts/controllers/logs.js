@@ -28,7 +28,8 @@ angular.module('cosmoUiApp')
                 'timeRange':{
                     'gte': '',
                     'lte': ''
-                }
+                },
+                'messageText': ''
             };
         };
         initFilters();

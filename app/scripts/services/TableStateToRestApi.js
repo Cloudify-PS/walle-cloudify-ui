@@ -39,6 +39,10 @@ angular.module('cosmoUiApp')
                         if(predicateObjectKey === 'timestamp'){
                             predicateObjectKey = '@timestamp';
                         }
+                        //HACK: changing message to message.text
+                        if(predicateObjectKey === 'message'){
+                            predicateObjectKey = 'message.text';
+                        }
 
                         if (predicateObjectValue.matchAny) {
                             try{
@@ -59,6 +63,11 @@ angular.module('cosmoUiApp')
                                 options._range = predicateObjectKey + ',' + gte + ',' + lte;
                             }
                             catch(e){}
+                        }else if(predicateObjectValue.equalTo){
+                            var equalTo = predicateObjectValue.equalTo;
+                            if(equalTo.length > 0){
+                                options[predicateObjectKey] = equalTo;
+                            }
                         }
                     }
                 });

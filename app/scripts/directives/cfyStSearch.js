@@ -17,7 +17,8 @@ angular.module('cosmoUiApp')
                     blueprint_id: 0,
                     deployment_id: 0,
                     level: 0,
-                    timestamp: 0
+                    timestamp: 0,
+                    message: 0
                 };
 
                 function isSkipSearchMatch(){
@@ -28,17 +29,30 @@ angular.module('cosmoUiApp')
                     return false;
                 }
 
-                if(attrs.match) {
+                if(attrs.match !== undefined) {
                     attrs.$observe('match', function (value) {
                         if(isSkipSearchMatch()){
                             return;
                         }
-                        if (value) {
+                        if (value || value === '') {
                             var query = {};
                             query.matchAny = value;
                             if (query.matchAny.length === 0) {
                                 query.matchAny = '[]';
                             }
+                            queryTable(query);
+                        }
+                    });
+                }
+
+                if(attrs.equal !== undefined) {
+                    attrs.$observe('equal', function (value) {
+                        if(isSkipSearchMatch()){
+                            return;
+                        }
+                        if (value || value === '') {
+                            var query = {};
+                            query.equalTo = value;
                             queryTable(query);
                         }
                     });
@@ -139,6 +153,17 @@ angular.module('cosmoUiApp')
                                 if (query.lte !== undefined) {
                                     skipSearches[attrs.predicate]++;
                                     _.set(scope, lteModel, new moment(lte));
+                                }
+                            }
+                        }
+                        if(query.equalTo !== undefined){
+                            var equalQuery = query.equalTo;
+                            var equalNgModel = attrs.ngModel;
+                            if (!!equalQuery) {
+                                //check if state is different
+                                if (isModelDifferentFromQuery(_.get(scope, equalNgModel), equalQuery)) {
+                                    skipSearches[attrs.predicate]++;
+                                    _.set(scope, equalNgModel, equalQuery);
                                 }
                             }
                         }

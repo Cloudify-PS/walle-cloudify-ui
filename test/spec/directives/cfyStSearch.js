@@ -85,4 +85,15 @@ describe('Directive: cfyStSearch', function () {
         expect(stTableCtrl.search).toHaveBeenCalledWith( { gte : '"2015-10-16T16:30:00.000Z"', lte : '"2010-10-10T10:10:00.000Z"' }, 'predicate' );
         expect(stTableCtrl.search).toHaveBeenCalledWith( { gte : '"2016-11-17T17:40:00.000Z"', lte : '"2011-11-11T11:11:00.000Z"' }, 'predicate' );
     });
+
+    it('should query table on equal attribute change', function () {
+        scope.predicate = 'predicate';
+        scope.equal = 'free text!!';
+        element = angular.element('<table st-table=""><div cfy-st-search match="{{equal}}" predicate="{{predicate}}"></div></table>');
+        initDirective();
+        scope.equal = 'yeahhh';
+        scope.$digest();
+        expect(stTableCtrl.search).toHaveBeenCalledWith( { matchAny : 'free text!!' }, 'predicate' );
+        expect(stTableCtrl.search).toHaveBeenCalledWith( { matchAny : 'yeahhh' }, 'predicate' );
+    });
 });
