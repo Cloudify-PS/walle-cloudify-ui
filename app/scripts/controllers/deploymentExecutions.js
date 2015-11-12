@@ -23,7 +23,7 @@ angular.module('cosmoUiApp')
                 if (error.status === 404) {
                     $scope.deploymentNotFound = true;
                 } else {
-                    $scope.errorMessage = 'deployment.executions.error';
+                    $scope.errorMessage = error.data || 'deployment.executions.error';
                 }
             });
     });
