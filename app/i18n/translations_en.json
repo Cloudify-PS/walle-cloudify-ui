@@ -246,6 +246,11 @@
                 "title": "Log Levels:",
                 "text": "Choose Log Levels"
             },
+            "timeRange": {
+                "title": "Time Range:",
+                "from": "From Time",
+                "to": "To Time"
+            },
             "clearFilterButton" : "Clear Filter"
         }
     },

@@ -24,11 +24,11 @@ angular.module('cosmoUiApp')
             $scope.eventsFilter = {
                 'blueprints': [],
                 'deployments': [],
-                'logLevels': []
-                //'timeRange':{
-                //    'lte': "",
-                //    'gte': ""
-                //}
+                'logLevels': [],
+                'timeRange':{
+                    'gte': '',
+                    'lte': ''
+                }
             };
         };
         initFilters();
