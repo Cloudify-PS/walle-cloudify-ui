@@ -98,6 +98,7 @@
             "started": "Started",
             "cancelling": "Cancelling",
             "force_cancelling": "Force cancelling"
+
         },
         "process": {
             "create_deployment_environment": "Initializing",
@@ -244,6 +245,15 @@
             "logLevels": {
                 "title": "Log Levels:",
                 "text": "Choose Log Levels"
+            },
+            "timeRange": {
+                "title": "Time Range:",
+                "from": "From Time",
+                "to": "To Time"
+            },
+            "messageText": {
+                "title": "Message Text:",
+                "text": "Search By Message Text"
             },
             "clearFilterButton" : "Clear Filter"
         }

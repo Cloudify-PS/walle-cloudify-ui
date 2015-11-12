@@ -12,44 +12,61 @@ angular.module('cosmoUiApp')
 
         this.getOptions = function(tableState){
             var options = {
-                from: tableState.pagination.start,
-                size: tableState.pagination.number,
-                include_logs: true
+            //paginating
+                _offset: tableState.pagination.start,
+                _size: tableState.pagination.number
             };
 
             //sorting
             if (Object.keys(tableState.sort).length > 0) {
-                options.sort = {
-                    field: tableState.sort.predicate,
-                    order: tableState.sort.reverse ? 'desc' : 'asc'
-                };
+                var sortOrder = tableState.sort.reverse ? '-' : '+' ;
+                var sortField = tableState.sort.predicate;
+
+                //HACK: changing timestamp to @timestamp
+                if(sortField === 'timestamp'){
+                    sortField = '@timestamp';
+                }
+
+                options._sort = sortOrder+sortField;
             }
 
             //searching
             if (Object.keys(tableState.search).length > 0) {
-                options.searches = [];
                 _.forEach(tableState.search.predicateObject, function (predicateObjectValue, predicateObjectKey) {
-                    var currentSearchOptions = {};
                     if(predicateObjectKey !== '$'){
-                        currentSearchOptions.predicate = predicateObjectKey;
+
+                        //HACK: changing timestamp to @timestamp
+                        if(predicateObjectKey === 'timestamp'){
+                            predicateObjectKey = '@timestamp';
+                        }
+                        //HACK: changing message to message.text
+                        if(predicateObjectKey === 'message'){
+                            predicateObjectKey = 'message.text';
+                        }
+
                         if (predicateObjectValue.matchAny) {
-                            try {
-                                currentSearchOptions.matchAny = JSON.parse(predicateObjectValue.matchAny);
-                                if(currentSearchOptions.matchAny.length > 0) {
-                                    options.searches.push(currentSearchOptions);
+                            try{
+                                var matchList = JSON.parse(predicateObjectValue.matchAny);
+                                if(matchList.length > 0){
+                                    options[predicateObjectKey] = matchList;
                                 }
                             }
                             catch(e){
+
                             }
-                        }else {
-                            if(predicateObjectValue.gte){
-                                currentSearchOptions.gte = predicateObjectValue.gte;
+                        }
+                        else if(predicateObjectValue.gte || predicateObjectValue.lte){
+                            try {
+                                //smartTable wrap everything with double quotes assuming everything can be an object, so we need to remove them
+                                var gte = predicateObjectValue.gte ? JSON.parse(predicateObjectValue.gte) : '';
+                                var lte = predicateObjectValue.lte ? JSON.parse(predicateObjectValue.lte) : '';
+                                options._range = predicateObjectKey + ',' + gte + ',' + lte;
                             }
-                            if(predicateObjectValue.lte){
-                                currentSearchOptions.lte = predicateObjectValue.lte;
-                            }
-                            if(Object.keys(currentSearchOptions).length>1){
-                                options.searches.push(currentSearchOptions);
+                            catch(e){}
+                        }else if(predicateObjectValue.equalTo){
+                            var equalTo = predicateObjectValue.equalTo;
+                            if(equalTo.length > 0){
+                                options[predicateObjectKey] = equalTo;
                             }
                         }
                     }

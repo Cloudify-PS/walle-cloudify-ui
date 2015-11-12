@@ -23,6 +23,7 @@
         "$": false,
         "_": false,
         "YAML": false,
-        "d3": false
+        "d3": false,
+        "moment": false
     }
 }

@@ -178,7 +178,10 @@ input[required] {
                 width: 100%;
                 height: 150px;
                 line-height: normal;
-                resize: none;
+
+                &.resize-vertical {
+                    resize: vertical;
+                }
             }
         }
         .error-message {

@@ -180,9 +180,11 @@ describe('Controller: LogsCtrl', function () {
                     then: function (successCallback) {
                         var getLogsResponse = {
                             data: {
-                                hits: {
-                                    hits: [],
-                                    total: 1
+                                items: [],
+                                metadata: {
+                                    pagination:{
+                                        total: 1
+                                    }
                                 }
                             },
                             status: 200
@@ -224,13 +226,23 @@ describe('Controller: LogsCtrl', function () {
                 scope.eventsFilter = {
                     'blueprints': ['blueprint1'],
                     'deployments': ['deployment2','deployment1'],
-                    'logLevels': ['error','warning','info']
+                    'logLevels': ['error','warning','info'],
+                    'timeRange': {
+                        'gte': new moment('2015-06-17T15:50:00.000Z'),
+                        'lte': new moment('2015-06-18T16:50:00.000Z')
+                    },
+                    'messageText': 'free text'
                 };
                 scope.clearFilters();
                 expect(scope.eventsFilter).toEqual({
                     'blueprints': [],
                     'deployments': [],
-                    'logLevels': []
+                    'logLevels': [],
+                    'timeRange': {
+                        'gte': '',
+                        'lte': ''
+                    },
+                    'messageText': ''
                 });
             });
         });
