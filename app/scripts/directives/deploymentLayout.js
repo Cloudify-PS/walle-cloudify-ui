@@ -57,7 +57,7 @@ angular.module('cosmoUiApp')
                     var statusFilter = ['pending', 'started', 'cancelling', 'force_cancelling'];
                     return cloudifyClient.executions.list( { deployment_id : $scope.deploymentId, _include: 'id,workflow_id,status', status: statusFilter })
                         .then(function (result) {
-                            $scope.currentExecution = _.first(result.data);
+                            $scope.currentExecution = _.first(result.data.items);
 
                             // mock.... remove!!!
                             //$scope.currentExecution = {"status":"started","workflow_id":"uninstall","id":"fa56b8a1-04b5-43b9-894e-8ae4f44321f3"}

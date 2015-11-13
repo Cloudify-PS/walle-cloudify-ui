@@ -59,7 +59,7 @@ angular.module('cosmoUiApp')
                     $scope.selectNodesArr = [];
                     cloudifyClient.nodeInstances.list($scope.id)
                         .then(function (httpResponse) {
-                            var instances = httpResponse.data;
+                            var instances = httpResponse.data.items;
                             _updateNodes.runUpdate(instances, $scope.nodesList);
 
                             instances.forEach(function (instance) {

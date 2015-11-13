@@ -45,7 +45,7 @@ describe('Controller: HostsCtrl', function () {
         beforeEach(inject(function (cloudifyClient) {
             cloudifyClient.deployments.list.andReturn({
                 then: function (success) {
-                    success({data: [{'id': 'foo', 'blueprint_id': 'bar'}]});
+                    success({data: {items: [{'id': 'foo', 'blueprint_id': 'bar'}]}});
                 }
             });
         }));
@@ -65,13 +65,15 @@ describe('Controller: HostsCtrl', function () {
             cloudifyClient.nodes.list.andReturn({
                 then: function (success) {
                     success({
-                        data: [
-                            {
-                                'deployment_id': 'foo',
-                                'id': 'bar',
-                                'type_hierarchy': ['hello', 'world']
-                            }
-                        ]
+                        data: {
+                            items: [
+                                {
+                                    'deployment_id': 'foo',
+                                    'id': 'bar',
+                                    'type_hierarchy': ['hello', 'world']
+                                }
+                            ]
+                        }
                     });
                 }
             });

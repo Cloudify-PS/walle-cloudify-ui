@@ -6,6 +6,7 @@ describe('Controller: DeploymentExecutions', function () {
     beforeEach(module('cosmoUiApp','backend-mock'));
 
     var DeploymentExecutions, scope;
+    var _cloudifyClient;
 
     var initCtrl = inject(function($controller){
         DeploymentExecutions = $controller('DeploymentExecutionsCtrl', {
@@ -14,8 +15,11 @@ describe('Controller: DeploymentExecutions', function () {
     });
 
     // Initialize the controller, mock scope, and spy on services
-    beforeEach(inject(function ($rootScope) {
+    beforeEach(inject(function ($rootScope, cloudifyClient ) {
         scope = $rootScope.$new();
+        _cloudifyClient = cloudifyClient;
+        spyOn(cloudifyClient.executions, 'list').andReturn(window.mockPromise({data : {items : []}})); //default implementation can be override
+        initCtrl();
     }));
 
 
@@ -24,7 +28,7 @@ describe('Controller: DeploymentExecutions', function () {
         expect(DeploymentExecutions).not.toBeUndefined();
     });
 
-    it('should load deployment"s executions', inject(function(cloudifyClient){
+    it('should load deployment"s executions', function(){
         var executionsMock = [
             {
                 blueprint_id: 'bomber',
@@ -49,37 +53,26 @@ describe('Controller: DeploymentExecutions', function () {
                 workflow_id: 'install'
             }
         ];
-        spyOn(cloudifyClient.executions, 'list').andReturn({
-            then: function (success) {
-                success({data: executionsMock});
-            }
-        });
+
+        _cloudifyClient.executions.list.andReturn(window.mockPromise({data : {items : executionsMock}}));
         initCtrl();
         expect(scope.executionsList).toBe(executionsMock);
-    }));
+    });
 
     describe('Error handling', function () {
 
-        it('should show error if result returned 500', inject(function (cloudifyClient) {
-            spyOn(cloudifyClient.executions, 'list').andReturn({
-                then: function (success, error) {
-                    error({status: 500});
-                }
-            });
+        it('should show error if result returned 500', function () {
+            _cloudifyClient.executions.list.andReturn(window.mockPromise(null,{status: 500}));
             initCtrl();
             expect(scope.errorMessage).toBe('deployment.executions.error');
-        }));
+        });
 
-        it('should show Deployment not found view if result returned 404', inject(function (cloudifyClient) {
-            spyOn(cloudifyClient.executions, 'list').andReturn({
-                then: function (success, error) {
-                    error({status: 404});
-                }
-            });
+        it('should show Deployment not found view if result returned 404', function () {
+            _cloudifyClient.executions.list.andReturn( window.mockPromise(null, {status: 404}));
             initCtrl();
             scope.$digest();
             expect(scope.deploymentNotFound).toBeTruthy();
-        }));
+        });
     });
 
 });

@@ -13,21 +13,20 @@ angular.module('cosmoUiApp')
             $scope.blueprints = null;
             $scope.managerError = false;
             return cloudifyClient.blueprints.list('id,updated_at,created_at,description').then(function (result) {
-
-                if (result.data.length < 1) {
+                if (result.data.items.length < 1) {
                     $scope.blueprints = [];
                 } else {
-                    $scope.blueprints = _.sortByOrder(result.data, ['updated_at'], [false]);
+                    $scope.blueprints = _.sortByOrder(result.data.items, ['updated_at'], [false]);
                 }
             }, function (result) {
-                $scope.managerError = result.data || 'General Error';
-                $log.error('got error result', result.data);
+                $scope.managerError = result.data.items || 'General Error';
+                $log.error('got error result', result.data.items);
             });
         }
 
         function loadDeployments(){
             cloudifyClient.deployments.list('blueprint_id').then(function( result ){
-                var deploymentsPerBlueprint = _.groupBy( result.data, 'blueprint_id' );
+                var deploymentsPerBlueprint = _.groupBy( result.data.items, 'blueprint_id' );
                 _.each($scope.blueprints, function(b){
                     b.deploymentsCount = deploymentsPerBlueprint.hasOwnProperty(b.id) ? deploymentsPerBlueprint[b.id].length : 0;
                 });
