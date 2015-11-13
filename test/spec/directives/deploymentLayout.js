@@ -59,18 +59,6 @@ describe('Directive: deploymentLayout', function () {
     });
 
     describe('#loadExecution', function(){
-        it('should redirect back to deployments if result returned 404 (CFY-1745)', inject(function( $location, cloudifyClient ){
-            spyOn($location,'path');
-            spyOn(cloudifyClient.executions,'list').andReturn({
-                then:function( success, error ){
-                    error({ status: 404 });
-                }
-            });
-            scope.loadExecutions();
-            expect($location.path).toHaveBeenCalled();
-
-        }));
-
         it('should put first running execution on scope.currentExecution', inject(function(cloudifyClient){
 
             var executions = [ { 'id' : 'foo' } , { 'id' : 'bar'}];

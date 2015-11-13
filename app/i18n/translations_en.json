@@ -97,8 +97,8 @@
             "pending": "Pending",
             "started": "Started",
             "cancelling": "Cancelling",
-            "force_cancelling": "Force cancelling"
-
+            "force_cancelling": "Force cancelling",
+            "error": "Unable to get executions list"
         },
         "process": {
             "create_deployment_environment": "Initializing",
@@ -129,6 +129,11 @@
                 "delete": ""
             },
             "workflowSelect": "-- Select workflow --"
+        },
+        "missingMessages": {
+            "indication": "Deployment not found",
+            "goBack": "Go back to deployments",
+            "deployBlueprint": "Let's deploy a blueprint"
         },
         "process": {
             "create_deployment_environment": "Initializing",
