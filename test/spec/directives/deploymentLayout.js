@@ -108,5 +108,13 @@ describe('Directive: deploymentLayout', function () {
             scope.loadExecutions();
             expect(cloudifyClient.executions.list).not.toHaveBeenCalled();
         }));
+
+        it('should not redirect after deletion if some navigation happened in between', inject(function($location){
+
+            $location.path('somewhere');
+            scope.goToDeployments();
+            expect($location.path()).toBe('/somewhere');
+
+        }));
     });
 });
