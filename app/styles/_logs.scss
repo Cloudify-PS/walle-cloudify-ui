@@ -10,6 +10,9 @@
         .filters {
             position: relative;
             margin: 0 0 10px;
+            max-width: 85%;
+            min-width: 200px;
+            float: left;
 
             .multiSelectMenu {
                 margin: 5px 10px 0 0;
@@ -19,14 +22,25 @@
                 display: inline-table;
                 margin: 0 0 10px;
             }
-            .actions {
-                margin-top: 27px;
-                float: right;
-            }
             .input-container {
                 margin: 5px 10px 0 0;
                 vertical-align: middle;
+                position: relative;
             }
+            .time-range{
+                padding-right: 20px;
+            }
+            .time-range-icon{
+                position: absolute;
+                top:9px;
+                right:5px;
+            }
+        }
+        .actions {
+            margin-top: 27px;
+            max-width: 15%;
+            min-width:143px;
+            float: right;
         }
 
         .emptyTable {

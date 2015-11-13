@@ -18,7 +18,8 @@ angular.module('cosmoUiApp')
                     deployment_id: 0,
                     level: 0,
                     timestamp: 0,
-                    message: 0
+                    message: 0,
+                    event_type: 0
                 };
 
                 function isSkipSearchMatch(){
@@ -62,21 +63,31 @@ angular.module('cosmoUiApp')
                 function createRangeQuery(){
                     var query = {};
                     if(attrs.gte && attrs.gte.length>0) {
-                        query.gte = attrs.gte;
+                        query.gte = getParsedValue(attrs.gte);
                     }
                     if(attrs.lte && attrs.lte.length>0)
                     {
-                        query.lte = attrs.lte;
+                        query.lte = getParsedValue(attrs.lte);
                     }
                     return query;
                 }
 
+                function getParsedValue(value){
+                    if(value.indexOf('\"') !== -1){
+                        value = value.replace(new RegExp('\"', 'g'), '');
+                    }
+                    if(moment(value, 'YYYY-MM-DD HH:mm', true).isValid()){
+                        return moment(value, 'YYYY-MM-DD HH:mm').toISOString();
+                    }
+                    if(moment(value, 'YYYY-MM-DDTHH:mm:ss.SSSZ',true).isValid()) {
+                        return value;
+                    }
+                    return '';
+                }
+
                 if(attrs.gte !== undefined) {
                     attrs.$observe('gte', function (value) {
-                        if(isSkipSearchMatch()){
-                            return;
-                        }
-                        if(value || value === ''){
+                        if (value !== undefined && !isSkipSearchMatch()) {
                             var query = createRangeQuery();
                             queryTable(query);
                         }
@@ -85,10 +96,7 @@ angular.module('cosmoUiApp')
 
                 if(attrs.lte !== undefined) {
                     attrs.$observe('lte', function (value) {
-                        if(isSkipSearchMatch()){
-                            return;
-                        }
-                        if(value || value === ''){
+                        if (value !== undefined && !isSkipSearchMatch()) {
                             var query = createRangeQuery();
                             queryTable(query);
                         }
@@ -135,10 +143,12 @@ angular.module('cosmoUiApp')
                             }
                         }
                         if(query.gte !== undefined){
-                            var gte = JSON.parse(query.gte);
+                            var gte = query.gte;
                             var gteModel = 'eventsFilter.timeRange.gte';
+                            var gteParsedModel = _.get(scope, gteModel);
+                            gteParsedModel = gteParsedModel.constructor.name === 'Moment' ? gteParsedModel.toISOString() : getParsedValue(gteParsedModel);
                             //check if state is different
-                            if (!angular.isFunction(_.get(scope, gteModel).toISOString) || isModelDifferentFromQuery(_.get(scope, gteModel).toISOString(), gte)) {
+                            if(isModelDifferentFromQuery(gteParsedModel, gte)) {
                                 if (query.gte !== undefined) {
                                     skipSearches[attrs.predicate]++;
                                     _.set(scope, gteModel, new moment(gte));
@@ -146,10 +156,12 @@ angular.module('cosmoUiApp')
                             }
                         }
                         if(query.lte !== undefined) {
-                            var lte = JSON.parse(query.lte);
+                            var lte = query.lte;
                             var lteModel = 'eventsFilter.timeRange.lte';
+                            var lteParsedModel = _.get(scope, lteModel);
+                            lteParsedModel = lteParsedModel.constructor.name === 'Moment' ? lteParsedModel.toISOString() : getParsedValue(lteParsedModel);
                             //check if state is different
-                            if (!angular.isFunction(_.get(scope, lteModel).toISOString) || isModelDifferentFromQuery(_.get(scope, lteModel).toISOString(), lte)) {
+                            if(isModelDifferentFromQuery(lteParsedModel, lte)) {
                                 if (query.lte !== undefined) {
                                     skipSearches[attrs.predicate]++;
                                     _.set(scope, lteModel, new moment(lte));
