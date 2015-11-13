@@ -59,37 +59,35 @@ describe('Directive: deploymentLayout', function () {
     });
 
     describe('#loadExecution', function(){
-        it('should redirect back to deployments if result returned 404 (CFY-1745)', inject(function( $location, cloudifyClient ){
-            spyOn($location,'path');
-            spyOn(cloudifyClient.executions,'list').andReturn({
-                then:function( success, error ){
-                    error({ status: 404 });
-                }
-            });
-            scope.loadExecutions();
-            expect($location.path).toHaveBeenCalled();
+        it('should put first running execution on scope.currentExecution', inject(function(cloudifyClient){
 
-        }));
+            var executions = [ { 'id' : 'foo' } , { 'id' : 'bar'}];
 
-        it('should put first running execution on scope.currentExecution', inject(function( cloudifyClient, ExecutionsService ){
-
-            var executions = [ { 'id' : 'foo' } , { 'id' : 'bar'}, { 'id' : 'running' }, { 'id' : 'not_running'}  ];
-
-            spyOn(ExecutionsService,'isRunning').andCallFake(function( exec ){
-                return exec.id === 'running';
-            });
             spyOn(cloudifyClient.executions,'list').andReturn({
                 then:function( success ){
-                    success({ data :  executions });
+                    success({ data : {items: executions } });
                 }
             });
             scope.loadExecutions();
 
-            expect(scope.currentExecution.id).toBe( 'running' );
+            expect(scope.currentExecution.id).toBe( 'foo' );
+        }));
 
-            executions = [ { 'id' : 'foo' } ];
+        it('should get only running executions', inject(function(cloudifyClient) {
+            var expectedParameters = {
+                deployment_id : scope.deploymentId,
+                _include: 'id,workflow_id,status',
+                status: ['pending', 'started', 'cancelling', 'force_cancelling']
+            };
+            spyOn(cloudifyClient.executions,'list').andCallFake(function(){
+                return {
+                    then:function(/*success,error*/){}
+                };
+            });
+
             scope.loadExecutions();
-            expect(scope.currentExecution).toBe(undefined);
+
+            expect(cloudifyClient.executions.list).toHaveBeenCalledWith(expectedParameters);
         }));
 
         it('should return immediately if deploymentNotFound', inject(function( cloudifyClient ){
@@ -97,6 +95,21 @@ describe('Directive: deploymentLayout', function () {
             spyOn(cloudifyClient.executions,'list');
             scope.loadExecutions();
             expect(cloudifyClient.executions.list).not.toHaveBeenCalled();
+        }));
+
+        it('should redirect after deletion', inject(function($location){
+
+            scope.goToDeployments();
+            expect($location.path()).toBe('/deployments');
+
+        }));
+
+        it('should not redirect after deletion if some navigation happened in between', inject(function($location){
+
+            $location.path('somewhere');
+            scope.goToDeployments();
+            expect($location.path()).toBe('/somewhere');
+
         }));
     });
 });

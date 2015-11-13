@@ -1,11 +1,9 @@
+//A color palette for the application. These are unique colors and should be reused across the stylesheets.
+//When adding new colors, please add them here and assign their variable to another variable inside _variables.scss,
+//e.g. "$LINK_COLOR: $clr-base-01", or simply inject their variable directly where needed, e.g. "color: $clr-base-01".
+//----------------------------------------------------------------------------------------------------------------------
 
-/*
-A color palette for the application. These are unique colors and should be reused across the stylesheets.
-When adding new colors, please add them here and assign their variable to another variable inside _variables.scss,
-e.g. "$LINK_COLOR: $clr-base-01", or simply inject their variable directly where needed, e.g. "color: $clr-base-01".
-----------------------------------------------------------------------------------------------------------------------*/
-
-/* opaque colors */
+// opaque colors
 $clr-base-00: #2c4a67 !default;
 $clr-base-01: #ffffff !default;
 $clr-base-02: #29aaee !default;
@@ -28,7 +26,7 @@ $clr-base-18: #8eaf26 !default;
 $clr-base-19: #d54931 !default;
 $clr-base-20: #53bbf1 !default;
 $clr-base-21: #333333 !default;
-$clr-base-22: #13B0CB !default;
+$clr-base-22: #13b0cb !default;
 $clr-base-23: #ededed !default;
 $clr-base-24: #bce0ef !default;
 $clr-base-25: #496685 !default;
@@ -38,8 +36,8 @@ $clr-base-28: #d7d7d7 !default;
 $clr-base-29: #dce6f0 !default;
 $clr-base-30: #eaf1f7 !default;
 
-/* translucent colors */
+// translucent colors
 $clr-base-alpha-01: rgba(0, 0, 0, .12) !default;
-$clr-base-alpha-02: rgba(144, 144, 144, 0.5) !default;
-$clr-base-alpha-03: rgba(255, 255, 255, 0.95) !default;
+$clr-base-alpha-02: rgba(144, 144, 144, .5) !default;
+$clr-base-alpha-03: rgba(255, 255, 255, .95) !default;
 $clr-base-alpha-04: rgba(255, 255, 255, .5) !default;

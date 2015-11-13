@@ -32,7 +32,8 @@
         "source": {
             "chooseFile": "Please choose file to preview.",
             "noPreview": "Generating Blueprint Source View...",
-            "browseError": "Error browsing blueprint files"
+            "browseError": "Error browsing blueprint files",
+            "downloadLink": "Download blueprint"
         },
         "actions": {
             "deployBtn": "Create Deployment",
@@ -96,7 +97,8 @@
             "pending": "Pending",
             "started": "Started",
             "cancelling": "Cancelling",
-            "force_cancelling": "Force cancelling"
+            "force_cancelling": "Force cancelling",
+            "error": "Unable to get executions list"
         },
         "process": {
             "create_deployment_environment": "Initializing",
@@ -127,6 +129,11 @@
                 "delete": ""
             },
             "workflowSelect": "-- Select workflow --"
+        },
+        "missingMessages": {
+            "indication": "Deployment not found",
+            "goBack": "Go back to deployments",
+            "deployBlueprint": "Let's deploy a blueprint"
         },
         "process": {
             "create_deployment_environment": "Initializing",
@@ -200,12 +207,36 @@
         "noLogs": "There are no events at this moment...",
         "fields": {
             "timestamp": "Timestamp",
-            "executionId": "Execution ID:",
-            "nodeId": "Node ID:",
-            "taskName": "Task Name:",
-            "plugin": "Plugin:",
-            "operation": "Operation:",
-            "messageText": "Message:"
+            "auditTimestamp": "Audit Timestamp",
+            "executionId": "Execution ID",
+            "nodeId": "Node ID",
+            "taskName": "Task Name",
+            "plugin": "Plugin",
+            "operation": "Operation",
+            "messageText": "Message",
+            "type": "Type",
+            "logger": "Logger",
+            "level": "Log Level",
+            "eventType": "Event Type",
+            "blueprintId": "Blueprint ID",
+            "deploymentId": "Deployment ID",
+            "workflowId": "Workflow ID",
+            "taskId": "Task ID",
+            "taskQueue": "Task Queue",
+            "taskTarget": "Task Target",
+            "taskCurrentRetries": "Task Current Retries",
+            "taskTotalRetries": "Task Total Retries",
+            "sourceName": "Source Name",
+            "sourceId": "Source ID",
+            "targetName": "Target Name",
+            "targetId": "Target ID",
+            "nodeName": "Node Name",
+            "group": "Group",
+            "policy": "Policy",
+            "trigger": "Trigger",
+            "triggerParameters": "Trigger Parameters"
+
+
         },
         "filters": {
             "blueprints": {
@@ -220,7 +251,26 @@
                 "title": "Log Levels:",
                 "text": "Choose Log Levels"
             },
-            "clearFilterButton" : "Clear Filter"
+            "eventTypes": {
+                "title": "Event Types",
+                "text": "Choose Event Types"
+            },
+            "timeRange": {
+                "title": "Time Range:",
+                "from":{
+                    "title": "From Time",
+                    "placeholder": "YYYY-MM-DD HH:MM"
+                } ,
+                "to": {
+                    "title": "To Time",
+                    "placeholder": "YYYY-MM-DD HH:MM"
+                }
+            },
+            "messageText": {
+                "title": "Message Text:",
+                "text": "Search By Message Text"
+            },
+            "clearFilterButton" : "Clear Filters"
         }
     },
     "toggleSwitch": {

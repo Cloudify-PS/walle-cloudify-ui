@@ -3,45 +3,36 @@
     #main-content-panel {
         padding-right: 40px;
     }
-
-
     .disable {
         color: $COSMOUI_BUTTON_DISABLED_BACKGROUND;
     }
-
     table {
         width: $COSMOUI_LIST_WIDTH;
 
-        tr {
-            td {
-                &.actions {
-                    width: $COSMOUI_LIST_HOVER_ACTION_WIDTH;
-                    overflow: initial;
-                }
-                &.delete {
-                    width: $COSMOUI_LIST_HOVER_DELETE_WIDTH;
-                    text-align: center;
-                }
+        td {
+            &.actions {
+                width: $COSMOUI_LIST_HOVER_ACTION_WIDTH;
+                overflow: initial;
+            }
+            &.delete {
+                width: $COSMOUI_LIST_HOVER_DELETE_WIDTH;
+                text-align: center;
             }
         }
-
         i {
             float: left;
         }
     }
-
     .connect-error-message {
         color: #f00;
         margin-left: 20px;
         margin-top: 20px;
     }
-
     .no-blueprints-message {
         color: #000;
         margin-left: 20px;
         margin-top: 20px;
     }
-
     form {
         margin-bottom: 10px;
 
@@ -49,7 +40,6 @@
             display: inline-block;
             vertical-align: top;
         }
-
         label {
             font-weight: inherit;
         }

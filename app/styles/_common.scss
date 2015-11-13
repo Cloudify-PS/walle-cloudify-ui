@@ -1,31 +1,39 @@
 .gs-table {
     width: $COSMOUI_LIST_WIDTH;
 
+    &.gs-table-align-top {
+        tr {
+            td {
+                vertical-align: top;
+            }
+        }
+    }
+
     thead {
         tr {
             th {
-                border: 0px !important;
                 background: $COSMOUI_LIST_COLUMN_HEADER_BACKGROUND;
                 color: $COSMOUI_LIST_COLUMN_HEADER_TEXT_COLOR;
+                border: 0 !important;
                 vertical-align: middle !important;
                 height: 32px;
-                border: none;
                 font-weight: normal;
-                padding: 5px 0px 5px 10px;
+                padding: 5px 0 5px 10px;
                 text-align: left;
 
-                &.sorting,.sorting {
+                &.sorting, .sorting {
                     padding-left: 20px;
                     cursor: pointer;
+
                     &:hover {
-                        background-color: #D9EDFC;
+                        background-color: #d9edfc;
                     }
                 }
 
                 &.st-sort-ascent:after, .st-sort-ascent:after {
                     font-size: 10px;
                     margin-left: 5px;
-                    position:relative;
+                    position: relative;
                     top: -3px;
                     content: '\25B2';
                 }
@@ -33,7 +41,7 @@
                 &.st-sort-descent:after, .st-sort-descent:after {
                     font-size: 10px;
                     margin-left: 5px;
-                    position:relative;
+                    position: relative;
                     top: -2px;
                     content: '\25BC';
                 }
@@ -41,14 +49,46 @@
         }
     }
     tbody {
-        border: 0px !important;
+        border: 0 !important;
+
         tr {
+
+            &.details {
+                background-color: #f5f5f5;
+                border-bottom: 1px solid #ccc;
+                padding: 10px;
+
+                .group {
+                    display: inline-block;
+                    border-right: 1px dotted #ccc;
+                    min-width: 250px;
+                    height: 100%;
+                    font-size: 13px;
+                    vertical-align: top;
+
+                    &:last-child {
+                        border: 0;
+                    }
+
+                    > span {
+                        display: block;
+                        padding: 5px 0;
+                        margin: 0 10px;
+                        line-height: 18px;
+                    }
+                }
+            }
+            &:hover {
+                //                background-color: $COSMOUI_LIST_HOVER_BACKGROUND;
+            }
+
             td {
                 vertical-align: middle;
                 height: 53px;
-                border: none;
+                border: 0;
                 background-color: transparent;
-                padding: 5px 0px 5px 10px;
+                padding: 5px 0 5px 10px;
+
                 i {
                     color: $clr-base-11;
                     width: 32px;
@@ -58,34 +98,6 @@
                     -webkit-font-smoothing: antialiased;
                     -moz-osx-font-smoothing: grayscale;
                 }
-            }
-
-          &.details {
-            background-color: #f5f5f5;
-            border-bottom: 1px solid #ccc;
-            padding: 10px;
-
-            .group {
-              display: inline-block;
-              border-right: 1px dotted #ccc;
-              min-width: 250px;
-              height: 100%;
-              font-size: 13px;
-              vertical-align: top;
-              > span {
-                display: block;
-                padding: 5px 0;
-                margin: 0 10px;
-                line-height: 18px;
-              }
-              &:last-child {
-                border: 0px;
-              }
-            }
-          }
-
-            &:hover {
-//                background-color: $COSMOUI_LIST_HOVER_BACKGROUND;
             }
         }
     }
@@ -97,33 +109,25 @@
     i {
         color: $COSMOUI_EVENTS_LIST_ITEM_COLOR;
     }
-
-  &.gs-table-align-top {
-    tr {
-      td {
-        vertical-align: top;
-      }
-    }
-  }
 }
 
 .gs-btn {
-    $GS_BUTTON_COLOR:white;
+    $GS_BUTTON_COLOR: #fff;
     color: $GS_BUTTON_COLOR;
-    padding: 5px 10px 5px 10px;
+    padding: 5px 10px;
     background-color: $COSMOUI_BUTTON_BACKGROUND;
     border-radius: 3px;
     border-bottom: 1px solid $COSMOUI_BUTTON_BOTTOM_BORDER_COLOR;
     border-right: 1px solid $COSMOUI_BUTTON_RIGHT_BORDER_COLOR;
-    border-top: none;
-    border-left: none;
+    border-top: 0;
+    border-left: 0;
     vertical-align: middle;
     background: $COSMOUI_BUTTON_BACKGROUND;
     cursor: pointer;
-    position:relative;
+    position: relative;
 
     &.disabled, &[disabled] {
-        &,&:hover {
+        &, &:hover {
             background: $COSMOUI_BUTTON_DISABLED_BACKGROUND;
             border-bottom: 1px solid $COSMOUI_BUTTON_DISABLED_BORDER_COLOR;
             border-right: 1px solid $COSMOUI_BUTTON_DISABLED_BORDER_COLOR;
@@ -132,105 +136,96 @@
         }
 
     }
-
-    .gs-loader, .gs-loader:hover {
-        display:none;
-        position:absolute;
-        left:0;
-        right:0;
-
-    }
-
-    &.gs-spinner-active{
+    &.gs-spinner-active {
         [ng-transclude] {
-            color:transparent;
+            color: transparent;
         }
-        .gs-loader, .gs-loader:hover{
-            display:inline-block;
+        .gs-loader, .gs-loader:hover {
+            display: inline-block;
         }
     }
-
-    &:hover{
+    &:hover {
         text-decoration: none;
-        color:$GS_BUTTON_COLOR;
-
+        color: $GS_BUTTON_COLOR;
     }
-
     &.close {
         float: right;
         position: absolute;
-        right: 0px;
+        right: 0;
         top: 5px;
-        background: url("/images/x_idle.png") no-repeat center center;
+        background: url('/images/x_idle.png') no-repeat center center;
         width: 32px;
         height: 32px;
         cursor: pointer;
         background-color: transparent;
-        border: none;
-        padding-right: 0px;
+        border: 0;
+        padding-right: 0;
 
         &:hover {
-            background: url("/images/x_hover.png") no-repeat center center;
+            background: url('/images/x_hover.png') no-repeat center center;
         }
 
         &:active {
-            background: url("/images/x_pressed.png") no-repeat center center;
+            background: url('/images/x_pressed.png') no-repeat center center;
         }
 
         &.disabled {
-            background: url("/images/x_idle.png") no-repeat center center;
+            background: url('/images/x_idle.png') no-repeat center center;
         }
+    }
+
+    .gs-loader, .gs-loader:hover {
+        display: none;
+        position: absolute;
+        left: 0;
+        right: 0;
     }
 }
 
 .gsBtnDisabled {
-  background: #f4fbff;
-  border-bottom: 1px solid #bce0ef;
-  border-right: 1px solid #bce0ef;
-  color: #bce0ef;
-  cursor: default;
+    background: #f4fbff;
+    border-bottom: 1px solid #bce0ef;
+    border-right: 1px solid #bce0ef;
+    color: #bce0ef;
+    cursor: default;
 }
 
 .gs-selection-button {
     margin-right: 5px;
 
     .gs-select {
-        min-width: 0px;
+        min-width: 0;
         width: 190px;
         color: $clr-base-11;
         background-color: $clr-base-01;
         font-weight: normal;
-        line-height:30px;
+        line-height: 30px;
         border-radius: 5px;
         border: 2px solid $clr-base-04;
         float: left;
         font-size: 14px;
         box-shadow: none;
-        -webkit-appearance: none;
-        -moz-appearance: none;
         appearance: none;
         cursor: pointer;
-
 
         &.disable {
             background: transparent;
             color: $clr-base-27;
         }
-
-        t{
-            padding-left:5px;
+        &.open {
+            height: 35px;
         }
 
-        div.button {
+        t {
+            padding-left: 5px;
+        }
+        .button {
             background-color: $clr-base-01;
-            border: none;
+            border: 0;
 
             label {
                 padding: 0;
             }
-        }
-        &.open {
-            height: 35px;
         }
     }
 
@@ -238,7 +233,7 @@
         position: relative;
         width: 30px;
         height: 33px;
-        top: 0px;
+        top: 0;
         right: 30px;
         border-left: 1px solid #cccccc;
         cursor: pointer;
@@ -246,7 +241,7 @@
         pointer-events: none;
 
         &:after {
-            content: "";
+            content: '';
             position: relative;
             left: 7px;
             top: 20px;
@@ -260,7 +255,7 @@
 .icon {
     width: 36px;
     height: 36px;
-    border-radius: 0px;
+    border-radius: 0;
 }
 
 .icon-events {
@@ -269,48 +264,23 @@
     width: 36px;
     height: 36px;
     font-size: 32px;
-    color: #2C4B68;
+    color: #2c4b68;
 
     // some classes are left empty as placeholders for color changes for the icon.
-    &.icon-gs-policy-failed:before {
-        color: #d64b34;
-    }
-    &.icon-gs-policy-success:before {
-        color: #9ABC2E;
-    }
-    &.icon-gs-task-failed:before {
-        color: #d64b34;
-    }
-    &.icon-gs-task-retried:before {
-        color: #F9B71B;
-    }
-    &.icon-gs-task-sent:before {
-        color: #049cdb;
-    }
-    &.icon-gs-task-started:before {
-    }
-    &.icon-gs-task-success:before {
-        color: #9ABC2E;
-    }
-    &.icon-gs-workflow-stage:before {
-    }
-    &.icon-gs-workflow-cancelled:before {
-        color: #d64b34;
-    }
-    &.icon-gs-workflow-failed:before {
-        color: #d64b34;
-    }
-    &.icon-gs-workflow-started:before {
-    }
-    &.icon-gs-workflow-success:before {
-        color: #9ABC2E;
-    }
-    &.icon-gs-task-sent:before {
-    }
-
-    &.gs-icon-logs:before {
-        color: #049cdb;
-    }
+    &.icon-gs-policy-failed:before { color: #d64b34; }
+    &.icon-gs-policy-success:before { color: #9abc2e; }
+    &.icon-gs-task-failed:before { color: #d64b34; }
+    &.icon-gs-task-retried:before { color: #f9b71b; }
+    &.icon-gs-task-sent:before { color: #049cdb; }
+    //&.icon-gs-task-started:before { }
+    &.icon-gs-task-success:before { color: #9abc2e; }
+    //&.icon-gs-workflow-stage:before { }
+    &.icon-gs-workflow-cancelled:before { color: #d64b34; }
+    &.icon-gs-workflow-failed:before { color: #d64b34; }
+    //&.icon-gs-workflow-started:before { }
+    &.icon-gs-workflow-success:before { color: #9abc2e; }
+    //&.icon-gs-task-sent:before { }
+    &.gs-icon-logs:before { color: #049cdb; }
 }
 
 $install: #2f3334;
@@ -341,91 +311,108 @@ $failed: #d54931;
     &.failed {
         color: $failed;
     }
-
 }
 
 .badge {
-  position: relative;
-  display: inline-block;
-  z-index: 1;
-  min-width: 20px;
-  border-radius: 10px;
-  padding: 3px !important;  // this is here to override bootstrap's own .badge class definition
-  vertical-align: baseline;
-  white-space: nowrap;
-  text-align: center;
-  background-color: $install;
-  text-decoration: none;
-  font-size: 14px;
-  color: #fff;
-  line-height: 15px;
-  font-style: normal;
-  font-weight: normal;
-  opacity: 1;
-  &.install {
+    position: relative;
+    display: inline-block;
+    z-index: 1;
+    min-width: 20px;
+    border-radius: 10px;
+    padding: 3px !important; // this is here to override bootstrap's own .badge class definition
+    vertical-align: baseline;
+    white-space: nowrap;
+    text-align: center;
     background-color: $install;
-  }
-  &.done {
-    background-color: $done;
-  }
-  &.alerts {
-    background-color: $alerts;
-  }
-  &.failed {
-    background-color: $failed;
-  }
+    text-decoration: none;
+    font-size: 14px;
+    color: #fff;
+    line-height: 15px;
+    font-style: normal;
+    font-weight: normal;
+    opacity: 1;
+
+    &.install {
+        background-color: $install;
+    }
+    &.done {
+        background-color: $done;
+    }
+    &.alerts {
+        background-color: $alerts;
+    }
+    &.failed {
+        background-color: $failed;
+    }
 }
 
 p[tooltip], div[tooltip], td {
-  overflow: hidden;
-  text-overflow: ellipsis;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
-input[type=text], input[type=password]{
-  height: 32px;
-  border-radius: 3px;
-  padding-left: 10px;
-  background-clip: padding-box;
-  background-color: $COSMOUI_INPUT_BACKGROUND;
-  border: 0;
+input[type=text], input[type=password] {
+    height: 32px;
+    border-radius: 3px;
+    padding-left: 10px;
+    background-clip: padding-box;
+    background-color: $COSMOUI_INPUT_BACKGROUND;
+    border: 0;
 }
 
-.hidden-thing{
-    width:0;
-    height:0;
-    display:none;
-    font-size:0;
+.filter-input{
+    border: 2px solid #cadbec;
+    &::-webkit-input-placeholder {
+        color: #4b6c8b;
+        font-style: normal;
+    }
+    &:-moz-placeholder { /* Firefox 18- */
+        color: #4b6c8b;
+        font-style: normal;
+    }
+    &::-moz-placeholder {  /* Firefox 19+ */
+        color: #4b6c8b;
+        font-style: normal;
+    }
+    &:-ms-input-placeholder {
+        color: #4b6c8b;
+        font-style: normal;
+    }
 }
 
+.hidden-thing {
+    width: 0;
+    height: 0;
+    display: none;
+    font-size: 0;
+}
 
+.gs-loader {
+    $LARGE_SIZE: 130px;
+    $SMALL_SIZE: 14px;
+    $MEDIUM_SIZE: 130px;
 
-.gs-loader{
-
-    $LARGE_SIZE:130px;
-    $SMALL_SIZE:14px;
-    $MEDIUM_SIZE:130px;
-    &.large{
-        margin:0 auto;
-        top:50px;
-        margin-bottom:100px;
-        font-size:$LARGE_SIZE;
-        color:$COSMOUI_SPINNER_COLOR_LARGE;
+    &.large {
+        margin: 0 auto;
+        top: 50px;
+        margin-bottom: 100px;
+        font-size: $LARGE_SIZE;
+        color: $COSMOUI_SPINNER_COLOR_LARGE;
         width: $LARGE_SIZE;
     }
+    &.inline {
+        display: inline-block;
 
-    &.inline{
-        display:inline-block;
-        i, i:before{
-            height:14px;
-            width:14px;
-            font-size:14px;
+        i, i:before {
+            height: 14px;
+            width: 14px;
+            font-size: 14px;
         }
     }
-
-    &.gs-btn{
-        display:inline-block;
-        font-size:$SMALL_SIZE;
-        width:$SMALL_SIZE;
+    &.gs-btn {
+        display: inline-block;
+        font-size: $SMALL_SIZE;
+        width: $SMALL_SIZE;
     }
 }
 
@@ -434,17 +421,64 @@ input[type=text], input[type=password]{
     -webkit-appearance: none;
     width: 7px;
 }
+
 ::-webkit-scrollbar-thumb {
     border-radius: 4px;
-    background-color: rgba(0,0,0,.5);
-    -webkit-box-shadow: 0 0 1px rgba(255,255,255,.5);
+    background-color: rgba(0, 0, 0, .5);
+    box-shadow: 0 0 1px rgba(255, 255, 255, .5);
 }
 
 //making every element with ng-click directive displaying a clickable cursor
-[ng-click],[data-ng-click]{
+[ng-click], [data-ng-click] {
     cursor: $COSMOUI_CLICKABLE_CURSOR;
 }
 
-.error{
-    color:red;
+.error {
+    color: #f00;
+}
+
+[date-picker-wrapper] {
+    border: 1px solid  lighten(#cce4f6, 50%);
+    top: 35px;
+    border-radius: 5px;
+
+    [date-picker] {
+        background-color: #cce4f6;
+
+        table{
+            margin: 0 auto;
+            tbody{
+                th, span {
+                    &.active {
+                        background-image: linear-gradient(to bottom, #29aaee, #29aaee);
+                    }
+                    &.now {
+                        background-image: linear-gradient(to bottom, #2c4a67, #2c4a67);
+                    }
+                    &:hover {
+                        background-image: linear-gradient(to bottom, #29aaee, #29aaee);
+                        color: white;
+                    }
+                }
+            }
+            thead{
+                tr:first-child th {
+                    &.switch{
+
+                    }
+                    &:hover{
+                        background-color: #29aaee;
+                        color: white;
+                    }
+                }
+
+                tr:nth-child(2) th {
+                    &:hover {
+                        background-color: #cce4f6;
+                        cursor: auto;
+                    }
+                }
+            }
+        }
+    }
 }

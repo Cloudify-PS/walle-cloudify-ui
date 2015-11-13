@@ -1,18 +1,16 @@
 .deployment-layout {
-    height:100%;
-    #main-content-panel{
-        padding:20px;
-    }
+    height: 100%;
 
+    #main-content-panel {
+        padding: 20px;
+    }
     #deployment-header {
         width: $COSMOUI_DEPLOYMENT_HEADER_WIDTH;
 
         .content-header {
-
             margin-bottom: 10px;
             overflow: hidden;
         }
-
         .header-left {
             margin-bottom: 10px;
 
@@ -21,68 +19,47 @@
                 cursor: pointer;
                 vertical-align: middle;
             }
-
-
-            [app-status-widget]{
-                margin-top:-20px;
-                margin-right:-20px;
-            }
-
-
             .actions {
                 display: inline-block;
                 float: right;
                 margin-right: 100px;
                 white-space: nowrap;
                 vertical-align: top;
-                .workflow-selector{
-
-                }
+                //.workflow-selector { }
             }
-
-
         }
-
-        .eventsTable {
-            tr {
-                td {
-                    vertical-align: top;
-                }
-            }
+        .eventsTable td {
+            vertical-align: top;
         }
     }
-
     #right-side-menu {
 
         .close-properties-button {
             cursor: pointer;
         }
-
         .content {
+
             .content-section {
                 position: relative;
-                padding-left: 0px;
+                padding-left: 0;
                 top: 30px;
 
                 .prop-section {
-                    top: 0px;
+                    top: 0;
 
                     .no-properties {
                         float: left;
                     }
                 }
-
                 .overview-node-name {
                     font-size: 16px;
                     font-weight: bold;
                     color: #333;
                     margin-bottom: 5px;
                 }
-
                 table.overview-data {
                     margin-bottom: 30px;
                 }
-
                 table.relationships-table {
                     width: 100%;
 
@@ -105,7 +82,7 @@
                         td {
                             min-width: 120px;
                             vertical-align: middle;
-                            padding-left: 0px;
+                            padding-left: 0;
 
                             &.relationships-target {
                                 width: 140px;
@@ -130,6 +107,17 @@
                                             background-color: #fff;
                                         }
                                     }
+                                    //&:first-child td {
+                                    //  background-color: #d3dfe2;
+                                    //  height: 30px;
+                                    //  color: #333333;
+                                    //  font-size: 13px;
+                                    //  padding-left: 5px;
+                                    //}
+                                    &:hover:not(:first-child) td {
+                                        background: none;
+                                        color: #333333;
+                                    }
 
                                     .relationship-arrow {
                                         float: left;
@@ -141,7 +129,6 @@
                                             border-bottom: 5px solid transparent;
                                             border-left: 5px solid #333;
                                         }
-
                                         &.down {
                                             margin-top: 7px;
                                             margin-right: 5px;
@@ -150,27 +137,12 @@
                                             border-top: 5px solid #333;
                                         }
                                     }
-
-                                    //&:first-child td {
-                                    //  background-color: #d3dfe2;
-                                    //  height: 30px;
-                                    //  color: #333333;
-                                    //  font-size: 13px;
-                                    //  padding-left: 5px;
-                                    //}
-
-                                    &:hover:not(:first-child) td {
-                                        background: none;
-                                        color: #333333;
-                                    }
-
                                     td {
                                         height: 30px;
                                         border-bottom: 1px solid #cadbec;
-                                        padding-left: 0px !important;
+                                        padding-left: 0 !important;
 
                                         table {
-
                                             margin-left: 10px;
                                             width: 98%;
 
@@ -182,6 +154,7 @@
 
                                                 td {
                                                     padding-left: 5px;
+
                                                     ul {
                                                         li {
                                                             list-style: none;
@@ -197,17 +170,18 @@
                     }
                 }
             }
-
         }
     }
-
-    .not-found-message{
+    #deployment-content {
+        clear: both;
+    }
+    .not-found-message {
         text-align: center;
         vertical-align: middle;
-        .message{
-            margin-top:100px;
-            padding:20px;
+
+        .message {
+            margin-top: 100px;
+            padding: 20px;
         }
     }
 }
-

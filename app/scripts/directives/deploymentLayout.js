@@ -7,7 +7,8 @@
  * # deploymentLayout
  */
 angular.module('cosmoUiApp')
-    .directive('deploymentLayout', function ($location, nodeStatus, ngDialog, cloudifyClient, ExecutionsService, $routeParams, $log ) {
+    .directive('deploymentLayout', function ($location, nodeStatus, cloudifyClient, ExecutionsService, $routeParams) {
+
         return {
             templateUrl: 'views/deployment/deploymentLayout.html',
             restrict: 'C',
@@ -15,9 +16,9 @@ angular.module('cosmoUiApp')
             replace: false,
             link: function postLink($scope/*, $element, $attrs*/) {
 
+                var url = $location.url();
+
                 $scope.deploymentId = $routeParams.deploymentId;
-
-
 
                 // Set Navigation Menu - Need to set only after blueprint id available for source page href
                 $scope.navMenu = [
@@ -53,25 +54,14 @@ angular.module('cosmoUiApp')
                     if ( $scope.deploymentNotFound ){
                         return { then: function(){} };
                     }
-                    return cloudifyClient.executions.list($scope.deploymentId, 'id,workflow_id,status')
+                    var statusFilter = ['pending', 'started', 'cancelling', 'force_cancelling'];
+                    return cloudifyClient.executions.list( { deployment_id : $scope.deploymentId, _include: 'id,workflow_id,status', status: statusFilter })
                         .then(function (result) {
-                            $scope.currentExecution = _.first(_.filter(result.data, function (execution) {
-                                return ExecutionsService.isRunning(execution);
-                            }));
+                            $scope.currentExecution = _.first(result.data.items);
 
                             // mock.... remove!!!
                             //$scope.currentExecution = {"status":"started","workflow_id":"uninstall","id":"fa56b8a1-04b5-43b9-894e-8ae4f44321f3"}
-
-                        },
-                        function (result) {
-                            // todo: need to lets user know the deployments was deleted somehow.
-                            if ( result.status === 404 ){
-                                $location.path('#/deployments');
-                            }else {
-                                // todo add proper erorr feedback for user
-                                $log.error('unable to get executions', result.data);
-                            }
-                        });
+                        }, function() {});
                 }
 
 
@@ -80,7 +70,9 @@ angular.module('cosmoUiApp')
                 };
 
                 $scope.goToDeployments = function() {
-                    $location.path('/deployments');
+                    if($location.url() === url) {
+                        $location.path('/deployments');
+                    }
                 };
 
                 $scope.registerTickerTask('deploymentLayout/loadExecutions', _loadExecutions, 1000);

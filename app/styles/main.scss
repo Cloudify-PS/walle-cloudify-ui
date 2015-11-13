@@ -1,10 +1,10 @@
-/** Bootstap **/
-@import '../bower_components/bootstrap-sass-official/assets/stylesheets/_bootstrap';
+// Bootstap
+@import '../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap';
 
-/** White Labeling **/
+// White Labeling
 @import './whitelabel';
 
-/** Common **/
+// Common
 @import './colors';
 @import './images';
 @import './variables';
@@ -30,15 +30,14 @@
 @import './startExecutionDialog';
 @import './SyntaxHighlighter/overwrites';
 
+$gs-infra-root: '../bower_components/gs-ui-infra';
+@import '../bower_components/gs-ui-infra/app/styles/main';
 
-$gs-infra-root:'../bower_components/gs-ui-infra';
-@import '../bower_components/gs-ui-infra/app/styles/main.scss';
-
-/** Fonts **/
-$fa-font-path:'../bower_components/font-awesome/fonts';
+// Fonts
+$fa-font-path: '../bower_components/font-awesome/fonts';
 @import '../bower_components/font-awesome/scss/font-awesome';
 
-/** Pages **/
+// Pages
 @import './blueprints/blueprintLayout';
 @import './blueprints/blueprintsIndex';
 @import './blueprints/blueprintTopology';

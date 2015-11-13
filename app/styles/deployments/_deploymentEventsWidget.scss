@@ -1,23 +1,21 @@
 .events-widget {
-    $BOTTOM: 60px; /* same as footer height */
-    /* todo: refactor this to be variables CFY-3326 */
+    $BOTTOM: 60px; // same as footer height
+    // todo: refactor this to be variables CFY-3326
     position: fixed;
     bottom: $BOTTOM;
-    left:186px;
-    right:20px;
+    left: 186px;
+    right: 20px;
     height: auto;
     border-top: 2px solid #4b6b8b;
     z-index: 10000;
-    -webkit-box-shadow: 0 -1px 24px 0px rgba(0, 0, 0, 0.2);
-    -moz-box-shadow: 0 -1px 24px 0px rgba(0, 0, 0, 0.2);
-    box-shadow: 0 -1px 24px 0px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 -1px 24px 0 rgba(0, 0, 0, .2);
 
     .bg {
         position: absolute;
         top: 0;
         left: 0;
         background-color: #fff;
-        opacity: 0.9;
+        opacity: .9;
         width: 100%;
         height: 100%;
         z-index: 1;
@@ -33,8 +31,15 @@
         .title {
             display: inline-block;
             font-size: 18px;
-            color: #29AAEE;
+            color: #29aaee;
             line-height: 28px;
+        }
+
+        #logs-page-link{
+            position: absolute;
+            top: 10.5px;
+            right: 50px;
+            cursor: $COSMOUI_CLICKABLE_CURSOR;
         }
 
         .lastEvent {
@@ -64,7 +69,7 @@
             right: 12px;
             width: 24px;
             height: 13px;
-            background: url("#{$img-events-widget-drag}") center center no-repeat;
+            background: url('#{$img-events-widget-drag}') center center no-repeat;
             cursor: row-resize;
         }
     }
@@ -80,7 +85,7 @@
         width: 24px;
         height: 24px;
         font-size: 24px;
-        line-height:24px;
+        line-height: 24px;
     }
 
     &.closed {
@@ -101,11 +106,9 @@
         tr {
             height: 50px;
             border-bottom: 1px solid #ffffff;
-            cursor: pointer;
 
             td {
                 border-bottom: 2px solid #e8edf2;
-                vertical-align: middle;
                 font-size: 14px;
                 padding-right: 10px;
                 vertical-align: top;
@@ -143,20 +146,6 @@
                         text-overflow: ellipsis;
                         white-space: nowrap;
                         margin-right: 20px;
-                    }
-                }
-            }
-
-            &.openRow {
-                td {
-                    height: auto;
-                    &.message {
-                        overflow: visible;
-                        .brief {
-                            height: auto;
-                            overflow: visible;
-                            white-space: normal;
-                        }
                     }
                 }
             }
