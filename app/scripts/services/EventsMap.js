@@ -88,6 +88,21 @@ angular.module('cosmoUiApp')
                 text: 'Policy failed',
                 icon: 'icon-gs-policy-failed',
                 class: 'event-text-red'
+            },
+            'workflow_node_event': {
+                text: 'Workflow node event'
+            },
+            'processing_trigger': {
+                text: 'Processing Trigger'
+            },
+            'trigger_failed': {
+                text: 'Trigger Failed'
+            },
+            'trigger_succeeded': {
+                text: 'Trigger Succeeded'
+            },
+            'workflow_event': {
+                text: 'Workflow Event'
             }
         };
 
