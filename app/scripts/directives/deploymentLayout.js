@@ -7,7 +7,8 @@
  * # deploymentLayout
  */
 angular.module('cosmoUiApp')
-    .directive('deploymentLayout', function ($location, nodeStatus, ngDialog, cloudifyClient, ExecutionsService, $routeParams, $log ) {
+    .directive('deploymentLayout', function ($location, nodeStatus, cloudifyClient, ExecutionsService, $routeParams) {
+
         return {
             templateUrl: 'views/deployment/deploymentLayout.html',
             restrict: 'C',
@@ -18,8 +19,6 @@ angular.module('cosmoUiApp')
                 var url = $location.url();
 
                 $scope.deploymentId = $routeParams.deploymentId;
-
-
 
                 // Set Navigation Menu - Need to set only after blueprint id available for source page href
                 $scope.navMenu = [
@@ -62,17 +61,7 @@ angular.module('cosmoUiApp')
 
                             // mock.... remove!!!
                             //$scope.currentExecution = {"status":"started","workflow_id":"uninstall","id":"fa56b8a1-04b5-43b9-894e-8ae4f44321f3"}
-
-                        },
-                        function (result) {
-                            // todo: need to lets user know the deployments was deleted somehow.
-                            if ( result.status === 404 ){
-                                $location.path('#/deployments');
-                            }else {
-                                // todo add proper erorr feedback for user
-                                $log.error('unable to get executions', result.data);
-                            }
-                        });
+                        }, function() {});
                 }
 
 
