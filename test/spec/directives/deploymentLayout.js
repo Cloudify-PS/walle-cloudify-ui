@@ -109,6 +109,13 @@ describe('Directive: deploymentLayout', function () {
             expect(cloudifyClient.executions.list).not.toHaveBeenCalled();
         }));
 
+        it('should redirect after deletion', inject(function($location){
+
+            scope.goToDeployments();
+            expect($location.path()).toBe('/deployments');
+
+        }));
+
         it('should not redirect after deletion if some navigation happened in between', inject(function($location){
 
             $location.path('somewhere');
