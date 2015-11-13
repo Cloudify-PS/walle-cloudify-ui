@@ -23,7 +23,7 @@ angular.module('cosmoUiApp')
                 // Set Navigation Menu - Need to set only after blueprint id available for source page href
                 $scope.navMenu = [
                     {'name': 'Topology', 'href': '/topology', default: true},
-                    {'name': 'Network', 'href': '/network'},
+                    //{'name': 'Network', 'href': '/network'},
                     {'name': 'Nodes', 'href': '/nodes'},
                     {'name': 'Executions', 'href': '/executions'},
                     {'name': 'Inputs & Outputs', 'href': '/inputs-outputs'},
