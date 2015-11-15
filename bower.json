@@ -30,7 +30,7 @@
         "angular-bootstrap": "0.12",
         "angular-smart-table": "~2.1.3",
         "dndLists": "~1.3.0",
-        "cloudify-blueprint-topology": "http://gigaspaces-repository-eu.s3.amazonaws.com/org/cloudify3/3.3.0/None-RELEASE/composer/blueprint-topology.zip",
+        "cloudify-blueprint-topology": "http://gigaspaces-repository-eu.s3.amazonaws.com/org/cloudify3/3.3.0/NoneNone-RELEASE/composer/blueprint-topology.zip",
         "angular-datepicker": "edenpessach/angular-datepicker#CFY-4013-timeRange-fix"
     },
     "devDependencies": {
