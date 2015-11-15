@@ -192,9 +192,13 @@ describe('Controller: LogsCtrl', function () {
                         successCallback(getLogsResponse);
                     }
                 });
+                jasmine.Clock.useMock();
 
                 expect(scope.logsHits).toBe(undefined);
                 scope.updateData(defaultMockTableState);
+
+                //waiting for debounce
+                jasmine.Clock.tick(500);
                 expect(scope.logsHits).not.toBe(undefined);
                 expect(scope.getLogsError).toBe(null);
             });
@@ -214,8 +218,10 @@ describe('Controller: LogsCtrl', function () {
                         failureCallback(getLogsResponse);
                     }
                 });
+                jasmine.Clock.useMock();
 
                 scope.updateData(defaultMockTableState);
+                jasmine.Clock.tick(500);
                 expect(scope.getLogsError).toBe('Getting logs failed message');
             });
         });

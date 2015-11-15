@@ -111,10 +111,10 @@
                     </th>
                 </tr>
             </thead>
-            <tbody  ng-repeat="log in logsHits" ng-init="isOpen=false">
+            <tbody  ng-repeat="log in logsHits track by $index" ng-init="isOpen=false">
             <tr data-ng-click="isOpen=!isOpen">
                 <!-- All of the next filtering of properties is documented in logs_and_events_properties.md file-->
-                <td ng-repeat="column in columns track by $index | filter:true">
+                <td ng-repeat="column in columns | filter:true">
                     <i ng-if='column.name === "Event Type Icon"' class="icon-events" ng-class="getEventIcon(log)"></i>
                     <p ng-if='column.name === "Timestamp"' class="date">{{log.timestamp == undefined && '-' || log.formattedTimestamp}}</p>
                     <p ng-if='column.name === "Event Type"' class="type">{{getEventText(log.event_type) == undefined && '-' || getEventText(log.event_type)}}</p>
