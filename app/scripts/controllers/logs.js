@@ -97,6 +97,7 @@ angular.module('cosmoUiApp')
         $scope.updateData = new Debounce(function (tableState) {
             var options = TableStateToRestApi.getOptions(tableState);
             $scope.getLogsError = null;
+            $scope.isLoading = true;
 
             cloudifyClient.events.get(options).then(function (response) {
                 $scope.logsHits = response.data.items;
@@ -107,8 +108,11 @@ angular.module('cosmoUiApp')
                 var totalHits = response.data.metadata.pagination.total;
                 tableState.pagination.totalItemCount = totalHits;
                 tableState.pagination.numberOfPages = Math.ceil(totalHits / options._size);
+                $scope.isLoading = false;
             },function(response){
                 $scope.getLogsError = response.data.message;
+                $scope.isLoading = false;
+
             });
         },350);
 
