@@ -24,6 +24,8 @@ var middlewares = require('./backend/middlewares');
 require('express-params');
 /*jshint -W079 */
 var _ = require('lodash');
+var url = require('url');
+var nodeRequest = require('request');
 var app = express();
 
 var gsSettings = require('./backend/gsSettings');
@@ -80,19 +82,54 @@ if (process.env.NODE_ENV === 'production' || process.argv[2] === 'production') {
 
 /* login */
 
+function checkLoginData( creds, callback ){
+    nodeRequest({
+        'method' : 'GET',
+        'headers' : {
+            'authorization': 'Basic ' + new Buffer(creds.username + ':' + creds.password).toString('base64') // todo: make reuse of code with AuthenticationMiddleware
+        },
+        'url' : url.resolve(conf.cloudifyManagerEndpoint, '/status')
+    }, callback );
+}
+
 app.post('/backend/login', function(request, response){
-    try{
+
     var loginData = request.body;
-    if ( loginData.remember ){
-        request.session.cookie.maxAge = 315360000;
-    }
-    request.session.cloudifyCredentials = loginData;
-    response.send({'message' : 'ok'});
+    checkLoginData( loginData , function(err, result){
+
+
+        if ( err ){
+            response.status(500).send();
+            return;
+        }
+
+        try{  // identify error response
+            if ( JSON.parse(result.body).error_code ) {
+                response.status(500).send();
+                return;
+            }
+        }catch(e){
+            response.status(500).send();
+            return;
+        }
+
+        if ( loginData.remember ){
+            request.session.cookie.maxAge = 315360000;
+        }
+        request.session.cloudifyCredentials = loginData;
+        response.send({'message' : 'ok'});
         return;
-    }catch(e){
-        logger.error('error while login',e);
-        response.status(500).send({'details' : e});
-    }
+    });
+
+    //try{
+    //
+    //
+    //
+    //
+    //}catch(e){
+    //    logger.error('error while login',e);
+    //    response.status(500).send({'details' : e});
+    //}
 
 });
 

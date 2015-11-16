@@ -58,9 +58,20 @@
             margin-left: 10px;
             margin-top: 20px;
 
+            .actions{
+                position:absolute;
+                bottom:0;
+                width:100%;
+                .error-message{
+                    color:red;
+                    padding-left:10px;
+
+                }
+            }
+
             .remember {
                 display: inline-block;
-                position: absolute;
+//                position: absolute;
                 bottom: 0;
                 left: 0;
 

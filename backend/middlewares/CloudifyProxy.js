@@ -15,6 +15,18 @@ module.exports = function (conf) {
             proxy( host , {
                 intercept: function (rsp, data, req, res, callback) {
                     res.removeHeader('www-authenticate'); // we want a login page!
+
+
+                    try {
+                        var _data = JSON.parse(data.toString());
+                        //console.log('this is error_code', _data.error_code );
+                        if ( _data.error_code === 'unauthorized_error' && !req.session.cloudifyCredentials){ // user is not authenticated
+                            //console.log('modifying error_code to unauthenticated');
+                            _data.error_code = 'unauthenticated_error';
+                            data = JSON.stringify(_data);
+                        }
+                    }catch(e){ /*console.log(e); */}
+
                     callback(null, data);
                 },
                 forwardPath: function( req ){

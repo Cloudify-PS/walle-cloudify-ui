@@ -216,9 +216,16 @@ function checkRestService( opts, callback ){
                 logger.trace('checking url [' +  checkUrl  + ']');
                 request({'url': checkUrl, timeout: 1500}, function (err, res) {
                     logger.trace('got response', res ? res.toJSON() : null );
+
                     if (!err && res && (Math.floor(res.statusCode/100)) !== 5 ) { // responses with 5xx are errors. otherwise all is good.
                         logger.trace('url [' + checkUrl + '] returned successfully');
-                        results.success = endpoint;
+
+                        var finalUrl = res.request.uri.href;
+                        if ( finalUrl === checkUrl ) {
+                            results.success = endpoint;
+                        }else{
+                            logger.trace('url [' + checkUrl + '] was redirected to [' + finalUrl + '] so it is incorrect');
+                        }
                     } else {
                         logger.trace('url [' + checkUrl + '] generated error = ', err);
                     }

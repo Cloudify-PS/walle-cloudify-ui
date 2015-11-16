@@ -13,6 +13,7 @@ angular.module('cosmoUiApp')
         $scope.loginPage = {};
 
         $scope.login = function () {
+            $scope.errorMessage = null;
             $log.debug('login...');
             if ($scope.isLoginEnabled()) {
                 LoginService.login($scope.loginPage)
@@ -20,8 +21,8 @@ angular.module('cosmoUiApp')
                         $log.info('login result', result);
                         $location.path('/');
                     }, function error(result){
-                        $log.error('could not log in', result);
-                        // todo: display error to user
+                        // todo : show the error on page
+                        $scope.errorMessage = 'invalid credentials'; // todo: translate this
                     });
             }
         };

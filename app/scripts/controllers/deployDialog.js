@@ -45,7 +45,6 @@ angular.module('cosmoUiApp')
                     }
                 }, function (data) {
                     $scope.inProcess = false;
-                    console.log('asdf', data);
                     setDeployError(CloudifyService.getErrorMessage(data));
 
                 });
@@ -56,7 +55,6 @@ angular.module('cosmoUiApp')
         });
 
         function setDeployError( msg ){
-            console.log(msg);
             $scope.deployErrorMessage = msg;
         }
 
