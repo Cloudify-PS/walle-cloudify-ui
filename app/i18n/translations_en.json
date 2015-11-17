@@ -288,7 +288,7 @@
         "blueprints": "Blueprints",
         "deployments": "Deployments",
         "logs": "Logs & Events",
-        "hosts": "Hosts",
+        "hosts": "Nodes",
         "interface": "Interface Elements"
     },
     "formRawParams": {
