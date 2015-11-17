@@ -115,6 +115,9 @@
             "outputsError": "Error getting deployment's outputs",
             "inputsUndefined": "No inputs were defined for this deployment",
             "outputsUndefined": "No outputs were defined for this deployment"
+        },
+        "eventsWidget": {
+            "linkToLogs": "Go to Logs & Events"
         }
     },
     "deployments": {
