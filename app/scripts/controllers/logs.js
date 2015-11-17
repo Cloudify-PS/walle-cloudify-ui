@@ -39,7 +39,6 @@ angular.module('cosmoUiApp')
         $scope.logLevelsList = [
             {value:'debug',label:'DEBUG'},
             {value:'info',label:'INFO'},
-            {value:'warn',label:'WARN'},
             {value:'warning',label:'WARNING'},
             {value:'error',label:'ERROR'},
             {value:'fatal',label:'FATAL'},
