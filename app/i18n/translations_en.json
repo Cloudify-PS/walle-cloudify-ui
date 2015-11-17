@@ -206,8 +206,10 @@
         "gettingLogsFailed": "Failed getting logs & events",
         "noLogs": "There are no events at this moment...",
         "fields": {
+            "logTimestamp": "Log Timestamp",
+            "eventTimestamp": "Event Timestamp",
             "timestamp": "Timestamp",
-            "auditTimestamp": "Audit Timestamp",
+            "@timestamp": "Registered Timestamp",
             "executionId": "Execution ID",
             "nodeId": "Node ID",
             "taskName": "Task Name",

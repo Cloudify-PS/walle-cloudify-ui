@@ -131,16 +131,13 @@
                         <pre>{{log.message.text == undefined && 'N/A' || log.message.text}}</pre>
                     </div>
                     <div class="group">
-                        <span><b>{{'logs.fields.auditTimestamp' | translate}}:</b> {{ log['@timestamp'] == undefined && 'N/A' || (log['@timestamp'] | dateFormat:'yyyy-MM-dd HH:mm:ss.ms')}}</span>
-                        <span><b>{{'logs.fields.timestamp' | translate}}:</b> {{ log.timestamp == undefined && 'N/A' || (log.timestamp | dateFormat:'yyyy-MM-dd HH:mm:ss.ms')}}</span>
+                        <span><b>{{'logs.fields.@timestamp' | translate}}:</b> {{ log['@timestamp'] == undefined && 'N/A' || (log['@timestamp'] | dateFormat:'yyyy-MM-dd HH:mm:ss.ms')}}</span>
+                        <span ng-if="log.type === 'cloudify_log'"><b>{{'logs.fields.logTimestamp' | translate}}:</b> {{ log.timestamp == undefined && 'N/A' || (log.timestamp | dateFormat:'yyyy-MM-dd HH:mm:ss.ms')}}</span>
+                        <span ng-if="log.type === 'cloudify_event'"><b>{{'logs.fields.eventTimestamp' | translate}}:</b> {{ log.timestamp == undefined && 'N/A' || (log.timestamp | dateFormat:'yyyy-MM-dd HH:mm:ss.ms')}}</span>
                         <span><b>{{'logs.fields.type' | translate}}:</b> {{ log.type == undefined && 'N/A' || log.type }}</span>
-                        <span ng-if="log.type === 'cloudify_log'">
-                            <span><b>{{'logs.fields.logger' | translate}}:</b> {{ log.logger == undefined && 'N/A' || log.logger }}</span>
-                            <span><b>{{'logs.fields.level' | translate}}:</b> {{ log.level == undefined && 'N/A' || log.level }}</span>
-                        </span>
-                        <span ng-if="log.type === 'cloudify_event'">
-                            <span><b>{{'logs.fields.eventType' | translate}}:</b> {{ log.event_type == undefined && 'N/A' || log.event_type }}</span>
-                        </span>
+                        <span ng-if="log.type === 'cloudify_log'"><b>{{'logs.fields.logger' | translate}}:</b> {{ log.logger == undefined && 'N/A' || log.logger }}</span>
+                        <span ng-if="log.type === 'cloudify_log'"><b>{{'logs.fields.level' | translate}}:</b> {{ log.level == undefined && 'N/A' || log.level }}</span>
+                        <span ng-if="log.type === 'cloudify_event'"><b>{{'logs.fields.eventType' | translate}}:</b> {{ log.event_type == undefined && 'N/A' || log.event_type }}</span>
                     </div>
                     <div class="group">
                         <span><b>{{'logs.fields.blueprintId' | translate}}:</b> {{ log.context.blueprint_id == undefined && 'N/A' || log.context.blueprint_id }}</span>
