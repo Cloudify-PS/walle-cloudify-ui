@@ -79,6 +79,20 @@
                     </span>
                 </div>
 
+                <div class="filter" cfy-st-search predicate="timestamp" gte="{{eventsFilter.timeRange.gte}}"  lte="{{eventsFilter.timeRange.lte}}" >
+                    {{'logs.filters.timeRange.title' | translate }}<br/>
+                    <span class="filter input-container">
+                        <input class="form-control filter-input time-range" date-time ng-model="eventsFilter.timeRange.gte" format="YYYY-MM-DD HH:mm" view="date" auto-close="true" placeholder="{{'logs.filters.timeRange.from.placeholder' | translate}}" title="{{'logs.filters.timeRange.from.title' | translate}}"/>
+                        <i class="fa fa-calendar time-range-icon" ng-if="isValidTime(eventsFilter.timeRange.gte)"></i>
+                        <i class="fa fa-calendar-o time-range-icon" ng-if="!isValidTime(eventsFilter.timeRange.gte)"></i>
+                    </span>
+                    <span class="filter input-container">
+                        <input class="form-control filter-input time-range" date-time ng-model="eventsFilter.timeRange.lte" format="YYYY-MM-DD HH:mm" view="date" auto-close="true" placeholder="{{'logs.filters.timeRange.to.placeholder' | translate}}" title="{{'logs.filters.timeRange.to.title' | translate}}"/>
+                         <i class="fa fa-calendar time-range-icon" ng-if="isValidTime(eventsFilter.timeRange.lte)"></i>
+                        <i class="fa fa-calendar-o time-range-icon" ng-if="!isValidTime(eventsFilter.timeRange.lte)"></i>
+                    </span>
+                </div>
+
                 <div class="filter" >
                     {{'logs.filters.messageText.title' | translate }}<br>
                     <input class="form-control filter-input input-container" ng-model="eventsFilter.messageText" cfy-st-search predicate="message" equal="{{eventsFilter.messageText}}" placeholder="{{'logs.filters.messageText.text' | translate}}" title="{{'logs.filters.messageText.text' | translate}}"/>
@@ -97,88 +111,85 @@
             <div ng-hide="showErrorDetails">{{getLogsError}}</div>
         </div>
         <div class="logs-container">
-            <table class="gs-table eventsTable" cfy-st-persist items-by-page="itemsPerPage" content-loaded="blueprintsList && deploymentsList" st-table-id="Logs">
-                <thead>
-                    <tr>
-                        <th ng-repeat="column in columns | filter:true">
-                            <span ng-if='column.name === "Event Type Icon"' class="icon header"><!-- icon --></span>
-                            <span ng-if='column.name === "Timestamp"' class="date sorting header"><span st-sort="timestamp" class="header-text" >{{'logs.fields.timestamp' | translate}}</span></span>
-                            <span ng-if='column.name === "Event Type"' class="type sorting header"><span st-sort="event_type" class="header-text">{{ 'logs.fields.eventType' | translate }}</span></span>
-                            <span ng-if='column.name === "Log Level"' class="level sorting header"><span st-sort="level" class="header-text">{{ 'logs.fields.level' | translate }}</span></span>
-                            <span ng-if='column.name === "Operation"' class="operation sorting header"><span st-sort="context.operation" class="header-text">{{ 'logs.fields.operation' | translate }}</span></span>
-                            <span ng-if='column.name === "Node Name"' class="node-name sorting header"><span st-sort="context.node_name" class="header-text">{{ 'logs.fields.nodeName' | translate }}</span></span>
-                            <span ng-if='column.name === "Node Id"' class="node-id sorting header"><span st-sort="context.node_id" class="header-text">{{ 'logs.fields.nodeId' | translate }}</span></span>
-                            <span ng-if='column.name === "Message"' class="task sorting header"><span st-sort="message.text" class="header-text">{{ 'logs.fields.messageText' | translate }}</span></span>
-                        </th>
-                    </tr>
-                </thead>
-                <tbody  ng-repeat="log in logsHits track by $index" ng-init="isOpen=false">
-                <tr data-ng-click="isOpen=!isOpen">
-                    <!-- All of the next filtering of properties is documented in logs_and_events_properties.md file-->
-                    <td ng-repeat="column in columns | filter:true">
-                        <i ng-if='column.name === "Event Type Icon"' class="icon-events" ng-class="getEventIcon(log)"></i>
-                        <p ng-if='column.name === "Timestamp"' class="date">{{log.timestamp == undefined && '-' || log.formattedTimestamp}}</p>
-                        <p ng-if='column.name === "Event Type"' class="type">{{getEventText(log.event_type) == undefined && '-' || getEventText(log.event_type)}}</p>
-                        <p ng-if='column.name === "Log Level"' class="level">{{log.level == undefined && '-' || log.level | uppercase}}</p>
-                        <p ng-if='column.name === "Operation"' class="operation">{{log.context.operation == undefined && '-' || log.context.operation}}</p>
-                        <p ng-if='column.name === "Node Name"' class="node_name">{{log.context.node_name == undefined && '-' || log.context.node_name}}</p>
-                        <p ng-if='column.name === "Node Id"'  class="node_id">{{log.context.node_id == undefined && '-' || log.context.node_id}}</p>
-                        <p ng-if='column.name === "Message"'  class="task large-text-overflow">{{log.message.text == undefined && '-' || log.message.text}}</p>
-                    </td>
+        <table class="gs-table eventsTable" cfy-st-persist items-by-page="itemsPerPage" content-loaded="blueprintsList && deploymentsList" st-table-id="Logs">
+            <thead>
+                <tr>
+                    <th ng-repeat="column in columns | filter:true">
+                        <span ng-if='column.name === "Event Type Icon"' class="icon header"><!-- icon --></span>
+                        <span ng-if='column.name === "Timestamp"' class="date sorting header"><span st-sort="timestamp" class="header-text" >{{'logs.fields.timestamp' | translate}}</span></span>
+                        <span ng-if='column.name === "Event Type"' class="type sorting header"><span st-sort="event_type" class="header-text">{{ 'logs.fields.eventType' | translate }}</span></span>
+                        <span ng-if='column.name === "Log Level"' class="level sorting header"><span st-sort="level" class="header-text">{{ 'logs.fields.level' | translate }}</span></span>
+                        <span ng-if='column.name === "Operation"' class="operation sorting header"><span st-sort="context.operation" class="header-text">{{ 'logs.fields.operation' | translate }}</span></span>
+                        <span ng-if='column.name === "Node Name"' class="node-name sorting header"><span st-sort="context.node_name" class="header-text">{{ 'logs.fields.nodeName' | translate }}</span></span>
+                        <span ng-if='column.name === "Node Id"' class="node-id sorting header"><span st-sort="context.node_id" class="header-text">{{ 'logs.fields.nodeId' | translate }}</span></span>
+                        <span ng-if='column.name === "Message"' class="task sorting header"><span st-sort="message.text" class="header-text">{{ 'logs.fields.messageText' | translate }}</span></span>
+                    </th>
                 </tr>
-                <tr class="details" data-ng-if="isOpen && isAnyColumnSelected()">
-                    <td colspan="8">
-                        <div class="message-text">
-                            <pre>{{log.message.text == undefined && 'N/A' || log.message.text}}</pre>
+            </thead>
+            <tbody  ng-repeat="log in logsHits" ng-init="isOpen=false">
+            <tr data-ng-click="isOpen=!isOpen">
+                <!-- All of the next filtering of properties is documented in logs_and_events_properties.md file-->
+                <td ng-repeat="column in columns | filter:true">
+                    <i ng-if='column.name === "Event Type Icon"' class="icon-events" ng-class="getEventIcon(log)"></i>
+                    <p ng-if='column.name === "Timestamp"' class="date">{{log.timestamp == undefined && '-' || log.formattedTimestamp}}</p>
+                    <p ng-if='column.name === "Event Type"' class="type">{{getEventText(log.event_type) == undefined && '-' || getEventText(log.event_type)}}</p>
+                    <p ng-if='column.name === "Log Level"' class="level">{{log.level == undefined && '-' || log.level | uppercase}}</p>
+                    <p ng-if='column.name === "Operation"' class="operation">{{log.context.operation == undefined && '-' || log.context.operation}}</p>
+                    <p ng-if='column.name === "Node Name"' class="node_name">{{log.context.node_name == undefined && '-' || log.context.node_name}}</p>
+                    <p ng-if='column.name === "Node Id"'  class="node_id">{{log.context.node_id == undefined && '-' || log.context.node_id}}</p>
+                    <p ng-if='column.name === "Message"'  class="task large-text-overflow">{{log.message.text == undefined && '-' || log.message.text}}</p>
+                </td>
+            </tr>
+            <tr class="details" data-ng-if="isOpen && isAnyColumnSelected()">
+                <td colspan="8">
+                    <div class="message-text">
+                        <pre>{{log.message.text == undefined && 'N/A' || log.message.text}}</pre>
+                    </div>
+                    <div class="group">
+                        <span><b>{{'logs.fields.@timestamp' | translate}}:</b> {{ log['@timestamp'] == undefined && 'N/A' || (log['@timestamp'] | dateFormat:'yyyy-MM-dd HH:mm:ss.ms')}}</span>
+                        <span ng-if="log.type === 'cloudify_log'"><b>{{'logs.fields.logTimestamp' | translate}}:</b> {{ log.timestamp == undefined && 'N/A' || (log.timestamp | dateFormat:'yyyy-MM-dd HH:mm:ss.ms')}}</span>
+                        <span ng-if="log.type === 'cloudify_event'"><b>{{'logs.fields.eventTimestamp' | translate}}:</b> {{ log.timestamp == undefined && 'N/A' || (log.timestamp | dateFormat:'yyyy-MM-dd HH:mm:ss.ms')}}</span>
+                        <span><b>{{'logs.fields.type' | translate}}:</b> {{ log.type == undefined && 'N/A' || log.type }}</span>
+                        <span ng-if="log.type === 'cloudify_log'"><b>{{'logs.fields.logger' | translate}}:</b> {{ log.logger == undefined && 'N/A' || log.logger }}</span>
+                        <span ng-if="log.type === 'cloudify_log'"><b>{{'logs.fields.level' | translate}}:</b> {{ log.level == undefined && 'N/A' || log.level }}</span>
+                        <span ng-if="log.type === 'cloudify_event'"><b>{{'logs.fields.eventType' | translate}}:</b> {{ log.event_type == undefined && 'N/A' || log.event_type }}</span>
+                    </div>
+                    <div class="group">
+                        <span><b>{{'logs.fields.blueprintId' | translate}}:</b> {{ log.context.blueprint_id == undefined && 'N/A' || log.context.blueprint_id }}</span>
+                        <span><b>{{'logs.fields.deploymentId' | translate}}:</b> {{ log.context.deployment_id == undefined && 'N/A' || log.context.deployment_id }}</span>
+                        <span><b>{{'logs.fields.executionId' | translate}}:</b> {{ log.context.execution_id == undefined && 'N/A' || log.context.execution_id }}</span>
+                        <span><b>{{'logs.fields.workflowId' | translate}}:</b> {{ log.context.workflow_id == undefined && 'N/A' || log.context.workflow_id }}</span>
+                    </div>
+                    <span ng-if="log.context.task_name || log.context.task_id || log.context.task_queue || log.context.task_target || log.context.operation || log.context.plugin || log.context.task_current_retries || log.context.task_total_retries">
+                        <div class="group">
+                            <span><b>{{'logs.fields.taskName' | translate}}:</b> {{ log.context.task_name == undefined && 'N/A' || log.context.task_name }}</span>
+                            <span><b>{{'logs.fields.taskId' | translate}}:</b> {{ log.context.task_id == undefined && 'N/A' || log.context.task_id }}</span>
+                            <span><b>{{'logs.fields.taskQueue' | translate}}:</b> {{ log.context.task_queue == undefined && 'N/A' || log.context.task_queue }}</span>
+                            <span><b>{{'logs.fields.taskTarget' | translate}}:</b> {{ log.context.task_target == undefined && 'N/A' || log.context.task_target }}</span>
                         </div>
                         <div class="group">
-                            <span><b>{{'logs.fields.auditTimestamp' | translate}}:</b> {{ log['@timestamp'] == undefined && 'N/A' || (log['@timestamp'] | dateFormat:'yyyy-MM-dd HH:mm:ss.ms')}}</span>
-                            <span><b>{{'logs.fields.timestamp' | translate}}:</b> {{ log.timestamp == undefined && 'N/A' || (log.timestamp | dateFormat:'yyyy-MM-dd HH:mm:ss.ms')}}</span>
-                            <span><b>{{'logs.fields.type' | translate}}:</b> {{ log.type == undefined && 'N/A' || log.type }}</span>
-                                <span ng-if="log.type === 'cloudify_log'">
-                                    <span><b>{{'logs.fields.logger' | translate}}:</b> {{ log.logger == undefined && 'N/A' || log.logger }}</span>
-                                    <span><b>{{'logs.fields.level' | translate}}:</b> {{ log.level == undefined && 'N/A' || log.level }}</span>
-                                </span>
-                                <span ng-if="log.type === 'cloudify_event'">
-                                    <span><b>{{'logs.fields.eventType' | translate}}:</b> {{ log.event_type == undefined && 'N/A' || log.event_type }}</span>
-                                </span>
+                            <span><b>{{'logs.fields.operation' | translate}}:</b> {{ log.context.operation == undefined && 'N/A' || log.context.operation }}</span>
+                            <span><b>{{'logs.fields.plugin' | translate}}:</b> {{ log.context.plugin == undefined && 'N/A' || log.context.plugin }}</span>
+                            <span><b>{{'logs.fields.taskCurrentRetries' | translate}}:</b> {{ log.context.task_current_retries == undefined && 'N/A' || log.context.task_current_retries }}</span>
+                            <span><b>{{'logs.fields.taskTotalRetries' | translate}}:</b> {{ log.context.task_total_retries == undefined && 'N/A' || log.context.task_total_retries }}</span>
                         </div>
-                        <div class="group">
-                            <span><b>{{'logs.fields.blueprintId' | translate}}:</b> {{ log.context.blueprint_id == undefined && 'N/A' || log.context.blueprint_id }}</span>
-                            <span><b>{{'logs.fields.deploymentId' | translate}}:</b> {{ log.context.deployment_id == undefined && 'N/A' || log.context.deployment_id }}</span>
-                            <span><b>{{'logs.fields.executionId' | translate}}:</b> {{ log.context.execution_id == undefined && 'N/A' || log.context.execution_id }}</span>
-                            <span><b>{{'logs.fields.workflowId' | translate}}:</b> {{ log.context.workflow_id == undefined && 'N/A' || log.context.workflow_id }}</span>
-                        </div>
-                            <span ng-if="log.context.task_name || log.context.task_id || log.context.task_queue || log.context.task_target || log.context.operation || log.context.plugin || log.context.task_current_retries || log.context.task_total_retries">
-                                <div class="group">
-                                    <span><b>{{'logs.fields.taskName' | translate}}:</b> {{ log.context.task_name == undefined && 'N/A' || log.context.task_name }}</span>
-                                    <span><b>{{'logs.fields.taskId' | translate}}:</b> {{ log.context.task_id == undefined && 'N/A' || log.context.task_id }}</span>
-                                    <span><b>{{'logs.fields.taskQueue' | translate}}:</b> {{ log.context.task_queue == undefined && 'N/A' || log.context.task_queue }}</span>
-                                    <span><b>{{'logs.fields.taskTarget' | translate}}:</b> {{ log.context.task_target == undefined && 'N/A' || log.context.task_target }}</span>
-                                </div>
-                                <div class="group">
-                                    <span><b>{{'logs.fields.operation' | translate}}:</b> {{ log.context.operation == undefined && 'N/A' || log.context.operation }}</span>
-                                    <span><b>{{'logs.fields.plugin' | translate}}:</b> {{ log.context.plugin == undefined && 'N/A' || log.context.plugin }}</span>
-                                    <span><b>{{'logs.fields.taskCurrentRetries' | translate}}:</b> {{ log.context.task_current_retries == undefined && 'N/A' || log.context.task_current_retries }}</span>
-                                    <span><b>{{'logs.fields.taskTotalRetries' | translate}}:</b> {{ log.context.task_total_retries == undefined && 'N/A' || log.context.task_total_retries }}</span>
-                                </div>
-                            </span>
-                        <div class="group" ng-if="log.context.source_name || log.context.source_id || log.context.target_name || log.context.target_id">
-                            <span><b>{{'logs.fields.sourceName' | translate}}:</b> {{ log.context.source_name == undefined && 'N/A' || log.context.source_name }}</span>
-                            <span><b>{{'logs.fields.sourceId' | translate}}:</b> {{ log.context.source_id == undefined && 'N/A' || log.context.source_id }}</span>
-                            <span><b>{{'logs.fields.targetName' | translate}}:</b> {{ log.context.target_name == undefined && 'N/A' || log.context.target_name }}</span>
-                            <span><b>{{'logs.fields.targetId' | translate}}:</b> {{ log.context.target_id == undefined && 'N/A' || log.context.target_id }}</span>
-                        </div>
-                        <div class="group" ng-if="log.context.node_id || log.context.node_name">
-                            <span><b>{{'logs.fields.nodeName' | translate}}:</b> {{ log.context.node_name == undefined && 'N/A' || log.context.node_name }}</span>
-                            <span><b>{{'logs.fields.nodeId' | translate}}:</b> {{ log.context.node_id == undefined && 'N/A' || log.context.node_id }}</span>
-                        </div>
-                        <div class="group" ng-if="log.context.group || log.context.policy || log.context.trigger || log.context.trigger_parameters">
-                            <span><b>{{'logs.fields.group' | translate}}:</b> {{ log.context.group == undefined && 'N/A' || log.context.group }}</span>
-                            <span><b>{{'logs.fields.policy' | translate}}:</b> {{ log.context.policy == undefined && 'N/A' || log.context.policy }}</span>
-                            <span><b>{{'logs.fields.trigger' | translate}}:</b> {{ log.context.trigger == undefined && 'N/A' || log.context.trigger }}</span>
-                            <span><b>{{'logs.fields.triggerParameters' | translate}}:</b> {{ log.context.trigger-parameters == undefined && 'N/A' || log.context.trigger-parameters }}</span>
-                        </div>
+                    </span>
+                    <div class="group" ng-if="log.context.source_name || log.context.source_id || log.context.target_name || log.context.target_id">
+                        <span><b>{{'logs.fields.sourceName' | translate}}:</b> {{ log.context.source_name == undefined && 'N/A' || log.context.source_name }}</span>
+                        <span><b>{{'logs.fields.sourceId' | translate}}:</b> {{ log.context.source_id == undefined && 'N/A' || log.context.source_id }}</span>
+                        <span><b>{{'logs.fields.targetName' | translate}}:</b> {{ log.context.target_name == undefined && 'N/A' || log.context.target_name }}</span>
+                        <span><b>{{'logs.fields.targetId' | translate}}:</b> {{ log.context.target_id == undefined && 'N/A' || log.context.target_id }}</span>
+                    </div>
+                    <div class="group" ng-if="log.context.node_id || log.context.node_name">
+                        <span><b>{{'logs.fields.nodeName' | translate}}:</b> {{ log.context.node_name == undefined && 'N/A' || log.context.node_name }}</span>
+                        <span><b>{{'logs.fields.nodeId' | translate}}:</b> {{ log.context.node_id == undefined && 'N/A' || log.context.node_id }}</span>
+                    </div>
+                    <div class="group" ng-if="log.context.group || log.context.policy || log.context.trigger || log.context.trigger_parameters">
+                        <span><b>{{'logs.fields.group' | translate}}:</b> {{ log.context.group == undefined && 'N/A' || log.context.group }}</span>
+                        <span><b>{{'logs.fields.policy' | translate}}:</b> {{ log.context.policy == undefined && 'N/A' || log.context.policy }}</span>
+                        <span><b>{{'logs.fields.trigger' | translate}}:</b> {{ log.context.trigger == undefined && 'N/A' || log.context.trigger }}</span>
+                        <span><b>{{'logs.fields.triggerParameters' | translate}}:</b> {{ log.context.trigger-parameters == undefined && 'N/A' || log.context.trigger-parameters }}</span>
+                    </div>
 
                     </td>
                 </tr>
