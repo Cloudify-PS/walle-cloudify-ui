@@ -1,10 +1,17 @@
 'use strict';
 
 angular.module('cosmoUiApp')
-    .controller('DeployDialogCtrl', function ($scope, cloudifyClient, CloudifyService ) {
+    .controller('DeployDialogCtrl', function ($scope, cloudifyClient, CloudifyService, $translate ) {
         $scope.deployment_id = null;
         $scope.deployErrorMessage = null;
         $scope.inputsValid = true;
+
+        cloudifyClient.blueprints.get($scope.blueprintId, null).then(function (result) {
+            $scope.selectedBlueprint = result.data || null;
+
+        }, function(result) {
+            setDeployError(CloudifyService.getErrorMessage(result) || $translate.instant('permissionError') )
+        });
 
         $scope.showError = function(){
             return !!$scope.deployErrorMessage;

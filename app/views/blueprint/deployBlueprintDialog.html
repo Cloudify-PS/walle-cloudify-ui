@@ -2,9 +2,9 @@
     <div class="dialogTitle">
         <label>{{ 'dialogs.deploy.title' | translate }} {{selectedBlueprint.id}}</label>
     </div>
-    <div ng-show="!permissionDenied">
+    <div>
         <div class="dialogDescription">{{ 'dialogs.deploy.description' | translate }}</div>
-        <div ng-show="!selectedBlueprint" class="gs-spinner large"></div>
+        <div ng-show="!selectedBlueprint && !deployErrorMessage" class="gs-spinner large"></div>
 
         <div ng-show="selectedBlueprint">
 
@@ -26,7 +26,4 @@
             <button id="deployBtn" class="gs-btn" ng-disabled="!isDeployEnabled()" gs-spinner="{{inProcess}}" ng-click="deployBlueprint(selectedBlueprint.id)">{{ 'dialogs.deploy.create' | translate }}</button>
         </div>
     </div>
-    <p ng-show="permissionDenied" class="error-message">
-        {{'permissionError' | translate}}
-    </p>
 </div>

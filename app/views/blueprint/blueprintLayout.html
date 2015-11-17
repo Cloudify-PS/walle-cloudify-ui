@@ -1,7 +1,7 @@
 <div id="blueprint-header" class="cosmo-layout">
 
-    <div ng-show="!!permissionDenied" class="error">{{'permissionError' | translate}}</div>
-    <span ng-show="!blueprintNotFound && !permissionDenied">
+    <div ng-show="!!loadError" class="error">{{loadError}}</div>
+    <span ng-show="!blueprintNotFound && !loadError">
     <div class="header-left">
 
         <div class="content-header">

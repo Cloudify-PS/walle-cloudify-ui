@@ -20,6 +20,7 @@ angular.module('cosmoUiApp')
 
                 function openDeployDialog(blueprintId) {
                     $scope.selectedBlueprint = null;
+                    $scope.blueprintId = blueprintId;
                     ngDialog.open({
                         template: 'views/blueprint/deployBlueprintDialog.html',
                         controller: 'DeployDialogCtrl',
@@ -27,14 +28,6 @@ angular.module('cosmoUiApp')
                         className: 'deploy-dialog'
                     });
 
-                    cloudifyClient.blueprints.get(blueprintId, null).then(function (result) {
-                        $scope.selectedBlueprint = result.data || null;
-
-                    }, function(result) {
-                        if(result.status === 403) {
-                            $scope.permissionDenied = true;
-                        }
-                    });
                 }
 
                 function openDeleteDialog() {

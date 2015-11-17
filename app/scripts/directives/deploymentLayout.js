@@ -7,7 +7,7 @@
  * # deploymentLayout
  */
 angular.module('cosmoUiApp')
-    .directive('deploymentLayout', function ($location, nodeStatus, cloudifyClient, ExecutionsService, $routeParams) {
+    .directive('deploymentLayout', function ($location, nodeStatus, cloudifyClient, CloudifyService, ExecutionsService, $routeParams) {
 
         return {
             templateUrl: 'views/deployment/deploymentLayout.html',
@@ -47,8 +47,8 @@ angular.module('cosmoUiApp')
                         $scope.showDeploymentEvents = false;
                         if ( result.status === 404 ){
                             $scope.deploymentNotFound = true;
-                        }else if(result.status === 403) {
-                            $scope.permissionDenied = true;
+                        }else {
+                            $scope.loadError = CloudifyService.getErrorMessage(result);
                         }
                     });
 
