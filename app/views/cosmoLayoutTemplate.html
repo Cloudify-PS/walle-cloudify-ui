@@ -17,8 +17,6 @@
                 <div ng-transclude>
 
                 </div>
-                <!-- this hsould be here.. but css has a bug -- http://stackoverflow.com/questions/8468066/child-inside-parent-with-min-height-100-not-inheriting-height/8468131#8468131 -->
-                <a ng-show="showTryBeta" href="#/blueprint/{{blueprintId}}/newtopology" class="try-beta">Try Beta</a>
             </div>
 
             <div class="layout-fix-push"></div>
@@ -44,7 +42,7 @@
                 <ul class="links">
                     <li>Manager version: {{ versions.manager }}</li>
                     <li>UI version: {{ versions.ui }}</li>
-                    <li><a href="/api/spec.html#!/spec.json" target="_blank">API Spec</a></li>
+                    <li><a href="http://api.getcloudify.org/" target="_blank">API Spec</a></li>
                     <li><a href="https://cloudifysource.atlassian.net/browse/CFY" target="_blank">Report an Issue</a></li>
                     <li><a href="https://groups.google.com/forum/#!forum/cloudify-users" target="_blank">Support
                         Forum</a></li>

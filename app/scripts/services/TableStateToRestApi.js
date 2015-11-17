@@ -58,8 +58,8 @@ angular.module('cosmoUiApp')
                         else if(predicateObjectValue.gte || predicateObjectValue.lte){
                             try {
                                 //smartTable wrap everything with double quotes assuming everything can be an object, so we need to remove them
-                                var gte = predicateObjectValue.gte ? JSON.parse(predicateObjectValue.gte) : '';
-                                var lte = predicateObjectValue.lte ? JSON.parse(predicateObjectValue.lte) : '';
+                                var gte = predicateObjectValue.gte ? predicateObjectValue.gte : '';
+                                var lte = predicateObjectValue.lte ? predicateObjectValue.lte : '';
                                 options._range = predicateObjectKey + ',' + gte + ',' + lte;
                             }
                             catch(e){}

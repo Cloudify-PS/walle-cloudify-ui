@@ -20,7 +20,7 @@ describe('Controller: DeploymentNodesCtrl', function () {
         _cloudifyClient = cloudifyClient;
         _NodeService = NodeService;
         scope = $rootScope.$new();
-        spyOn(cloudifyClient.nodes, 'list').andReturn(window.mockPromise([])); //default implementation can be override
+        spyOn(cloudifyClient.nodes, 'list').andReturn(window.mockPromise({data: {items: []}})); //default implementation can be override
         spyOn(NodeService, 'createNodesTree').andCallFake(function(){});
         initCtrl();
     }));
@@ -41,7 +41,7 @@ describe('Controller: DeploymentNodesCtrl', function () {
                     number_of_instances: '1'
                 }
             ];
-            _cloudifyClient.nodes.list.andReturn(window.mockPromise({data:nodesMock}));
+            _cloudifyClient.nodes.list.andReturn(window.mockPromise({data: {items: nodesMock}}));
             initCtrl();
             expect(scope.dataTable).toBe(nodesMock);
             expect(_NodeService.createNodesTree).toHaveBeenCalled();

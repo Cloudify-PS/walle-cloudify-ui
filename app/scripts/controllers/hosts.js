@@ -73,7 +73,7 @@ angular.module('cosmoUiApp')// todo : change to NodeCtrl
             });
             // wait for all promises and concatenate them.
             return $q.all(requests).then(function () {
-                return {data: _.flatten(_.pluck(_.flatten(arguments), 'data'))};
+                return {data: _.flatten(_.pluck(_.flatten(arguments), 'data.items'))};
             });
         }
 
@@ -81,11 +81,11 @@ angular.module('cosmoUiApp')// todo : change to NodeCtrl
         function loadDeploymentsAndBlueprints() {
             cloudifyClient.deployments.list('id,blueprint_id').then(function (result) {
                 // map deployment id to blueprint id
-                _.each(result.data, function (item) {
+                _.each(result.data.items, function (item) {
                     deployments[item.id] = item.blueprint_id;
                 });
                 // construct the blueprints list by uniquely taking the blueprint_id from each deployment
-                $scope.blueprintsList = _.map(_.uniq(result.data, 'blueprint_id'), function (item) {
+                $scope.blueprintsList = _.map(_.uniq(result.data.items, 'blueprint_id'), function (item) {
                     return {label: item.blueprint_id, value: item.blueprint_id};
                 });
                 // initialize the filter to first blueprint
@@ -93,7 +93,7 @@ angular.module('cosmoUiApp')// todo : change to NodeCtrl
                     $scope.hostsFilter.blueprint = $scope.blueprintsList[0];
                 }
                 // construct the deployments filter
-                allDeployments = _.map(result.data, function (item) {
+                allDeployments = _.map(result.data.items, function (item) {
                     return {label: item.id, value: item.id};
                 });
             });
@@ -139,12 +139,12 @@ angular.module('cosmoUiApp')// todo : change to NodeCtrl
                 typeDataPromise = cloudifyClient.nodes.list(null, null, 'deployment_id,id,type_hierarchy').then(function (result) {
                     var types = [];
                     // reconstruct the response to be by deployment_id and by type. allows easy access when we have a node instance.
-                    _.each(_.groupBy(result.data, 'deployment_id'), function (value, key) {
+                    _.each(_.groupBy(result.data.items, 'deployment_id'), function (value, key) {
                         typesByDeploymentAndNode[key] = _.indexBy(value, 'id');
                     });
 
                     // construct the types filter by joining together all the types we found
-                    _.each(result.data, function (item) {
+                    _.each(result.data.items, function (item) {
                         types = types.concat(item.type_hierarchy);
                     });
                     types = _.map(_.uniq(types), function (item) {

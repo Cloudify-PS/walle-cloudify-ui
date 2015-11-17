@@ -56,7 +56,7 @@ describe('Controller: DeploymentsCtrl', function () {
 
             _testSetup();
             executions = [{'deployment_id' : 'foo', name : 'bar', is_running: true }];
-            cloudifyClient.executions.list.andReturn( window.mockPromise( { data : executions  } ));
+            cloudifyClient.executions.list.andReturn( window.mockPromise( { data : {items: executions  }} ));
         }));
 
         it('should get only running executions', inject(function(cloudifyClient) {

@@ -15,21 +15,20 @@ describe('Controller: DeploymentExecutions', function () {
     });
 
     // Initialize the controller, mock scope, and spy on services
-    beforeEach(inject(function ($rootScope ,cloudifyClient) {
+    beforeEach(inject(function ($rootScope, cloudifyClient ) {
         scope = $rootScope.$new();
         _cloudifyClient = cloudifyClient;
-        spyOn(cloudifyClient.executions, 'list').andReturn(window.mockPromise([])); //default implementation can be override
+        spyOn(cloudifyClient.executions, 'list').andReturn(window.mockPromise({data : {items : []}})); //default implementation can be override
         initCtrl();
     }));
 
 
-
-
     it('should create a controller', function () {
+        initCtrl();
         expect(DeploymentExecutions).not.toBeUndefined();
     });
 
-    it('should load deployment"s executions',function(){
+    it('should load deployment"s executions', function(){
         var executionsMock = [
             {
                 blueprint_id: 'bomber',
@@ -54,9 +53,26 @@ describe('Controller: DeploymentExecutions', function () {
                 workflow_id: 'install'
             }
         ];
-        _cloudifyClient.executions.list.andReturn(window.mockPromise({data:executionsMock}));
+
+        _cloudifyClient.executions.list.andReturn(window.mockPromise({data : {items : executionsMock}}));
         initCtrl();
         expect(scope.executionsList).toBe(executionsMock);
+    });
+
+    describe('Error handling', function () {
+
+        it('should show error if result returned 500', function () {
+            _cloudifyClient.executions.list.andReturn(window.mockPromise(null,{status: 500}));
+            initCtrl();
+            expect(scope.errorMessage).toBe('deployment.executions.error');
+        });
+
+        it('should show Deployment not found view if result returned 404', function () {
+            _cloudifyClient.executions.list.andReturn( window.mockPromise(null, {status: 404}));
+            initCtrl();
+            scope.$digest();
+            expect(scope.deploymentNotFound).toBeTruthy();
+        });
     });
 
 });

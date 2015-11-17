@@ -37,7 +37,7 @@ angular.module('cosmoUiApp')
 
             var statusFilter = ['pending', 'started', 'cancelling', 'force_cancelling'];
             return cloudifyClient.executions.list({_include: 'id,workflow_id,status,deployment_id', status: statusFilter}).then(function(result){
-                runningExecutions = _.groupBy(result.data, 'deployment_id');
+                runningExecutions = _.groupBy(result.data.items, 'deployment_id');
             },function(){
                 // todo: implement error handling
             });
@@ -48,7 +48,7 @@ angular.module('cosmoUiApp')
                 .then(function(result) {
 
                     $scope.managerError = false;
-                    $scope.deployments = result.data;
+                    $scope.deployments = result.data.items;
 
                     _.each($scope.deployments, function (d) {
                         $scope.blueprints[d.blueprint_id] = {

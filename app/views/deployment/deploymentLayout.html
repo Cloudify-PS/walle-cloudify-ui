@@ -43,14 +43,13 @@
 
     <div id="deployment-content" ng-hide="isInitializing()" ng-transclude></div>
     </span>
-    <div ng-show="!!deploymentNotFound" class="not-found-message">
 
-        <div class="message">
-        Deployment not found.
-        </div>
+    <div ng-show="deploymentNotFound" class="not-found-message">
+
+        <div class="message">{{ 'deployments.missingMessages.indication' | translate }}</div>
         <div>
-            <a class="gs-btn" href="#/deployments">Go back to deployment</a>
-            <a class="gs-btn" href="#/blueprints">Lets deploy a blueprint</a>
+            <a class="gs-btn" href="#/deployments">{{ 'deployments.missingMessages.goBack' | translate }}</a>
+            <a class="gs-btn" href="#/blueprints">{{ 'deployments.missingMessages.deployBlueprint' | translate }}</a>
         </div>
 
     </div>

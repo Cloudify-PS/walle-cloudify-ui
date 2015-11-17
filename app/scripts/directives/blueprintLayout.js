@@ -49,7 +49,6 @@ angular.module('cosmoUiApp')
                 // Set Navigation Menu
                 $scope.navMenu = [
                     { 'name': 'Topology', 'href': '/topology'},
-                    { 'name': 'Network', 'href': '/network'},
                     { 'name': 'Nodes', 'href': '/nodes'},
                     { 'name': 'Source', 'href': '/source'}
                 ];
