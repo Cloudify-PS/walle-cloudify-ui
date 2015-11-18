@@ -16,7 +16,7 @@ angular.module('cosmoUiApp')
                     }
                     return cloudifyClient.nodeInstances.list($scope.deploymentId, 'state' ).then(function (result) {
 
-                        var progress = Math.floor(NodeService.status.calculateProgress( result.data ));
+                        var progress = Math.floor(NodeService.status.calculateProgress( result.data.items ));
                         $scope.value = { 'done' : progress };
                         $scope.text = progress;
                     });

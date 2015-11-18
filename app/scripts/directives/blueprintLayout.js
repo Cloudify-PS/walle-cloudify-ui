@@ -9,13 +9,14 @@ angular.module('cosmoUiApp')
             link: function postLink($scope, attrs) {
 
                 $scope.blueprint = {
-                    id:$routeParams.blueprintId
+                    id: $routeParams.blueprintId
                 };
 
                 cloudifyClient.blueprints.get($scope.blueprint.id)
-                    .then(function( result ){
+                    .then(function(result) {
+                        $scope.blueprint.description = result.data.description;
                         return result.data;
-                    }, function(result){
+                    }, function(result) {
                         if(result.status === 404) {
                             $scope.blueprintNotFound = true;
                         }
@@ -46,7 +47,6 @@ angular.module('cosmoUiApp')
                 // Set Navigation Menu
                 $scope.navMenu = [
                     { 'name': 'Topology', 'href': '/topology'},
-                    { 'name': 'Network', 'href': '/network'},
                     { 'name': 'Nodes', 'href': '/nodes'},
                     { 'name': 'Source', 'href': '/source'}
                 ];

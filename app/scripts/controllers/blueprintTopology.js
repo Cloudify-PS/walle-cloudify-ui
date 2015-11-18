@@ -4,8 +4,6 @@ angular.module('cosmoUiApp')
     .controller('BlueprintTopologyCtrl', function ($scope, $routeParams) {
         $scope.blueprintId = $routeParams.blueprintId;
         $scope.page = {};
-        $scope.showTryBeta = true;
-
 
         $scope.onNodeSelect = function(node){
             $scope.viewNode(node,'node');

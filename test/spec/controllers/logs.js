@@ -83,14 +83,16 @@ describe('Controller: LogsCtrl', function () {
                     _cloudifyClient.blueprints.list.andReturn({
                         then: function (successCallback) {
                             var response = {
-                                data: [
-                                    {
-                                        'id': 'blueprint1'
-                                    },
-                                    {
-                                        'id': 'blueprint2'
-                                    }
-                                ]
+                                data: {
+                                    items: [
+                                        {
+                                            'id': 'blueprint1'
+                                        },
+                                        {
+                                            'id': 'blueprint2'
+                                        }
+                                    ]
+                                }
                             };
                             successCallback(response);
                         }
@@ -99,22 +101,22 @@ describe('Controller: LogsCtrl', function () {
                     _cloudifyClient.deployments.list.andReturn({
                         then: function (successCallback) {
                             var response = {
-                                data: [
-                                    {
-                                        'id': 'firstDep',
-                                        'blueprint_id': 'blueprint1'
-
-                                    },
-                                    {
-                                        'id': 'secondDep',
-                                        'blueprint_id': 'blueprint1'
-                                    },
-                                    {
-                                        'id': 'onlyOneDeployment',
-                                        'blueprint_id': 'blueprint2'
-
-                                    }
-                                ]
+                                data: {
+                                    items: [
+                                        {
+                                            'id': 'firstDep',
+                                            'blueprint_id': 'blueprint1'
+                                        },
+                                        {
+                                            'id': 'secondDep',
+                                            'blueprint_id': 'blueprint1'
+                                        },
+                                        {
+                                            'id': 'onlyOneDeployment',
+                                            'blueprint_id': 'blueprint2'
+                                        }
+                                    ]
+                                }
                             };
                             successCallback(response);
                         }
@@ -190,11 +192,14 @@ describe('Controller: LogsCtrl', function () {
                         successCallback(getLogsResponse);
                     }
                 });
-
                 expect(scope.logsHits).toBe(undefined);
                 scope.updateData(defaultMockTableState);
-                expect(scope.logsHits).not.toBe(undefined);
-                expect(scope.getLogsError).toBe(null);
+                //waiting for debounce
+                waits(351);
+                runs(function() {
+                    expect(scope.logsHits).not.toBe(undefined);
+                    expect(scope.getLogsError).toBe(null);
+                });
             });
 
             it('should show error when failing to update data on tableState Change', function () {
@@ -214,7 +219,11 @@ describe('Controller: LogsCtrl', function () {
                 });
 
                 scope.updateData(defaultMockTableState);
-                expect(scope.getLogsError).toBe('Getting logs failed message');
+                //waiting for debounce
+                waits(351);
+                runs(function() {
+                    expect(scope.getLogsError).toBe('Getting logs failed message');
+                });
             });
         });
 
@@ -224,14 +233,40 @@ describe('Controller: LogsCtrl', function () {
                 scope.eventsFilter = {
                     'blueprints': ['blueprint1'],
                     'deployments': ['deployment2','deployment1'],
-                    'logLevels': ['error','warning','info']
+                    'logLevels': ['error','warning','info'],
+                    'eventTypes': ['task_sent'],
+                    'timeRange': {
+                        'gte': new moment('2015-06-17T15:50:00.000Z'),
+                        'lte': new moment('2015-06-18T16:50:00.000Z')
+                    },
+                    'messageText': 'free text'
                 };
                 scope.clearFilters();
                 expect(scope.eventsFilter).toEqual({
                     'blueprints': [],
                     'deployments': [],
-                    'logLevels': []
+                    'logLevels': [],
+                    'eventTypes': [],
+                    'timeRange': {
+                        'gte': '',
+                        'lte': ''
+                    },
+                    'messageText': ''
                 });
+            });
+        });
+        describe('#isValidTime' , function(){
+            it('should check if value is an expected time', function(){
+                initCtrl();
+                expect(scope.isValidTime(undefined)).toBe(false);
+                expect(scope.isValidTime('')).toBe(false);
+                expect(scope.isValidTime('any string')).toBe(false);
+                expect(scope.isValidTime('123456789')).toBe(false);
+                //a number of characters expected as date
+                expect(scope.isValidTime('1234567890123456')).toBe(false);
+                expect(scope.isValidTime('2015/10/12 10:10')).toBe(false);
+                expect(scope.isValidTime('2015-10-12 10:10')).toBe(true);
+                expect(scope.isValidTime(new moment())).toBe(true);
             });
         });
     });

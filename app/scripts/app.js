@@ -18,8 +18,9 @@ angular.module('cosmoUiApp', [
     'ui.bootstrap',
     'smart-table',
     'dndLists',
-    'cfy.topology'
-]).config( function ($routeProvider, $httpProvider, $translateProvider) {
+    'cfy.topology',
+    'datePicker'
+]).config( function ($routeProvider, $httpProvider, $translateProvider, $provide) {
 
         //var isSettingsExists = window.isSettingsExists();
 
@@ -57,10 +58,7 @@ angular.module('cosmoUiApp', [
                 templateUrl: 'views/blueprint/blueprintSource.html',
                 controller: 'SourceCtrl'
             })
-            .when('/blueprint/:blueprintId/newtopology', {
-                templateUrl : 'views/blueprint/newTopology.html',
-                controller: 'BlueprintNewTopologyCtrl'
-            })
+
             .when('/deployments',{
                 templateUrl: 'views/deployment/deploymentsIndex.html',
                 controller: 'DeploymentsCtrl',
@@ -154,6 +152,19 @@ angular.module('cosmoUiApp', [
         $httpProvider.defaults.headers.get.Pragma = 'no-cache';
 
         $httpProvider.interceptors.push('cloudifyLoginInterceptor');
+
+
+        //Decorator for date-picker starting with not value at all
+        $provide.decorator('mFormatFilter', function ()
+        {
+            return function newFilter(m, format, tz)
+            {
+                if (!(moment.isMoment(m))) {
+                    return '';
+                }
+                return tz ? moment.tz(m, tz).format(format) : m.format(format);
+            };
+        });
     })
     .value('appConfig', {
         versions: {

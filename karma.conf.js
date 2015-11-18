@@ -17,6 +17,7 @@ module.exports = function(config) {
         files: [
             'test/phantomjs.shim.js',
             'app/bower_components/jquery/dist/jquery.js',
+            'app/bower_components/cloudify-blueprint-topology/dist/scripts/jquery-ui-custom.js',
             'app/bower_components/angular/angular.js',
             'app/bower_components/angular-mocks/angular-mocks.js',
             'app/bower_components/ng-file-upload/angular-file-upload.js',
@@ -57,6 +58,8 @@ module.exports = function(config) {
             'app/bower_components/angular-bootstrap/ui-bootstrap-tpls.js',
             'app/bower_components/angular-smart-table/dist/smart-table.js',
             'app/bower_components/dndLists/angular-drag-and-drop-lists.js',
+            'app/bower_components/moment/moment.js',
+            'app/bower_components/angular-datepicker/dist/angular-datepicker.js',
 
             'app/scripts/*.js',
             'app/scripts/**/*.js',

@@ -1,5 +1,9 @@
 #logs {
 
+    #loader{
+        display: inline-block;
+    }
+
     #main-content-panel {
         padding-right: 0;
     }
@@ -7,24 +11,46 @@
         display: block;
         height: 100%;
 
-        .filters {
+        .logs-container{
+            width: 100%;
             position: relative;
-            margin: 0 0 10px;
-
-            .multiSelectMenu {
-                margin: 5px 10px 0 0;
-                vertical-align: middle;
-            }
-            .filter {
-                display: inline-block;
+            display: inline-block;
+            .filters {
+                position: relative;
                 margin: 0 0 10px;
+                max-width: 85%;
+                min-width: 200px;
+                float: left;
+
+                .multiSelectMenu {
+                    margin: 5px 10px 0 0;
+                    vertical-align: middle;
+                }
+                .filter {
+                    display: inline-table;
+                    margin: 0 0 10px;
+                }
+                .input-container {
+                    margin: 5px 10px 0 0;
+                    vertical-align: middle;
+                    position: relative;
+                }
+                .time-range{
+                    padding-right: 20px;
+                }
+                .time-range-icon{
+                    position: absolute;
+                    top:9px;
+                    right:5px;
+                }
             }
             .actions {
                 margin-top: 27px;
+                max-width: 15%;
+                min-width:143px;
                 float: right;
             }
         }
-
         .emptyTable {
             display: block;
             text-align: center;
@@ -33,6 +59,7 @@
 
         .logs-error-message {
             margin-bottom: 10px;
+            display:inline-block;
 
             a, a:hover {
                 font-weight: bold;

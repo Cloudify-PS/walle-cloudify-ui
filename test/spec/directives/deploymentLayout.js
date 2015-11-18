@@ -59,25 +59,13 @@ describe('Directive: deploymentLayout', function () {
     });
 
     describe('#loadExecution', function(){
-        it('should redirect back to deployments if result returned 404 (CFY-1745)', inject(function( $location, cloudifyClient ){
-            spyOn($location,'path');
-            spyOn(cloudifyClient.executions,'list').andReturn({
-                then:function( success, error ){
-                    error({ status: 404 });
-                }
-            });
-            scope.loadExecutions();
-            expect($location.path).toHaveBeenCalled();
-
-        }));
-
         it('should put first running execution on scope.currentExecution', inject(function(cloudifyClient){
 
             var executions = [ { 'id' : 'foo' } , { 'id' : 'bar'}];
 
             spyOn(cloudifyClient.executions,'list').andReturn({
                 then:function( success ){
-                    success({ data :  executions });
+                    success({ data : {items: executions } });
                 }
             });
             scope.loadExecutions();
@@ -107,6 +95,21 @@ describe('Directive: deploymentLayout', function () {
             spyOn(cloudifyClient.executions,'list');
             scope.loadExecutions();
             expect(cloudifyClient.executions.list).not.toHaveBeenCalled();
+        }));
+
+        it('should redirect after deletion', inject(function($location){
+
+            scope.goToDeployments();
+            expect($location.path()).toBe('/deployments');
+
+        }));
+
+        it('should not redirect after deletion if some navigation happened in between', inject(function($location){
+
+            $location.path('somewhere');
+            scope.goToDeployments();
+            expect($location.path()).toBe('/somewhere');
+
         }));
     });
 });
