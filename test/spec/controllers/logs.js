@@ -192,11 +192,14 @@ describe('Controller: LogsCtrl', function () {
                         successCallback(getLogsResponse);
                     }
                 });
-
                 expect(scope.logsHits).toBe(undefined);
                 scope.updateData(defaultMockTableState);
-                expect(scope.logsHits).not.toBe(undefined);
-                expect(scope.getLogsError).toBe(null);
+                //waiting for debounce
+                waits(351);
+                runs(function() {
+                    expect(scope.logsHits).not.toBe(undefined);
+                    expect(scope.getLogsError).toBe(null);
+                });
             });
 
             it('should show error when failing to update data on tableState Change', function () {
@@ -216,7 +219,11 @@ describe('Controller: LogsCtrl', function () {
                 });
 
                 scope.updateData(defaultMockTableState);
-                expect(scope.getLogsError).toBe('Getting logs failed message');
+                //waiting for debounce
+                waits(351);
+                runs(function() {
+                    expect(scope.getLogsError).toBe('Getting logs failed message');
+                });
             });
         });
 

@@ -93,9 +93,10 @@ angular.module('cosmoUiApp')
          * @description  generate and execute a query based on tableState to receive results and render them to the table
          * @param tableState - all the filters , sorts and pagination applied on the table
          */
-        $scope.updateData = function (tableState) {
+        function updateData (tableState) {
             var options = TableStateToRestApi.getOptions(tableState);
             $scope.getLogsError = null;
+            $scope.isLoading = true;
 
             cloudifyClient.events.get(options).then(function (response) {
                 $scope.logsHits = response.data.items;
@@ -106,10 +107,14 @@ angular.module('cosmoUiApp')
                 var totalHits = response.data.metadata.pagination.total;
                 tableState.pagination.totalItemCount = totalHits;
                 tableState.pagination.numberOfPages = Math.ceil(totalHits / options._size);
+                $scope.isLoading = false;
             },function(response){
                 $scope.getLogsError = response.data.message;
+                $scope.isLoading = false;
             });
-        };
+        }
+        $scope.updateData = _.debounce(updateData, 350);
+
 
         //Mapping event_type text(returned from elasticsearch) to our desired css,text and icon
         $scope.getEventIcon = function (event) {
