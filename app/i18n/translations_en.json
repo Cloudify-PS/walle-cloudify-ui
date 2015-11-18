@@ -351,7 +351,7 @@
         "tooBig" : "Blueprint is too big"
     },
     "hosts" : {
-        "chooseBlueprint" : "Choose a blueprint and click show...",
+        "chooseBlueprint" : "Choose a blueprint...",
         "blueprintsFilter" : "Deployed Blueprints:",
         "deploymentsFilter" : "Deployments:",
         "blueprintsFilterPlaceholder" : "Choose a Blueprint",
