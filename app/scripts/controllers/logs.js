@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('cosmoUiApp')
-    .controller('LogsCtrl', function ($scope, cloudifyClient, EventsMap, $routeParams, TableStateToRestApi, $location, Debounce) {
+    .controller('LogsCtrl', function ($scope, cloudifyClient, EventsMap, $routeParams, TableStateToRestApi, $location) {
 
         //default sorting desc timestamp - when there is not a specific query
         if(Object.keys($routeParams).length === 0){
@@ -93,7 +93,7 @@ angular.module('cosmoUiApp')
          * @description  generate and execute a query based on tableState to receive results and render them to the table
          * @param tableState - all the filters , sorts and pagination applied on the table
          */
-        $scope.updateData = new Debounce(function (tableState) {
+        function updateData (tableState) {
             var options = TableStateToRestApi.getOptions(tableState);
             $scope.getLogsError = null;
             $scope.isLoading = true;
@@ -111,9 +111,10 @@ angular.module('cosmoUiApp')
             },function(response){
                 $scope.getLogsError = response.data.message;
                 $scope.isLoading = false;
-
             });
-        },350);
+        }
+        $scope.updateData = _.debounce(updateData, 350);
+
 
         //Mapping event_type text(returned from elasticsearch) to our desired css,text and icon
         $scope.getEventIcon = function (event) {
