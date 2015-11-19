@@ -90,6 +90,25 @@
                     }
                 }
             }
+            tr {
+
+                &.details {
+                    padding-left: 0;
+
+                    .message-text {
+                        padding-bottom: 10px;
+                        font-size: 13px;
+                        margin: 0 10px;
+                    }
+                    .group {
+                        padding-left: 6px;
+                    }
+                    pre {
+                        max-width: 1628px;
+                        margin-top: 5px;
+                    }
+                }
+            }
             td {
 
                 &.type {
@@ -121,24 +140,6 @@
                 }
                 &.event-text-red {
                     color: $COSMOUI_EVENTS_LIST_TEXT_FAILED;
-                }
-                &.details {
-                    padding-left: 0;
-
-                    .message-text {
-                        padding-bottom: 10px;
-                        font-size: 13px;
-                        margin: 0 10px;
-                    }
-                    .group {
-                        padding-left: 6px;
-                    }
-                    pre {
-                        max-width: 1380px;
-                        margin-left: auto;
-                        margin-right: auto;
-                        margin-top: 5px;
-                    }
                 }
 
                 .large-text-overflow {
