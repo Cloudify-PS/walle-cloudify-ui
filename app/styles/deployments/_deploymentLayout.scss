@@ -57,6 +57,9 @@
                     color: #333;
                     margin-bottom: 5px;
                 }
+                table tr td:not(:first-child) {
+                    word-break: break-word;
+                }
                 table.overview-data {
                     margin-bottom: 30px;
                 }
