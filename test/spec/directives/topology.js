@@ -36,17 +36,17 @@ describe('Directive: topology', function () {
                         nodes: [
                             {
                                 deployment_plugins_to_install: [],
-                                host_id: "host",
-                                id: "nodejs",
+                                host_id: 'host',
+                                id: 'nodejs',
                                 instances: {deploy: 1},
                                 interfaces: {},
-                                name: "nodejs",
-                                nodeType: "node",
+                                name: 'nodejs',
+                                nodeType: 'node',
                                 operations: {},
                                 plugins: [],
                                 properties: {},
                                 relationships: [],
-                                type: "nodecellar.nodes.NodeJSServer",
+                                type: 'nodecellar.nodes.NodeJSServer',
                                 type_hierarchy: []
                             }
                         ]
@@ -64,13 +64,13 @@ describe('Directive: topology', function () {
                 container: {},
                 height: 160,
                 hierarchy: [],
-                id: "14482002209158",
+                id: '14482002209158',
                 markShifted: false,
                 markedContainedIn: false,
-                name: "nodejs",
+                name: 'nodejs',
                 templateData: {},
-                type: "NodeJSServer",
-                uiType: "Node",
+                type: 'NodeJSServer',
+                uiType: 'Node',
                 width: 210,
                 x: 355,
                 y: 80
@@ -79,6 +79,6 @@ describe('Directive: topology', function () {
             element.isolateScope().onNodeSelected(composerNodeMock);
 
             expect(element.isolateScope().onNodeSelect).toHaveBeenCalledWith({node: nodesMock.data.plan.nodes[0]});
-        }))
-    })
+        }));
+    });
 });
