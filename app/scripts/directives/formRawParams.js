@@ -96,7 +96,7 @@ angular.module('cosmoUiApp')
                         return skipKeys || _validateJsonKeys();
 
                     } catch (e) {
-                        debugger;
+
                         setDeployError('Invalid JSON: ' + e.message);
                         return false;
                     }
@@ -175,7 +175,7 @@ angular.module('cosmoUiApp')
                         $scope.inputs = parsedInputs;
                     } catch (e) {
                         $scope.inputsState = INPUT_STATE.RAW;
-                        debugger;
+
                         setDeployError('Invalid JSON: ' + e.message);
                     }
                 }

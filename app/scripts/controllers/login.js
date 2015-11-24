@@ -20,8 +20,7 @@ angular.module('cosmoUiApp')
                     .then(function success(result) {
                         $log.info('login result', result);
                         $location.path('/');
-                    }, function error(result){
-                        // todo : show the error on page
+                    }, function error(/*result*/){
                         $scope.errorMessage = 'invalid credentials'; // todo: translate this
                     });
             }

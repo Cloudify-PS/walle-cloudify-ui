@@ -10,7 +10,7 @@ angular.module('cosmoUiApp')
             $scope.selectedBlueprint = result.data || null;
 
         }, function(result) {
-            setDeployError(CloudifyService.getErrorMessage(result) || $translate.instant('permissionError') )
+            setDeployError(CloudifyService.getErrorMessage(result) || $translate.instant('permissionError') );
         });
 
         $scope.showError = function(){

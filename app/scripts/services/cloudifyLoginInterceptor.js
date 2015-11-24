@@ -8,7 +8,7 @@
  * Factory in the cosmoUiAppApp.
  */
 angular.module('cosmoUiApp')
-    .factory('cloudifyLoginInterceptor', function ( $log , $q, user ) {
+    .factory('cloudifyLoginInterceptor', function ( $log , $q ) {
         return {
             'responseError': function (rejection) {
 

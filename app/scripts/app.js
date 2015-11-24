@@ -171,7 +171,5 @@ angular.module('cosmoUiApp', [
             ui: '0.0',
             manager: '0.0'
         }
-    })
-    .value('user', {
-        loggedIn: false
     });
+
