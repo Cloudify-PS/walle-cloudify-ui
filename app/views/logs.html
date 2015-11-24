@@ -117,7 +117,7 @@
                         <!-- All of the next filtering of properties is documented in logs_and_events_properties.md file-->
                         <td ng-repeat="column in columns | filter:true">
                             <i ng-if='column.name === "Event Type Icon"' class="icon-events" ng-class="getEventIcon(log)"></i>
-                            <p ng-if='column.name === "Timestamp"' class="date">{{log.timestamp == undefined && '-' || log.formattedTimestamp}}</p>
+                            <p ng-if='column.name === "Timestamp"' class="date">{{log.timestamp == undefined && '-' || log.shortAtTimestamp}}</p>
                             <p ng-if='column.name === "Event Type"' class="type">{{getEventText(log.event_type) == undefined && '-' || getEventText(log.event_type)}}</p>
                             <p ng-if='column.name === "Log Level"' class="level">{{log.level == undefined && '-' || log.level | uppercase}}</p>
                             <p ng-if='column.name === "Operation"' class="operation">{{log.context.operation == undefined && '-' || log.context.operation}}</p>
@@ -132,9 +132,9 @@
                                 <pre>{{log.message.text == undefined && 'N/A' || log.message.text}}</pre>
                             </div>
                             <div class="group">
-                                <span><b>{{'logs.fields.@timestamp' | translate}}:</b> {{ log['@timestamp'] == undefined && 'N/A' || (log['@timestamp'] | dateFormat:'yyyy-MM-dd HH:mm:ss.ms')}}</span>
-                                <span ng-if="log.type === 'cloudify_log'"><b>{{'logs.fields.logTimestamp' | translate}}:</b> {{ log.timestamp == undefined && 'N/A' || (log.timestamp | dateFormat:'yyyy-MM-dd HH:mm:ss.ms')}}</span>
-                                <span ng-if="log.type === 'cloudify_event'"><b>{{'logs.fields.eventTimestamp' | translate}}:</b> {{ log.timestamp == undefined && 'N/A' || (log.timestamp | dateFormat:'yyyy-MM-dd HH:mm:ss.ms')}}</span>
+                                <span><b>{{'logs.fields.@timestamp' | translate}}:</b> {{ log['@timestamp'] == undefined && 'N/A' || log.longAtTimestamp}}</span>
+                                <span ng-if="log.type === 'cloudify_log'"><b>{{'logs.fields.logTimestamp' | translate}}:</b> {{ log.timestamp == undefined && 'N/A' || log.longTimestamp}}</span>
+                                <span ng-if="log.type === 'cloudify_event'"><b>{{'logs.fields.eventTimestamp' | translate}}:</b> {{ log.timestamp == undefined && 'N/A' || log.longTimestamp}}</span>
                                 <span><b>{{'logs.fields.type' | translate}}:</b> {{ log.type == undefined && 'N/A' || log.type }}</span>
                                 <span ng-if="log.type === 'cloudify_log'"><b>{{'logs.fields.logger' | translate}}:</b> {{ log.logger == undefined && 'N/A' || log.logger }}</span>
                                 <span ng-if="log.type === 'cloudify_log'"><b>{{'logs.fields.level' | translate}}:</b> {{ log.level == undefined && 'N/A' || log.level }}</span>
