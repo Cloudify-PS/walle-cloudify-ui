@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('cosmoUiApp')
-    .controller('BlueprintsIndexCtrl', function ($scope, $log, cloudifyClient) {
+    .controller('BlueprintsIndexCtrl', function ($scope, $log, cloudifyClient, CloudifyService ) {
         $scope.lastExecutedPlan = null;
         $scope.selectedBlueprint = null;
         $scope.managerError = false;
@@ -19,11 +19,8 @@ angular.module('cosmoUiApp')
                     $scope.blueprints = _.sortByOrder(result.data.items, ['updated_at'], [false]);
                 }
             }, function (result) {
-                $scope.managerError = result.data.items || 'General Error';
-                $log.error('got error result', result.data.items);
-                if(result.status === 403){
-                    $scope.permissionDenied = true;
-                }
+                $log.error('got error result', result.data);
+                $scope.managerError = CloudifyService.getErrorMessage(result) || 'General Error';
             });
         }
 

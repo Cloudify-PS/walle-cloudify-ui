@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('cosmoUiApp')
-    .directive('header', function ($log, CloudifyService, LoginService, user ) {
+    .directive('header', function ($log, CloudifyService, LoginService ) {
         return {
             templateUrl: 'views/headerTemplate.html',
             restrict: 'A',
