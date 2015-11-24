@@ -152,7 +152,8 @@ angular.module('cosmoUiApp')
             if(eventsMap.hasOwnProperty(eventType)) {
                 if (eventType === 'task_failed') {
                     return getFailedTaskIcon(event);
-                } else {
+                }
+                if(eventsMap[eventType].icon){
                     return eventsMap[eventType].icon;
                 }
             }
