@@ -49,7 +49,7 @@
                 </tr>
             </tfoot>
         </table>
-        <div class="connect-error-message" ng-show="managerError">{{ 'connectError' | translate }} - {{ managerError.message }} </div>
+        <div class="connect-error-message" ng-show="managerError">{{ 'connectError' | translate }}{{ managerError.message ? ' - ' + managerError.message : '' }}</div>
 
         <div  class="gs-spinner large" ng-show="blueprints == null && !managerError"></div>
 

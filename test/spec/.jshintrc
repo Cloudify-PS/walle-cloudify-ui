@@ -35,7 +35,8 @@
     "waitsFor": false,
     "runs" : false,
     "$" :false,
-    "moment": false
+    "moment": false,
+    "waits": false
   }
 }
 

@@ -116,6 +116,9 @@
             "outputsError": "Error getting deployment's outputs",
             "inputsUndefined": "No inputs were defined for this deployment",
             "outputsUndefined": "No outputs were defined for this deployment"
+        },
+        "eventsWidget": {
+            "linkToLogs": "Go to Logs & Events"
         }
     },
     "deployments": {
@@ -207,8 +210,10 @@
         "gettingLogsFailed": "Failed getting logs & events",
         "noLogs": "There are no events at this moment...",
         "fields": {
+            "logTimestamp": "Log Timestamp",
+            "eventTimestamp": "Event Timestamp",
             "timestamp": "Timestamp",
-            "auditTimestamp": "Audit Timestamp",
+            "@timestamp": "Registered Timestamp",
             "executionId": "Execution ID",
             "nodeId": "Node ID",
             "taskName": "Task Name",
@@ -289,7 +294,7 @@
         "blueprints": "Blueprints",
         "deployments": "Deployments",
         "logs": "Logs & Events",
-        "hosts": "Hosts",
+        "hosts": "Nodes",
         "interface": "Interface Elements"
     },
     "formRawParams": {
@@ -347,7 +352,7 @@
         "tooBig" : "Blueprint is too big"
     },
     "hosts" : {
-        "chooseBlueprint" : "Choose a blueprint and click show...",
+        "chooseBlueprint" : "Choose a blueprint...",
         "blueprintsFilter" : "Deployed Blueprints:",
         "deploymentsFilter" : "Deployments:",
         "blueprintsFilterPlaceholder" : "Choose a Blueprint",
