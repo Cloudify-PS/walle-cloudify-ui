@@ -152,7 +152,8 @@ angular.module('cosmoUiApp')
             if(eventsMap.hasOwnProperty(eventType)) {
                 if (eventType === 'task_failed') {
                     return getFailedTaskIcon(event);
-                } else {
+                }
+                if(eventsMap[eventType].icon){
                     return eventsMap[eventType].icon;
                 }
             }
@@ -160,7 +161,7 @@ angular.module('cosmoUiApp')
             return 'gs-icon-logs';
         };
 
-        this.getFormattedTimestamp = function(timestamp){
-            return  $filter('dateFormat')(timestamp, 'yyyy-MM-dd HH:mm:ss');
+        this.getFormattedTimestamp = function(timestamp, format){
+            return  $filter('dateFormat')(timestamp, format || 'yyyy-MM-dd HH:mm:ss');
         };
     });
