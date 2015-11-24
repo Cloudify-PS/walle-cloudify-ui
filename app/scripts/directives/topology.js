@@ -154,8 +154,8 @@ angular.module('cosmoUiApp')
                         // currently not supported.. need to discuss in 3.4
 
                     }else{ // node
-                        node = { node : _.find(nodes,{id:node.id || node.name}) };
-                        if ( !node ){
+                        node = { node : _.find(nodes,{id: node.name}) };
+                        if ( !node || !node.node ){
                             return; // fail silently;
                         }
                         $scope.onNodeSelect(node);
