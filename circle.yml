@@ -1,0 +1,16 @@
+machine:
+  node:
+    version: 0.10.35
+
+dependencies:
+  override:
+    - npm install
+  post:
+    - npm install -g bower grunt-cli
+
+test:
+  pre:
+    - bower update
+    - bower install
+  override:
+    - grunt
