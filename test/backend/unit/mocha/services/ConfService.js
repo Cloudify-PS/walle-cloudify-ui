@@ -32,14 +32,16 @@ describe('ConfService',function(){
     it('should set the successful protocol', sinon.test(function(){
 
         var successProtocol = 'https://';
+        var rawEndpoint = conf.cloudifyManagerEndpoint.replace('http://', '').replace('https://', '');
         mockRequire('request', function( opts , callback ){
-
             if ( opts.url.indexOf(successProtocol) === 0){
+                var request = {uri: {href: successProtocol + rawEndpoint +'blueprints'}};
                 callback(null, {
                     statusCode: 200,
                     toJSON: function () {
-                        return JSON.stringify({'key': 'mock_JSON', request: {uri: {href: conf.cloudifyManagerEndpoint+'blueprints'}}});
-                    }
+                        return JSON.stringify({'key': 'mock_JSON', 'request': request});
+                    },
+                    'request': request
                 });
             }else {
                 callback('error');
