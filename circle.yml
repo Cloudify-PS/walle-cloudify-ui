@@ -5,12 +5,10 @@ machine:
 dependencies:
   override:
     - npm install
-  post:
     - npm install -g bower grunt-cli
+    - bower install
+    - bower update
 
 test:
-  pre:
-    - bower update
-    - bower install
   override:
     - grunt
