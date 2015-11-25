@@ -26,6 +26,12 @@ require('express-params');
 var _ = require('lodash');
 var app = express();
 
+app.use(function(req, res, next) {
+    var contentType = req.get('Content-Type');
+    contentType && /application\/json/.test(contentType) && req.headers['Content-Type'].replace(/.+/, 'application/json');
+    next();
+});
+
 var gsSettings = require('./backend/gsSettings');
 
 var services = require('./backend/services');
