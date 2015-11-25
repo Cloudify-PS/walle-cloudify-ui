@@ -38,7 +38,7 @@ describe('ConfService',function(){
                 callback(null, {
                     statusCode: 200,
                     toJSON: function () {
-                        return JSON.stringify({'key': 'mock_JSON'});
+                        return JSON.stringify({'key': 'mock_JSON', request: {uri: {href: conf.cloudifyManagerEndpoint+'blueprints'}}});
                     }
                 });
             }else {

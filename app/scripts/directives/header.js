@@ -25,7 +25,6 @@ angular.module('cosmoUiApp')
                 LoginService.isLoggedIn().then(function(result){
                     scope.isLoggedIn = result.data.result;
                     scope.username = result.data.username;
-                    user.loggedIn = result.data.result;
                 });
             }
         };
