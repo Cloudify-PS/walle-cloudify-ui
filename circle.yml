@@ -6,8 +6,8 @@ dependencies:
   override:
     - npm install
     - npm install -g bower grunt-cli
-    - bower update
     - bower install
+    - bower update
 
 test:
   override:
