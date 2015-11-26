@@ -27,8 +27,11 @@ var _ = require('lodash');
 var app = express();
 
 app.use(function(req, res, next) {
-    var contentType = req.get('Content-Type');
-    contentType && /application\/json/.test(contentType) && req.headers['Content-Type'].replace(/.+/, 'application/json');
+    var CONTENT_TYPE_HEADER='content-type';
+    var contentType = req.get(CONTENT_TYPE_HEADER);
+    if ( contentType && ( contentType.indexOf('application/json') >= 0 ) ){
+        req.headers[CONTENT_TYPE_HEADER] = 'application/json';
+    }
     next();
 });
 
