@@ -352,6 +352,7 @@
         "tooBig" : "Blueprint is too big"
     },
     "hosts" : {
+        "gettingNodesFailed": "Failed getting nodes",
         "chooseBlueprint" : "Choose a blueprint...",
         "blueprintsFilter" : "Deployed Blueprints:",
         "deploymentsFilter" : "Deployments:",

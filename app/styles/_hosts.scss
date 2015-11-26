@@ -134,4 +134,13 @@
     .gs-btn {
         margin-top: 19px;
     }
+
+    .error a {
+        color: #f00;
+        font-weight: bold;
+
+        &:hover {
+            color: #dc143c;
+        }
+    }
 }

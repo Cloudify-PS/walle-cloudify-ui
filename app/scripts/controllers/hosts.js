@@ -106,6 +106,7 @@ angular.module('cosmoUiApp')// todo : change to NodeCtrl
          *  map blueprint_id to each node_instance
          */
         function loadNodeInstances() {
+            $scope.getNodesError = null;
             $scope.filterLoading = true;
             $q.all([getInstancesForDeployments(), loadTypesData()]).then(function (result) {
 
@@ -121,9 +122,10 @@ angular.module('cosmoUiApp')// todo : change to NodeCtrl
                 $scope.filterLoading = false;
                 filterItems();
             }, function(result){
-                if(result.status === 403){
-                    $scope.permissionDenied = true;
-                }
+                console.log('oops', result);
+                $scope.getNodesError = result.data.message;
+                $scope.filterLoading = false;
+                $scope.emptyReason = result.data.message;
             });
 
         }
