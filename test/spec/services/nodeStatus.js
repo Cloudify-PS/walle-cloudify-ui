@@ -138,6 +138,9 @@ describe('Service: nodeStatus', function () {
             expect(Math.floor(nodeStatus.calculateProgress([{state:'starting'}, {state:'started'}]))).toBe(92);
             expect(nodeStatus.calculateProgress([{state:'deleted'}, {state:'deleted'}])).toBe(0);
 
+            // when there's zero instances, we want the progress to equal zero
+            expect(nodeStatus.calculateProgress()).toBe(0);
+
         });
     });
 

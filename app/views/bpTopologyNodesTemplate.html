@@ -1,8 +1,8 @@
-<div data-ng-repeat="node in map track by node.name" ng-class="{box: !node.isApp, app: node.isApp, boxHover:hover}" data-type="{{node.dataType}}" blueprint:coordinate="{{node.id}}">
+<div data-ng-repeat="node in map track by node.name" ng-class="{box: !node.isApp, app: node.isApp, boxHover:hover}" data-type="{{node.dataType}}" blueprint-coordinate="{{node.id}}">
 
 
 
-    <div progress:pie="piProgress2" class="piProgress" size="55">
+    <div progress-pie="piProgress2" class="piProgress" size="55">
         <div class="badge-title" ng-class="getBadgeStatus(node)" ng-show="shouldShowBadgeTitle(node)" >{{getCompleted(node)}}/{{getTotal(node)}}</div>
         <div class="circle" ng-click="onNodeSelect({ 'node' : node })">
             <i class="gs-node-icon topology-glyph" ng-class="node.class"></i>
