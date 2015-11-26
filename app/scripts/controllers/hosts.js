@@ -122,7 +122,6 @@ angular.module('cosmoUiApp')// todo : change to NodeCtrl
                 $scope.filterLoading = false;
                 filterItems();
             }, function(result){
-                console.log('oops', result);
                 $scope.getNodesError = result.data.message;
                 $scope.filterLoading = false;
                 $scope.emptyReason = result.data.message;
