@@ -16,6 +16,10 @@
                 position: relative;
                 padding-left: 0;
                 top: 30px;
+
+                table tr td:not(:first-child) {
+                    word-break: break-word;
+                }
             }
         }
     }

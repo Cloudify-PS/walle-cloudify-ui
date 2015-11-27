@@ -185,7 +185,7 @@ angular.module('cosmoUiApp')
                 total += me.getStateWeight(instance);
             });
 
-            var result =  ( total / this.getCompleteProgress( nodeInstances ) ) * 100;
+            var result = _.size(nodeInstances) > 0 ? ( total / this.getCompleteProgress( nodeInstances ) ) * 100 : 0;
 
             // normalize so it won't show stupid numbers like -8 or 114..
             result = Math.max(0,result);

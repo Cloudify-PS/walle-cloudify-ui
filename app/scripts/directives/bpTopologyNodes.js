@@ -37,7 +37,7 @@ angular.module('cosmoUiApp')
                 }
 
                 scope.getCompleted = function( node ){
-                    return _.filter(getInstances(node), function(instance){ NodeService.status.isCompleted(instance);}).length;
+                    return _.filter(getInstances(node), function(instance){ return NodeService.status.isCompleted(instance);}).length;
                 };
 
 
