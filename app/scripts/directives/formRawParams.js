@@ -96,6 +96,7 @@ angular.module('cosmoUiApp')
                         return skipKeys || _validateJsonKeys();
 
                     } catch (e) {
+
                         setDeployError('Invalid JSON: ' + e.message);
                         return false;
                     }
@@ -150,6 +151,9 @@ angular.module('cosmoUiApp')
                 }
 
                 function _rawToForm() {
+                    if ( $scope.rawString === undefined ){
+                        return;
+                    }
                     setDeployError(null);
                     try {
                         var parsedInputs = JSON.parse($scope.rawString);
@@ -171,6 +175,7 @@ angular.module('cosmoUiApp')
                         $scope.inputs = parsedInputs;
                     } catch (e) {
                         $scope.inputsState = INPUT_STATE.RAW;
+
                         setDeployError('Invalid JSON: ' + e.message);
                     }
                 }

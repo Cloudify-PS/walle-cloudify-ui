@@ -5,7 +5,8 @@
             <li><span>{{'breadcrumb.deployments'|translate}}</span></li>
         </ul></div>
     </div>
-    <div id="dp1" class="content-section" st-table="displayedDeployments" st-safe-src="deployments" st-set-filter="customFilter">
+    <div ng-show="!!permissionDenied" class="error">{{'permissionError' | translate}}</div>
+    <div id="dp1" class="content-section" st-table="displayedDeployments" st-safe-src="deployments" st-set-filter="customFilter" ng-show="!permissionDenied">
         <form>
             <div class="form-group">
                 <label for="searchByName">{{'deployments.filters.deployment.title' | translate}}</label>

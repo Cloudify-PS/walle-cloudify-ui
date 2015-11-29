@@ -1,6 +1,7 @@
 <div class="deployments-layout-display cosmo-layout">
 
-    <span ng-hide="deploymentNotFound">
+    <div ng-show="!!loadError" class="error">{{loadError}}</div>
+    <span ng-show="!deploymentNotFound && !loadError">
 
 
     <div id="deployment-header">

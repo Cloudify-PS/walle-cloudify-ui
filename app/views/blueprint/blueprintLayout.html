@@ -1,6 +1,7 @@
 <div id="blueprint-header" class="cosmo-layout">
 
-    <span ng-show="!blueprintNotFound">
+    <div ng-show="!!loadError" class="error">{{loadError}}</div>
+    <span ng-show="!blueprintNotFound && !loadError">
     <div class="header-left">
 
         <div class="content-header">
@@ -37,6 +38,7 @@
         </div>
 
     </div>
+
 
 
 

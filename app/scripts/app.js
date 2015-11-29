@@ -172,3 +172,4 @@ angular.module('cosmoUiApp', [
             manager: '0.0'
         }
     });
+

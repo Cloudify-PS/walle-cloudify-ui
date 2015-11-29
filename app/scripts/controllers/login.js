@@ -13,15 +13,15 @@ angular.module('cosmoUiApp')
         $scope.loginPage = {};
 
         $scope.login = function () {
+            $scope.errorMessage = null;
             $log.debug('login...');
             if ($scope.isLoginEnabled()) {
                 LoginService.login($scope.loginPage)
                     .then(function success(result) {
                         $log.info('login result', result);
                         $location.path('/');
-                    }, function error(result){
-                        $log.error('could not log in', result);
-                        // todo: display error to user
+                    }, function error(/*result*/){
+                        $scope.errorMessage = 'invalid credentials'; // todo: translate this
                     });
             }
         };

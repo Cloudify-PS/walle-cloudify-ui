@@ -9,6 +9,7 @@
 
 //var services = require('../services');
 
+// support credentials on request body as well.
 module.exports = function (req, res, next) {
     var creds = req.session.cloudifyCredentials;
 

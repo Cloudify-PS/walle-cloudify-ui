@@ -6,8 +6,18 @@ describe('Controller: DeployDialogCtrl', function () {
 
     beforeEach(module('cosmoUiApp', 'ngMock', 'backend-mock'));
 
-    beforeEach(inject(function ($controller, $rootScope) {
+    beforeEach(inject(function ($controller, $rootScope, cloudifyClient) {
+
+        spyOn(cloudifyClient.blueprints, 'get').andCallFake(function () {
+            return {
+                then: function (success) {
+                    success({ data : {items: []} } );
+                }
+            };
+        });
+
         scope = $rootScope.$new();
+        scope.blueprintId = 'foo';
         scope.redirectToDeployment = jasmine.createSpy(); // todo: this should be handled with `on close` for dialog
         DeployDialogCtrl = $controller('DeployDialogCtrl', {
             $scope: scope
@@ -116,6 +126,7 @@ describe('Controller: DeployDialogCtrl', function () {
         scope.deployErrorMessage = 'hello';
 
         scope.deployment_id = 'deployment2';
+
         scope.$apply();
 
         expect(scope.showError()).toBe(false);

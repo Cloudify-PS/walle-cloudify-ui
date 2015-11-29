@@ -52,7 +52,6 @@ describe('Controller: LoginCtrl', function () {
         it('should log error if login failed', inject(function ($location, LoginService, $log) {
             var isSuccess = false;
             spyOn($location, 'path');
-            spyOn($log, 'error');
             spyOn($log, 'info');
 
             spyOn(LoginService, 'login').andCallFake(function () {
@@ -70,7 +69,7 @@ describe('Controller: LoginCtrl', function () {
             scope.loginPage = {'username': 'foo', 'password': 'bar'};
             scope.login();
 
-            expect($log.error).toHaveBeenCalled();
+            expect(scope.errorMessage).not.toBeNull();
 
             isSuccess = true;
             scope.login();

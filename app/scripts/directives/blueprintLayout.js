@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('cosmoUiApp')
-    .directive('blueprintLayout', function ($location, cloudifyClient, ngDialog, $routeParams) {
+    .directive('blueprintLayout', function ($location, cloudifyClient, CloudifyService, ngDialog, $routeParams) {
         return {
             templateUrl: 'views/blueprint/blueprintLayout.html',
             restrict: 'C',
@@ -19,6 +19,8 @@ angular.module('cosmoUiApp')
                     }, function(result) {
                         if(result.status === 404) {
                             $scope.blueprintNotFound = true;
+                        } else {
+                            $scope.loadError = CloudifyService.getErrorMessage(result);
                         }
                         // todo: handle other errors, apart from 404
                     })

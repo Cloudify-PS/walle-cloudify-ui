@@ -59,8 +59,11 @@ angular.module('cosmoUiApp')
                     $scope.blueprints = _.values($scope.blueprints);
                     $scope.deploymentsLoaded = true;
                 },
-                function() {
+                function(res) {
                     $scope.managerError = true;
+                    if(res.status === 403){
+                        $scope.permissionDenied = true;
+                    }
                 });
         };
 

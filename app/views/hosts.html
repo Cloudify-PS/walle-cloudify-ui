@@ -6,7 +6,8 @@
         </ul></div>
     </div>
 
-    <div class="content-section">
+    <div ng-show="!!permissionDenied" class="error">{{'permissionError' | translate}}</div>
+    <div class="content-section" ng-show="!permissionDenied">
         <div class="filters">
 
             <div class="filter gs-selection-button">
@@ -66,7 +67,13 @@
         <div class="newHosts" data-ng-show="newHosts>0">
             <p data-ng-click="scrollToTop()">{{ newHosts }} new hosts</p>
         </div>
-
+        <div class="error" ng-if="getNodesError" ng-init="showErrorDetails = true">
+            <a ng-click="showErrorDetails = !showErrorDetails">{{'hosts.gettingNodesFailed' | translate}}
+                <i ng-hide='showErrorDetails' class="fa fa-caret-up"></i>
+                <i ng-show='showErrorDetails' class="fa fa-caret-down"></i>
+            </a>
+            <div ng-hide="showErrorDetails">{{getNodesError}}</div>
+        </div>
         <table class="gs-table">
             <thead>
             <tr>

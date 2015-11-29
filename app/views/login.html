@@ -11,19 +11,16 @@
 
                         <input type="password" spellcheck="false" placeholder="{{ 'login.passLabel' | translate }}" ng-model="loginPage.password" required>
 
-                        <div class="remember">
-                            <input type="checkbox" ng-model="loginPage.remember">
-                            <label>{{ 'login.rememberLabel' | translate }}</label>
+                        <div class="actions">
+                            <div class="remember">
+                                <input type="checkbox" ng-model="loginPage.remember">
+                                <label>{{ 'login.rememberLabel' | translate }}</label>
+                            </div>
+
+                            <input type="submit" class="hidden-thing"/>
+                            <span class="error-message">{{ errorMessage}}</span>
+                            <button type="button" class="gs-btn" ng-class="{'disabled': !isLoginEnabled()}" ng-click="login()">{{ 'login.loginBtn' | translate }}</button>
                         </div>
-
-                        <ul id="errMsgList">
-                            <li class="errMsg" ng-repeat="err in errList">
-                                {{err}}
-                            </li>
-                        </ul>
-
-                        <input type="submit" class="hidden-thing"/>
-                        <button type="button" class="gs-btn" ng-class="{'disabled': !isLoginEnabled()}" ng-click="login()">{{ 'login.loginBtn' | translate }}</button>
                     </form>
                 </div>
             </div>

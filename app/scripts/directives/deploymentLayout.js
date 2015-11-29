@@ -7,7 +7,7 @@
  * # deploymentLayout
  */
 angular.module('cosmoUiApp')
-    .directive('deploymentLayout', function ($location, nodeStatus, cloudifyClient, ExecutionsService, $routeParams) {
+    .directive('deploymentLayout', function ($location, nodeStatus, cloudifyClient, CloudifyService, ExecutionsService, $routeParams) {
 
         return {
             templateUrl: 'views/deployment/deploymentLayout.html',
@@ -44,9 +44,11 @@ angular.module('cosmoUiApp')
                         $scope.blueprintId = result.data.blueprint_id;
                         $scope.deployment = result.data;
                     }, function( result ){
+                        $scope.showDeploymentEvents = false;
                         if ( result.status === 404 ){
                             $scope.deploymentNotFound = true;
-                            $scope.showDeploymentEvents = false;
+                        }else {
+                            $scope.loadError = CloudifyService.getErrorMessage(result);
                         }
                     });
 
