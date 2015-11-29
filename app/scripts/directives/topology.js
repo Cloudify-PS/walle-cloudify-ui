@@ -111,7 +111,6 @@ angular.module('cosmoUiApp')
                                 $rootScope.$broadcast('topology::refresh', DataProcessingService.encodeTopologyFromRest(topologyData));
                             } else {
                                 scope.topologyData = DataProcessingService.encodeTopologyFromRest(topologyData);
-                                $rootScope.$broadcast('topology::refresh', scope.topologyData);
                                 scope.topologyLoading = false;
                             }
                         });
