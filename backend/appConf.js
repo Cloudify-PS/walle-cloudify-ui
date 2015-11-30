@@ -55,7 +55,7 @@ var privateConfiguration = {
     autoDetectProtocol:true, // automatically detect if cloudify is listening on http or https
 
     // IMPORTANT: the slash at the end is important !!
-    cloudifyManagerEndpoint: 'http://localhost:80/api/v2/', // require('url').parse(href) ==> protocol+hostname+port+pathname ... (hostname+port == host)
+    cloudifyManagerEndpoint: 'http://localhost/api/v2/', // require('url').parse(href) ==> protocol+hostname+port+pathname ... (hostname+port == host)
     cloudifyLicense: 'tempLicense',
     secretValue: 'WmLaL99qM95260zZE460d5t2BM4B34yo370447J3f8456F57wrq1Qd653g6s',
     log4js: {
