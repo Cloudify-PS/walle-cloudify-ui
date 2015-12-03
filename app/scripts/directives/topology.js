@@ -70,7 +70,7 @@ angular.module('cosmoUiApp')
                     if (!attrs.deploymentId) {
 
                         $log.info('getting blueprint');
-                        cloudifyClient.blueprints.get(scope.blueprintId).then(function (result) {
+                        getBlueprint(scope.blueprintId).then(function (result) {
 
                             var data = result.data;
 
@@ -92,7 +92,7 @@ angular.module('cosmoUiApp')
 
                     if (scope.blueprintId && scope.deploymentId) {
 
-                        return $q.all([cloudifyClient.blueprints.get(scope.blueprintId), cloudifyClient.nodeInstances.list(scope.deploymentId)]).then(function (results) {
+                        return $q.all([getBlueprint(scope.blueprintId), cloudifyClient.nodeInstances.list(scope.deploymentId)]).then(function (results) {
 
                             var data = results[0].data;
                             var instances = results[1].data.items;
@@ -118,6 +118,20 @@ angular.module('cosmoUiApp')
                     } else {
                         return $q.defer().promise;
                     }
+                }
+
+                //caching blueprint
+                var blueprintPromise;
+                function getBlueprint( blueprintId ,force ){
+                    if ( !blueprintPromise && !force ) {
+                        blueprintPromise = cloudifyClient.blueprints.get(blueprintId).then(function (result) {
+                            nodes = result.data.plan.nodes;
+                            return result;
+                        }, function (result) {
+                            $q.reject(result);
+                        });
+                    }
+                    return blueprintPromise;
                 }
 
                 scope.onNodeSelected = function (node) {
