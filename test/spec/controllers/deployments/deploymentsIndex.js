@@ -10,13 +10,13 @@ describe('Controller: DeploymentsCtrl', function () {
 
             scope = $rootScope.$new();
 
-            spyOn(cloudifyClient.executions,'list').andCallFake(function(){
+            spyOn(cloudifyClient.executions,'list').and.callFake(function(){
                 return {
                     then:function(/*success,error*/){}
                 };
             });
 
-            spyOn(cloudifyClient.deployments,'list').andCallFake(function(){
+            spyOn(cloudifyClient.deployments,'list').and.callFake(function(){
                 return {
                     then: function (success/*, error*/) {
                         success({ data: []});
@@ -24,7 +24,7 @@ describe('Controller: DeploymentsCtrl', function () {
                 };
             });
 
-            spyOn(cloudifyClient.blueprints,'list').andCallFake(function () {
+            spyOn(cloudifyClient.blueprints,'list').and.callFake(function () {
                 return {
                     then:function(success){
                         success( { data : {} } );
@@ -47,7 +47,7 @@ describe('Controller: DeploymentsCtrl', function () {
 
         beforeEach(inject(function( cloudifyClient, ExecutionsService, TickerSrv  ){
 
-            spyOn(TickerSrv,'register').andCallFake(function( name, callback ){
+            spyOn(TickerSrv,'register').and.callFake(function( name, callback ){
                 if ( name === 'deployments/loadExecutions' ){
                     loadExecutions = callback;
 
@@ -56,7 +56,7 @@ describe('Controller: DeploymentsCtrl', function () {
 
             _testSetup();
             executions = [{'deployment_id' : 'foo', name : 'bar', is_running: true }];
-            cloudifyClient.executions.list.andReturn( window.mockPromise( { data : {items: executions  }} ));
+            cloudifyClient.executions.list.and.returnValue( window.mockPromise( { data : {items: executions  }} ));
         }));
 
         it('should get only running executions', inject(function(cloudifyClient) {
@@ -111,7 +111,7 @@ describe('Controller: DeploymentsCtrl', function () {
             var handler = null;
             var interval = 0;
 
-            spyOn(TickerSrv, 'register').andCallFake(function(id, _handler, _interval/*, delay, isLinear*/) {
+            spyOn(TickerSrv, 'register').and.callFake(function(id, _handler, _interval/*, delay, isLinear*/) {
                 if ( id === 'deployments/loadExecutions' ){
                     loadExecutionRegistered = true;
                     handler = _handler;

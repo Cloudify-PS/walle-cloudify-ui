@@ -24,28 +24,28 @@ describe('Controller: LogsCtrl', function () {
     });
 
     var spyOnServices = function () {
-        spyOn(_cloudifyClient.blueprints, 'list').andReturn({
+        spyOn(_cloudifyClient.blueprints, 'list').and.returnValue({
             then: function () {
             }
         });
 
-        spyOn(_cloudifyClient.deployments, 'list').andReturn({
+        spyOn(_cloudifyClient.deployments, 'list').and.returnValue({
             then: function () {
             }
         });
 
-        spyOn(_cloudifyClient.events, 'get').andReturn({
+        spyOn(_cloudifyClient.events, 'get').and.returnValue({
             then: function () {
             }
         });
 
-        spyOn(_TableStateToRestApi, 'getOptions').andReturn({});
+        spyOn(_TableStateToRestApi, 'getOptions').and.returnValue({});
 
-        spyOn(_EventsMap, 'getEventIcon').andReturn('');
+        spyOn(_EventsMap, 'getEventIcon').and.returnValue('');
 
-        spyOn(_EventsMap, 'getEventText').andReturn('');
+        spyOn(_EventsMap, 'getEventText').and.returnValue('');
 
-        spyOn(_$location, 'search').andCallFake(function(){});
+        spyOn(_$location, 'search').and.callFake(function(){});
     };
 
     beforeEach(init);
@@ -80,7 +80,7 @@ describe('Controller: LogsCtrl', function () {
 
             describe('mock getting filters info.', function () {
                 beforeEach(function () {
-                    _cloudifyClient.blueprints.list.andReturn({
+                    _cloudifyClient.blueprints.list.and.returnValue({
                         then: function (successCallback) {
                             var response = {
                                 data: {
@@ -98,7 +98,7 @@ describe('Controller: LogsCtrl', function () {
                         }
                     });
 
-                    _cloudifyClient.deployments.list.andReturn({
+                    _cloudifyClient.deployments.list.and.returnValue({
                         then: function (successCallback) {
                             var response = {
                                 data: {
@@ -176,7 +176,7 @@ describe('Controller: LogsCtrl', function () {
                 initCtrl();
 
                 //mocking success response data from events
-                _cloudifyClient.events.get.andReturn({
+                _cloudifyClient.events.get.and.returnValue({
                     then: function (successCallback) {
                         var getLogsResponse = {
                             data: {
@@ -206,7 +206,7 @@ describe('Controller: LogsCtrl', function () {
                 initCtrl();
 
                 //mocking failure response data from events
-                _cloudifyClient.events.get.andReturn({
+                _cloudifyClient.events.get.and.returnValue({
                     then: function (successCallback, failureCallback) {
                         var getLogsResponse = {
                             data: {

@@ -38,7 +38,7 @@ describe('Controller: BlueprintsIndexCtrl', function () {
 
         //Simulates an error status 0 with no info.
         it('should stop showing loading gif if got bad response with no data', function () {
-            spyOn(_cloudifyClient.blueprints, 'list').andCallFake(function () {
+            spyOn(_cloudifyClient.blueprints, 'list').and.callFake(function () {
                 return {
                     then: function (success, error) {
                         error({data:''});

@@ -31,7 +31,7 @@ describe('Directive: cosmoLayout', function () {
 
 
 
-        spyOn( VersionService, 'getVersions').andReturn({ then : function( success ){ success('foo'); } });
+        spyOn( VersionService, 'getVersions').and.returnValue({ then : function( success ){ success('foo'); } });
         scope = $rootScope.$new();
         element = angular.element('<div class="cosmo-layout"></div>');
         element = $compile(element)(scope);

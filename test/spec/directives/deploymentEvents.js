@@ -8,7 +8,7 @@ describe('Directive: deploymentEvents', function () {
 
     beforeEach(inject(function ($compile, $rootScope, cloudifyClient) {
 
-        spyOn(cloudifyClient.events,'get').andCallFake(function(){
+        spyOn(cloudifyClient.events,'get').and.callFake(function(){
             return {then:function( success ){ success({ data: { hits : { hits : [{}] }}}); }};
         });
 

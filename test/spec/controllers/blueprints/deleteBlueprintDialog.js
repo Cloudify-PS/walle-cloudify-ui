@@ -8,7 +8,7 @@ describe('Controller: DeleteBlueprintDialogCtrl', function () {
 
     beforeEach(inject(function ($controller, $rootScope, cloudifyClient) {
 
-        spyOn(cloudifyClient.blueprints, 'delete').andReturn({
+        spyOn(cloudifyClient.blueprints, 'delete').and.returnValue({
             then: function () {
             }
         });
@@ -56,7 +56,7 @@ describe('Controller: DeleteBlueprintDialogCtrl', function () {
     describe('#delete blueprint handler', function () {
         beforeEach(inject(function (cloudifyClient) {
 
-            cloudifyClient.blueprints.delete.andCallFake(function (blueprintId) {
+            cloudifyClient.blueprints.delete.and.callFake(function (blueprintId) {
                 return {
                     then: function (success, error) {
                         if (blueprintId === 'fail') {

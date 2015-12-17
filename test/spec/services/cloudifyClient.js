@@ -18,7 +18,7 @@ describe('Service: cloudifyClient', function () {
             return 'bar';
 
         }, success:function(){ return { error:function(){}}; }};
-        $provide.value('$http', jasmine.createSpy().andCallFake(function(){  return httpReturnObject; }));
+        $provide.value('$http', jasmine.createSpy().and.callFake(function(){  return httpReturnObject; }));
         $provide.value('$timeout', function(callback){ callback(); });
     }));
 

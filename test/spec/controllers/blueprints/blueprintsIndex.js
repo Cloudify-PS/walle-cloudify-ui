@@ -48,7 +48,7 @@ describe('Controller: BlueprintsIndexCtrl', function () {
 
             scope = $rootScope.$new();
 
-            spyOn(cloudifyClient.blueprints, 'list').andCallFake(function () {
+            spyOn(cloudifyClient.blueprints, 'list').and.callFake(function () {
                 return {
                     then: function (success/*, error*/) {
                         success({ data : {items: blueprints}});
@@ -57,7 +57,7 @@ describe('Controller: BlueprintsIndexCtrl', function () {
                 };
             });
 
-            spyOn(cloudifyClient.deployments,'list').andCallFake(function(){
+            spyOn(cloudifyClient.deployments,'list').and.callFake(function(){
                 return {
                     then: function(success){
                         success({data:[]});
