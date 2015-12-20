@@ -779,6 +779,7 @@ module.exports = function (grunt) {
     grunt.registerTask('build', 'builds the project', function () {
 
         var tasks = [
+            'verifyNode',
             'clean:server',
             'clean:dist',
             'useminPrepare',
