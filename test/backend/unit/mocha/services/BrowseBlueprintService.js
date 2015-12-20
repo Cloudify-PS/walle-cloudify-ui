@@ -61,8 +61,7 @@ describe('compression', function () {
                         )) {
                         done();
                     } else {
-                        this.timeout(100);
-                        testFileExistance();
+                        setTimeout(testFileExistance, 100);
                     }
                 }
 
