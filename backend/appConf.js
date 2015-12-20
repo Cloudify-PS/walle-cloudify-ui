@@ -204,7 +204,7 @@ function checkRestService( opts, callback ){
 
     /**
      *
-     * @type {{success: string|boolean}} false if no endpoint checked well, otherwise the endpoint string e.g. http://localhost:80/api/v2/
+     * @description {{success: string|boolean}} false if no endpoint checked well, otherwise the endpoint string e.g. http://localhost:80/api/v2/
      */
     var results = { success: false };
     // will generate a function to check a single endpoint
