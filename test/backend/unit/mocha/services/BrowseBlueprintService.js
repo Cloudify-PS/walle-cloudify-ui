@@ -61,6 +61,8 @@ describe('compression', function () {
                         )) {
                         done();
                     } else {
+                        /*jshint validthis:true */
+                        this.timeout(100);
                         setTimeout(testFileExistance, 100);
                     }
                 }
