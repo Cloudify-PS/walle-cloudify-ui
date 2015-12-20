@@ -8,18 +8,18 @@ describe('Controller: NewTopologyCtrl', function () {
     var BlueprintNewTopologyCtrl,
         cloudifyClient,
         DataProcessingService,
-        $routeParams,
+        $stateParams,
         scope;
 
     // Initialize the controller and a mock scope
-    beforeEach(inject(function ($controller, $rootScope, _cloudifyClient_, _DataProcessingService_, _$routeParams_ ) {
+    beforeEach(inject(function ($controller, $rootScope, _cloudifyClient_, _DataProcessingService_, _$stateParams_ ) {
 
         scope = $rootScope.$new();
-        $routeParams = _$routeParams_;
+        $stateParams = _$stateParams_;
         cloudifyClient = _cloudifyClient_;
         DataProcessingService = _DataProcessingService_;
 
-        $routeParams.blueprintId = 'baz';
+        $stateParams.blueprintId = 'baz';
         spyOn(cloudifyClient.blueprints,'get').andReturn(window.mockPromise({ data : 'bar' }));
         spyOn(DataProcessingService,'encodeTopologyFromRest').andReturn('foo');
         BlueprintNewTopologyCtrl = $controller('BlueprintNewTopologyCtrl', {

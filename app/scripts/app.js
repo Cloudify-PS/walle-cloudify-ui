@@ -19,8 +19,9 @@ angular.module('cosmoUiApp', [
     'smart-table',
     'dndLists',
     'cfy.topology',
-    'datePicker'
-]).config( function ($routeProvider, $httpProvider, $translateProvider, $provide) {
+    'datePicker',
+    'ui.router'
+]).config( function ($httpProvider, $translateProvider, $provide, $stateProvider, $urlRouterProvider) {
 
         //var isSettingsExists = window.isSettingsExists();
 
@@ -32,109 +33,153 @@ angular.module('cosmoUiApp', [
 
         $translateProvider.preferredLanguage('en');
 
-        $routeProvider
-            .when('/json', {
-                templateUrl: 'views/main.html',
-                controller: 'MainCtrl'
+        $stateProvider
+            .state('login', {
+                url: '/login',
+                templateUrl: 'views/login.html',
+                controller: 'LoginCtrl'
             })
-            .when('/blueprints', {
+            .state('cloudifyLayout',{
+                templateUrl: 'views/cloudifyLayoutTemplate.html',
+                controller: 'CloudifyLayoutCtrl'
+            })
+            .state('cloudifyLayout.blueprints',{
+                url: '/blueprints' +
+                '?pageNobp1' +
+                '&sortBybp1' +
+                '&reversebp1' +
+                '&idbp1',
+                params: {
+                    idbp1: {
+                        value: ''
+                    }
+                },
                 templateUrl: 'views/blueprintsIndex.html',
                 controller: 'BlueprintsIndexCtrl',
                 reloadOnSearch: false
             })
-            .when('/blueprint/:blueprintId/topology', {
+            .state('cloudifyLayout.blueprintLayout',
+            {
+                url:'/blueprint/:blueprintId',
+                abstract: true,
+                templateUrl: 'views/blueprint/blueprintLayout.html',
+                controller: 'BlueprintLayoutCtrl'
+            })
+            .state('cloudifyLayout.blueprintLayout.topology', {
+                url: '/topology',
                 templateUrl: 'views/blueprint/blueprintTopology.html',
                 controller: 'BlueprintTopologyCtrl'
             })
-            .when('/blueprint/:blueprintId/network', {
-                templateUrl: 'views/blueprint/blueprintNetwork.html',
-                controller: 'BlueprintNetworkCtrl'
-            })
-            .when('/blueprint/:blueprintId/nodes', {
+            .state('cloudifyLayout.blueprintLayout.nodes', {
+                url: '/nodes',
                 templateUrl: 'views/blueprint/blueprintNodes.html',
                 controller: 'BlueprintNodesCtrl'
             })
-            .when('/blueprint/:blueprintId/source', {
+            .state('cloudifyLayout.blueprintLayout.source', {
+                url: '/source',
                 templateUrl: 'views/blueprint/blueprintSource.html',
                 controller: 'SourceCtrl'
             })
-
-            .when('/deployments',{
+            .state('cloudifyLayout.deployments', {
+                url: '/deployments'+
+                    '?pageNodp1' +
+                    '&sortBydp1' +
+                    '&reversedp1' +
+                    '&iddp1' +
+                    '&blueprint_iddp1',
+                params: {
+                    iddp1: {
+                        value: ''
+                    },
+                    blueprint_iddp1: {
+                        value: ''
+                    }
+                },
                 templateUrl: 'views/deployment/deploymentsIndex.html',
                 controller: 'DeploymentsCtrl',
                 reloadOnSearch: false
             })
-            .when('/deployment/:deploymentId/monitoring', {
+            .state('cloudifyLayout.deploymentLayout',
+            {
+                url:'/deployment/:deploymentId',
+                abstract: true,
+                templateUrl: 'views/deployment/deploymentLayout.html',
+                controller: 'DeploymentLayoutCtrl'
+            })
+            .state('cloudifyLayout.deploymentLayout.monitoring', {
+                url: '/monitoring',
                 templateUrl: 'views/deployment/deploymentMonitoring.html',
                 controller: 'DeploymentMonitoringCtrl'
             })
-            .when('/deployment/:deploymentId/topology', {
+            .state('cloudifyLayout.deploymentLayout.topology', {
+                url: '/topology',
                 templateUrl: 'views/deployment/deploymentTopology.html',
                 controller: 'DeploymentTopologyCtrl'
             })
-            .when('/deployment/:deploymentId/network', {
+            .state('cloudifyLayout.deploymentLayout.network', {
+                url: '/network',
                 templateUrl: 'views/deployment/deploymentNetwork.html',
                 controller: 'DeploymentNetworkCtrl'
             })
-            .when('/deployment/:deploymentId/nodes', {
+            .state('cloudifyLayout.deploymentLayout.nodes', {
+                url: '/nodes',
                 templateUrl: 'views/deployment/deploymentNodes.html',
                 controller: 'DeploymentNodesCtrl'
             })
-            .when('/deployment/:deploymentId/executions', {
+            .state('cloudifyLayout.deploymentLayout.executions', {
+                url: '/executions',
                 templateUrl: 'views/deployment/deploymentExecutions.html',
                 controller: 'DeploymentExecutionsCtrl'
             })
-            .when('/deployment/:deploymentId/inputs-outputs', {
+            .state('cloudifyLayout.deploymentLayout.inputsOutputs', {
+                url: '/inputs-outputs',
                 templateUrl: 'views/deployment/deploymentInputsOutputs.html',
                 controller: 'InputsOutputsCtrl'
             })
-            .when('/deployment/:deploymentId/events', {
+            .state('cloudifyLayout.deploymentLayout.events', {
+                url: '/events',
                 templateUrl: 'views/deployment/events.html',
                 controller: 'DeploymentEventsCtrl'
             })
-            .when('/deployment/:deploymentId/source', {
+            .state('cloudifyLayout.deploymentLayout.source', {
+                url: '/source',
                 templateUrl: 'views/deployment/deploymentSource.html',
                 controller: 'SourceCtrl'
             })
-            .when('/monitoring',{
-                templateUrl: 'views/blueprintsIndex.html'
-            })
-            .when('/logs',{
+            .state('cloudifyLayout.logs', {
+                url: '/logs' +
+                '?pageNoLogs' +
+                '&sortByLogs' +
+                '&reverseLogs' +
+                '&blueprint_idLogs' +
+                '&deployment_idLogs' +
+                '&levelLogs' +
+                '&event_typeLogs' +
+                '&timestampLogs' +
+                '&messageLogs',
                 templateUrl: 'views/logs.html',
                 controller: 'LogsCtrl',
                 reloadOnSearch: false
             })
-            .when('/hosts',{
+            .state('cloudifyLayout.nodes', {
+                url: '/nodes',
                 templateUrl: 'views/hosts.html',
                 controller: 'HostsCtrl'
             })
-            .when('/networks',{
-                templateUrl: 'views/blueprintsIndex.html'
-            })
-            .when('/floating-ips',{
-                templateUrl: 'views/blueprintsIndex.html'
-            })
-            .when('/storage',{
-                templateUrl: 'views/blueprintsIndex.html'
-            })
-            .when('/interface', {
+            .state('cloudifyLayout.interface', {
+                url: '/interface',
                 templateUrl: 'views/interface.html',
                 controller: 'InterfaceCtrl'
             })
-            .when('/grafana', {
+            .state('cloudifyLayout.grafana', { url: '/grafana',
                 templateUrl: 'views/grafana.html'
             })
-            .when('/config', {
+            .state('config', { url: '/config',
                 templateUrl: 'views/config.html',
                 controller: 'ConfigCtrl'
-            })
-            .when('/login', {
-                templateUrl: 'views/login.html',
-                controller: 'LoginCtrl'
-            })
-            .otherwise({
-                redirectTo: '/blueprints'
             });
+        $urlRouterProvider.otherwise('/blueprints');
+
 
         //initialize get if not there
         if (!$httpProvider.defaults.headers.get) {

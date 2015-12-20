@@ -31,9 +31,12 @@ angular.module('cosmoUiApp')
             }
 
             //searching
-            if (Object.keys(tableState.search).length > 0) {
+            var isAnySearchValueDefined = _.some(tableState.search.predicateObject, function(value){
+                return value !== undefined && value !== 'undefined';
+            });
+            if (!_.isEmpty(tableState.search) && isAnySearchValueDefined) {
                 _.forEach(tableState.search.predicateObject, function (predicateObjectValue, predicateObjectKey) {
-                    if(predicateObjectKey !== '$'){
+                    if(predicateObjectKey !== '$' && !!predicateObjectValue){
 
                         //HACK: changing timestamp to @timestamp
                         if(predicateObjectKey === 'timestamp'){

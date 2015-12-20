@@ -8,9 +8,9 @@
 * Controller of the cosmoUiApp
 */
 angular.module('cosmoUiApp')
-  .controller('InputsOutputsCtrl', function ($scope, $routeParams, cloudifyClient ) {
+  .controller('InputsOutputsCtrl', function ($scope, $stateParams, cloudifyClient ) {
 
-        $scope.deploymentId = $routeParams.deploymentId;
+        $scope.deploymentId = $stateParams.deploymentId;
 
         //get deployment inputs from deployment's data
         cloudifyClient.deployments.get($scope.deploymentId).then(function (httpResponse) {

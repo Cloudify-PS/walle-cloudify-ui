@@ -1,10 +1,14 @@
 'use strict';
 
 angular.module('cosmoUiApp')
-    .controller('LogsCtrl', function ($scope, cloudifyClient, EventsMap, $routeParams, TableStateToRestApi, $location, $filter) {
+    .controller('LogsCtrl', function ($scope, cloudifyClient, EventsMap, $stateParams, TableStateToRestApi,$state,$routeParams, $location, $filter) {
 
         //default sorting desc timestamp - when there is not a specific query
-        if(Object.keys($routeParams).length === 0){
+
+        var isAnyStateParamsValuesDefined = _.some($stateParams, function(value){
+            return value !== undefined && value !== '';
+        });
+        if(_.isEmpty($stateParams) || !isAnyStateParamsValuesDefined){
             $location.search({sortByLogs: 'timestamp', reverseLogs: 'true'});
         }
 

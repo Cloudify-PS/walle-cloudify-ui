@@ -8,7 +8,7 @@
  * Controller of the cosmoUiApp
  */
 angular.module('cosmoUiApp')
-    .controller('SourceCtrl', function ($scope, $routeParams, $location, CloudifyService, BlueprintSourceService, cloudifyClient ) {
+    .controller('SourceCtrl', function ($scope, $stateParams, $location, CloudifyService, BlueprintSourceService, cloudifyClient ) {
 
 
 
@@ -30,14 +30,14 @@ angular.module('cosmoUiApp')
             }
         });
 
-        if ( $routeParams.blueprintId ){
-            $scope.blueprintId = $routeParams.blueprintId;
+        if ( $stateParams.blueprintId ){
+            $scope.blueprintId = $stateParams.blueprintId;
         }
 
 
 
-        if ( $routeParams.deploymentId ){
-            cloudifyClient.deployments.get($routeParams.deploymentId, 'blueprint_id').then(function( result ){
+        if ( $stateParams.deploymentId ){
+            cloudifyClient.deployments.get($stateParams.deploymentId, 'blueprint_id').then(function( result ){
                 $scope.blueprintId = result.data.blueprint_id;
             });
         }

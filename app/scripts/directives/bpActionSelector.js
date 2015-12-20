@@ -7,7 +7,7 @@
  * # bpActionSelector
  */
 angular.module('cosmoUiApp')
-    .directive('bpActionSelector', function (ngDialog, cloudifyClient, $routeParams, $location) {
+    .directive('bpActionSelector', function (ngDialog, cloudifyClient, $stateParams, $location) {
         return {
             templateUrl: 'views/directives/actionSelector.html',
             restrict: 'C',
@@ -66,7 +66,7 @@ angular.module('cosmoUiApp')
 
                 $scope.defaultAction = $scope.actions[0];
 
-                if ($routeParams.deploy === 'true') {
+                if ($stateParams.deploy === 'true') {
                     openDeployDialog($scope.blueprint.id);
                 }
             },

@@ -10,7 +10,7 @@ describe('Directive: bpActionSelector', function () {
         _$compile,
         _ngDialog;
 
-    beforeEach(inject(function ($routeParams, $rootScope, $compile, ngDialog) {
+    beforeEach(inject(function ($stateParams, $rootScope, $compile, ngDialog) {
         _$compile = $compile;
         _ngDialog = ngDialog;
         scope = $rootScope.$new();
@@ -51,9 +51,9 @@ describe('Directive: bpActionSelector', function () {
         }));
     });
 
-    it('should open deploy dialog if routeParams include deploy=true', inject(function ($routeParams, ngDialog, $httpBackend) {
+    it('should open deploy dialog if stateParams include deploy=true', inject(function ($stateParams, ngDialog, $httpBackend) {
         spyOn(ngDialog, 'open').andReturn();
-        $routeParams.deploy = 'true';
+        $stateParams.deploy = 'true';
         $httpBackend.whenGET('/backend/cloudify-api/blueprints/'+scope.blueprint.id).respond(200);
         scope.$digest();
         expect(ngDialog.open).toHaveBeenCalled();

@@ -8,9 +8,9 @@
  * Controller of the cosmoUiAppApp
  */
 angular.module('cosmoUiApp')
-    .controller('DeploymentNodesCtrl', function ($scope, $routeParams, NodeService, cloudifyClient, $log) {
+    .controller('DeploymentNodesCtrl', function ($scope, $stateParams, NodeService, cloudifyClient, $log) {
 
-        $scope.deploymentId = $routeParams.deploymentId;
+        $scope.deploymentId = $stateParams.deploymentId;
         $scope.page = {};
 
         cloudifyClient.nodes.list($scope.deploymentId)

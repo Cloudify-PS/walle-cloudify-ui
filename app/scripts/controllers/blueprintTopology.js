@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('cosmoUiApp')
-    .controller('BlueprintTopologyCtrl', function ($scope, $routeParams) {
-        $scope.blueprintId = $routeParams.blueprintId;
+    .controller('BlueprintTopologyCtrl', function ($scope, $stateParams) {
+        $scope.blueprintId = $stateParams.blueprintId;
         $scope.page = {};
 
         $scope.onNodeSelect = function(node){

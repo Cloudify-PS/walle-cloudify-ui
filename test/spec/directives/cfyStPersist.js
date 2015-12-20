@@ -31,25 +31,20 @@ describe('Directive: cfyStPersist', function () {
     }));
 
 
-    it('should set table params from route', inject(function($routeParams) {
+    it('should set route params from table state - search', inject(function ($location) {
 
-        var pageNo = 3;
-        var sortBy = 'something';
-        var reverse = true;
-        var id = 'myId';
+        var q = _.object(['pageNo' + tableId, 'searchId' + tableId],['1', 'sth']);
 
-        $routeParams['pageNo'+tableId] = pageNo;
-        $routeParams['sortBy'+tableId] = sortBy;
-        $routeParams['reverse'+tableId] = reverse;
-        $routeParams['searchId'+tableId] = id;
-
+        spyOn($location, 'search').andCallThrough();
         scope.loaded = true;
         scope.$digest();
-        expect(Math.floor(controller.tableState().pagination.start/controller.tableState().pagination.number)).toEqual(pageNo-1);
-        expect(controller.tableState().sort.predicate).toEqual(sortBy);
-        expect(controller.tableState().sort.reverse).toEqual(reverse);
-        expect(controller.tableState().search.predicateObject.searchId).toBeDefined();
-        expect(controller.tableState().search.predicateObject.searchId).toEqual(id);
+
+        controller.search(q['searchId' + tableId], 'searchId');
+
+        scope.$digest();
+
+        expect($location.search).toHaveBeenCalledWith(q);
+
     }));
 
     it('should set route params from table state - page and sort', inject(function ($location) {
@@ -70,19 +65,27 @@ describe('Directive: cfyStPersist', function () {
 
     }));
 
-    it('should set route params from table state - search', inject(function ($location) {
+    it('should set table params from route', inject(function($stateParams) {
 
-        var q = _.object(['pageNo' + tableId, 'searchId' + tableId],['1', 'sth']);
+        var pageNo = 3;
+        var sortBy = 'something';
+        var reverse = true;
+        var id = 'myId';
 
-        spyOn($location, 'search').andCallThrough();
+        $stateParams['pageNo'+tableId] = pageNo;
+        $stateParams['sortBy'+tableId] = sortBy;
+        $stateParams['reverse'+tableId] = reverse;
+        $stateParams['searchId'+tableId] = id;
+
         scope.loaded = true;
         scope.$digest();
-
-        controller.search(q['searchId' + tableId], 'searchId');
-
-        scope.$digest();
-
-        expect($location.search).toHaveBeenCalledWith(q);
-
+        expect(Math.floor(controller.tableState().pagination.start/controller.tableState().pagination.number)).toEqual(pageNo-1);
+        expect(controller.tableState().sort.predicate).toEqual(sortBy);
+        expect(controller.tableState().sort.reverse).toEqual(reverse);
+        expect(controller.tableState().search.predicateObject.searchId).toBeDefined();
+        expect(controller.tableState().search.predicateObject.searchId).toEqual(id);
     }));
+
+
+
 });

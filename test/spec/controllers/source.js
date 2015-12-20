@@ -303,7 +303,7 @@ describe('Controller: SourceCtrl', function () {
 
         SourceCtrl = $controller('SourceCtrl', {
             $scope: scope,
-            $routeParams: { 'blueprintId' : 'fake_blueprint_id' }
+            $stateParams: { 'blueprintId' : 'fake_blueprint_id' }
         });
     }));
 
@@ -336,7 +336,7 @@ describe('Controller: SourceCtrl', function () {
             });
             SourceCtrl = $controller('SourceCtrl', {
                 $scope: scope,
-                $routeParams: {'deploymentId': 'fake_deployment_id'}
+                $stateParams: {'deploymentId': 'fake_deployment_id'}
             });
             expect(cloudifyClient.deployments.get).toHaveBeenCalledWith('fake_deployment_id', 'blueprint_id');
             expect(scope.blueprintId).toBe('new_blueprint_id');
