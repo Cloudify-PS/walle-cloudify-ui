@@ -61,7 +61,9 @@ describe('compression', function () {
                         )) {
                         done();
                     } else {
+                        jasmine.Clock.useMock = true;
                         setTimeout(testFileExistance, 100);
+                        jasmine.Clock.tick(100);
                     }
                 }
 
