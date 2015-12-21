@@ -4,11 +4,11 @@ var expect = require('expect.js');
 /*jshint camelcase: false */
 describe('BlueprintsController', function(){
 
-    var BlueprintsController = require('../../../../../backend/controllers/BlueprintsController');
+    var BlueprintsController = null;
     var sinon = require('sinon');
     var logger = require('log4js').getLogger('testBlueprintsController');
     var fs = require('fs');
-    var services = require('../../../../../backend/services');
+    var services = null;
 
     var req;
     var res;
@@ -16,6 +16,8 @@ describe('BlueprintsController', function(){
 
 
     beforeEach(function(){
+        BlueprintsController =  require('../../../../../backend/controllers/BlueprintsController');
+        services = require('../../../../../backend/services');
         sandbox = sinon.sandbox.create();
         req = {
             cloudifyClient: {
