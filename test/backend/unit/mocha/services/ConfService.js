@@ -20,14 +20,14 @@ function unloadService(){
 describe('ConfService',function(){
 
     beforeEach(unloadService);
-    it('should call timeout if all urls returns error CFY-3576', sinon.test(function(){
+    it('should call timeout if all urls returns error CFY-3576', function(){
         mockRequire('request', function( opts , callback ){
             callback('error');
         });
-        global.setTimeout = this.spy();
+        global.setTimeout = sinon.spy();
         loadService();
         expect( global.setTimeout.callCount).to.be(1);
-    }));
+    });
 
     it('should set the successful protocol', sinon.test(function(){
 
