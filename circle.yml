@@ -6,7 +6,6 @@ dependencies:
   override:
     - npm install
     - npm install -g bower grunt-cli
-    - npm rebuild node-sass
     - bower install
     - bower update
 
