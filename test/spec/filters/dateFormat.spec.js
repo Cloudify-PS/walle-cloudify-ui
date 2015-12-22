@@ -55,6 +55,6 @@ describe('Filter: dateFormat', function () {
     describe('rest of formats', function(){
         it('should add timezone to timestamps without', function(){
             expect(dateFormat('2011-11-24 07:59:17.362781', 'yyyy-MM-dd HH:mm:ss.sss')).toBe('2011-11-24 0'+(7+new Date().getTimezoneOffset()/-60)+':59:17.362');
-        })
-    })
+        });
+    });
 });
