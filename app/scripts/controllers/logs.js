@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('cosmoUiApp')
-    .controller('LogsCtrl', function ($scope, cloudifyClient, EventsMap, $routeParams, TableStateToRestApi, $location, $filter) {
+    .controller('LogsCtrl', function ($scope, cloudifyClient, EventsMap, $routeParams, TableStateToRestApi, $location) {
 
         //default sorting desc timestamp - when there is not a specific query
         if(Object.keys($routeParams).length === 0){
@@ -103,7 +103,7 @@ angular.module('cosmoUiApp')
                 //Formatting the timestamp
                 _.each($scope.logsHits, function(log){
                     log.shortAtTimestamp = EventsMap.getFormattedTimestamp(log['@timestamp']);
-                    log.longAtTimestamp = $filter('date')(log['@timestamp'] ,'yyyy-MM-dd HH:mm:ss.sss');
+                    log.longAtTimestamp = EventsMap.getFormattedTimestamp(log['@timestamp'] ,'yyyy-MM-dd HH:mm:ss.sss');
                     log.longTimestamp = EventsMap.getFormattedTimestamp(log.timestamp,'yyyy-MM-dd HH:mm:ss.sss');
                 });
                 var totalHits = response.data.metadata.pagination.total;
