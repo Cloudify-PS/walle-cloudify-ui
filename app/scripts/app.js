@@ -136,11 +136,6 @@ angular.module('cosmoUiApp', [
                 templateUrl: 'views/deployment/deploymentInputsOutputs.html',
                 controller: 'InputsOutputsCtrl'
             })
-            .state('cloudifyLayout.deploymentLayout.events', {
-                url: '/events',
-                templateUrl: 'views/deployment/events.html',
-                controller: 'DeploymentEventsCtrl'
-            })
             .state('cloudifyLayout.deploymentLayout.source', {
                 url: '/source',
                 templateUrl: 'views/deployment/deploymentSource.html',
