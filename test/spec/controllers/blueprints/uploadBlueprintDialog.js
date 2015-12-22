@@ -127,7 +127,7 @@ describe('Controller: UploadBlueprintDialogCtrl', function () {
                     'url': ''
                 }
             };
-            var formData = $upload.upload.mostRecentCall.args[0];
+            var formData = $upload.upload.calls.mostRecent().args[0];
             expect(JSON.stringify(formData)).toBe(JSON.stringify(expected));
         }));
 
@@ -260,7 +260,7 @@ describe('Controller: UploadBlueprintDialogCtrl', function () {
 
             scope.uploadBlueprint();
 
-            var opts = JSON.parse($upload.upload.mostRecentCall.args[0].fields.opts);
+            var opts = JSON.parse($upload.upload.calls.mostRecent().args[0].fields.opts);
             expect(opts.blueprint_id).toBe('a%2Fb');
         }));
     });

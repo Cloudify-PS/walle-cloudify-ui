@@ -163,19 +163,14 @@ describe('Controller: LogsCtrl', function () {
             });
         });
 
-        describe('#updateData', function () {
-            var defaultMockTableState;
-            beforeEach(function () {
-                //setting default tableState settings object
-                defaultMockTableState = {
-                    pagination: {}
-                };
-            });
+        describe('#updateData success', function () {
+            var defaultMockTableState = {
+                pagination: {}
+            };
 
-            it('should update data on tableState change and not show error', function () {
+            beforeEach(function (done) {
                 initCtrl();
 
-                //mocking success response data from events
                 _cloudifyClient.events.get.and.returnValue({
                     then: function (successCallback) {
                         var getLogsResponse = {
@@ -192,20 +187,27 @@ describe('Controller: LogsCtrl', function () {
                         successCallback(getLogsResponse);
                     }
                 });
-                expect(scope.logsHits).toBe(undefined);
                 scope.updateData(defaultMockTableState);
-                //waiting for debounce
-                waits(351);
-                runs(function() {
-                    expect(scope.logsHits).not.toBe(undefined);
-                    expect(scope.getLogsError).toBe(null);
-                });
+
+                setTimeout(function () {
+                    done();
+                }, 350);
             });
 
-            it('should show error when failing to update data on tableState Change', function () {
+            it('should update data on tableState change and not show error', function () {
+                expect(scope.logsHits).not.toBe(undefined);
+                expect(scope.getLogsError).toBe(null);
+            });
+        });
+
+        describe('#updateData error', function () {
+            var defaultMockTableState = {
+                pagination: {}
+            };
+
+            beforeEach(function (done) {
                 initCtrl();
 
-                //mocking failure response data from events
                 _cloudifyClient.events.get.and.returnValue({
                     then: function (successCallback, failureCallback) {
                         var getLogsResponse = {
@@ -219,11 +221,14 @@ describe('Controller: LogsCtrl', function () {
                 });
 
                 scope.updateData(defaultMockTableState);
-                //waiting for debounce
-                waits(351);
-                runs(function() {
-                    expect(scope.getLogsError).toBe('Getting logs failed message');
-                });
+
+                setTimeout(function () {
+                    done();
+                }, 350);
+            });
+
+            it('should show error when failing to update data on tableState Change', function () {
+                expect(scope.getLogsError).toBe('Getting logs failed message');
             });
         });
 

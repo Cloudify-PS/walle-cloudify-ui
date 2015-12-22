@@ -43,7 +43,7 @@ describe('Controller: BlueprintsIndexCtrl', function () {
     // load the controller's module
     beforeEach(module('cosmoUiApp', 'ngMock', 'backend-mock', 'templates-main'));
 
-    function _testSetup(deleteSuccess) {
+    function _testSetup(done, deleteSuccess) {
         inject(function ($controller, $rootScope, $q, CloudifyService, cloudifyClient) {
 
             scope = $rootScope.$new();
@@ -83,6 +83,8 @@ describe('Controller: BlueprintsIndexCtrl', function () {
             });
 
             scope.$digest();
+
+            done();
         });
     }
 
@@ -94,13 +96,7 @@ describe('Controller: BlueprintsIndexCtrl', function () {
         });
 
         it('should load blueprints list', function () {
-            waitsFor(function () {
-                return scope.blueprints !== null;
-            });
-
-            runs(function () {
-                expect(scope.blueprints.length).toBe(2);
-            });
+            expect(scope.blueprints.length).toBe(2);
         });
 
 
