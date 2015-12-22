@@ -13,25 +13,24 @@ angular.module('cosmoUiApp')
                 };
 
                 cloudifyClient.blueprints.get($scope.blueprint.id)
-                    .then(function(result) {
+                    .then(function (result) {
                         $scope.blueprint.description = result.data.description;
                         return result.data;
-                    }, function(result) {
-                        if(result.status === 404) {
+                    }, function (result) {
+                        if (result.status === 404) {
                             $scope.blueprintNotFound = true;
                         } else {
                             $scope.loadError = CloudifyService.getErrorMessage(result);
                         }
                         // todo: handle other errors, apart from 404
                     })
-                    .then(function(blueprintData) {
+                    .then(function (blueprintData) {
 
                         // Verify it's valid page, if not redirect to blueprints page
                         if (blueprintData.hasOwnProperty('error_code')) {
                             // todo: this seems wrong to me. we should display error instead
                             $location.path('/blueprints');
                         }
-
 
                         // Add breadcrumbs for the current deployment
                         $scope.breadcrumb = [
@@ -44,32 +43,29 @@ angular.module('cosmoUiApp')
 
                     });
 
-
-
                 // Set Navigation Menu
                 $scope.navMenu = [
-                    { 'name': 'Topology', 'href': '/topology'},
-                    { 'name': 'Nodes', 'href': '/nodes'},
-                    { 'name': 'Source', 'href': '/source'}
+                    {'name': 'Topology', 'href': '/topology'},
+                    {'name': 'Nodes', 'href': '/nodes'},
+                    {'name': 'Source', 'href': '/source'}
                 ];
 
-                _.each($scope.navMenu, function(nm){
-                    if ( $location.path().indexOf(nm.href) >= 0){
+                _.each($scope.navMenu, function (nm) {
+                    if ($location.path().indexOf(nm.href) >= 0) {
                         nm.active = true;
                     }
-                    nm.href='#/blueprint/' + $scope.blueprint.id + nm.href;
+                    nm.href = '#/blueprint/' + $scope.blueprint.id + nm.href;
                 });
 
                 $scope.isSectionActive = function (section) {
                     return section.name === attrs.section ? 'active' : '';
                 };
 
-
-                $scope.redirectToDeployment = function(deployment_id) {
+                $scope.redirectToDeployment = function (deployment_id) {
                     $location.path('/deployment/' + deployment_id + '/topology');
                 };
 
-                $scope.redirectToBlueprints = function() {
+                $scope.redirectToBlueprints = function () {
                     $location.path('/blueprints');
                 };
             }

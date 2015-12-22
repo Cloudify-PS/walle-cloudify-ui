@@ -40,7 +40,7 @@ angular.module('cosmoUiApp')
                     });
                 }
 
-                $scope.onCreate = function(deployment){
+                $scope.onCreate = function (deployment) {
                     $location.path('/deployment/' + deployment.id + '/topology');
                     $location.search('');
                 };

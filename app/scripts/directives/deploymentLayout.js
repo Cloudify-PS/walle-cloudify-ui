@@ -31,7 +31,7 @@ angular.module('cosmoUiApp')
                     {'name': 'Monitoring', 'href': '/monitoring'}
                 ];
                 _.each($scope.navMenu, function (nm) {
-                    if ( $location.path().indexOf(nm.href) >=0 ){
+                    if ($location.path().indexOf(nm.href) >= 0) {
                         nm.active = true;
                     }
                     nm.href = '#/deployment/' + $scope.deploymentId + nm.href;
@@ -43,43 +43,48 @@ angular.module('cosmoUiApp')
                     .then(function (result) {
                         $scope.blueprintId = result.data.blueprint_id;
                         $scope.deployment = result.data;
-                    }, function( result ){
+                    }, function (result) {
                         $scope.showDeploymentEvents = false;
-                        if ( result.status === 404 ){
+                        if (result.status === 404) {
                             $scope.deploymentNotFound = true;
-                        }else {
+                        } else {
                             $scope.loadError = CloudifyService.getErrorMessage(result);
                         }
                     });
 
                 function _loadExecutions() {
-                    if ( $scope.deploymentNotFound ){
-                        return { then: function(){} };
+                    if ($scope.deploymentNotFound) {
+                        return {
+                            then: function () {
+                            }
+                        };
                     }
                     var statusFilter = ['pending', 'started', 'cancelling', 'force_cancelling'];
-                    return cloudifyClient.executions.list( { deployment_id : $scope.deploymentId, _include: 'id,workflow_id,status', status: statusFilter })
+                    return cloudifyClient.executions.list({
+                        deployment_id: $scope.deploymentId,
+                        _include: 'id,workflow_id,status',
+                        status: statusFilter
+                    })
                         .then(function (result) {
                             $scope.currentExecution = _.first(result.data.items);
 
                             // mock.... remove!!!
                             //$scope.currentExecution = {"status":"started","workflow_id":"uninstall","id":"fa56b8a1-04b5-43b9-894e-8ae4f44321f3"}
-                        }, function() {});
+                        }, function () {
+                        });
                 }
-
 
                 $scope.isInitializing = function () {
                     return $scope.currentExecution && $scope.currentExecution.workflow_id === 'create_deployment_environment';
                 };
 
-                $scope.goToDeployments = function() {
-                    if($location.url() === url) {
+                $scope.goToDeployments = function () {
+                    if ($location.url() === url) {
                         $location.path('/deployments');
                     }
                 };
 
                 $scope.registerTickerTask('deploymentLayout/loadExecutions', _loadExecutions, 1000);
-
-
 
                 /// for tests
 

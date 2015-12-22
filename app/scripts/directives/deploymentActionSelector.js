@@ -31,7 +31,7 @@ angular.module('cosmoUiApp')
                     });
                 }
 
-                function openStartExecutionDialog(){
+                function openStartExecutionDialog() {
                     ngDialog.open({
                         template: 'views/deployment/startExecutionDialog.html',
                         controller: 'StartExecutionDialogCtrl',
@@ -105,7 +105,7 @@ angular.module('cosmoUiApp')
             link: function postLink(scope, element) {
 
                 function deploymentDeletedChecker(deployment_id) {
-                    cloudifyClient.deployments.get(deployment_id).then(null, function() {
+                    cloudifyClient.deployments.get(deployment_id).then(null, function () {
                         scope.onDelete();
                         $log.log('deployment "' + deployment_id + '" deleted.');
                     });

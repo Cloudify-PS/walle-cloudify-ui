@@ -1,20 +1,19 @@
 'use strict';
 
 /*********************
-* SVG layer to implement the relations between the nodes
-*/
+ * SVG layer to implement the relations between the nodes
+ */
 angular.module('gsUiInfraApp')
-    .directive('blueprintArrows', function(blueprintCoordinateService){
+    .directive('blueprintArrows', function (blueprintCoordinateService) {
         return {
             restrict: 'A',
             scope: {
                 'coordinates': '=blueprintArrows'
             },
-            link: function($scope, $element, $attr)
-            {
-                var lineColor = $attr.color || '#ccc',
-                    withArrow = Boolean($attr.arrow) || false,
-                    storkeSize = $attr.storke || 3;
+            link: function ($scope, $element, $attr) {
+                var lineColor = $attr.color || '#ccc';
+                var withArrow = Boolean($attr.arrow) || false;
+                var storkeSize = $attr.storke || 3;
 
                 var canvas = d3.select($element[0]).append('svg:svg')
                     .attr('width', '100%')
@@ -24,22 +23,22 @@ angular.module('gsUiInfraApp')
                 var group = canvas.append('g')
                     .attr('transform', 'translate(0, 0)');
 
-//                var diagonal = d3.svg.diagonal();
+                //var diagonal = d3.svg.diagonal();
+                //
+                //function applyDiagonals(data) {
+                //      return diagonal.apply(this, [{
+                //          source : {
+                //              x: data[0].x,
+                //              y: Math.floor(data[0].y)
+                //          },
+                //          target : {
+                //              x: data[1].x,
+                //              y: Math.floor(data[1].y)
+                //          }
+                //      }]);
+                //  }
 
-//                function applyDiagonals(data) {
-//                    return diagonal.apply(this, [{
-//                        source : {
-//                            x: data[0].x,
-//                            y: Math.floor(data[0].y)
-//                        },
-//                        target : {
-//                            x: data[1].x,
-//                            y: Math.floor(data[1].y)
-//                        }
-//                    }]);
-//                }
-
-                if(withArrow) {
+                if (withArrow) {
                     canvas.append('svg:defs').selectAll('marker')
                         .data(['Arrow'])
                         .enter()
@@ -57,8 +56,8 @@ angular.module('gsUiInfraApp')
                         .attr('d', 'M 0 0 L 20 10 L 0 20 z');
                 }
 
-                $scope.$watch('coordinates', function(data){
-                    if(data) {
+                $scope.$watch('coordinates', function (data) {
+                    if (data) {
                         group.selectAll('path')
                             .remove();
 
@@ -67,8 +66,12 @@ angular.module('gsUiInfraApp')
                             .enter()
                             .append('path')
                             .attr('d', d3.svg.line()
-                                .x(function(d) { return d.x; })
-                                .y(function(d) { return d.y; })
+                                .x(function (d) {
+                                    return d.x;
+                                })
+                                .y(function (d) {
+                                    return d.y;
+                                })
                                 .interpolate('linear'))
                             .attr('marker-end', 'url(#arrowhead)')
                             .attr('fill', 'none')
@@ -89,36 +92,37 @@ angular.module('gsUiInfraApp')
     });
 
 /***************
-* Directive to define DOM element coordinate
-* Must be as: Attribute='{id}'
-*/
+ * Directive to define DOM element coordinate
+ * Must be as: Attribute='{id}'
+ */
 angular.module('gsUiInfraApp')
-    .directive('blueprintCoordinate', function(blueprintCoordinateService){
+    .directive('blueprintCoordinate', function (blueprintCoordinateService) {
         return {
             restrict: 'A',
             scope: true,
-            link: function($scope, $element, $attr) {
+            link: function ($scope, $element, $attr) {
                 blueprintCoordinateService.addElement($attr.blueprintCoordinate, $element);
             }
         };
     });
 
 /*****************
-* This directive listen to the blueprint container for any resize
-* and broadcast it into angular, which update the 'data' of the
-* coordinates
-*/
+ * This directive listen to the blueprint container for any resize
+ * and broadcast it into angular, which update the 'data' of the
+ * coordinates
+ */
 angular.module('gsUiInfraApp')
-    .directive('blueprintResize', function(blueprintCoordinateService){
+    .directive('blueprintResize', function (blueprintCoordinateService) {
         return {
             restrict: 'A',
             scope: false,
-            link: function($scope/*, $element*/) {
+            link: function ($scope/*, $element*/) {
                 function broadcastResize() {
-                    $scope.$apply(function(){
+                    $scope.$apply(function () {
                         blueprintCoordinateService.draw();
                     });
                 }
+
                 document.addEventListener('DOMContentLoaded', broadcastResize, false);
                 window.onresize = broadcastResize;
             }
@@ -126,21 +130,21 @@ angular.module('gsUiInfraApp')
     });
 
 /***************
-* Service to store and calculate the coordinate data
-*/
+ * Service to store and calculate the coordinate data
+ */
 angular.module('gsUiInfraApp')
-    .service('blueprintCoordinateService', function($timeout){
+    .service('blueprintCoordinateService', function ($timeout) {
 
-        var data = {},
-            elements = {},
-            coordinates = [],
-            map = {};
+        var data = {};
+        var elements = {};
+        var coordinates = [];
+        var map = {};
 
         /*************
          * Api method to fire the update method
          */
-        this.draw = function() {
-            $timeout(function(){
+        this.draw = function () {
+            $timeout(function () {
                 updateData();
             }, 0);
         };
@@ -149,14 +153,14 @@ angular.module('gsUiInfraApp')
          * Api method to connect the coordinates
          * @returns {Array}
          */
-        this.getCoordinates = function() {
+        this.getCoordinates = function () {
             return coordinates;
         };
 
         /**************
          * Api method to reset the coordinates
          */
-        this.resetCoordinates = function() {
+        this.resetCoordinates = function () {
             coordinates = [];
         };
 
@@ -164,7 +168,7 @@ angular.module('gsUiInfraApp')
          * Set the map of relations between the nodes
          * @param data
          */
-        this.setMap = function( data ) {
+        this.setMap = function (data) {
             map = data;
         };
 
@@ -173,24 +177,22 @@ angular.module('gsUiInfraApp')
          * @param id
          * @param element
          */
-        this.addElement = function(id, element) {
+        this.addElement = function (id, element) {
             elements[id] = element;
         };
-
 
         /**************
          * Using the element which inject into the server
          * and calculating the x,y coordinates of the element
          */
         function updateData() {
-            angular.forEach(elements, function (element, id){
-                if($(document).find(element).length) {
+            angular.forEach(elements, function (element, id) {
+                if ($(document).find(element).length) {
                     data[id] = {
                         'x': element.offset().left - element.parents('.bpContainer').offset().left,
-                        'y': element.offset().top  - element.parents('.bpContainer').offset().top
+                        'y': element.offset().top - element.parents('.bpContainer').offset().top
                     };
-                }
-                else {
+                } else {
                     delete elements[id];
                 }
             });
@@ -200,16 +202,15 @@ angular.module('gsUiInfraApp')
         /***************
          * Conveting Map relations to D3
          */
-        function setCoordinates()
-        {
+        function setCoordinates() {
             var Coords = [];
             angular.forEach(map, function (relation) {
-                var from = relation.source,
-                    to = relation.target;
+                var from = relation.source;
+                var to = relation.target;
 
-                if(data[from] !== undefined && data[to] !== undefined) {
+                if (data[from] !== undefined && data[to] !== undefined) {
                     var thisCord = getNearestPoints(from, to);
-                    if(thisCord !== null) {
+                    if (thisCord !== null) {
                         Coords.push(thisCord);
                     }
                 }
@@ -223,13 +224,13 @@ angular.module('gsUiInfraApp')
          * @param to = id of element
          */
         function getNearestPoints(from, to) {
-            var fromPoint = getAttachPointes(from),
-                toPoint = getAttachPointes(to),
-                nearest = false,
-                collector,
-                current;
+            var fromPoint = getAttachPointes(from);
+            var toPoint = getAttachPointes(to);
+            var nearest = false;
+            var collector;
+            var current;
 
-            if(fromPoint !== null && toPoint !== null) {
+            if (fromPoint !== null && toPoint !== null) {
                 angular.forEach(fromPoint, function (f, fi) {
                     angular.forEach(toPoint, function (t, ti) {
                         current = Math.max(Math.abs(f.x - t.x), Math.abs(f.y - t.y)); // Calculate distance between points
@@ -243,8 +244,7 @@ angular.module('gsUiInfraApp')
                     });
                 });
                 return [fromPoint[collector.from], toPoint[collector.to]];
-            }
-            else {
+            } else {
                 return null;
             }
         }
@@ -254,17 +254,16 @@ angular.module('gsUiInfraApp')
          * @param id = id of element
          * @returns {Array}
          */
-        function getAttachPointes( id )
-        {
-            if(!elements.hasOwnProperty(id)) {
+        function getAttachPointes(id) {
+            if (!elements.hasOwnProperty(id)) {
                 return null;
             }
 
-            var callback = [],
-                width  = elements[id].outerWidth(),
-                height = elements[id].outerHeight(),
-                x = data[id].x,
-                y = data[id].y;
+            var callback = [];
+            var width = elements[id].outerWidth();
+            var height = elements[id].outerHeight();
+            var x = data[id].x;
+            var y = data[id].y;
 
             // [0] Left Middle Point
             callback.push({

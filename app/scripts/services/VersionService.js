@@ -6,7 +6,7 @@
  */
 
 angular.module('cosmoUiApp')
-    .service('VersionService', function VersionService($q, $http, cloudifyClient ) {
+    .service('VersionService', function VersionService($q, $http, cloudifyClient) {
 
         var getLatestPromise = null;
 
@@ -16,8 +16,8 @@ angular.module('cosmoUiApp')
          * @returns Promise The latest UI version available
          * @private
          */
-        this.getLatest = function(uiVersion) {
-            if ( getLatestPromise === null ){
+        this.getLatest = function (uiVersion) {
+            if (getLatestPromise === null) {
                 getLatestPromise = $http({
                     url: '/backend/version/latest',
                     method: 'GET',
@@ -34,7 +34,7 @@ angular.module('cosmoUiApp')
          * @returns Promise The local UI version
          * @private
          */
-        this.getUiVersion = function() {
+        this.getUiVersion = function () {
             return $http.get('/backend/versions/ui');
         };
 
@@ -43,7 +43,7 @@ angular.module('cosmoUiApp')
          * @returns Promise The current Cloudify version
          * @private
          */
-        this.getManagerVersion = function() {
+        this.getManagerVersion = function () {
             return cloudifyClient.manager.get_version();
         };
 
@@ -53,17 +53,17 @@ angular.module('cosmoUiApp')
          * @example .then(function(boolean) {})
          * @private
          */
-        this.needUpdate = function() {
+        this.needUpdate = function () {
             var deferred = $q.defer();
 
             var me = this;
             this.getUiVersion()
-                .then(function(data){
-                    if(!!data && !!data.data && !!data.data.hasOwnProperty('version')) {
+                .then(function (data) {
+                    if (!!data && !!data.data && !!data.data.hasOwnProperty('version')) {
                         var currentVersion = data.data.version;
 
                         me.getLatest(currentVersion)
-                            .then(function(ver) {
+                            .then(function (ver) {
                                 var _currentVer = parseInt(currentVersion, 10);
                                 var _ver = parseInt(ver.data, 10);
                                 if (!isNaN(_ver)) {
@@ -72,7 +72,7 @@ angular.module('cosmoUiApp')
                                     deferred.resolve(false);
                                 }
                             });
-                    }else{
+                    } else {
                         deferred.resolve(false);
                     }
                 });
@@ -85,8 +85,8 @@ angular.module('cosmoUiApp')
          * @private
          */
         var versionsPromise = null;
-        this.getVersions = function() {
-            if ( versionsPromise === null ) {
+        this.getVersions = function () {
+            if (versionsPromise === null) {
                 versionsPromise = $q.all([
                     this.getUiVersion(),
                     this.getManagerVersion()

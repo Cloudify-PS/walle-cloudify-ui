@@ -2,15 +2,15 @@
 
 describe('Controller: StartExecutionDialogCtrl', function () {
     /*jshint camelcase: false */
-    var StartExecutionDialogCtrl, scope;
-
+    var StartExecutionDialogCtrl;
+    var scope;
 
     beforeEach(module('cosmoUiApp', 'ngMock', 'templates-main', 'backend-mock'));
 
     beforeEach(inject(function ($controller, $rootScope) {
         scope = $rootScope.$new();
 
-        scope.deployment = { workflows : [] };
+        scope.deployment = {workflows: []};
         StartExecutionDialogCtrl = $controller('StartExecutionDialogCtrl', {
             $scope: scope
 
@@ -18,11 +18,9 @@ describe('Controller: StartExecutionDialogCtrl', function () {
 
     }));
 
-
     it('should create a controller', function () {
         expect(StartExecutionDialogCtrl).not.toBeUndefined();
     });
-
 
     describe('#isExecuteEnabled', function () {
         it('should return true if inputsValid is true and workflow exists', function () {
@@ -36,7 +34,6 @@ describe('Controller: StartExecutionDialogCtrl', function () {
             expect(scope.isExecuteEnabled()).toBe(true);
         });
     });
-
 
     describe('executeWorkflow', function () {
         beforeEach(function () {
@@ -76,13 +73,11 @@ describe('Controller: StartExecutionDialogCtrl', function () {
             expect(scope.inProcess).toBe(false);
             expect(scope.setErrorMessage).toHaveBeenCalledWith('foo');
 
-
         }));
     });
 
     describe('buttons', function () {
         var newConfirmDialog = null;
-
 
         beforeEach(inject(function (ngDialog, $timeout) {
 
@@ -96,7 +91,6 @@ describe('Controller: StartExecutionDialogCtrl', function () {
                 $timeout.flush();
                 return dialogId;
             };
-
 
         }));
 

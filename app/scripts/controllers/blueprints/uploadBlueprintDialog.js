@@ -16,9 +16,9 @@ angular.module('cosmoUiApp')
 
         $scope.onFileSelect = function ($files) {
             $log.info('file was selected', $files);
-            if ( _.isArray($files) ) {
+            if (_.isArray($files)) {
                 $scope.selectedFile = $files[0];
-            }else{
+            } else {
                 $scope.selectedFile = $files;
             }
 
@@ -29,13 +29,13 @@ angular.module('cosmoUiApp')
             $log.info(['files were selected', $files]);
         };
 
-        $scope.$watch('myFile', function(newValue, oldValue){
-            if ( !!newValue && newValue !== oldValue ) {
+        $scope.$watch('myFile', function (newValue, oldValue) {
+            if (!!newValue && newValue !== oldValue) {
                 $scope.onFileSelect(newValue);
             }
         });
 
-        $scope.$watch('blueprintUploadOpts.params.application_file_name', function(filename) {
+        $scope.$watch('blueprintUploadOpts.params.application_file_name', function (filename) {
             $scope.blueprintUploadOpts.params = {};
 
             if (filename) {
@@ -51,8 +51,7 @@ angular.module('cosmoUiApp')
             }
         });
 
-
-        function onSuccess(data){
+        function onSuccess(data) {
 
             if ($scope.blueprintUploadOpts.blueprint_id === undefined || $scope.blueprintUploadOpts.blueprint_id === '') {
                 $scope.blueprintUploadOpts.blueprint_id = data.id;
@@ -65,7 +64,7 @@ angular.module('cosmoUiApp')
         function onError(e) {
             // guy - todo - what the hell is going on here with the messages? we should try to uniform this
             // or at least document what/when
-            var responseText = e && ( e.message || e.statusText || e.responseText || e );
+            var responseText = e && (e.message || e.statusText || e.responseText || e);
 
             if (typeof(responseText) === 'string' && responseText.indexOf('Too Large') > 0) {
                 responseText = translate('blueprintUpload.tooBig');
@@ -76,27 +75,25 @@ angular.module('cosmoUiApp')
             $scope.uploadInProcess = false;
         }
 
-
         // handle upload without a file. upload with a url.
-        $scope.publishArchive = function() {
+        $scope.publishArchive = function () {
             $scope.uploadInProcess = true;
             $scope.uploadError = false;
 
             var blueprint_path = $scope.inputText;
-            var blueprint_id  = $scope.blueprintUploadOpts.blueprint_id;
+            var blueprint_id = $scope.blueprintUploadOpts.blueprint_id;
             var blueprint_filename = $scope.blueprintUploadOpts.params.application_file_name;
 
             // the handlers expect the data, not the result, so lets strip away the result and return result.data
             cloudifyClient.blueprints.publish_archive(blueprint_path, blueprint_id, blueprint_filename)
-                .then(function(result){
+                .then(function (result) {
                     return result.data;
                 },
-                function( result ){
+                function (result) {
                     return $q.reject(result.data);
                 })
-                .then(onSuccess,onError);
+                .then(onSuccess, onError);
         };
-
 
         $scope.uploadBlueprint = function () {
 
@@ -128,12 +125,12 @@ angular.module('cosmoUiApp')
                 }
             }).success(onSuccess)
                 .error(onError)
-                .finally(function(){
+                .finally(function () {
                     ngProgress.reset();
                 });
         };
 
-        $scope.uploadFile = function() {
+        $scope.uploadFile = function () {
             $log.info(['upload: ', selectedFile]);
 
             if (!$scope.isUploadEnabled()) {
@@ -147,14 +144,13 @@ angular.module('cosmoUiApp')
             }
         };
 
-        $scope.isUploadEnabled = function() {
-            return (($scope.inputText !== '' && $scope.inputText !== undefined) &&
-                !$scope.uploadInProcess &&
-                $scope.blueprintUploadOpts.blueprint_id !== undefined &&
-                $scope.blueprintUploadOpts.blueprint_id.length > 0);
+        $scope.isUploadEnabled = function () {
+            return (($scope.inputText !== '' && $scope.inputText !== undefined) && !$scope.uploadInProcess &&
+            $scope.blueprintUploadOpts.blueprint_id !== undefined &&
+            $scope.blueprintUploadOpts.blueprint_id.length > 0);
         };
 
-        $scope.isUploadError = function() {
+        $scope.isUploadError = function () {
             return $scope.uploadError;
         };
 
@@ -170,7 +166,6 @@ angular.module('cosmoUiApp')
         }
 
         resetDialog();
-
 
         // make it test friendly do not use these functions
         this.onUploadSuccess = onSuccess;

@@ -234,6 +234,20 @@ module.exports = function (grunt) {
                 }
             }
         },
+        jscs: {
+            app: {
+                src: '<%= yeoman.app %>/scripts/**/*.js',
+                options: {
+                    config: true
+                }
+            },
+            test: {
+                src: 'test/spec/**/*.js',
+                options: {
+                    config: true
+                }
+            }
+        },
         sasslint: {
             options: {
                 configFile: 'test/spec/.sass-lint.yml'
@@ -757,6 +771,7 @@ module.exports = function (grunt) {
         if ( testBackend === undefined || testBackend === '' || testBackend === 'all' || testBackend === 'frontend') { // default
             tasks = [
                 'jshint',
+                'jscs',
                 'sasslint',
                 'clean:server',
                 'concurrent:test',
@@ -974,6 +989,7 @@ module.exports = function (grunt) {
 
     grunt.registerTask('default', 'compiles the project' ,[
         'jshint',
+        'jscs',
         'jsdoc',
         'test:all',
         'build',

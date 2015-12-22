@@ -20,7 +20,6 @@ describe('Filter: dateFormat', function () {
             expect(dateFormat(text, format)).toBe('2011-11-24 07:00:00');
         });
 
-
         it('should accept only valid format', function () {
             var text = '20111124T090027';
             var timeFormat = 'HH:mm:ss';
@@ -52,7 +51,6 @@ describe('Filter: dateFormat', function () {
         it('work if no seconds', function () {
             expect(dateFormat('0000-00-00T07:00')).toBe('Nov-30-1899');
         });
-
 
     });
 });

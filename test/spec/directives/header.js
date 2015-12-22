@@ -2,11 +2,12 @@
 
 describe('Directive: header', function () {
 
-    var element, scope;
+    var element;
+    var scope;
     beforeEach(module('cosmoUiApp', 'ngMock', 'templates-main', 'backend-mock'));
 
     function compileDirective(opts) {
-        inject(function($compile, $rootScope, $httpBackend) {
+        inject(function ($compile, $rootScope, $httpBackend) {
             $httpBackend.whenGET('/backend/configuration?access=all').respond(200);
             $httpBackend.whenGET('/backend/versions/ui').respond(200);
             $httpBackend.expectGET('/backend/isLoggedIn').respond(200);
@@ -24,24 +25,24 @@ describe('Directive: header', function () {
         });
     }
 
-    describe('Directive tests', function() {
+    describe('Directive tests', function () {
 
-        it('should create an element with searchCloudify function', function() {
+        it('should create an element with searchCloudify function', function () {
             compileDirective();
             expect(typeof(scope.searchCloudify)).toBe('function');
         });
 
-        it('should have a version div', function() {
+        it('should have a version div', function () {
             compileDirective();
             expect(element.find('div.version-check').length).toBe(1);
         });
 
-        it('should have a version div with 2 sub divs', function() {
+        it('should have a version div with 2 sub divs', function () {
             compileDirective();
             expect(element.find('div.version-check div').length).toBe(1);
         });
 
-        it('should show an update available message div when updateVersion variable is true', inject(function($rootScope) {
+        it('should show an update available message div when updateVersion variable is true', inject(function ($rootScope) {
             var _scope = $rootScope.$new();
             _scope.updateVersion = true;
 
@@ -50,9 +51,9 @@ describe('Directive: header', function () {
             expect(element.find('div#needUpdate').hasClass('ng-hide')).toBe(false);
         }));
 
-        it('should not show update message when valid version result returns', inject(function($rootScope, CloudifyService, $q) {
+        it('should not show update message when valid version result returns', inject(function ($rootScope, CloudifyService, $q) {
             var _scope = $rootScope.$new();
-            CloudifyService.version.needUpdate = function() {
+            CloudifyService.version.needUpdate = function () {
                 var deferred = $q.defer();
                 var result = false;
 
@@ -64,48 +65,45 @@ describe('Directive: header', function () {
 
             compileDirective({scope: _scope});
 
-            waitsFor(function() {
+            waitsFor(function () {
                 return _scope.updateVersion !== true;
             });
-            runs(function() {
+            runs(function () {
                 expect(_scope.updateVersion).toBe(false);
             });
         }));
 
-        describe('logout', function(){
-            it('should exist', function(){
+        describe('logout', function () {
+            it('should exist', function () {
                 compileDirective();
                 expect(element.find('.logout-panel').length).toBe(1);
             });
 
-            it('should call logout on service', inject(function(LoginService){
+            it('should call logout on service', inject(function (LoginService) {
                 compileDirective();
-                spyOn(LoginService,'logout');
+                spyOn(LoginService, 'logout');
                 scope.logout();
             }));
 
-            it('should not show logout if user is logged in', inject(function(){
+            it('should not show logout if user is logged in', inject(function () {
                 compileDirective();
                 expect(element.find('.logout-panel').is('.ng-hide')).toBe(true);
             }));
 
-            it('should show logout if user is logged in', inject(function( $rootScope ){
+            it('should show logout if user is logged in', inject(function ($rootScope) {
                 var _scope = $rootScope.$new();
                 _scope.username = 'foo';
                 _scope.isLoggedIn = true;
-                compileDirective( {  scope:_scope } );
+                compileDirective({scope: _scope});
                 expect(element.find('.logout-panel').is('.ng-hide')).toBe(false);
                 expect(element.find('.username').text()).toBe('foo');
             }));
 
-
         });
 
-
-
-        it('should not show update message when invalid version result returns', inject(function($rootScope, CloudifyService, $q) {
+        it('should not show update message when invalid version result returns', inject(function ($rootScope, CloudifyService, $q) {
             var _scope = $rootScope.$new();
-            CloudifyService.version.needUpdate = function() {
+            CloudifyService.version.needUpdate = function () {
                 var deferred = $q.defer();
                 var result = 'invalid result';
 
@@ -117,10 +115,10 @@ describe('Directive: header', function () {
 
             compileDirective({scope: _scope});
 
-            waitsFor(function() {
+            waitsFor(function () {
                 return _scope.updateVersion !== true;
             });
-            runs(function() {
+            runs(function () {
                 expect(_scope.updateVersion).toBe(false);
             });
         }));

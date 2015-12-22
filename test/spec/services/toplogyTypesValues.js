@@ -3,7 +3,7 @@
 describe('Service: TopologyTypesValues', function () {
 
     // load the service's module
-    beforeEach(module('cosmoUiApp', 'ngMock','backend-mock'));
+    beforeEach(module('cosmoUiApp', 'ngMock', 'backend-mock'));
 
     // instantiate service
     var topologyTypesValues;
@@ -15,7 +15,7 @@ describe('Service: TopologyTypesValues', function () {
         expect(!!topologyTypesValues).toBe(true);
     });
 
-    it('should include cloudify.nodes.Root node type', function() {
+    it('should include cloudify.nodes.Root node type', function () {
         expect(!!topologyTypesValues['cloudify.nodes.Root']).toBe(true);
     });
 

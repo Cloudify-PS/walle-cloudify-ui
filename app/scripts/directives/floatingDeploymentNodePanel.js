@@ -14,7 +14,7 @@ angular.module('cosmoUiApp')
             scope: {
                 id: '=depid',
                 node: '=node',
-                showPanel : '@show',
+                showPanel: '@show',
                 nodesList: '=nodesList'
             },
             link: function postLink($scope, element) {
@@ -24,8 +24,7 @@ angular.module('cosmoUiApp')
                 $scope.propSection = 'general';
                 $scope.selectedRelationship = '';
 
-
-                $scope.hideProperties = function(){
+                $scope.hideProperties = function () {
                     $scope.node = null;
                 };
 
@@ -38,7 +37,7 @@ angular.module('cosmoUiApp')
                             'type': node.type
                         }
                     };
-                    if($scope.id) {
+                    if ($scope.id) {
                         _getInstances(node.id);
                     }
                 }
@@ -64,7 +63,7 @@ angular.module('cosmoUiApp')
 
                             instances.forEach(function (instance) {
                                 if (instance.deployment_id === $scope.id) {
-                                    if(instance.node_id === nodeId) {
+                                    if (instance.node_id === nodeId) {
                                         // adding value and label properties so the selectNodesArr can be used in the multiSelectMenu.
                                         instance.value = instance.id;
                                         instance.label = instance.id;
@@ -75,7 +74,7 @@ angular.module('cosmoUiApp')
                         });
                 }
 
-                $scope.$watch('node', function(node){
+                $scope.$watch('node', function (node) {
                     // todo - guy - why are we not usgin ng-show instead?? and then here it would be $scope.showPanel = !!newValue. boom, 4 lines less..
                     $scope.showPanel = !!node;
                     if (!!node) {
@@ -84,24 +83,24 @@ angular.module('cosmoUiApp')
                         element.hide();
                     }
 
-                    if(node) {
+                    if (node) {
                         $scope.selectedNode = null;
                         $scope.propSection = 'general';
 
-                        switch(node.nodeType) {
-                        case 'node':
-                            _viewNode(node);
-                            break;
-                        case 'relationship':
-                            _viewRelationship(node);
-                            break;
-                        default:
-                            _viewNode(node);
+                        switch (node.nodeType) {
+                            case 'node':
+                                _viewNode(node);
+                                break;
+                            case 'relationship':
+                                _viewRelationship(node);
+                                break;
+                            default:
+                                _viewNode(node);
                         }
                     }
                 }, true);
 
-                $scope.nodeSelected = function(node) {
+                $scope.nodeSelected = function (node) {
                     $scope.selectedNode = node;
                     if (node !== null) {
                         $scope.showProperties = {
@@ -121,7 +120,7 @@ angular.module('cosmoUiApp')
                     }
                 };
 
-                $scope.showRelationship = function(relationship) {
+                $scope.showRelationship = function (relationship) {
                     if (relationship === $scope.selectedRelationship) {
                         $scope.selectedRelationship = '';
                     } else {
@@ -129,7 +128,7 @@ angular.module('cosmoUiApp')
                     }
                 };
 
-                $scope.getPropertyKeyName = function(key) {
+                $scope.getPropertyKeyName = function (key) {
                     var name = key;
                     if (key === 'ip') {
                         name = 'private IP';

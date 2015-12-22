@@ -2,7 +2,8 @@
 
 describe('Controller: BlueprintsIndexCtrl', function () {
 
-    var BlueprintsIndexCtrl, scope;
+    var BlueprintsIndexCtrl;
+    var scope;
     var blueprints = [
         {
             'updated_at': '2014-08- 21 00:54:04.878540',
@@ -51,16 +52,16 @@ describe('Controller: BlueprintsIndexCtrl', function () {
             spyOn(cloudifyClient.blueprints, 'list').andCallFake(function () {
                 return {
                     then: function (success/*, error*/) {
-                        success({ data : {items: blueprints}});
+                        success({data: {items: blueprints}});
                         return $q.defer().promise;
                     }
                 };
             });
 
-            spyOn(cloudifyClient.deployments,'list').andCallFake(function(){
+            spyOn(cloudifyClient.deployments, 'list').andCallFake(function () {
                 return {
-                    then: function(success){
-                        success({data:[]});
+                    then: function (success) {
+                        success({data: []});
                     }
                 };
             });
@@ -102,7 +103,6 @@ describe('Controller: BlueprintsIndexCtrl', function () {
                 expect(scope.blueprints.length).toBe(2);
             });
         });
-
 
     });
 });

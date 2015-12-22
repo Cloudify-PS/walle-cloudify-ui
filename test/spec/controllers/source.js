@@ -5,8 +5,8 @@ describe('Controller: SourceCtrl', function () {
     // load the controller's module
     beforeEach(module('cosmoUiApp', 'ngMock', 'backend-mock'));
 
-    var SourceCtrl, scope;
-
+    var SourceCtrl;
+    var scope;
 
     var nodecellarSources = {
         'name': 'root',
@@ -276,18 +276,15 @@ describe('Controller: SourceCtrl', function () {
         }]
     };
 
-
     // Initialize the controller and a mock scope
     beforeEach(inject(function ($controller, $rootScope, BlueprintSourceService, CloudifyService) {
         scope = $rootScope.$new();
         scope.id = 'blueprint1';
         scope.errorMessage = 'noPreview';
 
-
-
         spyOn(CloudifyService.blueprints, 'browse').andCallFake(function () {
             return {
-                then: function ( success ) {
+                then: function (success) {
                     success({});
                 }
             };
@@ -295,7 +292,7 @@ describe('Controller: SourceCtrl', function () {
 
         spyOn(BlueprintSourceService, 'getBrowseData').andCallFake(function () {
             return {
-                then: function ( success ) {
+                then: function (success) {
                     success({});
                 }
             };
@@ -303,7 +300,7 @@ describe('Controller: SourceCtrl', function () {
 
         SourceCtrl = $controller('SourceCtrl', {
             $scope: scope,
-            $routeParams: { 'blueprintId' : 'fake_blueprint_id' }
+            $routeParams: {'blueprintId': 'fake_blueprint_id'}
         });
     }));
 
@@ -343,10 +340,8 @@ describe('Controller: SourceCtrl', function () {
         }));
     });
 
-
-
-    describe('#isDefaultCandidate', function(){
-        it('should identify potential files to auto open', function(){
+    describe('#isDefaultCandidate', function () {
+        it('should identify potential files to auto open', function () {
             expect(scope.isDefaultCandidate('guy')).toBe(false);
             expect(scope.isDefaultCandidate('README')).toBe(true);
             expect(scope.isDefaultCandidate('README.md')).toBe(true);
@@ -354,19 +349,19 @@ describe('Controller: SourceCtrl', function () {
         });
     });
 
-    describe('#getBrushByFile', function(){
-        it('should get brushes by file and text as default', function(){
+    describe('#getBrushByFile', function () {
+        it('should get brushes by file and text as default', function () {
             expect(scope.getBrushByFile('README.md')).toBe('text');
             expect(scope.getBrushByFile('README.py')).toBe('py');
             expect(scope.getBrushByFile('foo')).toBe('text');
             expect(scope.getBrushByFile('foo.bat')).toBe('bat');
             expect(scope.getBrushByFile('foo.yaml')).toBe('yml');
             expect(scope.getBrushByFile('foo.yml')).toBe('yml');
-        }) ;
+        });
     });
 
-    describe('#isSourceText', function(){
-        it('should return true if file is a source file', function(){
+    describe('#isSourceText', function () {
+        it('should return true if file is a source file', function () {
             expect(scope.isSourceText('foo.foo')).toBe(false);
             expect(scope.isSourceText('file.yaml')).toBe(true);
             expect(scope.isSourceText('file.css')).toBe(true);
@@ -383,15 +378,19 @@ describe('Controller: SourceCtrl', function () {
                 return {
                     then: function (success) { // todo: handle errors.
                         if (browseData.id === 'success') {
-                            success({ data : 'this is content' } );
+                            success({data: 'this is content'});
                         }
                     }
                 };
             });
         }));
         it('should populate dataCode with file content', function () {
-            scope.selectedBlueprint = { 'id' : 'success' };
-            scope.openSourceFile({'id': 'success', 'name': 'foo.yaml', 'path': 'bar'});
+            scope.selectedBlueprint = {'id': 'success'};
+            scope.openSourceFile({
+                'id': 'success',
+                'name': 'foo.yaml',
+                'path': 'bar'
+            });
 
             expect(scope.filename).toBe('foo.yaml');
             expect(scope.dataCode.data).toBe('this is content');
@@ -399,20 +398,17 @@ describe('Controller: SourceCtrl', function () {
             expect(scope.dataCode.path).toBe('bar');
         });
 
-
     });
 
-    describe('#autoSelectFile', function( ){
-        it('should identify file in blueprint to open automatically', function(){
+    describe('#autoSelectFile', function () {
+        it('should identify file in blueprint to open automatically', function () {
             var result = scope.autoSelectFile(nodecellarSources);
-            expect( result.name ).toBe( 'README.md' );
+            expect(result.name).toBe('README.md');
 
             result = scope.autoSelectFile({});
-            expect( result ).toBe( undefined );
+            expect(result).toBe(undefined);
         });
     });
-
-
 
     it('should return fa-minus-square-o string', function () {
         var result = scope.isFolderOpen({show: true});

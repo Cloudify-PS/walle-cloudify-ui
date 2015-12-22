@@ -1,7 +1,7 @@
 'use strict';
 
 describe('Directive: bpNetworks', function () {
-    beforeEach(module('cosmoUiApp','backend-mock','templates-main'));
+    beforeEach(module('cosmoUiApp', 'backend-mock', 'templates-main'));
 
     var element;
 
@@ -15,20 +15,20 @@ describe('Directive: bpNetworks', function () {
 });
 
 describe('Directive: bpNetworkCoordinate', function () {
-    beforeEach(module('cosmoUiApp','backend-mock','templates-main'));
+    beforeEach(module('cosmoUiApp', 'backend-mock', 'templates-main'));
 
     var element;
 
-    var testRender = function( type ){
-        return inject(function( $rootScope, $compile, bpNetworkService ){
+    var testRender = function (type) {
+        return inject(function ($rootScope, $compile, bpNetworkService) {
             var methodName = 'addDevice';
-            if ( type !== 'foo'){
+            if (type !== 'foo') {
                 methodName = 'add' + type[0].toUpperCase() + type.substring(1);
-            }else{
+            } else {
 
             }
-            spyOn(bpNetworkService,methodName);
-            $rootScope.myData = { type : type };
+            spyOn(bpNetworkService, methodName);
+            $rootScope.myData = {type: type};
             element = angular.element('<div bp-network-coordinate="myData" ng-model="myData"></div>');
             element = $compile(element)($rootScope);
             $rootScope.$digest();

@@ -21,9 +21,8 @@ angular.module('cosmoUiApp')
                 ['failed', 'terminated', 'cancelled'].indexOf(execution.status) < 0;
         };
 
-        this.canPause = function(execution){
+        this.canPause = function (execution) {
             return !!execution;
         };
-
 
     });

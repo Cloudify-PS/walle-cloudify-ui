@@ -10,7 +10,6 @@
 angular.module('cosmoUiApp')
     .controller('BlueprintNodesCtrl', function ($scope, $routeParams, NodeService, cloudifyClient) {
 
-
         $scope.blueprintId = $routeParams.blueprintId;
         $scope.page = {};
 

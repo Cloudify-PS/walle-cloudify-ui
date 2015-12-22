@@ -10,23 +10,23 @@ angular.module('cosmoUiApp')
         };
         var fromTimeText = 'now';
         var filterModel = angular.copy(filterModelDefaults);
-        this.set = function(data) {
-            for(var i in data) {
-                if(filterModel.hasOwnProperty(i)) {
+        this.set = function (data) {
+            for (var i in data) {
+                if (filterModel.hasOwnProperty(i)) {
                     filterModel[i] = data[i];
                 }
             }
-            if(data.hasOwnProperty('startdate')) {
+            if (data.hasOwnProperty('startdate')) {
                 fromTimeText = 'event time';
             }
         };
-        this.reset = function() {
+        this.reset = function () {
             filterModel = angular.copy(filterModelDefaults);
         };
-        this.get = function() {
+        this.get = function () {
             return filterModel;
         };
-        this.getFromTimeText = function() {
+        this.getFromTimeText = function () {
             return fromTimeText;
         };
     });

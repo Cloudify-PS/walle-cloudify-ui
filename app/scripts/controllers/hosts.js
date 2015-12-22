@@ -1,6 +1,5 @@
 'use strict';
 
-
 /**
  * @module HostsCtrl //todo: change to NodeCtrl
  * @description builds the required information for the nodes page
@@ -30,7 +29,6 @@
 angular.module('cosmoUiApp')// todo : change to NodeCtrl
     .controller('HostsCtrl', function ($scope, $filter, cloudifyClient, $q) {
 
-
         $scope.typesList = [];
         var _blueprint = null;
         var matchFilter = {};
@@ -41,7 +39,6 @@ angular.module('cosmoUiApp')// todo : change to NodeCtrl
 
         $scope.emptyReason = $filter('translate')('hosts.chooseBlueprint');
 
-
         // keeps a map between deployment id to blueprint id
         var deployments = {};
         var allDeployments = [];
@@ -51,7 +48,12 @@ angular.module('cosmoUiApp')// todo : change to NodeCtrl
          * @see HostsFilter
          */
         $scope.clearFilter = function () {
-            $scope.hostsFilter = {blueprint: null, deployments: null, types: null, search: null};
+            $scope.hostsFilter = {
+                blueprint: null,
+                deployments: null,
+                types: null,
+                search: null
+            };
         };
 
         $scope.clearFilter();
@@ -61,9 +63,11 @@ angular.module('cosmoUiApp')// todo : change to NodeCtrl
          * @see HostsFilter
          */
         function resetTypesFilter() {
-            $scope.hostsFilter.types = [{'value': 'cloudify.nodes.Compute', 'label': 'cloudify.nodes.Compute'}];
+            $scope.hostsFilter.types = [{
+                'value': 'cloudify.nodes.Compute',
+                'label': 'cloudify.nodes.Compute'
+            }];
         }
-
 
         // since the api does not allow us to query for multiple deployments at once, we need to create a request per deployment
         function getInstancesForDeployments() {
@@ -114,21 +118,19 @@ angular.module('cosmoUiApp')// todo : change to NodeCtrl
                 _.each(result.data, function (item) {
                     item.blueprint_id = deployments[item.deployment_id];
 
-
                     item.type_hierarchy = typesByDeploymentAndNode[item.deployment_id][item.node_id].type_hierarchy;
                 });
                 allNodes = result.data;
 
                 $scope.filterLoading = false;
                 filterItems();
-            }, function(result){
+            }, function (result) {
                 $scope.getNodesError = result.data.message;
                 $scope.filterLoading = false;
                 $scope.emptyReason = result.data.message;
             });
 
         }
-
 
         // make this function only run once
         var typeDataPromise = null;
@@ -195,7 +197,7 @@ angular.module('cosmoUiApp')// todo : change to NodeCtrl
             if (!!$scope.hostsFilter.deployments && $scope.hostsFilter.deployments.length > 0) {
                 matchFilter.deployments = _.pluck($scope.hostsFilter.deployments, 'value');
             } else if (!!matchFilter.blueprint) { // get all selected deployments for blueprint
-                matchFilter.deployments =  _.pluck($scope.deploymentsList, 'value');
+                matchFilter.deployments = _.pluck($scope.deploymentsList, 'value');
             }
 
             if (!!$scope.hostsFilter.types && $scope.hostsFilter.types.length > 0) {
@@ -221,7 +223,6 @@ angular.module('cosmoUiApp')// todo : change to NodeCtrl
 
         // on each change, lets rebuild the page
         $scope.$watch('hostsFilter', onHostsFilterChange, true);
-
 
         $scope.clearFilter();
 

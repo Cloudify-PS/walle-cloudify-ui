@@ -5,14 +5,14 @@ describe('Controller: DeploymentNetworkCtrl', function () {
     // load the controller's module
     beforeEach(module('cosmoUiApp', 'backend-mock'));
 
-    var DeploymentnetworkCtrl,
-        $rootScope,
-        cloudifyClient,
-        $timeout,
-        $q,
-        NetworksService,
-        bpNetworkService,
-        scope;
+    var DeploymentnetworkCtrl;
+    var $rootScope;
+    var cloudifyClient;
+    var $timeout;
+    var $q;
+    var NetworksService;
+    var bpNetworkService;
+    var scope;
 
     // Initialize the controller and a mock scope
     beforeEach(inject(function ($controller, _$rootScope_, _cloudifyClient_, _$timeout_, _NetworksService_, _bpNetworkService_, _$q_) {
@@ -23,10 +23,10 @@ describe('Controller: DeploymentNetworkCtrl', function () {
         NetworksService = _NetworksService_;
         bpNetworkService = _bpNetworkService_;
 
-        spyOn(cloudifyClient.manager, 'get_context').andReturn(window.mockPromise({data:{}}));
-        spyOn(cloudifyClient.deployments,'get').andReturn(window.mockPromise({data:{}}));
-        spyOn(cloudifyClient.blueprints,'get').andReturn(window.mockPromise({data:{ plan : { nodes: [] }  }}));
-        spyOn($q,'all').andReturn(window.mockPromise([{},{ data: {} }]));
+        spyOn(cloudifyClient.manager, 'get_context').andReturn(window.mockPromise({data: {}}));
+        spyOn(cloudifyClient.deployments, 'get').andReturn(window.mockPromise({data: {}}));
+        spyOn(cloudifyClient.blueprints, 'get').andReturn(window.mockPromise({data: {plan: {nodes: []}}}));
+        spyOn($q, 'all').andReturn(window.mockPromise([{}, {data: {}}]));
 
         spyOn(NetworksService, 'createNetworkTree').andReturn({});
         spyOn(bpNetworkService, 'setMap').andReturn();

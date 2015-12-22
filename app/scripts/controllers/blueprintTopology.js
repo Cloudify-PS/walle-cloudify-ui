@@ -5,11 +5,11 @@ angular.module('cosmoUiApp')
         $scope.blueprintId = $routeParams.blueprintId;
         $scope.page = {};
 
-        $scope.onNodeSelect = function(node){
-            $scope.viewNode(node,'node');
+        $scope.onNodeSelect = function (node) {
+            $scope.viewNode(node, 'node');
         };
 
-        $scope.onRelationshipSelect = function( relationship ){
+        $scope.onRelationshipSelect = function (relationship) {
             $scope.viewNode(relationship, 'relationship');
         };
 
@@ -17,6 +17,5 @@ angular.module('cosmoUiApp')
             viewNode.nodeType = nodeType;
             $scope.page.viewNode = viewNode;
         };
-
 
     });

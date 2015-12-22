@@ -2,7 +2,8 @@
 
 /*jshint camelcase: false */
 describe('Controller: DeployDialogCtrl', function () {
-    var DeployDialogCtrl, scope;
+    var DeployDialogCtrl;
+    var scope;
 
     beforeEach(module('cosmoUiApp', 'ngMock', 'backend-mock'));
 
@@ -11,7 +12,7 @@ describe('Controller: DeployDialogCtrl', function () {
         spyOn(cloudifyClient.blueprints, 'get').andCallFake(function () {
             return {
                 then: function (success) {
-                    success({ data : {items: []} } );
+                    success({data: {items: []}});
                 }
             };
         });
@@ -71,13 +72,18 @@ describe('Controller: DeployDialogCtrl', function () {
         scope.deployBlueprint('blueprint1');
 
         expect(deployParams).not.toBe(null);
-        expect(cloudifyClient.deployments.create).toHaveBeenCalledWith('blueprint1', 'deployment1', { webserver_port : 8080, image_name : 'image_name', agent_user : 'agent_user', flavor_name : 'flavor_name', bool_variable : false, str_variable : 'some string' });
+        expect(cloudifyClient.deployments.create).toHaveBeenCalledWith('blueprint1', 'deployment1', {
+            webserver_port: 8080,
+            image_name: 'image_name',
+            agent_user: 'agent_user',
+            flavor_name: 'flavor_name',
+            bool_variable: false,
+            str_variable: 'some string'
+        });
     }));
 
-
-
     it('should not validate deployment name', inject(function (cloudifyClient) {
-        spyOn(cloudifyClient.deployments,'create').andCallFake(function () {
+        spyOn(cloudifyClient.deployments, 'create').andCallFake(function () {
             scope.inProcess = false;
             scope.redirectToDeployment(scope.deployment_id);
             return {
@@ -99,12 +105,11 @@ describe('Controller: DeployDialogCtrl', function () {
         expect(scope.redirectToDeployment).toHaveBeenCalledWith(scope.deployment_id);
     }));
 
-
     it('should set showError flag to true once deploy returned message', inject(function (cloudifyClient) {
         spyOn(cloudifyClient.deployments, 'create').andCallFake(function () {
             return {
                 then: function (success/*, error*/) {
-                    success({ data : {'message': 'foo'} } );
+                    success({data: {'message': 'foo'}});
                 }
             };
         });
@@ -119,7 +124,6 @@ describe('Controller: DeployDialogCtrl', function () {
         expect(scope.deployErrorMessage).toBe('foo');
         expect(scope.showError()).toBe(true);
     }));
-
 
     it('should set showError flag to false once the deployment name is changed', function () {
         scope.deployment_id = 'deployment1';
@@ -143,6 +147,5 @@ describe('Controller: DeployDialogCtrl', function () {
             expect(!!scope.isParamsVisible()).toBe(true);
         });
     });
-
 
 });

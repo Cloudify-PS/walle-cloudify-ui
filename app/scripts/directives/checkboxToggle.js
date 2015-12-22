@@ -22,12 +22,11 @@ angular.module('cosmoUiApp')
                             scope.value = $(e.target).addClass('active').attr('value');
                         });
 
-//                        $location.search('section', scope.value);
+                        //$location.search('section', scope.value);
                         $log.info(['set new value on scope', scope.value]);
                     } catch (e) {
                         $log.info(e);
                     }
-
 
                 });
 

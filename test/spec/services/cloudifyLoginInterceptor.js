@@ -26,11 +26,13 @@ describe('Service: cloudifyLoginInterceptor', function () {
         }));
 
         it('should redirect if status is 401 and errorCode is unauthorized_error', inject(function ($q) {
-            cloudifyLoginInterceptor.responseError({'status': 401, data: {error_code: 'unauthenticated_error'}});
+            cloudifyLoginInterceptor.responseError({
+                'status': 401,
+                data: {error_code: 'unauthenticated_error'}
+            });
             expect(window.location.hash).toBe('#/login');
             expect($q.reject).not.toHaveBeenCalled();
         }));
     });
-
 
 });

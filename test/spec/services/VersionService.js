@@ -8,12 +8,11 @@ describe('Service: VersionService', function () {
         versionService = VersionService;
     }));
 
-
     it('should create a new VersionService instance', function () {
         expect(versionService).not.toBeUndefined();
     });
 
-    describe('#getLatest', function(){
+    describe('#getLatest', function () {
         it('should call backend for latest version only once', inject(function ($httpBackend) {
             $httpBackend.expectGET('/backend/version/latest?version=foo');
             versionService.getLatest('foo');
@@ -22,9 +21,9 @@ describe('Service: VersionService', function () {
         }));
     });
 
-    describe('#getUiVersion', function(){
+    describe('#getUiVersion', function () {
         it('should call backend for ui version', inject(function ($http) {
-            spyOn($http,'get');
+            spyOn($http, 'get');
             versionService.getUiVersion();
             expect($http.get).toHaveBeenCalledWith('/backend/versions/ui');
 
@@ -32,15 +31,15 @@ describe('Service: VersionService', function () {
 
     });
 
-    describe('#getManagerVersion', function(){
+    describe('#getManagerVersion', function () {
         it('should call backend for manager version', inject(function (cloudifyClient) {
-            spyOn(cloudifyClient.manager,'get_version');
+            spyOn(cloudifyClient.manager, 'get_version');
             versionService.getManagerVersion();
             expect(cloudifyClient.manager.get_version).toHaveBeenCalled();
         }));
     });
 
-    describe('#needUpdate', function(){
+    describe('#needUpdate', function () {
 
         var resolution = null;
         var uiVersion = null;
@@ -48,68 +47,60 @@ describe('Service: VersionService', function () {
 
         beforeEach(inject(function ($q) {
             resolution = null;
-            uiVersion = { data :  null } ;
-            latestVersion = { data :  null  };
+            uiVersion = {data: null};
+            latestVersion = {data: null};
             spyOn($q, 'defer').andReturn({
                 promise: 'foo',
                 resolve: function (res) {
                     resolution = res;
                 }
             });
-            spyOn(versionService,'getUiVersion').andReturn({
-                then:function( success ){
-                    console.log('return uiVersion', uiVersion );
-                    success( uiVersion );
+            spyOn(versionService, 'getUiVersion').andReturn({
+                then: function (success) {
+                    console.log('return uiVersion', uiVersion);
+                    success(uiVersion);
                 }
             });
-            spyOn(versionService,'getLatest').andReturn({
-                then:function(success){
-                    success( latestVersion );
+            spyOn(versionService, 'getLatest').andReturn({
+                then: function (success) {
+                    success(latestVersion);
                 }
             });
         }));
 
-        describe('with corrupt data', function(){
+        describe('with corrupt data', function () {
             it('should return false if ui version is corrupt', function () {
-                uiVersion.data = { version : 'foo' };
+                uiVersion.data = {version: 'foo'};
                 versionService.needUpdate();
                 expect(resolution).toBe(false);
             });
 
-            it('should return false if ui version is missing completely', function(){
+            it('should return false if ui version is missing completely', function () {
                 versionService.needUpdate();
                 expect(resolution).toBe(false);
             });
 
         });
 
-        describe('proper data', function(){
-            it('should return false if ui version >= latest', function(){
-                uiVersion.data = { version : '6' };
-                latestVersion.data = '5' ;
+        describe('proper data', function () {
+            it('should return false if ui version >= latest', function () {
+                uiVersion.data = {version: '6'};
+                latestVersion.data = '5';
                 versionService.needUpdate();
                 expect(resolution).toBe(false);
             });
 
-            it('should return true if ui version< latest', function(){
-                uiVersion.data = { version : '6' };
-                latestVersion.data =  '8' ;
+            it('should return true if ui version< latest', function () {
+                uiVersion.data = {version: '6'};
+                latestVersion.data = '8';
                 versionService.needUpdate();
                 expect(resolution).toBe(true);
             });
         });
     });
 
-    describe('#getVersions', function(){
+    describe('#getVersions', function () {
 
     });
-
-
-
-
-
-
-
-
 
 });

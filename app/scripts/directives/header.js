@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('cosmoUiApp')
-    .directive('header', function ($log, CloudifyService, LoginService ) {
+    .directive('header', function ($log, CloudifyService, LoginService) {
         return {
             templateUrl: 'views/headerTemplate.html',
             restrict: 'A',
@@ -10,19 +10,19 @@ angular.module('cosmoUiApp')
                     name: 'John Doe'
                 };
 
-                CloudifyService.version.needUpdate().then(function(result) {
-                    scope.updateVersion = typeof(result) === 'boolean'? result : false;
+                CloudifyService.version.needUpdate().then(function (result) {
+                    scope.updateVersion = typeof(result) === 'boolean' ? result : false;
                 });
 
-                scope.searchCloudify = function() {
+                scope.searchCloudify = function () {
                     $log.info('search ' + element.find('#search-field').val());
                 };
 
-                scope.logout = function() {
+                scope.logout = function () {
                     LoginService.logout(true);
                 };
 
-                LoginService.isLoggedIn().then(function(result){
+                LoginService.isLoggedIn().then(function (result) {
                     scope.isLoggedIn = result.data.result;
                     scope.username = result.data.username;
                 });

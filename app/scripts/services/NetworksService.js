@@ -18,7 +18,7 @@ angular.module('cosmoUiApp')
 
         var _colors = {
             idx: 0,
-            colors:['#1F77B4', '#FF7F0E', '#2CA02C', '#D62728', '#9467BD', '#8C564B', '#4b6c8b', '#550000', '#dc322f', '#FF6600', '#cce80b', '#003300', '#805e00']
+            colors: ['#1F77B4', '#FF7F0E', '#2CA02C', '#D62728', '#9467BD', '#8C564B', '#4b6c8b', '#550000', '#dc322f', '#FF6600', '#cce80b', '#003300', '#805e00']
         };
 
         var _relationshipTypes = {
@@ -57,17 +57,27 @@ angular.module('cosmoUiApp')
 
             // set defaults
             var providerContextResources = {
-                'ext_network': {'id': 'External Network', 'name': 'External Network', 'type': 'network'},
-                'int_network': { 'id' : 'Cloudify Manager Network', 'name' : 'Cloudify Manager Network' , 'type' : 'network' },
-                'subnet': { 'id' : 'Cloudify Manager Subnet', 'name' : 'Cloudify Manager Subnet', 'type': 'subnet' },
-                router: { 'id' : 'Router', 'name' : 'Router', 'type' : 'router' }
+                'ext_network': {
+                    'id': 'External Network',
+                    'name': 'External Network',
+                    'type': 'network'
+                },
+                'int_network': {
+                    'id': 'Cloudify Manager Network',
+                    'name': 'Cloudify Manager Network',
+                    'type': 'network'
+                },
+                'subnet': {
+                    'id': 'Cloudify Manager Subnet',
+                    'name': 'Cloudify Manager Subnet',
+                    'type': 'subnet'
+                },
+                router: {'id': 'Router', 'name': 'Router', 'type': 'router'}
             };
 
-            if ( providerData && providerData.context && providerData.context.resources ){
+            if (providerData && providerData.context && providerData.context.resources) {
                 providerContextResources = _.merge(providerContextResources, providerData.context.resources);
             }
-
-
 
             providerContextResources.router.icon = 'router';
 
@@ -307,7 +317,7 @@ angular.module('cosmoUiApp')
 
         function _getSubnetByNetwork(network_id) {
             var subnet = {};
-            networkModel.networks.forEach(function(network) {
+            networkModel.networks.forEach(function (network) {
                 if (network.id === network_id) {
                     subnet = network.subnets[0];
                 }
@@ -316,8 +326,8 @@ angular.module('cosmoUiApp')
         }
 
         function _addRelation(relation) {
-            for(var i in networkModel.relations) {
-                if((relation.source + relation.target) === (networkModel.relations[i].source + networkModel.relations[i].target)) {
+            for (var i in networkModel.relations) {
+                if ((relation.source + relation.target) === (networkModel.relations[i].source + networkModel.relations[i].target)) {
                     return;
                 }
             }
@@ -330,8 +340,8 @@ angular.module('cosmoUiApp')
                 'server'
             ];
             var result = false;
-            node.type_hierarchy.forEach(function(type) {
-                validDevices.forEach(function(deviceType) {
+            node.type_hierarchy.forEach(function (type) {
+                validDevices.forEach(function (deviceType) {
                     if (type.substr(type.lastIndexOf('.') + 1).toLowerCase().indexOf(deviceType) > -1) {
                         result = true;
                     }
@@ -346,6 +356,8 @@ angular.module('cosmoUiApp')
         this.getNetworkColors = _getNetworkColors;
         this.getNetworkColor = _getNetworkColor;
         this.setExternalNetwork = _setExternalNetworks;
-        this.getNetworkModel = function(){ return networkModel; };
+        this.getNetworkModel = function () {
+            return networkModel;
+        };
 
     });

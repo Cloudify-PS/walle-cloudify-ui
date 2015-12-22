@@ -2,10 +2,12 @@
 
 describe('Controller: UploadBlueprintDialogCtrl', function () {
 
-    var UploadBlueprintDialogCtrl, _cloudifyService, scope;
+    var UploadBlueprintDialogCtrl;
+    var _cloudifyService;
+    var scope;
 
     // load the controller's module
-    beforeEach(module('cosmoUiApp', 'ngMock', 'backend-mock','templates-main'));
+    beforeEach(module('cosmoUiApp', 'ngMock', 'backend-mock', 'templates-main'));
 
     // Initialize the controller and a mock scope
     beforeEach(inject(function ($controller, $rootScope, $httpBackend, $q, CloudifyService) {
@@ -20,13 +22,12 @@ describe('Controller: UploadBlueprintDialogCtrl', function () {
         });
     }));
 
-
     describe('Controller tests', function () {
         it('should create a controller', function () {
             expect(UploadBlueprintDialogCtrl).not.toBeUndefined();
         });
 
-        it('should show error message when error returns from backend', inject(function ( cloudifyClient ) {
+        it('should show error message when error returns from backend', inject(function (cloudifyClient) {
             expect(scope.errorMessage).toBe('blueprintUpload.generalError'); // todo: verify with erez
             scope.selectedFile = {};
             scope.blueprintUploadOpts.blueprint_id = 'blueprint1';
@@ -34,10 +35,10 @@ describe('Controller: UploadBlueprintDialogCtrl', function () {
             spyOn(cloudifyClient.blueprints, 'publish_archive').andCallFake(function () {
 
                 return { // promise
-                    then: function( ){
+                    then: function () {
                         return {
-                            then:function(success, error){
-                                return error({ 'responseText' : 'foo2'});
+                            then: function (success, error) {
+                                return error({'responseText': 'foo2'});
                             }
                         };
                     }
@@ -64,7 +65,6 @@ describe('Controller: UploadBlueprintDialogCtrl', function () {
             });
         });
 
-
         describe('onFileSelect', function () {
             it('should support both array and single items', function () {
                 scope.onFileSelect('foo');
@@ -75,7 +75,7 @@ describe('Controller: UploadBlueprintDialogCtrl', function () {
             });
         });
 
-        it('should pass blueprint name to the $upload.upload', inject(function ( $upload ) {
+        it('should pass blueprint name to the $upload.upload', inject(function ($upload) {
             scope.selectedFile = {};
 
             spyOn(scope, 'isUploadEnabled').andCallFake(function () {
@@ -86,15 +86,20 @@ describe('Controller: UploadBlueprintDialogCtrl', function () {
                 scope.uploadInProcess = false;
             };
 
-            spyOn($upload,'upload').andCallFake(function(){
+            spyOn($upload, 'upload').andCallFake(function () {
                 return {
-                    progress: function(){
+                    progress: function () {
                         return {
-                            success: function(callback){
-                                callback( { id: 'foo' });
-                                return { error: function(){
-                                    return {finally: function(){}};
-                                }};
+                            success: function (callback) {
+                                callback({id: 'foo'});
+                                return {
+                                    error: function () {
+                                        return {
+                                            finally: function () {
+                                            }
+                                        };
+                                    }
+                                };
                             }
                         };
                     }
@@ -131,7 +136,6 @@ describe('Controller: UploadBlueprintDialogCtrl', function () {
             expect(JSON.stringify(formData)).toBe(JSON.stringify(expected));
         }));
 
-
         it('should update upload type to file when file is browsed', function () {
             scope.inputText = 'http://some.kind/of/url.tar.gz';
             scope.uploadType = 'url';
@@ -142,7 +146,7 @@ describe('Controller: UploadBlueprintDialogCtrl', function () {
 
         // should update upload type to url when url is entered - is not relevant anymore now that we are using cloudifyfClient
 
-        it('should invoke cloudifyClient.blueprints.publish_archive with the correct values', inject(function ( cloudifyClient ) {
+        it('should invoke cloudifyClient.blueprints.publish_archive with the correct values', inject(function (cloudifyClient) {
 
             spyOn(cloudifyClient.blueprints, 'publish_archive').andCallFake(function () {
                     return {
@@ -158,7 +162,7 @@ describe('Controller: UploadBlueprintDialogCtrl', function () {
 
             scope.inputText = 'http://some.kind/of/url.tar.gz';
             _cloudifyService.blueprints.add = function (data, successCallback) {
-                successCallback({id:'blueprint1'});
+                successCallback({id: 'blueprint1'});
             };
             spyOn(_cloudifyService.blueprints, 'add').andCallThrough();
             spyOn(scope, 'isUploadEnabled').andCallFake(function () {
@@ -166,53 +170,53 @@ describe('Controller: UploadBlueprintDialogCtrl', function () {
             });
 
             scope.publishArchive();
-            expect( cloudifyClient.blueprints.publish_archive ).toHaveBeenCalledWith('http://some.kind/of/url.tar.gz', '', '');
+            expect(cloudifyClient.blueprints.publish_archive).toHaveBeenCalledWith('http://some.kind/of/url.tar.gz', '', '');
         }));
     });
 
-    describe('#onUploadSuccess', function(){
-        beforeEach(function(){
-            scope.uploadDone = function(){}; // mock.
+    describe('#onUploadSuccess', function () {
+        beforeEach(function () {
+            scope.uploadDone = function () {
+            }; // mock.
         });
 
-        it('should put id on scope.blueprintUploadOpts.blueprint_id ', function(){
-            UploadBlueprintDialogCtrl.onUploadSuccess({'id':'foo'});
+        it('should put id on scope.blueprintUploadOpts.blueprint_id ', function () {
+            UploadBlueprintDialogCtrl.onUploadSuccess({'id': 'foo'});
             expect(scope.blueprintUploadOpts.blueprint_id).toBe('foo');
             expect(scope.closeThisDialog).toHaveBeenCalled();
         });
     });
 
-    describe('#onUploadError', function(){
+    describe('#onUploadError', function () {
 
-
-        it('should put error on scope while supporting 3 formats for error', function(){
+        it('should put error on scope while supporting 3 formats for error', function () {
 
             UploadBlueprintDialogCtrl.onUploadError('foo'); // format 1 - simple text
             expect(scope.errorMessage).toBe('foo');
 
-            UploadBlueprintDialogCtrl.onUploadError({'message' : 'bar'}); // format 2 - object with message
+            UploadBlueprintDialogCtrl.onUploadError({'message': 'bar'}); // format 2 - object with message
             expect(scope.errorMessage).toBe('bar');
 
-            UploadBlueprintDialogCtrl.onUploadError({'statusText' : 'foo'}); // format 2 - object with message
+            UploadBlueprintDialogCtrl.onUploadError({'statusText': 'foo'}); // format 2 - object with message
             expect(scope.errorMessage).toBe('foo');
 
         });
 
-        it('should mark process is over', function(){
+        it('should mark process is over', function () {
             scope.uploadInProcess = true;
             UploadBlueprintDialogCtrl.onUploadError('foo');
             expect(scope.uploadInProcess).toBe(false);
         });
 
-        it('handle HTML response that file is too big, and present a nice message to user', function(){
+        it('handle HTML response that file is too big, and present a nice message to user', function () {
             UploadBlueprintDialogCtrl.onUploadError('<html>Too Large</html>');
             expect(scope.errorMessage).toBe('blueprintUpload.tooBig');
         });
 
     });
 
-    describe('#uploadBlueprint', function(){
-        it('should update ngProgress with progress percentage', inject(function( $upload , ngProgress ){
+    describe('#uploadBlueprint', function () {
+        it('should update ngProgress with progress percentage', inject(function ($upload, ngProgress) {
             var progressCallback = null;
 
             spyOn($upload, 'upload').andCallFake(function () {
@@ -224,7 +228,8 @@ describe('Controller: UploadBlueprintDialogCtrl', function () {
                                 return {
                                     error: function () {
                                         return {
-                                            finally: function(){}
+                                            finally: function () {
+                                            }
                                         };
                                     }
                                 };
@@ -234,21 +239,20 @@ describe('Controller: UploadBlueprintDialogCtrl', function () {
                 };
             });
 
-
             var lastProgress = null;
-            spyOn(ngProgress,'set').andCallFake(function( progress ){
+            spyOn(ngProgress, 'set').andCallFake(function (progress) {
                 lastProgress = progress;
             });
 
             scope.uploadBlueprint();
             expect(progressCallback).not.toBe(null);
 
-            progressCallback({ loaded : 20, total: 100});
+            progressCallback({loaded: 20, total: 100});
             expect(lastProgress).toBe(20);
 
         }));
 
-        it('should escape the blueprint id before upload (CFY-1958)', inject(function( $upload ) {
+        it('should escape the blueprint id before upload (CFY-1958)', inject(function ($upload) {
             scope.blueprintUploadOpts = {
                 blueprint_id: 'a/b',
                 params: {
@@ -256,7 +260,7 @@ describe('Controller: UploadBlueprintDialogCtrl', function () {
                 }
             };
 
-            spyOn($upload,'upload').andCallThrough();
+            spyOn($upload, 'upload').andCallThrough();
 
             scope.uploadBlueprint();
 
@@ -265,9 +269,8 @@ describe('Controller: UploadBlueprintDialogCtrl', function () {
         }));
     });
 
-
-    describe('display', function(){
-        it('should accept multiple file compressions', inject(function( $templateCache ){
+    describe('display', function () {
+        it('should accept multiple file compressions', inject(function ($templateCache) {
             var templateUrl = 'views/blueprint/uploadDialog.html';
             var html = $templateCache.get(templateUrl);
             var accepts = $(html).find('[accept]');

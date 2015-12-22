@@ -8,7 +8,7 @@
  * Constant in the cosmoUiApp.
  */
 angular.module('cosmoUiApp')
-  .constant('TopologyTypesValues', {
+    .constant('TopologyTypesValues', {
         'cloudify.nodes.Root': {
             icon: 'cloudify-nodes-Root'
         },

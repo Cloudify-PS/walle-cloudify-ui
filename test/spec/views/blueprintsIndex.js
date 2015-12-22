@@ -10,9 +10,18 @@ describe('Controller: BlueprintsIndexCtrl', function () {
     }));
 
     describe('Views tests', function () {
-        var BlueprintsIndexCtrl, scope, _ngDialog,_$httpBackend,_$controller, _cloudifyClient, html, view, $compile, _q;
+        var BlueprintsIndexCtrl;
+        var scope;
+        var _ngDialog;
+        var _$httpBackend;
+        var _$controller;
+        var _cloudifyClient;
+        var html;
+        var view;
+        var $compile;
+        var _q;
 
-        beforeEach(inject(function ($templateCache,$controller, $rootScope, $httpBackend, ngDialog, cloudifyClient, _$compile_, $q) {
+        beforeEach(inject(function ($templateCache, $controller, $rootScope, $httpBackend, ngDialog, cloudifyClient, _$compile_, $q) {
             scope = $rootScope.$new();
             _cloudifyClient = cloudifyClient;
             _ngDialog = ngDialog;
@@ -41,7 +50,7 @@ describe('Controller: BlueprintsIndexCtrl', function () {
             spyOn(_cloudifyClient.blueprints, 'list').andCallFake(function () {
                 return {
                     then: function (success, error) {
-                        error({data:''});
+                        error({data: ''});
                         return _q.defer().promise;
                     }
                 };

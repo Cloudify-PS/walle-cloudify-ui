@@ -8,7 +8,7 @@
  * Service in the cosmoUiApp.
  */
 angular.module('cosmoUiApp')
-    .service('BlueprintsService', function Blueprintsservice($q, $timeout, $http ) {
+    .service('BlueprintsService', function Blueprintsservice($q, $timeout, $http) {
 
         function _add(data, successCallback, errorCallback) {
             $.ajax({ // we have to use $.ajax here.. :( formData issue.
@@ -18,27 +18,35 @@ angular.module('cosmoUiApp')
                 contentType: false,
                 processData: false,
                 cache: false,
-                success: function(data) {
-                    $timeout(function(){ // make sure digest loop, timeout will not crash if already in digest
+                success: function (data) {
+                    $timeout(function () { // make sure digest loop, timeout will not crash if already in digest
                         successCallback(data);
-                    },0);
+                    }, 0);
 
                 },
-                error: function(e) { // make sure digest loop, timeout will not crash if already in digest
-                    $timeout(function(){
+                error: function (e) { // make sure digest loop, timeout will not crash if already in digest
+                    $timeout(function () {
                         errorCallback(e.responseJSON);
-                    },0);
+                    }, 0);
 
                 }
             });
         }
 
         function _browse(params) {
-            return $http({ url: '/backend/blueprints/browse', method: 'GET', params: params});
+            return $http({
+                url: '/backend/blueprints/browse',
+                method: 'GET',
+                params: params
+            });
         }
 
         function _browseFile(params) {
-            return $http({ url: '/backend/blueprints/browse/file', method: 'GET', params: params});
+            return $http({
+                url: '/backend/blueprints/browse/file',
+                method: 'GET',
+                params: params
+            });
         }
 
         this.browse = _browse;
