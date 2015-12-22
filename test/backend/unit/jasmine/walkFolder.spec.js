@@ -8,17 +8,17 @@ describe('Backend: walkFolder', function () {
         expect(browseBlueprint).not.toBeUndefined();
     });
 
-    it('should have a Walker object', function() {
+    it('should have a Walker object', function () {
         expect(walker).not.toBeUndefined();
     });
 
-    it('should return folder content without hidden files & symbolic links', function(done) {
+    it('should return folder content without hidden files & symbolic links', function (done) {
         var folderFiles = {};
-        walker.walk('./test/backend/resources/content', function(err, data) {
+        walker.walk('./test/backend/resources/content', function (err, data) {
             folderFiles = data;
         });
 
-        waitsFor(function() {
+        waitsFor(function () {
             return folderFiles.children !== undefined;
         }, 'waiting for folder content', 5000);
 

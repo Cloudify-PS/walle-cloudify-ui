@@ -15,7 +15,7 @@ describe('Integration: addBlueprint', function () {
         expect(typeof(cloudify4node.addBlueprint)).toBe('function');
     });
 
-    it('should add blueprint successfully', function() {
+    it('should add blueprint successfully', function () {
         var result;
         var successResult;
         var blueprintName = 'blueprint' + new Date().getTime();

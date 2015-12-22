@@ -20,7 +20,6 @@ var mountFolder = function (connect, dir) {
 
 module.exports = function (grunt) {
 
-
     // load all grunt tasks
     require('matchdep').filterDev('grunt-*').forEach(grunt.loadNpmTasks);
 
@@ -44,7 +43,7 @@ module.exports = function (grunt) {
             help: {
                 options: {
                     filter: 'include',
-                    tasks: ['default', 'build','blueprint','buildArtifacts','uploadArtifacts','analyze']
+                    tasks: ['default', 'build', 'blueprint', 'buildArtifacts', 'uploadArtifacts', 'analyze']
                 }
             }
         },
@@ -96,12 +95,11 @@ module.exports = function (grunt) {
                         return [
                             lrSnippet,
                             proxySnippet,
-                            function(req, res, next) {
-                                if(req.url.indexOf('/grafana') === 0) {
+                            function (req, res, next) {
+                                if (req.url.indexOf('/grafana') === 0) {
                                     req.url = req.url.substring('/grafana'.length) || '/';
                                     return connect.static(path.resolve('../grafana-cosmo/src/'))(req, res, next);
-                                }
-                                else {
+                                } else {
                                     next();
                                 }
                             },
@@ -160,8 +158,8 @@ module.exports = function (grunt) {
             doc: ['doc'],
             backendTestResults: ['backend_test_results']
         },
-        jsdoc : {
-            backend : {
+        jsdoc: {
+            backend: {
                 src: ['backend/**/*.js'],
                 options: {
                     destination: '<%= reportsBase %>/backend-doc'
@@ -190,7 +188,7 @@ module.exports = function (grunt) {
 
                 '<%= yeoman.app %>/scripts/**/*.js'
             ],
-            backend:{
+            backend: {
                 options: {
                     jshintrc: 'backend/.jshintrc'
                 },
@@ -201,7 +199,7 @@ module.exports = function (grunt) {
                     ]
                 }
             },
-            backendMochaTest:{
+            backendMochaTest: {
                 options: {
                     jshintrc: 'test/backend/unit/mocha/.jshintrc'
                 },
@@ -211,7 +209,7 @@ module.exports = function (grunt) {
                     ]
                 }
             },
-            backendJasmineTest:{
+            backendJasmineTest: {
                 options: {
                     jshintrc: 'test/backend/.jshintrc'
                 },
@@ -243,6 +241,32 @@ module.exports = function (grunt) {
             },
             test: {
                 src: 'test/spec/**/*.js',
+                options: {
+                    config: true
+                }
+            },
+            backend: {
+                src: [
+                    'Gruntfile.js',
+                    'backend/**/*.js'
+                ],
+                options: {
+                    config: true
+                }
+            },
+            backendMochaTest: {
+                src: [
+                    'test/backend/unit/mocha/**/*.js'
+                ],
+                options: {
+                    config: true
+                }
+            },
+            backendJasmineTest: {
+                src: [
+                    'test/backend/**/*.js',
+                    '!test/backend/unit/mocha/**/*.js'
+                ],
                 options: {
                     config: true
                 }
@@ -278,14 +302,14 @@ module.exports = function (grunt) {
                 ]
             }
         },
-        compress:{
-            blueprint:{
-                options: { archive: '<%=yeoman.dist%>/blueprint.tar.gz' },
+        compress: {
+            blueprint: {
+                options: {archive: '<%=yeoman.dist%>/blueprint.tar.gz'},
                 files: [
                     {
                         cwd: '<%=yeoman.distBlueprint%>/blueprint',
                         src: ['node-application/**'],
-                        expand:true
+                        expand: true
 
                     }
                 ]
@@ -294,18 +318,17 @@ module.exports = function (grunt) {
 
         },
 
-
-// Compiles Sass to CSS and generates necessary files if requested
+        // Compiles Sass to CSS and generates necessary files if requested
         sass: {
 
             dist: {
                 files: {
-                    '.tmp/styles/main.css' : '<%= yeoman.app %>/styles/main.scss'
+                    '.tmp/styles/main.css': '<%= yeoman.app %>/styles/main.scss'
                 }
             },
             server: {
                 files: {
-                    '.tmp/styles/main.css' : '<%= yeoman.app %>/styles/main.scss'
+                    '.tmp/styles/main.css': '<%= yeoman.app %>/styles/main.scss'
                 }
 
             }
@@ -322,27 +345,27 @@ module.exports = function (grunt) {
                 src: ['.tmp/styles/main.css', '<%= yeoman.dist %>/styles/main.css']
             }
         },
-       /* compass: {
-            options: {
-                sassDir: '<%= yeoman.app %>/styles',
-                cssDir: '.tmp/styles',
-                generatedImagesDir: '.tmp/images/generated',
-                imagesDir: '<%= yeoman.app %>/images',
-                javascriptsDir: '<%= yeoman.app %>/scripts',
-                fontsDir: '<%= yeoman.app %>/styles/fonts',
-                importPath: '<%= yeoman.app %>/bower_components',
-                httpImagesPath: '/images',
-                httpGeneratedImagesPath: '/images/generated',
-                httpFontsPath: '/styles/fonts',
-                relativeAssets: false
-            },
-            dist: {},
-            server: {
-                options: {
-                    debugInfo: true
-                }
-            }
-        },*/
+        /* compass: {
+         options: {
+         sassDir: '<%= yeoman.app %>/styles',
+         cssDir: '.tmp/styles',
+         generatedImagesDir: '.tmp/images/generated',
+         imagesDir: '<%= yeoman.app %>/images',
+         javascriptsDir: '<%= yeoman.app %>/scripts',
+         fontsDir: '<%= yeoman.app %>/styles/fonts',
+         importPath: '<%= yeoman.app %>/bower_components',
+         httpImagesPath: '/images',
+         httpGeneratedImagesPath: '/images/generated',
+         httpFontsPath: '/styles/fonts',
+         relativeAssets: false
+         },
+         dist: {},
+         server: {
+         options: {
+         debugInfo: true
+         }
+         }
+         },*/
         // not used since Uglify task does concat,
         // but still available if needed
         /*concat: {
@@ -397,7 +420,7 @@ module.exports = function (grunt) {
             //     ]
             //   }
             // }
-            options:{processImport: false}
+            options: {processImport: false}
         },
         htmlmin: {
             dist: {
@@ -424,43 +447,43 @@ module.exports = function (grunt) {
         },
         // Put files not handled in other tasks here
         copy: {
-            artifacts:{
-                files:[
+            artifacts: {
+                files: [
                     {
-                        expand:true,
+                        expand: true,
                         dot: true,
                         cwd: '<%= yeoman.dist %>',
                         dest: '<%= yeoman.artifacts %>',
-                        src: [ 'cosmo-ui-*.tgz','cloudify-ui-*.tgz', 'blueprint.tar.gz'],
-                        rename: function( dest , src ){
+                        src: ['cosmo-ui-*.tgz', 'cloudify-ui-*.tgz', 'blueprint.tar.gz'],
+                        rename: function (dest, src) {
                             var md = grunt.config.data.cfy.metadata;
                             console.log('renaming ', dest, src);
-                            if ( src.indexOf('blueprint.tar.gz') >= 0){
-                                return require('path').join(dest , 'ui-blueprint-' + md.buildVersion + '.tar.gz');
-                            }else if ( src.indexOf('cloudify-ui') >= 0 || src.indexOf('cosmo-ui') >= 0){
-                                return require('path').join(dest,'cloudify-ui-' + md.buildVersion + '.tgz');
+                            if (src.indexOf('blueprint.tar.gz') >= 0) {
+                                return require('path').join(dest, 'ui-blueprint-' + md.buildVersion + '.tar.gz');
+                            } else if (src.indexOf('cloudify-ui') >= 0 || src.indexOf('cosmo-ui') >= 0) {
+                                return require('path').join(dest, 'cloudify-ui-' + md.buildVersion + '.tgz');
                             }
                         }
                     }
                 ]
             },
-            blueprint:{
-                files:[
+            blueprint: {
+                files: [
                     {
-                        expand:true,
+                        expand: true,
                         dot: true,
                         cwd: 'build',
                         dest: '<%= yeoman.distBlueprint %>',
-                        src: [ 'blueprint/**']
+                        src: ['blueprint/**']
                     },
                     {
                         expand: true,
                         dot: true,
                         cwd: '<%= yeoman.dist %>',
                         dest: '<%= yeoman.distBlueprint%>',
-                        src: [ 'cosmo-ui-*.tgz','cloudify-ui*.tgz'],
-                        rename: function( dest /*, src*/ ){
-                            return path.join(dest ,'blueprint/node-application','app.tgz');
+                        src: ['cosmo-ui-*.tgz', 'cloudify-ui*.tgz'],
+                        rename: function (dest /*, src*/) {
+                            return path.join(dest, 'blueprint/node-application', 'app.tgz');
                         }
                     }
                 ]
@@ -509,8 +532,8 @@ module.exports = function (grunt) {
                     },
                     {
                         expand: true,
-                        flatten:true,
-                        nonull:true,
+                        flatten: true,
+                        nonull: true,
                         dot: true,
                         cwd: '<%= yeoman.app %>/bower_components/gs-ui-infra/assets',
                         dest: '<%= yeoman.dist %>/styles/fonts',
@@ -521,7 +544,7 @@ module.exports = function (grunt) {
                 ]
             },
             backendCoverageTests: {
-                expand:true,
+                expand: true,
                 dest: 'backend-instrument',
                 src: ['test/**/*', 'backend/mock/**/*']
             }
@@ -541,7 +564,7 @@ module.exports = function (grunt) {
                 'imagemin',
                 'htmlmin'
             ],
-            mochaTestUnit: [ // fix for mochaTest getting stuck..
+            mochaTestUnit: [// fix for mochaTest getting stuck..
                 'mochaTest:unit'
             ]
         },
@@ -549,14 +572,13 @@ module.exports = function (grunt) {
             unit: {
                 configFile: 'karma.conf.js',
                 singleRun: true,
-                junitReporter: { outputFile: '<%= reportsBase %>/unit/test-results.xml' },
-                coverageReporter:  {
+                junitReporter: {outputFile: '<%= reportsBase %>/unit/test-results.xml'},
+                coverageReporter: {
                     dir: '<%= reportsBase %>/coverage/',
                     subdir: function (browser) {
                         return browser.toLowerCase().split(/[ /-]/)[0];
                     },
-                    reporters: [  {type: 'html'},{ type: 'cobertura'} ]
-
+                    reporters: [{type: 'html'}, {type: 'cobertura'}]
 
                 }
             },
@@ -570,7 +592,7 @@ module.exports = function (grunt) {
                 reporters: ['spec'],
                 configFile: 'karma.conf.js',
                 singleRun: false /** TODO : find how to : 1) tell karma to use chrome from here.. override conf file**/
-                                                         /** 2) tell karma to run a single test from here... override conf file **/
+                /** 2) tell karma to run a single test from here... override conf file **/
             }
         },
         ngmin: {
@@ -595,7 +617,7 @@ module.exports = function (grunt) {
             }
         },
         /* using istanbul directly since jasmine-node-coverage plugin does not work properly yet...*/
-       /* reference: https://github.com/taichi/grunt-istanbul */
+        /* reference: https://github.com/taichi/grunt-istanbul */
 
         instrument: {
             files: 'backend/**/*.js',
@@ -639,9 +661,9 @@ module.exports = function (grunt) {
         mocha_istanbul: {
             coverage: {
                 options: {
-                    coverageFolder:'<%= reportsBase %>/backend-coverage'
+                    coverageFolder: '<%= reportsBase %>/backend-coverage'
                 },
-                'src' : 'test/backend/unit/mocha/**/*'
+                'src': 'test/backend/unit/mocha/**/*'
             }
         },
         shell: {
@@ -649,11 +671,11 @@ module.exports = function (grunt) {
                 command: 'npm pack',
                 options: {
                     execOptions: {
-                        cwd : '<%= yeoman.dist %>'
+                        cwd: '<%= yeoman.dist %>'
                     }
                 }
             },
-            npmInstallDist : {
+            npmInstallDist: {
                 command: 'npm install --production',
                 options: {
                     execOptions: {
@@ -668,7 +690,7 @@ module.exports = function (grunt) {
                     report: true,
                     savePath: 'backend_test_results/',
                     useDotNotation: true,
-                    consolidate:true,
+                    consolidate: true,
                     consolidateAll: true
                 }
             },
@@ -685,13 +707,13 @@ module.exports = function (grunt) {
                 dest: '.tmp/viewTemplates/templates.js'
             }
         },
-        jscpd:{
+        jscpd: {
             //js: { path: 'app/scripts', output: 'dev/jscpd.js.output.txt' , threshold: 1 },
             //scss: { path: 'app/styles', output: 'dev/jscpd.scss.output.txt' , threshold: 1 },
             //backend: { path: 'backend', output: 'dev/jscpd.backend.output.txt' , threshold: 1 },
             //test: { path: 'test/spec', output: 'dev/jscpd.test.output.txt' , threshold: 1 },
             //testBackend: { path: 'test/backend', output: 'dev/jscpd.testBackend.output.txt' , threshold: 1 },
-            all : {
+            all: {
                 path: '.',
                 output: '<%= reportsBase %>/jscpd/jscpd.output.txt',
                 exclude: [
@@ -732,27 +754,32 @@ module.exports = function (grunt) {
                     bucket: '<%= aws.bucket %>'
                 },
                 files: [
-                    {dest: '<%= aws.folder %>', cwd: './artifacts' , expand:true, src:['**'],action: 'upload'}
+                    {
+                        dest: '<%= aws.folder %>',
+                        cwd: './artifacts',
+                        expand: true,
+                        src: ['**'],
+                        action: 'upload'
+                    }
                 ]
             }
         }
     });
-
 
     grunt.registerTask('server', function (target) {
 
         proxySnippet = require('grunt-connect-proxy/lib/utils').proxyRequest;
 
         if (target === 'dist') {
-            return grunt.task.run([ 'configureProxies', 'open', 'connect:dist:keepalive']);
+            return grunt.task.run(['configureProxies', 'open', 'connect:dist:keepalive']);
         }
         if (target === 'build_dist') {
-            return grunt.task.run([ 'build', 'configureProxies', 'open', 'connect:dist:keepalive']);
+            return grunt.task.run(['build', 'configureProxies', 'open', 'connect:dist:keepalive']);
         }
         // guy - moving lines here after build broke.
         // this way : 1) build will not break 2) it will be clearer what broke where
 
-        lrSnippet = require('connect-livereload')({ port: LIVERELOAD_PORT });
+        lrSnippet = require('connect-livereload')({port: LIVERELOAD_PORT});
 
         grunt.task.run([
             'clean:server',
@@ -764,11 +791,11 @@ module.exports = function (grunt) {
         ]);
     });
 
-    grunt.registerTask('analyze', 'analyzes the sources and reports quality problems such as copy-paste', [ 'jscpd', 'grunt-jscpd-reporter']);
+    grunt.registerTask('analyze', 'analyzes the sources and reports quality problems such as copy-paste', ['jscpd', 'grunt-jscpd-reporter']);
 
-    grunt.registerTask('test', function(testBackend) {
-        var tasks  = [];
-        if ( testBackend === undefined || testBackend === '' || testBackend === 'all' || testBackend === 'frontend') { // default
+    grunt.registerTask('test', function (testBackend) {
+        var tasks = [];
+        if (testBackend === undefined || testBackend === '' || testBackend === 'all' || testBackend === 'frontend') { // default
             tasks = [
                 'jshint',
                 'jscs',
@@ -781,11 +808,11 @@ module.exports = function (grunt) {
             ];
         }
 
-        if( testBackend === undefined || testBackend === '' || testBackend === 'all' || testBackend === 'backend') {
+        if (testBackend === undefined || testBackend === '' || testBackend === 'all' || testBackend === 'backend') {
             // guy - we always use code coverage in grunt.. when debug from the IDE so no need for no instrumented mode in grunt.
 
             // IMPORTANT: using concurrent to run mochaTest because otherwise grunt will get stuck as we mock modules.
-            tasks = tasks.concat([ 'concurrent:mochaTestUnit','mocha_istanbul']);
+            tasks = tasks.concat(['concurrent:mochaTestUnit', 'mocha_istanbul']);
             //tasks = tasks.concat( ['clean:coverageBackend','instrument', 'copy:backendCoverageTests', /*'jasmine_node:unitInstrument', 'storeCoverage',*/ 'makeReport','clean:instrumentBackend']);
         }
         grunt.task.run(tasks);
@@ -815,8 +842,7 @@ module.exports = function (grunt) {
         grunt.task.run(tasks);
     });
 
-
-    grunt.registerTask('pack', 'after `build` will run npm pack on dist folder',[
+    grunt.registerTask('pack', 'after `build` will run npm pack on dist folder', [
         'shell:npmInstallDist',
         'shell:npmPack'
     ]);
@@ -830,7 +856,7 @@ module.exports = function (grunt) {
         grunt.file.write('dist/package.json', JSON.stringify(pkg, undefined, '  '));
     });
 
-    grunt.registerTask('readMetadata', function(){
+    grunt.registerTask('readMetadata', function () {
 
         // either read version.json file or from environment variables
 
@@ -843,39 +869,33 @@ module.exports = function (grunt) {
         var versionFile = process.env.VERSION_JSON || './dev/version.json';
 
         var fileData = {};
-        if ( grunt.file.exists(versionFile) ){
+        if (grunt.file.exists(versionFile)) {
             grunt.log.ok('version file exists. reading..');
             fileData = grunt.file.readJSON(versionFile);
-        }else{
+        } else {
             grunt.log.ok('version file does not exist. skipping');
         }
 
-
-        if ( !grunt.config.data.cfy){
+        if (!grunt.config.data.cfy) {
             grunt.config.data.cfy = {};
         }
 
         grunt.config.data.cfy.metadata = _.merge({}, envData, fileData);
 
-
-        grunt.config.data.cfy.metadata.fullVersion = _.compact([ grunt.config.data.cfy.metadata.version, grunt.config.data.cfy.metadata.prerelease ]).join('-');
+        grunt.config.data.cfy.metadata.fullVersion = _.compact([grunt.config.data.cfy.metadata.version, grunt.config.data.cfy.metadata.prerelease]).join('-');
 
         //
-        grunt.config.data.cfy.metadata.buildVersion = _.compact([ grunt.config.data.cfy.metadata.version, grunt.config.data.cfy.metadata.prerelease, grunt.config.data.cfy.metadata.build ?  'b' + grunt.config.data.cfy.metadata.build : null ]).join('-');
+        grunt.config.data.cfy.metadata.buildVersion = _.compact([grunt.config.data.cfy.metadata.version, grunt.config.data.cfy.metadata.prerelease, grunt.config.data.cfy.metadata.build ? 'b' + grunt.config.data.cfy.metadata.build : null]).join('-');
 
         grunt.log.debug('version data is', grunt.config.data.cfy.version);
 
     });
 
-
-
-
-
     grunt.registerTask('overrideBuildVersion', function () {
         var done = this.async();
         var packageJson = grunt.file.readJSON('dist/package.json');
 
-        if ( !process.env.NEW_BUILD ) {
+        if (!process.env.NEW_BUILD) {
 
             var versionFilename = 'VERSION';
             var buildVersion = null;
@@ -903,8 +923,7 @@ module.exports = function (grunt) {
                 grunt.log.ok(versionFilename + ' does not exist. skipping version manipulation');
             }
 
-        }else {
-
+        } else {
 
             packageJson.version = grunt.config.data.cfy.metadata.fullVersion;
             try {
@@ -925,7 +944,7 @@ module.exports = function (grunt) {
 
     });
 
-    grunt.registerTask('backend', function() {
+    grunt.registerTask('backend', function () {
         grunt.config.set('jshint.options.jshintrc', 'backend/.jshintrc');
         grunt.task.run('jshint:backend');
     });
@@ -935,13 +954,12 @@ module.exports = function (grunt) {
      * run it by running `npm pack blueprint`
      * or if you already ran `npm pack` just run `npm blueprint`
      */
-    grunt.registerTask('blueprint', 'a task to run after npm pack in order to construct the blueprint',[
+    grunt.registerTask('blueprint', 'a task to run after npm pack in order to construct the blueprint', [
         'copy:blueprint',
         'compress:blueprint'
     ]);
 
-
-    grunt.registerTask('uploadArtifacts', 'assumes `buildArtifacts` execution. uploads artifacts to amazon and tarzan',[
+    grunt.registerTask('uploadArtifacts', 'assumes `buildArtifacts` execution. uploads artifacts to amazon and tarzan', [
         'readS3Keys',
         'aws_s3:uploadArtifacts'
     ]);
@@ -957,37 +975,36 @@ module.exports = function (grunt) {
         'copy:artifacts'
     ]);
 
-    grunt.registerTask('readS3Keys', function(){
+    grunt.registerTask('readS3Keys', function () {
 
         var s3KeysDefault = {
-            'accessKey' : process.env.S3_ACCESS_KEY,
-            'secretKey' : process.env.S3_SECRET_KEY,
-            'bucket' :    process.env.S3_BUCKET,
-            'folder' :    process.env.S3_FOLDER,
-            'region' :    process.env.S3_REGION
+            'accessKey': process.env.S3_ACCESS_KEY,
+            'secretKey': process.env.S3_SECRET_KEY,
+            'bucket': process.env.S3_BUCKET,
+            'folder': process.env.S3_FOLDER,
+            'region': process.env.S3_REGION
 
         };
-
 
         var s3KeysFile = process.env.AWS_JSON || './dev/aws-keys.json';
 
         // if nothing is defined anywhere... lets fail the process
-        if (_.compact(_.values(s3KeysDefault)).length === 0 && !grunt.file.exists(s3KeysFile) ){
-            grunt.fail.fatal('expecting s3 configuration either with S3_(ACCESS_KEY, SECRET_KEY, BUCKET_FOLDER, REGION) environment variables or in file ' + s3KeysFile  + ' but configuration was empty');
+        if (_.compact(_.values(s3KeysDefault)).length === 0 && !grunt.file.exists(s3KeysFile)) {
+            grunt.fail.fatal('expecting s3 configuration either with S3_(ACCESS_KEY, SECRET_KEY, BUCKET_FOLDER, REGION) environment variables or in file ' + s3KeysFile + ' but configuration was empty');
         }
 
         var fileOverrides = {};
-        if ( grunt.file.exists(s3KeysFile)) {
+        if (grunt.file.exists(s3KeysFile)) {
             grunt.log.ok('reading s3 keys from [' + s3KeysFile + ']');
             fileOverrides = grunt.file.readJSON(s3KeysFile); // Read the file
-        }else if ( process.env.AWS_JSON){
-            grunt.log.warn('AWS_JSON file declared but does not exist [' + process.env.AWS_JSON + ']' );
+        } else if (process.env.AWS_JSON) {
+            grunt.log.warn('AWS_JSON file declared but does not exist [' + process.env.AWS_JSON + ']');
         }
 
         grunt.config.data.aws = _.merge({}, s3KeysDefault, fileOverrides);
     });
 
-    grunt.registerTask('default', 'compiles the project' ,[
+    grunt.registerTask('default', 'compiles the project', [
         'jshint',
         'jscs',
         'jsdoc',
@@ -996,12 +1013,7 @@ module.exports = function (grunt) {
         'backend'
     ]);
 
-
-
-
     grunt.registerTask('compass', ['sass']);
-
-
     grunt.registerTask('help', ['availabletasks:help']);
 
 };

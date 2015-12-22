@@ -1,98 +1,105 @@
 {
-    "inputs": {
-        "flavor_name": "flavor_name",
-        "webserver_port": 8080,
-        "image_name": "image_name",
-        "agent_user": "agent_user"
-    },
-    "policy_triggers": {
-        "cloudify.policies.triggers.execute_workflow": {
-            "source": "https://raw.githubusercontent.com/cloudify-cosmo/cloudify-manager/master/resources/rest-service/cloudify/triggers/execute_workflow.clj",
-            "parameters": {
-                "workflow_parameters": {
-                    "default": {},
-                    "description": "Workflow paramters"
-                },
-                "force": {
-                    "default": false,
-                    "description": "Should the workflow be executed even when another execution\nfor the same workflow is currently in progress\n"
-                },
-                "workflow": {
-                    "description": "Workflow name to execute"
-                },
-                "socket_timeout": {
-                    "default": 1000,
-                    "description": "Socket timeout when making request to manager REST in ms"
-                },
-                "allow_custom_parameters": {
-                    "default": false,
-                    "description": "Should parameters not defined in the workflow parameters\nschema be accepted\n"
-                },
-                "conn_timeout": {
-                    "default": 1000,
-                    "description": "Connection timeout when making request to manager REST in ms"
-                }
-            }
+  "inputs": {
+    "flavor_name": "flavor_name",
+    "webserver_port": 8080,
+    "image_name": "image_name",
+    "agent_user": "agent_user"
+  },
+  "policy_triggers": {
+    "cloudify.policies.triggers.execute_workflow": {
+      "source": "https://raw.githubusercontent.com/cloudify-cosmo/cloudify-manager/master/resources/rest-service/cloudify/triggers/execute_workflow.clj",
+      "parameters": {
+        "workflow_parameters": {
+          "default": {},
+          "description": "Workflow paramters"
+        },
+        "force": {
+          "default": false,
+          "description": "Should the workflow be executed even when another execution\nfor the same workflow is currently in progress\n"
+        },
+        "workflow": {
+          "description": "Workflow name to execute"
+        },
+        "socket_timeout": {
+          "default": 1000,
+          "description": "Socket timeout when making request to manager REST in ms"
+        },
+        "allow_custom_parameters": {
+          "default": false,
+          "description": "Should parameters not defined in the workflow parameters\nschema be accepted\n"
+        },
+        "conn_timeout": {
+          "default": 1000,
+          "description": "Connection timeout when making request to manager REST in ms"
         }
-    },
-    "groups": {},
-    "blueprint_id": "blueprint1414674274485",
-    "policy_types": {
-        "cloudify.policies.types.threshold": {
-            "source": "https://raw.githubusercontent.com/cloudify-cosmo/cloudify-manager/master/resources/rest-service/cloudify/policies/threshold.clj",
-            "properties": {
-                "threshold": {
-                    "description": "The metric threshold value"
-                },
-                "metric": {
-                    "description": "The metric name"
-                },
-                "upper_bound": {
-                    "default": true,
-                    "description": "boolean value for describing the semantics of the threshold.\nif 'true': metrics whose value if bigger then the threshold\nwill cause the triggers to be processed. if 'false': metrics\nwith values lower then the threshold will do so.\n"
-                }
-            }
+      }
+    }
+  },
+  "groups": {},
+  "blueprint_id": "blueprint1414674274485",
+  "policy_types": {
+    "cloudify.policies.types.threshold": {
+      "source": "https://raw.githubusercontent.com/cloudify-cosmo/cloudify-manager/master/resources/rest-service/cloudify/policies/threshold.clj",
+      "properties": {
+        "threshold": {
+          "description": "The metric threshold value"
+        },
+        "metric": {
+          "description": "The metric name"
+        },
+        "upper_bound": {
+          "default": true,
+          "description": "boolean value for describing the semantics of the threshold.\nif 'true': metrics whose value if bigger then the threshold\nwill cause the triggers to be processed. if 'false': metrics\nwith values lower then the threshold will do so.\n"
         }
-    },
-    "outputs": {
-        "http_endpoint": {
-            "description": "HTTP web server endpoint.",
-            "value": {
-                "get_attribute": ["vm", "ip"]
-            }
+      }
+    }
+  },
+  "outputs": {
+    "http_endpoint": {
+      "description": "HTTP web server endpoint.",
+      "value": {
+        "get_attribute": [
+          "vm",
+          "ip"
+        ]
+      }
+    }
+  },
+  "created_at": "2014-10-30 13:09:33.867319",
+  "workflows": [
+    {
+      "created_at": null,
+      "name": "execute_operation",
+      "parameters": {
+        "operation_kwargs": {
+          "default": {}
+        },
+        "node_ids": {
+          "default": []
+        },
+        "node_instance_ids": {
+          "default": []
+        },
+        "run_by_dependency_order": {
+          "default": false
+        },
+        "operation": {},
+        "type_names": {
+          "default": []
         }
+      }
     },
-    "created_at": "2014-10-30 13:09:33.867319",
-    "workflows": [{
-        "created_at": null,
-        "name": "execute_operation",
-        "parameters": {
-            "operation_kwargs": {
-                "default": {}
-            },
-            "node_ids": {
-                "default": []
-            },
-            "node_instance_ids": {
-                "default": []
-            },
-            "run_by_dependency_order": {
-                "default": false
-            },
-            "operation": {},
-            "type_names": {
-                "default": []
-            }
-        }
-    }, {
-        "created_at": null,
-        "name": "install",
-        "parameters": {}
-    }, {
-        "created_at": null,
-        "name": "uninstall",
-        "parameters": {}
-    }],
-    "id": "deployment",
-    "updated_at": "2014-10-30 13:09:33.867319"
+    {
+      "created_at": null,
+      "name": "install",
+      "parameters": {}
+    },
+    {
+      "created_at": null,
+      "name": "uninstall",
+      "parameters": {}
+    }
+  ],
+  "id": "deployment",
+  "updated_at": "2014-10-30 13:09:33.867319"
 }

@@ -14,7 +14,7 @@ describe('Integration: executeDeployment', function () {
         expect(typeof(cloudify4node.executeDeployment)).toBe('function');
     });
 
-    it('should execute deployment successfully', function() {
+    it('should execute deployment successfully', function () {
         // add deployment with inputs
         var result;
         var successResult = null;
@@ -24,15 +24,15 @@ describe('Integration: executeDeployment', function () {
             'deployment_id': null
         };
 
-        cloudify4node.getDeployments(function(err, data) {
+        cloudify4node.getDeployments(function (err, data) {
             deployments = JSON.parse(data);
         });
 
-        waitsFor(function() {
+        waitsFor(function () {
             return deployments !== null;
         });
 
-        runs(function() {
+        runs(function () {
             fs.readFile('./test/backend/resources/execution/executionSuccessResult.json', 'utf-8', function (err, data) {
                 successResult = JSON.parse(data);
                 successResult.blueprint_id = deployments[0].blueprint_id;

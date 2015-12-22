@@ -1,68 +1,76 @@
 {
-    "lastEvent": 4,
-    "deploymentTotalEvents": 5,
-    "firstEvent": 0,
-    "id": "9fdc3dfb-5525-4def-bd55-030b05342dc3",
-    "events": [{
-        "timestamp": "2014-01-23 13:38:10.651",
-        "workflow_id": "20140123-1338-pishipuji-jugizuri",
-        "type": "workflow_received",
-        "deployment_id": "9fdc3dfb-5525-4def-bd55-030b05342dc3"
-    }, {
-        "timestamp": "2014-01-23 13:38:10.968",
-        "workflow_id": "20140123-1338-pishipuji-jugizuri",
-        "type": "workflow_started",
-        "deployment_id": "9fdc3dfb-5525-4def-bd55-030b05342dc3"
-    }, {
-        "blueprint": "hello_world",
-        "timestamp": "2014-01-23 13:38:11.253",
-        "workflow_name": "initialize_nodes",
-        "workflow_id": "20140123-1338-pishipuji-jugizuri",
-        "deployment_id": "9fdc3dfb-5525-4def-bd55-030b05342dc3",
-        "type": "workflow_stage",
-        "stage": "Initializing monitoring policies"
-    }, {
-        "node": "vm_b98e6",
-        "blueprint": "hello_world",
-        "timestamp": "2014-01-23 13:38:12.914",
-        "app": "hello_world",
-        "workflow_id": "20140123-1338-pishipuji-jugizuri",
-        "deployment_id": "9fdc3dfb-5525-4def-bd55-030b05342dc3",
-        "type": "workflow_stage",
-        "workflow_name": "initialize_nodes",
-        "stage": "Create node"
-    }, {
-        "timestamp": "2014-01-23 13:38:17.409",
-        "workflow_id": "20140123-1338-pishipuji-jugizuri",
-        "type": "workflow_failed",
-        "deployment_id": "9fdc3dfb-5525-4def-bd55-030b05342dc3",
-        "error": {
-            "deviations": null,
-            "trace": null,
-            "tree": ["participant", {
-                "target": "${target}",
-                "exec": "${operation}",
-                "argument_names": "${argument_names}",
-                "to_f": "${v:to_f}",
-                "ref": "execute_task",
-                "payload": {
-                    "relationship_properties": "$relationship_other_node.properties",
-                    "params": "$v:params",
-                    "properties": "$operation_properties"
-                }
-            },
-                []
-            ],
-            "fei": {
-                "wfid": "20140123-1338-pishipuji-jugizuri",
-                "subid": "76fff67d5f09242e5350c6d19633cc66",
-                "expid": "0_1_6",
-                "engine_id": "engine"
-            },
-            "details": null,
-            "message": "BadRequest()",
-            "class": "Exception",
-            "at": "2014-01-23 13:38:17.395000 UTC"
-        }
-    }]
+  "lastEvent": 4,
+  "deploymentTotalEvents": 5,
+  "firstEvent": 0,
+  "id": "9fdc3dfb-5525-4def-bd55-030b05342dc3",
+  "events": [
+    {
+      "timestamp": "2014-01-23 13:38:10.651",
+      "workflow_id": "20140123-1338-pishipuji-jugizuri",
+      "type": "workflow_received",
+      "deployment_id": "9fdc3dfb-5525-4def-bd55-030b05342dc3"
+    },
+    {
+      "timestamp": "2014-01-23 13:38:10.968",
+      "workflow_id": "20140123-1338-pishipuji-jugizuri",
+      "type": "workflow_started",
+      "deployment_id": "9fdc3dfb-5525-4def-bd55-030b05342dc3"
+    },
+    {
+      "blueprint": "hello_world",
+      "timestamp": "2014-01-23 13:38:11.253",
+      "workflow_name": "initialize_nodes",
+      "workflow_id": "20140123-1338-pishipuji-jugizuri",
+      "deployment_id": "9fdc3dfb-5525-4def-bd55-030b05342dc3",
+      "type": "workflow_stage",
+      "stage": "Initializing monitoring policies"
+    },
+    {
+      "node": "vm_b98e6",
+      "blueprint": "hello_world",
+      "timestamp": "2014-01-23 13:38:12.914",
+      "app": "hello_world",
+      "workflow_id": "20140123-1338-pishipuji-jugizuri",
+      "deployment_id": "9fdc3dfb-5525-4def-bd55-030b05342dc3",
+      "type": "workflow_stage",
+      "workflow_name": "initialize_nodes",
+      "stage": "Create node"
+    },
+    {
+      "timestamp": "2014-01-23 13:38:17.409",
+      "workflow_id": "20140123-1338-pishipuji-jugizuri",
+      "type": "workflow_failed",
+      "deployment_id": "9fdc3dfb-5525-4def-bd55-030b05342dc3",
+      "error": {
+        "deviations": null,
+        "trace": null,
+        "tree": [
+          "participant",
+          {
+            "target": "${target}",
+            "exec": "${operation}",
+            "argument_names": "${argument_names}",
+            "to_f": "${v:to_f}",
+            "ref": "execute_task",
+            "payload": {
+              "relationship_properties": "$relationship_other_node.properties",
+              "params": "$v:params",
+              "properties": "$operation_properties"
+            }
+          },
+          []
+        ],
+        "fei": {
+          "wfid": "20140123-1338-pishipuji-jugizuri",
+          "subid": "76fff67d5f09242e5350c6d19633cc66",
+          "expid": "0_1_6",
+          "engine_id": "engine"
+        },
+        "details": null,
+        "message": "BadRequest()",
+        "class": "Exception",
+        "at": "2014-01-23 13:38:17.395000 UTC"
+      }
+    }
+  ]
 }

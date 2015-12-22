@@ -25,9 +25,9 @@
     "beforeEach": false,
     "describe": false,
     "it": false,
-      "waitsFor" : false,
-      "runs" : false,
-      "expect" : false
+    "waitsFor": false,
+    "runs": false,
+    "expect": false
   }
 }
 

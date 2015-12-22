@@ -8,9 +8,6 @@ var logger = log4js.getLogger('apilogs');
 
 logger.setLevel('OFF');
 
-
 logger.info('TestLog');
 
 console.log('Appender:', log4js.levels);
-
-

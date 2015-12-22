@@ -1,6 +1,5 @@
 'use strict';
 
-
 var logger = require('log4js').getLogger('BlueprintsController');
 logger.info('loaded');
 
@@ -18,7 +17,7 @@ var fs = require('fs');
  *
  * @constructor
  */
-var UploadTypes = function(){
+var UploadTypes = function () {
 
     this.ids = {
         FILE: 'file'
@@ -30,8 +29,8 @@ var UploadTypes = function(){
         }
     ];
 
-    this.isValid = function(type){
-        return !!_.find(this.types, { id : type } );
+    this.isValid = function (type) {
+        return !!_.find(this.types, {id: type});
     };
 };
 
@@ -39,9 +38,6 @@ var UploadTypes = function(){
  * @type {UploadTypes}
  */
 var uploadTypes = new UploadTypes();
-
-
-
 
 /**
  *
@@ -61,52 +57,52 @@ var uploadTypes = new UploadTypes();
  * @param {object} req.cloudifyClientConf - see CloudifyMiddleware
  * @param {object} res response
  */
-exports.upload = function( req, res ){
-    var cloudifyConf = { authHeader :  req.cloudifyAuthHeader };
+exports.upload = function (req, res) {
+    var cloudifyConf = {authHeader: req.cloudifyAuthHeader};
     var blueprintUploadData = req.body;
 
-    if ( !blueprintUploadData ){
-        res.status(400).send({'message' : 'body is missing'});
+    if (!blueprintUploadData) {
+        res.status(400).send({'message': 'body is missing'});
         return;
     }
 
     // resolve upload type
     var type = uploadTypes.ids.FILE;
-    if ( blueprintUploadData.hasOwnProperty('type') ){
+    if (blueprintUploadData.hasOwnProperty('type')) {
         type = blueprintUploadData.type;
         logger.debug('request overrides type with value', type);
     } else {
         logger.debug('request does not override type');
     }
 
-    if ( !uploadTypes.isValid(type) ){
-        res.status(400).send( { 'message' : 'invalid upload type [' + type + ']' } );
+    if (!uploadTypes.isValid(type)) {
+        res.status(400).send({'message': 'invalid upload type [' + type + ']'});
         return;
     } else {
         logger.debug(type, 'is valid upload type');
     }
 
-    function uploadCallback( err, data, statusCode ){
+    function uploadCallback(err, data, statusCode) {
         //logger.info('handling upload callback', err, data );
-        if ( !!err ){
-            if ( !!err.status ){
+        if (!!err) {
+            if (!!err.status) {
                 res.status(err.status).send(err);
                 return;
-            }else{
+            } else {
                 res.status(500).send(err);
                 return;
             }
             return;
         }
 
-        if ( !!statusCode ){
+        if (!!statusCode) {
             res.status(statusCode);
         }
         res.send(data);
     }
 
-    if ( type === uploadTypes.ids.FILE ){
-        var readStream = fs.createReadStream( req.files.application_archive.path, { bufferSize: 64 * 1024 });
-        services.cloudify4node.uploadBlueprint( cloudifyConf, readStream, blueprintUploadData.opts , uploadCallback);
+    if (type === uploadTypes.ids.FILE) {
+        var readStream = fs.createReadStream(req.files.application_archive.path, {bufferSize: 64 * 1024});
+        services.cloudify4node.uploadBlueprint(cloudifyConf, readStream, blueprintUploadData.opts, uploadCallback);
     }
 };
