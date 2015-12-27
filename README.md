@@ -3,7 +3,7 @@
 
 An [AngularJS][4] based UI for Cosmo.
 
-
+* Master [![Circle CI](https://circleci.com/gh/cloudify-cosmo/cloudify-ui/tree/master.svg?style=shield)](https://circleci.com/gh/cloudify-cosmo/cloudify-ui/tree/master)
 
 ===
 
