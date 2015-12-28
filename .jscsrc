@@ -16,8 +16,8 @@
   "disallowMultipleLineStrings": true,
   "disallowMixedSpacesAndTabs": true,
   "disallowTrailingWhitespace": true,
-  "disallowSpaceAfterPrefixUnaryOperators": true,
-  "disallowMultipleVarDecl": true,
+//  "disallowSpaceAfterPrefixUnaryOperators": true,
+//  "disallowMultipleVarDecl": true,
   "disallowKeywordsOnNewLine": ["else"],
 
   "requireSpaceAfterKeywords": [
@@ -32,32 +32,34 @@
     "catch"
   ],
   "requireSpaceBeforeBinaryOperators": [
-    "=", "+=", "-=", "*=", "/=", "%=", "<<=", ">>=", ">>>=",
+//    "=",
+    "+=", "-=", "*=", "/=", "%=", "<<=", ">>=", ">>>=",
     "&=", "|=", "^=", "+=",
 
-    "+", "-", "*", "/", "%", "<<", ">>", ">>>", "&",
+//    "+",
+    "-", "*", "/", "%", "<<", ">>", ">>>", "&",
     "|", "^", "&&", "||", "===", "==", ">=",
     "<=", "<", ">", "!=", "!=="
   ],
-  "requireSpaceAfterBinaryOperators": true,
+//  "requireSpaceAfterBinaryOperators": true,
   "requireSpacesInConditionalExpression": true,
-  "requireSpaceBeforeBlockStatements": true,
+//  "requireSpaceBeforeBlockStatements": true,
   "requireSpacesInForStatement": true,
   "requireLineFeedAtFileEnd": true,
-  "requireSpacesInFunctionExpression": {
-    "beforeOpeningCurlyBrace": true
-  },
-  "disallowSpacesInsideObjectBrackets": "all",
-  "disallowSpacesInsideArrayBrackets": "all",
-  "disallowSpacesInsideParentheses": true,
+//  "requireSpacesInFunctionExpression": {
+//    "beforeOpeningCurlyBrace": true
+//  },
+//  "disallowSpacesInsideObjectBrackets": "all",
+//  "disallowSpacesInsideArrayBrackets": "all",
+//  "disallowSpacesInsideParentheses": true,
 
-  "disallowMultipleLineBreaks": true,
+//  "disallowMultipleLineBreaks": true,
   "disallowNewlineBeforeBlockStatements": true,
   "disallowKeywords": ["with"],
   "disallowSpacesInCallExpression": true,
-  "disallowSpaceAfterObjectKeys": true,
-  "requireSpaceBeforeObjectValues": true,
-  "requireCapitalizedConstructors": true,
+//  "disallowSpaceAfterObjectKeys": true,
+//  "requireSpaceBeforeObjectValues": true,
+//  "requireCapitalizedConstructors": true,
   "requireDotNotation": true,
   "requireSemicolons": true,
   "validateParameterSeparator": ", "

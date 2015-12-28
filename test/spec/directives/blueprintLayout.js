@@ -19,7 +19,7 @@ describe('Directive: blueprintLayout', function () {
         scope.$digest();
     });
 
-    beforeEach(inject(function (cloudifyClient,$routeParams) {
+    beforeEach(inject(function (cloudifyClient, $routeParams) {
         spyOn(cloudifyClient.blueprints, 'get').and.callFake(function () {
             return {
                 then: function (success) {

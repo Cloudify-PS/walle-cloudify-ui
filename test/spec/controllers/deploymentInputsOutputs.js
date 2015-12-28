@@ -16,7 +16,7 @@ describe('Controller: InputsOutputsCtrl', function () {
         scope,html,$compile;
 
     // Initialize the controller and a mock scope
-    beforeEach(inject(function ($controller, $rootScope, cloudifyClient ,$templateCache, _$compile_) {
+    beforeEach(inject(function ($controller, $rootScope, cloudifyClient, $templateCache, _$compile_) {
         _cloudifyClient = cloudifyClient;
         spyOn(cloudifyClient.deployments,'get').and.returnValue({ then: function(){}});
         spyOn(cloudifyClient.deployments.outputs,'get').and.returnValue({ then: function(){}});

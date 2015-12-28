@@ -86,7 +86,7 @@ describe('Controller: CancelExecutionDialogCtrl', function () {
         var newConfirmDialog = null;
 
 
-        beforeEach(inject(function(ngDialog,$timeout){
+        beforeEach(inject(function(ngDialog, $timeout){
 
             newConfirmDialog = function (){
                 var dialogId = ngDialog.open({

@@ -7,7 +7,7 @@ describe('Controller: DeploymentNodesCtrl', function () {
     beforeEach(module('cosmoUiApp', 'backend-mock'));
 
     var DeploymentNodesCtrl, scope;
-    var _cloudifyClient,_NodeService;
+    var _cloudifyClient, _NodeService;
 
     var initCtrl = inject(function($controller){
         DeploymentNodesCtrl = $controller('DeploymentNodesCtrl', {
@@ -16,7 +16,7 @@ describe('Controller: DeploymentNodesCtrl', function () {
     });
 
     // Initialize the controller and a mock scope
-    beforeEach(inject(function ($rootScope ,cloudifyClient ,NodeService ) {
+    beforeEach(inject(function ($rootScope, cloudifyClient, NodeService) {
         _cloudifyClient = cloudifyClient;
         _NodeService = NodeService;
         scope = $rootScope.$new();

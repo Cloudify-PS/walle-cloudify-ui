@@ -67,7 +67,7 @@ describe('Directive: floatingBlueprintNodePanel', function () {
     beforeEach(module('cosmoUiApp', 'ngMock', 'templates-main', 'backend-mock'));
 
     describe('Test setup', function() {
-        it ('', inject(function ($compile, $rootScope, $httpBackend) {
+        it('', inject(function ($compile, $rootScope, $httpBackend) {
             $httpBackend.whenGET('/backend/configuration?access=all').respond(200);
             $httpBackend.whenGET('/backend/versions/ui').respond(200);
             $httpBackend.whenGET('/backend/versions/manager').respond(200);
