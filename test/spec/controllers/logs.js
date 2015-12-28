@@ -1,17 +1,12 @@
 'use strict';
 
 describe('Controller: LogsCtrl', function () {
-    var LogsCtrl;
-    var scope;
-    var _cloudifyClient;
-    var _TableStateToRestApi;
-    var _EventsMap;
-    var _$routeParams;
-    var _$location;
+    var LogsCtrl, scope;
+    var _cloudifyClient, _TableStateToRestApi, _EventsMap, _$routeParams, _$location;
 
     beforeEach(module('cosmoUiApp', 'backend-mock'));
 
-    var init = inject(function ($rootScope, cloudifyClient, TableStateToRestApi, EventsMap, $location) {
+    var init = inject(function ($rootScope, cloudifyClient, TableStateToRestApi, EventsMap, $location ) {
         _cloudifyClient = cloudifyClient;
         _TableStateToRestApi = TableStateToRestApi;
         _EventsMap = EventsMap;
@@ -29,29 +24,28 @@ describe('Controller: LogsCtrl', function () {
     });
 
     var spyOnServices = function () {
-        spyOn(_cloudifyClient.blueprints, 'list').andReturn({
+        spyOn(_cloudifyClient.blueprints, 'list').and.returnValue({
             then: function () {
             }
         });
 
-        spyOn(_cloudifyClient.deployments, 'list').andReturn({
+        spyOn(_cloudifyClient.deployments, 'list').and.returnValue({
             then: function () {
             }
         });
 
-        spyOn(_cloudifyClient.events, 'get').andReturn({
+        spyOn(_cloudifyClient.events, 'get').and.returnValue({
             then: function () {
             }
         });
 
-        spyOn(_TableStateToRestApi, 'getOptions').andReturn({});
+        spyOn(_TableStateToRestApi, 'getOptions').and.returnValue({});
 
-        spyOn(_EventsMap, 'getEventIcon').andReturn('');
+        spyOn(_EventsMap, 'getEventIcon').and.returnValue('');
 
-        spyOn(_EventsMap, 'getEventText').andReturn('');
+        spyOn(_EventsMap, 'getEventText').and.returnValue('');
 
-        spyOn(_$location, 'search').andCallFake(function () {
-        });
+        spyOn(_$location, 'search').and.callFake(function(){});
     };
 
     beforeEach(init);
@@ -63,22 +57,20 @@ describe('Controller: LogsCtrl', function () {
             expect(LogsCtrl).not.toBeUndefined();
         });
         describe('on first load', function () {
-            it('should search url with timestamp desc when no parameter was given', function () {
+            it('should search url with timestamp desc when no parameter was given', function(){
                 _$routeParams = {};
                 initCtrl();
 
-                expect(_$location.search).toHaveBeenCalledWith({
-                    sortByLogs: 'timestamp',
-                    reverseLogs: 'true'
-                });
+                expect(_$location.search).toHaveBeenCalledWith({ sortByLogs : 'timestamp', reverseLogs : 'true' });
             });
 
-            it('should search url with timestamp desc when no parameter was given', function () {
-                _$routeParams = {someKey: 'someValue'};
+            it('should search url with timestamp desc when no parameter was given', function(){
+                _$routeParams = {someKey:'someValue'};
                 initCtrl();
 
                 expect(_$location.search).not.toHaveBeenCalled();
             });
+
 
             it('should define filter options', function () {
                 initCtrl();
@@ -88,7 +80,7 @@ describe('Controller: LogsCtrl', function () {
 
             describe('mock getting filters info.', function () {
                 beforeEach(function () {
-                    _cloudifyClient.blueprints.list.andReturn({
+                    _cloudifyClient.blueprints.list.and.returnValue({
                         then: function (successCallback) {
                             var response = {
                                 data: {
@@ -106,7 +98,7 @@ describe('Controller: LogsCtrl', function () {
                         }
                     });
 
-                    _cloudifyClient.deployments.list.andReturn({
+                    _cloudifyClient.deployments.list.and.returnValue({
                         then: function (successCallback) {
                             var response = {
                                 data: {
@@ -171,26 +163,21 @@ describe('Controller: LogsCtrl', function () {
             });
         });
 
-        describe('#updateData', function () {
-            var defaultMockTableState;
-            beforeEach(function () {
-                //setting default tableState settings object
-                defaultMockTableState = {
-                    pagination: {}
-                };
-            });
+        describe('#updateData success', function () {
+            var defaultMockTableState = {
+                pagination: {}
+            };
 
-            it('should update data on tableState change and not show error', function () {
+            beforeEach(function (done) {
                 initCtrl();
 
-                //mocking success response data from events
-                _cloudifyClient.events.get.andReturn({
+                _cloudifyClient.events.get.and.returnValue({
                     then: function (successCallback) {
                         var getLogsResponse = {
                             data: {
                                 items: [],
                                 metadata: {
-                                    pagination: {
+                                    pagination:{
                                         total: 1
                                     }
                                 }
@@ -200,21 +187,28 @@ describe('Controller: LogsCtrl', function () {
                         successCallback(getLogsResponse);
                     }
                 });
-                expect(scope.logsHits).toBe(undefined);
                 scope.updateData(defaultMockTableState);
-                //waiting for debounce
-                waits(351);
-                runs(function () {
-                    expect(scope.logsHits).not.toBe(undefined);
-                    expect(scope.getLogsError).toBe(null);
-                });
+
+                setTimeout(function () {
+                    done();
+                }, 350);
             });
 
-            it('should show error when failing to update data on tableState Change', function () {
+            it('should update data on tableState change and not show error', function () {
+                expect(scope.logsHits).not.toBe(undefined);
+                expect(scope.getLogsError).toBe(null);
+            });
+        });
+
+        describe('#updateData error', function () {
+            var defaultMockTableState = {
+                pagination: {}
+            };
+
+            beforeEach(function (done) {
                 initCtrl();
 
-                //mocking failure response data from events
-                _cloudifyClient.events.get.andReturn({
+                _cloudifyClient.events.get.and.returnValue({
                     then: function (successCallback, failureCallback) {
                         var getLogsResponse = {
                             data: {
@@ -227,27 +221,28 @@ describe('Controller: LogsCtrl', function () {
                 });
 
                 scope.updateData(defaultMockTableState);
-                //waiting for debounce
-                waits(351);
-                runs(function () {
-                    expect(scope.getLogsError).toBe('Getting logs failed message');
-                });
+
+                setTimeout(function () {
+                    done();
+                }, 350);
+            });
+
+            it('should show error when failing to update data on tableState Change', function () {
+                expect(scope.getLogsError).toBe('Getting logs failed message');
             });
         });
 
         describe('#clearFilters', function () {
-            it('should clear filters', function () {
+            it('should clear filters',function(){
                 initCtrl();
                 scope.eventsFilter = {
                     'blueprints': ['blueprint1'],
-                    'deployments': ['deployment2', 'deployment1'],
-                    'logLevels': ['error', 'warning', 'info'],
+                    'deployments': ['deployment2','deployment1'],
+                    'logLevels': ['error','warning','info'],
                     'eventTypes': ['task_sent'],
                     'timeRange': {
-                        // jscs:disable requireCapitalizedConstructors
                         'gte': new moment('2015-06-17T15:50:00.000Z'),
                         'lte': new moment('2015-06-18T16:50:00.000Z')
-                        // jscs:enable requireCapitalizedConstructors
                     },
                     'messageText': 'free text'
                 };
@@ -265,8 +260,8 @@ describe('Controller: LogsCtrl', function () {
                 });
             });
         });
-        describe('#isValidTime', function () {
-            it('should check if value is an expected time', function () {
+        describe('#isValidTime' , function(){
+            it('should check if value is an expected time', function(){
                 initCtrl();
                 expect(scope.isValidTime(undefined)).toBe(false);
                 expect(scope.isValidTime('')).toBe(false);
@@ -276,9 +271,7 @@ describe('Controller: LogsCtrl', function () {
                 expect(scope.isValidTime('1234567890123456')).toBe(false);
                 expect(scope.isValidTime('2015/10/12 10:10')).toBe(false);
                 expect(scope.isValidTime('2015-10-12 10:10')).toBe(true);
-                // jscs:disable requireCapitalizedConstructors
                 expect(scope.isValidTime(new moment())).toBe(true);
-                // jscs:enable requireCapitalizedConstructors
             });
         });
     });

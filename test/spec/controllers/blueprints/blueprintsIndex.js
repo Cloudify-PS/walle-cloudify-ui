@@ -2,8 +2,7 @@
 
 describe('Controller: BlueprintsIndexCtrl', function () {
 
-    var BlueprintsIndexCtrl;
-    var scope;
+    var BlueprintsIndexCtrl, scope;
     var blueprints = [
         {
             'updated_at': '2014-08- 21 00:54:04.878540',
@@ -44,24 +43,24 @@ describe('Controller: BlueprintsIndexCtrl', function () {
     // load the controller's module
     beforeEach(module('cosmoUiApp', 'ngMock', 'backend-mock', 'templates-main'));
 
-    function _testSetup(deleteSuccess) {
+    function _testSetup(done, deleteSuccess) {
         inject(function ($controller, $rootScope, $q, CloudifyService, cloudifyClient) {
 
             scope = $rootScope.$new();
 
-            spyOn(cloudifyClient.blueprints, 'list').andCallFake(function () {
+            spyOn(cloudifyClient.blueprints, 'list').and.callFake(function () {
                 return {
                     then: function (success/*, error*/) {
-                        success({data: {items: blueprints}});
+                        success({ data : {items: blueprints}});
                         return $q.defer().promise;
                     }
                 };
             });
 
-            spyOn(cloudifyClient.deployments, 'list').andCallFake(function () {
+            spyOn(cloudifyClient.deployments,'list').and.callFake(function(){
                 return {
-                    then: function (success) {
-                        success({data: []});
+                    then: function(success){
+                        success({data:[]});
                     }
                 };
             });
@@ -84,6 +83,8 @@ describe('Controller: BlueprintsIndexCtrl', function () {
             });
 
             scope.$digest();
+
+            done();
         });
     }
 
@@ -95,14 +96,9 @@ describe('Controller: BlueprintsIndexCtrl', function () {
         });
 
         it('should load blueprints list', function () {
-            waitsFor(function () {
-                return scope.blueprints !== null;
-            });
-
-            runs(function () {
-                expect(scope.blueprints.length).toBe(2);
-            });
+            expect(scope.blueprints.length).toBe(2);
         });
+
 
     });
 });

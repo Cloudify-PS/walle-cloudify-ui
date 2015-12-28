@@ -6,25 +6,22 @@ describe('Controller: DeploymentNodesCtrl', function () {
     // load the controller's module
     beforeEach(module('cosmoUiApp', 'backend-mock'));
 
-    var DeploymentNodesCtrl;
-    var scope;
-    var _cloudifyClient;
-    var _NodeService;
+    var DeploymentNodesCtrl, scope;
+    var _cloudifyClient,_NodeService;
 
-    var initCtrl = inject(function ($controller) {
+    var initCtrl = inject(function($controller){
         DeploymentNodesCtrl = $controller('DeploymentNodesCtrl', {
             $scope: scope
         });
     });
 
     // Initialize the controller and a mock scope
-    beforeEach(inject(function ($rootScope, cloudifyClient, NodeService) {
+    beforeEach(inject(function ($rootScope ,cloudifyClient ,NodeService ) {
         _cloudifyClient = cloudifyClient;
         _NodeService = NodeService;
         scope = $rootScope.$new();
-        spyOn(cloudifyClient.nodes, 'list').andReturn(window.mockPromise({data: {items: []}})); //default implementation can be override
-        spyOn(NodeService, 'createNodesTree').andCallFake(function () {
-        });
+        spyOn(cloudifyClient.nodes, 'list').and.returnValue(window.mockPromise({data: {items: []}})); //default implementation can be override
+        spyOn(NodeService, 'createNodesTree').and.callFake(function(){});
         initCtrl();
     }));
 
@@ -32,8 +29,8 @@ describe('Controller: DeploymentNodesCtrl', function () {
         expect(DeploymentNodesCtrl).not.toBeUndefined();
     });
 
-    describe('initial load', function () {
-        it('should load deployment"s nodes', function () {
+    describe('initial load', function(){
+        it('should load deployment"s nodes', function(){
             var nodesMock = [
                 {
                     blueprint_id: 'bomber',
@@ -44,42 +41,43 @@ describe('Controller: DeploymentNodesCtrl', function () {
                     number_of_instances: '1'
                 }
             ];
-            _cloudifyClient.nodes.list.andReturn(window.mockPromise({data: {items: nodesMock}}));
+            _cloudifyClient.nodes.list.and.returnValue(window.mockPromise({data: {items: nodesMock}}));
             initCtrl();
             expect(scope.dataTable).toBe(nodesMock);
             expect(_NodeService.createNodesTree).toHaveBeenCalled();
         });
     });
 
-    describe('#getRelationshipByType', function () {
-        it('should get relationships by type', function () {
-            expect(scope.getRelationshipByType({relationships: [{type_hierarchy: ['foo']}, {type_hierarchy: ['bar']}]}, 'foo').length).toBe(1);
+    describe('#getRelationshipByType', function(){
+        it('should get relationships by type', function(){
+            expect(scope.getRelationshipByType( {relationships: [ { type_hierarchy : [ 'foo' ] }, { type_hierarchy : [ 'bar' ] } ]}, 'foo').length).toBe(1);
         });
 
-        it('should return empty array if node has no relationships', function () {
+        it('should return empty array if node has no relationships', function(){
             expect(scope.getRelationshipByType({}, 'foo').length).toBe(0);
         });
     });
 
-    describe('#getNodeById', function () {
-        it('should find node in list', function () {
-            scope.dataTable = [{'id': 'foo'}];
+    describe('#getNodeById', function(){
+        it('should find node in list', function(){
+            scope.dataTable = [ { 'id' : 'foo' } ];
             expect(scope.getNodeById('foo').id).toBe('foo');
         });
 
-        it('should return empty object if id not found', function () {
-            scope.dataTable = [{'id': 'bar'}];
+        it('should return empty object if id not found', function(){
+            scope.dataTable = [ { 'id' : 'bar' } ];
             expect(JSON.stringify(scope.getNodeById('foo'))).toBe('{}');
         });
 
     });
 
-    describe('#viewNode', function () {
-        it('should put node on page', function () {
+    describe('#viewNode', function(){
+        it('should put node on page', function(){
             scope.viewNodeDetails('foo');
             expect(scope.page.viewNode).toBe('foo');
         });
     });
+
 
     // todo: legacy tests - need to remove
     it('should set default middle alignment to table when gs-table-align-top class is not used', function () {

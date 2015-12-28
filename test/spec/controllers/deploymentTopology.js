@@ -1,15 +1,15 @@
 'use strict';
 
 describe('Controller: DeploymentTopologyCtrl', function () {
-    var DeploymentTopologyCtrl;
-    var scope;
+    var DeploymentTopologyCtrl, scope;
+
 
     // load the controller's module
     beforeEach(module('cosmoUiApp', 'ngMock', 'backend-mock'));
 
     beforeEach(inject(function ($controller, $rootScope, cloudifyClient) {
         scope = $rootScope.$new();
-        spyOn(cloudifyClient.deployments, 'get').andReturn(window.mockPromise({data: {blueprint_id: 'foo'}}));
+        spyOn(cloudifyClient.deployments, 'get').and.returnValue(window.mockPromise({ data : { blueprint_id : 'foo' } }));
         DeploymentTopologyCtrl = $controller('DeploymentTopologyCtrl', {
             $scope: scope
         });
@@ -20,10 +20,11 @@ describe('Controller: DeploymentTopologyCtrl', function () {
             expect(DeploymentTopologyCtrl).not.toBeUndefined();
         });
 
-        it('should call cloudifyClient deployments get and put blueprint_id on scope', inject(function (cloudifyClient) {
-            expect(cloudifyClient.deployments.get).toHaveBeenCalled();
+        it('should call cloudifyClient deployments get and put blueprint_id on scope', inject(function( cloudifyClient ){
+            expect( cloudifyClient.deployments.get).toHaveBeenCalled();
             expect(scope.blueprintId).toBe('foo');
         }));
+
 
         // depreacted. to be removed in 3.4
         //describe('#showNode', function () {

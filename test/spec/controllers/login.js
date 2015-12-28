@@ -31,7 +31,7 @@ describe('Controller: LoginCtrl', function () {
 
     describe('#login', function () {
         it('should call to login if enabled', inject(function (LoginService) {
-            spyOn(LoginService, 'login').andCallFake(function () {
+            spyOn(LoginService, 'login').and.callFake(function () {
                 return {
                     then: function () {
                     }
@@ -54,7 +54,7 @@ describe('Controller: LoginCtrl', function () {
             spyOn($location, 'path');
             spyOn($log, 'info');
 
-            spyOn(LoginService, 'login').andCallFake(function () {
+            spyOn(LoginService, 'login').and.callFake(function () {
                 return {
                     then: function (success, error) {
                         if (isSuccess) {

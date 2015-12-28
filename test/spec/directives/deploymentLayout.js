@@ -2,24 +2,23 @@
 
 describe('Directive: deploymentLayout', function () {
 
-    var element;
-    var scope;
+    var element, scope;
+
+
+
 
     beforeEach(module('cosmoUiApp', 'ngMock', 'templates-main', 'backend-mock', function ($provide) {
         $provide.factory('cosmoLayoutDirective', function () {
             return {};
         }); // mock cosmo layout
-        $provide.factory('deploymentActionSelectorDirective', function () {
+        $provide.factory('deploymentActionSelectorDirective', function(){
             return {};
         }); // mock workflow selector
     }));
 
-    beforeEach(inject(function ($compile, $rootScope, cloudifyClient) {
+    beforeEach(inject(function ($compile, $rootScope, cloudifyClient ) {
         scope = $rootScope.$new();
-        spyOn(cloudifyClient.deployments, 'get').andReturn({
-            then: function () {
-            }
-        });
+        spyOn(cloudifyClient.deployments,'get').and.returnValue({then:function(){}});
         element = $compile(angular.element('<div class="deployment-layout"></div>'))(scope);
         scope.$digest();
     }));
@@ -31,7 +30,7 @@ describe('Directive: deploymentLayout', function () {
     describe('init', function () {
         describe('cloudifyClient.deployments.get', function () {
             it('should put deploymentNotFound=true on scope if result is 404', inject(function ($compile, cloudifyClient) {
-                cloudifyClient.deployments.get.andReturn({
+                cloudifyClient.deployments.get.and.returnValue({
                     then: function (success, error) {
                         error({status: 404});
                     }
@@ -42,10 +41,11 @@ describe('Directive: deploymentLayout', function () {
                 expect(scope.showDeploymentEvents).toBe(false);
             }));
 
+
             it('should put blueprint_id and deployment on scope', inject(function ($compile, cloudifyClient) {
-                cloudifyClient.deployments.get.andReturn({
+                cloudifyClient.deployments.get.and.returnValue({
                     then: function (success) {
-                        success({data: {id: 'foo', 'blueprint_id': 'bar'}});
+                        success({ data : { id: 'foo' , 'blueprint_id' : 'bar'} } );
                     }
                 });
                 element = $compile(angular.element('<div class="deployment-layout"></div>'))(scope);
@@ -55,33 +55,33 @@ describe('Directive: deploymentLayout', function () {
             }));
         });
 
+
     });
 
-    describe('#loadExecution', function () {
-        it('should put first running execution on scope.currentExecution', inject(function (cloudifyClient) {
+    describe('#loadExecution', function(){
+        it('should put first running execution on scope.currentExecution', inject(function(cloudifyClient){
 
-            var executions = [{'id': 'foo'}, {'id': 'bar'}];
+            var executions = [ { 'id' : 'foo' } , { 'id' : 'bar'}];
 
-            spyOn(cloudifyClient.executions, 'list').andReturn({
-                then: function (success) {
-                    success({data: {items: executions}});
+            spyOn(cloudifyClient.executions,'list').and.returnValue({
+                then:function( success ){
+                    success({ data : {items: executions } });
                 }
             });
             scope.loadExecutions();
 
-            expect(scope.currentExecution.id).toBe('foo');
+            expect(scope.currentExecution.id).toBe( 'foo' );
         }));
 
-        it('should get only running executions', inject(function (cloudifyClient) {
+        it('should get only running executions', inject(function(cloudifyClient) {
             var expectedParameters = {
-                deployment_id: scope.deploymentId,
+                deployment_id : scope.deploymentId,
                 _include: 'id,workflow_id,status',
                 status: ['pending', 'started', 'cancelling', 'force_cancelling']
             };
-            spyOn(cloudifyClient.executions, 'list').andCallFake(function () {
+            spyOn(cloudifyClient.executions,'list').and.callFake(function(){
                 return {
-                    then: function (/*success,error*/) {
-                    }
+                    then:function(/*success,error*/){}
                 };
             });
 
@@ -90,21 +90,21 @@ describe('Directive: deploymentLayout', function () {
             expect(cloudifyClient.executions.list).toHaveBeenCalledWith(expectedParameters);
         }));
 
-        it('should return immediately if deploymentNotFound', inject(function (cloudifyClient) {
+        it('should return immediately if deploymentNotFound', inject(function( cloudifyClient ){
             scope.deploymentNotFound = true;
-            spyOn(cloudifyClient.executions, 'list');
+            spyOn(cloudifyClient.executions,'list');
             scope.loadExecutions();
             expect(cloudifyClient.executions.list).not.toHaveBeenCalled();
         }));
 
-        it('should redirect after deletion', inject(function ($location) {
+        it('should redirect after deletion', inject(function($location){
 
             scope.goToDeployments();
             expect($location.path()).toBe('/deployments');
 
         }));
 
-        it('should not redirect after deletion if some navigation happened in between', inject(function ($location) {
+        it('should not redirect after deletion if some navigation happened in between', inject(function($location){
 
             $location.path('somewhere');
             scope.goToDeployments();

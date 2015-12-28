@@ -14,8 +14,8 @@ describe('Controller: HostsCtrl', function () {
 
         scope = $rootScope.$new();
 
-        spyOn(cloudifyClient.deployments, 'list').andReturn(window.mockPromise());
-        spyOn(cloudifyClient.nodes, 'list').andReturn(window.mockPromise());
+        spyOn(cloudifyClient.deployments, 'list').and.returnValue(window.mockPromise());
+        spyOn(cloudifyClient.nodes, 'list').and.returnValue(window.mockPromise());
 
         HostsCtrl = $controller('HostsCtrl', {
             $scope: scope
@@ -43,7 +43,7 @@ describe('Controller: HostsCtrl', function () {
 
     describe('#loadDeploymentsAndBlueprints', function () {
         beforeEach(inject(function (cloudifyClient) {
-            cloudifyClient.deployments.list.andReturn({
+            cloudifyClient.deployments.list.and.returnValue({
                 then: function (success) {
                     success({
                         data: {
@@ -69,7 +69,7 @@ describe('Controller: HostsCtrl', function () {
 
     describe('#loadTypesData', function () {
         beforeEach(inject(function (cloudifyClient) {
-            cloudifyClient.nodes.list.andReturn({
+            cloudifyClient.nodes.list.and.returnValue({
                 then: function (success) {
                     success({
                         data: {

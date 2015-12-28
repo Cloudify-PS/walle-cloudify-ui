@@ -15,7 +15,7 @@ describe('Service: BlueprintSourceService', function () {
 
         beforeEach(inject(function (CloudifyService) {
             browseResponse = {children: [{}]};
-            spyOn(CloudifyService.blueprints, 'browse').andCallFake(function () {
+            spyOn(CloudifyService.blueprints, 'browse').and.callFake(function () {
                 return {
                     then: function (success) {
                         var result = success({data: browseResponse});

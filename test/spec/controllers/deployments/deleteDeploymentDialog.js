@@ -9,7 +9,7 @@ describe('Controller: DeleteDeploymentDialogCtrl', function () {
 
     beforeEach(inject(function ($controller, $rootScope, cloudifyClient) {
 
-        spyOn(cloudifyClient.deployments, 'delete').andReturn({
+        spyOn(cloudifyClient.deployments, 'delete').and.returnValue({
             then: function () {
             }
         });
@@ -108,7 +108,7 @@ describe('Controller: DeleteDeploymentDialogCtrl', function () {
     describe('#delete deployment handler', function () {
         beforeEach(inject(function (cloudifyClient) {
 
-            cloudifyClient.deployments.delete.andCallFake(function (deployment_id) {
+            cloudifyClient.deployments.delete.and.callFake(function (deployment_id) {
                 return {
                     then: function (success, error) {
                         if (deployment_id === 'fail') {

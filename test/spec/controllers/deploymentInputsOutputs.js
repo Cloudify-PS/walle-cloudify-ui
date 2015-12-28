@@ -3,7 +3,7 @@
 describe('Controller: InputsOutputsCtrl', function () {
 
     // load the controller's module
-    beforeEach(module('cosmoUiApp', 'templates-main', 'backend-mock', function ($provide) {
+    beforeEach(module('cosmoUiApp','templates-main','backend-mock',function($provide){
         $provide.factory('cosmoLayoutDirective', function () {
             return {};
         }); // mock cosmo layout
@@ -12,23 +12,14 @@ describe('Controller: InputsOutputsCtrl', function () {
         }); // mock deployment layout
     }));
 
-    var InputsOutputsCtrl;
-    var _cloudifyClient;
-    var scope;
-    var html;
-    var $compile;
+    var InputsOutputsCtrl,_cloudifyClient,
+        scope,html,$compile;
 
     // Initialize the controller and a mock scope
-    beforeEach(inject(function ($controller, $rootScope, cloudifyClient, $templateCache, _$compile_) {
+    beforeEach(inject(function ($controller, $rootScope, cloudifyClient ,$templateCache, _$compile_) {
         _cloudifyClient = cloudifyClient;
-        spyOn(cloudifyClient.deployments, 'get').andReturn({
-            then: function () {
-            }
-        });
-        spyOn(cloudifyClient.deployments.outputs, 'get').andReturn({
-            then: function () {
-            }
-        });
+        spyOn(cloudifyClient.deployments,'get').and.returnValue({ then: function(){}});
+        spyOn(cloudifyClient.deployments.outputs,'get').and.returnValue({ then: function(){}});
         scope = $rootScope.$new();
         initCtrl();
         $compile = _$compile_;
@@ -41,20 +32,21 @@ describe('Controller: InputsOutputsCtrl', function () {
         });
     });
 
-    function appendCompiledHtml(scope) {
+    function appendCompiledHtml(scope){
         var view = $compile(angular.element(html))(scope);
         scope.$digest();
         $('body').append(view);
     }
 
-    describe('controller tests', function () {
+    describe('controller tests', function() {
         describe('on first load', function () {
             it('should create a controller', function () {
                 expect(InputsOutputsCtrl).not.toBeUndefined();
             });
 
+
             it('should load inputs', function () {
-                _cloudifyClient.deployments.get.andReturn(
+                _cloudifyClient.deployments.get.and.returnValue(
                     {
                         then: function (successCallback) {
                             var httpResponse = {
@@ -77,7 +69,7 @@ describe('Controller: InputsOutputsCtrl', function () {
             });
 
             it('should load outputs', function () {
-                _cloudifyClient.deployments.outputs.get.andReturn(
+                _cloudifyClient.deployments.outputs.get.and.returnValue(
                     {
                         then: function (successCallback) {
                             var httpResponse = {
@@ -101,7 +93,7 @@ describe('Controller: InputsOutputsCtrl', function () {
         });
     });
 
-    describe('views tests', function () {
+    describe('views tests', function() {
         it('should show only inputs table', function () {
             scope.inputs = {
                 'eden': 'eden',

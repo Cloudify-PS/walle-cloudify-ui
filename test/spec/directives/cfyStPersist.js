@@ -55,7 +55,7 @@ describe('Directive: cfyStPersist', function () {
 
         var q = _.object(['pageNo' + tableId, 'sortBy' + tableId, 'reverse' + tableId], ['3', 'something', false]);
 
-        spyOn($location, 'search').andCallThrough();
+        spyOn($location, 'search').and.callThrough();
         scope.loaded = true;
         scope.$digest();
 
@@ -73,7 +73,7 @@ describe('Directive: cfyStPersist', function () {
 
         var q = _.object(['pageNo' + tableId, 'searchId' + tableId], ['1', 'sth']);
 
-        spyOn($location, 'search').andCallThrough();
+        spyOn($location, 'search').and.callThrough();
         scope.loaded = true;
         scope.$digest();
 

@@ -42,14 +42,14 @@ describe('Controller: StartExecutionDialogCtrl', function () {
         });
         it('should call cloudifyclient.executions.start', inject(function (cloudifyClient) {
 
-            spyOn(cloudifyClient.executions, 'start').andReturn(window.mockPromise());
+            spyOn(cloudifyClient.executions, 'start').and.returnValue(window.mockPromise());
             scope.executeWorkflow();
             expect(scope.inProcess).toBe(true);
             expect(cloudifyClient.executions.start).toHaveBeenCalled();
         }));
 
         it('should setErrorMessage on failure', inject(function (cloudifyClient) {
-            spyOn(cloudifyClient.executions, 'start').andReturn(window.mockPromise({data: {message: 'foo'}}));
+            spyOn(cloudifyClient.executions, 'start').and.returnValue(window.mockPromise({data: {message: 'foo'}}));
             spyOn(scope, 'setErrorMessage');
             scope.executeWorkflow();
             expect(scope.inProcess).toBe(false);
@@ -58,7 +58,7 @@ describe('Controller: StartExecutionDialogCtrl', function () {
         }));
 
         it('should close dialog on success', inject(function (cloudifyClient) {
-            spyOn(cloudifyClient.executions, 'start').andReturn(window.mockPromise({data: {}}));
+            spyOn(cloudifyClient.executions, 'start').and.returnValue(window.mockPromise({data: {}}));
             scope.closeThisDialog = jasmine.createSpy('closeThisDialog');
             scope.onBegin = jasmine.createSpy('onBegin');
             scope.executeWorkflow();
@@ -67,7 +67,7 @@ describe('Controller: StartExecutionDialogCtrl', function () {
         }));
 
         it('should put error message if success result has message property', inject(function (cloudifyClient) {
-            spyOn(cloudifyClient.executions, 'start').andReturn(window.mockPromise({data: {message: 'foo'}}));
+            spyOn(cloudifyClient.executions, 'start').and.returnValue(window.mockPromise({data: {message: 'foo'}}));
             spyOn(scope, 'setErrorMessage');
             scope.executeWorkflow();
             expect(scope.inProcess).toBe(false);

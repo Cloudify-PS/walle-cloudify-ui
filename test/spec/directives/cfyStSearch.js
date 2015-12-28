@@ -22,8 +22,8 @@ describe('Directive: cfyStSearch', function () {
             tableState: function () {
             }
         };
-        spyOn(stTableCtrl, 'search').andCallThrough();
-        spyOn(stTableCtrl, 'tableState').andReturn({
+        spyOn(stTableCtrl, 'search').and.callThrough();
+        spyOn(stTableCtrl, 'tableState').and.returnValue({
             search: {
                 predicateObject: {}
             }
