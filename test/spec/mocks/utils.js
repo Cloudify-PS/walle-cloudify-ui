@@ -8,7 +8,7 @@
  *
  * Usage:
  *
- * `spyOn(MyService,'callApiRequest').andReturn(window.mockPromise()) // ==> will not call any of the callbacks`
+ * `spyOn(MyService,'callApiRequest').and.returnValue(window.mockPromise()) // ==> will not call any of the callbacks`
  *
  * To call success, run `window.mockPromise(successResponse)` - set successResponse to whatever you want.
  * To call error, run `window.mockPromise(null, errorResponse)` - set errorResponse to whatever you want.

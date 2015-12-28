@@ -20,7 +20,7 @@ describe('Directive: blueprintLayout', function () {
     });
 
     beforeEach(inject(function (cloudifyClient,$routeParams) {
-        spyOn(cloudifyClient.blueprints, 'get').andCallFake(function () {
+        spyOn(cloudifyClient.blueprints, 'get').and.callFake(function () {
             return {
                 then: function (success) {
                     var result = success({ data : {id: 'foo', plan: {inputs: {}}} });
@@ -37,7 +37,7 @@ describe('Directive: blueprintLayout', function () {
 
     it('should get the blueprint id from the routeParams', function(){
         compileElement();
-        expect(scope.blueprint).toEqual({id:'hello'});
+        expect(scope.blueprint).toEqual({id: 'hello', description: undefined});
     });
 
 });

@@ -31,7 +31,7 @@ describe('Controller: UploadBlueprintDialogCtrl', function () {
             scope.selectedFile = {};
             scope.blueprintUploadOpts.blueprint_id = 'blueprint1';
 
-            spyOn(cloudifyClient.blueprints, 'publish_archive').andCallFake(function () {
+            spyOn(cloudifyClient.blueprints, 'publish_archive').and.callFake(function () {
 
                 return { // promise
                     then: function( ){
@@ -52,7 +52,7 @@ describe('Controller: UploadBlueprintDialogCtrl', function () {
 
         describe('$scope.$watch myFile', function () {
             it('should trigger a watch on myFile', function () {
-                spyOn(scope, 'onFileSelect').andCallFake(function () {
+                spyOn(scope, 'onFileSelect').and.callFake(function () {
                 });
 
                 // trigger watch
@@ -78,7 +78,7 @@ describe('Controller: UploadBlueprintDialogCtrl', function () {
         it('should pass blueprint name to the $upload.upload', inject(function ( $upload ) {
             scope.selectedFile = {};
 
-            spyOn(scope, 'isUploadEnabled').andCallFake(function () {
+            spyOn(scope, 'isUploadEnabled').and.callFake(function () {
                 return true;
             });
 
@@ -86,7 +86,7 @@ describe('Controller: UploadBlueprintDialogCtrl', function () {
                 scope.uploadInProcess = false;
             };
 
-            spyOn($upload,'upload').andCallFake(function(){
+            spyOn($upload,'upload').and.callFake(function(){
                 return {
                     progress: function(){
                         return {
@@ -113,7 +113,7 @@ describe('Controller: UploadBlueprintDialogCtrl', function () {
                 }
             };
 
-            spyOn(_cloudifyService.blueprints, 'add').andCallThrough();
+            spyOn(_cloudifyService.blueprints, 'add').and.callThrough();
 
             scope.uploadFile();
 
@@ -127,7 +127,7 @@ describe('Controller: UploadBlueprintDialogCtrl', function () {
                     'url': ''
                 }
             };
-            var formData = $upload.upload.mostRecentCall.args[0];
+            var formData = $upload.upload.calls.mostRecent().args[0];
             expect(JSON.stringify(formData)).toBe(JSON.stringify(expected));
         }));
 
@@ -144,7 +144,7 @@ describe('Controller: UploadBlueprintDialogCtrl', function () {
 
         it('should invoke cloudifyClient.blueprints.publish_archive with the correct values', inject(function ( cloudifyClient ) {
 
-            spyOn(cloudifyClient.blueprints, 'publish_archive').andCallFake(function () {
+            spyOn(cloudifyClient.blueprints, 'publish_archive').and.callFake(function () {
                     return {
                         then: function () {
                             return {
@@ -160,8 +160,8 @@ describe('Controller: UploadBlueprintDialogCtrl', function () {
             _cloudifyService.blueprints.add = function (data, successCallback) {
                 successCallback({id:'blueprint1'});
             };
-            spyOn(_cloudifyService.blueprints, 'add').andCallThrough();
-            spyOn(scope, 'isUploadEnabled').andCallFake(function () {
+            spyOn(_cloudifyService.blueprints, 'add').and.callThrough();
+            spyOn(scope, 'isUploadEnabled').and.callFake(function () {
                 return true;
             });
 
@@ -215,7 +215,7 @@ describe('Controller: UploadBlueprintDialogCtrl', function () {
         it('should update ngProgress with progress percentage', inject(function( $upload , ngProgress ){
             var progressCallback = null;
 
-            spyOn($upload, 'upload').andCallFake(function () {
+            spyOn($upload, 'upload').and.callFake(function () {
                 return {
                     progress: function (callback) {
                         progressCallback = callback;
@@ -236,7 +236,7 @@ describe('Controller: UploadBlueprintDialogCtrl', function () {
 
 
             var lastProgress = null;
-            spyOn(ngProgress,'set').andCallFake(function( progress ){
+            spyOn(ngProgress,'set').and.callFake(function( progress ){
                 lastProgress = progress;
             });
 
@@ -256,11 +256,11 @@ describe('Controller: UploadBlueprintDialogCtrl', function () {
                 }
             };
 
-            spyOn($upload,'upload').andCallThrough();
+            spyOn($upload,'upload').and.callThrough();
 
             scope.uploadBlueprint();
 
-            var opts = JSON.parse($upload.upload.mostRecentCall.args[0].fields.opts);
+            var opts = JSON.parse($upload.upload.calls.mostRecent().args[0].fields.opts);
             expect(opts.blueprint_id).toBe('a%2Fb');
         }));
     });

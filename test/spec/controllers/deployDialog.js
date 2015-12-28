@@ -8,7 +8,7 @@ describe('Controller: DeployDialogCtrl', function () {
 
     beforeEach(inject(function ($controller, $rootScope, cloudifyClient) {
 
-        spyOn(cloudifyClient.blueprints, 'get').andCallFake(function () {
+        spyOn(cloudifyClient.blueprints, 'get').and.callFake(function () {
             return {
                 then: function (success) {
                     success({ data : {items: []} } );
@@ -59,7 +59,7 @@ describe('Controller: DeployDialogCtrl', function () {
 
     it('should pass all params provided to CloudifyService on deployment creation', inject(function (cloudifyClient) {
         var deployParams = null;
-        spyOn(cloudifyClient.deployments, 'create').andCallFake(function (params) {
+        spyOn(cloudifyClient.deployments, 'create').and.callFake(function (params) {
             deployParams = params;
             return {
                 then: function () {
@@ -77,7 +77,7 @@ describe('Controller: DeployDialogCtrl', function () {
 
 
     it('should not validate deployment name', inject(function (cloudifyClient) {
-        spyOn(cloudifyClient.deployments,'create').andCallFake(function () {
+        spyOn(cloudifyClient.deployments,'create').and.callFake(function () {
             scope.inProcess = false;
             scope.redirectToDeployment(scope.deployment_id);
             return {
@@ -90,7 +90,7 @@ describe('Controller: DeployDialogCtrl', function () {
         scope.deployment_id = '~~~!!!@@@';
         scope.inputsState = 'raw';
 
-        spyOn(scope, 'isDeployEnabled').andCallFake(function () {
+        spyOn(scope, 'isDeployEnabled').and.callFake(function () {
             return true;
         });
 
@@ -101,7 +101,7 @@ describe('Controller: DeployDialogCtrl', function () {
 
 
     it('should set showError flag to true once deploy returned message', inject(function (cloudifyClient) {
-        spyOn(cloudifyClient.deployments, 'create').andCallFake(function () {
+        spyOn(cloudifyClient.deployments, 'create').and.callFake(function () {
             return {
                 then: function (success/*, error*/) {
                     success({ data : {'message': 'foo'} } );
@@ -109,7 +109,7 @@ describe('Controller: DeployDialogCtrl', function () {
             };
         });
 
-        spyOn(scope, 'isDeployEnabled').andCallFake(function () {
+        spyOn(scope, 'isDeployEnabled').and.callFake(function () {
             return true;
         });
 

@@ -12,9 +12,9 @@ describe('Controller: BlueprintNodesCtrl', function () {
     beforeEach(inject(function ($controller, $rootScope, _cloudifyClient_, _NodeService_ ) {
         cloudifyClient = _cloudifyClient_;
         NodeService = _NodeService_;
-        spyOn(cloudifyClient.blueprints, 'get').andReturn(
+        spyOn(cloudifyClient.blueprints, 'get').and.returnValue(
             window.mockPromise({ 'data': { 'plan': { 'nodes': 'foo' } } }));
-        spyOn(NodeService, 'createNodesTree').andCallFake(function(){});
+        spyOn(NodeService, 'createNodesTree').and.callFake(function(){});
 
         scope = $rootScope.$new();
         DeploymentNodesCtrl = $controller('BlueprintNodesCtrl', {

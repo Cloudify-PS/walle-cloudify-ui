@@ -18,8 +18,8 @@ describe('Controller: InputsOutputsCtrl', function () {
     // Initialize the controller and a mock scope
     beforeEach(inject(function ($controller, $rootScope, cloudifyClient ,$templateCache, _$compile_) {
         _cloudifyClient = cloudifyClient;
-        spyOn(cloudifyClient.deployments,'get').andReturn({ then: function(){}});
-        spyOn(cloudifyClient.deployments.outputs,'get').andReturn({ then: function(){}});
+        spyOn(cloudifyClient.deployments,'get').and.returnValue({ then: function(){}});
+        spyOn(cloudifyClient.deployments.outputs,'get').and.returnValue({ then: function(){}});
         scope = $rootScope.$new();
         initCtrl();
         $compile = _$compile_;
@@ -46,7 +46,7 @@ describe('Controller: InputsOutputsCtrl', function () {
 
 
             it('should load inputs', function () {
-                _cloudifyClient.deployments.get.andReturn(
+                _cloudifyClient.deployments.get.and.returnValue(
                     {
                         then: function (successCallback) {
                             var httpResponse = {
@@ -69,7 +69,7 @@ describe('Controller: InputsOutputsCtrl', function () {
             });
 
             it('should load outputs', function () {
-                _cloudifyClient.deployments.outputs.get.andReturn(
+                _cloudifyClient.deployments.outputs.get.and.returnValue(
                     {
                         then: function (successCallback) {
                             var httpResponse = {

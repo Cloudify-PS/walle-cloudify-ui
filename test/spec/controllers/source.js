@@ -285,7 +285,7 @@ describe('Controller: SourceCtrl', function () {
 
 
 
-        spyOn(CloudifyService.blueprints, 'browse').andCallFake(function () {
+        spyOn(CloudifyService.blueprints, 'browse').and.callFake(function () {
             return {
                 then: function ( success ) {
                     success({});
@@ -293,7 +293,7 @@ describe('Controller: SourceCtrl', function () {
             };
         });
 
-        spyOn(BlueprintSourceService, 'getBrowseData').andCallFake(function () {
+        spyOn(BlueprintSourceService, 'getBrowseData').and.callFake(function () {
             return {
                 then: function ( success ) {
                     success({});
@@ -316,7 +316,7 @@ describe('Controller: SourceCtrl', function () {
             expect(scope.blueprintId).toBe('fake_blueprint_id');
 
             spyOn(scope, 'setData');
-            spyOn(cloudifyClient.blueprints, 'get').andReturn({
+            spyOn(cloudifyClient.blueprints, 'get').and.returnValue({
                 then: function (success) {
                     success({data: 'foo'});
                 }
@@ -329,7 +329,7 @@ describe('Controller: SourceCtrl', function () {
         }));
 
         it('should get the blueprint if deploymentId is specified', inject(function ($controller, cloudifyClient) {
-            spyOn(cloudifyClient.deployments, 'get').andReturn({
+            spyOn(cloudifyClient.deployments, 'get').and.returnValue({
                 then: function (success) {
                     success({data: {'blueprint_id': 'new_blueprint_id'}});
                 }
@@ -379,7 +379,7 @@ describe('Controller: SourceCtrl', function () {
 
     describe('#openSourceFile', function () {
         beforeEach(inject(function (CloudifyService) {
-            spyOn(CloudifyService.blueprints, 'browseFile').andCallFake(function (browseData) {
+            spyOn(CloudifyService.blueprints, 'browseFile').and.callFake(function (browseData) {
                 return {
                     then: function (success) { // todo: handle errors.
                         if (browseData.id === 'success') {
