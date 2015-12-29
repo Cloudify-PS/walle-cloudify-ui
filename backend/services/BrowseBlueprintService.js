@@ -9,10 +9,8 @@ var _ = require('lodash');
 var unzip = require('unzip');
 var Decompress = require('decompress');
 
-
-
-module.exports.walkBlueprint = function (  id, last_update, callbackFn){
-    if(id.indexOf('.') !== -1 || id.indexOf('/') !== -1) {
+module.exports.walkBlueprint = function (id, last_update, callbackFn) {
+    if (id.indexOf('.') !== -1 || id.indexOf('/') !== -1) {
         var err = new Error('Blueprint ID can\'t contain spacial characters.');
         return callbackFn(err);
     }
@@ -20,51 +18,47 @@ module.exports.walkBlueprint = function (  id, last_update, callbackFn){
     walker.walk(path.join(conf.browseBlueprint.path, id, last_update), callbackFn);
 };
 
-
-
-module.exports.deleteBlueprint = function(id, callbackFn) {
+module.exports.deleteBlueprint = function (id, callbackFn) {
     function removeFile(id, callbackFn) {
-        fs.exists(path.join(conf.browseBlueprint.path, id + '.archive'), function (exists){
-            if(exists) {
-                fs.remove(path.join(conf.browseBlueprint.path, id + '.archive'), function(err){
-                    if(err) {
+        fs.exists(path.join(conf.browseBlueprint.path, id + '.archive'), function (exists) {
+            if (exists) {
+                fs.remove(path.join(conf.browseBlueprint.path, id + '.archive'), function (err) {
+                    if (err) {
                         return callbackFn(err);
                     }
                     return callbackFn(null);
                 });
-            }
-            else {
+            } else {
                 return callbackFn(null);
             }
         });
     }
 
     function removeFolder(id, callbackFn) {
-        fs.exists(path.join(conf.browseBlueprint.path, id), function (exists){
-            if(exists) {
-                fs.rmrf(path.join(conf.browseBlueprint.path, id), function(err){
-                    if(err) {
+        fs.exists(path.join(conf.browseBlueprint.path, id), function (exists) {
+            if (exists) {
+                fs.rmrf(path.join(conf.browseBlueprint.path, id), function (err) {
+                    if (err) {
                         return callbackFn(err);
                     }
                     return callbackFn(null);
                 });
-            }
-            else {
+            } else {
                 return callbackFn(null);
             }
         });
     }
 
-    return removeFile(id, function(err){
-        if(err === null) {
+    return removeFile(id, function (err) {
+        if (err === null) {
             return removeFolder(id, callbackFn);
         }
     });
 };
 
-module.exports.Walker = function() {
+module.exports.Walker = function () {
     var _finalCallback = null;
-    var root = { 'name': 'root', 'children': []};
+    var root = {'name': 'root', 'children': []};
     var origRoot;
     var counter = 0;
 
@@ -87,7 +81,7 @@ module.exports.Walker = function() {
                 counter--;
                 doFinalCallback();
             } else {
-                fileIsAscii(path.join(rootFolder, file), function(err, isAscii){
+                fileIsAscii(path.join(rootFolder, file), function (err, isAscii) {
                     children.push({
                         'name': file,
                         'relativePath': path.relative(origRoot, path.join(rootFolder, file)),
@@ -104,7 +98,10 @@ module.exports.Walker = function() {
 
     function doFinalCallback(err) {
         if (err) {
-            _finalCallback({message: 'Error browsing blueprint files', errCode: 'browseError'}, null);
+            _finalCallback({
+                message: 'Error browsing blueprint files',
+                errCode: 'browseError'
+            }, null);
         }
         if (counter === 0) {
             _finalCallback(null, root);
@@ -113,7 +110,6 @@ module.exports.Walker = function() {
 
     function walkFolder(rootFolder, _list) {
         logger.trace('walkFolder', rootFolder);
-
 
         // readdir will throw a 'catchall' error... there's nothing we can do about it
         // however in the end, we will catch
@@ -133,30 +129,31 @@ module.exports.Walker = function() {
 
                 counter--;
                 for (var i in files) {
-                //
+                    //
                     if (files.hasOwnProperty(i)) {
                         addChild(rootFolder, _list, files[i]);
-                    }
-                    else {
+                    } else {
                         counter--;
                     }
                 }
-            }catch(e){
+            } catch (e) {
                 doFinalCallback(e);
             }
         });
         counter++; // leave here in case of an error..
     }
 
-
     function fileIsAscii(filename, callback) {
-        require('fs').readFile(filename, function(err, buf) {
+        require('fs').readFile(filename, function (err, buf) {
             if (!!err) {
                 throw err;
             }
             var isAscii = true;
-            for (var i=0, len=buf.length; i<len; i++) {
-                if (buf[i] > 127) { isAscii=false; break; }
+            for (var i = 0, len = buf.length; i < len; i++) {
+                if (buf[i] > 127) {
+                    isAscii = false;
+                    break;
+                }
             }
             callback(null, isAscii);
         });
@@ -170,50 +167,49 @@ module.exports.Walker = function() {
 
 };
 
-
 /**
  * We assume we know the type of compression beforehand by some ridiculous convention
  * @param {string} type - the type of compression. one of tar,tar.gz, tgz, zip. (gzip is not meant for directories and hence not used here: http://unix.stackexchange.com/questions/93139/can-i-zip-an-entire-folder-using-gzip )
  * @param path - location of compressed file
  * @param dest - destination folder for extraction
  */
-exports.extractArchive = function  ( type, path, dest, callback ){
-    logger.debug('extracting', type, path,dest);
-    if ( !callback ){
-        callback = function(){};
+exports.extractArchive = function (type, path, dest, callback) {
+    logger.debug('extracting', type, path, dest);
+    if (!callback) {
+        callback = function () {
+        };
     }
-    try{
+    try {
 
         var decompress = new Decompress()
             .src(path)
             .dest(dest);
-        if ( ['tar.gz','tgz'].indexOf(type) >= 0 ) {
+        if (['tar.gz', 'tgz'].indexOf(type) >= 0) {
             decompress.use(Decompress.targz());
-        } else if ( type === 'tar' ){
+        } else if (type === 'tar') {
             decompress.use(Decompress.tar());
-        }  else if ( type === 'zip' ){
+        } else if (type === 'zip') {
 
-            fs.createReadStream(path).pipe(unzip.Extract({ path: dest })).on('close',callback);
+            fs.createReadStream(path).pipe(unzip.Extract({path: dest})).on('close', callback);
             return; // FIX CFY-3772.. Decompress-unzip has a bug.. THIS DOES NOT REPRODUCE IN UNIT TESTS BUT IT DOES AT RUNTIME!
             //decompress.use(Decompress.zip());
-        } else if (type === 'tar.bz2' ){
+        } else if (type === 'tar.bz2') {
             decompress.use(Decompress.tarbz2());
-        }else {
+        } else {
             callback(new Error('unknown compression type [' + type + ']'));
         }
         decompress.run(callback);
 
-    }catch(e){
+    } catch (e) {
         callback(e);
     }
 };
 
-function normalizeExtension( filename ){ //
-    return _.find([ 'tar.bz2','tar.gz','tgz','tar','zip'], function( type ){
+function normalizeExtension(filename) { //
+    return _.find(['tar.bz2', 'tar.gz', 'tgz', 'tar', 'zip'], function (type) {
         return _.endsWith(filename, type);
     });
 }
-
 
 exports.downloadBlueprint = function (cloudifyClientConf, blueprint_id, last_update, callback) {
 
@@ -252,9 +248,7 @@ exports.downloadBlueprint = function (cloudifyClientConf, blueprint_id, last_upd
     });
 };
 
-
-
-exports.browseBlueprint = function( cloudifyConfig, blueprint_id, last_update, callback) {
+exports.browseBlueprint = function (cloudifyConfig, blueprint_id, last_update, callback) {
     logger.trace('browsing blueprint', blueprint_id);
     exports.downloadBlueprint(cloudifyConfig, blueprint_id, last_update, function (err) {
         if (err) {
@@ -265,6 +259,6 @@ exports.browseBlueprint = function( cloudifyConfig, blueprint_id, last_update, c
     });
 };
 
-exports.browseBlueprintFile = function(blueprint_id, relativePath, callback) {
+exports.browseBlueprintFile = function (blueprint_id, relativePath, callback) {
     fs.readFile(path.join(conf.browseBlueprint.path, blueprint_id, relativePath), 'utf-8', callback);
 };

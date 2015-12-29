@@ -14,15 +14,15 @@ angular.module('cosmoUiApp')
         $scope.page = {};
 
         cloudifyClient.nodes.list($scope.deploymentId)
-            .then(function(httpResponse){
+            .then(function (httpResponse) {
                 //TODO: This function is changing the Model directly! We should not allow this! CFY-3798
                 NodeService.createNodesTree(httpResponse.data.items);
                 $scope.dataTable = httpResponse.data.items;
-            },function(httpResponse){
+            }, function (httpResponse) {
                 $log.error(httpResponse);
             });
 
-        $scope.getRelationshipByType = function(node, type) {
+        $scope.getRelationshipByType = function (node, type) {
             var relationshipData = [];
             if (node.relationships !== undefined) {
                 for (var i = 0; i < node.relationships.length; i++) {
@@ -34,9 +34,9 @@ angular.module('cosmoUiApp')
             return relationshipData;
         };
 
-        $scope.getNodeById = function(node_id) {
+        $scope.getNodeById = function (node_id) {
             var _node = {};
-            $scope.dataTable.forEach(function(node) {
+            $scope.dataTable.forEach(function (node) {
                 if (node.id === node_id) {
                     _node = node;
                 }

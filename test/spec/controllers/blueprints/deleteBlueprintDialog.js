@@ -2,13 +2,14 @@
 
 /*jshint camelcase: false */
 describe('Controller: DeleteBlueprintDialogCtrl', function () {
-    var DeleteBlueprintDialogCtrl, scope;
+    var DeleteBlueprintDialogCtrl;
+    var scope;
 
     beforeEach(module('cosmoUiApp', 'ngMock', 'backend-mock', 'templates-main'));
 
     beforeEach(inject(function ($controller, $rootScope, cloudifyClient) {
 
-        spyOn(cloudifyClient.blueprints, 'delete').andReturn({
+        spyOn(cloudifyClient.blueprints, 'delete').and.returnValue({
             then: function () {
             }
         });
@@ -21,17 +22,15 @@ describe('Controller: DeleteBlueprintDialogCtrl', function () {
         });
     }));
 
-
     it('should create a controller', function () {
         expect(DeleteBlueprintDialogCtrl).not.toBeUndefined();
     });
 
     it('should call blueprint delete method if a blueprint is being deleted', inject(function (cloudifyClient) {
-        scope.blueprint = { id : 'foo' };
+        scope.blueprint = {id: 'foo'};
         scope.confirmDelete();
         expect(cloudifyClient.blueprints.delete).toHaveBeenCalledWith('foo');
     }));
-
 
     it('should close dialog when pressing the cancel button', inject(function (ngDialog, $timeout) {
         var id = ngDialog.open({
@@ -52,11 +51,10 @@ describe('Controller: DeleteBlueprintDialogCtrl', function () {
         expect(elems.length).toBe(0);
     }));
 
-
     describe('#delete blueprint handler', function () {
         beforeEach(inject(function (cloudifyClient) {
 
-            cloudifyClient.blueprints.delete.andCallFake(function (blueprintId) {
+            cloudifyClient.blueprints.delete.and.callFake(function (blueprintId) {
                 return {
                     then: function (success, error) {
                         if (blueprintId === 'fail') {
@@ -64,9 +62,14 @@ describe('Controller: DeleteBlueprintDialogCtrl', function () {
                         } else if (blueprintId === 'fail_with_message') {
                             error({data: {message: 'foo'}});
                         } else if (blueprintId === 'success') {
-                            success({ data : {} });
+                            success({data: {}});
                         } else if (blueprintId === 'success_with_error_code') {
-                            success({ data : { error_code: 'bar', message: 'foo'} } );
+                            success({
+                                data: {
+                                    error_code: 'bar',
+                                    message: 'foo'
+                                }
+                            });
                         }
                     }
                 };
@@ -77,7 +80,7 @@ describe('Controller: DeleteBlueprintDialogCtrl', function () {
         describe('success handling', function () {
             beforeEach(function () {
                 scope.inProcess = true;
-                scope.blueprint = { id : 'success' };
+                scope.blueprint = {id: 'success'};
             });
 
             it('should call `closeThisDialog`', function () {
@@ -89,13 +92,12 @@ describe('Controller: DeleteBlueprintDialogCtrl', function () {
             });
 
             it('should put error message on scope if error_code present', function () {
-                scope.blueprint = { id : 'success_with_error_code' } ;
+                scope.blueprint = {id: 'success_with_error_code'};
                 scope.confirmDelete();
                 expect(scope.inProcess).toBe(false);
                 expect(scope.errorMessage).toBe('foo');
             });
         });
-
 
         describe('error handling', function () {
             beforeEach(function () {
@@ -111,14 +113,12 @@ describe('Controller: DeleteBlueprintDialogCtrl', function () {
                 expect(scope.errorMessage).toBe('An error occurred'); // todo, this should be translated.
             });
             it('should put message on scope if one exists', function () {
-                scope.blueprint = { id : 'fail_with_message' };
+                scope.blueprint = {id: 'fail_with_message'};
                 scope.confirmDelete();
                 expect(scope.errorMessage).toBe('foo');
             });
         });
 
     });
-
-
 
 });

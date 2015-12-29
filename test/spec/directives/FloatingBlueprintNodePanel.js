@@ -67,7 +67,7 @@ describe('Directive: floatingBlueprintNodePanel', function () {
     beforeEach(module('cosmoUiApp', 'ngMock', 'templates-main', 'backend-mock'));
 
     describe('Test setup', function() {
-        it ('', inject(function ($compile, $rootScope, $httpBackend) {
+        it('', inject(function ($compile, $rootScope, $httpBackend) {
             $httpBackend.whenGET('/backend/configuration?access=all').respond(200);
             $httpBackend.whenGET('/backend/versions/ui').respond(200);
             $httpBackend.whenGET('/backend/versions/manager').respond(200);
@@ -100,13 +100,8 @@ describe('Directive: floatingBlueprintNodePanel', function () {
 
             scope.$apply();
 
-            waitsFor(function() {
-                return scope.showProperties !== undefined;
-            });
-            runs(function() {
-                expect(scope.showProperties.relationships).toBeUndefined();
-                expect(scope.showProperties.general.name).toBe('floatingip');
-            });
+            expect(scope.showProperties.relationships).toBeUndefined();
+            expect(scope.showProperties.general.name).toBe('floatingip');
         });
 
         it('should create showProperties object with relationships for node view panel', function() {
@@ -114,13 +109,8 @@ describe('Directive: floatingBlueprintNodePanel', function () {
 
             scope.$apply();
 
-            waitsFor(function() {
-                return scope.showProperties !== undefined;
-            });
-            runs(function() {
-                expect(scope.showProperties.relationships).toBeDefined();
-                expect(scope.showProperties.general.name).toBe('nodejs_vm');
-            });
+            expect(scope.showProperties.relationships).toBeDefined();
+            expect(scope.showProperties.general.name).toBe('nodejs_vm');
         });
 
         it('should show panel when node is set', function() {

@@ -36,16 +36,19 @@ angular.module('cosmoUiApp')
         function _loadExecutions() {
 
             var statusFilter = ['pending', 'started', 'cancelling', 'force_cancelling'];
-            return cloudifyClient.executions.list({_include: 'id,workflow_id,status,deployment_id', status: statusFilter}).then(function(result){
+            return cloudifyClient.executions.list({
+                _include: 'id,workflow_id,status,deployment_id',
+                status: statusFilter
+            }).then(function (result) {
                 runningExecutions = _.groupBy(result.data.items, 'deployment_id');
-            },function(){
+            }, function () {
                 // todo: implement error handling
             });
         }
 
-        $scope.loadDeployments = function() {
+        $scope.loadDeployments = function () {
             cloudifyClient.deployments.list('id,blueprint_id,created_at,updated_at,workflows,inputs,outputs')
-                .then(function(result) {
+                .then(function (result) {
 
                     $scope.managerError = false;
                     $scope.deployments = result.data.items;
@@ -59,16 +62,15 @@ angular.module('cosmoUiApp')
                     $scope.blueprints = _.values($scope.blueprints);
                     $scope.deploymentsLoaded = true;
                 },
-                function(res) {
+                function (res) {
                     $scope.managerError = true;
-                    if(res.status === 403){
+                    if (res.status === 403) {
                         $scope.permissionDenied = true;
                     }
                 });
         };
 
-
-        $scope.onExecutionStart = function() {
+        $scope.onExecutionStart = function () {
             _loadExecutions();
         };
 
@@ -80,9 +82,8 @@ angular.module('cosmoUiApp')
 
         $scope.loadDeployments();
 
-
     })
-    .filter('customFilter', function($filter) {
+    .filter('customFilter', function ($filter) {
         var filterFilter = $filter('filter');
         var standardComparator = function standardComparator(obj, text) {
             text = ('' + text).toLowerCase();
@@ -96,10 +97,10 @@ angular.module('cosmoUiApp')
                     var evaluated;
                     try {
                         evaluated = JSON.parse(expected);
-                    }catch(e) {
+                    } catch (e) {
                         evaluated = expected;
                     }
-                    if(typeof evaluated !== 'undefined'){
+                    if (typeof evaluated !== 'undefined') {
                         expected = evaluated;
                     }
                 }

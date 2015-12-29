@@ -13,21 +13,21 @@ describe('Integration: getDeploymentExecutions', function () {
         expect(typeof(cloudify4node.getDeploymentExecutions)).toBe('function');
     });
 
-    it('should get deployment executions successfully', function() {
+    it('should get deployment executions successfully', function () {
         // add deployment with inputs
         var result;
         var deployments = null;
         var deploymentId = null;
 
-        cloudify4node.getDeployments(function(err, data) {
+        cloudify4node.getDeployments(function (err, data) {
             deployments = JSON.parse(data);
         });
 
-        waitsFor(function() {
+        waitsFor(function () {
             return deployments !== null;
         });
 
-        runs(function() {
+        runs(function () {
             deploymentId = deployments[0].id;
             cloudify4node.getDeploymentExecutions(deploymentId, function (err, data) {
                 result = JSON.parse(data);
@@ -43,7 +43,7 @@ describe('Integration: getDeploymentExecutions', function () {
             var wrongDeploymentId = false;
 
             if (result.length > 0) {
-                for(var i = 0; i < result.length; i++) {
+                for (var i = 0; i < result.length; i++) {
                     if (result[i].deployment_id !== deploymentId) {
                         wrongDeploymentId = true;
                     }

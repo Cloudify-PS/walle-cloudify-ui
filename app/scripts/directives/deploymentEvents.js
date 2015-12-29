@@ -21,9 +21,9 @@ angular.module('cosmoUiApp')
                 $scope.minimizeMode = false;
                 $scope.logsSearchParams =
                 {
-                    deployment_Id: '{"matchAny":"[\\"'+$scope.id+'\\"]"}',
-                    sortBy:'timestamp',
-                    reverseOrder:true
+                    deployment_Id: '{"matchAny":"[\\"' + $scope.id + '\\"]"}',
+                    sortBy: 'timestamp',
+                    reverseOrder: true
                 };
 
                 var dragFromY = 0; // indicates which Y value drag started
@@ -32,21 +32,29 @@ angular.module('cosmoUiApp')
 
                 function executeEvents() {
 
-                    if ( !$scope.id || !$scope.showDeploymentEvents ){
-                        return { then:function(){}};
+                    if (!$scope.id || !$scope.showDeploymentEvents) {
+                        return {
+                            then: function () {
+                            }
+                        };
                     }
-                    return cloudifyClient.events.get( { 'deployment_id' :  $scope.id ,  '_offset': 0, '_size' : 50 , _sort:'-@timestamp', 'type': 'cloudify_event' } ).then(function (result) {
+                    return cloudifyClient.events.get({
+                        'deployment_id': $scope.id,
+                        '_offset': 0,
+                        '_size': 50,
+                        _sort: '-@timestamp',
+                        'type': 'cloudify_event'
+                    }).then(function (result) {
                         $scope.events = result.data.items;
                         $scope.lastEvent = _.first($scope.events);
                         //Formatting the timestamp
-                        _.each($scope.events, function(event){
+                        _.each($scope.events, function (event) {
                             event.formattedTimestamp = EventsMap.getFormattedTimestamp(event['@timestamp']);
                         });
                     }, true);
                 }
 
                 $scope.registerTickerTask('deploymentEvents/events', executeEvents, 3000);
-
 
                 // todo : get rid of this. replace with scope binding on directive
                 $scope.$watch('events', function () {
@@ -64,7 +72,6 @@ angular.module('cosmoUiApp')
 
                 $scope.dragIt = function (event) {
 
-
                     event.preventDefault();
                     $scope.minimizeMode = false;
                     dragFromY = event.clientY;
@@ -77,8 +84,7 @@ angular.module('cosmoUiApp')
                     if ($element.find('.containList').height() <= minHeight) {
                         $log.debug('minimizeMode is on');
                         $scope.minimizeMode = true;
-                    }
-                    else {
+                    } else {
                         $scope.minimizeMode = false;
                     }
                 }
@@ -87,18 +93,15 @@ angular.module('cosmoUiApp')
                     var currentY = event.clientY; // clientY increases if mouse is lower on screen.
                     var newHeight = dragFromHeight + dragFromY - currentY;
 
-
-
                     var c = $element.find('.containList');
                     var maxHeight = $element.parent().height();
 
-                    newHeight= Math.min(newHeight, maxHeight);
+                    newHeight = Math.min(newHeight, maxHeight);
 
                     // don't allow element overflow from page anyway..
-                    if ($element.find('.events-widget').position().top <= 0 ){
+                    if ($element.find('.events-widget').position().top <= 0) {
                         newHeight = Math.min(newHeight, c.height());
                     }
-
 
                     c.css({
                         height: newHeight + 'px'
@@ -110,8 +113,6 @@ angular.module('cosmoUiApp')
                     $document.unbind('mousemove', mousemove);
                     $document.unbind('mouseup', mouseup);
                 }
-
-
 
                 /// for tests
                 $scope.executeEvents = executeEvents;

@@ -7,7 +7,7 @@ describe('Controller: DeploymentNodesCtrl', function () {
     beforeEach(module('cosmoUiApp', 'backend-mock'));
 
     var DeploymentNodesCtrl, scope;
-    var _cloudifyClient,_NodeService;
+    var _cloudifyClient, _NodeService;
 
     var initCtrl = inject(function($controller){
         DeploymentNodesCtrl = $controller('DeploymentNodesCtrl', {
@@ -16,12 +16,12 @@ describe('Controller: DeploymentNodesCtrl', function () {
     });
 
     // Initialize the controller and a mock scope
-    beforeEach(inject(function ($rootScope ,cloudifyClient ,NodeService ) {
+    beforeEach(inject(function ($rootScope, cloudifyClient, NodeService) {
         _cloudifyClient = cloudifyClient;
         _NodeService = NodeService;
         scope = $rootScope.$new();
-        spyOn(cloudifyClient.nodes, 'list').andReturn(window.mockPromise({data: {items: []}})); //default implementation can be override
-        spyOn(NodeService, 'createNodesTree').andCallFake(function(){});
+        spyOn(cloudifyClient.nodes, 'list').and.returnValue(window.mockPromise({data: {items: []}})); //default implementation can be override
+        spyOn(NodeService, 'createNodesTree').and.callFake(function(){});
         initCtrl();
     }));
 
@@ -41,7 +41,7 @@ describe('Controller: DeploymentNodesCtrl', function () {
                     number_of_instances: '1'
                 }
             ];
-            _cloudifyClient.nodes.list.andReturn(window.mockPromise({data: {items: nodesMock}}));
+            _cloudifyClient.nodes.list.and.returnValue(window.mockPromise({data: {items: nodesMock}}));
             initCtrl();
             expect(scope.dataTable).toBe(nodesMock);
             expect(_NodeService.createNodesTree).toHaveBeenCalled();

@@ -6,14 +6,11 @@
  * implements cloudify REST client in nodejs
  */
 
-
 var conf = require('../appConf'); // todo: this class should not read directly from configuration
 var log4js = require('log4js');
 log4js.configure(conf.log4js); // todo: no need for this here..
 var logger = log4js.getLogger('cloudify4node');
 var querystring = require('querystring');
-
-
 
 /**
  *
@@ -32,11 +29,11 @@ var querystring = require('querystring');
  * @param {function} callback function(err,data)
  */
 // todo - Cloudify4node should be an instance.. why are we using static function declaration?
-exports.uploadBlueprint = function( cloudifyConf, streamReader, opts, callback) {
+exports.uploadBlueprint = function (cloudifyConf, streamReader, opts, callback) {
     var ajax = require('http');
     var endpoint = require('url').parse(conf.cloudifyManagerEndpoint);
 
-    if ( endpoint.protocol && endpoint.protocol.indexOf('https') >= 0 ){
+    if (endpoint.protocol && endpoint.protocol.indexOf('https') >= 0) {
         ajax = require('https');
 
     }
@@ -56,7 +53,7 @@ exports.uploadBlueprint = function( cloudifyConf, streamReader, opts, callback) 
 
     querystring.stringify(opts.params);
 
-    function handleResponse(res){
+    function handleResponse(res) {
         var responseMessage = '';
         logger.debug('[uploadBlueprint] got response.  statusCode: ' + res.statusCode);
 
@@ -74,13 +71,12 @@ exports.uploadBlueprint = function( cloudifyConf, streamReader, opts, callback) 
         });
     }
 
-
     var querystr = querystring.stringify(opts.params);
 
     var requestOptions = {
         hostname: endpoint.hostname,
         port: endpoint.port,
-        path: require('url').resolve(endpoint.path, 'blueprints/' + opts.blueprint_id + ( querystr ? '?' + querystr : '' )),
+        path: require('url').resolve(endpoint.path, 'blueprints/' + opts.blueprint_id + (querystr ? '?' + querystr : '')),
         method: 'PUT',
         headers: {
             'Content-Type': 'application/octet-stream',
@@ -90,8 +86,7 @@ exports.uploadBlueprint = function( cloudifyConf, streamReader, opts, callback) 
 
     console.log('this is requestOptions', requestOptions);
 
-
-    if (  cloudifyConf.authHeader  ){
+    if (cloudifyConf.authHeader) {
         console.log('auth header is', cloudifyConf.authHeader);
         requestOptions.headers.Authorization = cloudifyConf.authHeader;
     }
@@ -99,8 +94,8 @@ exports.uploadBlueprint = function( cloudifyConf, streamReader, opts, callback) 
     //logger.info('sending request', requestOptions);
     var req = ajax.request(requestOptions, handleResponse);
 
-    req.on('error', function(e) {
-        logger.error('[uploadBlueprint] problem with request: ',e);
+    req.on('error', function (e) {
+        logger.error('[uploadBlueprint] problem with request: ', e);
         callback(e); // todo: this does not match the error format we use above.
         return;
     });
@@ -120,7 +115,3 @@ exports.uploadBlueprint = function( cloudifyConf, streamReader, opts, callback) 
             req.end();
         });
 };
-
-
-
-

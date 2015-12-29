@@ -50,19 +50,19 @@ describe('Service: VersionService', function () {
             resolution = null;
             uiVersion = { data :  null } ;
             latestVersion = { data :  null  };
-            spyOn($q, 'defer').andReturn({
+            spyOn($q, 'defer').and.returnValue({
                 promise: 'foo',
                 resolve: function (res) {
                     resolution = res;
                 }
             });
-            spyOn(versionService,'getUiVersion').andReturn({
+            spyOn(versionService,'getUiVersion').and.returnValue({
                 then:function( success ){
                     console.log('return uiVersion', uiVersion );
                     success( uiVersion );
                 }
             });
-            spyOn(versionService,'getLatest').andReturn({
+            spyOn(versionService,'getLatest').and.returnValue({
                 then:function(success){
                     success( latestVersion );
                 }

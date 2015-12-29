@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('cosmoUiApp')
-    .controller('BlueprintsIndexCtrl', function ($scope, $log, cloudifyClient, CloudifyService ) {
+    .controller('BlueprintsIndexCtrl', function ($scope, $log, cloudifyClient, CloudifyService) {
         $scope.lastExecutedPlan = null;
         $scope.selectedBlueprint = null;
         $scope.managerError = false;
@@ -24,19 +24,19 @@ angular.module('cosmoUiApp')
             });
         }
 
-        function loadDeployments(){
-            cloudifyClient.deployments.list('blueprint_id').then(function( result ){
-                var deploymentsPerBlueprint = _.groupBy( result.data.items, 'blueprint_id' );
-                _.each($scope.blueprints, function(b){
+        function loadDeployments() {
+            cloudifyClient.deployments.list('blueprint_id').then(function (result) {
+                var deploymentsPerBlueprint = _.groupBy(result.data.items, 'blueprint_id');
+                _.each($scope.blueprints, function (b) {
                     b.deploymentsCount = deploymentsPerBlueprint.hasOwnProperty(b.id) ? deploymentsPerBlueprint[b.id].length : 0;
                 });
                 $scope.deploymentsCount = true;
-            }, function(/*result*/){
+            }, function (/*result*/) {
                 // alert on error somewhere. todo.
             });
         }
 
-        $scope.loadBlueprints = function(){
+        $scope.loadBlueprints = function () {
             loadBlueprints().then(loadDeployments);
         };
 

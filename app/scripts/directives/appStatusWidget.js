@@ -1,23 +1,23 @@
 'use strict';
 
 angular.module('cosmoUiApp')
-    .directive('appStatusWidget', function ( cloudifyClient, NodeService  ) {
+    .directive('appStatusWidget', function (cloudifyClient, NodeService) {
         return {
             templateUrl: 'views/directives/appStatusWidget.html',
             transclude: true,
-            scope:{
-                'deploymentId' : '='
+            scope: {
+                'deploymentId': '='
             },
             restrict: 'A',
             link: function ($scope) {
                 function loadInstances() {
-                    if ( !$scope.deploymentId ){
+                    if (!$scope.deploymentId) {
                         return;
                     }
-                    return cloudifyClient.nodeInstances.list($scope.deploymentId, 'state' ).then(function (result) {
+                    return cloudifyClient.nodeInstances.list($scope.deploymentId, 'state').then(function (result) {
 
-                        var progress = Math.floor(NodeService.status.calculateProgress( result.data.items ));
-                        $scope.value = { 'done' : progress };
+                        var progress = Math.floor(NodeService.status.calculateProgress(result.data.items));
+                        $scope.value = {'done': progress};
                         $scope.text = progress;
                     });
                 }

@@ -14,7 +14,7 @@ angular.module('cosmoUiApp')
 
         $scope.page = {};
         $scope.page.topologyLoading = true;
-        if ( blueprintId ) {
+        if (blueprintId) {
             cloudifyClient.blueprints.get(blueprintId).then(function (result) {
                 var data = result.data;
 

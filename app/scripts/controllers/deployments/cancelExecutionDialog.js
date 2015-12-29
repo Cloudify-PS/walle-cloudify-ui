@@ -15,13 +15,11 @@ angular.module('cosmoUiApp')
                 return;
             }
 
-
             cloudifyClient.executions.cancel(execution.id, !!force).then(function (result) {
                 var data = result.data;
                 if (data.hasOwnProperty('error_code')) {
                     $scope.setErrorMessage(data.message);
-                }
-                else {
+                } else {
                     $scope.closeThisDialog();
                 }
             }, function (e) {
@@ -29,6 +27,5 @@ angular.module('cosmoUiApp')
 
             });
         };
-
 
     });

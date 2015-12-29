@@ -3,7 +3,7 @@
 describe('Directive: iframeOnload', function () {
 
     var element;
-    beforeEach(module('cosmoUiApp', 'ngMock', 'templates-main','backend-mock'));
+    beforeEach(module('cosmoUiApp', 'ngMock', 'templates-main', 'backend-mock'));
 
     it('should trigger function on load', inject(function ($rootScope, $compile) {
         $rootScope.doSomething = jasmine.createSpy();

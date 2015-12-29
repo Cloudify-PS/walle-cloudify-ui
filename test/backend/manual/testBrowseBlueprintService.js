@@ -7,8 +7,7 @@ var logger = log4js.getLogger('testBrowseBlueprintService');
 
 var browseBlueprintService = require('../services/BrowseBlueprintService');
 
-
-browseBlueprintService.deleteBlueprint('monBrowse', function(err){
+browseBlueprintService.deleteBlueprint('monBrowse', function (err) {
     logger.debug('deleteBlueprint error', err);
 });
 
@@ -17,7 +16,6 @@ browseBlueprintService.deleteBlueprint('monBrowse', function(err){
 //    console.log('fileGetContent', err, content);
 //
 //});
-
 
 //cloudify4node.browseBlueprint('nodecellar' ,function(err, data) {
 //
@@ -41,5 +39,3 @@ browseBlueprintService.deleteBlueprint('monBrowse', function(err){
 //    });
 //
 //});
-
-

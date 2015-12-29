@@ -4,14 +4,14 @@
 describe('Directive: topology', function () {
 
     // load the directive's module
-    beforeEach(module('cosmoUiApp','backend-mock' ,'templates-main'));
+    beforeEach(module('cosmoUiApp', 'backend-mock', 'templates-main'));
 
-    var element,
-        scope;
+    var element;
+    var scope;
 
     beforeEach(inject(function ($rootScope, $compile) {
         scope = $rootScope.$new();
-        spyOn(scope,'registerTickerTask');
+        spyOn(scope, 'registerTickerTask');
         element = angular.element('<div ui-topology blueprint-id="blueprintId"></div>');
         element = $compile(element)(scope);
 
@@ -20,7 +20,7 @@ describe('Directive: topology', function () {
     //TODO: make tests run https://cloudifysource.atlassian.net/browse/CFY-4379
     //describe('init', function(){
     //    it('should load blueprint if id exists', inject(function( cloudifyClient ){
-    //        spyOn(cloudifyClient.blueprints,'get').andReturn({ then:function(){ }});
+    //        spyOn(cloudifyClient.blueprints,'get').and.returnValue({ then:function(){ }});
     //        scope.blueprintId = 'foo';
     //        scope.$digest();
     //        expect(cloudifyClient.blueprints.get).toHaveBeenCalled();
@@ -53,8 +53,8 @@ describe('Directive: topology', function () {
     //                }
     //            }
     //        };
-    //        spyOn(DataProcessingService,'encodeTopologyFromRest').andReturn({});
-    //        spyOn(cloudifyClient.blueprints,'get').andReturn(window.mockPromise(nodesMock));
+    //        spyOn(DataProcessingService,'encodeTopologyFromRest').and.returnValue({});
+    //        spyOn(cloudifyClient.blueprints,'get').and.returnValue(window.mockPromise(nodesMock));
     //        scope.blueprintId = 'foo';
     //        scope.$digest();
     //
@@ -75,7 +75,7 @@ describe('Directive: topology', function () {
     //            x: 355,
     //            y: 80
     //        };
-    //        spyOn(element.isolateScope(),'onNodeSelect').andCallThrough();
+    //        spyOn(element.isolateScope(),'onNodeSelect').and.callThrough();
     //        element.isolateScope().onNodeSelected(composerNodeMock);
     //
     //        expect(element.isolateScope().onNodeSelect).toHaveBeenCalledWith({node: nodesMock.data.plan.nodes[0]});

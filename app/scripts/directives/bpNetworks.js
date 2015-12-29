@@ -6,8 +6,8 @@ angular.module('cosmoUiApp')
             restrict: 'A',
             link: function postLink($scope, $element) {
 
-                var width = '100%',
-                    height = '100%';
+                var width = '100%';
+                var height = '100%';
 
                 var vis = d3.select($element[0]).append('svg:svg')
                     .attr('width', width)
@@ -39,6 +39,7 @@ angular.module('cosmoUiApp')
                         bpNetworkService.render();
                     });
                 }
+
                 document.addEventListener('DOMContentLoaded', broadcastResize, false);
                 window.onresize = broadcastResize;
 
@@ -60,18 +61,18 @@ angular.module('cosmoUiApp')
                     }
                 }
 
-                $scope.$on('coordinatesUpdated', function(e, data) {
+                $scope.$on('coordinatesUpdated', function (e, data) {
                     if (data.length > 0) {
                         draw(data);
                     }
                 });
 
-                $scope.$watch(function() {
-                    return $element.is(':visible');
-                },
-                function() {
-                    bpNetworkService.render();
-                });
+                $scope.$watch(function () {
+                        return $element.is(':visible');
+                    },
+                    function () {
+                        bpNetworkService.render();
+                    });
             }
         };
     });
@@ -89,24 +90,24 @@ angular.module('cosmoUiApp')
                 ngModel.$render = function () {
                     var data = ngModel.$viewValue || false;
                     switch (data.type) {
-                    case 'subnet':
-                        $element.css('backgroundColor', data.color);
-                        bpNetworkService.addSubnet(data.id, $element, data.color);
-                        break;
+                        case 'subnet':
+                            $element.css('backgroundColor', data.color);
+                            bpNetworkService.addSubnet(data.id, $element, data.color);
+                            break;
 
-                    case 'network':
-                        $element.css('backgroundColor', data.color);
-                        bpNetworkService.addNetwork(data.id, $element, data.color);
-                        break;
+                        case 'network':
+                            $element.css('backgroundColor', data.color);
+                            bpNetworkService.addNetwork(data.id, $element, data.color);
+                            break;
 
-                    case 'router':
-                        $element.css('backgroundColor', data.color);
-                        bpNetworkService.addRouter(data.id, $element);
-                        break;
+                        case 'router':
+                            $element.css('backgroundColor', data.color);
+                            bpNetworkService.addRouter(data.id, $element);
+                            break;
 
-                    default:
-                        bpNetworkService.addDevice(data.id, $element);
-                        break;
+                        default:
+                            bpNetworkService.addDevice(data.id, $element);
+                            break;
                     }
 
                     $scope.$root.$broadcast('elementsUpdated');
@@ -116,21 +117,21 @@ angular.module('cosmoUiApp')
     });
 
 angular.module('cosmoUiApp')
-    .service('bpNetworkService', ['$rootScope', function($rootScope){
+    .service('bpNetworkService', ['$rootScope', function ($rootScope) {
 
-        var elements = {},
-            coordinates = [],
-            map = {};
+        var elements = {};
+        var coordinates = [];
+        var map = {};
 
         this.render = function () {
             _render();
         };
 
-        $rootScope.$on('elementsUpdated', function() {
+        $rootScope.$on('elementsUpdated', function () {
             _render();
         });
 
-        $rootScope.$watch(function() {
+        $rootScope.$watch(function () {
             return coordinates;
         }, function () {
             $rootScope.$broadcast('coordinatesUpdated', coordinates);
@@ -140,13 +141,13 @@ angular.module('cosmoUiApp')
         function _render() {
             var Coords = [];
             angular.forEach(map, function (relation) {
-                if(!elements.hasOwnProperty(relation.source) || !elements.hasOwnProperty(relation.target)) {
+                if (!elements.hasOwnProperty(relation.source) || !elements.hasOwnProperty(relation.target)) {
                     return;
                 }
 
-                var from = elements[relation.source],
-                    to = elements[relation.target],
-                    height = to.element.outerHeight();
+                var from = elements[relation.source];
+                var to = elements[relation.target];
+                var height = to.element.outerHeight();
 
                 Coords.push({
                     source: {
@@ -166,13 +167,12 @@ angular.module('cosmoUiApp')
         }
 
         function getAttachPoint(startPoint, endPoint, element) {
-            var width = element.outerWidth(),
-                pointPosition = startPoint - endPoint;
+            var width = element.outerWidth();
+            var pointPosition = startPoint - endPoint;
 
             if (pointPosition < 0) { // Target right
                 return startPoint + width;
-            }
-            else { // Target left
+            } else { // Target left
                 return startPoint;
             }
         }

@@ -1,15 +1,13 @@
 'use strict';
 
 angular.module('cosmoUiApp')
-    .controller('DeleteBlueprintDialogCtrl', function ($scope, cloudifyClient, $log ) {
+    .controller('DeleteBlueprintDialogCtrl', function ($scope, cloudifyClient, $log) {
 
-
-
-        $scope.confirmDelete = function ( ) {
+        $scope.confirmDelete = function () {
             $scope.inProcess = true;
 
             if (!!$scope.blueprint) {
-                cloudifyClient.blueprints.delete( $scope.blueprint.id )
+                cloudifyClient.blueprints.delete($scope.blueprint.id)
                     .then(function (result) {
                         var data = result.data;
                         if (data.error_code !== undefined) {
@@ -29,7 +27,7 @@ angular.module('cosmoUiApp')
                         }
                     });
 
-            }else{
+            } else {
                 $log.error('blueprint id is missing!!');
             }
         };

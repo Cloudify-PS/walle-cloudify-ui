@@ -14,7 +14,7 @@ describe('Integration: addDeployment', function () {
         expect(typeof(cloudify4node.addDeployment)).toBe('function');
     });
 
-    it('should add deployment successfully', function() {
+    it('should add deployment successfully', function () {
         // add deployment with inputs
         var blueprints = null;
         var result = null;
@@ -37,7 +37,7 @@ describe('Integration: addDeployment', function () {
             successResult.blueprint_id = blueprintName;
         });
 
-        cloudify4node.getBlueprints(function(err, data) {
+        cloudify4node.getBlueprints(function (err, data) {
             blueprints = JSON.parse(data);
         });
 
@@ -45,7 +45,7 @@ describe('Integration: addDeployment', function () {
             return blueprints !== null;
         }, 'waiting for blueprints list to be loaded', 5000);
 
-        runs(function() {
+        runs(function () {
             logger.info('blueprints loaded, creating deployment');
             requestBody.blueprint_id = blueprints[0].id;
             cloudify4node.addDeployment(requestBody, function (err, data) {

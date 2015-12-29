@@ -10,9 +10,18 @@ describe('Controller: BlueprintsIndexCtrl', function () {
     }));
 
     describe('Views tests', function () {
-        var BlueprintsIndexCtrl, scope, _ngDialog,_$httpBackend,_$controller, _cloudifyClient, html, view, $compile, _q;
+        var BlueprintsIndexCtrl;
+        var scope;
+        var _ngDialog;
+        var _$httpBackend;
+        var _$controller;
+        var _cloudifyClient;
+        var html;
+        var view;
+        var $compile;
+        var _q;
 
-        beforeEach(inject(function ($templateCache,$controller, $rootScope, $httpBackend, ngDialog, cloudifyClient, _$compile_, $q) {
+        beforeEach(inject(function ($templateCache, $controller, $rootScope, $httpBackend, ngDialog, cloudifyClient, _$compile_, $q) {
             scope = $rootScope.$new();
             _cloudifyClient = cloudifyClient;
             _ngDialog = ngDialog;
@@ -38,10 +47,10 @@ describe('Controller: BlueprintsIndexCtrl', function () {
 
         //Simulates an error status 0 with no info.
         it('should stop showing loading gif if got bad response with no data', function () {
-            spyOn(_cloudifyClient.blueprints, 'list').andCallFake(function () {
+            spyOn(_cloudifyClient.blueprints, 'list').and.callFake(function () {
                 return {
                     then: function (success, error) {
-                        error({data:''});
+                        error({data: ''});
                         return _q.defer().promise;
                     }
                 };

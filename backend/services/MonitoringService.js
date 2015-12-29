@@ -9,9 +9,9 @@ logger.info('loaded');
 function _createInfluxRequest(query, callback) {
     var influxClient = influx({
         host: conf.influx.host,
-        username : conf.influx.user,
-        password : conf.influx.pass,
-        database : conf.influx.dbname
+        username: conf.influx.user,
+        password: conf.influx.pass,
+        database: conf.influx.dbname
     });
 
     influxClient.request.get({
@@ -25,14 +25,17 @@ function _getDashboardSeries(query, callbackFn) {
 }
 
 function _getDashboardSeriesList(query, callbackFn) {
-    if(!query.hasOwnProperty('dashboardId')) {
+    if (!query.hasOwnProperty('dashboardId')) {
         callbackFn({
             'status': 400,
             'message': '400: Invalid dashboardId',
             'error_code': 'Dashboard ID required'
         }, null);
     }
-    _createInfluxRequest({q: 'list series like /' + query.dashboardId + '..*/i', time_precision: query.time_precision}, function(err, data){
+    _createInfluxRequest({
+        q: 'list series like /' + query.dashboardId + '..*/i',
+        time_precision: query.time_precision
+    }, function (err, data) {
         return callbackFn(err, data);
     });
 }
@@ -45,13 +48,13 @@ function _getDeploymentDashboard(query, callbackFn) {
 
     // Inject deployment to template
     if (dashboard.hasOwnProperty('rows')) {
-        for(var i in dashboard.rows) {
+        for (var i in dashboard.rows) {
             var row = dashboard.rows[i];
 
-            for(var j in row.panels) {
+            for (var j in row.panels) {
                 var panel = row.panels[j];
 
-                for(var k in panel.targets) {
+                for (var k in panel.targets) {
                     var target = panel.targets[k];
 
                     target.query = target.query.replace(/{%deployment%}/gi, query.dashboardId);
