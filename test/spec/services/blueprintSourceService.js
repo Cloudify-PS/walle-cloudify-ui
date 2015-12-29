@@ -18,7 +18,7 @@ describe('Service: BlueprintSourceService', function () {
             spyOn(CloudifyService.blueprints, 'browse').and.callFake(function () {
                 return {
                     then: function (success) {
-                        var result = success({data:browseResponse});
+                        var result = success({data: browseResponse});
                         return {
                             then: function (success) {
                                 success(result);

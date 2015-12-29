@@ -17,7 +17,7 @@ angular.module('cosmoUiApp')
             var deltaFromNow = todayTimeStamp - input;
             if (deltaFromNow < 86400000) {
                 dayStr = 'Today';
-            } else if (deltaFromNow > 86400000 &&  deltaFromNow < 259200000) {
+            } else if (deltaFromNow > 86400000 && deltaFromNow < 259200000) {
                 dayStr = daysArr[weekday];
             } else {
                 dayStr = day + '/' + month;

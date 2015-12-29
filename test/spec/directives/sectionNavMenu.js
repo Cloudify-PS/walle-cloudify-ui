@@ -6,8 +6,8 @@ describe('Directive: sectionNavMenu', function () {
     // load the directive's module
     beforeEach(module('cosmoUiApp', 'backend-mock', 'templates-main'));
 
-    var element,
-        scope;
+    var element;
+    var scope;
 
     beforeEach(inject(function ($rootScope, $compile) {
         scope = $rootScope.$new();

@@ -14,7 +14,7 @@ describe('Controller: BlueprintNetwork', function () {
         scope;
 
     // Initialize the controller and a mock scope
-    beforeEach(inject(function ($controller, _$rootScope_, _cloudifyClient_, _$q_ , _NetworksService_, _bpNetworkService_ ) {
+    beforeEach(inject(function ($controller, _$rootScope_, _cloudifyClient_, _$q_, _NetworksService_, _bpNetworkService_) {
         cloudifyClient = _cloudifyClient_;
         $rootScope = _$rootScope_;
         $q = _$q_;

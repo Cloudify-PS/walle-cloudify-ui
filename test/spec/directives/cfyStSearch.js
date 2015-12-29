@@ -3,12 +3,12 @@
 describe('Directive: cfyStSearch', function () {
 
     // load the directive's module
-    beforeEach(module('cosmoUiApp','backend-mock'));
+    beforeEach(module('cosmoUiApp', 'backend-mock'));
 
-    var element,
-        scope;
-
-    var _$compile, stTableCtrl;
+    var element;
+    var scope;
+    var _$compile;
+    var stTableCtrl;
 
     beforeEach(inject(function ($rootScope, $httpBackend, $compile) {
         _$compile = $compile;
@@ -25,8 +25,7 @@ describe('Directive: cfyStSearch', function () {
         spyOn(stTableCtrl, 'search').and.callThrough();
         spyOn(stTableCtrl, 'tableState').and.returnValue({
             search: {
-                predicateObject:{
-                }
+                predicateObject: {}
             }
         });
 
@@ -39,7 +38,6 @@ describe('Directive: cfyStSearch', function () {
         scope.$digest();
     };
 
-
     it('should query table on match attribute change', function () {
         scope.predicate = 'predicate';
         scope.match = '[]';
@@ -47,43 +45,55 @@ describe('Directive: cfyStSearch', function () {
         initDirective();
         scope.match = ['some value'];
         scope.$digest();
-        expect(stTableCtrl.search).toHaveBeenCalledWith( { matchAny : '[]' }, 'predicate' );
-        expect(stTableCtrl.search).toHaveBeenCalledWith( { matchAny : '["some value"]' }, 'predicate' );
+        expect(stTableCtrl.search).toHaveBeenCalledWith({matchAny: '[]'}, 'predicate');
+        expect(stTableCtrl.search).toHaveBeenCalledWith({matchAny: '["some value"]'}, 'predicate');
     });
 
     it('should query table on gte attribute change', function () {
         scope.predicate = 'predicate';
+        // jscs:disable requireCapitalizedConstructors
         scope.gte = new moment('2015-10-16T16:30:00.000Z');
         element = angular.element('<table st-table=""><div cfy-st-search gte="{{gte}}" predicate="{{predicate}}"></div></table>');
         initDirective();
         scope.gte = new moment('2016-11-17T17:40:00.000Z');
+        // jscs:enable requireCapitalizedConstructors
         scope.$digest();
-        expect(stTableCtrl.search).toHaveBeenCalledWith( { gte : '2015-10-16T16:30:00.000Z' }, 'predicate' );
-        expect(stTableCtrl.search).toHaveBeenCalledWith( { gte : '2016-11-17T17:40:00.000Z' }, 'predicate' );
+        expect(stTableCtrl.search).toHaveBeenCalledWith({gte: '2015-10-16T16:30:00.000Z'}, 'predicate');
+        expect(stTableCtrl.search).toHaveBeenCalledWith({gte: '2016-11-17T17:40:00.000Z'}, 'predicate');
     });
 
     it('should query table on lte attribute change', function () {
         scope.predicate = 'predicate';
+        // jscs:disable requireCapitalizedConstructors
         scope.lte = new moment('2010-10-10T10:10:00.000Z');
         element = angular.element('<table st-table=""><div cfy-st-search lte="{{lte}}" predicate="{{predicate}}"></div></table>');
         initDirective();
         scope.lte = new moment('2011-11-11T11:11:00.000Z');
+        // jscs:enable requireCapitalizedConstructors
         scope.$digest();
-        expect(stTableCtrl.search).toHaveBeenCalledWith( { lte : '2010-10-10T10:10:00.000Z' }, 'predicate' );
-        expect(stTableCtrl.search).toHaveBeenCalledWith( { lte : '2011-11-11T11:11:00.000Z' }, 'predicate' );
+        expect(stTableCtrl.search).toHaveBeenCalledWith({lte: '2010-10-10T10:10:00.000Z'}, 'predicate');
+        expect(stTableCtrl.search).toHaveBeenCalledWith({lte: '2011-11-11T11:11:00.000Z'}, 'predicate');
     });
 
     it('should query table with lte and gte', function () {
         scope.predicate = 'predicate';
+        // jscs:disable requireCapitalizedConstructors
         scope.gte = new moment('2015-10-16T16:30:00.000Z');
         scope.lte = new moment('2010-10-10T10:10:00.000Z');
         element = angular.element('<table st-table=""><div cfy-st-search gte={{gte}} lte="{{lte}}" predicate="{{predicate}}"></div></table>');
         initDirective();
         scope.gte = new moment('2016-11-17T17:40:00.000Z');
         scope.lte = new moment('2011-11-11T11:11:00.000Z');
+        // jscs:enable requireCapitalizedConstructors
         scope.$digest();
-        expect(stTableCtrl.search).toHaveBeenCalledWith( { gte : '2015-10-16T16:30:00.000Z', lte : '2010-10-10T10:10:00.000Z' }, 'predicate' );
-        expect(stTableCtrl.search).toHaveBeenCalledWith( { gte : '2016-11-17T17:40:00.000Z', lte : '2011-11-11T11:11:00.000Z' }, 'predicate' );
+        expect(stTableCtrl.search).toHaveBeenCalledWith({
+            gte: '2015-10-16T16:30:00.000Z',
+            lte: '2010-10-10T10:10:00.000Z'
+        }, 'predicate');
+        expect(stTableCtrl.search).toHaveBeenCalledWith({
+            gte: '2016-11-17T17:40:00.000Z',
+            lte: '2011-11-11T11:11:00.000Z'
+        }, 'predicate');
     });
 
     it('should query table on equal attribute change', function () {
@@ -93,7 +103,7 @@ describe('Directive: cfyStSearch', function () {
         initDirective();
         scope.equal = 'yeahhh';
         scope.$digest();
-        expect(stTableCtrl.search).toHaveBeenCalledWith( { matchAny : 'free text!!' }, 'predicate' );
-        expect(stTableCtrl.search).toHaveBeenCalledWith( { matchAny : 'yeahhh' }, 'predicate' );
+        expect(stTableCtrl.search).toHaveBeenCalledWith({matchAny: 'free text!!'}, 'predicate');
+        expect(stTableCtrl.search).toHaveBeenCalledWith({matchAny: 'yeahhh'}, 'predicate');
     });
 });

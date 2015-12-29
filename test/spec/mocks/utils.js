@@ -19,14 +19,14 @@
  **/
 
 'use strict';
-window.mockPromise = function(successResponse, errorResponse){
+window.mockPromise = function (successResponse, errorResponse) {
     return {
-        then:function(success, error){
-            if ( !!successResponse ){
+        then: function (success, error) {
+            if (!!successResponse) {
                 success(successResponse);
             }
 
-            if (!!errorResponse ){
+            if (!!errorResponse) {
                 error(errorResponse);
             }
         }

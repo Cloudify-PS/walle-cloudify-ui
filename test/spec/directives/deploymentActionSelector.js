@@ -5,8 +5,8 @@ describe('Directive: deploymentActionSelector', function () {
     // load the directive's module
     beforeEach(module('cosmoUiApp', 'backend-mock', 'templates-main'));
 
-    var element,
-        scope;
+    var element;
+    var scope;
 
     beforeEach(inject(function ($rootScope, ngDialog, $compile) {
         scope = $rootScope.$new();
@@ -17,8 +17,7 @@ describe('Directive: deploymentActionSelector', function () {
         element = $compile(element)(scope);
     }));
 
-
-    describe('display', function(){
+    describe('display', function () {
         it('should overflow and ellipsis text', inject(function () {
             scope.currentExecution = 'A very very very verrryyyyyy long workflow name';
             scope.$digest();
@@ -30,7 +29,6 @@ describe('Directive: deploymentActionSelector', function () {
             element.remove();
         }));
     });
-
 
     describe('isolateScope functions', function () {
         var isolateScope = null;
@@ -78,7 +76,7 @@ describe('Directive: deploymentActionSelector', function () {
                 spyOn(_ngDialog, 'open');
             }));
 
-            it('should toggle delete confirmation dialog when deleteDeployment is selected', inject(function ( ngDialog ) {
+            it('should toggle delete confirmation dialog when deleteDeployment is selected', inject(function (ngDialog) {
                 scope.$digest();
                 var deleteAction = element.isolateScope().actions.filter(function (a) {
                     return a.name === 'deployments.deleteBtn';
@@ -90,7 +88,6 @@ describe('Directive: deploymentActionSelector', function () {
             }));
 
         });
-
 
     });
 

@@ -11,26 +11,28 @@ angular.module('cosmoUiApp')
         return {
             template: '<span><span ng-transclude></span><div class="gs-loader"><i class="fa fa-spinner fa-pulse"></i></div></span>',
             restrict: 'EAC',
-            transclude:true,
+            transclude: true,
             replace: false,
 
-            link: function(scope,element,attrs){
-                if ( element.is('.large')){
+            link: function (scope, element, attrs) {
+                if (element.is('.large')) {
                     element.find('.gs-loader').addClass('large');
                 }
 
-                if ( element.is('.inline') ){
+                if (element.is('.inline')) {
                     element.find('.gs-loader').addClass('inline');
                 }
 
-                scope.$watch(function(){ return attrs.gsSpinner; }, function(){
-                    if ( !attrs || !attrs.gsSpinner || attrs.gsSpinner.length === 0 ){ // empty
+                scope.$watch(function () {
+                    return attrs.gsSpinner;
+                }, function () {
+                    if (!attrs || !attrs.gsSpinner || attrs.gsSpinner.length === 0) { // empty
                         return;
                     }
 
-                    if ( attrs.gsSpinner === 'true' ){
+                    if (attrs.gsSpinner === 'true') {
                         element.addClass('gs-spinner-active');
-                    }else{ // 'false'
+                    } else { // 'false'
                         element.removeClass('gs-spinner-active');
                     }
                 });

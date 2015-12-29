@@ -33,8 +33,8 @@
     "it": false,
     "spyOn": false,
     "waitsFor": false,
-    "runs" : false,
-    "$" :false,
+    "runs": false,
+    "$": false,
     "moment": false,
     "waits": false
   }

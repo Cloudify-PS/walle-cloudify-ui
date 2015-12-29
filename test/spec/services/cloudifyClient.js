@@ -12,7 +12,7 @@ describe('Service: cloudifyClient', function () {
 
         successResult = null;
         errorResult = null;
-        httpReturnObject = {then:function(success,error){ // mock $http..
+        httpReturnObject = {then:function(success, error){ // mock $http..
             if ( successResult ) {  success(successResult); }
             if ( errorResult ){ error(errorResult); }
             return 'bar';

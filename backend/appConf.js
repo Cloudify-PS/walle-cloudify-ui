@@ -52,7 +52,7 @@ var publicConfiguration = {
 };
 
 var privateConfiguration = {
-    autoDetectProtocol:true, // automatically detect if cloudify is listening on http or https
+    autoDetectProtocol: true, // automatically detect if cloudify is listening on http or https
 
     // IMPORTANT: the slash at the end is important !!
     cloudifyManagerEndpoint: 'http://localhost/api/v2/', // require('url').parse(href) ==> protocol+hostname+port+pathname ... (hostname+port == host)
@@ -60,7 +60,7 @@ var privateConfiguration = {
     secretValue: 'WmLaL99qM95260zZE460d5t2BM4B34yo370447J3f8456F57wrq1Qd653g6s',
     log4js: {
         appenders: [
-            { 'type': 'console' },
+            {'type': 'console'},
             {
                 'type': 'file',
                 'filename': 'logs/application.log',
@@ -86,13 +86,11 @@ var privateConfiguration = {
 };
 logger.debug('browseBlueprint path: ' + privateConfiguration.browseBlueprint.path);
 
-
 /*************************************************************************************/
 /*************************************************************************************/
 /************************** Initialization Code - Don't Touch ************************/
 /*************************************************************************************/
 /*************************************************************************************/
-
 
 var meConf = null;
 try {
@@ -168,19 +166,16 @@ exports.applyConfiguration = function (settings) {
 
 };
 
-
 var prConf = getPrivateConfiguration();
 if (prConf !== null) {
     for (var i in prConf) {
         if (prConf[i] === undefined) {
 
-//            throw new Error('undefined configuration [' + i + ']');
+            //throw new Error('undefined configuration [' + i + ']');
         }
         exports[i] = prConf[i];
     }
 }
-
-
 
 exports.getPublicConfiguration = getPublicConfiguration;
 
@@ -194,36 +189,35 @@ exports.getPrivateConfiguration = getPrivateConfiguration;
  * @param {string} opts.usingPath e.g. blueprints
  * @param callback
  */
-function checkRestService( opts, callback ){
+function checkRestService(opts, callback) {
 
     var endpoint = opts.endpoint;
     var current = url.parse(endpoint).protocol;
-    var httpEndpoint = endpoint.replace(current,'http:');
-    var httpsEndpoint = endpoint.replace(current,'https:');
-
+    var httpEndpoint = endpoint.replace(current, 'http:');
+    var httpsEndpoint = endpoint.replace(current, 'https:');
 
     /**
      *
      * @type {{success: string|boolean}} false if no endpoint checked well, otherwise the endpoint string e.g. http://localhost:80/api/v2/
      */
-    var results = { success: false };
+    var results = {success: false};
     // will generate a function to check a single endpoint
-    function checkEndpoint( endpoint ){
+    function checkEndpoint(endpoint) {
 
-        return function(callback){
+        return function (callback) {
             try {
                 var checkUrl = url.resolve(endpoint, opts.usingPath);
-                logger.trace('checking url [' +  checkUrl  + ']');
+                logger.trace('checking url [' + checkUrl + ']');
                 request({'url': checkUrl, timeout: 1500}, function (err, res) {
-                    logger.trace('got response', res ? res.toJSON() : null );
+                    logger.trace('got response', res ? res.toJSON() : null);
 
-                    if (!err && res && (Math.floor(res.statusCode/100)) !== 5 ) { // responses with 5xx are errors. otherwise all is good.
+                    if (!err && res && (Math.floor(res.statusCode / 100)) !== 5) { // responses with 5xx are errors. otherwise all is good.
                         logger.trace('url [' + checkUrl + '] returned successfully');
 
                         var finalUrl = res.request.uri.href;
-                        if ( finalUrl === checkUrl ) {
+                        if (finalUrl === checkUrl) {
                             results.success = endpoint;
-                        }else{
+                        } else {
                             logger.trace('url [' + checkUrl + '] was redirected to [' + finalUrl + '] so it is incorrect');
                         }
                     } else {
@@ -231,43 +225,46 @@ function checkRestService( opts, callback ){
                     }
                     callback();
                 });
-            }catch(e){
-                logger.error('got error when checking url',e);
+            } catch (e) {
+                logger.error('got error when checking url', e);
                 callback(e);
             }
         };
     }
 
-
     async.parallel([
         checkEndpoint(httpEndpoint),
         checkEndpoint(httpsEndpoint)
-    ], function(error){
-        callback(error, results );
+    ], function (error) {
+        callback(error, results);
     });
 }
 
-function pollRestService(opts, callback){
+function pollRestService(opts, callback) {
 
     logger.trace('polling rest service');
-    checkRestService(opts, function( error , results ){
-        if ( !!error ){
+    checkRestService(opts, function (error, results) {
+        if (!!error) {
             callback(error);
             return;
         }
 
-        if ( results.success ){
+        if (results.success) {
             callback(null, results.success);
-        }else{ // poll again
-            setTimeout(function(){pollRestService(opts,callback); }, 5000);
+        } else { // poll again
+            setTimeout(function () {
+                pollRestService(opts, callback);
+            }, 5000);
         }
 
     });
 }
 
-
-if ( prConf.autoDetectProtocol ) {
-    pollRestService( { endpoint: privateConfiguration.cloudifyManagerEndpoint, usingPath: 'blueprints' }, function (err, endpoint) {
+if (prConf.autoDetectProtocol) {
+    pollRestService({
+        endpoint: privateConfiguration.cloudifyManagerEndpoint,
+        usingPath: 'blueprints'
+    }, function (err, endpoint) {
         if (!err && !!endpoint) {
             logger.trace('setting endpoint protocol. new endpoint is', endpoint);
             exports.cloudifyManagerEndpoint = privateConfiguration.cloudifyManagerEndpoint = endpoint;
@@ -275,8 +272,6 @@ if ( prConf.autoDetectProtocol ) {
             logger.error('unable to decide protocol', err);
         }
     });
-}else{
+} else {
     logger.info('auto detect protocol off, will not detect');
 }
-
-

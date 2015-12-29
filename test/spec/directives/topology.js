@@ -4,14 +4,14 @@
 describe('Directive: topology', function () {
 
     // load the directive's module
-    beforeEach(module('cosmoUiApp','backend-mock' ,'templates-main'));
+    beforeEach(module('cosmoUiApp', 'backend-mock', 'templates-main'));
 
-    var element,
-        scope;
+    var element;
+    var scope;
 
     beforeEach(inject(function ($rootScope, $compile) {
         scope = $rootScope.$new();
-        spyOn(scope,'registerTickerTask');
+        spyOn(scope, 'registerTickerTask');
         element = angular.element('<div ui-topology blueprint-id="blueprintId"></div>');
         element = $compile(element)(scope);
 

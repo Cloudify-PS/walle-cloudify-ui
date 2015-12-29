@@ -22,17 +22,17 @@ angular.module('cosmoUiApp')
                     event_type: 0
                 };
 
-                function isSkipSearchMatch(){
-                    if(skipSearches[attrs.predicate] > 0){
+                function isSkipSearchMatch() {
+                    if (skipSearches[attrs.predicate] > 0) {
                         skipSearches[attrs.predicate]--;
                         return true;
                     }
                     return false;
                 }
 
-                if(attrs.match !== undefined) {
+                if (attrs.match !== undefined) {
                     attrs.$observe('match', function (value) {
-                        if(isSkipSearchMatch()){
+                        if (isSkipSearchMatch()) {
                             return;
                         }
                         if (value || value === '') {
@@ -46,9 +46,9 @@ angular.module('cosmoUiApp')
                     });
                 }
 
-                if(attrs.equal !== undefined) {
+                if (attrs.equal !== undefined) {
                     attrs.$observe('equal', function (value) {
-                        if(isSkipSearchMatch()){
+                        if (isSkipSearchMatch()) {
                             return;
                         }
                         if (value || value === '') {
@@ -60,32 +60,31 @@ angular.module('cosmoUiApp')
                 }
 
                 //Please notice that in order for range query to work both, lte and gte must be on the same element
-                function createRangeQuery(){
+                function createRangeQuery() {
                     var query = {};
-                    if(attrs.gte && attrs.gte.length>0) {
+                    if (attrs.gte && attrs.gte.length > 0) {
                         query.gte = getParsedValue(attrs.gte);
                     }
-                    if(attrs.lte && attrs.lte.length>0)
-                    {
+                    if (attrs.lte && attrs.lte.length > 0) {
                         query.lte = getParsedValue(attrs.lte);
                     }
                     return query;
                 }
 
-                function getParsedValue(value){
-                    if(value.indexOf('\"') !== -1){
+                function getParsedValue(value) {
+                    if (value.indexOf('\"') !== -1) {
                         value = value.replace(new RegExp('\"', 'g'), '');
                     }
-                    if(moment(value, 'YYYY-MM-DD HH:mm', true).isValid()){
+                    if (moment(value, 'YYYY-MM-DD HH:mm', true).isValid()) {
                         return moment(value, 'YYYY-MM-DD HH:mm').toISOString();
                     }
-                    if(moment(value, 'YYYY-MM-DDTHH:mm:ss.SSSZ',true).isValid()) {
+                    if (moment(value, 'YYYY-MM-DDTHH:mm:ss.SSSZ', true).isValid()) {
                         return value;
                     }
                     return '';
                 }
 
-                if(attrs.gte !== undefined) {
+                if (attrs.gte !== undefined) {
                     attrs.$observe('gte', function (value) {
                         if (value !== undefined && !isSkipSearchMatch()) {
                             var query = createRangeQuery();
@@ -94,7 +93,7 @@ angular.module('cosmoUiApp')
                     });
                 }
 
-                if(attrs.lte !== undefined) {
+                if (attrs.lte !== undefined) {
                     attrs.$observe('lte', function (value) {
                         if (value !== undefined && !isSkipSearchMatch()) {
                             var query = createRangeQuery();
@@ -108,21 +107,21 @@ angular.module('cosmoUiApp')
                 }, function (query) {
 
                     //This checks if the state was changed from outside of this directive, so the model didn't updated
-                    function isModelDifferentFromQuery(model, queryValues){
+                    function isModelDifferentFromQuery(model, queryValues) {
                         //is ngModel different from the queried value?
                         return !_.isEqual(model, queryValues);
                     }
 
-                    function getSelectedOptions(queryValues){
-                        function getOptionObjectByValue(options, value){
+                    function getSelectedOptions(queryValues) {
+                        function getOptionObjectByValue(options, value) {
                             return _.find(options, 'value', value);
                         }
 
                         var selectedOptions = [];
-                        var options = _.get(scope,attrs.options);
+                        var options = _.get(scope, attrs.options);
                         _.forEach(queryValues, function (queryValue) {
                             var option = getOptionObjectByValue(options, queryValue);
-                            if(!!option){
+                            if (!!option) {
                                 selectedOptions.push(option);
                             }
                         });
@@ -130,45 +129,49 @@ angular.module('cosmoUiApp')
                     }
 
                     try {
-                        if(query.matchAny !== undefined) {
+                        if (query.matchAny !== undefined) {
                             var queryValues = Array.isArray(query.matchAny) ? query.matchAny : JSON.parse(query.matchAny);
                             var ngModel = attrs.ngModel;
                             if (!!queryValues) {
                                 //check if state is different
-                                if (isModelDifferentFromQuery(_.pluck(_.get(scope, ngModel),'value'), queryValues)) {
+                                if (isModelDifferentFromQuery(_.pluck(_.get(scope, ngModel), 'value'), queryValues)) {
                                     var selectedOptions = getSelectedOptions(queryValues);
                                     skipSearches[attrs.predicate]++;
                                     _.set(scope, ngModel, selectedOptions);
                                 }
                             }
                         }
-                        if(query.gte !== undefined){
+                        if (query.gte !== undefined) {
                             var gte = query.gte;
                             var gteModel = 'eventsFilter.timeRange.gte';
                             var gteParsedModel = _.get(scope, gteModel);
                             gteParsedModel = gteParsedModel.constructor.name === 'Moment' ? gteParsedModel.toISOString() : getParsedValue(gteParsedModel);
                             //check if state is different
-                            if(isModelDifferentFromQuery(gteParsedModel, gte)) {
+                            if (isModelDifferentFromQuery(gteParsedModel, gte)) {
                                 if (query.gte !== undefined) {
                                     skipSearches[attrs.predicate]++;
+                                    // jscs:disable requireCapitalizedConstructors
                                     _.set(scope, gteModel, new moment(gte));
+                                    // jscs:enable requireCapitalizedConstructors
                                 }
                             }
                         }
-                        if(query.lte !== undefined) {
+                        if (query.lte !== undefined) {
                             var lte = query.lte;
                             var lteModel = 'eventsFilter.timeRange.lte';
                             var lteParsedModel = _.get(scope, lteModel);
                             lteParsedModel = lteParsedModel.constructor.name === 'Moment' ? lteParsedModel.toISOString() : getParsedValue(lteParsedModel);
                             //check if state is different
-                            if(isModelDifferentFromQuery(lteParsedModel, lte)) {
+                            if (isModelDifferentFromQuery(lteParsedModel, lte)) {
                                 if (query.lte !== undefined) {
                                     skipSearches[attrs.predicate]++;
+                                    // jscs:disable requireCapitalizedConstructors
                                     _.set(scope, lteModel, new moment(lte));
+                                    // jscs:enable requireCapitalizedConstructors
                                 }
                             }
                         }
-                        if(query.equalTo !== undefined){
+                        if (query.equalTo !== undefined) {
                             var equalQuery = query.equalTo;
                             var equalNgModel = attrs.ngModel;
                             if (!!equalQuery) {
@@ -180,8 +183,7 @@ angular.module('cosmoUiApp')
                             }
                         }
                     }
-                    catch(e)
-                    {
+                    catch (e) {
                         $log.error(e.message);
                     }
                 }, true);

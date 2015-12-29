@@ -3,7 +3,8 @@
 describe('Controller: HostsCtrl', function () {
 
     /*jshint camelcase: false */
-    var HostsCtrl, scope;
+    var HostsCtrl;
+    var scope;
 
     // load the controller's module
     beforeEach(module('cosmoUiApp', 'backend-mock'));
@@ -30,7 +31,6 @@ describe('Controller: HostsCtrl', function () {
         });
     });
 
-
     describe('#resetTypeFilter', function () {
 
         it('should set Compute type on filter', function () {
@@ -45,7 +45,14 @@ describe('Controller: HostsCtrl', function () {
         beforeEach(inject(function (cloudifyClient) {
             cloudifyClient.deployments.list.and.returnValue({
                 then: function (success) {
-                    success({data: {items: [{'id': 'foo', 'blueprint_id': 'bar'}]}});
+                    success({
+                        data: {
+                            items: [{
+                                'id': 'foo',
+                                'blueprint_id': 'bar'
+                            }]
+                        }
+                    });
                 }
             });
         }));
@@ -117,6 +124,5 @@ describe('Controller: HostsCtrl', function () {
     describe('#onHostsFilterChange', function () {
 
     });
-
 
 });

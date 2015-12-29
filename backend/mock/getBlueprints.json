@@ -1,14 +1,14 @@
 [
-    {
-        "name": "mock-blueprint1",
-        "version": "1.0",
-        "description": "This is blueprint 1",
-        "id": "79d63db1-f70c-450e-81c8-934fcc2a768f"
-    },
-    {
-        "name": "mock-blueprint2",
-        "version": "1.0",
-        "description": "This is blueprint 2",
-        "id": "1111-22222-3333-4444-5555555"
-    }
+  {
+    "name": "mock-blueprint1",
+    "version": "1.0",
+    "description": "This is blueprint 1",
+    "id": "79d63db1-f70c-450e-81c8-934fcc2a768f"
+  },
+  {
+    "name": "mock-blueprint2",
+    "version": "1.0",
+    "description": "This is blueprint 2",
+    "id": "1111-22222-3333-4444-5555555"
+  }
 ]

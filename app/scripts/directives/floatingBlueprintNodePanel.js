@@ -14,11 +14,11 @@ angular.module('cosmoUiApp')
             scope: {
                 node: '=node',
                 nodes: '=nodeLists',
-                showPanel : '@show'
+                showPanel: '@show'
             },
             link: function postLink($scope, element) {
 
-                $scope.hideProperties = function(){
+                $scope.hideProperties = function () {
                     $scope.node = null;
                 };
 
@@ -45,7 +45,7 @@ angular.module('cosmoUiApp')
                     };
                 }
 
-                $scope.$watch('node', function(node){
+                $scope.$watch('node', function (node) {
                     // todo - guy - why are we not usgin ng-show instead?? and then here it would be $scope.showPanel = !!newValue. boom, 4 lines less..
                     $scope.showPanel = !!node;
                     if (!!node) {
@@ -54,23 +54,23 @@ angular.module('cosmoUiApp')
                         element.hide();
                     }
 
-                    if(node) {
-                        switch(node.nodeType) {
-                        case 'node':
-                            _viewNode(node);
-                            break;
-                        case 'relationship':
-                            _viewRelationship(node);
-                            break;
-                        default:
-                            _viewNode(node);
+                    if (node) {
+                        switch (node.nodeType) {
+                            case 'node':
+                                _viewNode(node);
+                                break;
+                            case 'relationship':
+                                _viewRelationship(node);
+                                break;
+                            default:
+                                _viewNode(node);
                         }
                     }
                 }, true);
 
-                $scope.getNodeById = function(nodeId) {
-                    angular.forEach($scope.nodes, function(node){
-                        if(node.id === nodeId) {
+                $scope.getNodeById = function (nodeId) {
+                    angular.forEach($scope.nodes, function (node) {
+                        if (node.id === nodeId) {
                             _viewNode(node);
                             return;
                         }

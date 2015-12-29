@@ -212,7 +212,7 @@ describe('Controller: UploadBlueprintDialogCtrl', function () {
     });
 
     describe('#uploadBlueprint', function(){
-        it('should update ngProgress with progress percentage', inject(function( $upload , ngProgress ){
+        it('should update ngProgress with progress percentage', inject(function( $upload, ngProgress ){
             var progressCallback = null;
 
             spyOn($upload, 'upload').and.callFake(function () {

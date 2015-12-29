@@ -17,22 +17,21 @@ angular.module('cosmoUiApp')
             replace: true,
             link: function postLink(scope/*, element*/) {
                 scope.embeded = $window !== $window.top;
-                if ( $routeParams.hasOwnProperty('embed')  ) { // override
+                if ($routeParams.hasOwnProperty('embed')) { // override
                     scope.embeded = $routeParams.embed === 'true';
                 }
 
-                VersionService.getVersions().then(function(versions) {
+                VersionService.getVersions().then(function (versions) {
                     scope.versions = versions;
                 });
 
-
-                $(document).on('scroll', function(){
-                    var newValue =  $('body').scrollTop();
-                    $('#left-side-menu').css('bottom', $('#footer').innerHeight() - newValue );
+                $(document).on('scroll', function () {
+                    var newValue = $('body').scrollTop();
+                    $('#left-side-menu').css('bottom', $('#footer').innerHeight() - newValue);
                     var $left = $('#left-side-menu');
-                    if ( newValue > 80 ){
+                    if (newValue > 80) {
                         $left.addClass('fix-to-top');
-                    }else {
+                    } else {
                         $left.removeClass('fix-to-top');
                     }
                 });

@@ -5,8 +5,8 @@ describe('Controller: LoginCtrl', function () {
     // load the controller's module
     beforeEach(module('cosmoUiApp', 'backend-mock'));
 
-    var LoginCtrl,
-        scope;
+    var LoginCtrl;
+    var scope;
 
     // Initialize the controller and a mock scope
     beforeEach(inject(function ($controller, $rootScope) {

@@ -9,13 +9,13 @@ angular.module('cosmoUiApp')
             },
             link: function postLink($scope, $element, $attrs) {
 
-                var defaultSize = 200,
-                    ratio = 4.7,
-                    width = $attrs.size || defaultSize,
-                    height = $attrs.size || defaultSize,
-                    innerSize = width - (width / ratio),
-                    pi = Math.PI,
-                    towPi = pi * 2;
+                var defaultSize = 200;
+                var ratio = 4.7;
+                var width = $attrs.size || defaultSize;
+                var height = $attrs.size || defaultSize;
+                var innerSize = width - (width / ratio);
+                var pi = Math.PI;
+                var towPi = pi * 2;
 
                 // Collection of colors
                 var color = d3.scale.category20();
@@ -36,8 +36,7 @@ angular.module('cosmoUiApp')
                         if (previous.hasOwnProperty(i)) {
                             var oldArc = previous[i];
                             arc.previous = startAngle + convertToRadian(oldArc.value);
-                        }
-                        else {
+                        } else {
                             arc.previous = startAngle;
                         }
                         arc.startAngle = startAngle;
@@ -56,9 +55,13 @@ angular.module('cosmoUiApp')
                         .data(data);
 
                     // arc configuration
-                    function configArc( group ) {
-                        return group.attr('fill', function (d, i) { return color(i); })
-                            .attr('class', function(d){ return d.key; })
+                    function configArc(group) {
+                        return group.attr('fill', function (d, i) {
+                            return color(i);
+                        })
+                            .attr('class', function (d) {
+                                return d.key;
+                            })
                             .transition()
                             .ease('bounce')
                             .duration(750)
@@ -70,8 +73,8 @@ angular.module('cosmoUiApp')
 
                     // enter for new data
                     configArc(g.enter()
-                        .append('g')
-                        .append('svg:path')
+                            .append('g')
+                            .append('svg:path')
                     );
 
                     // remove old data

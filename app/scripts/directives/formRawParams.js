@@ -27,7 +27,7 @@ angular.module('cosmoUiApp')
             link: function postLink(scope/*, element, attrs*/) {
                 var $scope = scope;
 
-                var INPUT_STATE = { RAW: 'raw',PARAMS:'params'};
+                var INPUT_STATE = {RAW: 'raw', PARAMS: 'params'};
 
                 $scope.inputsState = INPUT_STATE.PARAMS;
                 $scope.inputs = {};
@@ -48,7 +48,6 @@ angular.module('cosmoUiApp')
                     scope.valid = newValue && _validateJsonKeys() && _validateJSON(false, true); //set error message turned on
                 });
 
-
                 // JSON keys validation, verifying all expected keys exists in JSON
                 // if key is missing we want to display an error
                 // if additional key is added and unexpected we want to display an error
@@ -56,8 +55,7 @@ angular.module('cosmoUiApp')
                     function isKeyInParams(key) {
                         if (key in scope.params) {
                             return true;
-                        }
-                        else {
+                        } else {
                             return false;
                         }
                     }
@@ -151,7 +149,7 @@ angular.module('cosmoUiApp')
                 }
 
                 function _rawToForm() {
-                    if ( $scope.rawString === undefined ){
+                    if ($scope.rawString === undefined) {
                         return;
                     }
                     setDeployError(null);
@@ -167,7 +165,7 @@ angular.module('cosmoUiApp')
                             // if input type is object (except null) avoid [Object object] by stringifying
                             // if input type will be changed by parsing again (see parseInputs) then we want to keep it a string, so we need to stringify it
                             // this handles "true" and "1" strings that will accidentally be parsed to true (boolean) and 1 (number) etc..
-                            if (( !!value && typeof(value) === 'object') || typeof(value) !== typeof(parsedValue)) {
+                            if ((!!value && typeof(value) === 'object') || typeof(value) !== typeof(parsedValue)) {
                                 parsedInputs[key] = JSON.stringify(value);
                             }
                         });
@@ -206,7 +204,6 @@ angular.module('cosmoUiApp')
 
                 // cover scenario where key is missing and I just added it in form mode
                 $scope.$watch('inputs', _formToRaw, true);
-
 
                 $scope.toggleInputsState = function (state) {
                     $scope.inputsState = INPUT_STATE[state];

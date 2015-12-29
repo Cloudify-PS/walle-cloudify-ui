@@ -5,10 +5,10 @@ describe('Directive: bpActionSelector', function () {
     // load the directive's module
     beforeEach(module('cosmoUiApp', 'templates-main', 'backend-mock'));
 
-    var element,
-        scope,
-        _$compile,
-        _ngDialog;
+    var element;
+    var scope;
+    var _$compile;
+    var _ngDialog;
 
     beforeEach(inject(function ($routeParams, $rootScope, $compile, ngDialog) {
         _$compile = $compile;
@@ -54,7 +54,7 @@ describe('Directive: bpActionSelector', function () {
     it('should open deploy dialog if routeParams include deploy=true', inject(function ($routeParams, ngDialog, $httpBackend) {
         spyOn(ngDialog, 'open').and.returnValue();
         $routeParams.deploy = 'true';
-        $httpBackend.whenGET('/backend/cloudify-api/blueprints/'+scope.blueprint.id).respond(200);
+        $httpBackend.whenGET('/backend/cloudify-api/blueprints/' + scope.blueprint.id).respond(200);
         scope.$digest();
         expect(ngDialog.open).toHaveBeenCalled();
     }));

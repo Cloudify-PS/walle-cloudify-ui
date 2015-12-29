@@ -1,6 +1,6 @@
 {
-    "version": "3.0",
-    "build": "4-12",
-    "date": "SOME DATE",
-    "commit": "SOME COMMIT ID"
+  "version": "3.0",
+  "build": "4-12",
+  "date": "SOME DATE",
+  "commit": "SOME COMMIT ID"
 }
