@@ -2,7 +2,7 @@
 
 describe('Controller: CloudifyLayoutCtrl', function () {
 
-  // load the controller's module
+    // load the controller's module
     beforeEach(module('cosmoUiApp','backend-mock', 'templates-main', function( $provide){
 
         // override $window to test embed mechanism
@@ -22,7 +22,7 @@ describe('Controller: CloudifyLayoutCtrl', function () {
 
     var init = inject(function(_VersionService_){
         VersionService = _VersionService_;
-        spyOn( VersionService, 'getVersions').andReturn({ then : function( success ){ success('foo'); } });
+        spyOn( VersionService, 'getVersions').and.returnValue({ then : function( success ){ success('foo'); } });
         initCtrl();
     });
 

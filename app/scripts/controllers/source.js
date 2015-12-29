@@ -167,8 +167,7 @@ angular.module('cosmoUiApp')
         $scope.openTreeFolder = function(data) {
             if(!data.hasOwnProperty('show')) {
                 data.show = true;
-            }
-            else {
+            }else {
                 data.show = !data.show;
             }
         };

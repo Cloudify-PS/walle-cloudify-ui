@@ -7,8 +7,8 @@ describe('Controller: BlueprintLayoutCtrl', function () {
 
     beforeEach(module('cosmoUiApp', 'templates-main', 'backend-mock'));
 
-    var init = inject(function(cloudifyClient,$stateParams){
-        spyOn(cloudifyClient.blueprints, 'get').andCallFake(function () {
+    var init = inject(function(cloudifyClient, $stateParams){
+        spyOn(cloudifyClient.blueprints, 'get').and.callFake(function () {
             return {
                 then: function (success) {
                     var result = success({ data : {id: 'foo', plan: {inputs: {}}} });
@@ -36,6 +36,6 @@ describe('Controller: BlueprintLayoutCtrl', function () {
 
     it('should get the blueprint id from the stateParams', function(){
         initCtrl();
-        expect(scope.blueprint).toEqual({id:'hello'});
+        expect(scope.blueprint).toEqual({id:'hello', description: undefined});
     });
 });

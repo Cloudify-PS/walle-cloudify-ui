@@ -20,8 +20,8 @@ describe('Controller: NewTopologyCtrl', function () {
         DataProcessingService = _DataProcessingService_;
 
         $stateParams.blueprintId = 'baz';
-        spyOn(cloudifyClient.blueprints,'get').andReturn(window.mockPromise({ data : 'bar' }));
-        spyOn(DataProcessingService,'encodeTopologyFromRest').andReturn('foo');
+        spyOn(cloudifyClient.blueprints,'get').and.returnValue(window.mockPromise({ data : 'bar' }));
+        spyOn(DataProcessingService,'encodeTopologyFromRest').and.returnValue('foo');
         BlueprintNewTopologyCtrl = $controller('BlueprintNewTopologyCtrl', {
             $scope: scope
 
