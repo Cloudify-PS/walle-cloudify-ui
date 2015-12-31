@@ -2,5 +2,5 @@
     <a data-ng-repeat="section in sections"
        href="{{section.href}}"
             data-ng-class="{ 'active' : section.active }"
-            class="btn btn-default">{{ section.name }}</a>
+            class="btn btn-default" ng-click="setSectionActive(section.name)">{{ section.name }}</a>
 </div>

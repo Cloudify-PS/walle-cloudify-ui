@@ -106,6 +106,10 @@ angular.module('cosmoUiApp')
                     return table.tableState().search.predicateObject[attrs.predicate];
                 }, function (query) {
 
+                    if(!query){
+                        return;
+                    }
+
                     //This checks if the state was changed from outside of this directive, so the model didn't updated
                     function isModelDifferentFromQuery(model, queryValues) {
                         //is ngModel different from the queried value?

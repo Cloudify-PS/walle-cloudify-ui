@@ -8,9 +8,9 @@
  * Controller of the cosmoUiApp
  */
 angular.module('cosmoUiApp')
-    .controller('DeploymentExecutionsCtrl', function ($scope, $routeParams, cloudifyClient, CloudifyService, $log) {
+    .controller('DeploymentExecutionsCtrl', function ($scope, $stateParams, cloudifyClient, CloudifyService, $log) {
 
-        $scope.deploymentId = $routeParams.deploymentId;
+        $scope.deploymentId = $stateParams.deploymentId;
         $scope.executionsList = [];
         $scope.errorMessage = '';
 

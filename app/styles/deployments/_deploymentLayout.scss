@@ -190,9 +190,18 @@
 }
 
 
-#deployment.deployment-topology-page.deployment-layout{
-    #appStatus[app-status-widget]{
-        top:-20px;
-        right:-20px;
+.deployment-layout{
+    #appStatus {
+        float: right;
+        width: $COSMOUI_DEPLOYMENT_APP_STATUS_WIDTH;
+        height: $COSMOUI_DEPLOYMENT_APP_STATUS_HEIGHT;
+        background: $COSMOUI_DEPLOYMENT_APP_STATUS_BACKGROUND;
+        border-bottom-left-radius: $COSMOUI_DEPLOYMENT_APP_STATUS_BORDER_BOTTOM_LEFT_RADIUS;
+        border-left: $COSMOUI_DEPLOYMENT_APP_STATUS_BORDER;
+        border-bottom: $COSMOUI_DEPLOYMENT_APP_STATUS_BORDER;
+        position: absolute;
+        right: 0;
+        top: 0;
+        z-index: 1;
     }
 }

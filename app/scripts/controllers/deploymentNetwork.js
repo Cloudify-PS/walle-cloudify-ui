@@ -8,9 +8,9 @@
  * Controller of the cosmoUiApp
  */
 angular.module('cosmoUiApp')
-    .controller('DeploymentNetworkCtrl', function ($scope, $routeParams, $timeout, cloudifyClient, bpNetworkService, NetworksService, $q) {
+    .controller('DeploymentNetworkCtrl', function ($scope, $stateParams, $timeout, cloudifyClient, bpNetworkService, NetworksService, $q) {
 
-        $scope.deploymentId = $routeParams.deploymentId;
+        $scope.deploymentId = $stateParams.deploymentId;
         $scope.page = {};
 
         var blueprintPromise = cloudifyClient.deployments.get($scope.deploymentId, 'blueprint_id').then(function (result) {

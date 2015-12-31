@@ -23,8 +23,15 @@ angular.module('cosmoUiApp')
             scope: {
                 'sections': '=sectionNavMenu'
             },
-            link: function postLink(/*scope, element, attrs*/) {
-
+            link: function postLink(scope/* ,element, attrs*/) {
+                scope.setSectionActive = function(sectionName){
+                    var section = _.find(scope.sections, {name: sectionName});
+                    if(section){
+                        var activeSections = _.where(scope.sections,{active:true});
+                        activeSections[0].active = false;
+                        section.active = true;
+                    }
+                };
             }
         };
     });
