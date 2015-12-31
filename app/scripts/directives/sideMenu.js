@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('cosmoUiApp')
-    .directive('sideMenu', function ($location, $route) {
+    .directive('sideMenu', function ($location, $state) {
         return {
             templateUrl: 'views/sideMenuTemplate.html',
             restrict: 'A',
@@ -45,7 +45,7 @@ angular.module('cosmoUiApp')
 
                 scope.goTo = function(item) {
                     if($location.path() === '/' + item.route[0].substr(1) && item.reload === true) {
-                        $route.reload();
+                        $state.go($state.current, {}, {reload: true});
                     }
                     $location.url(item.route[0].substr(1));
                 };
