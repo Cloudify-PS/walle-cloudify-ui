@@ -76,11 +76,11 @@ describe('Directive: floatingBlueprintNodePanel', function () {
             scope = $rootScope.$new();
             element = $compile(angular.element('<div floating-blueprint-node-panel node="node" node-lists="nodeList"></div>'))(scope);
 
-            $rootScope.$apply();
+            $rootScope.$digest();
 
             scope = element.isolateScope();
             isolateScope = element.children().scope();
-            scope.$apply();
+            scope.$digest();
         }));
     });
 
@@ -98,7 +98,7 @@ describe('Directive: floatingBlueprintNodePanel', function () {
         it('should create showProperties object without relationships for relationship view panel', function() {
             scope.node = _relationship;
 
-            scope.$apply();
+            scope.$digest();
 
             expect(scope.showProperties.relationships).toBeUndefined();
             expect(scope.showProperties.general.name).toBe('floatingip');
@@ -107,7 +107,7 @@ describe('Directive: floatingBlueprintNodePanel', function () {
         it('should create showProperties object with relationships for node view panel', function() {
             scope.node = _node;
 
-            scope.$apply();
+            scope.$digest();
 
             expect(scope.showProperties.relationships).toBeDefined();
             expect(scope.showProperties.general.name).toBe('nodejs_vm');
@@ -116,7 +116,7 @@ describe('Directive: floatingBlueprintNodePanel', function () {
         it('should show panel when node is set', function() {
             scope.node = _node;
 
-            scope.$apply();
+            scope.$digest();
 
             expect(isolateScope.showPanel).toBe(true);
         });
@@ -124,7 +124,7 @@ describe('Directive: floatingBlueprintNodePanel', function () {
         it('should hide panel when node is set to null', function() {
             scope.node = null;
 
-            scope.$apply();
+            scope.$digest();
 
             expect(isolateScope.showPanel).toBe(false);
         });

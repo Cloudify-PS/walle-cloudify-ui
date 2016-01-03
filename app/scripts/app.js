@@ -1,7 +1,6 @@
 'use strict';
 
 angular.module('cosmoUiApp', [
-    'gsUiInfraApp',
     'angularFileUpload',
     'ngSanitize',
     'ngAnimate',
