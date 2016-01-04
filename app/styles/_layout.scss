@@ -24,13 +24,6 @@ body {
     background: $COSMOUI_BACKGROUND;
     font-family: 'OpenSansLight', sans-serif;
 
-    #header {
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        height: 45px;
-    }
     #left-side-menu {
         position: absolute;
         left: 0;
@@ -49,10 +42,10 @@ body {
     }
     .main-content {
         position: absolute;
-        left: 180px;
-        right: 10px;
+        left: 0;
+        right: 0;
         bottom: $FOOTER_HEIGHT;
-        top: 45px;
+        top: 35px;
         background: #fff;
 
         .main-content-display {
@@ -138,12 +131,43 @@ body {
 }
 
 #header {
-    height: $HEADER_HEIGHT;
-    background: $COSMOUI_BACKGROUND;
+    .navbar{
+        background: $COSMOUI_BACKGROUND;
+        min-height:35px;
+    }
+    .navbar-fixed-top{
+        border:0;
+    }
+
+    .navbar-item{
+        height: 35px;
+        display: table-cell;
+        vertical-align: middle;
+    }
+
+    .navbar-nav li{
+        a{
+            padding-top:0;
+            padding-bottom:0;
+            padding-right: 7px;
+            padding-left: 7px;
+            color: white;
+            background-color: $COSMOUI_BACKGROUND;
+            &:hover {
+                color: #4b6c8b;
+                background-color: white !important;
+            }
+        }
+        &.active a{
+            //color: #4b6c8b;
+            background-color: #4b6c8b;
+
+        }
+    }
 
     .logout-panel {
         position: absolute;
-        top: 10px;
+        top: 6px;
         right: 21px;
         overflow: hidden;
         padding-top: 1px;
@@ -203,7 +227,7 @@ body {
 //}
 
 #smallFooter {
-    margin: 8px 23px 0 186px;
+    margin: 8px 23px 0 10px;
     color: #ccc;
     font-size: 11px;
 
@@ -241,14 +265,17 @@ body {
 }
 
 .logo {
-    position: relative;
+    //padding-top: 5px;
+    padding-left: 10px;
+    padding-right: 10px;
     display: inline-block;
-    top: 5px;
-    left: 15px;
     .logo-img{
         width: 35px;
         height: 35px;
         float:left;
+    }
+    p{
+        margin: 0;
     }
 }
 
