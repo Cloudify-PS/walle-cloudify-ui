@@ -47,10 +47,6 @@ angular.module('cosmoUiApp')
                     }).then(function (result) {
                         $scope.events = result.data.items;
                         $scope.lastEvent = _.first($scope.events);
-                        //Formatting the timestamp
-                        _.each($scope.events, function (event) {
-                            event.formattedTimestamp = EventsMap.getFormattedTimestamp(event['@timestamp']);
-                        });
                     }, true);
                 }
 
