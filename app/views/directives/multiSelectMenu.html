@@ -1,0 +1,25 @@
+<div class="multiSelectMenu" data-ng-class="isOpen()" >
+    <span data-ng-click="open($event)">
+        <div class="button">
+            <label>
+                <t title="{{selectedLabel()}}">{{ selectedLabel() }}</t>
+                <input type="text" class="no-click" data-ng-model="filter" placeholder="{{ reflection() }}">
+                <!--<input value="{{ reflection() }}"  class="no-click reflection">-->
+            </label>
+        </div>
+        <div class="msArrow"></div>
+    </span>
+
+
+    <ul>
+        <li data-ng-repeat="option in filteredItems = (options | filter: filter)"
+            data-ng-click="select(option)"
+            data-ng-class="navigator(option)"
+            data-ng-mouseover="hoverOption(option)"
+            title="{{ option.label }}">
+            <input type="checkbox" data-ng-show="multiple" data-ng-checked="optionChecked(option)">
+            {{ option.label }}
+        </li>
+    </ul>
+</div>
+

@@ -20,13 +20,6 @@ describe('Filter: dateFormat', function () {
             expect(dateFormat(text, format)).toBe('2011-11-24 07:00:00');
         });
 
-        it('should accept only valid format', function () {
-            var text = '20111124T090027';
-            var timeFormat = 'HH:mm:ss';
-
-            expect(dateFormat(text, timeFormat)).toBe('NaN:NaN:NaN');
-        });
-
         it('it should return undefined if text is undefined', function () {
             expect(dateFormat(undefined)).toBe(undefined);
         });

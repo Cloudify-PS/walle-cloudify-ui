@@ -329,12 +329,12 @@ describe('Directive: formRawParams', function () {
                 var restoreDefault = element.find('.restore-default');
 
                 // Checking - Array, Object, String, null, number, boolean
-                expect(restoreDefault[2].getAttribute('title')).toBe('80');
+                expect(restoreDefault[0].getAttribute('title')).toBe('80');
                 expect(restoreDefault[1].getAttribute('title')).toBe('true');
-                expect(restoreDefault[5].getAttribute('title')).toBe('foo bar');
+                expect(restoreDefault[2].getAttribute('title')).toBe('foo bar');
                 expect(restoreDefault[3].getAttribute('title')).toBe('null');
-                expect(restoreDefault[4].getAttribute('title')).toBe('{"key":"value"}');
-                expect(restoreDefault[0].getAttribute('title')).toBe('[1,2,3,true]');
+                expect(restoreDefault[5].getAttribute('title')).toBe('{"key":"value"}');
+                expect(restoreDefault[4].getAttribute('title')).toBe('[1,2,3,true]');
             });
 
             it('should have restore-default button if has default', function () {

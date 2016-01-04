@@ -1,14 +1,10 @@
 'use strict';
 
 angular.module('cosmoUiApp', [
-    'gsUiInfraApp',
     'angularFileUpload',
-    'ngRoute',
     'ngSanitize',
-    'elasticjs.service',
     'ngAnimate',
     'ngStorage',
-    'timer',
     'pascalprecht.translate',
     'ngDialog',
     'ngProgress',
