@@ -2,15 +2,15 @@
 
 describe('Controller: StartExecutionDialogCtrl', function () {
     /*jshint camelcase: false */
-    var StartExecutionDialogCtrl, scope;
-
+    var StartExecutionDialogCtrl;
+    var scope;
 
     beforeEach(module('cosmoUiApp', 'ngMock', 'templates-main', 'backend-mock'));
 
     beforeEach(inject(function ($controller, $rootScope) {
         scope = $rootScope.$new();
 
-        scope.deployment = { workflows : [] };
+        scope.deployment = {workflows: []};
         StartExecutionDialogCtrl = $controller('StartExecutionDialogCtrl', {
             $scope: scope
 
@@ -18,11 +18,9 @@ describe('Controller: StartExecutionDialogCtrl', function () {
 
     }));
 
-
     it('should create a controller', function () {
         expect(StartExecutionDialogCtrl).not.toBeUndefined();
     });
-
 
     describe('#isExecuteEnabled', function () {
         it('should return true if inputsValid is true and workflow exists', function () {
@@ -37,7 +35,6 @@ describe('Controller: StartExecutionDialogCtrl', function () {
         });
     });
 
-
     describe('executeWorkflow', function () {
         beforeEach(function () {
             scope.workflow = {'name': 'bar'};
@@ -45,14 +42,14 @@ describe('Controller: StartExecutionDialogCtrl', function () {
         });
         it('should call cloudifyclient.executions.start', inject(function (cloudifyClient) {
 
-            spyOn(cloudifyClient.executions, 'start').andReturn(window.mockPromise());
+            spyOn(cloudifyClient.executions, 'start').and.returnValue(window.mockPromise());
             scope.executeWorkflow();
             expect(scope.inProcess).toBe(true);
             expect(cloudifyClient.executions.start).toHaveBeenCalled();
         }));
 
         it('should setErrorMessage on failure', inject(function (cloudifyClient) {
-            spyOn(cloudifyClient.executions, 'start').andReturn(window.mockPromise({data: {message: 'foo'}}));
+            spyOn(cloudifyClient.executions, 'start').and.returnValue(window.mockPromise({data: {message: 'foo'}}));
             spyOn(scope, 'setErrorMessage');
             scope.executeWorkflow();
             expect(scope.inProcess).toBe(false);
@@ -61,7 +58,7 @@ describe('Controller: StartExecutionDialogCtrl', function () {
         }));
 
         it('should close dialog on success', inject(function (cloudifyClient) {
-            spyOn(cloudifyClient.executions, 'start').andReturn(window.mockPromise({data: {}}));
+            spyOn(cloudifyClient.executions, 'start').and.returnValue(window.mockPromise({data: {}}));
             scope.closeThisDialog = jasmine.createSpy('closeThisDialog');
             scope.onBegin = jasmine.createSpy('onBegin');
             scope.executeWorkflow();
@@ -70,19 +67,17 @@ describe('Controller: StartExecutionDialogCtrl', function () {
         }));
 
         it('should put error message if success result has message property', inject(function (cloudifyClient) {
-            spyOn(cloudifyClient.executions, 'start').andReturn(window.mockPromise({data: {message: 'foo'}}));
+            spyOn(cloudifyClient.executions, 'start').and.returnValue(window.mockPromise({data: {message: 'foo'}}));
             spyOn(scope, 'setErrorMessage');
             scope.executeWorkflow();
             expect(scope.inProcess).toBe(false);
             expect(scope.setErrorMessage).toHaveBeenCalledWith('foo');
-
 
         }));
     });
 
     describe('buttons', function () {
         var newConfirmDialog = null;
-
 
         beforeEach(inject(function (ngDialog, $timeout) {
 
@@ -96,7 +91,6 @@ describe('Controller: StartExecutionDialogCtrl', function () {
                 $timeout.flush();
                 return dialogId;
             };
-
 
         }));
 

@@ -300,17 +300,14 @@ describe('Service: NetworksService', function () {
     ];
     var results;
 
+    describe('set external networks', function () {
+        it('should put default values in case provider context does not have network info CFY-2851', inject(function (NetworksService) {
 
-
-    describe('set external networks', function(){
-        it('should put default values in case provider context does not have network info CFY-2851', inject(function( NetworksService ){
-
-            NetworksService.setExternalNetwork(null,[]);
+            NetworksService.setExternalNetwork(null, []);
             var networkModel = NetworksService.getNetworkModel();
             expect(networkModel.hasOwnProperty('external')).toBe(true);
         }));
     });
-
 
     beforeEach(module('cosmoUiApp', 'backend-mock'));
 
@@ -320,7 +317,6 @@ describe('Service: NetworksService', function () {
         colorsList = mNetworksService.getNetworkColors();
         results = mNetworksService.createNetworkTree(providerData, nodes);
     }));
-
 
     describe('Unit tests', function () {
 

@@ -73,7 +73,7 @@ describe('Directive: floatingDeploymentNodePanel', function () {
     beforeEach(inject(function ($compile, $rootScope, cloudifyClient ) {
 
         // by default, don't return a response. invokes unwanted update during tests
-        spyOn(cloudifyClient.nodeInstances,'list').andReturn( { then : function() { } } );
+        spyOn(cloudifyClient.nodeInstances,'list').and.returnValue( { then : function() { } } );
 
         scope = $rootScope.$new();
         scope.node = _nodeInstance;

@@ -17,10 +17,9 @@ angular.module('cosmoUiApp')
             if(text !== undefined) {
                 var tempdate;
                 //if date has timezone
-                if(hasTimezone(text)){
+                if(hasTimezone(text)) {
                     tempdate = moment(text).toISOString();
-                }
-                else{
+                }else {
                     tempdate = moment(text+'+00:00').toISOString();
                 }
                 return $filter('date')(tempdate, newformat ? newformat : 'MMM-dd-yyyy');

@@ -21,7 +21,7 @@ describe('Service: tableStateToRestApi', function () {
                     start: 0,
                     totalItemCount: 0
                 },
-                search:{},
+                search: {},
                 sort: {
                     predicate: 'timestamp',
                     reverse: false
@@ -52,7 +52,7 @@ describe('Service: tableStateToRestApi', function () {
                         }
                     }
                 },
-                sort:{}
+                sort: {}
             };
 
             expect(_TableStateToRestApi.getOptions(tableStateMock)).toEqual(
@@ -79,7 +79,7 @@ describe('Service: tableStateToRestApi', function () {
                         }
                     }
                 },
-                sort:{}
+                sort: {}
             };
 
             expect(_TableStateToRestApi.getOptions(tableStateMock)).toEqual(
@@ -134,7 +134,7 @@ describe('Service: tableStateToRestApi', function () {
                         }
                     }
                 },
-                sort:{}
+                sort: {}
             };
 
             expect(_TableStateToRestApi.getOptions(tableStateMock)).toEqual(
@@ -161,7 +161,7 @@ describe('Service: tableStateToRestApi', function () {
                         }
                     }
                 },
-                sort:{}
+                sort: {}
             };
 
             expect(_TableStateToRestApi.getOptions(tableStateMock)).toEqual(
@@ -186,12 +186,12 @@ describe('Service: tableStateToRestApi', function () {
                         message: {
                             equalTo: 'free text'
                         },
-                        timestamp:{
+                        timestamp: {
                             gte: '2015-10-16T16:30:00.000Z'
                         }
                     }
                 },
-                sort:{}
+                sort: {}
             };
 
             expect(_TableStateToRestApi.getOptions(tableStateMock)).toEqual(

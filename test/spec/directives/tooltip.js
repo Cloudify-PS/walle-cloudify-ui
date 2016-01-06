@@ -2,11 +2,12 @@
 
 describe('Directive: tooltip', function () {
 
-    var element, scope;
+    var element;
+    var scope;
     beforeEach(module('cosmoUiApp', 'ngMock', 'templates-main', 'backend-mock'));
 
     function compileDirective(opts) {
-        inject(function($compile, $rootScope, $httpBackend) {
+        inject(function ($compile, $rootScope, $httpBackend) {
             $httpBackend.whenGET('/backend/configuration?access=all').respond(200);
             $httpBackend.whenGET('/backend/versions/ui').respond(200);
             $httpBackend.whenGET('/backend/versions/manager').respond(200);
@@ -23,8 +24,8 @@ describe('Directive: tooltip', function () {
         });
     }
 
-    describe('Directive tests', function() {
-        it('should add title attribute to element with the element text', function() {
+    describe('Directive tests', function () {
+        it('should add title attribute to element with the element text', function () {
             compileDirective();
             expect(element.attr('title')).toBe(element.text());
         });

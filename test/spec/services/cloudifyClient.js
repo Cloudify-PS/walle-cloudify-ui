@@ -12,13 +12,13 @@ describe('Service: cloudifyClient', function () {
 
         successResult = null;
         errorResult = null;
-        httpReturnObject = {then:function(success,error){ // mock $http..
+        httpReturnObject = {then:function(success, error){ // mock $http..
             if ( successResult ) {  success(successResult); }
             if ( errorResult ){ error(errorResult); }
             return 'bar';
 
         }, success:function(){ return { error:function(){}}; }};
-        $provide.value('$http', jasmine.createSpy().andCallFake(function(){  return httpReturnObject; }));
+        $provide.value('$http', jasmine.createSpy().and.callFake(function(){  return httpReturnObject; }));
         $provide.value('$timeout', function(callback){ callback(); });
     }));
 

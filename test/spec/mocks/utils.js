@@ -8,7 +8,7 @@
  *
  * Usage:
  *
- * `spyOn(MyService,'callApiRequest').andReturn(window.mockPromise()) // ==> will not call any of the callbacks`
+ * `spyOn(MyService,'callApiRequest').and.returnValue(window.mockPromise()) // ==> will not call any of the callbacks`
  *
  * To call success, run `window.mockPromise(successResponse)` - set successResponse to whatever you want.
  * To call error, run `window.mockPromise(null, errorResponse)` - set errorResponse to whatever you want.
@@ -19,14 +19,14 @@
  **/
 
 'use strict';
-window.mockPromise = function(successResponse, errorResponse){
+window.mockPromise = function (successResponse, errorResponse) {
     return {
-        then:function(success, error){
-            if ( !!successResponse ){
+        then: function (success, error) {
+            if (!!successResponse) {
                 success(successResponse);
             }
 
-            if (!!errorResponse ){
+            if (!!errorResponse) {
                 error(errorResponse);
             }
         }

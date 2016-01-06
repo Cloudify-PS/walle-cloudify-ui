@@ -1,7 +1,7 @@
 'use strict';
 
 describe('Directive: sideMenu', function () {
-    beforeEach(module('cosmoUiApp','backend-mock','templates-main'));
+    beforeEach(module('cosmoUiApp', 'backend-mock', 'templates-main'));
 
     var element;
 
@@ -10,6 +10,6 @@ describe('Directive: sideMenu', function () {
         element = $compile(element)($rootScope);
         $rootScope.$digest();
         var isolateScope = element.children().scope();
-        expect( !!isolateScope.items ).toBe(true);
+        expect(!!isolateScope.items).toBe(true);
     }));
 });

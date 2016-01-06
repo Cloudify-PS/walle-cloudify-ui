@@ -8,13 +8,18 @@
  * Service in the cosmoUiApp.
  */
 angular.module('cosmoUiApp')
-    .service('CloudifyService', function Cloudifyservice($rootScope, $log,  BlueprintsService, VersionService, $http ) {
+    .service('CloudifyService', function Cloudifyservice($rootScope, $log, BlueprintsService, VersionService, $http) {
 
         function _setSettings(data) {
             return $http({
                 url: '/backend/settings',
                 method: 'POST',
-                data: {settings: {'cosmoServer': data.cosmoServer, 'cosmoPort': data.cosmoPort}}
+                data: {
+                    settings: {
+                        'cosmoServer': data.cosmoServer,
+                        'cosmoPort': data.cosmoPort
+                    }
+                }
             });
         }
 
@@ -23,18 +28,21 @@ angular.module('cosmoUiApp')
         }
 
         function _getConfiguration(access) {
-            return $http({ url: '/backend/configuration', method: 'GET', params: { access: access || 'all'}});
+            return $http({
+                url: '/backend/configuration',
+                method: 'GET',
+                params: {access: access || 'all'}
+            });
         }
 
-
         // this method translates error code from REST API.
-        this.getErrorMessage = function( errResponse ){
+        this.getErrorMessage = function (errResponse) {
             try {
                 return '[' + errResponse.data.error_code + '] : ' + errResponse.data.message;
-            }catch(e){
+            } catch (e) {
                 try {
                     return typeof(errResponse.data) === 'string' ? errResponse.data : JSON.stringify(errResponse.data);
-                }catch(e){
+                } catch (e) {
                     return 'An error has occurred. information is not available';
                 }
             }

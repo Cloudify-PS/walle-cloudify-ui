@@ -11,9 +11,9 @@ describe('Service: BlueprintsService', function () {
             mBlueprintsService = BlueprintsService;
 
         }));
-    describe('Unit tests', function() {
+    describe('Unit tests', function () {
 
-        it('should create a new BlueprintsService instance', function() {
+        it('should create a new BlueprintsService instance', function () {
             expect(mBlueprintsService).not.toBeUndefined();
         });
 

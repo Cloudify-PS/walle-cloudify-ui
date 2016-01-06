@@ -1,32 +1,32 @@
-<div id="blueprint-header" class="cosmo-layout">
+<div id="blueprint-header" class="blueprint-layout">
 
     <div ng-show="!!loadError" class="error">{{loadError}}</div>
     <span ng-show="!blueprintNotFound && !loadError">
-    <div class="header-left">
+        <div class="header-left">
 
-        <div class="content-header">
-            <div class="breadcrumbs"><ul>
-                <li><a href="#/blueprints"> {{'breadcrumb.blueprints' | translate }}</a></li>
+            <div class="content-header">
+                <div class="breadcrumbs"><ul>
+                    <li><a href="#/blueprints"> {{'breadcrumb.blueprints' | translate }}</a></li>
 
-                <li><span title="{{ blueprint.description }}"> {{ blueprintId }}</span></li>
-            </ul></div>
+                    <li><span title="{{ blueprint.description }}"> {{ blueprint.id }}</span></li>
+                </ul></div>
+            </div>
+
+
+
+            <div class="navigation-and-actions">
+
+            <div section-nav-menu="navMenu"></div>
+
+
+            <span class="actions">
+                <div class="bp-action-selector" on-create="redirectToDeployment(id)" on-delete="redirectToBlueprints()" blueprint="blueprint"></div>
+            </span>
+            </div>
         </div>
-
-
-
-        <div class="navigation-and-actions">
-
-        <div section-nav-menu="navMenu"></div>
-
-
-        <span class="actions">
-            <div class="bp-action-selector" on-create="redirectToDeployment(id)" on-delete="redirectToBlueprints()" blueprint="blueprint"></div>
-        </span>
-        </div>
-    </div>
-
-    <div ng-transclude></div>
+        <div ui-view></div>
     </span>
+
     <div ng-show="!!blueprintNotFound" class="not-found-message">
 
         <div class="message">
@@ -38,8 +38,4 @@
         </div>
 
     </div>
-
-
-
-
 </div>

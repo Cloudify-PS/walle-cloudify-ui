@@ -3,7 +3,8 @@
 describe('Controller: HostsCtrl', function () {
 
     /*jshint camelcase: false */
-    var HostsCtrl, scope;
+    var HostsCtrl;
+    var scope;
 
     // load the controller's module
     beforeEach(module('cosmoUiApp', 'backend-mock'));
@@ -13,8 +14,8 @@ describe('Controller: HostsCtrl', function () {
 
         scope = $rootScope.$new();
 
-        spyOn(cloudifyClient.deployments, 'list').andReturn(window.mockPromise());
-        spyOn(cloudifyClient.nodes, 'list').andReturn(window.mockPromise());
+        spyOn(cloudifyClient.deployments, 'list').and.returnValue(window.mockPromise());
+        spyOn(cloudifyClient.nodes, 'list').and.returnValue(window.mockPromise());
 
         HostsCtrl = $controller('HostsCtrl', {
             $scope: scope
@@ -30,7 +31,6 @@ describe('Controller: HostsCtrl', function () {
         });
     });
 
-
     describe('#resetTypeFilter', function () {
 
         it('should set Compute type on filter', function () {
@@ -43,9 +43,16 @@ describe('Controller: HostsCtrl', function () {
 
     describe('#loadDeploymentsAndBlueprints', function () {
         beforeEach(inject(function (cloudifyClient) {
-            cloudifyClient.deployments.list.andReturn({
+            cloudifyClient.deployments.list.and.returnValue({
                 then: function (success) {
-                    success({data: {items: [{'id': 'foo', 'blueprint_id': 'bar'}]}});
+                    success({
+                        data: {
+                            items: [{
+                                'id': 'foo',
+                                'blueprint_id': 'bar'
+                            }]
+                        }
+                    });
                 }
             });
         }));
@@ -62,7 +69,7 @@ describe('Controller: HostsCtrl', function () {
 
     describe('#loadTypesData', function () {
         beforeEach(inject(function (cloudifyClient) {
-            cloudifyClient.nodes.list.andReturn({
+            cloudifyClient.nodes.list.and.returnValue({
                 then: function (success) {
                     success({
                         data: {
@@ -117,6 +124,5 @@ describe('Controller: HostsCtrl', function () {
     describe('#onHostsFilterChange', function () {
 
     });
-
 
 });

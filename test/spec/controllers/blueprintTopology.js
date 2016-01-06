@@ -2,7 +2,8 @@
 
 describe('Controller: BlueprintTopologyCtrl', function () {
 
-    var BlueprintTopologyCtrl, scope;
+    var BlueprintTopologyCtrl;
+    var scope;
 
     // load the controller's module
     beforeEach(module('cosmoUiApp', 'ngMock', 'backend-mock'));
@@ -17,7 +18,6 @@ describe('Controller: BlueprintTopologyCtrl', function () {
             });
         });
     });
-
 
     it('should create a controller', function () {
         expect(BlueprintTopologyCtrl).not.toBeUndefined();

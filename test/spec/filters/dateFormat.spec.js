@@ -20,14 +20,6 @@ describe('Filter: dateFormat', function () {
             expect(dateFormat(text, format)).toBe('2011-11-24 0'+(7+new Date().getTimezoneOffset()/-60)+':12:12.123');
         });
 
-
-        it('should accept only valid format', function () {
-            var text = '20111124T090027';
-            var timeFormat = 'HH:mm:ss';
-
-            expect(dateFormat(text, timeFormat)).toBe('Invalid date');
-        });
-
         it('it should return undefined if text is undefined', function () {
             expect(dateFormat(undefined)).toBe(undefined);
         });
@@ -56,5 +48,6 @@ describe('Filter: dateFormat', function () {
         it('should add timezone to timestamps without', function(){
             expect(dateFormat('2011-11-24 07:59:17.362781', 'yyyy-MM-dd HH:mm:ss.sss')).toBe('2011-11-24 0'+(7+new Date().getTimezoneOffset()/-60)+':59:17.362');
         });
+
     });
 });

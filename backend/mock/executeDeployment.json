@@ -1,9 +1,9 @@
 {
-    "status": "pending",
-    "workflowId": "install",
-    "deploymentId": "9fdc3dfb-5525-4def-bd55-030b05342dc3",
-    "error": "None",
-    "blueprintId": "79d63db1-f70c-450e-81c8-934fcc2a768f",
-    "id": "96d4fb50-db63-40b6-952e-04df9b662715",
-    "createdAt": "2014-01-23T13:38:10+00:00"
+  "status": "pending",
+  "workflowId": "install",
+  "deploymentId": "9fdc3dfb-5525-4def-bd55-030b05342dc3",
+  "error": "None",
+  "blueprintId": "79d63db1-f70c-450e-81c8-934fcc2a768f",
+  "id": "96d4fb50-db63-40b6-952e-04df9b662715",
+  "createdAt": "2014-01-23T13:38:10+00:00"
 }

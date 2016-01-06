@@ -6,14 +6,15 @@ describe('Directive: sectionNavMenu', function () {
     // load the directive's module
     beforeEach(module('cosmoUiApp', 'backend-mock', 'templates-main'));
 
-    var element,
-        scope;
+    var element;
+    var scope;
 
     beforeEach(inject(function ($rootScope, $compile) {
         scope = $rootScope.$new();
         scope.items = [
             {href: '__url__', 'active': true, 'name': '__some_name__'},
-            {href: 'foo', 'active': false, 'name': 'bar'}
+            {href: 'foo', 'active': false, 'name': 'foo'},
+            {href: 'bar', 'active': false, 'name': 'bar'}
         ];
         element = angular.element('<div section-nav-menu="items"></div>');
         element = $compile(element)(scope);
@@ -28,5 +29,16 @@ describe('Directive: sectionNavMenu', function () {
         expect(element.find('[href=__url__]').length > 0).toBe(true);
         expect(element.find('[href=foo]').length > 0).toBe(true);
     }));
+
+    it('should change active sections', function(){
+        element.isolateScope().setSectionActive('bar');
+        expect(scope.items[0].active).toBe(false);
+        expect(scope.items[1].active).toBe(false);
+        expect(scope.items[2].active).toBe(true);
+        element.isolateScope().setSectionActive('foo');
+        expect(scope.items[0].active).toBe(false);
+        expect(scope.items[1].active).toBe(true);
+        expect(scope.items[2].active).toBe(false);
+    });
 
 });

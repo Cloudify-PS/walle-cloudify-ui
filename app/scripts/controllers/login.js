@@ -8,7 +8,7 @@
  * Controller of the cosmoUiApp
  */
 angular.module('cosmoUiApp')
-    .controller('LoginCtrl', function ($scope, LoginService, $log, $location ) {
+    .controller('LoginCtrl', function ($scope, LoginService, $log, $location) {
 
         $scope.loginPage = {};
 
@@ -20,13 +20,13 @@ angular.module('cosmoUiApp')
                     .then(function success(result) {
                         $log.info('login result', result);
                         $location.path('/');
-                    }, function error(/*result*/){
+                    }, function error(/*result*/) {
                         $scope.errorMessage = 'invalid credentials'; // todo: translate this
                     });
             }
         };
 
-        $scope.isLoginEnabled = function() {
+        $scope.isLoginEnabled = function () {
             return $scope.loginPage.username !== undefined && $scope.loginPage.password !== undefined;
         };
     });

@@ -67,7 +67,7 @@ describe('Directive: floatingBlueprintNodePanel', function () {
     beforeEach(module('cosmoUiApp', 'ngMock', 'templates-main', 'backend-mock'));
 
     describe('Test setup', function() {
-        it ('', inject(function ($compile, $rootScope, $httpBackend) {
+        it('', inject(function ($compile, $rootScope, $httpBackend) {
             $httpBackend.whenGET('/backend/configuration?access=all').respond(200);
             $httpBackend.whenGET('/backend/versions/ui').respond(200);
             $httpBackend.whenGET('/backend/versions/manager').respond(200);
@@ -76,11 +76,11 @@ describe('Directive: floatingBlueprintNodePanel', function () {
             scope = $rootScope.$new();
             element = $compile(angular.element('<div floating-blueprint-node-panel node="node" node-lists="nodeList"></div>'))(scope);
 
-            $rootScope.$apply();
+            $rootScope.$digest();
 
             scope = element.isolateScope();
             isolateScope = element.children().scope();
-            scope.$apply();
+            scope.$digest();
         }));
     });
 
@@ -98,35 +98,25 @@ describe('Directive: floatingBlueprintNodePanel', function () {
         it('should create showProperties object without relationships for relationship view panel', function() {
             scope.node = _relationship;
 
-            scope.$apply();
+            scope.$digest();
 
-            waitsFor(function() {
-                return scope.showProperties !== undefined;
-            });
-            runs(function() {
-                expect(scope.showProperties.relationships).toBeUndefined();
-                expect(scope.showProperties.general.name).toBe('floatingip');
-            });
+            expect(scope.showProperties.relationships).toBeUndefined();
+            expect(scope.showProperties.general.name).toBe('floatingip');
         });
 
         it('should create showProperties object with relationships for node view panel', function() {
             scope.node = _node;
 
-            scope.$apply();
+            scope.$digest();
 
-            waitsFor(function() {
-                return scope.showProperties !== undefined;
-            });
-            runs(function() {
-                expect(scope.showProperties.relationships).toBeDefined();
-                expect(scope.showProperties.general.name).toBe('nodejs_vm');
-            });
+            expect(scope.showProperties.relationships).toBeDefined();
+            expect(scope.showProperties.general.name).toBe('nodejs_vm');
         });
 
         it('should show panel when node is set', function() {
             scope.node = _node;
 
-            scope.$apply();
+            scope.$digest();
 
             expect(isolateScope.showPanel).toBe(true);
         });
@@ -134,7 +124,7 @@ describe('Directive: floatingBlueprintNodePanel', function () {
         it('should hide panel when node is set to null', function() {
             scope.node = null;
 
-            scope.$apply();
+            scope.$digest();
 
             expect(isolateScope.showPanel).toBe(false);
         });

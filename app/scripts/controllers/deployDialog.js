@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('cosmoUiApp')
-    .controller('DeployDialogCtrl', function ($scope, cloudifyClient, CloudifyService, $translate ) {
+    .controller('DeployDialogCtrl', function ($scope, cloudifyClient, CloudifyService, $translate) {
         $scope.deployment_id = null;
         $scope.deployErrorMessage = null;
         $scope.inputsValid = true;
@@ -9,21 +9,21 @@ angular.module('cosmoUiApp')
         cloudifyClient.blueprints.get($scope.blueprintId, null).then(function (result) {
             $scope.selectedBlueprint = result.data || null;
 
-        }, function(result) {
-            setDeployError(CloudifyService.getErrorMessage(result) || $translate.instant('permissionError') );
+        }, function (result) {
+            setDeployError(CloudifyService.getErrorMessage(result) || $translate.instant('permissionError'));
         });
 
-        $scope.showError = function(){
+        $scope.showError = function () {
             return !!$scope.deployErrorMessage;
         };
 
-        $scope.isDetailsInvalid = function(){
+        $scope.isDetailsInvalid = function () {
             return !$scope.selectedBlueprint || !$scope.deployment_id || $scope.showError();
         };
 
         $scope.isDeployEnabled = function () {
             // if error message is shown, deploy button should be disabled
-            return  $scope.inputsValid && !$scope.isDetailsInvalid();
+            return $scope.inputsValid && !$scope.isDetailsInvalid();
         };
 
         $scope.isParamsVisible = function () {
@@ -39,14 +39,13 @@ angular.module('cosmoUiApp')
             setDeployError(null);
 
             $scope.inProcess = true;
-            cloudifyClient.deployments.create(blueprintId, $scope.deployment_id, $scope.rawString ? JSON.parse($scope.rawString) : null )
+            cloudifyClient.deployments.create(blueprintId, $scope.deployment_id, $scope.rawString ? JSON.parse($scope.rawString) : null)
                 .then(function (result) {
                     var data = result.data;
                     $scope.inProcess = false;
                     if (data.hasOwnProperty('message')) {
                         setDeployError(data.message);
-                    }
-                    else {
+                    } else {
                         $scope.onCreate({id: result.data.id});
                         $scope.closeThisDialog();
                     }
@@ -57,16 +56,14 @@ angular.module('cosmoUiApp')
                 });
         };
 
-        $scope.$watch('deployment_id', function(){
+        $scope.$watch('deployment_id', function () {
             setDeployError(null);
         });
 
-        function setDeployError( msg ){
+        function setDeployError(msg) {
             $scope.deployErrorMessage = msg;
         }
 
         $scope.setDeployError = setDeployError;
-
-
 
     });

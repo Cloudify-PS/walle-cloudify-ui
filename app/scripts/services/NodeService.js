@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('cosmoUiApp')
-    .service('NodeService', function NodeService(TopologyTypes, nodeStatus ) {
+    .service('NodeService', function NodeService(TopologyTypes, nodeStatus) {
 
         this.status = nodeStatus; // use is from here.
 
@@ -33,14 +33,14 @@ angular.module('cosmoUiApp')
                     node.dataType = _getNodeDataType(node);
 
                     if (!node.isContained) {
-                        if(node.hasOwnProperty('children')) {
+                        if (node.hasOwnProperty('children')) {
                             node.children.sort(_sortBy('id'));
                         }
                         roots.push(node);
                     }
-                } else if(!_isIgnoreNode(node) && !_isNetworkNode(node) && !node.isContained){
+                } else if (!_isIgnoreNode(node) && !_isNetworkNode(node) && !node.isContained) {
                     node.dataType = _getNodeDataType(node);
-                    if(node.hasOwnProperty('children')) {
+                    if (node.hasOwnProperty('children')) {
                         node.children.sort(_sortBy('id'));
                     }
                     roots.push(node);
@@ -69,7 +69,7 @@ angular.module('cosmoUiApp')
             nodes.sort(_sortBy('id'));
 
             var orderedNodes = {};
-            nodes.forEach(function(node) {
+            nodes.forEach(function (node) {
                 node.class = _getNodeClass(node.type_hierarchy);
                 node.isApp = _isAppNode(node.type_hierarchy);
                 node.isHost = _isHostNode(node.type_hierarchy);
@@ -130,26 +130,25 @@ angular.module('cosmoUiApp')
         this.createNodesTree = _createNodesTree;
         this.getInstanceType = _getInstanceType;
 
-
         /**
          * @returns true iff relationship is connected to
          * @param relationship
          */
-        this.isConnectedTo = function( relationship ){
+        this.isConnectedTo = function (relationship) {
             try {
                 return relationship.type_hierarchy.join(',').indexOf('connected_to') && TopologyTypes.isValidConnection(relationship.node);
-            }catch(e){
+            } catch (e) {
                 return false;
             }
         };
 
-        this.getConnections = function(nodes, type) {
+        this.getConnections = function (nodes, type) {
             var connections = [];
             _.each(nodes.forEach(function (node) {
-                var relationships = _.filter(node.relationships, function(rel){ //
+                var relationships = _.filter(node.relationships, function (rel) { //
                     return rel.type_hierarchy.join(',').indexOf(type) > -1;
                 });
-                _.each(relationships, function(rel) {
+                _.each(relationships, function (rel) {
                     connections.push({
                         source: node.id,
                         target: rel.target_id,
@@ -160,9 +159,5 @@ angular.module('cosmoUiApp')
             }));
             return connections;
         };
-
-
-
-
 
     });

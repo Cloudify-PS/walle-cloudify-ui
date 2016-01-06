@@ -1,2 +1,1 @@
-
 exports.blueprints = require('./BlueprintsController');

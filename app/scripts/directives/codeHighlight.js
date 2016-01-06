@@ -26,8 +26,8 @@ angular.module('cosmoUiApp')
                 };
                 ngModel.$render = function () {
                     var config = ngModel.$viewValue || {};
-                    angular.forEach(config, function(value, name){
-                        if(options.hasOwnProperty(name)) {
+                    angular.forEach(config, function (value, name) {
+                        if (options.hasOwnProperty(name)) {
                             options[name] = value;
                         }
                     });

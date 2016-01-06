@@ -3,8 +3,8 @@
 describe('Filter: limitRange', function () {
     var limitRange;
 
-    describe('Test setup', function() {
-        it('Injecting required data & initializing a new instance', function() {
+    describe('Test setup', function () {
+        it('Injecting required data & initializing a new instance', function () {
             // load the filter's module
             module('cosmoUiApp', 'ngMock', 'backend-mock');
 
@@ -20,8 +20,8 @@ describe('Filter: limitRange', function () {
         });
     });
 
-    describe('Unit tests', function() {
-        it('has a limitRange filter', function(){
+    describe('Unit tests', function () {
+        it('has a limitRange filter', function () {
             expect(limitRange).not.toBeUndefined();
         });
 

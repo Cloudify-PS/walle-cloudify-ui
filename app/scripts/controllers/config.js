@@ -8,7 +8,7 @@ angular.module('cosmoUiApp')
         $scope.onlyNumbers = /^\d+$/;
         $scope.errList = [];
 
-        $scope.saveConfiguration = function() {
+        $scope.saveConfiguration = function () {
 
             var validation = _validateConfiguration();
             if (validation.valid) {
@@ -46,7 +46,5 @@ angular.module('cosmoUiApp')
 
             return result;
         }
-
-
 
     });
