@@ -23,6 +23,13 @@ describe('Filter: dateFormat', function () {
         it('it should return undefined if text is undefined', function () {
             expect(dateFormat(undefined)).toBe(undefined);
         });
+
+        it('should accept only valid format', function () {
+            var text = '20111124T090027';
+            var timeFormat = 'HH:mm:ss';
+
+            expect(dateFormat(text, timeFormat)).toBe('Invalid date');
+        });
     });
 
     describe('iso date without offset', function () {
