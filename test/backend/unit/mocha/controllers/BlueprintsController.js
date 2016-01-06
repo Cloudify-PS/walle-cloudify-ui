@@ -9,12 +9,9 @@ describe('BlueprintsController', function() {
     var logger = require('log4js').getLogger('testBlueprintsController');
     var fs = require('fs');
     var services = null;
-
     var req;
     var res;
     var sandbox;
-
-    beforeEach(function() {
 
     beforeEach(function(){
         BlueprintsController =  require('../../../../../backend/controllers/BlueprintsController');
@@ -43,26 +40,26 @@ describe('BlueprintsController', function() {
 
     describe('#upload', function() {
 
-        beforeEach(function() {
+        beforeEach(function () {
             sandbox.stub(fs, 'createReadStream');
         });
 
-        afterEach(function() {
+        afterEach(function () {
             sandbox.restore();
         });
 
-        it('should send status 400 if no body on req', function() {
+        it('should send status 400 if no body on req', function () {
             BlueprintsController.upload(req, res);
             expect(res.status.calledWith(400)).to.be(true);
         });
 
-        it('should send status 400 if upload type is invliad', function() {
+        it('should send status 400 if upload type is invliad', function () {
             req.body = {type: 'unknown'};
             BlueprintsController.upload(req, res);
             expect(res.status.calledWith(400)).to.be(true);
         });
 
-        it('should open file stream if uploading file', function() {
+        it('should open file stream if uploading file', function () {
             req.body = {};
             req.cloudifyClientConf = {'endpoint': 'http://localhost'};
             req.body.opts = '{}';
@@ -75,7 +72,7 @@ describe('BlueprintsController', function() {
             expect(fs.createReadStream.called).to.be(true);
         });
 
-        it('should send back error if got one from manager', function() {
+        it('should send back error if got one from manager', function () {
             req.body = {};
             req.body.opts = '{}';
             req.files = {application_archive: 'guy.blueprint.archive'};
@@ -87,12 +84,12 @@ describe('BlueprintsController', function() {
             expect(res.send.calledWith('error')).to.be(true);
         });
 
-        it('should send back data if got one from manager', function() {
+        it('should send back data if got one from manager', function () {
             req.body = {};
             req.body.opts = '{}';
             req.files = {application_archive: 'guy.blueprint.archive'};
 
-            sandbox.stub(services.cloudify4node, 'uploadBlueprint', sinon.spy(function(cloudifyConf, stream, opts, callback) {
+            sandbox.stub(services.cloudify4node, 'uploadBlueprint', sinon.spy(function (cloudifyConf, stream, opts, callback) {
                 callback(null, 'data');
             }));
 
@@ -101,6 +98,5 @@ describe('BlueprintsController', function() {
         });
 
         // not relevant anymore -  should upload blueprint from url
-
     });
 });
