@@ -106,7 +106,7 @@ angular.module('cosmoUiApp')
             }
         };
 
-        var getFailedTaskIcon = function(event) {
+        var getFailedTaskIcon = function (event) {
             // todo: CFY-2437
             // this is a hack fix for 3.2 and should be refactored properly when the core can provide more info on the task context so there
             // won't be the need to search the message text.
@@ -125,35 +125,35 @@ angular.module('cosmoUiApp')
             }
         };
 
-        this.getEvent = function(event) {
-            if(eventsMap.hasOwnProperty(event)) {
+        this.getEvent = function (event) {
+            if (eventsMap.hasOwnProperty(event)) {
                 return eventsMap[event];
             }
         };
 
-        this.getEventsList = function() {
+        this.getEventsList = function () {
             return eventsMap;
         };
 
-        this.getEventText = function(event) {
-            if(eventsMap.hasOwnProperty(event)) {
+        this.getEventText = function (event) {
+            if (eventsMap.hasOwnProperty(event)) {
                 return eventsMap[event].text;
             }
             return event;
         };
 
-        this.getEventIcon = function(event) {
+        this.getEventIcon = function (event) {
             if (!event) {
                 return 'gs-icon-logs';
             }
 
             var eventType = event.event_type;
 
-            if(eventsMap.hasOwnProperty(eventType)) {
+            if (eventsMap.hasOwnProperty(eventType)) {
                 if (eventType === 'task_failed') {
                     return getFailedTaskIcon(event);
                 }
-                if(eventsMap[eventType].icon){
+                if (eventsMap[eventType].icon) {
                     return eventsMap[eventType].icon;
                 }
             }
@@ -161,7 +161,7 @@ angular.module('cosmoUiApp')
             return 'gs-icon-logs';
         };
 
-        this.getFormattedTimestamp = function(timestamp, format){
-            return  $filter('dateFormat')(timestamp, format || 'yyyy-MM-dd HH:mm:ss');
+        this.getFormattedTimestamp = function (timestamp, format) {
+            return $filter('dateFormat')(timestamp, format || 'yyyy-MM-dd HH:mm:ss');
         };
     });

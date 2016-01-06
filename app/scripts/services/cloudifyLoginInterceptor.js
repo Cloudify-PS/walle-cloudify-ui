@@ -8,20 +8,20 @@
  * Factory in the cosmoUiAppApp.
  */
 angular.module('cosmoUiApp')
-    .factory('cloudifyLoginInterceptor', function ( $log , $q ) {
+    .factory('cloudifyLoginInterceptor', function ($log, $q) {
         return {
             'responseError': function (rejection) {
 
                 $log.info('got bad response', rejection);
 
                 var errorCode = null;
-                try{
+                try {
                     var responseBody = rejection.data;
-                    if ( typeof(responseBody) === 'string' ) {
+                    if (typeof(responseBody) === 'string') {
                         responseBody = JSON.parse(responseBody);
                     }
                     errorCode = responseBody.error_code;
-                }catch(e){
+                } catch (e) {
                     // this is a valid situation no need to print anything
                 }
 

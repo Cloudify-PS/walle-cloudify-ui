@@ -17,15 +17,16 @@ Date.fromISO = (function () {
         }
         return day.getTime();
     };
-    if (noOffset(testIso) === 1322118027000 && !Date.forceIsoOffset /* make it testable */ ) {
+    if (noOffset(testIso) === 1322118027000 && !Date.forceIsoOffset /* make it testable */) {
         return noOffset;
     }
     return function (s) {
 
-        var day, tz,
-            rx = /^(\d{4}\-\d\d\-\d\d([tT][\d:\.]*)?)([zZ]|([+\-])(\d\d):?(\d\d))?$/,
+        var day;
+        var tz;
+        var rx = /^(\d{4}\-\d\d\-\d\d([tT][\d:\.]*)?)([zZ]|([+\-])(\d\d):?(\d\d))?$/;
+        var p = rx.exec(s) || [];
 
-            p = rx.exec(s) || [];
         if (p[1]) {
             day = p[1].split(/\D/).map(function (itm) {
                 return parseInt(itm, 10) || 0;
@@ -58,9 +59,9 @@ angular.module('cosmoUiApp')
 
         return function (text, newformat) {
 
-            if(text !== undefined) {
+            if (text !== undefined) {
                 var fromiso = Date.fromISO(text);
-                var tempdate = new Date( fromiso );
+                var tempdate = new Date(fromiso);
                 tempdate.setUTCHours(tempdate.getUTCHours() + tempdate.getTimezoneOffset() / 60);
                 return $filter('date')(tempdate, newformat ? newformat : 'MMM-dd-yyyy');
             }

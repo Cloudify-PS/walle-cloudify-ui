@@ -11,8 +11,8 @@ angular.module('cosmoUiApp')
         return {
             templateUrl: 'views/directives/columnsOrganizer.html',
             restrict: 'E',
-            replace:true,
-            scope:{
+            replace: true,
+            scope: {
                 columns: '='
             }
         };

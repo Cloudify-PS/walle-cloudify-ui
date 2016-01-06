@@ -13,7 +13,7 @@
  * # blueprintTopology
  */
 angular.module('cosmoUiApp')
-    .directive('uiTopology', function (cloudifyClient, NodeService, blueprintCoordinateService, DataProcessingService, $log, $q, $rootScope ) {
+    .directive('uiTopology', function (cloudifyClient, NodeService, DataProcessingService, $log, $q, $rootScope) {
         return {
             templateUrl: 'views/directives/topology.html',
             restrict: 'A',
@@ -76,7 +76,6 @@ angular.module('cosmoUiApp')
 
                             nodes = data.plan.nodes;
 
-
                             var topologyData = _.merge({}, topologyScale, {
                                 data: data
                             });
@@ -122,8 +121,9 @@ angular.module('cosmoUiApp')
 
                 //caching blueprint
                 var blueprintPromise;
-                function getBlueprint( blueprintId ,force ){
-                    if ( !blueprintPromise && !force ) {
+
+                function getBlueprint(blueprintId, force) {
+                    if (!blueprintPromise && !force) {
                         blueprintPromise = cloudifyClient.blueprints.get(blueprintId).then(function (result) {
                             nodes = result.data.plan.nodes;
                             return result;
@@ -148,7 +148,6 @@ angular.module('cosmoUiApp')
                         scope.onNodeSelect(node);
                     }
                 };
-
 
                 scope.$watch('blueprintId', scope.loadBlueprint);
 

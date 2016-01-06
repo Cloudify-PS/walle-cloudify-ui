@@ -1,55 +1,55 @@
 'use strict';
 
-describe('Directive: deploymentLayout', function () {
+describe('Controller: DeploymentLayoutCtrl', function () {
 
-    var element, scope;
+    var scope;
+    var DeploymentLayoutCtrl, $state, $rootScope;
 
-
-
-
-    beforeEach(module('cosmoUiApp', 'ngMock', 'templates-main', 'backend-mock', function ($provide) {
-        $provide.factory('cosmoLayoutDirective', function () {
-            return {};
-        }); // mock cosmo layout
+    beforeEach(module('cosmoUiApp', 'backend-mock','templates-main', function ($provide) {
         $provide.factory('deploymentActionSelectorDirective', function(){
             return {};
         }); // mock workflow selector
     }));
 
-    beforeEach(inject(function ($compile, $rootScope, cloudifyClient ) {
-        scope = $rootScope.$new();
-        spyOn(cloudifyClient.deployments,'get').andReturn({then:function(){}});
-        element = $compile(angular.element('<div class="deployment-layout"></div>'))(scope);
-        scope.$digest();
-    }));
-
-    afterEach(function () {
-        $('#deployment').remove();
+    var init = inject(function ( cloudifyClient, _$rootScope_, _$state_ ) {
+        spyOn(cloudifyClient.deployments,'get').and.returnValue({then:function(){}});
+        $state = _$state_;
+        $state.go('cloudifyLayout.deploymentLayout.topology');
+        $rootScope = _$rootScope_;
+        $rootScope.$digest();
     });
+
+    var initCtrl = inject(function($controller, $rootScope){
+        scope = $rootScope.$new();
+        DeploymentLayoutCtrl = $controller('DeploymentLayoutCtrl',{
+            $scope: scope
+        });
+        scope.$digest();
+    });
+
+    beforeEach(init);
 
     describe('init', function () {
         describe('cloudifyClient.deployments.get', function () {
-            it('should put deploymentNotFound=true on scope if result is 404', inject(function ($compile, cloudifyClient) {
-                cloudifyClient.deployments.get.andReturn({
+            it('should put deploymentNotFound=true on scope if result is 404', inject(function ( cloudifyClient) {
+                cloudifyClient.deployments.get.and.returnValue({
                     then: function (success, error) {
                         error({status: 404});
                     }
                 });
-                element = $compile(angular.element('<div class="deployment-layout"></div>'))(scope);
-                scope.$digest();
+                initCtrl();
                 expect(scope.deploymentNotFound).toBe(true);
                 expect(scope.showDeploymentEvents).toBe(false);
             }));
 
 
-            it('should put blueprint_id and deployment on scope', inject(function ($compile, cloudifyClient) {
-                cloudifyClient.deployments.get.andReturn({
+            it('should put blueprint_id and deployment on scope', inject(function ( cloudifyClient) {
+                cloudifyClient.deployments.get.and.returnValue({
                     then: function (success) {
                         success({ data : { id: 'foo' , 'blueprint_id' : 'bar'} } );
                     }
                 });
-                element = $compile(angular.element('<div class="deployment-layout"></div>'))(scope);
-                scope.$digest();
+                initCtrl();
                 expect(scope.blueprintId).toBe('bar');
                 expect(scope.deployment.id).toBe('foo');
             }));
@@ -60,10 +60,10 @@ describe('Directive: deploymentLayout', function () {
 
     describe('#loadExecution', function(){
         it('should put first running execution on scope.currentExecution', inject(function(cloudifyClient){
-
+            initCtrl();
             var executions = [ { 'id' : 'foo' } , { 'id' : 'bar'}];
 
-            spyOn(cloudifyClient.executions,'list').andReturn({
+            spyOn(cloudifyClient.executions,'list').and.returnValue({
                 then:function( success ){
                     success({ data : {items: executions } });
                 }
@@ -74,12 +74,13 @@ describe('Directive: deploymentLayout', function () {
         }));
 
         it('should get only running executions', inject(function(cloudifyClient) {
+            initCtrl();
             var expectedParameters = {
                 deployment_id : scope.deploymentId,
                 _include: 'id,workflow_id,status',
                 status: ['pending', 'started', 'cancelling', 'force_cancelling']
             };
-            spyOn(cloudifyClient.executions,'list').andCallFake(function(){
+            spyOn(cloudifyClient.executions,'list').and.callFake(function(){
                 return {
                     then:function(/*success,error*/){}
                 };
@@ -91,25 +92,30 @@ describe('Directive: deploymentLayout', function () {
         }));
 
         it('should return immediately if deploymentNotFound', inject(function( cloudifyClient ){
+            initCtrl();
             scope.deploymentNotFound = true;
             spyOn(cloudifyClient.executions,'list');
             scope.loadExecutions();
             expect(cloudifyClient.executions.list).not.toHaveBeenCalled();
         }));
 
-        it('should redirect after deletion', inject(function($location){
-
+        it('should redirect after deletion', function(){
+            initCtrl();
+            expect($state.current.name).toBe('cloudifyLayout.deploymentLayout.topology');
             scope.goToDeployments();
-            expect($location.path()).toBe('/deployments');
+            $rootScope.$digest();
+            expect($state.current.name).toBe('cloudifyLayout.deployments');
 
-        }));
+        });
 
-        it('should not redirect after deletion if some navigation happened in between', inject(function($location){
-
-            $location.path('somewhere');
+        it('should not redirect after deletion if some navigation happened in between', function(){
+            initCtrl();
+            $state.go('config');
+            $rootScope.$digest();
+            expect($state.current.name).toBe('config');
             scope.goToDeployments();
-            expect($location.path()).toBe('/somewhere');
-
-        }));
+            $rootScope.$digest();
+            expect($state.current.name).toBe('config');
+        });
     });
 });

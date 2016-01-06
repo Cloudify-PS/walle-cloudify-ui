@@ -3,28 +3,27 @@
 describe('Directive: columnsOrganizer', function () {
 
     // load the directive's module
-    beforeEach(module('cosmoUiApp','backend-mock','templates-main'));
-    var element,
-        scope;
+    beforeEach(module('cosmoUiApp', 'backend-mock', 'templates-main'));
+    var element;
+    var scope;
 
     beforeEach(inject(function ($rootScope) {
         scope = $rootScope.$new();
-        scope.columns = [ //default columns that can be override
-            {name:'Event Type Icon',isSelected:true},
-            {name:'Timestamp',isSelected:false}
+        scope.columns = [//default columns that can be override
+            {name: 'Event Type Icon', isSelected: true},
+            {name: 'Timestamp', isSelected: false}
         ];
     }));
 
-    var setup = inject(function( $compile ){
+    var setup = inject(function ($compile) {
         element = angular.element('<columns-organizer columns="columns"></columns-organizer>');
         element = $compile(element)(scope);
         scope.$digest();
     });
 
-
-    it('should have selected class and checked icon',function(){
+    it('should have selected class and checked icon', function () {
         scope.columns = [
-            {name:'Event Type Icon',isSelected:true}
+            {name: 'Event Type Icon', isSelected: true}
         ];
         setup();
 
@@ -36,9 +35,9 @@ describe('Directive: columnsOrganizer', function () {
         expect(checkIcon.getAttribute('class').indexOf('fa-square-o')).toBe(-1);
     });
 
-    it('should not have selected class and have a not checked icon',function(){
+    it('should not have selected class and have a not checked icon', function () {
         scope.columns = [
-            {name:'Event Type Icon',isSelected:false}
+            {name: 'Event Type Icon', isSelected: false}
         ];
 
         setup();
@@ -51,10 +50,10 @@ describe('Directive: columnsOrganizer', function () {
         expect(checkIcon.getAttribute('class').indexOf('fa-square-o')).not.toBe(-1);
     });
 
-    it('should change isSelected value on click',function(){
+    it('should change isSelected value on click', function () {
         scope.columns = [
-            {name:'Event Type Icon',isSelected:false},
-            {name:'Timestamp',isSelected:true}
+            {name: 'Event Type Icon', isSelected: false},
+            {name: 'Timestamp', isSelected: true}
         ];
 
         setup();

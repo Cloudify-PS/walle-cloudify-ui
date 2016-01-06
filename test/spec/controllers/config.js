@@ -5,10 +5,9 @@ describe('Controller: ConfigCtrl', function () {
     // load the controller's module
     beforeEach(module('cosmoUiApp', 'backend-mock'));
 
-    var ConfigCtrl,
-        mockWindow,
-
-        scope;
+    var ConfigCtrl;
+    var mockWindow;
+    var scope;
 
     // Initialize the controller and a mock scope
     beforeEach(inject(function ($controller, $rootScope, CloudifyService) {

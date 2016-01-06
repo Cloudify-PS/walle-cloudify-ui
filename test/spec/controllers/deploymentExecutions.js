@@ -18,7 +18,7 @@ describe('Controller: DeploymentExecutions', function () {
     beforeEach(inject(function ($rootScope, cloudifyClient ) {
         scope = $rootScope.$new();
         _cloudifyClient = cloudifyClient;
-        spyOn(cloudifyClient.executions, 'list').andReturn(window.mockPromise({data : {items : []}})); //default implementation can be override
+        spyOn(cloudifyClient.executions, 'list').and.returnValue(window.mockPromise({data : {items : []}})); //default implementation can be override
         initCtrl();
     }));
 
@@ -54,7 +54,7 @@ describe('Controller: DeploymentExecutions', function () {
             }
         ];
 
-        _cloudifyClient.executions.list.andReturn(window.mockPromise({data : {items : executionsMock}}));
+        _cloudifyClient.executions.list.and.returnValue(window.mockPromise({data : {items : executionsMock}}));
         initCtrl();
         expect(scope.executionsList).toBe(executionsMock);
     });
@@ -62,13 +62,13 @@ describe('Controller: DeploymentExecutions', function () {
     describe('Error handling', function () {
 
         it('should show error if result returned 500', function () {
-            _cloudifyClient.executions.list.andReturn(window.mockPromise(null,{status: 500}));
+            _cloudifyClient.executions.list.and.returnValue(window.mockPromise(null,{status: 500}));
             initCtrl();
             expect(scope.errorMessage).toBe('deployment.executions.error');
         });
 
         it('should show Deployment not found view if result returned 404', function () {
-            _cloudifyClient.executions.list.andReturn( window.mockPromise(null, {status: 404}));
+            _cloudifyClient.executions.list.and.returnValue( window.mockPromise(null, {status: 404}));
             initCtrl();
             scope.$digest();
             expect(scope.deploymentNotFound).toBeTruthy();

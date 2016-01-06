@@ -8,13 +8,13 @@
  * Controller of the cosmoUiApp
  */
 angular.module('cosmoUiApp')
-    .controller('BlueprintNewTopologyCtrl', function ($scope, cloudifyClient, $routeParams, DataProcessingService) {
+    .controller('BlueprintNewTopologyCtrl', function ($scope, cloudifyClient, $stateParams, DataProcessingService) {
 
-        var blueprintId = $routeParams.blueprintId;
+        var blueprintId = $stateParams.blueprintId;
 
         $scope.page = {};
         $scope.page.topologyLoading = true;
-        if ( blueprintId ) {
+        if (blueprintId) {
             cloudifyClient.blueprints.get(blueprintId).then(function (result) {
                 var data = result.data;
 

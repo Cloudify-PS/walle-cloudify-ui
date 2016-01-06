@@ -64,12 +64,7 @@ describe('Directive: header', function () {
 
             compileDirective({scope: _scope});
 
-            waitsFor(function() {
-                return _scope.updateVersion !== true;
-            });
-            runs(function() {
-                expect(_scope.updateVersion).toBe(false);
-            });
+            expect(_scope.updateVersion).toBe(false);
         }));
 
         describe('logout', function(){
@@ -117,12 +112,7 @@ describe('Directive: header', function () {
 
             compileDirective({scope: _scope});
 
-            waitsFor(function() {
-                return _scope.updateVersion !== true;
-            });
-            runs(function() {
-                expect(_scope.updateVersion).toBe(false);
-            });
+            expect(_scope.updateVersion).toBe(false);
         }));
     });
 });

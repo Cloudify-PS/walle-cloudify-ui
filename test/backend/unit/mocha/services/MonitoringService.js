@@ -4,21 +4,21 @@ var path = require('path');
 var fse = require('fs.extra');
 //var MonitoringService = require('../../../../../backend/services/MonitoringService');
 
-describe('MonitoringService', function() {
+describe('MonitoringService', function () {
 
-    describe('charts', function() {
+    describe('charts', function () {
         var dashboardData;
 
-        beforeEach(function() {
+        beforeEach(function () {
             var dashboardDataFile = path.join(__dirname, '../../../../../backend/mock/grafana_dashboard_default.json');
             dashboardData = fse.readJSONSync(dashboardDataFile);
         });
 
-        it('should verify file exists', function() {
+        it('should verify file exists', function () {
             expect(dashboardData).to.not.be(undefined);
         });
 
-        it('line chart fill should be 0', function() {
+        it('line chart fill should be 0', function () {
             expect(dashboardData.rows).to.not.be.empty();
 
             for (var i = 0; i < dashboardData.rows.length; i++) {

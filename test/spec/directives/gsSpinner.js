@@ -5,8 +5,8 @@ describe('Directive: gsSpinner', function () {
     // load the directive's module
     beforeEach(module('cosmoUiApp', 'backend-mock', 'templates-main'));
 
-    var element,
-        scope;
+    var element;
+    var scope;
 
     beforeEach(inject(function ($rootScope, $compile) {
         scope = $rootScope.$new();
@@ -16,9 +16,8 @@ describe('Directive: gsSpinner', function () {
         scope.$digest();
     }));
 
-
-    describe('classes', function(){
-        it('should take class large and inline from parent and put it on gs-loader', function(){
+    describe('classes', function () {
+        it('should take class large and inline from parent and put it on gs-loader', function () {
             var $gsLoader = element.find('.gs-loader');
             expect($gsLoader.is('.large')).toBe(true);
             expect($gsLoader.is('.inline')).toBe(true);

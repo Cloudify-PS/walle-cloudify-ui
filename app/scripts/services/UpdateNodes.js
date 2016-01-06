@@ -14,7 +14,6 @@ angular.module('cosmoUiApp')
             var _nodesInstances = [];
             var _nodesList = [];
 
-
             function _runUpdate(nodesInstances, nodesList) {
                 _nodesInstances = nodesInstances;
                 _nodesList = nodesList;
@@ -27,13 +26,13 @@ angular.module('cosmoUiApp')
 
             function _addPublicIpToNode(node) {
                 var _idsAddresses = [];
-                if(node.hasOwnProperty('relationships')) {
-                    for(var i in node.relationships) {
+                if (node.hasOwnProperty('relationships')) {
+                    for (var i in node.relationships) {
                         var relation = node.relationships[i];
                         var relatedNode = _findNodeById(relation.target_id, _nodesInstances);
 
-                        if(_checkForValidType(relatedNode, 'VirtualIP')) {
-                            if(relatedNode.hasOwnProperty('runtime_properties') &&
+                        if (_checkForValidType(relatedNode, 'VirtualIP')) {
+                            if (relatedNode.hasOwnProperty('runtime_properties') &&
                                 relatedNode.runtime_properties !== null &&
                                 relatedNode.runtime_properties.hasOwnProperty('floating_ip_address')) {
                                 _idsAddresses.push(relatedNode.runtime_properties.floating_ip_address);
@@ -70,10 +69,10 @@ angular.module('cosmoUiApp')
             }
 
             function _addNewProperty(node, field, value) {
-                if(node.runtime_properties === null) {
+                if (node.runtime_properties === null) {
                     node.runtime_properties = {};
                 }
-                if(!node.runtime_properties.hasOwnProperty(field)) {
+                if (!node.runtime_properties.hasOwnProperty(field)) {
                     node.runtime_properties[field] = value;
                 }
             }

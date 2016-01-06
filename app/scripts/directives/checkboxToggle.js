@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('cosmoUiApp')
-    .directive('checkboxToggle', function ($routeParams, $log/*, $location*/) {
+    .directive('checkboxToggle', function ($stateParams, $log/*, $location*/) {
         return {
             template: '<div ng-transclude></div>',
             transclude: 'element',
@@ -12,7 +12,7 @@ angular.module('cosmoUiApp')
             },
             link: function (scope, element/*, attrs*/) {
 
-                scope.value = $routeParams.section || scope.value;
+                scope.value = $stateParams.section || scope.value;
 
                 element.on('click', 'button', function (e) {
                     try {
@@ -22,12 +22,11 @@ angular.module('cosmoUiApp')
                             scope.value = $(e.target).addClass('active').attr('value');
                         });
 
-//                        $location.search('section', scope.value);
+                        //$location.search('section', scope.value);
                         $log.info(['set new value on scope', scope.value]);
                     } catch (e) {
                         $log.info(e);
                     }
-
 
                 });
 

@@ -11,7 +11,7 @@
  * # stPersist
  */
 angular.module('cosmoUiApp')
-    .directive('cfyStPersist', function ($location, $routeParams) {
+    .directive('cfyStPersist', function ($location, $stateParams) {
         return {
             require: '^stTable',
             scope: {
@@ -64,11 +64,11 @@ angular.module('cosmoUiApp')
                 function setFromRoute(){
 
                     // sorting
-                    if($routeParams.hasOwnProperty('sortBy' + scope.stTableId)) {
-                        var predicate = $routeParams['sortBy' + scope.stTableId];
+                    if($stateParams.hasOwnProperty('sortBy' + scope.stTableId)) {
+                        var predicate = $stateParams['sortBy' + scope.stTableId];
                         var reverse;
                         try {
-                            reverse = JSON.parse($routeParams['reverse' + scope.stTableId]);
+                            reverse = JSON.parse($stateParams['reverse' + scope.stTableId]);
                             ctrl.tableState().sort.predicate = predicate;
                             ctrl.tableState().sort.reverse = reverse;
                             //ctrl.sortBy(predicate, reverse);
@@ -77,14 +77,14 @@ angular.module('cosmoUiApp')
                         }
                     }
                     // paging
-                    var pageNo = parseInt($routeParams['pageNo'+scope.stTableId], 10) || 1;
+                    var pageNo = parseInt($stateParams['pageNo'+scope.stTableId], 10) || 1;
                     ctrl.slice((pageNo - 1) * scope.itemsByPage, scope.itemsByPage);
                     //search
 
                     var re = new RegExp(scope.stTableId+'$'), index, fieldName;
                     var reservedKeys = ['pageNo', 'sortBy', 'reverse'];
 
-                    _.forIn($routeParams, function(value, key){
+                    _.forIn($stateParams, function(value, key){
 
                         index = key.search(re);
                         fieldName = key.substr(0, index);

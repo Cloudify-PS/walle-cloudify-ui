@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('cosmoUiApp')
-    .directive('sideMenu', function ($location, $route) {
+    .directive('sideMenu', function ($location, $state) {
         return {
             templateUrl: 'views/sideMenuTemplate.html',
             restrict: 'A',
@@ -16,7 +16,7 @@ angular.module('cosmoUiApp')
                     { 'route' : ['#deployments', '#deployment'] ,       reload: false,  'icon': 'deployments',  'label':'Deployments'                        },
 //                    { 'route' : ['#monitoring'] ,                       reload: false, 'icon': 'monitoring',   'label':'Monitoring',       isDisabled: true },
                     { 'route' : ['#logs'] ,                             reload: false, 'icon': 'logs',         'label':'Logs & Events'                      },
-                    { 'route' : ['#hosts'] ,                            reload: false, 'icon': 'hosts',        'label':'Nodes'                              }
+                    { 'route' : ['#nodes'] ,                            reload: false, 'icon': 'hosts',        'label':'Nodes'                              }
                     //{ 'route' : ['#networks'] ,                         reload: false, 'icon': 'networks',     'label':'Networks',         isDisabled: true },
                     //{ 'route' : ['#floating-ips'] ,                     reload: false, 'icon': 'floating-ips', 'label':'Floating IPs',     isDisabled: true },
                     //{ 'route' : ['#storage'] ,                          reload: false, 'icon': 'storage',      'label':'Storage',          isDisabled: true }
@@ -45,7 +45,7 @@ angular.module('cosmoUiApp')
 
                 scope.goTo = function(item) {
                     if($location.path() === '/' + item.route[0].substr(1) && item.reload === true) {
-                        $route.reload();
+                        $state.go($state.current, {}, {reload: true});
                     }
                     $location.url(item.route[0].substr(1));
                 };

@@ -14,7 +14,7 @@ angular.module('cosmoUiApp')
         // see all states at:
         // https://github.com/cloudify-cosmo/cloudify-plugins-common/blob/master/cloudify/plugins/lifecycle.py#L137
         // https://github.com/cloudify-cosmo/cloudify-plugins-common/blob/master/cloudify/plugins/lifecycle.py#L188
-        var statesIndex = ['uninitialized', 'initializing', 'creating', 'created', 'configuring', 'configured', 'starting', 'started', 'deleting','deleted','stopping','stopped'];
+        var statesIndex = ['uninitialized', 'initializing', 'creating', 'created', 'configuring', 'configured', 'starting', 'started', 'deleting', 'deleted', 'stopping', 'stopped'];
 
         // use this instead of numbers
         var NODE_STATUS = {
@@ -38,32 +38,29 @@ angular.module('cosmoUiApp')
             3: ' icon-gs-node-status-fail'
         };
 
-        this.getStatesIndex = function() {
+        this.getStatesIndex = function () {
             return statesIndex;
         };
 
-        this.getStateByIndex = function(index) {
+        this.getStateByIndex = function (index) {
             return statesIndex[index];
         };
 
-
-        this.getStatuses = function() {
+        this.getStatuses = function () {
             return statuses;
         };
 
-        this.getNodeStatus = function(deployment, deploymentInProgress, process) {
-            if(process === false || process === 0) {
+        this.getNodeStatus = function (deployment, deploymentInProgress, process) {
+            if (process === false || process === 0) {
                 return 0;
-            }
-            else if(process === 100) {
+            } else if (process === 100) {
                 return 1;
-            }
-            else if(process > 0 && process < 100) {
+            } else if (process > 0 && process < 100) {
                 // we tried to install
                 if (deploymentInProgress) {
                     // execution in progress, set progress status
                     return 0;
-                } else if(deployment.completed === 0) {
+                } else if (deployment.completed === 0) {
                     // no execution in progress and none completed - set error status
                     return 3;
                 } else {
@@ -74,51 +71,47 @@ angular.module('cosmoUiApp')
             }
         };
 
-        this.getNodeStatusEnum = function(){
+        this.getNodeStatusEnum = function () {
             return NODE_STATUS;
         };
 
-        this.getCompleteProgress = function( instances ){
-            var stateNum = this.stateToNum( { state: 'started' } ); // started is the complete
+        this.getCompleteProgress = function (instances) {
+            var stateNum = this.stateToNum({state: 'started'}); // started is the complete
             return stateNum * _.size(instances); // this is our 100%.
         };
 
-
-        this.isCompleted = function( instance ){ // sugar
+        this.isCompleted = function (instance) { // sugar
             return this.isStarted(instance);
         };
 
-        this.stateToNum = function( instance ){
+        this.stateToNum = function (instance) {
 
             return statesIndex.indexOf(instance.state);
         };
 
-
-        this.getStateWeight = function( instance ){
-            return me.isDeleted(instance) ? 0 : Math.max(me.stateToNum(instance),0);
+        this.getStateWeight = function (instance) {
+            return me.isDeleted(instance) ? 0 : Math.max(me.stateToNum(instance), 0);
         };
 
-
-        this.isDeleted = function( instance ){
+        this.isDeleted = function (instance) {
             return instance.state === 'deleted';
         };
 
-        this.isInProgress = function( instance ){ // todo: consider using !uninitialized.. single source of truth
-            var stateNum = me.stateToNum( instance );
+        this.isInProgress = function (instance) { // todo: consider using !uninitialized.. single source of truth
+            var stateNum = me.stateToNum(instance);
             return stateNum > 0 && stateNum <= 7;
         };
 
-        this.isUninitialized = function(instance){
-            var stateNum = this.stateToNum( instance );
+        this.isUninitialized = function (instance) {
+            var stateNum = this.stateToNum(instance);
             return stateNum === 0 || stateNum > 7;
         };
 
-
-        this.getStatusClass = function(status_id) {
+        this.getStatusClass = function (status_id) {
             return statuses[status_id] || '';
         };
 
-        this.getIconClass = function(status_id) {
+        this.getIconClass = function (status_id) {
             return statusIcons[status_id] || '';
         };
 
@@ -134,13 +127,11 @@ angular.module('cosmoUiApp')
                 return me.isCompleted(instance);
             });
 
-            var initialized = _.find(instances, function( instance ){
+            var initialized = _.find(instances, function (instance) {
                 return !me.isUninitialized(instance);
             });
 
-
-
-            if ( initialized ) { // did someone even try to install the blueprint?? - if not, there's nothing to talk about
+            if (initialized) { // did someone even try to install the blueprint?? - if not, there's nothing to talk about
                 if (!inProgress) {
                     if (!completed) { // not even one node is completed. this is a total failure!!!
                         status = NODE_STATUS.FAILED;
@@ -150,7 +141,7 @@ angular.module('cosmoUiApp')
                 } // else in progress, then status is loading. since it is already set.. we do nothing here..
 
                 // no regardless if in progress or not, if everything is ok, show success
-                if ( completed && !failed ){ // if all nodes completed and nothing failed, then everything is working. yey!!!!
+                if (completed && !failed) { // if all nodes completed and nothing failed, then everything is working. yey!!!!
                     status = NODE_STATUS.DONE;
                 }
             }
@@ -158,18 +149,17 @@ angular.module('cosmoUiApp')
             return status;
         };
 
-        this.getBadgeStatusAndIcon = function( inProgress, instances ){
+        this.getBadgeStatusAndIcon = function (inProgress, instances) {
             var status = this.getStatus(inProgress, instances);
-            return this.getStatusClass( status ) + ' ' + this.getIconClass( status );
+            return this.getStatusClass(status) + ' ' + this.getIconClass(status);
         };
 
-        this.getBadgeStatus = function( inProgress, instances ){
+        this.getBadgeStatus = function (inProgress, instances) {
             var status = this.getStatus(inProgress, instances);
-            return this.getStatusClass( status );
+            return this.getStatusClass(status);
         };
 
-
-        this.isStarted = function( instance ){
+        this.isStarted = function (instance) {
             return instance.state === 'started';
         };
 
@@ -181,19 +171,18 @@ angular.module('cosmoUiApp')
 
             var total = 0;
 
-            _.each(nodeInstances, function(instance){
+            _.each(nodeInstances, function (instance) {
                 total += me.getStateWeight(instance);
             });
 
-            var result = _.size(nodeInstances) > 0 ? ( total / this.getCompleteProgress( nodeInstances ) ) * 100 : 0;
+            var result = _.size(nodeInstances) > 0 ? (total / this.getCompleteProgress(nodeInstances)) * 100 : 0;
 
             // normalize so it won't show stupid numbers like -8 or 114..
-            result = Math.max(0,result);
-            result = Math.min(100,result);
+            result = Math.max(0, result);
+            result = Math.min(100, result);
 
             return result;
 
         };
-
 
     });

@@ -12,8 +12,7 @@
 //var compressSrv = require('./services/CompressService');
 //var fs = require('fs');
 
-
-exports.getLogsExportFile = function(/*conf,callback*/) {
+exports.getLogsExportFile = function (/*conf,callback*/) {
     //var filePath = path.join(conf.logs.folder, conf.logs.file);
     //
     //compressSrv.pack(conf.logs.file, conf.logs.folder, function(err) {

@@ -6,7 +6,6 @@ var fs = require('fs.extra');
 
 var logger = require('log4js').getLogger('BrowseBlueprintService');
 
-
 describe('BrowseBlueprintService', function () {
     var BrowseBlueprintService = null;
     beforeEach(function () {
@@ -33,7 +32,6 @@ describe('BrowseBlueprintService', function () {
     });
 });
 
-
 describe('compression', function () {
     var dest = path.join(__dirname, '../../../../../dev/test_resources/tmp');
     var BrowseBlueprintService = null;
@@ -47,8 +45,7 @@ describe('compression', function () {
         fs.removeSync(dest);
     });
 
-
-    ['zip', 'tar', 'tar.gz','tar.bz2'].forEach(function (type) {
+    ['zip', 'tar', 'tar.gz', 'tar.bz2'].forEach(function (type) {
         it('should decompress ' + type, function (done) {
             var file = path.join(__dirname, '../../../../resources/compression/test_file.' + type);
             BrowseBlueprintService.extractArchive(type, file, dest, function (err) {
@@ -56,8 +53,8 @@ describe('compression', function () {
                 expect(!err).to.be(true);
 
                 function testFileExistance() {
-                    if ( ( type !== 'zip' && fs.existsSync(path.join(dest, 'test_file.txt') ) ||
-                        (type === 'zip' && fs.existsSync(path.join(dest, 'cloudify-nodecellar-example-master/LICENSE'))) // CFY-3772 add test for zip, resource should have a folder
+                    if ((type !== 'zip' && fs.existsSync(path.join(dest, 'test_file.txt')) ||
+                            (type === 'zip' && fs.existsSync(path.join(dest, 'cloudify-nodecellar-example-master/LICENSE'))) // CFY-3772 add test for zip, resource should have a folder
                         )) {
                         done();
                     } else {

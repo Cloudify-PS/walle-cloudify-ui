@@ -12,12 +12,10 @@ angular.module('cosmoUiApp')
             templateUrl: 'views/directives/uploadBlueprintButton.html',
             restrict: 'A',
             transclude: true,
-            scope: {
-
-            },
+            scope: {},
             link: function postLink(scope) {
 
-                scope.openAddDialog = function() {
+                scope.openAddDialog = function () {
                     ngDialog.open({
                         template: 'views/blueprint/uploadDialog.html',
                         controller: 'UploadBlueprintDialogCtrl',
@@ -26,7 +24,7 @@ angular.module('cosmoUiApp')
                     });
                 };
 
-                scope.uploadDone = function(blueprint_id) {
+                scope.uploadDone = function (blueprint_id) {
                     $location.path('/blueprint/' + blueprint_id + '/topology');
                 };
 

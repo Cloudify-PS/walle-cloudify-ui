@@ -1,47 +1,51 @@
-<div class="deployments-layout-display cosmo-layout">
+<div class="deployments-layout-display deployment-layout">
 
     <div ng-show="!!loadError" class="error">{{loadError}}</div>
     <span ng-show="!deploymentNotFound && !loadError">
 
 
-    <div id="deployment-header">
+        <div id="deployment-header">
 
-        <div class="deploymentLoader" data-ng-show="isInitializing()">
-            <div>
-                <div class="gs-spinner large"></div>
-                <p>Initializing <b>{{ deploymentId }}</b><br> Please wait...</p>
+            <div class="deploymentLoader" data-ng-if="isInitializing()">
+                <div>
+                    <div class="gs-spinner large"></div>
+                    <p>Initializing <b>{{ deploymentId }}</b><br> Please wait...</p>
+                </div>
             </div>
-        </div>
 
-        <div class="header-left">
-            <div data-ng-hide="isInitializing()">
+            <div class="header-left">
+                <div data-ng-if="!isInitializing()">
 
-                <div class="content-header">
-                    <div class="breadcrumbs">
-                        <ul>
-                            <li><a ng-href="#/deployments">{{ 'breadcrumb.deployments' | translate }}</a></li>
-                            <li class="active"><span>{{ deploymentId }} <a ng-href="#/blueprint/{{ blueprintId }}/topology">({{ blueprintId }})</a> </span></li>
-                        </ul>
+                    <div class="content-header">
+                        <div class="breadcrumbs">
+                            <ul>
+                                <li><a ng-href="#/deployments">{{ 'breadcrumb.deployments' | translate }}</a></li>
+                                <li class="active"><span>{{ deploymentId }} <a ng-href="#/blueprint/{{ blueprintId }}/topology">({{ blueprintId }})</a> </span></li>
+                            </ul>
+                        </div>
                     </div>
+
+                    <div section-nav-menu="navMenu"></div>
+
+
+
+
+                    <div class="actions">
+                        <div class="deployment-action-selector" deployment="deployment" on-delete="goToDeployments()" current-execution="currentExecution"></div>
+                    </div>
+
+                    <div app-status-widget deployment-id="deploymentId" id="appStatus"></div>
+
                 </div>
-
-                <div section-nav-menu="navMenu"></div>
-
-
-
-
-                <div class="actions">
-                    <div class="deployment-action-selector" deployment="deployment" on-delete="goToDeployments()" current-execution="currentExecution"></div>
-                </div>
-
-                <div app-status-widget deployment-id="deploymentId" id="appStatus"></div>
-
             </div>
+
         </div>
 
-    </div>
+        <div id="deployment-content" ng-if="!isInitializing()">
+            <div ui-view></div>
+        </div>
 
-    <div id="deployment-content" ng-hide="isInitializing()" ng-transclude></div>
+        <div deployment-events="deploymentId" show-deployment-events="showDeploymentEvents"></div>
     </span>
 
     <div ng-show="deploymentNotFound" class="not-found-message">

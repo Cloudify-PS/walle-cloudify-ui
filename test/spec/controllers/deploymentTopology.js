@@ -5,11 +5,13 @@ describe('Controller: DeploymentTopologyCtrl', function () {
 
 
     // load the controller's module
-    beforeEach(module('cosmoUiApp', 'ngMock', 'backend-mock'));
+    beforeEach(module('cosmoUiApp', 'ngMock', 'backend-mock','templates-main'));
 
     beforeEach(inject(function ($controller, $rootScope, cloudifyClient) {
         scope = $rootScope.$new();
-        spyOn(cloudifyClient.deployments, 'get').andReturn(window.mockPromise({ data : { blueprint_id : 'foo' } }));
+        spyOn(cloudifyClient.deployments, 'get').and.returnValue(window.mockPromise({ data : { blueprint_id : 'foo' } }));
+        //mocking deploymentEvents interface
+        scope.setShowEventsWidget = function(){};
         DeploymentTopologyCtrl = $controller('DeploymentTopologyCtrl', {
             $scope: scope
         });

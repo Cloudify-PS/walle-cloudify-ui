@@ -1,54 +1,60 @@
 {
-    "localhost-ipv6" :{
-        "bindIp" : "::",
-        "bindPort" : 9001,
-        "cosmoServer": "::1",
-        "cosmoPort": 80,
-        "cloudifyManagerEndpoint": "http://::80",
-        "log4js": {
-            "appenders": [
-                { "type":"console" },
-                {
-                    "type": "file",
-                    "filename": "logs/application.log",
-                    "maxLogSize": 20480,
-                    "backups": 3
-                }
-            ]
+  "localhost-ipv6": {
+    "bindIp": "::",
+    "bindPort": 9001,
+    "cosmoServer": "::1",
+    "cosmoPort": 80,
+    "cloudifyManagerEndpoint": "http://::80",
+    "log4js": {
+      "appenders": [
+        {
+          "type": "console"
+        },
+        {
+          "type": "file",
+          "filename": "logs/application.log",
+          "maxLogSize": 20480,
+          "backups": 3
         }
-    },
-    "localhost": {
-        "bindIp" : "0.0.0.0",
-        "bindPort" : 9001,
-        "cosmoServer": "localhost",
-        "cosmoPort": 80,
-        "cloudifyManagerEndpoint": "http://localhost",
-        "log4js": {
-            "appenders": [
-                { "type":"console" },
-                {
-                    "type": "file",
-                    "filename": "logs/application.log",
-                    "maxLogSize": 20480,
-                    "backups": 3
-                }
-            ]
-        }
-    },
-    "staging": {
-        "cosmoServer": "192.168.15.13",
-        "cosmoPort": 80,
-        "cloudifyManagerEndpoint": "http://192.168.15.13:80",
-        "log4js": {
-            "appenders": [
-                { "type":"console" },
-                {
-                    "type": "file",
-                    "filename": "logs/application.log",
-                    "maxLogSize": 20480,
-                    "backups": 3
-                }
-            ]
-        }
+      ]
     }
+  },
+  "localhost": {
+    "bindIp": "0.0.0.0",
+    "bindPort": 9001,
+    "cosmoServer": "localhost",
+    "cosmoPort": 80,
+    "cloudifyManagerEndpoint": "http://localhost",
+    "log4js": {
+      "appenders": [
+        {
+          "type": "console"
+        },
+        {
+          "type": "file",
+          "filename": "logs/application.log",
+          "maxLogSize": 20480,
+          "backups": 3
+        }
+      ]
+    }
+  },
+  "staging": {
+    "cosmoServer": "192.168.15.13",
+    "cosmoPort": 80,
+    "cloudifyManagerEndpoint": "http://192.168.15.13:80",
+    "log4js": {
+      "appenders": [
+        {
+          "type": "console"
+        },
+        {
+          "type": "file",
+          "filename": "logs/application.log",
+          "maxLogSize": 20480,
+          "backups": 3
+        }
+      ]
+    }
+  }
 }
