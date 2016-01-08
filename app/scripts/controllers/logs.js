@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('cosmoUiApp')
-    .controller('LogsCtrl', function ($scope, cloudifyClient, EventsMap, $stateParams, TableStateToRestApi, $state, $routeParams, $location, $filter) {
+    .controller('LogsCtrl', function ($scope, cloudifyClient, EventsMap, $stateParams, TableStateToRestApi, $state, $location, $filter) {
 
         //default sorting desc timestamp - when there is not a specific query
 

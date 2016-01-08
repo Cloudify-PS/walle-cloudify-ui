@@ -15,7 +15,7 @@ angular.module('cosmoUiApp')
         $scope.managerError = false;
 
         $scope.itemsByPage = 9;
-        $scope.blueprints = {};
+        $scope.blueprints = [];
         $scope.deploymentsFilter = {
             blueprints: []
         };

@@ -25,23 +25,23 @@ angular.module('cosmoUiApp')
                 function _viewNode(node) {
                     $scope.propSection = 'general';
                     $scope.showProperties = {
-                        properties: node.properties,
-                        relationships: node.relationships,
                         general: {
                             'name': node.id,
                             'type': node.type
-                        }
+                        },
+                        properties: node.properties,
+                        relationships: node.relationships
                     };
                 }
 
                 function _viewRelationship(relationship) {
                     $scope.propSection = 'general';
                     $scope.showProperties = {
-                        properties: relationship.properties,
                         general: {
                             'name': relationship.target_id,
                             'type': relationship.type
-                        }
+                        },
+                        properties: relationship.properties
                     };
                 }
 

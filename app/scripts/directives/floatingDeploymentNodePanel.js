@@ -30,12 +30,12 @@ angular.module('cosmoUiApp')
 
                 function _viewNode(node) {
                     $scope.showProperties = {
-                        properties: node.properties,
-                        relationships: node.relationships,
                         general: {
                             'name': node.id,
                             'type': node.type
-                        }
+                        },
+                        properties: node.properties,
+                        relationships: node.relationships
                     };
                     if ($scope.id) {
                         _getInstances(node.id);
@@ -46,11 +46,11 @@ angular.module('cosmoUiApp')
                     //$scope.selectNodesArr = [];
                     $scope.propSection = 'general';
                     $scope.showProperties = {
-                        properties: relationship.properties,
                         general: {
                             'name': relationship.target_id,
                             'type': relationship.type
-                        }
+                        },
+                        properties: relationship.properties
                     };
                 }
 
@@ -104,15 +104,15 @@ angular.module('cosmoUiApp')
                     $scope.selectedNode = node;
                     if (node !== null) {
                         $scope.showProperties = {
-                            properties: node.runtime_properties,
-                            relationships: node.relationships,
                             general: {
                                 'name': node.id,
                                 'type': NodeService.getInstanceType(node, $scope.nodesList),
                                 'state': node.state !== null ? node.state : '',
                                 'ip': node.runtime_properties !== null ? node.runtime_properties.ip : '',
                                 'ip_addresses': node.runtime_properties !== null && node.runtime_properties.hasOwnProperty('ip_addresses') ? node.runtime_properties.ip_addresses.join(', ') : ''
-                            }
+                            },
+                            properties: node.runtime_properties,
+                            relationships: node.relationships
                         };
                         $scope.propSection = 'general';
                     } else {
