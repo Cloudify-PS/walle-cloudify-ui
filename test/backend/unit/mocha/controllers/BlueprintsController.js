@@ -2,25 +2,25 @@
 var expect = require('expect.js');
 
 /*jshint camelcase: false */
-describe('BlueprintsController', function () {
+describe('BlueprintsController', function() {
 
-    var BlueprintsController = require('../../../../../backend/controllers/BlueprintsController');
+    var BlueprintsController = null;
     var sinon = require('sinon');
     var logger = require('log4js').getLogger('testBlueprintsController');
     var fs = require('fs');
-    var services = require('../../../../../backend/services');
-
+    var services = null;
     var req;
     var res;
     var sandbox;
 
-    beforeEach(function () {
+    beforeEach(function(){
+        BlueprintsController =  require('../../../../../backend/controllers/BlueprintsController');
+        services = require('../../../../../backend/services');
         sandbox = sinon.sandbox.create();
         req = {
             cloudifyClient: {
                 blueprints: {
-                    publish_archive: function () {
-                    }
+                    publish_archive: function() {}
                 }
             }
         };
@@ -34,11 +34,11 @@ describe('BlueprintsController', function () {
         };
     });
 
-    afterEach(function () {
+    afterEach(function() {
         sandbox.restore();
     });
 
-    describe('#upload', function () {
+    describe('#upload', function() {
 
         beforeEach(function () {
             sandbox.stub(fs, 'createReadStream');
@@ -98,6 +98,5 @@ describe('BlueprintsController', function () {
         });
 
         // not relevant anymore -  should upload blueprint from url
-
     });
 });

@@ -174,8 +174,8 @@ module.exports = function (grunt) {
         },
         curl: {
             nodejs: {
-                src: 'https://nodejs.org/dist/v0.10.35/node-v0.10.35-linux-x64.tar.gz',
-                dest: '<%= yeoman.dist %>/node-v0.10.35-linux-x64.tar.gz'
+                src: 'https://nodejs.org/dist/v4.2.0/node-v4.2.0-linux-x64.tar.gz',
+                dest: '<%= yeoman.dist %>/node-v4.2.0-linux-x64.tar.gz'
             }
 
         },
@@ -821,6 +821,7 @@ module.exports = function (grunt) {
     grunt.registerTask('build', 'builds the project', function () {
 
         var tasks = [
+            'verifyNode',
             'clean:server',
             'clean:dist',
             'useminPrepare',
@@ -1001,4 +1002,35 @@ module.exports = function (grunt) {
     grunt.registerTask('compass', ['sass']);
     grunt.registerTask('help', ['availabletasks:help']);
 
+    grunt.registerTask('verifyNode', function() {
+        var isPassed = true;
+        var nodeVersion = grunt.file.read('.nvmrc').trim();
+        grunt.log.write('NodeJs version is: '+nodeVersion);
+        //verify travis use updated node version
+        var travisFile = grunt.file.read('.travis.yml');
+        if(travisFile.indexOf(nodeVersion) === -1){
+            grunt.log.error('.travis.yml is not using the updated version of node');
+            isPassed = false;
+        }
+        //verify circle use updated node version
+        var circleFile = grunt.file.read('circle.yml');
+        if(circleFile.indexOf(nodeVersion) === -1){
+            grunt.log.error('circle.yml is not using the updated version of node');
+            isPassed = false;
+        }
+        //verify grunt task curl use updated node version
+        var gruntNodeTask = grunt.config.get('curl.nodejs');
+        if(gruntNodeTask.src.indexOf(nodeVersion) === -1){
+            grunt.log.error('Gruntfile curl.nodejs.src is not using the updated version of node');
+            isPassed = false;
+        }
+        if(gruntNodeTask.dest.indexOf(nodeVersion) === -1){
+            grunt.log.error('Gruntfile curl.nodejs.dest is not using the updated version of node');
+            isPassed = false;
+        }
+
+        if(!isPassed){
+            grunt.fail.fatal('Please make sure all nodejs dependencies are updated');
+        }
+    });
 };
