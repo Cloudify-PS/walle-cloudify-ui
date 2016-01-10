@@ -10,7 +10,7 @@ angular.module('cosmoUiApp')
                 console.log(e);
                 console.log(hotkeys.get('mod+b'));
 
-                //hotkeysEventsHandler.subscribeEvent(e);
+                hotkeysEventsHandler.subscribeEvent(e);
             }
         });
 
@@ -45,4 +45,8 @@ angular.module('cosmoUiApp')
                 $state.go('cloudifyLayout.nodes')
             }
         });
+
+        hotkeysEventsHandler.on('.',function(){
+            console.log(1);
+        })
 });

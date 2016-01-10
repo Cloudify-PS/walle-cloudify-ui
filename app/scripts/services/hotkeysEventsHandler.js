@@ -13,14 +13,17 @@ angular.module('cosmoUiApp')
 
         this.subscribeEvent = function(event){
             _.each(callbacks, function(trigger, callback){
-                if(trigger === event.combo){
+                var eventTrigger = String.fromCharCode(event.keyCode);
+                if(trigger === eventTrigger){
                     callback();
                 }
             });
         };
 
         this.on = function(eventTrigger, callback){
-            callbacks.push({eventTrigger: callback});
+            var event = {};
+            event[eventTrigger] = callback;
+            callbacks.push(event);
             return function unsubscribe(){
                 var index = _.findIndex(callback,{eventTrigger: callback});
                 callback.splice(index,1)
