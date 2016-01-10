@@ -1,18 +1,15 @@
 'use strict';
 angular.module('cosmoUiApp')
     .run(function(hotkeys, $state, hotkeysEventsHandler){
-
-        hotkeys.add({
-            combo: '.',
-            description: 'test 1',
-            callback: function(e) {
-                console.log('dot has clicked');
-                console.log(e);
-                console.log(hotkeys.get('mod+b'));
-
-                hotkeysEventsHandler.subscribeEvent(e);
-            }
-        });
+        //function broadcastEvent(e) {
+        //    hotkeysEventsHandler.broadcast(e);
+        //}
+        //
+        //hotkeys.add({
+        //    combo: '.',
+        //    description: 'Open actions manager',
+        //    callback: broadcastEvent
+        //});
 
         //navigation
         hotkeys.add({
@@ -45,8 +42,4 @@ angular.module('cosmoUiApp')
                 $state.go('cloudifyLayout.nodes')
             }
         });
-
-        hotkeysEventsHandler.on('.',function(){
-            console.log(1);
-        })
 });

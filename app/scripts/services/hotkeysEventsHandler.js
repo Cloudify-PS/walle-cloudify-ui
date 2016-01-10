@@ -9,23 +9,21 @@
  */
 angular.module('cosmoUiApp')
   .service('hotkeysEventsHandler', function () {
-        var callbacks = [];
+        var subscriptions = [];
 
-        this.subscribeEvent = function(event){
-            _.each(callbacks, function(trigger, callback){
+        this.broadcast = function(event){
+            _.forEach(subscriptions, function(subscription){
                 var eventTrigger = String.fromCharCode(event.keyCode);
-                if(trigger === eventTrigger){
-                    callback();
+                if(subscription.trigger === eventTrigger){
+                    subscription.callback();
                 }
             });
         };
 
         this.on = function(eventTrigger, callback){
-            var event = {};
-            event[eventTrigger] = callback;
-            callbacks.push(event);
+            subscriptions.push({trigger: eventTrigger, callback: callback});
             return function unsubscribe(){
-                var index = _.findIndex(callback,{eventTrigger: callback});
+                var index = _.findIndex(callback,{trigger: eventTrigger, callback: callback});
                 callback.splice(index,1)
             }
         };
