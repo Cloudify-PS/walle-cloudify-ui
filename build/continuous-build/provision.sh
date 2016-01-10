@@ -1,11 +1,10 @@
-#!/usr/bin/env bash -e
+#!/usr/bin/env bash
 
 echo "read configuration"
 
 source /etc/ENVIRONMENT_VARIABLES.sh || echo "no environment variables file.. skipping.. "
 
-DEV_ENV_VARS="/vagrant/dev/ENVIRONMENT_VARIABLES.sh"
-source /etc/ENVIRONMENT_VARIABLES.sh || echo "no dev environment variables file.. skipping.. "
+source /vagrant/dev/ENVIRONMENT_VARIABLES.sh || echo "no dev environment variables file.. skipping.. "
 
 if [ ! -f /usr/bin/git ]; then
     echo "installing git"
@@ -56,9 +55,9 @@ if [ "${SKIP_BUILD}" == "" ];then # for development purposes
     fi
     git clone ${GIT_URL} ${GIT_DEST}
 
-    push ${GIT_DEST}
+    pushd ${GIT_DEST}
         echo "installing preprequirements and building"
-        nvm install
+        nvm install &> /dev/null
         npm run install_prereq
         npm run build_and_publish
     popd
