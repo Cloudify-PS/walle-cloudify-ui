@@ -53,10 +53,7 @@ angular.module('cosmoUiApp', [
             },
             templateUrl: 'views/blueprintsIndex.html',
             controller: 'BlueprintsIndexCtrl',
-            reloadOnSearch: false,
-            hotkeys: [
-                ['u', 'Upload Blueprint', 'openAddDialog()']
-            ]
+            reloadOnSearch: false
         })
         .state('cloudifyLayout.blueprintLayout',
         {

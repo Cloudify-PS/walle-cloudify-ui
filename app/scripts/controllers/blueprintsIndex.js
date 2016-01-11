@@ -41,4 +41,12 @@ angular.module('cosmoUiApp')
         };
 
         $scope.loadBlueprints();
+
+        $scope.select = function(selectedBlueprint){
+            _.each($scope.displayedBlueprints, function(blueprint){
+                blueprint.isSelected = false;
+            });
+            selectedBlueprint.isSelected = true;
+
+        }
     });
