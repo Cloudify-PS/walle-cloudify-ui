@@ -13,6 +13,7 @@ if [ "${BUILD_UID}" = "default" ]; then
 fi
 
 export GIT_TAG="v${CFY_VERSION}-${CFY_PRERELEASE}-${CFY_BUILD_NUMBER}-${BUILD_UID}"
+git config user.name $GIT_USERNAME
 git tag ${GIT_TAG} -m "automated build"
 git push origin --tags
 
