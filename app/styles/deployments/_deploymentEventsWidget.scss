@@ -3,8 +3,9 @@
     // todo: refactor this to be variables CFY-3326
     position: fixed;
     bottom: $BOTTOM;
-    left: 186px;
-    right: 20px;
+    left: 0;
+    right: 0;
+    bottom: 30px;
     height: auto;
     border-top: 2px solid #4b6b8b;
     z-index: 10000;
