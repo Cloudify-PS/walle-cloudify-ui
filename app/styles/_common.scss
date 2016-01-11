@@ -283,69 +283,6 @@
     &.gs-icon-logs:before { color: #049cdb; }
 }
 
-$install: #2f3334;
-$done: #8eaf26;
-$alerts: #feb300;
-$failed: #d54931;
-
-.badge-title {
-    position: relative;
-    text-decoration: none;
-    font-size: 12px;
-    line-height: 15px;
-    font-style: normal;
-    font-weight: bold;
-    opacity: 1;
-    top: -6px;
-    left: 47px;
-
-    &.install {
-        color: $install;
-    }
-    &.done {
-        color: $done;
-    }
-    &.alerts {
-        color: $alerts;
-    }
-    &.failed {
-        color: $failed;
-    }
-}
-
-.badge {
-    position: relative;
-    display: inline-block;
-    z-index: 1;
-    min-width: 20px;
-    border-radius: 10px;
-    padding: 3px !important; // this is here to override bootstrap's own .badge class definition
-    vertical-align: baseline;
-    white-space: nowrap;
-    text-align: center;
-    background-color: $install;
-    text-decoration: none;
-    font-size: 14px;
-    color: #fff;
-    line-height: 15px;
-    font-style: normal;
-    font-weight: normal;
-    opacity: 1;
-
-    &.install {
-        background-color: $install;
-    }
-    &.done {
-        background-color: $done;
-    }
-    &.alerts {
-        background-color: $alerts;
-    }
-    &.failed {
-        background-color: $failed;
-    }
-}
-
 p[tooltip], div[tooltip], td {
     overflow: hidden;
     text-overflow: ellipsis;
