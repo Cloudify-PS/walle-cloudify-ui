@@ -25,7 +25,7 @@ echo "installing node"
 nvm install 0.10.35 # keep this in older version deliberately.
 
 # replace json file placeholders with environment variables. https://github.com/guy-mograbi-at-gigaspaces/node-replace-env-in-json-file
-curl https://goo.gl/j6qnth | INJECT_FILE="${CONFIG_FILE}" node
+curl -L https://goo.gl/j6qnth | INJECT_FILE="${CONFIG_FILE}" node
 
 chmod 600  $PEM_FILE
 
