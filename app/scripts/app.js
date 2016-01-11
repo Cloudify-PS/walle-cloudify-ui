@@ -112,11 +112,6 @@ angular.module('cosmoUiApp', [
             templateUrl: 'views/deployment/deploymentTopology.html',
             controller: 'DeploymentTopologyCtrl'
         })
-        .state('cloudifyLayout.deploymentLayout.network', {
-            url: '/network',
-            templateUrl: 'views/deployment/deploymentNetwork.html',
-            controller: 'DeploymentNetworkCtrl'
-        })
         .state('cloudifyLayout.deploymentLayout.nodes', {
             url: '/nodes',
             templateUrl: 'views/deployment/deploymentNodes.html',
