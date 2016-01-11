@@ -46,7 +46,7 @@ pushd ${VAGRANT_WORKDIR}
     popd
 popd
 
-pushd ${REPORTS_BASEDIR}
-    rm -rf reports
-    vagrant-automation-machines-copy reports # copy from guest machine!
-popd
+#pushd ${REPORTS_BASEDIR}
+#    rm -rf reports
+#    vagrant-automation-machines-copy reports # copy from guest machine!
+#popd
