@@ -76,8 +76,7 @@
     },
     "deployment": {
         "title": {
-            "topology": "Topology",
-            "network": "Network"
+            "topology": "Topology"
         },
         "table": {
             "heading": {
@@ -186,8 +185,6 @@
         "properties": "Properties",
         "policies": "Policies",
         "relationships": "Relationships",
-        "topology": "Topology",
-        "network": "Network",
         "topology": {
             "networkName": "Network Name",
             "subnetName": "Subnet Name",
