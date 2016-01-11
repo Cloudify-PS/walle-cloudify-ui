@@ -5,7 +5,8 @@ set -e
 echo "build started"
 export BUILD_BRANCH=${GIT_REFERENCE}
 export S3_FOLDER="continuous-build/nightly/${CFY_VERSION}-${CFY_PRERELEASE}-${BUILD_ID}"
-export VAGRANT_WORKDIR="`pwd`/build/continuous-build"
+export VAGRANT_BASEDIR="`pwd`/build/continuous-build" # contains provision script and synced folder
+export VAGRANT_WORKDIR="${VAGRANT_BASEDIR}/aws" # contains the Vagrantfile itself
 export REPORTS_BASEDIR="`pwd`"
 
 if [ "${BUILD_UID}" = "default" ]; then
@@ -32,16 +33,16 @@ chmod 600  $PEM_FILE
 npm install cloudify-cosmo/vagrant-automation-machines -g
 
 function cleanup(){
-    pushd $VAGRANT_WORKDIR
+    pushd ${VAGRANT_WORKDIR}
         vagrant destroy -f
     popd
 }
 trap cleanup EXIT
 
-pushd ${VAGRANT_WORKDIR}
+pushd ${VAGRANT_BASEDIR}
     vagrant-automation-machines-setup aws
     cleanup || echo "no need to teardown the machine because it was not running"
-    pushd aws
+    pushd ${VAGRANT_WORKDIR}
         vagrant up --provider=aws
     popd
 popd
