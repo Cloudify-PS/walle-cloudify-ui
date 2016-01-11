@@ -2,23 +2,31 @@
 
 set -e
 
-export BUILD_BRANCH=${TAG}
+export BUILD_BRANCH=${GIT_REFERENCE}
 export S3_FOLDER="continuous-build/nightly/${CFY_VERSION}-${CFY_PRERELEASE}-${BUILD_ID}"
 export VAGRANT_WORKDIR="`pwd`/build/continuous-build"
 export REPORTS_BASEDIR="`pwd`"
+
+if [ "${BUILD_UID}" = "" ]; then
+    export BUILD_UID="`date +%s`"
+fi
+
+export GIT_TAG="v${CFY_VERSION}-${CFY_PRERELEASE}-${CFY_BUILD_NUMBER}-${BUILD_UID}"
+git tag ${GIT_TAG} -m "automated build"
+git push origin --tags
 
 echoerr() { echo "$@" 1>&2; }
 
 echo "user is $USER";
 
-nvm install 0.10.35
+nvm install 0.10.35 # keep this in older version deliberately.
 
 # replace json file placeholders with environment variables
 curl https://goo.gl/j6qnth | INJECT_FILE="${CONFIG_FILE}" node
 
 chmod 600  $PEM_FILE
 
-npm install vagrant-automation-machines -g
+npm install cloudify-cosmo/vagrant-automation-machines -g
 
 function cleanup(){
     pushd $VAGRANT_WORKDIR
