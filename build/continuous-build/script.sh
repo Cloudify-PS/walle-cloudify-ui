@@ -41,7 +41,9 @@ trap cleanup EXIT
 pushd ${VAGRANT_WORKDIR}
     vagrant-automation-machines-setup aws
     cleanup || echo "no need to teardown the machine because it was not running"
-    vagrant up --provider=aws
+    pushd aws
+        vagrant up --provider=aws
+    popd
 popd
 
 pushd ${REPORTS_BASEDIR}
