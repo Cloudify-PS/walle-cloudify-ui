@@ -2,6 +2,7 @@
 
 set -e
 
+echo "build started"
 export BUILD_BRANCH=${GIT_REFERENCE}
 export S3_FOLDER="continuous-build/nightly/${CFY_VERSION}-${CFY_PRERELEASE}-${BUILD_ID}"
 export VAGRANT_WORKDIR="`pwd`/build/continuous-build"
@@ -19,6 +20,7 @@ echoerr() { echo "$@" 1>&2; }
 
 echo "user is $USER";
 
+echo "installing node"
 nvm install 0.10.35 # keep this in older version deliberately.
 
 # replace json file placeholders with environment variables. https://github.com/guy-mograbi-at-gigaspaces/node-replace-env-in-json-file
