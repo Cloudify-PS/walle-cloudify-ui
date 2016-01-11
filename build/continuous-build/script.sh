@@ -7,7 +7,7 @@ export S3_FOLDER="continuous-build/nightly/${CFY_VERSION}-${CFY_PRERELEASE}-${BU
 export VAGRANT_WORKDIR="`pwd`/build/continuous-build"
 export REPORTS_BASEDIR="`pwd`"
 
-if [ "${BUILD_UID}" = "" ]; then
+if [ "${BUILD_UID}" = "default" ]; then
     export BUILD_UID="`date +%s`"
 fi
 
@@ -21,7 +21,7 @@ echo "user is $USER";
 
 nvm install 0.10.35 # keep this in older version deliberately.
 
-# replace json file placeholders with environment variables
+# replace json file placeholders with environment variables. https://github.com/guy-mograbi-at-gigaspaces/node-replace-env-in-json-file
 curl https://goo.gl/j6qnth | INJECT_FILE="${CONFIG_FILE}" node
 
 chmod 600  $PEM_FILE
