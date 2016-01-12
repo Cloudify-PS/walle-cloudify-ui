@@ -15,8 +15,9 @@ fi
 
 echo "define variables"
 export REPORTS_BASE=`echo ~`/reports
-export GIT_DEST="`pwd`/cloudify-ui"
-export GIT_URL="https://$GITHUB_USER:$GITHUB_TOKEN@github.com/cloudify-cosmo/cloudify-ui.git"
+export PROJECT_NAME="cloudify-ui"
+export GIT_DEST="`pwd`/${PROJECT_NAME}"
+export GIT_URL="https://$GITHUB_USER:$GITHUB_TOKEN@github.com/cloudify-cosmo/${PROJECT_NAME}.git"
 
 
 echo "install nvm"
@@ -46,6 +47,7 @@ else
 fi
 
 
+
 if [ "${SKIP_BUILD}" == "" ];then # for development purposes
     if [ "${UPDATE_CLONE}" != "" ]; then
         echo "updating clone"
@@ -58,6 +60,11 @@ if [ "${SKIP_BUILD}" == "" ];then # for development purposes
     pushd ${GIT_DEST}
         echo "installing preprequirements and building"
         nvm install &> /dev/null
+
+        npm -g install guy-mograbi-at-gigaspaces/cloudify-ui-build-helper
+        create-and-push-git-tag
+        export S3_FOLDER="`get-unstable-s3-folder`"
+
         npm run install_prereq
         npm run build_and_publish
     popd

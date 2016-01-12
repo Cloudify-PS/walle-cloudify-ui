@@ -4,7 +4,6 @@ set -e
 
 echo "build started"
 export BUILD_BRANCH=${GIT_REFERENCE}
-export S3_FOLDER="continuous-build/nightly/${CFY_VERSION}-${CFY_PRERELEASE}-${BUILD_ID}"
 export VAGRANT_BASEDIR="`pwd`/build/continuous-build" # contains provision script and synced folder
 export VAGRANT_WORKDIR="${VAGRANT_BASEDIR}/aws" # contains the Vagrantfile itself
 export REPORTS_BASEDIR="`pwd`"
@@ -12,11 +11,6 @@ export REPORTS_BASEDIR="`pwd`"
 if [ "${BUILD_UID}" = "default" ]; then
     export BUILD_UID="`date +%s`"
 fi
-
-# export GIT_TAG="v${CFY_VERSION}-${CFY_PRERELEASE}-${CFY_BUILD_NUMBER}-${BUILD_UID}"
-#git config user.name $GIT_USERNAME
-#git tag ${GIT_TAG} -m "automated build"
-#git push origin --tags
 
 echoerr() { echo "$@" 1>&2; }
 
