@@ -72,9 +72,9 @@ describe('Controller: DeploymentsCtrl', function () {
     });
 
     describe('managerError', function () {
-        it('should be initialized to true', function () {
+        it('should be initialized to empty string', function () {
             _testSetup();
-            expect(scope.managerError).toBe(false);
+            expect(scope.managerError).toBe('');
         });
     });
 

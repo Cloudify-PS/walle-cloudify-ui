@@ -5,14 +5,13 @@ angular.module('cosmoUiApp')
     .controller('DeploymentsCtrl', function ($scope, ExecutionsService, $location, $log, cloudifyClient, HotkeysManager) {
 
         $scope.deployments = null;
-        $scope.executedErr = false;
         $scope.confirmationType = '';
 
         // holds currently running execution per deployment_id
         var runningExecutions = {};
 
         $scope.inputs = {};
-        $scope.managerError = false;
+        $scope.managerError = '';
 
         $scope.itemsByPage = 9;
         $scope.blueprints = [];
@@ -47,7 +46,7 @@ angular.module('cosmoUiApp')
             cloudifyClient.deployments.list('id,blueprint_id,created_at,updated_at,workflows,inputs,outputs')
                 .then(function (result) {
 
-                    $scope.managerError = false;
+                    $scope.managerError = '';
                     $scope.deployments = result.data.items;
 
                     _.each($scope.deployments, function (d) {
@@ -60,10 +59,7 @@ angular.module('cosmoUiApp')
                     $scope.deploymentsLoaded = true;
                 },
                 function (res) {
-                    $scope.managerError = true;
-                    if (res.status === 403) {
-                        $scope.permissionDenied = true;
-                    }
+                    $scope.managerError = res.statusText === 'Unauthorized' ? 'permissionError' : 'connectError';
                 });
         };
 

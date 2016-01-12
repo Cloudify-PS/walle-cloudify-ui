@@ -5,8 +5,7 @@
             <li><span>{{'breadcrumb.deployments'|translate}}</span></li>
         </ul></div>
     </div>
-    <div ng-show="!!permissionDenied" class="error">{{'permissionError' | translate}}</div>
-    <div id="dp1" class="content-section" st-table="displayedDeployments" st-safe-src="deployments" st-set-filter="customFilter" ng-show="!permissionDenied">
+    <div id="dp1" class="content-section" st-table="displayedDeployments" st-safe-src="deployments" st-set-filter="customFilter" ng-show="managerError !== 'permissionError'">
         <form>
             <div class="form-group">
                 <label for="searchByName">{{'deployments.filters.deployment.title' | translate}}</label>
@@ -65,6 +64,6 @@
                 </tr>
             </tfoot>
         </table>
-        <div class="connect-error-message" ng-show="managerError">{{ 'connectError' | translate }}</div>
     </div>
+    <div class="connect-error-message" ng-show="managerError">{{ managerError | translate }}</div>
 </div>
