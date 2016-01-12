@@ -63,7 +63,7 @@ if [ "${SKIP_BUILD}" == "" ];then # for development purposes
         nvm install &> /dev/null
 
         npm -g install guy-mograbi-at-gigaspaces/cloudify-ui-build-helper
-        create-and-push-git-tag
+        create-and-push-build-tag
         export S3_FOLDER="`get-unstable-s3-folder`"
 
         npm run install_prereq
