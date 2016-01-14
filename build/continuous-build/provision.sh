@@ -59,6 +59,7 @@ if [ "${SKIP_BUILD}" == "" ];then # for development purposes
     git clone ${GIT_URL} ${GIT_DEST}
 
     pushd ${GIT_DEST}
+        git checkout ${BUILD_BRANCH}
         echo "installing preprequirements and building"
         nvm install &> /dev/null
 
