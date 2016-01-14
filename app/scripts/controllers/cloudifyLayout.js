@@ -8,7 +8,7 @@
  * Controller of the cosmoUiApp
  */
 angular.module('cosmoUiApp')
-  .controller('CloudifyLayoutCtrl', function ($scope, $stateParams, VersionService, $window) {
+  .controller('CloudifyLayoutCtrl', function ($scope, $stateParams, VersionService, $window, HotkeysManager) {
         $scope.embeded = $window !== $window.top;
         if ( $stateParams.hasOwnProperty('embed')  ) { // override
             $scope.embeded = $stateParams.embed === 'true';
@@ -29,4 +29,6 @@ angular.module('cosmoUiApp')
                 $left.removeClass('fix-to-top');
             }
         });
+
+        HotkeysManager.bindNavigations($scope);
     });

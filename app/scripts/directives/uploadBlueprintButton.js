@@ -7,7 +7,7 @@
  * # uploadBlueprintButton
  */
 angular.module('cosmoUiApp')
-    .directive('uploadBlueprintButton', function (ngDialog, $location, hotkeys) {
+    .directive('uploadBlueprintButton', function (ngDialog, $location, HotkeysManager) {
         return {
             templateUrl: 'views/directives/uploadBlueprintButton.html',
             restrict: 'A',
@@ -28,14 +28,7 @@ angular.module('cosmoUiApp')
                     $location.path('/blueprint/' + blueprint_id + '/topology');
                 };
 
-                hotkeys.bindTo(scope)
-                    .add({
-                        combo: 'u',
-                        description: 'Upload blueprint',
-                        callback: function() {
-                            scope.openAddDialog();
-                        }
-                    })
+                HotkeysManager.bindUploadBlueprint(scope);
             }
         };
     });

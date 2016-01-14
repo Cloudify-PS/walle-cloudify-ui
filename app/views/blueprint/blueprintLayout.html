@@ -27,7 +27,7 @@
         <div ui-view></div>
     </span>
 
-    <div ng-show="!!blueprintNotFound" class="not-found-message">
+    <div ng-if="!!blueprintNotFound" class="not-found-message">
 
         <div class="message">
             {{'blueprints.missingMessages.indication' | translate}}

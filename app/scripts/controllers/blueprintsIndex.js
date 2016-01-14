@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('cosmoUiApp')
-    .controller('BlueprintsIndexCtrl', function ($scope, $log, cloudifyClient, CloudifyService) {
+    .controller('BlueprintsIndexCtrl', function ($scope, $log, cloudifyClient, CloudifyService, HotkeysManager) {
         $scope.lastExecutedPlan = null;
         $scope.selectedBlueprint = null;
         $scope.managerError = false;
@@ -47,6 +47,7 @@ angular.module('cosmoUiApp')
                 blueprint.isSelected = false;
             });
             selectedBlueprint.isSelected = true;
+        };
 
-        }
+        HotkeysManager.bindBlueprintActions($scope);
     });
