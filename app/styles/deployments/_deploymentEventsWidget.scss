@@ -86,7 +86,7 @@
         width: 24px;
         height: 24px;
         font-size: 24px;
-        line-height: 24px;
+        line-height: 25px;
     }
 
     &.closed {
@@ -105,26 +105,26 @@
         table-layout: fixed;
 
         tr {
-            height: 50px;
+            height: $COSMOUI_LIST_LINE_HEIGHT;
             border-bottom: 1px solid #ffffff;
 
             td {
                 border-bottom: 2px solid #e8edf2;
                 font-size: 14px;
                 padding-right: 10px;
-                vertical-align: top;
+                vertical-align: middle;
 
                 &.icon {
                     width: 55px;
                     text-align: center;
                     padding-left: 20px;
                     white-space: nowrap;
-                    padding-top: 13px;
+                    //padding-top: 13px;
                 }
 
                 &.type {
                     width: 200px;
-                    padding-top: 16px;
+                    //padding-top: 16px;
                     overflow: hidden;
                     text-overflow: ellipsis;
                     white-space: nowrap;
@@ -133,12 +133,12 @@
                 &.time {
                     width: 160px;
                     white-space: nowrap;
-                    padding-top: 16px;
+                    //padding-top: 16px;
                 }
 
                 &.message {
                     width: auto;
-                    padding: 16px 0;
+                    //padding: 16px 0;
 
                     .brief {
                         display: block;
