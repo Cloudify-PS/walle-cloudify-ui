@@ -31,7 +31,6 @@ angular.module('cosmoUiApp')
                 };
 
                 self.openDeleteDialog = function() {
-
                     ngDialog.open({
                         template: 'views/blueprint/deleteBlueprintDialog.html',
                         controller: 'DeleteBlueprintDialogCtrl',

@@ -24,7 +24,7 @@ angular.module('cosmoUiApp')
                 $scope.showProgress = true;
 
                 self.openCancelExecutionDialog = function() {
-                    if($scope.currentExecution){
+                    if($scope.canCancel()){
                         ngDialog.open({
                             template: 'views/deployment/cancelExecutionDialog.html',
                             controller: 'CancelExecutionDialogCtrl',
@@ -35,7 +35,7 @@ angular.module('cosmoUiApp')
                 };
 
                 self.openStartExecutionDialog = function() {
-                    if(!$scope.currentExecution) {
+                    if(!$scope.isRunning()) {
                         ngDialog.open({
                             template: 'views/deployment/startExecutionDialog.html',
                             controller: 'StartExecutionDialogCtrl',
@@ -46,7 +46,7 @@ angular.module('cosmoUiApp')
                 };
 
                 self.openDeleteDialog = function() {
-                    if(!$scope.currentExecution) {
+                    if(!$scope.isRunning()) {
                         $scope.itemToDelete = $scope.deployment;
                         ngDialog.open({
                             template: 'views/deployment/deleteDeploymentDialog.html',
@@ -72,7 +72,7 @@ angular.module('cosmoUiApp')
                 };
 
                 $scope.isRunning = function () {
-                    return !ExecutionsService.isRunning($scope.currentExecution);
+                    return ExecutionsService.isRunning($scope.currentExecution);
                 };
 
                 // comment

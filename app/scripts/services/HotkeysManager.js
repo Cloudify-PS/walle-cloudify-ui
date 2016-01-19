@@ -54,6 +54,8 @@ angular.module('cosmoUiApp')
               });
       };
 
+      // Binding directive logic on the conroller scope instead the directive itself since it overrides binds
+      // https://github.com/chieffancypants/angular-hotkeys/issues/195
       this.bindBlueprintActions = function(scope){
           hotkeys.bindTo(scope)
               .add({

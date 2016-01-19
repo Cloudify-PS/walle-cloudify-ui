@@ -5,12 +5,6 @@ describe('Controller: CloudifyLayoutCtrl', function () {
     // load the controller's module
     beforeEach(module('cosmoUiApp','backend-mock', 'templates-main', function( $provide){
 
-        // override $window to test embed mechanism
-        $provide.provider('$window', function(){
-            this.$get = function(){
-                return {};
-            };
-        });
         // override lower level directives
         // http://stackoverflow.com/questions/17533052/how-do-you-mock-directives-to-enable-unit-testing-of-higher-level-directive
 
