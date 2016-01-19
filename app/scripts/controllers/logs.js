@@ -1,10 +1,14 @@
 'use strict';
 
 angular.module('cosmoUiApp')
-    .controller('LogsCtrl', function ($scope, cloudifyClient, EventsMap, $routeParams, TableStateToRestApi, $location, $filter) {
+    .controller('LogsCtrl', function ($scope, cloudifyClient, EventsMap, $stateParams, TableStateToRestApi, $state, $location, $filter) {
 
         //default sorting desc timestamp - when there is not a specific query
-        if (Object.keys($routeParams).length === 0) {
+
+        var isAnyStateParamsValuesDefined = _.some($stateParams, function(value){
+            return value !== undefined && value !== '';
+        });
+        if(_.isEmpty($stateParams) || !isAnyStateParamsValuesDefined){
             $location.search({sortByLogs: 'timestamp', reverseLogs: 'true'});
         }
 
@@ -20,12 +24,12 @@ angular.module('cosmoUiApp')
         ];
 
         $scope.itemsPerPage = 50;
-        var initFilters = function () {
+        var initFilters = function() {
             $scope.eventsFilter = {
                 'blueprints': [],
                 'deployments': [],
                 'logLevels': [],
-                'timeRange': {
+                'timeRange':{
                     'gte': '',
                     'lte': ''
                 },
@@ -45,95 +49,47 @@ angular.module('cosmoUiApp')
             {value: 'critical', label: 'CRITICAL'}
         ];
         $scope.eventTypesList = [
-            {value: 'policy', label: EventsMap.getEventText('policy')},
-            {
-                value: 'processing_trigger',
-                label: EventsMap.getEventText('processing_trigger')
-            },
-            {
-                value: 'trigger_failed',
-                label: EventsMap.getEventText('trigger_failed')
-            },
-            {
-                value: 'trigger_succeeded',
-                label: EventsMap.getEventText('trigger_succeeded')
-            },
-            {
-                value: 'task_failed',
-                label: EventsMap.getEventText('task_failed')
-            },
-            {
-                value: 'task_rescheduled',
-                label: EventsMap.getEventText('task_rescheduled')
-            },
-            {
-                value: 'task_started',
-                label: EventsMap.getEventText('task_started')
-            },
-            {
-                value: 'task_succeeded',
-                label: EventsMap.getEventText('task_succeeded')
-            },
-            {
-                value: 'sending_task',
-                label: EventsMap.getEventText('sending_task')
-            },
-            {
-                value: 'workflow_cancelled',
-                label: EventsMap.getEventText('workflow_cancelled')
-            },
-            {
-                value: 'workflow_event',
-                label: EventsMap.getEventText('workflow_event')
-            },
-            {
-                value: 'workflow_failed',
-                label: EventsMap.getEventText('workflow_failed')
-            },
-            {
-                value: 'workflow_node_event',
-                label: EventsMap.getEventText('workflow_node_event')
-            },
-            {
-                value: 'workflow_stage',
-                label: EventsMap.getEventText('workflow_stage')
-            },
-            {
-                value: 'workflow_started',
-                label: EventsMap.getEventText('workflow_started')
-            },
-            {
-                value: 'workflow_succeeded',
-                label: EventsMap.getEventText('workflow_succeeded')
-            }
+            {value:'policy',label: EventsMap.getEventText('policy')},
+            {value:'processing_trigger',label: EventsMap.getEventText('processing_trigger')},
+            {value:'trigger_failed',label: EventsMap.getEventText('trigger_failed')},
+            {value:'trigger_succeeded',label: EventsMap.getEventText('trigger_succeeded')},
+            {value:'task_failed',label: EventsMap.getEventText('task_failed')},
+            {value:'task_rescheduled',label: EventsMap.getEventText('task_rescheduled')},
+            {value:'task_started',label: EventsMap.getEventText('task_started')},
+            {value:'task_succeeded',label: EventsMap.getEventText('task_succeeded')},
+            {value:'sending_task',label: EventsMap.getEventText('sending_task')},
+            {value:'workflow_cancelled',label: EventsMap.getEventText('workflow_cancelled')},
+            {value:'workflow_event',label: EventsMap.getEventText('workflow_event')},
+            {value:'workflow_failed',label: EventsMap.getEventText('workflow_failed')},
+            {value:'workflow_node_event',label: EventsMap.getEventText('workflow_node_event')},
+            {value:'workflow_stage',label: EventsMap.getEventText('workflow_stage')},
+            {value:'workflow_started',label: EventsMap.getEventText('workflow_started')},
+            {value:'workflow_succeeded',label: EventsMap.getEventText('workflow_succeeded')}
         ];
 
         //Getting blueprints list
         cloudifyClient.blueprints.list()
             .then(function (response) {
                 $scope.blueprintsList = [];
-                _.forEach(response.data.items, function (blueprint) {
-                    $scope.blueprintsList.push({
-                        'value': blueprint.id,
-                        'label': blueprint.id
-                    });
+                _.forEach(response.data.items, function(blueprint){
+                    $scope.blueprintsList.push({'value': blueprint.id, 'label': blueprint.id});
                 });
             });
 
         //getting deployments list
         cloudifyClient.deployments.list()
-            .then(function (response) {
+            .then(function(response){
                 $scope.deploymentsList = [];
-                _.forEach(response.data.items, function (deployment) {
+                _.forEach(response.data.items, function(deployment){
                     $scope.deploymentsList.push({
                         'value': deployment.id,
-                        'label': deployment.id + ' [' + deployment.blueprint_id + ']',
+                        'label': deployment.id+' ['+deployment.blueprint_id+']',
                         'parent': deployment.blueprint_id
                     });
                 });
             });
 
-        $scope.clearFilters = function () {
+        $scope.clearFilters = function(){
             initFilters();
         };
 
@@ -141,7 +97,7 @@ angular.module('cosmoUiApp')
          * @description  generate and execute a query based on tableState to receive results and render them to the table
          * @param tableState - all the filters , sorts and pagination applied on the table
          */
-        function updateData(tableState) {
+        function updateData (tableState) {
             var options = TableStateToRestApi.getOptions(tableState);
             $scope.getLogsError = null;
             $scope.isLoading = true;
@@ -149,21 +105,20 @@ angular.module('cosmoUiApp')
             cloudifyClient.events.get(options).then(function (response) {
                 $scope.logsHits = response.data.items;
                 //Formatting the timestamp
-                _.each($scope.logsHits, function (log) {
+                _.each($scope.logsHits, function(log){
                     log.shortAtTimestamp = EventsMap.getFormattedTimestamp(log['@timestamp']);
-                    log.longAtTimestamp = $filter('date')(log['@timestamp'], 'yyyy-MM-dd HH:mm:ss.sss');
-                    log.longTimestamp = EventsMap.getFormattedTimestamp(log.timestamp, 'yyyy-MM-dd HH:mm:ss.sss');
+                    log.longAtTimestamp = $filter('date')(log['@timestamp'] ,'yyyy-MM-dd HH:mm:ss.sss');
+                    log.longTimestamp = EventsMap.getFormattedTimestamp(log.timestamp,'yyyy-MM-dd HH:mm:ss.sss');
                 });
                 var totalHits = response.data.metadata.pagination.total;
                 tableState.pagination.totalItemCount = totalHits;
                 tableState.pagination.numberOfPages = Math.ceil(totalHits / options._size);
                 $scope.isLoading = false;
-            }, function (response) {
+            },function(response){
                 $scope.getLogsError = response.data.message;
                 $scope.isLoading = false;
             });
         }
-
         $scope.updateData = _.debounce(updateData, 350);
 
         //Mapping event_type text(returned from elasticsearch) to our desired css,text and icon
@@ -180,13 +135,13 @@ angular.module('cosmoUiApp')
             return _.pluck(objectsArray, key);
         };
 
-        $scope.isAnyColumnSelected = function () {
+        $scope.isAnyColumnSelected = function(){
             return _.some($scope.columns, 'isSelected', true);
         };
 
         //knowing when the user input is consider a valid date
-        $scope.isValidTime = function (time) {
-            if (!time || time === '') {
+        $scope.isValidTime = function(time){
+            if(!time || time === '') {
                 return false;
             }
             return time.constructor.name === 'Moment' || moment(time, 'YYYY-MM-DD HH:mm', true).isValid();

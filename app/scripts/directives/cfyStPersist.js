@@ -11,7 +11,7 @@
  * # stPersist
  */
 angular.module('cosmoUiApp')
-    .directive('cfyStPersist', function ($location, $routeParams) {
+    .directive('cfyStPersist', function ($location, $stateParams) {
         return {
             require: '^stTable',
             scope: {
@@ -21,8 +21,8 @@ angular.module('cosmoUiApp')
             },
             link: function postLink(scope, element, attr, ctrl) {
 
-                var stopWatchingContentLoaded = scope.$watch('contentLoaded', function (val) {
-                    if (val) {
+                var stopWatchingContentLoaded = scope.$watch('contentLoaded', function(val){
+                    if(val) {
                         setFromRoute();
                         startWatch();
                         stopWatchingContentLoaded();
@@ -41,19 +41,19 @@ angular.module('cosmoUiApp')
                     var routeObject = {};
                     var sort = tableState.sort;
 
-                    routeObject['pageNo' + scope.stTableId] = Math.floor(paginationState.start / paginationState.number) + 1 + '';
-                    if (typeof sort.predicate !== 'undefined') {
+                    routeObject['pageNo'+scope.stTableId] = Math.floor(paginationState.start / paginationState.number) + 1 + '';
+                    if(typeof sort.predicate !== 'undefined') {
                         routeObject['sortBy' + scope.stTableId] = sort.predicate;
                         routeObject['reverse' + scope.stTableId] = sort.reverse;
                     }
 
-                    var prObj = _.mapKeys(tableState.search.predicateObject, function (value, key) {
+                    var prObj = _.mapKeys(tableState.search.predicateObject, function(value, key){
                         return key + scope.stTableId;
                     });
                     _.extend(routeObject, prObj);
 
-                    routeObject = _.mapValues(routeObject, function (val) {
-                        if (typeof val !== 'string') {
+                    routeObject = _.mapValues(routeObject, function(val){
+                        if(typeof val !== 'string'){
                             return encodeURIComponent(JSON.stringify(val));
                         }
                         return val;
@@ -61,14 +61,14 @@ angular.module('cosmoUiApp')
                     $location.search(routeObject);
                 }
 
-                function setFromRoute() {
+                function setFromRoute(){
 
                     // sorting
-                    if ($routeParams.hasOwnProperty('sortBy' + scope.stTableId)) {
-                        var predicate = $routeParams['sortBy' + scope.stTableId];
+                    if($stateParams.hasOwnProperty('sortBy' + scope.stTableId)) {
+                        var predicate = $stateParams['sortBy' + scope.stTableId];
                         var reverse;
                         try {
-                            reverse = JSON.parse($routeParams['reverse' + scope.stTableId]);
+                            reverse = JSON.parse($stateParams['reverse' + scope.stTableId]);
                             ctrl.tableState().sort.predicate = predicate;
                             ctrl.tableState().sort.reverse = reverse;
                             //ctrl.sortBy(predicate, reverse);
@@ -77,25 +77,23 @@ angular.module('cosmoUiApp')
                         }
                     }
                     // paging
-                    var pageNo = parseInt($routeParams['pageNo' + scope.stTableId], 10) || 1;
+                    var pageNo = parseInt($stateParams['pageNo'+scope.stTableId], 10) || 1;
                     ctrl.slice((pageNo - 1) * scope.itemsByPage, scope.itemsByPage);
                     //search
 
-                    var re = new RegExp(scope.stTableId + '$');
-                    var index;
-                    var fieldName;
+                    var re = new RegExp(scope.stTableId+'$'), index, fieldName;
                     var reservedKeys = ['pageNo', 'sortBy', 'reverse'];
 
-                    _.forIn($routeParams, function (value, key) {
+                    _.forIn($stateParams, function(value, key){
 
                         index = key.search(re);
                         fieldName = key.substr(0, index);
 
-                        if (index !== -1 && !_.contains(reservedKeys, fieldName)) {
+                        if(index !== -1 && !_.contains(reservedKeys, fieldName)) {
                             var query;
                             try {
                                 query = JSON.parse(decodeURIComponent(value));
-                            } catch (e) {
+                            }catch(e) {
                                 query = value;
                             }
                             ctrl.tableState().search.predicateObject = ctrl.tableState().search.predicateObject || {};

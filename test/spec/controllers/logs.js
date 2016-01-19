@@ -2,7 +2,7 @@
 
 describe('Controller: LogsCtrl', function () {
     var LogsCtrl, scope;
-    var _cloudifyClient, _TableStateToRestApi, _EventsMap, _$routeParams, _$location;
+    var _cloudifyClient, _TableStateToRestApi, _EventsMap, _$stateParams, _$location;
 
     beforeEach(module('cosmoUiApp', 'backend-mock'));
 
@@ -11,7 +11,7 @@ describe('Controller: LogsCtrl', function () {
         _TableStateToRestApi = TableStateToRestApi;
         _EventsMap = EventsMap;
         _$location = $location;
-        _$routeParams = {}; //default route params object , can be override
+        _$stateParams = {}; //default route params object , can be override
         scope = $rootScope.$new();
         spyOnServices(); // default spies that you can later override
     });
@@ -19,7 +19,7 @@ describe('Controller: LogsCtrl', function () {
     var initCtrl = inject(function ($controller) {
         LogsCtrl = $controller('LogsCtrl', {
             $scope: scope,
-            $routeParams: _$routeParams
+            $stateParams: _$stateParams
         });
     });
 
@@ -58,14 +58,14 @@ describe('Controller: LogsCtrl', function () {
         });
         describe('on first load', function () {
             it('should search url with timestamp desc when no parameter was given', function(){
-                _$routeParams = {};
+                _$stateParams = {};
                 initCtrl();
 
                 expect(_$location.search).toHaveBeenCalledWith({ sortByLogs : 'timestamp', reverseLogs : 'true' });
             });
 
             it('should search url with timestamp desc when no parameter was given', function(){
-                _$routeParams = {someKey:'someValue'};
+                _$stateParams = {someKey:'someValue'};
                 initCtrl();
 
                 expect(_$location.search).not.toHaveBeenCalled();

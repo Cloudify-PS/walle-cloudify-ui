@@ -8,9 +8,9 @@
  * Controller of the cosmoUiApp
  */
 angular.module('cosmoUiApp')
-    .controller('DeploymentMonitoringCtrl', function ($scope, $routeParams) {
+    .controller('DeploymentMonitoringCtrl', function ($scope, $stateParams) {
 
-        $scope.deploymentId = $routeParams.deploymentId;
+        $scope.deploymentId = $stateParams.deploymentId;
 
         $scope.grafanaDashboard = '/grafana/#/dashboard/cloudify/' + $scope.deploymentId;
 

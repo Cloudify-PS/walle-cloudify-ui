@@ -8,9 +8,10 @@
  * Controller of the cosmoUiAppApp
  */
 angular.module('cosmoUiApp')
-    .controller('BlueprintNodesCtrl', function ($scope, $routeParams, NodeService, cloudifyClient) {
+    .controller('BlueprintNodesCtrl', function ($scope, $stateParams, NodeService, cloudifyClient) {
 
-        $scope.blueprintId = $routeParams.blueprintId;
+
+        $scope.blueprintId = $stateParams.blueprintId;
         $scope.page = {};
 
         cloudifyClient.blueprints.get($scope.blueprintId).then(function (result) {

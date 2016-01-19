@@ -100,10 +100,10 @@
         "matchdep": "~0.1.2",
         "mocha": "^2.1.0",
         "mock-require": "^1.2.0",
-        "sinon": "^1.12.2",
+        "sinon": "^1.17.2",
         "xunit-file": "0.0.6"
     },
     "engines": {
-        "node": ">=0.10.0"
+        "node": ">=4.2.0"
     }
 }

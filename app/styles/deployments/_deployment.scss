@@ -1,4 +1,4 @@
-#deployment {
+#deployment, .deployment-layout {
 
     #main-content-panel {
         position: relative;
@@ -9,20 +9,6 @@
         right: $COSMOUI_DEPLOYMENT_EVENT_WIDGET_RIGHT;
         top: $COSMOUI_DEPLOYMENT_EVENT_WIDGET_TOP;
         z-index: 9998;
-    }
-
-    #appStatus {
-        float: right;
-        width: $COSMOUI_DEPLOYMENT_APP_STATUS_WIDTH;
-        height: $COSMOUI_DEPLOYMENT_APP_STATUS_HEIGHT;
-        background: $COSMOUI_DEPLOYMENT_APP_STATUS_BACKGROUND;
-        border-bottom-left-radius: $COSMOUI_DEPLOYMENT_APP_STATUS_BORDER_BOTTOM_LEFT_RADIUS;
-        border-left: $COSMOUI_DEPLOYMENT_APP_STATUS_BORDER;
-        border-bottom: $COSMOUI_DEPLOYMENT_APP_STATUS_BORDER;
-        position: absolute;
-        right: 0;
-        top: 0;
-        z-index: 1;
     }
 
     #right-side-menu {
