@@ -22,12 +22,12 @@ angular.module('cosmoUiApp')
                         'label': 'Logs & Events'
                     },
                     {
-                        'route': 'hosts',
+                        'route': 'nodes',
                         'label': 'Nodes'
                     }
                 ];
-                var currentRoute = $location.path();
                 scope.isActive = function(routeItem){
+                    var currentRoute = $location.path();
                     var allRoutes = [routeItem.route];
                     _.each(routeItem.otherRoutes, function(route){
                         allRoutes.push(route);
