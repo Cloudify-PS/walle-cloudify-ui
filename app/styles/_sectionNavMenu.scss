@@ -20,11 +20,11 @@
             background-color: $clr-base-01;
 
             &:first-child {
-                border-radius: $RADIUS 0 0 $RADIUS;
+                border-radius: 3px 0 0 3px;
                 border-left-width: $BORDER_WIDTH;
             }
             &:last-child {
-                border-radius: 0 $RADIUS $RADIUS 0;
+                border-radius: 0 3px 3px 0;
             }
             &.active {
                 background: $COSOMUI_SECTION_MENU_ACTIVE_BACKGROUND;
