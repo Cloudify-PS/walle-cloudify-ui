@@ -1009,7 +1009,7 @@ module.exports = function (grunt) {
                 githash: githash,
                 build_id: process.env.BUILD_ID,
                 data: new Date().toString()
-        });
+            });
 
             console.log('build details = ', buildDetails );
             require('fs').writeFileSync('dist/BUILD_DETAILS.txt', buildDetails );
