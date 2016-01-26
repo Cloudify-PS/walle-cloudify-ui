@@ -1004,15 +1004,15 @@ module.exports = function (grunt) {
         //cloudify-packager/common/provision.sh
         var done = this.async();
 
-        require('git-rev').long(function( githash ){
+        require('git-rev').long(function (githash) {
             var buildDetails = JSON.stringify({
                 githash: githash,
                 build_id: process.env.BUILD_ID,
                 data: new Date().toString()
-        });
+            });
 
-            console.log('build details = ', buildDetails );
-            require('fs').writeFileSync('dist/BUILD_DETAILS.txt', buildDetails );
+            console.log('build details = ', buildDetails);
+            require('fs').writeFileSync('dist/BUILD_DETAILS.txt', buildDetails);
             done();
         });
 
