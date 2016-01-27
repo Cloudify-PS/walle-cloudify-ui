@@ -10,20 +10,20 @@
 angular.module('cosmoUiApp')
   .controller('CloudifyLayoutCtrl', function ($scope, $stateParams, VersionService, $window, HotkeysManager) {
 
-        VersionService.getVersions().then(function(versions) {
-            $scope.versions = versions;
-        });
+      VersionService.getVersions().then(function(versions) {
+          $scope.versions = versions;
+      });
 
-        $(document).on('scroll', function(){
-            var newValue =  $('body').scrollTop();
-            $('#left-side-menu').css('bottom', $('#footer').innerHeight() - newValue );
-            var $left = $('#left-side-menu');
-            if ( newValue > 80 ){
-                $left.addClass('fix-to-top');
-            }else {
-                $left.removeClass('fix-to-top');
-            }
-        });
+      $(document).on('scroll', function(){
+          var newValue =  $('body').scrollTop();
+          $('#left-side-menu').css('bottom', $('#footer').innerHeight() - newValue );
+          var $left = $('#left-side-menu');
+          if ( newValue > 80 ){
+              $left.addClass('fix-to-top');
+          }else {
+              $left.removeClass('fix-to-top');
+          }
+      });
 
-        HotkeysManager.bindNavigations($scope);
-    });
+      HotkeysManager.bindNavigations($scope);
+  });
