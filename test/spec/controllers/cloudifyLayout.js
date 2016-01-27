@@ -35,32 +35,4 @@ describe('Controller: CloudifyLayoutCtrl', function () {
         expect(scope.versions).toBe('foo');
     }));
 
-
-    describe('Directive: cosmoLayout - embed mechanism', function(){
-        it('should be true if window is not top', function(){
-            expect(scope.embeded).toBe(true);
-        });
-
-        it('should be false is window is top', inject(function($window){
-            $window.top = $window;
-            initCtrl();
-            scope.$digest();
-
-            expect(scope.embeded).toBe(false);
-        }));
-
-        it('should be override-d by `embed` routeParam', inject(function( $stateParams, $window ){
-
-            // when window != top, we expect true. so lets check override to false
-            $stateParams.embed='false';
-            initCtrl();
-            expect(scope.embeded).toBe(false);
-
-            // when window == top, we expect fal
-            $stateParams.embed='true';
-            $window.top = $window;
-            initCtrl();
-            expect(scope.embeded).toBe(true);
-        }));
-    });
 });
