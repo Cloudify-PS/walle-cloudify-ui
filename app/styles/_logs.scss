@@ -1,9 +1,8 @@
 #logs {
 
-    #loader{
+    #loader {
         display: inline-block;
     }
-
     #main-content-panel {
         padding-right: 0;
     }
@@ -11,10 +10,11 @@
         display: block;
         height: 100%;
 
-        .logs-container{
+        .logs-container {
             width: 100%;
             position: relative;
             display: inline-block;
+
             .filters {
                 position: relative;
                 margin: 0;
@@ -35,19 +35,19 @@
                     vertical-align: middle;
                     position: relative;
                 }
-                .time-range{
+                .time-range {
                     padding-right: 20px;
                 }
-                .time-range-icon{
+                .time-range-icon {
                     position: absolute;
-                    top:9px;
-                    right:5px;
+                    top: 9px;
+                    right: 5px;
                 }
             }
             .actions {
                 margin-top: 27px;
                 max-width: 15%;
-                min-width:143px;
+                min-width: 143px;
                 float: right;
             }
         }
@@ -59,7 +59,7 @@
 
         .logs-error-message {
             margin-bottom: 10px;
-            display:inline-block;
+            display: inline-block;
 
             a, a:hover {
                 font-weight: bold;
