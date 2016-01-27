@@ -23,12 +23,10 @@
                                 <li class="active"><span>{{ deploymentId }} <a ng-href="#/blueprint/{{ blueprintId }}/topology">({{ blueprintId }})</a> </span></li>
                             </ul>
                         </div>
+                        <div app-status-widget deployment-id="deploymentId" id="app-status"></div>
                     </div>
 
                     <div section-nav-menu="navMenu"></div>
-
-
-
 
                     <div class="actions">
                         <div class="deployment-action-selector" deployment="deployment" on-delete="goToDeployments()" current-execution="currentExecution"></div>

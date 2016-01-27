@@ -5,10 +5,6 @@
     },
     "connectError": "Error connecting to Cloudify server",
     "permissionError": "Access denied",
-    "appStatus": {
-        "title": "App Status",
-        "time": "Time left"
-    },
     "version": {
         "updated": "Your version is up to date",
         "updateAvailable": "New version is available:",

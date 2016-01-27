@@ -1,28 +1,11 @@
-<!--<nav>-->
-    <!--<div class="logo"><img class="logo-img" src="images/logo.png"><p class="gs-font">Cloudify</p></div>-->
-    <!--<a href="#/blueprints">Blueprints</a>-->
-    <!--<a href="#/deployments">deployments</a>-->
-    <!--<a href="#/logs">Logs & Events</a>-->
-    <!--<a href="#/Nodes">Nodes</a>-->
-
-    <!--<div class="version-check">-->
-        <!--<div id="needUpdate" ng-show="!!updateVersion">{{ 'version.updateAvailable' | translate }} <a href="http://getcloudify.org/downloads/get_cloudify_3x.html">{{ 'version.download' | translate }}</a></div>-->
-    <!--</div>-->
-
-    <!--<div class="logout-panel" ng-show="!!isLoggedIn">-->
-        <!--<div  class="user-icon"></div>-->
-        <!--<div class="username">{{ username }}</div>-->
-        <!--<div class="logout_icon" ng-click="logout()" title="{{ 'header.logout' | translate }}"></div>-->
-    <!--</div>-->
-<!--</nav>-->
 <nav class="navbar navbar-fixed-top">
     <div class="logo nav navbar-nav .navbar-left"><img class="logo-img" src="images/logo.png"><p class="gs-font">Cloudify</p></div>
     <ul class="nav navbar-nav">
         <li ng-repeat="item in navbarItems" ng-class="{active: isActive(item)}"><a href="#/{{item.route}}" class="navbar-item">{{item.label}}</a></li>
     </ul>
-    <!--<div class="version-check">-->
-        <!--<div id="needUpdate" ng-show="!!updateVersion">{{ 'version.updateAvailable' | translate }} <a href="http://getcloudify.org/downloads/get_cloudify_3x.html">{{ 'version.download' | translate }}</a></div>-->
-    <!--</div>-->
+    <div class="version-check">
+        <div id="needUpdate" ng-show="!!updateVersion">{{ 'version.updateAvailable' | translate }} <a href="http://getcloudify.org/downloads/get_cloudify_3x.html">{{ 'version.download' | translate }}</a></div>
+    </div>
 
     <div class="logout-panel nav navbar-nav" ng-show="!!isLoggedIn">
         <div  class="user-icon"></div>
