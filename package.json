@@ -1,6 +1,6 @@
 {
     "name": "cosmo-ui",
-    "version": "3.2.0-development",
+    "version": "3.4.0-development",
     "private": true,
     "man": [
         "./man/cosmoui.1"
@@ -16,8 +16,8 @@
         }
     ],
     "scripts": {
-        "install_prereq": "npm install -g  bower grunt-cli phantomjs && npm cache clean ",
-        "build_linux": "rm -rf node_modules && rm -rf app/bower_components && npm cache clean && bower cache clean &&  npm install && bower install && grunt  clean buildArtifacts analyze $FORCE $NO_COLOR",
+        "install_prereq": "npm install -g bower grunt-cli phantomjs && npm cache clean ",
+        "build_linux": "rm -rf node_modules && rm -rf app/bower_components && npm cache clean && bower cache clean && npm install && bower install && grunt clean buildArtifacts analyze $FORCE $NO_COLOR",
         "build_and_publish": "npm run build_linux && grunt uploadArtifacts $NO_COLOR",
         "clean_all": "rm -rf app/bower_components && rm -rf node_modules && bower cache clean && npm cache clean && bower install && npm install"
     },
@@ -45,6 +45,7 @@
         "autoprefixer": "^6.0.3",
         "connect-livereload": "^0.3.2",
         "expect.js": "^0.3.1",
+        "git-rev": "^0.2.1",
         "grunt": "~0.4.2",
         "grunt-available-tasks": "~0.5.7",
         "grunt-aws-s3": "~0.11.1",
@@ -66,7 +67,7 @@
         "grunt-curl": "^2.2.0",
         "grunt-html2js": "^0.2.8",
         "grunt-istanbul": "~0.3.0",
-        "grunt-jasmine-node": "^0.2.1",
+        "grunt-jasmine-node": "^0.3.1",
         "grunt-jscpd": "0.0.11",
         "grunt-jscpd-reporter": "guy-mograbi-at-gigaspaces/grunt-jscpd-reporter",
         "grunt-jscs": "^2.5.0",
@@ -84,14 +85,15 @@
         "grunt-update-json": "~0.2.1",
         "grunt-usemin": "~0.1.11",
         "istanbul": "^0.3.5",
+        "jasmine-core": "^2.4.1",
         "jshint-stylish": "~1.0.0",
-        "karma": "~0.13.0",
+        "karma": "~0.13.19",
         "karma-chrome-launcher": "~0.1.0",
         "karma-coffee-preprocessor": "~0.1.0",
         "karma-coverage": "~0.2.6",
         "karma-failed-reporter": "0.0.2",
         "karma-firefox-launcher": "~0.1.0",
-        "karma-jasmine": "~0.2.0",
+        "karma-jasmine": "~0.3.6",
         "karma-junit-reporter": "^0.2.2",
         "karma-phantomjs-launcher": "~0.2.1",
         "karma-requirejs": "~0.2.0",
@@ -100,10 +102,10 @@
         "matchdep": "~0.1.2",
         "mocha": "^2.1.0",
         "mock-require": "^1.2.0",
-        "sinon": "^1.12.2",
+        "sinon": "^1.17.2",
         "xunit-file": "0.0.6"
     },
     "engines": {
-        "node": ">=0.10.0"
+        "node": ">=4.2.0"
     }
 }

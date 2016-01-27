@@ -113,7 +113,8 @@ describe('Directive: formRawParams', function () {
             element.isolateScope().rawString = ' { "some" goofy } ';
 
             expect(element.isolateScope().validateJSON(true)).toBe(false);
-            expect(scope.onError).toHaveBeenCalledWith('Invalid JSON: Unable to parse JSON string');
+            //Not checking the entire message since it behaves differently with different browsers/platforms
+            expect(scope.onError.calls.mostRecent().args[0]).toContain('Invalid JSON');
         });
     });
 
@@ -157,7 +158,8 @@ describe('Directive: formRawParams', function () {
             scope.$digest();
             element.isolateScope().rawString = '{ foo bar }';
             element.isolateScope().rawToForm();
-            expect(scope.onError).toHaveBeenCalledWith('Invalid JSON: Unable to parse JSON string');
+            //Not checking the entire message since it behaves differently with different browsers/platforms
+            expect(scope.onError.calls.mostRecent().args[0]).toContain('Invalid JSON');
             expect(element.isolateScope().inputsState).toBe('raw');
         }));
     });

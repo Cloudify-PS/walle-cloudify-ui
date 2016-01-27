@@ -174,8 +174,8 @@ module.exports = function (grunt) {
         },
         curl: {
             nodejs: {
-                src: 'https://nodejs.org/dist/v0.10.35/node-v0.10.35-linux-x64.tar.gz',
-                dest: '<%= yeoman.dist %>/node-v0.10.35-linux-x64.tar.gz'
+                src: 'https://nodejs.org/dist/v4.2.0/node-v4.2.0-linux-x64.tar.gz',
+                dest: '<%= yeoman.dist %>/node-v4.2.0-linux-x64.tar.gz'
             }
 
         },
@@ -821,6 +821,7 @@ module.exports = function (grunt) {
     grunt.registerTask('build', 'builds the project', function () {
 
         var tasks = [
+            'verifyNode',
             'clean:server',
             'clean:dist',
             'useminPrepare',
@@ -836,7 +837,8 @@ module.exports = function (grunt) {
             'cssmin',
             'uglify',
             'rev',
-            'usemin'
+            'usemin',
+            'writeBuildDetails'
         ];
 
         grunt.task.run(tasks);
@@ -977,7 +979,7 @@ module.exports = function (grunt) {
 
     grunt.registerTask('readS3Keys', function () {
 
-        var s3KeysDefault = {
+        grunt.config.data.aws = {
             'accessKey': process.env.S3_ACCESS_KEY,
             'secretKey': process.env.S3_SECRET_KEY,
             'bucket': process.env.S3_BUCKET,
@@ -986,22 +988,7 @@ module.exports = function (grunt) {
 
         };
 
-        var s3KeysFile = process.env.AWS_JSON || './dev/aws-keys.json';
 
-        // if nothing is defined anywhere... lets fail the process
-        if (_.compact(_.values(s3KeysDefault)).length === 0 && !grunt.file.exists(s3KeysFile)) {
-            grunt.fail.fatal('expecting s3 configuration either with S3_(ACCESS_KEY, SECRET_KEY, BUCKET_FOLDER, REGION) environment variables or in file ' + s3KeysFile + ' but configuration was empty');
-        }
-
-        var fileOverrides = {};
-        if (grunt.file.exists(s3KeysFile)) {
-            grunt.log.ok('reading s3 keys from [' + s3KeysFile + ']');
-            fileOverrides = grunt.file.readJSON(s3KeysFile); // Read the file
-        } else if (process.env.AWS_JSON) {
-            grunt.log.warn('AWS_JSON file declared but does not exist [' + process.env.AWS_JSON + ']');
-        }
-
-        grunt.config.data.aws = _.merge({}, s3KeysDefault, fileOverrides);
     });
 
     grunt.registerTask('default', 'compiles the project', [
@@ -1013,7 +1000,59 @@ module.exports = function (grunt) {
         'backend'
     ]);
 
+    grunt.registerTask('writeBuildDetails', function(){
+        //cloudify-packager/common/provision.sh
+        var done = this.async();
+
+        require('git-rev').long(function (githash) {
+            var buildDetails = JSON.stringify({
+                githash: githash,
+                build_id: process.env.BUILD_ID,
+                data: new Date().toString()
+            });
+
+            console.log('build details = ', buildDetails);
+            require('fs').writeFileSync('dist/BUILD_DETAILS.txt', buildDetails);
+            done();
+        });
+
+
+
+
+    });
+
     grunt.registerTask('compass', ['sass']);
     grunt.registerTask('help', ['availabletasks:help']);
 
+    grunt.registerTask('verifyNode', function() {
+        var isPassed = true;
+        var nodeVersion = grunt.file.read('.nvmrc').trim();
+        grunt.log.write('NodeJs version is: '+nodeVersion);
+        //verify travis use updated node version
+        var travisFile = grunt.file.read('.travis.yml');
+        if(travisFile.indexOf(nodeVersion) === -1){
+            grunt.log.error('.travis.yml is not using the updated version of node');
+            isPassed = false;
+        }
+        //verify circle use updated node version
+        var circleFile = grunt.file.read('circle.yml');
+        if(circleFile.indexOf(nodeVersion) === -1){
+            grunt.log.error('circle.yml is not using the updated version of node');
+            isPassed = false;
+        }
+        //verify grunt task curl use updated node version
+        var gruntNodeTask = grunt.config.get('curl.nodejs');
+        if(gruntNodeTask.src.indexOf(nodeVersion) === -1){
+            grunt.log.error('Gruntfile curl.nodejs.src is not using the updated version of node');
+            isPassed = false;
+        }
+        if(gruntNodeTask.dest.indexOf(nodeVersion) === -1){
+            grunt.log.error('Gruntfile curl.nodejs.dest is not using the updated version of node');
+            isPassed = false;
+        }
+
+        if(!isPassed){
+            grunt.fail.fatal('Please make sure all nodejs dependencies are updated');
+        }
+    });
 };
