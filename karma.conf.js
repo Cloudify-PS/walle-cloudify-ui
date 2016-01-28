@@ -53,6 +53,7 @@ module.exports = function(config) {
             'app/bower_components/moment/moment.js',
             'app/bower_components/angular-datepicker/dist/angular-datepicker.js',
             'app/bower_components/angular-hotkeys/build/hotkeys.js',
+            'app/bower_components/angularjs-toaster/toaster.js',
 
             'app/scripts/*.js',
             'app/scripts/**/*.js',

@@ -1,0 +1,23 @@
+#toast-container{
+    .toast{
+        opacity: 1;
+        -moz-box-shadow: 0 0 0 0 !important;
+        -webkit-box-shadow: 0 0 0 0 !important;
+        box-shadow: 0 0 0 0 !important;
+        cursor: default !important;
+        .toast-title, .toast-message{
+            cursor: auto;
+        }
+    }
+}
+
+//overriding fade in/out animation config
+:not(.no-leave)#toast-container {
+    & > div.ng-leave, & > div.ng-enter {
+        -webkit-transition: 500ms cubic-bezier(0.250, 0.250, 0.750, 0.750) all !important;
+        -moz-transition: 500ms cubic-bezier(0.250, 0.250, 0.750, 0.750) all !important;
+        -ms-transition: 500ms cubic-bezier(0.250, 0.250, 0.750, 0.750) all !important;
+        -o-transition: 500ms cubic-bezier(0.250, 0.250, 0.750, 0.750) all !important;
+        transition: 500ms cubic-bezier(0.250, 0.250, 0.750, 0.750) all !important;
+    }
+}

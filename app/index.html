@@ -23,6 +23,7 @@
     <link rel="stylesheet" href="bower_components/cloudify-blueprint-topology/dist/styles/blueprint-topology.css"/>
     <link rel="stylesheet" href="bower_components/angular-datepicker/dist/angular-datepicker.css"/>
     <link rel="stylesheet" href="bower_components/angular-hotkeys/build/hotkeys.css"/>
+    <link rel="stylesheet" href="bower_components/angularjs-toaster/toaster.css"/>
 
     <!-- endbuild -->
 
@@ -135,6 +136,7 @@
 
 
     <div ui-view style="height:100%;"></div>
+    <toaster-container toaster-options="{'close-button': true, 'position-class': 'toast-bottom-right', 'tap-to-dismiss': false, 'time-out': 7000}"></toaster-container>
     <maintenance-message></maintenance-message>
 
     <!-- build:js scripts/plugins.js -->
@@ -181,6 +183,8 @@
 
     <script src="bower_components/cloudify-blueprint-topology/dist/scripts/jquery-ui-custom.js"></script>
     <script src="bower_components/cloudify-blueprint-topology/dist/scripts/blueprint-topology-tpls.js"></script>
+
+    <script src="bower_components/angularjs-toaster/toaster.js"></script>
 
     <script src="bower_components/angular-hotkeys/build/hotkeys.min.js"></script>
 
