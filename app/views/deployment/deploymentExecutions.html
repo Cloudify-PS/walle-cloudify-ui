@@ -9,6 +9,8 @@
                 <th class="workflow">Workflow</th>
                 <th class="id">ID</th>
                 <th class="created">Created</th>
+                <th class="parameters">Parameters</th>
+                <th class="system-workflow">System Workflow</th>
                 <th class="status">Status</th>
                 <th class="error">Error</th>
             </tr>
@@ -18,6 +20,8 @@
                 <td class="workflow">{{ row.workflow_id }}</td>
                 <td class="id">{{ row.id }}</td>
                 <td class="created">{{ row.created_at | dateFormat: 'yyyy-MM-dd HH:mm:ss' }}</td>
+                <td class="parameters">{{ row.parameters }}</td>
+                <td class="system-workflow">{{ row.is_system_workflow }}</td>
                 <td class="status">{{ 'deployment.executions.' + row.status | translate }}</td>
                 <td class="error">{{ row.error }}</td>
             </tr>
