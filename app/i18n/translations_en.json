@@ -87,6 +87,10 @@
                 "workflow": "Workflow"
             }
         },
+        "appStatus": {
+            "succeedInstall": "Successfully installed",
+            "failedInstall": "Failed to install successfully"
+        },
         "executions": {
             "terminated": "Completed successfully",
             "failed": "Failed",
