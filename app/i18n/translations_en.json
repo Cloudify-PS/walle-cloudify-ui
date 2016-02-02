@@ -320,9 +320,9 @@
         },
         "upload": {
             "title": "Upload Blueprint",
-            "description": "Select blueprint file to upload, and click 'Save'",
+            "description": "Select blueprint file to upload, and click 'Upload'",
             "browseText": "Select blueprint file or url",
-            "save": "Save",
+            "save": "Upload",
             "name": "Blueprint ID",
             "filename": "Blueprint filename (e.g blueprint.yaml)",
             "required": "* Required field"
