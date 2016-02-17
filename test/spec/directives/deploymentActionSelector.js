@@ -70,25 +70,60 @@ describe('Directive: deploymentActionSelector', function () {
         });
 
         describe('dialogs', function () {
-            var _ngDialog = null;
-            beforeEach(inject(function (ngDialog) {
-                _ngDialog = ngDialog;
-                spyOn(_ngDialog, 'open');
+            var ngDialog = null;
+            var ExecutionsService = null;
+            beforeEach(inject(function (_ngDialog_, _ExecutionsService_) {
+                ngDialog = _ngDialog_;
+                ExecutionsService = _ExecutionsService_;
+                spyOn(ngDialog, 'open');
+                spyOn(ExecutionsService, 'canPause').and.callFake(function(){return false;});
+                spyOn(ExecutionsService, 'isRunning').and.callFake(function(){return false;});
             }));
 
-            it('should toggle delete confirmation dialog when deleteDeployment is selected', inject(function (ngDialog) {
+            it('should toggle delete confirmation dialog when deleteDeployment is selected', function () {
                 scope.$digest();
+
                 var deleteAction = element.isolateScope().actions.filter(function (a) {
                     return a.name === 'deployments.deleteBtn';
                 })[0];
-                element.isolateScope().selectAction(deleteAction);
 
+                element.isolateScope().selectAction(deleteAction);
                 expect(element.isolateScope().itemToDelete.id).toBe(element.isolateScope().deployment.id);
                 expect(ngDialog.open).toHaveBeenCalled();
-            }));
 
+                ExecutionsService.isRunning.and.callFake(function(){return true;});
+
+                element.isolateScope().selectAction(deleteAction);
+                expect(ngDialog.open.calls.count()).toBe(1);
+            });
+
+            it('should toggle execution dialog', function () {
+                scope.$digest();
+
+                var executeAction = element.isolateScope().actions.filter(function (a) {
+                    return a.name === 'deployments.executeWorkflowBtn';
+                })[0];
+
+                element.isolateScope().selectAction(executeAction);
+                expect(ngDialog.open).toHaveBeenCalled();
+
+                ExecutionsService.isRunning.and.callFake(function(){return true;});
+
+                element.isolateScope().selectAction(executeAction);
+                expect(ngDialog.open.calls.count()).toBe(1);
+            });
+
+            it('should toggle cancel execution dialog', function () {
+                scope.$digest();
+                console.log(element.isolateScope().cancel);
+                element.isolateScope().cancel();
+                expect(ngDialog.open).not.toHaveBeenCalled();
+
+                ExecutionsService.canPause.and.callFake(function(){return true;});
+
+                element.isolateScope().cancel();
+                expect(ngDialog.open).toHaveBeenCalled();
+            });
         });
-
     });
-
 });

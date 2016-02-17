@@ -51,6 +51,7 @@ module.exports = function(config) {
             'app/bower_components/dndLists/angular-drag-and-drop-lists.js',
             'app/bower_components/moment/moment.js',
             'app/bower_components/angular-datepicker/dist/angular-datepicker.js',
+            'app/bower_components/angular-hotkeys/build/hotkeys.js',
 
             'app/scripts/*.js',
             'app/scripts/**/*.js',

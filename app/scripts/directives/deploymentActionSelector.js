@@ -16,39 +16,46 @@ angular.module('cosmoUiApp')
                 currentExecution: '=',
                 onBegin: '&',
                 onCancel: '&',
-                onDelete: '&'
+                onDelete: '&',
+                isSelected: '='
             },
             controller: function ($scope) {
-
+                var self = this;
                 $scope.showProgress = true;
 
-                function openCancelExecutionDialog() {
-                    ngDialog.open({
-                        template: 'views/deployment/cancelExecutionDialog.html',
-                        controller: 'CancelExecutionDialogCtrl',
-                        scope: $scope,
-                        className: 'confirm-dialog'
-                    });
-                }
+                self.openCancelExecutionDialog = function() {
+                    if($scope.canCancel()){
+                        ngDialog.open({
+                            template: 'views/deployment/cancelExecutionDialog.html',
+                            controller: 'CancelExecutionDialogCtrl',
+                            scope: $scope,
+                            className: 'confirm-dialog'
+                        });
+                    }
+                };
 
-                function openStartExecutionDialog() {
-                    ngDialog.open({
-                        template: 'views/deployment/startExecutionDialog.html',
-                        controller: 'StartExecutionDialogCtrl',
-                        scope: $scope,
-                        className: 'confirm-dialog'
-                    });
-                }
+                self.openStartExecutionDialog = function() {
+                    if(!$scope.isRunning()) {
+                        ngDialog.open({
+                            template: 'views/deployment/startExecutionDialog.html',
+                            controller: 'StartExecutionDialogCtrl',
+                            scope: $scope,
+                            className: 'confirm-dialog'
+                        });
+                    }
+                };
 
-                function openDeleteDialog() {
-                    $scope.itemToDelete = $scope.deployment;
-                    ngDialog.open({
-                        template: 'views/deployment/deleteDeploymentDialog.html',
-                        controller: 'DeleteDeploymentDialogCtrl',
-                        scope: $scope,
-                        className: 'delete-dialog'
-                    });
-                }
+                self.openDeleteDialog = function() {
+                    if(!$scope.isRunning()) {
+                        $scope.itemToDelete = $scope.deployment;
+                        ngDialog.open({
+                            template: 'views/deployment/deleteDeploymentDialog.html',
+                            controller: 'DeleteDeploymentDialogCtrl',
+                            scope: $scope,
+                            className: 'delete-dialog'
+                        });
+                    }
+                };
 
                 $scope.selectAction = function (action) {
                     $scope.currentTask = action.name;
@@ -65,14 +72,14 @@ angular.module('cosmoUiApp')
                 };
 
                 $scope.isRunning = function () {
-                    return !ExecutionsService.isRunning($scope.currentExecution);
+                    return ExecutionsService.isRunning($scope.currentExecution);
                 };
 
                 // comment
 
                 $scope.cancel = function () {
                     $log.debug($scope.currentExecution);
-                    openCancelExecutionDialog();
+                    self.openCancelExecutionDialog();
                 };
 
                 $scope.getExecutionName = function (currentExecution) {
@@ -91,18 +98,18 @@ angular.module('cosmoUiApp')
                 $scope.actions = [
                     {
                         name: 'deployments.executeWorkflowBtn',
-                        task: openStartExecutionDialog
+                        task: self.openStartExecutionDialog
                     },
                     {
                         name: 'deployments.deleteBtn',
-                        task: openDeleteDialog
+                        task: self.openDeleteDialog
                     }
 
                 ];
                 $scope.defaultAction = $scope.actions[0];
 
             },
-            link: function postLink(scope, element) {
+            link: function postLink(scope, element, attrs, ctrl) {
 
                 function deploymentDeletedChecker(deployment_id) {
                     cloudifyClient.deployments.get(deployment_id).then(null, function () {
@@ -121,6 +128,24 @@ angular.module('cosmoUiApp')
                         }
                     }
                 }, true);
+
+                scope.$on('hotkeyExecute', function() {
+                    if(scope.isSelected) {
+                        ctrl.openStartExecutionDialog();
+                    }
+                });
+
+                scope.$on('hotkeyDeleteDeployment', function() {
+                    if(scope.isSelected) {
+                        ctrl.openDeleteDialog();
+                    }
+                });
+
+                scope.$on('hotkeyCancelExecution', function() {
+                    if(scope.isSelected) {
+                        ctrl.openCancelExecutionDialog();
+                    }
+                });
             }
         };
     });

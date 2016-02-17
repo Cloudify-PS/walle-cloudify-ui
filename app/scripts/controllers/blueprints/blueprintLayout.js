@@ -8,7 +8,7 @@
  * Controller of the cosmoUiApp
  */
 angular.module('cosmoUiApp')
-  .controller('BlueprintLayoutCtrl', function ($scope, $location, cloudifyClient, CloudifyService, ngDialog, $stateParams) {
+  .controller('BlueprintLayoutCtrl', function ($scope, $location, cloudifyClient, CloudifyService, ngDialog, $stateParams, HotkeysManager) {
         $scope.blueprint = {
             id: $stateParams.blueprintId
         };
@@ -66,4 +66,6 @@ angular.module('cosmoUiApp')
         $scope.redirectToBlueprints = function() {
             $location.path('/blueprints');
         };
+
+        HotkeysManager.bindBlueprintActions($scope);
     });
