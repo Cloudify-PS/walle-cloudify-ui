@@ -8,7 +8,7 @@
  * Controller of the cosmoUiApp
  */
 angular.module('cosmoUiApp')
-  .controller('DeploymentLayoutCtrl', function ($scope, $state, nodeStatus, cloudifyClient, CloudifyService, ExecutionsService, $stateParams) {
+  .controller('DeploymentLayoutCtrl', function ($scope, $state, nodeStatus, cloudifyClient, CloudifyService, ExecutionsService, $stateParams, HotkeysManager) {
 
       var url = $state.href($state.current).slice(1);
 
@@ -80,4 +80,5 @@ angular.module('cosmoUiApp')
       /// for tests
 
       $scope.loadExecutions = _loadExecutions;
+      HotkeysManager.bindDeploymentActions($scope);
   });

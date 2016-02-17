@@ -8,7 +8,7 @@
  * Controller of the cosmoUiApp
  */
 angular.module('cosmoUiApp')
-  .controller('CloudifyLayoutCtrl', function ($scope, $stateParams, VersionService, $window) {
+  .controller('CloudifyLayoutCtrl', function ($scope, $stateParams, VersionService, $window, HotkeysManager) {
         $scope.embeded = $window !== $window.top;
         if ( $stateParams.hasOwnProperty('embed')  ) { // override
             $scope.embeded = $stateParams.embed === 'true';
@@ -17,4 +17,6 @@ angular.module('cosmoUiApp')
         VersionService.getVersions().then(function(versions) {
             $scope.versions = versions;
         });
+
+        HotkeysManager.bindNavigations($scope);
     });

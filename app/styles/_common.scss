@@ -107,6 +107,11 @@
             background-color: $COSMOUI_LIST_LINE_ODD_BACKGROUND;
         }
     }
+    tbody:nth-child(even) {
+        tr {
+            background-color: transparent;
+        }
+    }
     i {
         color: $COSMOUI_EVENTS_LIST_ITEM_COLOR;
     }

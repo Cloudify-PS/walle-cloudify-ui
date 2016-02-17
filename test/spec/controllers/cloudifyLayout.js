@@ -5,12 +5,6 @@ describe('Controller: CloudifyLayoutCtrl', function () {
     // load the controller's module
     beforeEach(module('cosmoUiApp','backend-mock', 'templates-main', function( $provide){
 
-        // override $window to test embed mechanism
-        $provide.provider('$window', function(){
-            this.$get = function(){
-                return {};
-            };
-        });
         // override lower level directives
         // http://stackoverflow.com/questions/17533052/how-do-you-mock-directives-to-enable-unit-testing-of-higher-level-directive
 
@@ -41,32 +35,4 @@ describe('Controller: CloudifyLayoutCtrl', function () {
         expect(scope.versions).toBe('foo');
     }));
 
-
-    describe('Directive: cosmoLayout - embed mechanism', function(){
-        it('should be true if window is not top', function(){
-            expect(scope.embeded).toBe(true);
-        });
-
-        it('should be false is window is top', inject(function($window){
-            $window.top = $window;
-            initCtrl();
-            scope.$digest();
-
-            expect(scope.embeded).toBe(false);
-        }));
-
-        it('should be override-d by `embed` routeParam', inject(function( $stateParams, $window ){
-
-            // when window != top, we expect true. so lets check override to false
-            $stateParams.embed='false';
-            initCtrl();
-            expect(scope.embeded).toBe(false);
-
-            // when window == top, we expect fal
-            $stateParams.embed='true';
-            $window.top = $window;
-            initCtrl();
-            expect(scope.embeded).toBe(true);
-        }));
-    });
 });
