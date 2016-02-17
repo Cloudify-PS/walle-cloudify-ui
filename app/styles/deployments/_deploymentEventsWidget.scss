@@ -1,10 +1,11 @@
 .events-widget {
-    $BOTTOM: 60px; // same as footer height
+    $BOTTOM: 30px; // same as footer height
     // todo: refactor this to be variables CFY-3326
     position: fixed;
     bottom: $BOTTOM;
-    left: 186px;
-    right: 20px;
+    left: 0;
+    right: 0;
+    bottom: 30px;
     height: auto;
     border-top: 2px solid #4b6b8b;
     z-index: 10000;
@@ -85,7 +86,7 @@
         width: 24px;
         height: 24px;
         font-size: 24px;
-        line-height: 24px;
+        line-height: 25px;
     }
 
     &.closed {
@@ -104,26 +105,26 @@
         table-layout: fixed;
 
         tr {
-            height: 50px;
+            height: $COSMOUI_LIST_LINE_HEIGHT;
             border-bottom: 1px solid #ffffff;
 
             td {
                 border-bottom: 2px solid #e8edf2;
                 font-size: 14px;
                 padding-right: 10px;
-                vertical-align: top;
+                vertical-align: middle;
 
                 &.icon {
                     width: 55px;
                     text-align: center;
                     padding-left: 20px;
                     white-space: nowrap;
-                    padding-top: 13px;
+                    //padding-top: 13px;
                 }
 
                 &.type {
                     width: 200px;
-                    padding-top: 16px;
+                    //padding-top: 16px;
                     overflow: hidden;
                     text-overflow: ellipsis;
                     white-space: nowrap;
@@ -132,12 +133,12 @@
                 &.time {
                     width: 160px;
                     white-space: nowrap;
-                    padding-top: 16px;
+                    //padding-top: 16px;
                 }
 
                 &.message {
                     width: auto;
-                    padding: 16px 0;
+                    //padding: 16px 0;
 
                     .brief {
                         display: block;

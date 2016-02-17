@@ -13,9 +13,9 @@
 
     #right-side-menu {
         position: fixed;
-        top: 83px;
-        bottom: 60px; // todo: should use variable
-        right: 20px;
+        top: 35px;
+        bottom: 30px; // todo: should use variable
+        right: 0;
         width: 600px;
         border-left: 4px solid $COSMOUI_BLUEPRINT_DETAILS_LEFT_BORDER_COLOR;
         background-color: $COSMOUI_BLUEPRINT_DETAILS_BACKGROUND;
@@ -549,7 +549,7 @@
         width: 100%;
     }
     .inputsOutputs {
-        margin: 30px 0 0;
+        margin: 0;
         padding: 0 20px 20px;
 
         .splitContainer {
@@ -715,7 +715,7 @@
         }
     }
     div[ng-switch-when="nodes"], div[ng-switch-when="executions"], .executions, .nodesTable {
-        margin: 30px 0 0;
+        margin: 15px 0 0;
         padding: 0;
 
         .gs-table {

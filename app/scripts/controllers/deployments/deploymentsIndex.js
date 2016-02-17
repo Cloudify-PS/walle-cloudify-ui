@@ -34,11 +34,8 @@ angular.module('cosmoUiApp')
         };
 
         function _loadExecutions() {
-
-            var statusFilter = ['pending', 'started', 'cancelling', 'force_cancelling'];
-            return cloudifyClient.executions.list({
-                _include: 'id,workflow_id,status,deployment_id',
-                status: statusFilter
+            return cloudifyClient.executions.getRunningExecutions({
+                _include: 'id,workflow_id,status,deployment_id'
             }).then(function (result) {
                 runningExecutions = _.groupBy(result.data.items, 'deployment_id');
             }, function () {

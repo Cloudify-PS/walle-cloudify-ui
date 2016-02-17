@@ -15,7 +15,7 @@ body {
 }
 
 .layout {
-    $FOOTER_HEIGHT: 60px;
+    $FOOTER_HEIGHT: 30px;
 
     margin: 0 auto;
     min-width: 600px;
@@ -24,18 +24,11 @@ body {
     background: $COSMOUI_BACKGROUND;
     font-family: 'OpenSansLight', sans-serif;
 
-    #header {
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        height: 100px;
-    }
     #left-side-menu {
         position: absolute;
         left: 0;
         width: 100px;
-        top: 83px;
+        top: 45px;
         bottom: $FOOTER_HEIGHT;
         background: #fff;
         overflow: visible;
@@ -49,10 +42,10 @@ body {
     }
     .main-content {
         position: absolute;
-        left: 186px;
-        right: 20px;
+        left: 0;
+        right: 0;
         bottom: $FOOTER_HEIGHT;
-        top: 83px;
+        top: 35px;
         background: #fff;
 
         .main-content-display {
@@ -138,12 +131,41 @@ body {
 }
 
 #header {
-    height: $HEADER_HEIGHT;
-    background: $COSMOUI_BACKGROUND;
+    .navbar{
+        background: $COSMOUI_BACKGROUND;
+        min-height:35px;
+    }
+    .navbar-fixed-top{
+        border:0;
+    }
+
+    .navbar-item{
+        height: 35px;
+        display: table-cell;
+        vertical-align: middle;
+    }
+
+    .navbar-nav li{
+        a{
+            padding-top:0;
+            padding-bottom:0;
+            padding-right: 7px;
+            padding-left: 7px;
+            color: white;
+            background-color: $COSMOUI_BACKGROUND;
+            &:hover {
+                color: #4b6c8b;
+                background-color: white !important;
+            }
+        }
+        &.active a{
+            background-color: #4b6c8b;
+        }
+    }
 
     .logout-panel {
         position: absolute;
-        top: 34px;
+        top: 6px;
         right: 21px;
         overflow: hidden;
         padding-top: 1px;
@@ -203,7 +225,7 @@ body {
 //}
 
 #smallFooter {
-    margin: 10px 23px 0 186px;
+    margin: 8px 23px 0 10px;
     color: #ccc;
     font-size: 11px;
 
@@ -241,15 +263,15 @@ body {
 }
 
 .logo {
-    position: relative;
-    top: 5px;
-    left: 20px;
-    width: 122px;
-    height: 75px;
-    background-position: 50% 50%;
-    background-repeat: no-repeat;
-    background-image: url('#{$img-cloudify-logo}');
-    background-size: contain;
+    padding-left: 10px;
+    padding-right: 10px;
+    display: inline-block;
+    .logo-img{
+        height: 35px;
+    }
+    p{
+        margin: 0;
+    }
 }
 
 .version-check {
@@ -439,4 +461,12 @@ button, input[type='button'], input[type='submit'], .btn.active:focus, .btn:acti
     outline: none;
 }
 
+.gs-font{
+    display: inline-block;
+    font-family: 'Varela', sans-serif;
+    color: #fff !important;
+    font-size: 24px;
+    padding-left:5px;
+    margin-top: 2px;
+}
 

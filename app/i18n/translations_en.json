@@ -5,10 +5,6 @@
     },
     "connectError": "Error connecting to Cloudify server",
     "permissionError": "Access denied",
-    "appStatus": {
-        "title": "App Status",
-        "time": "Time left"
-    },
     "version": {
         "updated": "Your version is up to date",
         "updateAvailable": "New version is available:",
@@ -90,6 +86,10 @@
                 "message": "Message",
                 "workflow": "Workflow"
             }
+        },
+        "appStatus": {
+            "succeedInstall": "Successfully installed",
+            "failedInstall": "Failed to install successfully"
         },
         "executions": {
             "terminated": "Completed successfully",
