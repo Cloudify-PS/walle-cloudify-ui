@@ -17,7 +17,8 @@ angular.module('cosmoUiApp', [
     'cfy.topology',
     'datePicker',
     'ui.router'
-]).config( function ($httpProvider, $translateProvider, $provide, $stateProvider, $urlRouterProvider) {
+]).config( function ($httpProvider, $translateProvider, $provide, $stateProvider, $urlRouterProvider, cfpLoadingBarProvider) {
+    cfpLoadingBarProvider.includeSpinner = false;
 
     //var isSettingsExists = window.isSettingsExists();
 
