@@ -29,7 +29,8 @@ npm install cloudify-cosmo/vagrant-automation-machines -g
 function cleanup(){
     pushd ${VAGRANT_WORKDIR}
         echo "I am at `pwd` and I am destroying the machine"
-        vagrant destroy -f
+        vagrant destroy -f || echo "destroy failed for some reason"
+        rm -rf .vagrant || echo "no .vagrant folder to remove"
     popd
 }
 trap cleanup EXIT
