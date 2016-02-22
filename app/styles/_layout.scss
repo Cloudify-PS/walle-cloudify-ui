@@ -268,6 +268,9 @@ body {
     display: inline-block;
     .logo-img{
         height: 35px;
+        background: url('#{$img-cloudify-logo}') no-repeat center center;
+        background-size: cover;
+        width: 110px;
     }
     p{
         margin: 0;
