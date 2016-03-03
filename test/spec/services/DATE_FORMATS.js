@@ -12,8 +12,8 @@ describe('Service: DATE_FORMATS', function () {
         mDATE_FORMATS = DATE_FORMATS;
     }));
 
-    it('should do something', function () {
-        expect(!!mDATE_FORMATS).toEqual({
+    it('should check date formats', function () {
+        expect(mDATE_FORMATS).toEqual({
             short: 'yyyy-MM-dd HH:mm:ss',
             long: 'yyyy-MM-dd HH:mm:ss.sss'
         });

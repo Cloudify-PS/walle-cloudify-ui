@@ -43,11 +43,11 @@ describe('Filter: dateFormat', function () {
         });
 
         it('should have default date format', function () {
-            expect(dateFormat('2011-11-24T07:00:00+0000')).toBe('Nov-24-2011');
+            expect(dateFormat('2011-11-24T07:00:00+0000')).toBe('2011-11-24 09:00:00');
         });
 
         it('support timezones', function () {
-            expect(dateFormat('2011-11-24T07:00:00+0300')).toBe('Nov-24-2011');
+            expect(dateFormat('2011-11-24T07:00:00+0300')).toBe('2011-11-24 06:00:00');
         });
     });
 
@@ -56,5 +56,12 @@ describe('Filter: dateFormat', function () {
             expect(dateFormat('2011-11-24 07:59:17.362781', 'yyyy-MM-dd HH:mm:ss.sss')).toBe('2011-11-24 0'+(7+new Date().getTimezoneOffset()/-60)+':59:17.362');
         });
 
+        it('should use short date format', function () {
+            expect(dateFormat('2011-11-24T07:00:00+0000','short')).toBe('2011-11-24 09:00:00');
+        });
+
+        it('should use long date format', function () {
+            expect(dateFormat('2011-11-24T07:00:00+0000','long')).toBe('2011-11-24 09:00:00.000');
+        });
     });
 });
