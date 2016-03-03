@@ -18,7 +18,7 @@
                     <div class="icon-events" ng-class="getEventIcon(event)"></div>
                 </td>
                 <td class="type">{{ getEventText(event.event_type) }} {{ event.context.node_name ? ' - ' + event.context.node_name : '' }}</td>
-                <td class="time">{{ event['@timestamp'] | dateFormat:'yyyy-MM-dd HH:mm:ss' }}</td>
+                <td class="time">{{ event['@timestamp'] | dateFormat:'short' }}</td>
                 <td class="message">
                     <div class="brief">{{ event.message.text }}</div>
                 </td>

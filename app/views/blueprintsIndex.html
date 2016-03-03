@@ -32,8 +32,8 @@
             <tbody ng-repeat="blueprint in displayedBlueprints">
                 <tr>
                     <td class="name"><a href="#/blueprint/{{ blueprint.id }}/topology" title="{{ blueprint.description }}">{{ blueprint.id }}</a></td>
-                    <td class="created">{{ blueprint.created_at | dateFormat: 'yyyy-MM-dd HH:mm:ss' }}</td>
-                    <td class="updated">{{ blueprint.updated_at | dateFormat: 'yyyy-MM-dd HH:mm:ss' }}</td>
+                    <td class="created">{{ blueprint.created_at | dateFormat: 'short' }}</td>
+                    <td class="updated">{{ blueprint.updated_at | dateFormat: 'short' }}</td>
                     <td class="deployments"><a ng-href="#/deployments?blueprint_iddp1={{ {matchAny:[blueprint.id]} | json:stringify | encodeUri }}" class="deployments-number">{{blueprint.deploymentsCount}}</a></td>
                     <td class="actions">
                         <div class="bp-action-selector" on-delete="loadBlueprints()" blueprint="blueprint"></div>

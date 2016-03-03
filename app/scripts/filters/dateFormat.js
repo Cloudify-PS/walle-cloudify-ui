@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('cosmoUiApp')
-    .filter('dateFormat', function myDateFormat($filter) {
+    .filter('dateFormat', function myDateFormat($filter, DATE_FORMATS) {
         //Supporting 3 date formats currently received from rest
         function hasTimezone(timestamp){
             //check is ISO
@@ -22,7 +22,10 @@ angular.module('cosmoUiApp')
                 }else {
                     tempdate = moment(text+'+00:00').toISOString();
                 }
-                return $filter('date')(tempdate, newformat ? newformat : 'MMM-dd-yyyy');
+                if( newformat && DATE_FORMATS[newformat]){
+                    newformat = DATE_FORMATS[newformat];
+                }
+                return $filter('date')(tempdate, newformat ? newformat : DATE_FORMATS.short);
             }
         };
     });
