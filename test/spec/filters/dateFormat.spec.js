@@ -38,30 +38,30 @@ describe('Filter: dateFormat', function () {
         });
         it('should give same results ', function () {
             //Added timezone adjustment just for it to pass on travis / circle and locally
-            expect(dateFormat('2011-11-24T07:12:12.123+0000', 'yyyy-MM-dd HH:mm:ss.sss')).toBe('2011-11-24 0'+(7+new Date().getTimezoneOffset()/-60)+':12:12.123');
-            expect(dateFormat('2011-11-24T07:12:12.123+0000', 'yyyy-MM-dd HH:mm:ss')).toBe('2011-11-24 0'+(7+new Date().getTimezoneOffset()/-60)+':12:12');
+            expect(dateFormat('2011-11-24T05:12:12.123+0000', 'yyyy-MM-dd HH:mm:ss.sss')).toBe('2011-11-24 0'+(5+new Date().getTimezoneOffset()/-60)+':12:12.123');
+            expect(dateFormat('2011-11-24T05:12:12.123+0000', 'yyyy-MM-dd HH:mm:ss')).toBe('2011-11-24 0'+(5+new Date().getTimezoneOffset()/-60)+':12:12');
         });
 
         it('should have default date format', function () {
-            expect(dateFormat('2011-11-24T07:00:00+0000')).toBe('2011-11-24 09:00:00');
+            expect(dateFormat('2011-11-24T05:00:00+0000')).toBe('2011-11-24 0'+(5+new Date().getTimezoneOffset()/-60)+':00:00');
         });
 
         it('support timezones', function () {
-            expect(dateFormat('2011-11-24T07:00:00+0300')).toBe('2011-11-24 06:00:00');
+            expect(dateFormat('2011-11-24T05:00:00+0300')).toBe('2011-11-24 0'+(2+new Date().getTimezoneOffset()/-60)+':00:00');
         });
     });
 
     describe('rest of formats', function(){
         it('should add timezone to timestamps without', function(){
-            expect(dateFormat('2011-11-24 07:59:17.362781', 'yyyy-MM-dd HH:mm:ss.sss')).toBe('2011-11-24 0'+(7+new Date().getTimezoneOffset()/-60)+':59:17.362');
+            expect(dateFormat('2011-11-24 05:59:17.362781', 'yyyy-MM-dd HH:mm:ss.sss')).toBe('2011-11-24 0'+(5+new Date().getTimezoneOffset()/-60)+':59:17.362');
         });
 
         it('should use short date format', function () {
-            expect(dateFormat('2011-11-24T07:00:00+0000','short')).toBe('2011-11-24 09:00:00');
+            expect(dateFormat('2011-11-24T05:00:00+0000','short')).toBe('2011-11-24 0'+(5+new Date().getTimezoneOffset()/-60)+':00:00');
         });
 
         it('should use long date format', function () {
-            expect(dateFormat('2011-11-24T07:00:00+0000','long')).toBe('2011-11-24 09:00:00.000');
+            expect(dateFormat('2011-11-24T05:00:00+0000','long')).toBe('2011-11-24 0'+(5+new Date().getTimezoneOffset()/-60)+':00:00.000');
         });
     });
 });
