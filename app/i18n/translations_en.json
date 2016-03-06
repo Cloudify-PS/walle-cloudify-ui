@@ -294,7 +294,7 @@
         "blueprints": "Blueprints",
         "deployments": "Deployments",
         "logs": "Logs & Events",
-        "hosts": "Nodes",
+        "nodesInstances": "Nodes Instances",
         "interface": "Interface Elements"
     },
     "formRawParams": {
@@ -351,8 +351,8 @@
         "generalError" : "Error uploading blueprint",
         "tooBig" : "Blueprint is too big"
     },
-    "hosts" : {
-        "gettingNodesFailed": "Failed getting nodes",
+    "nodesInstances" : {
+        "gettingNodesFailed": "Failed getting nodes instances",
         "chooseBlueprint" : "Choose a blueprint...",
         "blueprintsFilter" : "Deployed Blueprints:",
         "deploymentsFilter" : "Deployments:",
