@@ -155,9 +155,9 @@ angular.module('cosmoUiApp', [
             reloadOnSearch: false
         })
         .state('cloudifyLayout.nodes', {
-            url: '/nodes',
-            templateUrl: 'views/hosts.html',
-            controller: 'HostsCtrl'
+            url: '/nodes-instances',
+            templateUrl: 'views/nodesInstances.html',
+            controller: 'NodesInstancesCtrl'
         })
         .state('cloudifyLayout.interface', {
             url: '/interface',

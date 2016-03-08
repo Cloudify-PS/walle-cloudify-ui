@@ -1,9 +1,9 @@
 'use strict';
 
-describe('Controller: HostsCtrl', function () {
+describe('Controller: NodesInstancesCtrl', function () {
 
     /*jshint camelcase: false */
-    var HostsCtrl;
+    var NodesInstancesCtrl;
     var scope;
 
     // load the controller's module
@@ -17,27 +17,27 @@ describe('Controller: HostsCtrl', function () {
         spyOn(cloudifyClient.deployments, 'list').and.returnValue(window.mockPromise());
         spyOn(cloudifyClient.nodes, 'list').and.returnValue(window.mockPromise());
 
-        HostsCtrl = $controller('HostsCtrl', {
+        NodesInstancesCtrl = $controller('NodesInstancesCtrl', {
             $scope: scope
         });
         scope.$digest();
     }));
 
     describe('#clearFilter', function () {
-        it('should reset hostsFilter on scope', function () {
-            scope.hostsFilter = 'foo';
+        it('should reset nodesInstancesFilter on scope', function () {
+            scope.nodesInstancesFilter = 'foo';
             scope.clearFilter();
-            expect(scope.hostsFilter.blueprint).toBe(null);
+            expect(scope.nodesInstancesFilter.blueprint).toBe(null);
         });
     });
 
     describe('#resetTypeFilter', function () {
 
         it('should set Compute type on filter', function () {
-            scope.hostsFilter = {};
+            scope.nodesInstancesFilter = {};
             scope.resetTypesFilter();
-            expect(scope.hostsFilter.types.length).toBe(1);
-            expect(scope.hostsFilter.types[0].value).toBe('cloudify.nodes.Compute');
+            expect(scope.nodesInstancesFilter.types.length).toBe(1);
+            expect(scope.nodesInstancesFilter.types[0].value).toBe('cloudify.nodes.Compute');
         });
     });
 
@@ -109,7 +109,7 @@ describe('Controller: HostsCtrl', function () {
     describe('#buildMatchFilter', function () {
 
         it('should set construct the matchFilter to be used later for filtering', function () {
-            scope.hostsFilter = {
+            scope.nodesInstancesFilter = {
                 blueprint: {'value': 'foo'},
                 'deployments': [{'value': 'bar'}],
                 'types': [{'value': 'hello'}]
@@ -121,7 +121,7 @@ describe('Controller: HostsCtrl', function () {
         });
     });
 
-    describe('#onHostsFilterChange', function () {
+    describe('#onNodesInstancesFilterChange', function () {
 
     });
 
