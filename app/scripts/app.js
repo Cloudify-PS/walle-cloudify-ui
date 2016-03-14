@@ -39,7 +39,9 @@ angular.module('cosmoUiApp', [
         })
         .state('cloudifyLayout',{
             templateUrl: 'views/cloudifyLayoutTemplate.html',
-            controller: 'CloudifyLayoutCtrl'
+            controller: 'CloudifyLayoutCtrl',
+            abstract: true,
+            url:'?embed'
         })
         .state('cloudifyLayout.blueprints',{
             url: '/blueprints' +

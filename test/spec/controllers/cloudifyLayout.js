@@ -12,18 +12,19 @@ describe('Controller: CloudifyLayoutCtrl', function () {
         $provide.factory('floatingDeploymentNodePanelDirective', function(){  return {}; });
     }));
 
-    var scope, CloudifyLayoutCtrl, VersionService;
+    var scope, CloudifyLayoutCtrl, VersionService, $stateParams;
 
     var init = inject(function(_VersionService_){
         VersionService = _VersionService_;
         spyOn( VersionService, 'getVersions').and.returnValue({ then : function( success ){ success('foo'); } });
-        initCtrl();
+        $stateParams = {};
     });
 
     var initCtrl = inject(function($rootScope, $controller ){
         scope = $rootScope.$new();
         CloudifyLayoutCtrl = $controller('CloudifyLayoutCtrl',{
-            $scope: scope
+            $scope: scope,
+            $stateParams: $stateParams
         });
         scope.$digest();
     });
@@ -31,8 +32,19 @@ describe('Controller: CloudifyLayoutCtrl', function () {
     beforeEach(init);
 
     it('should make hidden element visible', inject(function (VersionService ) {
+        initCtrl();
         expect(VersionService.getVersions).toHaveBeenCalled();
         expect(scope.versions).toBe('foo');
     }));
+
+    it('should set embeded by embed url parameter', function(){
+        $stateParams.embed = 'true';
+        initCtrl();
+        expect(scope.embeded).toBe(true);
+
+        $stateParams.embed = 'false';
+        initCtrl();
+        expect(scope.embeded).toBe(false);
+    });
 
 });
