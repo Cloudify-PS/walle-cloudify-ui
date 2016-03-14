@@ -45,7 +45,6 @@ angular.module('cosmoUiApp')
             {value: 'info', label: 'INFO'},
             {value: 'warning', label: 'WARNING'},
             {value: 'error', label: 'ERROR'},
-            {value: 'fatal', label: 'FATAL'},
             {value: 'critical', label: 'CRITICAL'}
         ];
         $scope.eventTypesList = [
