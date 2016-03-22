@@ -7,6 +7,15 @@ source /etc/ENVIRONMENT_VARIABLES.sh || echo "no environment variables file.. sk
 
 source /vagrant/dev/ENVIRONMENT_VARIABLES.sh || echo "no dev environment variables file.. skipping.. "
 
+# Declaring credentials variables passed through vagrant args feature
+export S3_ACCESS_KEY=$1
+export S3_SECRET_KEY=$2
+export GITHUB_USERNAME=$3
+export GITHUB_PASSWORD=$4
+
+#TODO: remove this:
+echo "GITHUB_USER issssssS:::::: @@@@@!!@$@#%#&%##$%$$#!$@!%@#&$%^()*^&(*^$%#%%^$&%*^()(^&%*$&^#%::::: ----- >>>>> "$GITHUB_USER
+
 if [ ! -f /usr/bin/git ]; then
     echo "installing git"
     sudo yum install git -y
