@@ -24,7 +24,7 @@ curl -L https://goo.gl/j6qnth | INJECT_FILE="${CONFIG_FILE}" node
 
 chmod 600  $PEM_FILE
 
-npm install cloudify-cosmo/vagrant-automation-machines -g
+npm install cloudify-cosmo/vagrant-automation-machines#dynamic-provision-arguments -g
 
 function cleanup(){
     pushd ${VAGRANT_WORKDIR}
@@ -36,7 +36,7 @@ function cleanup(){
 trap cleanup EXIT
 
 pushd ${VAGRANT_BASEDIR}
-    vagrant-automation-machines-setup aws
+    vagrant-automation-machines-setup --cloud aws --args S3_ACCESS_KEY S3_SECRET_KEY GITHUB_USERNAME GITHUB_PASSWORD
     cleanup || echo "no need to teardown the machine because it was not running"
     pushd ${VAGRANT_WORKDIR}
         vagrant up --provider=aws
