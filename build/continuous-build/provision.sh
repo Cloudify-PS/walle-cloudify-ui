@@ -13,9 +13,6 @@ export S3_SECRET_KEY=$2
 export GITHUB_USERNAME=$3
 export GITHUB_PASSWORD=$4
 
-#TODO: remove this:
-echo "GITHUB_USERNAME issssssS:::::: @@@@@!!@$@#%#&%##$%$$#!$@!%@#&$%^()*^&(*^$%#%%^$&%*^()(^&%*$&^#%::::: ----- >>>>> "$GITHUB_USERNAME
-
 if [ ! -f /usr/bin/git ]; then
     echo "installing git"
     sudo yum install git -y
