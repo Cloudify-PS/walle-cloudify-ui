@@ -14,7 +14,7 @@ export GITHUB_USERNAME=$3
 export GITHUB_PASSWORD=$4
 
 #TODO: remove this:
-echo "GITHUB_USER issssssS:::::: @@@@@!!@$@#%#&%##$%$$#!$@!%@#&$%^()*^&(*^$%#%%^$&%*^()(^&%*$&^#%::::: ----- >>>>> "$GITHUB_USER
+echo "GITHUB_USERNAME issssssS:::::: @@@@@!!@$@#%#&%##$%$$#!$@!%@#&$%^()*^&(*^$%#%%^$&%*^()(^&%*$&^#%::::: ----- >>>>> "$GITHUB_USERNAME
 
 if [ ! -f /usr/bin/git ]; then
     echo "installing git"
@@ -27,7 +27,7 @@ echo "define variables"
 export REPORTS_BASE=`echo ~`/reports
 export PROJECT_NAME="cloudify-ui"
 export GIT_DEST="`pwd`/${PROJECT_NAME}"
-export GIT_URL="https://$GITHUB_USER:$GITHUB_TOKEN@github.com/cloudify-cosmo/${PROJECT_NAME}.git"
+export GIT_URL="https://$GITHUB_USERNAME:$GITHUB_PASSWORD@github.com/cloudify-cosmo/${PROJECT_NAME}.git"
 
 
 echo "install nvm"
