@@ -19,7 +19,7 @@
             <tr>
                 <td class="workflow">{{ row.workflow_id }}</td>
                 <td class="id">{{ row.id }}</td>
-                <td class="created">{{ row.created_at | dateFormat: 'yyyy-MM-dd HH:mm:ss' }}</td>
+                <td class="created">{{ row.created_at | dateFormat: 'short' }}</td>
                 <td class="parameters">{{ row.parameters }}</td>
                 <td class="system-workflow">{{ row.is_system_workflow }}</td>
                 <td class="status">{{ 'deployment.executions.' + row.status | translate }}</td>

@@ -43,8 +43,8 @@
                 <tr ng-click="select(deployment)" ng-class="{'selected': deployment.isSelected}">
                     <td class="id"><a href="#/deployment/{{deployment.id}}/topology">{{deployment.id}}</a></td>
                     <td class="blueprint"><a href="#/blueprint/{{deployment.blueprint_id}}/topology">{{deployment.blueprint_id}}</a></td>
-                    <td class="create">{{deployment.created_at | dateFormat: 'yyyy-MM-dd HH:mm:ss'}}</td>
-                    <td class="description">{{deployment.updated_at | dateFormat: 'yyyy-MM-dd HH:mm:ss'}}</td>
+                    <td class="create">{{deployment.created_at | dateFormat: 'short'}}</td>
+                    <td class="description">{{deployment.updated_at | dateFormat: 'short'}}</td>
                     <td class="actions">
                         <div class="deployment-action-selector"
                              deployment="deployment"
