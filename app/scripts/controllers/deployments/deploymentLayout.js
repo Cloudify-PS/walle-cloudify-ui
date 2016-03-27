@@ -8,7 +8,7 @@
  * Controller of the cosmoUiApp
  */
 angular.module('cosmoUiApp')
-  .controller('DeploymentLayoutCtrl', function ($scope, $state, nodeStatus, cloudifyClient, CloudifyService, ExecutionsService, $stateParams) {
+  .controller('DeploymentLayoutCtrl', function ($scope, $state, nodeStatus, cloudifyClient, CloudifyService, ExecutionsService, $stateParams, HotkeysManager) {
 
       var url = $state.href($state.current).slice(1);
 
@@ -50,8 +50,7 @@ angular.module('cosmoUiApp')
           if ( $scope.deploymentNotFound ){
               return { then: function(){} };
           }
-          var statusFilter = ['pending', 'started', 'cancelling', 'force_cancelling'];
-          return cloudifyClient.executions.list( { deployment_id : $scope.deploymentId, _include: 'id,workflow_id,status', status: statusFilter })
+          return cloudifyClient.executions.getRunningExecutions({deployment_id : $scope.deploymentId, _include: 'id,workflow_id,status'})
               .then(function (result) {
                   $scope.currentExecution = _.first(result.data.items);
               }, function() {});
@@ -81,4 +80,5 @@ angular.module('cosmoUiApp')
       /// for tests
 
       $scope.loadExecutions = _loadExecutions;
+      HotkeysManager.bindDeploymentActions($scope);
   });

@@ -1,12 +1,12 @@
 'use strict';
 
 /**
- * @module HostsCtrl //todo: change to NodeCtrl
+ * @module NodesInstancesCtrl
  * @description builds the required information for the nodes page
  */
 /**
- * @typedef {object} HostsCtrl~MatchFilter
- * @description an object to keep all filter information for matching algorithm since it is not easy to use HostsFilter which is for display purposes.
+ * @typedef {object} NodesInstancesCtrl~MatchFilter
+ * @description an object to keep all filter information for matching algorithm since it is not easy to use NodesInstancesFilter which is for display purposes.
  * @property {Array<string>} types all types to filter by
  * @property {string} blueprint - the selected blueprint id
  * @property {Array<string>} deployments - the deployments id selected by filter. - if none are selected you should use all the deployments matching the blueprint.
@@ -18,8 +18,8 @@
  * @property {string} value
  */
 /**
- * @typedef {object} HostsCtrl~HostsFilter
- * @description an object to keep all filtering information display. when used, it is then converted to {@link HostsCtrl~MatchFilter}
+ * @typedef {object} NodesInstancesCtrl~NodesInstancesFilter
+ * @description an object to keep all filtering information display. when used, it is then converted to {@link NodesInstancesCtrl~MatchFilter}
  * @property {MultiSelectItem} blueprint - the selected blueprint. user allowed to pick just one. initializes to first blueprint.
  * @property {Array<MultiSelectItem>} deployments - filter by deployments. affected by the selected blueprint. multiple selection allowed.
  * @property {string} search - free text search
@@ -27,7 +27,7 @@
  */
 
 angular.module('cosmoUiApp')// todo : change to NodeCtrl
-    .controller('HostsCtrl', function ($scope, $filter, cloudifyClient, $q) {
+    .controller('NodesInstancesCtrl', function ($scope, $filter, cloudifyClient, $q) {
 
         $scope.typesList = [];
         var _blueprint = null;
@@ -37,7 +37,7 @@ angular.module('cosmoUiApp')// todo : change to NodeCtrl
 
         var allNodes = []; // unfiltered
 
-        $scope.emptyReason = $filter('translate')('hosts.chooseBlueprint');
+        $scope.emptyReason = $filter('translate')('nodesInstances.chooseBlueprint');
 
         // keeps a map between deployment id to blueprint id
         var deployments = {};
@@ -45,10 +45,10 @@ angular.module('cosmoUiApp')// todo : change to NodeCtrl
 
         /**
          * @description clears the filter completely.
-         * @see HostsFilter
+         * @see NodesInstancesFilter
          */
         $scope.clearFilter = function () {
-            $scope.hostsFilter = {
+            $scope.nodesInstancesFilter = {
                 blueprint: null,
                 deployments: null,
                 types: null,
@@ -60,10 +60,10 @@ angular.module('cosmoUiApp')// todo : change to NodeCtrl
 
         /**
          * @description initializes the types filter to Compute
-         * @see HostsFilter
+         * @see NodesInstancesFilter
          */
         function resetTypesFilter() {
-            $scope.hostsFilter.types = [{
+            $scope.nodesInstancesFilter.types = [{
                 'value': 'cloudify.nodes.Compute',
                 'label': 'cloudify.nodes.Compute'
             }];
@@ -94,7 +94,7 @@ angular.module('cosmoUiApp')// todo : change to NodeCtrl
                 });
                 // initialize the filter to first blueprint
                 if ($scope.blueprintsList.length > 0) {
-                    $scope.hostsFilter.blueprint = $scope.blueprintsList[0];
+                    $scope.nodesInstancesFilter.blueprint = $scope.blueprintsList[0];
                 }
                 // construct the deployments filter
                 allDeployments = _.map(result.data.items, function (item) {
@@ -184,34 +184,34 @@ angular.module('cosmoUiApp')// todo : change to NodeCtrl
         }
 
         /**
-         * while the hosts filter is used for display, the matchFilter is used for matching each item
+         * while the nodesInstances filter is used for display, the matchFilter is used for matching each item
          * this structure is much easier to use in functions
          */
         function buildMatchFilter() {
             matchFilter = {};
-            if (!!$scope.hostsFilter.blueprint) {
-                matchFilter.blueprint = $scope.hostsFilter.blueprint.value;
+            if (!!$scope.nodesInstancesFilter.blueprint) {
+                matchFilter.blueprint = $scope.nodesInstancesFilter.blueprint.value;
             }
 
             // if deployments are selected, use them. otherwise get all deployments for blueprint
-            if (!!$scope.hostsFilter.deployments && $scope.hostsFilter.deployments.length > 0) {
-                matchFilter.deployments = _.pluck($scope.hostsFilter.deployments, 'value');
+            if (!!$scope.nodesInstancesFilter.deployments && $scope.nodesInstancesFilter.deployments.length > 0) {
+                matchFilter.deployments = _.pluck($scope.nodesInstancesFilter.deployments, 'value');
             } else if (!!matchFilter.blueprint) { // get all selected deployments for blueprint
                 matchFilter.deployments = _.pluck($scope.deploymentsList, 'value');
             }
 
-            if (!!$scope.hostsFilter.types && $scope.hostsFilter.types.length > 0) {
-                matchFilter.types = _.pluck($scope.hostsFilter.types, 'value');
+            if (!!$scope.nodesInstancesFilter.types && $scope.nodesInstancesFilter.types.length > 0) {
+                matchFilter.types = _.pluck($scope.nodesInstancesFilter.types, 'value');
             }
         }
 
-        function onHostsFilterChange(newValue) {
+        function onNodesInstancesFilterChange(newValue) {
             if (!newValue) {
                 return;
             }
-            if (!!$scope.hostsFilter.blueprint) { //  todo: change only when blueprint changes..
+            if (!!$scope.nodesInstancesFilter.blueprint) { //  todo: change only when blueprint changes..
                 $scope.deploymentsList = _.filter(allDeployments, function (item) {
-                    return deployments[item.label] === $scope.hostsFilter.blueprint.label;
+                    return deployments[item.label] === $scope.nodesInstancesFilter.blueprint.label;
                 });
                 _blueprint = newValue.value;
             }
@@ -222,7 +222,7 @@ angular.module('cosmoUiApp')// todo : change to NodeCtrl
         }
 
         // on each change, lets rebuild the page
-        $scope.$watch('hostsFilter', onHostsFilterChange, true);
+        $scope.$watch('nodesInstancesFilter', onNodesInstancesFilterChange, true);
 
         $scope.clearFilter();
 
@@ -237,7 +237,7 @@ angular.module('cosmoUiApp')// todo : change to NodeCtrl
         $scope.loadTypesData = loadTypesData;
         $scope.matchItem = matchItem;
         $scope.buildMatchFilter = buildMatchFilter;
-        $scope.onHostsFilterChange = onHostsFilterChange;
+        $scope.onNodesInstancesFilterChange = onNodesInstancesFilterChange;
         $scope.getDeployments = function () {
             return deployments;
         };

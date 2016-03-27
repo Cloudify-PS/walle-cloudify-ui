@@ -19,7 +19,7 @@
     &.events { background-position: -80px 0; }
     &.monitoring { background-position: -120px 0; }
     &.logs { background-position: -160px 0; }
-    &.hosts { background-position: -200px 0; }
+    &.nodesInstances { background-position: -200px 0; }
     &.networks { background-position: -237px 0; }
     &.floating-ips { background-position: -277px 0; }
     &.storage { background-position: -316px 0; }
@@ -37,7 +37,7 @@
 .gs-icon-closed-envelope:before { content: '\e611'; }
 .gs-icon-events:before { content: '\e612'; }
 .gs-icon-floating-ips:before { content: '\e61a'; }
-.gs-icon-hosts:before { content: '\e61b'; }
+.gs-icon-nodes-instances:before { content: '\e61b'; }
 .gs-icon-logs:before { content: '\e624'; }
 .gs-icon-monitoring:before { content: '\e628'; }
 .gs-icon-networks:before { content: '\e62f'; }

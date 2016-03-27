@@ -10,13 +10,13 @@ An [AngularJS][4] based UI for Cosmo.
 
 ## Setting up your development environment 
 
- - install nodejs 0.10.35  with npm 
+ - install nodejs 4.2.0 with npm 
  - run `sudo npm install -g bower grunt-cli`
  - run `sudo npm cache clean && sudo bower cache clean` - this steps is necessary as your cache folders will require root permissions and this will fail the next step
  - run `npm install && bower install` in project root
  - bootstrap a manager - simplest way is to use a vagrantbox. 
  - optional: override configuration
-   - create a file `dev/meConf.js` or `dev/meConf.json` (the below example uses json)
+   - create a file `conf/dev/meConf.js` or `conf/dev/meConf.json` (the below example uses json)
    - configure the manager's location. for example:
    ```json
    {

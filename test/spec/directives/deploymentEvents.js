@@ -82,9 +82,11 @@ describe('Directive: deploymentEvents', function () {
     describe('drag head functionality', function () {
         it('should change the height', function(){
             element.css({ height: 250, width: 200});
+            $('body').attr('class','main-content');
+            $('body').css('top','83px');
             $('body').append(element);
-            $('body').addClass('bpContainer');
-            $('body').attr('id','main-content');
+            $('.events-widget').css('top','500px');
+            $('.events-widget').css('height','500px');
             var eventsList = element.find('.containList');
             var dragBtn = element.find('.dragBtn');
             dragBtn.simulate('drag', { dy:10}); // drag once to enforce maxHeight..
@@ -93,7 +95,7 @@ describe('Directive: deploymentEvents', function () {
             var lastHeight =  eventsList.height();
             expect(firstHeight - lastHeight).toBe(10);
             $('body').removeClass('bpContainer');
-            $('body').attr('id',null);
+            $('body').attr('class',null);
             element.remove();
         });
 

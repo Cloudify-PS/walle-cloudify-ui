@@ -40,7 +40,7 @@
                 </tr>
             </thead>
             <tbody ng-repeat="deployment in displayedDeployments">
-                <tr>
+                <tr ng-click="select(deployment)" ng-class="{'selected': deployment.isSelected}">
                     <td class="id"><a href="#/deployment/{{deployment.id}}/topology">{{deployment.id}}</a></td>
                     <td class="blueprint"><a href="#/blueprint/{{deployment.blueprint_id}}/topology">{{deployment.blueprint_id}}</a></td>
                     <td class="create">{{deployment.created_at | dateFormat: 'short'}}</td>
@@ -51,7 +51,8 @@
                              on-begin="onExecutionStart()"
                              on-cancel="onExecutionCancel()"
                              on-delete="loadDeployments()"
-                             current-execution="getExecution(deployment)">
+                             current-execution="getExecution(deployment)"
+                             is-selected="deployment.isSelected">
                         </div>
                     </td>
                 </tr>

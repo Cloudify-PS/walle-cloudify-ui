@@ -7,6 +7,12 @@ source /etc/ENVIRONMENT_VARIABLES.sh || echo "no environment variables file.. sk
 
 source /vagrant/dev/ENVIRONMENT_VARIABLES.sh || echo "no dev environment variables file.. skipping.. "
 
+# Declaring credentials variables passed through vagrant args feature
+export S3_ACCESS_KEY=$1
+export S3_SECRET_KEY=$2
+export GITHUB_USERNAME=$3
+export GITHUB_PASSWORD=$4
+
 if [ ! -f /usr/bin/git ]; then
     echo "installing git"
     sudo yum install git -y
@@ -18,7 +24,7 @@ echo "define variables"
 export REPORTS_BASE=`echo ~`/reports
 export PROJECT_NAME="cloudify-ui"
 export GIT_DEST="`pwd`/${PROJECT_NAME}"
-export GIT_URL="https://$GITHUB_USER:$GITHUB_TOKEN@github.com/cloudify-cosmo/${PROJECT_NAME}.git"
+export GIT_URL="https://$GITHUB_USERNAME:$GITHUB_PASSWORD@github.com/cloudify-cosmo/${PROJECT_NAME}.git"
 
 
 echo "install nvm"
