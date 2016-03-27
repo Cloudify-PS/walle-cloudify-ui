@@ -314,4 +314,15 @@
             font-size: 15px;
         }
     }
+
+    #gridContainer {
+        #grid {
+            cursor: -webkit-grab;
+            cursor: grab;
+            &.grabbed {
+                cursor: -webkit-grabbing;
+                cursor: grabbing;
+            }
+        }
+    }
 }
