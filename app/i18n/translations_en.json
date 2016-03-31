@@ -220,6 +220,7 @@
             "plugin": "Plugin",
             "operation": "Operation",
             "messageText": "Message",
+            "stackTrace": "Stack Trace",
             "type": "Type",
             "logger": "Logger",
             "level": "Log Level",
