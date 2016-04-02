@@ -34,7 +34,9 @@ module.exports = function (conf) {
                     var res = require('url').resolve(endpoint.path, require('url').parse(req.url).path.substring(1));
                     logger.trace('this is forward', res);
                     return res;
-                }
+                },
+                //1mb by default
+                limit: '120mb'
             })(req, res, next);
         } catch (e) {
             logger.error('unable to proxy', e);
