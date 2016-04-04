@@ -1,11 +1,13 @@
-$MAIN_PADDING:20px;
-.layout .main-content .main-content-display &>[ui-view] [ui-view] [ui-topology]{
-    position:absolute;
+$MAIN_PADDING: 20px;
+
+.layout .main-content .main-content-display & > [ui-view] [ui-view] [ui-topology] {
+    position: absolute;
     top: 100px+$MAIN_PADDING;
-    bottom:$MAIN_PADDING;
-    left:$MAIN_PADDING;
-    right:$MAIN_PADDING;
-    .gs-topology{
-        padding:0;
+    bottom: $MAIN_PADDING;
+    left: $MAIN_PADDING;
+    right: $MAIN_PADDING;
+
+    .gs-topology {
+        padding: 0;
     }
 }
