@@ -9,7 +9,7 @@
  */
 angular.module('cosmoUiApp')
     .factory('cloudifyClient', function (CloudifyClient, $http, $q) {
-        return new CloudifyClient({
+        var client =  new CloudifyClient({
             'endpoint': '/backend/cloudify-api',
             request: function (opts, callback) {
                 if (!callback) {
@@ -38,4 +38,12 @@ angular.module('cosmoUiApp')
                 });
             }
         });
+
+        client.executions.getRunningExecutions = function(opts){
+            var statusFilter = ['pending', 'started', 'cancelling', 'force_cancelling'];
+            opts.status = statusFilter;
+            return client.executions.list(opts);
+        };
+
+        return client;
     });

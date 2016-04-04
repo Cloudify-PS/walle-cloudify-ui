@@ -2,17 +2,16 @@
 
 // TODO: this code should be much more testable
 angular.module('cosmoUiApp')
-    .controller('DeploymentsCtrl', function ($scope, ExecutionsService, $location, $log, cloudifyClient) {
+    .controller('DeploymentsCtrl', function ($scope, ExecutionsService, $location, $log, cloudifyClient, HotkeysManager) {
 
         $scope.deployments = null;
-        $scope.executedErr = false;
         $scope.confirmationType = '';
 
         // holds currently running execution per deployment_id
         var runningExecutions = {};
 
         $scope.inputs = {};
-        $scope.managerError = false;
+        $scope.managerError = '';
 
         $scope.itemsByPage = 9;
         $scope.blueprints = [];
@@ -34,11 +33,8 @@ angular.module('cosmoUiApp')
         };
 
         function _loadExecutions() {
-
-            var statusFilter = ['pending', 'started', 'cancelling', 'force_cancelling'];
-            return cloudifyClient.executions.list({
-                _include: 'id,workflow_id,status,deployment_id',
-                status: statusFilter
+            return cloudifyClient.executions.getRunningExecutions({
+                _include: 'id,workflow_id,status,deployment_id'
             }).then(function (result) {
                 runningExecutions = _.groupBy(result.data.items, 'deployment_id');
             }, function () {
@@ -50,7 +46,7 @@ angular.module('cosmoUiApp')
             cloudifyClient.deployments.list('id,blueprint_id,created_at,updated_at,workflows,inputs,outputs')
                 .then(function (result) {
 
-                    $scope.managerError = false;
+                    $scope.managerError = '';
                     $scope.deployments = result.data.items;
 
                     _.each($scope.deployments, function (d) {
@@ -63,10 +59,7 @@ angular.module('cosmoUiApp')
                     $scope.deploymentsLoaded = true;
                 },
                 function (res) {
-                    $scope.managerError = true;
-                    if (res.status === 403) {
-                        $scope.permissionDenied = true;
-                    }
+                    $scope.managerError = res.statusText === 'Unauthorized' ? 'permissionError' : 'connectError';
                 });
         };
 
@@ -82,6 +75,15 @@ angular.module('cosmoUiApp')
 
         $scope.loadDeployments();
 
+        $scope.select = function(selectedDeployment){
+            _.each($scope.displayedDeployments, function(deployment){
+                deployment.isSelected = false;
+            });
+            selectedDeployment.isSelected = true;
+
+        };
+
+        HotkeysManager.bindDeploymentActions($scope);
     })
     .filter('customFilter', function ($filter) {
         var filterFilter = $filter('filter');

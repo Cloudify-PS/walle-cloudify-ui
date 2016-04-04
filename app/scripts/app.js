@@ -16,8 +16,10 @@ angular.module('cosmoUiApp', [
     'dndLists',
     'cfy.topology',
     'datePicker',
-    'ui.router'
-]).config( function ($httpProvider, $translateProvider, $provide, $stateProvider, $urlRouterProvider) {
+    'ui.router',
+    'cfp.hotkeys'
+]).config( function ($httpProvider, $translateProvider, $provide, $stateProvider, $urlRouterProvider, cfpLoadingBarProvider) {
+    cfpLoadingBarProvider.includeSpinner = false;
 
     //var isSettingsExists = window.isSettingsExists();
 
@@ -37,7 +39,9 @@ angular.module('cosmoUiApp', [
         })
         .state('cloudifyLayout',{
             templateUrl: 'views/cloudifyLayoutTemplate.html',
-            controller: 'CloudifyLayoutCtrl'
+            controller: 'CloudifyLayoutCtrl',
+            abstract: true,
+            url:'?embed'
         })
         .state('cloudifyLayout.blueprints',{
             url: '/blueprints' +
@@ -148,9 +152,9 @@ angular.module('cosmoUiApp', [
             reloadOnSearch: false
         })
         .state('cloudifyLayout.nodes', {
-            url: '/nodes',
-            templateUrl: 'views/hosts.html',
-            controller: 'HostsCtrl'
+            url: '/nodes-instances',
+            templateUrl: 'views/nodesInstances.html',
+            controller: 'NodesInstancesCtrl'
         })
         .state('cloudifyLayout.interface', {
             url: '/interface',

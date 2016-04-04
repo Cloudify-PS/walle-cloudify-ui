@@ -1,10 +1,17 @@
 #!/usr/bin/env bash
+set -e
 
 echo "read configuration"
 
 source /etc/ENVIRONMENT_VARIABLES.sh || echo "no environment variables file.. skipping.. "
 
 source /vagrant/dev/ENVIRONMENT_VARIABLES.sh || echo "no dev environment variables file.. skipping.. "
+
+# Declaring credentials variables passed through vagrant args feature
+export S3_ACCESS_KEY=$1
+export S3_SECRET_KEY=$2
+export GITHUB_USERNAME=$3
+export GITHUB_PASSWORD=$4
 
 if [ ! -f /usr/bin/git ]; then
     echo "installing git"
@@ -15,8 +22,9 @@ fi
 
 echo "define variables"
 export REPORTS_BASE=`echo ~`/reports
-export GIT_DEST="`pwd`/cloudify-ui"
-export GIT_URL="https://$GITHUB_USER:$GITHUB_TOKEN@github.com/cloudify-cosmo/cloudify-ui.git"
+export PROJECT_NAME="cloudify-ui"
+export GIT_DEST="`pwd`/${PROJECT_NAME}"
+export GIT_URL="https://$GITHUB_USERNAME:$GITHUB_PASSWORD@github.com/cloudify-cosmo/${PROJECT_NAME}.git"
 
 
 echo "install nvm"
@@ -46,6 +54,7 @@ else
 fi
 
 
+
 if [ "${SKIP_BUILD}" == "" ];then # for development purposes
     if [ "${UPDATE_CLONE}" != "" ]; then
         echo "updating clone"
@@ -56,8 +65,14 @@ if [ "${SKIP_BUILD}" == "" ];then # for development purposes
     git clone ${GIT_URL} ${GIT_DEST}
 
     pushd ${GIT_DEST}
+        git checkout ${BUILD_BRANCH}
         echo "installing preprequirements and building"
         nvm install &> /dev/null
+
+        npm -g install guy-mograbi-at-gigaspaces/cloudify-ui-build-helper
+        create-and-push-build-tag
+        export S3_FOLDER="`get-unstable-s3-folder`"
+
         npm run install_prereq
         npm run build_and_publish
     popd

@@ -62,13 +62,8 @@
                     display: inline-block;
                     border-right: 1px dotted #ccc;
                     min-width: 250px;
-                    height: 100%;
                     font-size: 13px;
                     vertical-align: top;
-
-                    &:last-child {
-                        border: 0;
-                    }
 
                     > span {
                         display: block;
@@ -84,15 +79,16 @@
 
             td {
                 vertical-align: middle;
-                height: 53px;
+                height: $COSMOUI_LIST_LINE_HEIGHT;
+                vertical-align: middle;
                 border: 0;
                 background-color: transparent;
-                padding: 5px 0 5px 10px;
+                padding: 0px 0 0px 10px;
 
                 i {
                     color: $clr-base-11;
                     width: 32px;
-                    height: 32px;
+                    //height: 32px;
                     display: inline-block;
                     line-height: 1;
                     -webkit-font-smoothing: antialiased;
@@ -104,6 +100,11 @@
     tbody:nth-child(odd) {
         tr {
             background-color: $COSMOUI_LIST_LINE_ODD_BACKGROUND;
+        }
+    }
+    tbody:nth-child(even) {
+        tr {
+            background-color: transparent;
         }
     }
     i {
@@ -262,8 +263,8 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     width: 36px;
-    height: 36px;
-    font-size: 32px;
+    height: 28px;
+    font-size: 24px;
     color: #2c4b68;
 
     // some classes are left empty as placeholders for color changes for the icon.

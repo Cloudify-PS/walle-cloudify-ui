@@ -5,8 +5,7 @@
             <li><span>{{'breadcrumb.deployments'|translate}}</span></li>
         </ul></div>
     </div>
-    <div ng-show="!!permissionDenied" class="error">{{'permissionError' | translate}}</div>
-    <div id="dp1" class="content-section" st-table="displayedDeployments" st-safe-src="deployments" st-set-filter="customFilter" ng-show="!permissionDenied">
+    <div id="dp1" class="content-section" st-table="displayedDeployments" st-safe-src="deployments" st-set-filter="customFilter" ng-show="managerError !== 'permissionError'">
         <form>
             <div class="form-group">
                 <label for="searchByName">{{'deployments.filters.deployment.title' | translate}}</label>
@@ -40,18 +39,19 @@
                 </tr>
             </thead>
             <tbody ng-repeat="deployment in displayedDeployments">
-                <tr>
+                <tr ng-click="select(deployment)" ng-class="{'selected': deployment.isSelected}">
                     <td class="id"><a href="#/deployment/{{deployment.id}}/topology">{{deployment.id}}</a></td>
                     <td class="blueprint"><a href="#/blueprint/{{deployment.blueprint_id}}/topology">{{deployment.blueprint_id}}</a></td>
-                    <td class="create">{{deployment.created_at | dateFormat: 'yyyy-MM-dd HH:mm:ss'}}</td>
-                    <td class="description">{{deployment.updated_at | dateFormat: 'yyyy-MM-dd HH:mm:ss'}}</td>
+                    <td class="create">{{deployment.created_at | dateFormat: 'short'}}</td>
+                    <td class="description">{{deployment.updated_at | dateFormat: 'short'}}</td>
                     <td class="actions">
                         <div class="deployment-action-selector"
                              deployment="deployment"
                              on-begin="onExecutionStart()"
                              on-cancel="onExecutionCancel()"
                              on-delete="loadDeployments()"
-                             current-execution="getExecution(deployment)">
+                             current-execution="getExecution(deployment)"
+                             is-selected="deployment.isSelected">
                         </div>
                     </td>
                 </tr>
@@ -64,6 +64,6 @@
                 </tr>
             </tfoot>
         </table>
-        <div class="connect-error-message" ng-show="managerError">{{ 'connectError' | translate }}</div>
     </div>
+    <div class="connect-error-message" ng-show="managerError">{{ managerError | translate }}</div>
 </div>

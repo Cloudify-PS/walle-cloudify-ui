@@ -13,12 +13,12 @@ angular.module('cosmoUiApp')
             restrict: 'C',
             scope: {
                 blueprint: '=',
-
-                onDelete: '&'
+                onDelete: '&',
+                isSelected: '='
             },
             controller: function ($scope) {
-
-                function openDeployDialog(blueprintId) {
+                var self = this;
+                self.openDeployDialog = function(blueprintId) {
                     $scope.selectedBlueprint = null;
                     $scope.blueprintId = blueprintId;
                     ngDialog.open({
@@ -28,17 +28,16 @@ angular.module('cosmoUiApp')
                         className: 'deploy-dialog'
                     });
 
-                }
+                };
 
-                function openDeleteDialog() {
-
+                self.openDeleteDialog = function() {
                     ngDialog.open({
                         template: 'views/blueprint/deleteBlueprintDialog.html',
                         controller: 'DeleteBlueprintDialogCtrl',
                         scope: $scope,
                         className: 'delete-dialog'
                     });
-                }
+                };
 
                 $scope.onCreate = function (deployment) {
                     $location.path('/deployment/' + deployment.id + '/topology');
@@ -55,22 +54,22 @@ angular.module('cosmoUiApp')
                     {
                         name: 'blueprints.actions.deployBtn',
                         task: function () {
-                            openDeployDialog($scope.blueprint.id);
+                            self.openDeployDialog($scope.blueprint.id);
                         }
                     },
                     {
                         name: 'blueprints.actions.deleteBtn',
-                        task: openDeleteDialog
+                        task: self.openDeleteDialog
                     }
                 ];
 
                 $scope.defaultAction = $scope.actions[0];
 
                 if ($stateParams.deploy === 'true') {
-                    openDeployDialog($scope.blueprint.id);
+                    self.openDeployDialog($scope.blueprint.id);
                 }
             },
-            link: function postLink(scope, element) {
+            link: function postLink(scope, element, attrs, ctrl) {
 
                 scope.$watch('currentExecution', function (executing) {
                     if (executing) {
@@ -80,6 +79,17 @@ angular.module('cosmoUiApp')
                     }
                 }, true);
 
+                scope.$on('hotkeyDeploy', function() {
+                    if(scope.isSelected) {
+                        ctrl.openDeployDialog(scope.blueprint.id);
+                    }
+                });
+
+                scope.$on('hotkeyDeleteBlueprint', function() {
+                    if(scope.isSelected) {
+                        ctrl.openDeleteDialog();
+                    }
+                });
             }
         };
     });

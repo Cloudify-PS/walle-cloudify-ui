@@ -21,7 +21,8 @@
     <link rel="stylesheet" href="bower_components/angular-loading-bar/build/loading-bar.css"/>
     <link rel="stylesheet" href="bower_components/ngDialog/css/ngDialog.min.css" />
     <link rel="stylesheet" href="bower_components/cloudify-blueprint-topology/dist/styles/blueprint-topology.css"/>
-    <link rel="stylesheet" href="bower_components/angular-datepicker/dist/angular-datepicker.css"></link>
+    <link rel="stylesheet" href="bower_components/angular-datepicker/dist/angular-datepicker.css"/>
+    <link rel="stylesheet" href="bower_components/angular-hotkeys/build/hotkeys.css"/>
 
     <!-- endbuild -->
 
@@ -179,6 +180,8 @@
     <script src="bower_components/cloudify-blueprint-topology/dist/scripts/jquery-ui-custom.js"></script>
     <script src="bower_components/cloudify-blueprint-topology/dist/scripts/blueprint-topology-tpls.js"></script>
 
+    <script src="bower_components/angular-hotkeys/build/hotkeys.min.js"></script>
+
     <!-- endbuild -->
 
     <!-- build:js scripts/modules.js -->
@@ -208,7 +211,7 @@
     <script src="scripts/directives/bindGraph.js"></script>
     <script src="scripts/directives/onFinishRender.js"></script>
     <script src="scripts/filters/limitRange.js"></script>
-    <script src="scripts/controllers/hosts.js"></script>
+    <script src="scripts/controllers/nodesInstances.js"></script>
     <script src="scripts/controllers/interface.js"></script>
     <script src="scripts/services/TopologyTypes.js"></script>
     <script src="scripts/services/NodeService.js"></script>
@@ -261,6 +264,9 @@
     <script src="scripts/controllers/blueprints/blueprintLayout.js"></script>
     <script src="scripts/controllers/deployments/deploymentLayout.js"></script>
     <script src="scripts/directives/multiSelectMenu.js"></script>
+    <script src="scripts/services/DATE_FORMATS.js"></script>
+    <script src="scripts/services/HotkeysManager.js"></script>
+    <script src="scripts/directives/bindTitle.js"></script>
     <!-- endbuild -->
 </body>
 </html>

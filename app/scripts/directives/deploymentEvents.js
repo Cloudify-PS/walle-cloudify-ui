@@ -47,10 +47,6 @@ angular.module('cosmoUiApp')
                     }).then(function (result) {
                         $scope.events = result.data.items;
                         $scope.lastEvent = _.first($scope.events);
-                        //Formatting the timestamp
-                        _.each($scope.events, function (event) {
-                            event.formattedTimestamp = EventsMap.getFormattedTimestamp(event['@timestamp']);
-                        });
                     }, true);
                 }
 
@@ -94,14 +90,13 @@ angular.module('cosmoUiApp')
                     var newHeight = dragFromHeight + dragFromY - currentY;
 
                     var c = $element.find('.containList');
-                    var maxHeight = $element.parent().height();
 
+                    //measuring element position and height(together creating the element lowest point) minus the header padding and the element height
+                    var headerPadding = parseInt($('.main-content').css('top').substr(0,2)) -1;
+                    var closedWidgetHeight = parseInt($element.find('.head').css('height').substr(0,2));
+                    var elementOffset = $element.children().height() + $element.children().position().top;
+                    var maxHeight = (elementOffset) - (headerPadding + closedWidgetHeight);
                     newHeight = Math.min(newHeight, maxHeight);
-
-                    // don't allow element overflow from page anyway..
-                    if ($element.find('.events-widget').position().top <= 0) {
-                        newHeight = Math.min(newHeight, c.height());
-                    }
 
                     c.css({
                         height: newHeight + 'px'

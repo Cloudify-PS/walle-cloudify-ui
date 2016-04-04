@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('cosmoUiApp')
-    .service('EventsMap', function EventsMap($filter) {
+    .service('EventsMap', function EventsMap() {
 
         var eventsMap = {
             'workflow_received': {
@@ -159,9 +159,5 @@ angular.module('cosmoUiApp')
             }
 
             return 'gs-icon-logs';
-        };
-
-        this.getFormattedTimestamp = function (timestamp, format) {
-            return $filter('dateFormat')(timestamp, format || 'yyyy-MM-dd HH:mm:ss');
         };
     });

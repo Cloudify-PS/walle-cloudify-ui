@@ -5,10 +5,6 @@
     },
     "connectError": "Error connecting to Cloudify server",
     "permissionError": "Access denied",
-    "appStatus": {
-        "title": "App Status",
-        "time": "Time left"
-    },
     "version": {
         "updated": "Your version is up to date",
         "updateAvailable": "New version is available:",
@@ -89,6 +85,10 @@
                 "message": "Message",
                 "workflow": "Workflow"
             }
+        },
+        "appStatus": {
+            "succeedInstall": "Successfully installed",
+            "failedInstall": "Failed to install successfully"
         },
         "executions": {
             "terminated": "Completed successfully",
@@ -217,6 +217,7 @@
             "plugin": "Plugin",
             "operation": "Operation",
             "messageText": "Message",
+            "stackTrace": "Stack Trace",
             "type": "Type",
             "logger": "Logger",
             "level": "Log Level",
@@ -291,7 +292,7 @@
         "blueprints": "Blueprints",
         "deployments": "Deployments",
         "logs": "Logs & Events",
-        "hosts": "Nodes",
+        "nodesInstances": "Nodes Instances",
         "interface": "Interface Elements"
     },
     "formRawParams": {
@@ -317,9 +318,9 @@
         },
         "upload": {
             "title": "Upload Blueprint",
-            "description": "Select blueprint file to upload, and click 'Save'",
+            "description": "Select blueprint file to upload, and click 'Upload'",
             "browseText": "Select blueprint file or url",
-            "save": "Save",
+            "save": "Upload",
             "name": "Blueprint ID",
             "filename": "Blueprint filename (e.g blueprint.yaml)",
             "required": "* Required field"
@@ -348,8 +349,8 @@
         "generalError" : "Error uploading blueprint",
         "tooBig" : "Blueprint is too big"
     },
-    "hosts" : {
-        "gettingNodesFailed": "Failed getting nodes",
+    "nodesInstances" : {
+        "gettingNodesFailed": "Failed getting nodes instances",
         "chooseBlueprint" : "Choose a blueprint...",
         "blueprintsFilter" : "Deployed Blueprints:",
         "deploymentsFilter" : "Deployments:",

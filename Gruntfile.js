@@ -837,7 +837,8 @@ module.exports = function (grunt) {
             'cssmin',
             'uglify',
             'rev',
-            'usemin'
+            'usemin',
+            'writeBuildDetails'
         ];
 
         grunt.task.run(tasks);
@@ -998,6 +999,27 @@ module.exports = function (grunt) {
         'build',
         'backend'
     ]);
+
+    grunt.registerTask('writeBuildDetails', function(){
+        //cloudify-packager/common/provision.sh
+        var done = this.async();
+
+        require('git-rev').long(function (githash) {
+            var buildDetails = JSON.stringify({
+                githash: githash,
+                build_id: process.env.BUILD_ID,
+                data: new Date().toString()
+            });
+
+            console.log('build details = ', buildDetails);
+            require('fs').writeFileSync('dist/BUILD_DETAILS.txt', buildDetails);
+            done();
+        });
+
+
+
+
+    });
 
     grunt.registerTask('compass', ['sass']);
     grunt.registerTask('help', ['availabletasks:help']);

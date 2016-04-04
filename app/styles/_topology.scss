@@ -9,4 +9,15 @@ $MAIN_PADDING: 20px;
     .gs-topology {
         height: 100%;
     }
+
+    #gridContainer {
+        #grid {
+            cursor: -webkit-grab;
+            cursor: grab;
+            &.grabbed {
+                cursor: -webkit-grabbing;
+                cursor: grabbing;
+            }
+        }
+    }
 }
