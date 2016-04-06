@@ -298,17 +298,17 @@ input[type=text], input[type=password] {
     border: 0;
 }
 
-.filter-input{
+.filter-input {
     border: 2px solid #cadbec;
     &::-webkit-input-placeholder {
         color: #4b6c8b;
         font-style: normal;
     }
-    &:-moz-placeholder { /* Firefox 18- */
+    &:-moz-placeholder { //Firefox 18-
         color: #4b6c8b;
         font-style: normal;
     }
-    &::-moz-placeholder {  /* Firefox 19+ */
+    &::-moz-placeholder { //Firefox 19+
         color: #4b6c8b;
         font-style: normal;
     }
@@ -376,17 +376,20 @@ input[type=text], input[type=password] {
 }
 
 [date-picker-wrapper] {
-    border: 1px solid  lighten(#cce4f6, 50%);
+    border: 1px solid lighten(#cce4f6, 50%);
     top: 35px;
     border-radius: 5px;
 
     [date-picker] {
         background-color: #cce4f6;
 
-        table{
+        table {
             margin: 0 auto;
-            tbody{
+
+            tbody {
+
                 th, span {
+
                     &.active {
                         background-image: linear-gradient(to bottom, #29aaee, #29aaee);
                     }
@@ -395,22 +398,22 @@ input[type=text], input[type=password] {
                     }
                     &:hover {
                         background-image: linear-gradient(to bottom, #29aaee, #29aaee);
-                        color: white;
+                        color: $clr-base-01;
                     }
                 }
             }
-            thead{
-                tr:first-child th {
-                    &.switch{
+            thead {
 
-                    }
-                    &:hover{
+                tr:first-child th {
+
+                    //&.switch { }
+                    &:hover {
                         background-color: #29aaee;
-                        color: white;
+                        color: $clr-base-01;
                     }
                 }
-
                 tr:nth-child(2) th {
+
                     &:hover {
                         background-color: #cce4f6;
                         cursor: auto;
