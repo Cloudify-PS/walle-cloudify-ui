@@ -129,35 +129,4 @@ angular.module('cosmoUiApp')
 
         this.createNodesTree = _createNodesTree;
         this.getInstanceType = _getInstanceType;
-
-        /**
-         * @returns true iff relationship is connected to
-         * @param relationship
-         */
-        this.isConnectedTo = function (relationship) {
-            try {
-                return relationship.type_hierarchy.join(',').indexOf('connected_to') && TopologyTypes.isValidConnection(relationship.node);
-            } catch (e) {
-                return false;
-            }
-        };
-
-        this.getConnections = function (nodes, type) {
-            var connections = [];
-            _.each(nodes.forEach(function (node) {
-                var relationships = _.filter(node.relationships, function (rel) { //
-                    return rel.type_hierarchy.join(',').indexOf(type) > -1;
-                });
-                _.each(relationships, function (rel) {
-                    connections.push({
-                        source: node.id,
-                        target: rel.target_id,
-                        type: rel.type,
-                        typeHierarchy: rel.type_hierarchy
-                    });
-                });
-            }));
-            return connections;
-        };
-
     });

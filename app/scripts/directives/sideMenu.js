@@ -17,7 +17,6 @@ angular.module('cosmoUiApp')
 //                    { 'route' : ['#monitoring'] ,                       reload: false, 'icon': 'monitoring',   'label':'Monitoring',       isDisabled: true },
                     { 'route' : ['#logs'] ,                             reload: false, 'icon': 'logs',         'label':'Logs & Events'                      },
                     { 'route' : ['#nodes-instances'] ,                            reload: false, 'icon': 'nodes-instances',        'label':'Nodes Instances'                              }
-                    //{ 'route' : ['#networks'] ,                         reload: false, 'icon': 'networks',     'label':'Networks',         isDisabled: true },
                     //{ 'route' : ['#floating-ips'] ,                     reload: false, 'icon': 'floating-ips', 'label':'Floating IPs',     isDisabled: true },
                     //{ 'route' : ['#storage'] ,                          reload: false, 'icon': 'storage',      'label':'Storage',          isDisabled: true }
                 ];
