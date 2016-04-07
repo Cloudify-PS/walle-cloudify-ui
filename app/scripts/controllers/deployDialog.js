@@ -8,17 +8,12 @@ angular.module('cosmoUiApp')
 
         cloudifyClient.blueprints.get($scope.blueprintId, null).then(function (result) {
             $scope.selectedBlueprint = result.data || null;
-
         }, function (result) {
-            setDeployError(CloudifyService.getErrorMessage(result) || $translate.instant('permissionError'));
+            setError(CloudifyService.getErrorMessage(result) || $translate.instant('permissionError'));
         });
 
-        $scope.showError = function () {
-            return !!$scope.deployErrorMessage;
-        };
-
         $scope.isDetailsInvalid = function () {
-            return !$scope.selectedBlueprint || !$scope.deployment_id || $scope.showError();
+            return !$scope.selectedBlueprint || !$scope.deployment_id || $scope.deployErrorMessage;
         };
 
         $scope.isDeployEnabled = function () {
@@ -36,7 +31,7 @@ angular.module('cosmoUiApp')
         $scope.deployBlueprint = function (blueprintId) {
 
             // parse inputs so "true" string will become boolean etc.
-            setDeployError(null);
+            setError(null);
 
             $scope.inProcess = true;
             cloudifyClient.deployments.create(blueprintId, $scope.deployment_id, $scope.rawString ? JSON.parse($scope.rawString) : null)
@@ -44,26 +39,26 @@ angular.module('cosmoUiApp')
                     var data = result.data;
                     $scope.inProcess = false;
                     if (data.hasOwnProperty('message')) {
-                        setDeployError(data.message);
+                        setError(data.message);
                     } else {
                         $scope.onCreate({id: result.data.id});
                         $scope.closeThisDialog();
                     }
                 }, function (data) {
                     $scope.inProcess = false;
-                    setDeployError(CloudifyService.getErrorMessage(data));
+                    setError(CloudifyService.getErrorMessage(data));
 
                 });
         };
 
         $scope.$watch('deployment_id', function () {
-            setDeployError(null);
+            setError(null);
         });
 
-        function setDeployError(msg) {
+        function setError(msg) {
             $scope.deployErrorMessage = msg;
         }
 
-        $scope.setDeployError = setDeployError;
+        $scope.setError = setError;
 
     });

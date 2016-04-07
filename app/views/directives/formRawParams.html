@@ -1,13 +1,13 @@
-<div class="dialogInputs deployInputs"><!-- This comment is important!!!  - http://stackoverflow.com/questions/8824395/still-space-between-elements-buttons-with-margin-0
-    --><div class="type-toggle"><!-- This comment is important!!!
-        --><div class="section-nav-menu-class"><!-- This comment is important!!!
-            --><div class="buttons-group"><!-- This comment is important!!!
-                --><button data-ng-class="{'active': inputsState == 'params'}" class="btn btn-default" data-ng-click="toggleInputsState('PARAMS')">Parameters</button><!-- This comment is important!!!
-                --><button data-ng-class="{'active': inputsState == 'raw'}" class="btn btn-default" data-ng-click="toggleInputsState('RAW')">Raw</button>
+<div class="dialogInputs deployInputs">
+    <div class="type-toggle">
+        <div class="section-nav-menu-class">
+            <div class="buttons-group">
+                <button ng-class="{'active': inputsState == 'form'}" class="btn btn-default" data-ng-click="toggleInputsState('form')">Parameters</button><!-- This comment is important!!! http://stackoverflow.com/questions/8824395/still-space-between-elements-buttons-with-margin-0
+                --><button ng-class="{'active': inputsState == 'raw'}" class="btn btn-default" data-ng-click="toggleInputsState('raw')">Raw</button>
             </div>
         </div>
     </div>
-    <div class="inputsParameters" ng-show="inputsState == 'params'">
+    <div class="inputsParameters" ng-show="inputsState == 'form'">
         <ul>
             <li ng-repeat="(name, value) in params">
                 <div title="{{name}}{{': '+(value.description ||'formRawParams.noDescriptionTooltip'|translate)}}" class="form-raw-item-name">{{name}}:</div>

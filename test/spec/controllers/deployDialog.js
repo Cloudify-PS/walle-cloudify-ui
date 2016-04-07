@@ -117,7 +117,6 @@ describe('Controller: DeployDialogCtrl', function () {
         scope.deployBlueprint('blueprint1');
 
         expect(scope.deployErrorMessage).toBe('foo');
-        expect(scope.showError()).toBe(true);
     }));
 
 
@@ -129,7 +128,7 @@ describe('Controller: DeployDialogCtrl', function () {
 
         scope.$apply();
 
-        expect(scope.showError()).toBe(false);
+        expect(scope.deployErrorMessage).toBe(null);
     });
 
     describe('#isParamsVisible', function () {

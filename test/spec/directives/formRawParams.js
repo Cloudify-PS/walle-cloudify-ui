@@ -1,166 +1,148 @@
 'use strict';
 
 describe('Directive: formRawParams', function () {
+    var element;
+    var scope;
+    var isolateScope;
 
     // load the directive's module
     beforeEach(module('cosmoUiApp', 'backend-mock', 'templates-main'));
 
-    var element;
-    var scope;
-
     beforeEach(inject(function ($compile, $rootScope) {
-
         scope = $rootScope.$new();
-        scope.onError = jasmine.createSpy('onError');
         scope.valid = false;
         scope.params = [];
         scope.rawString = '';
+        scope.onError = jasmine.createSpy('onError');
 
-        element = angular.element('<div form-raw-params on-error="onError(msg)" raw-string="rawString" valid="valid" params="params"></div>');
+        element = angular.element('<div form-raw-params on-error="onError" raw-string="rawString" valid="valid" params="params"></div>');
         element = $compile(element)(scope);
+
+        scope.$digest();
+
+        isolateScope = element.isolateScope();
     }));
 
     it('should update input JSON object when one of the inputs is updated', function () {
+        scope.params = {image_name: {default: 'new value'}};
         scope.$digest();
 
-        expect(JSON.parse(element.isolateScope().rawString).image_name).not.toBe('new value');
-
-        element.isolateScope().inputs = {image_name: {default: 'new value'}};
-        element.isolateScope().inputsState = 'raw';
-
-        element.isolateScope().updateInputs();
-
-        expect(JSON.parse(element.isolateScope().rawString).image_name.default).toBe('new value');
+        expect(JSON.parse(isolateScope.rawString).image_name).toBe('new value');
     });
 
     it('should save input type when converting inputs to JSON', function () {
-
         scope.params = {
             'webserver_port': {default: 80},
             'bool_variable': {default: true},
             'str_variable': {default: 'foo bar'}
         };
-        scope.rawString = JSON.stringify(scope.params, null, 2);
-        scope.inputsState = 'raw';
-
         scope.$digest();
 
-        element.isolateScope().updateInputs();
-
-        expect(typeof(JSON.parse(scope.rawString).webserver_port)).toBe('number');
-        expect(typeof(JSON.parse(scope.rawString).bool_variable)).toBe('boolean');
-        expect(typeof(JSON.parse(scope.rawString).str_variable)).toBe('string');
+        expect((typeof JSON.parse(isolateScope.rawString).webserver_port)).toBe('number');
+        expect((typeof JSON.parse(isolateScope.rawString).bool_variable)).toBe('boolean');
+        expect((typeof JSON.parse(isolateScope.rawString).str_variable)).toBe('string');
     });
 
     it('should not let resize #rawString textarea', function () {
-        var textarea;
-        scope.$digest();
-        textarea = element.find('#rawString');
+        var textarea = element.find('#rawString');
+
         expect(textarea.hasClass('resize-vertical')).toBeTruthy();
     });
 
     describe('#validateJsonKeys', function () {
         beforeEach(function () {
-            scope.params = {
-                'foo': 'bar',
-                'hello': 'world'
-            };
+            scope.params = { 'foo': 'bar', 'hello': 'world'};
             scope.$digest();
         });
-        it('should return error and false if key is missing', function () {
-            element.isolateScope().rawString = JSON.stringify({'foo': 'bar'});
 
-            expect(element.isolateScope().validateJsonKeys()).toBe(false);
+        it('should return error and false if key is missing', function () {
+            isolateScope.rawString = JSON.stringify({'foo': 'bar'});
+
+            expect(isolateScope.validateJsonKeys()).toBe(false);
             expect(scope.onError).toHaveBeenCalledWith('formRawParams.missingKeyInJson');
 
         });
 
         it('should return error and false if key is missing', function () {
-            element.isolateScope().rawString = JSON.stringify({
+            isolateScope.rawString = JSON.stringify({
                 'foo': undefined,
                 'hello': 'world'
             });
 
-            expect(element.isolateScope().validateJsonKeys(true)).toBe(false);
+            expect(isolateScope.validateJsonKeys(true)).toBe(false);
             expect(scope.onError).toHaveBeenCalledWith(null);
         });
 
         it('should return true if all keys exist', function () {
-            element.isolateScope().rawString = JSON.stringify({
+            isolateScope.rawString = JSON.stringify({
                 'foo': 'bar',
                 'hello': 'world'
             });
 
-            expect(element.isolateScope().validateJsonKeys()).toBe(true);
+            expect(isolateScope.validateJsonKeys()).toBe(true);
             expect(scope.onError).toHaveBeenCalledWith(null);
         });
 
         it('should return error and false if addition unexpected key was added', function () {
-            element.isolateScope().rawString = JSON.stringify({
+            isolateScope.rawString = JSON.stringify({
                 'foo': 'bar',
                 'hello': 'world',
                 'unexpected': 'key'
             });
 
-            expect(element.isolateScope().validateJsonKeys()).toBe(false);
+            expect(isolateScope.validateJsonKeys()).toBe(false);
             expect(scope.onError).toHaveBeenCalledWith('formRawParams.unexpectedKeyInJson');
         });
     });
 
     describe('#validateJSON', function () {
         it('should return false if rawString is an invalid JSON', function () {
-            scope.$digest();
-            element.isolateScope().rawString = ' { "some" goofy } ';
+            isolateScope.rawString = 1;
 
-            expect(element.isolateScope().validateJSON(true)).toBe(false);
-            //Not checking the entire message since it behaves differently with different browsers/platforms
-            expect(scope.onError.calls.mostRecent().args[0]).toContain('Invalid JSON');
+            expect(isolateScope.validateJSON(true)).toBe(false);
+            expect(scope.onError).toHaveBeenCalled();
         });
     });
 
     describe('#validateInputsNotEmpty', function () {
         it('should return false if one of the inputs is empty', function () {
-            scope.$digest();
-            element.isolateScope().rawString = ' { "input" : "", "empty" : "I aint no empty homie" } ';
+            isolateScope.rawString = ' { "input" : "", "empty" : "I aint no empty homie" } ';
 
-            expect(element.isolateScope().validateInputsNotEmpty()).toBe(false);
+            expect(isolateScope.validateInputsNotEmpty()).toBe(false);
         });
 
         it('should return true if all inputs are not empty', function () {
-            scope.$digest();
-            element.isolateScope().rawString = ' { "input" : "What would life be if we had no courage to attempt anything - Vincent Van Gogh", "empty" : "I aint no empty homie" } ';
+            isolateScope.rawString = ' { "input" : "What would life be if we had no courage to attempt anything - Vincent Van Gogh", "empty" : "I aint no empty homie" } ';
 
-            expect(element.isolateScope().validateInputsNotEmpty()).toBe(true);
+            expect(isolateScope.validateInputsNotEmpty()).toBe(true);
         });
     });
 
     describe('updating params object', function () {
         it('should set default values as an empty string', function () {
+            scope.params = {'money': {}, 'happiness': {}};
             scope.$digest();
-            element.isolateScope().params = {'money': {}, 'happiness': {}};
-            scope.$digest();
-            expect(element.isolateScope().inputs.money).toBe('');
-            expect(element.isolateScope().inputs.happiness).toBe('');
+
+            expect(isolateScope.inputs.money).toBe('');
+            expect(isolateScope.inputs.happiness).toBe('');
         });
     });
 
     describe('#rawToForm', function () {
         it('should stringify "1","true" and "null" and not convert them to 1,true,null', function () {
+            isolateScope.rawString = '{ "foo" : "1", "bar" : "true", "hello" : "null" }';
             scope.$digest();
-            element.isolateScope().rawString = '{ "foo" : "1", "bar" : "true", "hello" : "null" }';
-            element.isolateScope().rawToForm();
-            expect(element.isolateScope().inputs.foo).toBe('"1"');
-            expect(element.isolateScope().inputs.bar).toBe('"true"');
-            expect(element.isolateScope().inputs.hello).toBe('"null"');
+
+            expect(isolateScope.inputs.foo).toBe('"1"');
+            expect(isolateScope.inputs.bar).toBe('"true"');
+            expect(isolateScope.inputs.hello).toBe('"null"');
         });
 
-        it('should handle invalid raw string and remain in raw mode', inject(function () {
+        it('should handle invalid raw string', inject(function () {
+            isolateScope.rawString = '{ foo bar }';
             scope.$digest();
-            element.isolateScope().rawString = '{ foo bar }';
-            element.isolateScope().rawToForm();
-            //Not checking the entire message since it behaves differently with different browsers/platforms
-            expect(scope.onError.calls.mostRecent().args[0]).toContain('Invalid JSON');
-            expect(element.isolateScope().inputsState).toBe('raw');
+
+            expect(scope.onError).toHaveBeenCalledWith('<div>Parse error on line 1:</div><div>{ foo bar }</div><div>--^</div><div>Expecting \'STRING\', \'}\', got \'undefined\'</div>');
         }));
     });
 
@@ -176,12 +158,12 @@ describe('Directive: formRawParams', function () {
             };
             scope.$digest();
 
-            expect(JSON.parse(scope.rawString).int_variable).toBe(80);
-            expect(JSON.parse(scope.rawString).bool_variable).toBe(true);
-            expect(JSON.parse(scope.rawString).str_variable).toBe('foo bar');
-            expect(JSON.parse(scope.rawString).null_variable).toBe(null);
-            expect(JSON.parse(scope.rawString).array).toEqual([1, 2, 3, true]);
-            expect(JSON.parse(scope.rawString).object).toEqual({'key': 'value'});
+            expect(JSON.parse(isolateScope.rawString).int_variable).toBe(80);
+            expect(JSON.parse(isolateScope.rawString).bool_variable).toBe(true);
+            expect(JSON.parse(isolateScope.rawString).str_variable).toBe('foo bar');
+            expect(JSON.parse(isolateScope.rawString).null_variable).toBe(null);
+            expect(JSON.parse(isolateScope.rawString).array).toEqual([1, 2, 3, true]);
+            expect(JSON.parse(isolateScope.rawString).object).toEqual({'key': 'value'});
         });
     });
 
@@ -197,37 +179,35 @@ describe('Directive: formRawParams', function () {
             };
             scope.$digest();
 
-            element.isolateScope().inputs.int_variable = 'changed default';
-            element.isolateScope().inputs.bool_variable = 'changed default';
-            element.isolateScope().inputs.str_variable = 'changed default';
-            element.isolateScope().inputs.null_variable = 'changed default';
-            element.isolateScope().inputs.array = 'changed default';
-            element.isolateScope().inputs.object = 'changed default';
-            scope.$digest();
+            isolateScope.inputs.int_variable = 'changed default';
+            isolateScope.inputs.bool_variable = 'changed default';
+            isolateScope.inputs.str_variable = 'changed default';
+            isolateScope.inputs.null_variable = 'changed default';
+            isolateScope.inputs.array = 'changed default';
+            isolateScope.inputs.object = 'changed default';
 
-            element.isolateScope().restoreDefault('int_variable', 80);
-            element.isolateScope().restoreDefault('bool_variable', true);
-            element.isolateScope().restoreDefault('str_variable', 'foo bar');
-            element.isolateScope().restoreDefault('null_variable', null);
-            element.isolateScope().restoreDefault('array', [1, 2, 3, true]);
-            element.isolateScope().restoreDefault('object', {'key': 'value'});
+            isolateScope.restoreDefault('int_variable', 80);
+            isolateScope.restoreDefault('bool_variable', true);
+            isolateScope.restoreDefault('str_variable', 'foo bar');
+            isolateScope.restoreDefault('null_variable', null);
+            isolateScope.restoreDefault('array', [1, 2, 3, true]);
+            isolateScope.restoreDefault('object', {'key': 'value'});
 
             //checking inputs before digest since it changes them (for example "null" turns to - null
             //meaning this is what the user see immediately after clicking the button before value is parsed / changed
-            expect(element.isolateScope().inputs.int_variable).toBe(80);
-            expect(element.isolateScope().inputs.bool_variable).toBe(true);
-            expect(element.isolateScope().inputs.str_variable).toBe('foo bar');
-            expect(element.isolateScope().inputs.null_variable).toBe(null);
-            expect(element.isolateScope().inputs.array).toEqual('[1,2,3,true]');
-            expect(element.isolateScope().inputs.object).toEqual('{"key":"value"}');
-            scope.$digest();
+            expect(isolateScope.inputs.int_variable).toBe(80);
+            expect(isolateScope.inputs.bool_variable).toBe(true);
+            expect(isolateScope.inputs.str_variable).toBe('foo bar');
+            expect(isolateScope.inputs.null_variable).toBe(null);
+            expect(isolateScope.inputs.array).toEqual('[1,2,3,true]');
+            expect(isolateScope.inputs.object).toEqual('{"key":"value"}');
 
-            expect(JSON.parse(scope.rawString).int_variable).toBe(80);
-            expect(JSON.parse(scope.rawString).bool_variable).toBe(true);
-            expect(JSON.parse(scope.rawString).str_variable).toBe('foo bar');
-            expect(JSON.parse(scope.rawString).null_variable).toBe(null);
-            expect(JSON.parse(scope.rawString).array).toEqual([1, 2, 3, true]);
-            expect(JSON.parse(scope.rawString).object).toEqual({'key': 'value'});
+            expect(JSON.parse(isolateScope.rawString).int_variable).toBe(80);
+            expect(JSON.parse(isolateScope.rawString).bool_variable).toBe(true);
+            expect(JSON.parse(isolateScope.rawString).str_variable).toBe('foo bar');
+            expect(JSON.parse(isolateScope.rawString).null_variable).toBe(null);
+            expect(JSON.parse(isolateScope.rawString).array).toEqual([1, 2, 3, true]);
+            expect(JSON.parse(isolateScope.rawString).object).toEqual({'key': 'value'});
         });
     });
 
@@ -297,7 +277,7 @@ describe('Directive: formRawParams', function () {
                 scope.params = {'foo': {}};
                 content.append(element);
                 scope.$digest();
-                element.isolateScope().rawString = ' { "foo" : null } ';
+                isolateScope.rawString = ' { "foo" : null } ';
                 scope.$digest();
                 var input = element.find('li input');
 
@@ -308,8 +288,7 @@ describe('Directive: formRawParams', function () {
                 scope.params = {'foo': {}};
                 content.append(element);
                 scope.$digest();
-                element.isolateScope().rawString = ' { "foo" : "" } ';
-                scope.$digest();
+                isolateScope.rawString = ' { "foo" : "" } ';
                 var input = element.find('li input');
 
                 expect(input[0].getAttribute('placeholder')).toBe('dialogs.deploy.value');

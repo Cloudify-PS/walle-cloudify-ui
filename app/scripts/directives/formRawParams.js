@@ -24,57 +24,31 @@ angular.module('cosmoUiApp')
                 'rawString': '=',
                 'valid': '='
             },
-            link: function postLink(scope/*, element, attrs*/) {
-                var $scope = scope;
+            link: function postLink($scope/*, $element, $attrs*/) {
+                var sendErrorMessage = $scope.sendErrorMessage.call(this, {msg: arguments});
 
-                var INPUT_STATE = {RAW: 'raw', PARAMS: 'params'};
-
-                $scope.inputsState = INPUT_STATE.PARAMS;
+                $scope.inputsState = 'form';
                 $scope.inputs = {};
 
-                function setDeployError(msg) {
-                    scope.sendErrorMessage({'msg': msg});
+                function isValid() {
+                    return _validateJSON(false) && _validateInputsNotEmpty();
                 }
-
-                scope.$watch(function () {
-                    return _validateJSON(false, true);
-                }, function (newValue) {
-                    scope.valid = newValue && _validateJsonKeys() && _validateInputsNotEmpty(); //set error message turned on
-                });
-
-                scope.$watch(function () {
-                    return _validateInputsNotEmpty();
-                }, function (newValue) {
-                    scope.valid = newValue && _validateJsonKeys() && _validateJSON(false, true); //set error message turned on
-                });
 
                 // JSON keys validation, verifying all expected keys exists in JSON
                 // if key is missing we want to display an error
                 // if additional key is added and unexpected we want to display an error
-                function _validateJsonKeys(skipErrorMessage) {
-                    function isKeyInParams(key) {
-                        if (key in scope.params) {
-                            return true;
-                        } else {
-                            return false;
-                        }
-                    }
-
+                function _validateJsonKeys() {
                     var _json = $scope.rawString ? JSON.parse($scope.rawString) : {};
-                    for (var expectedKey in scope.params) {
-                        var value = _json[expectedKey];
-                        if (value === undefined) {
-                            if (!skipErrorMessage) {
-                                setDeployError($filter('translate')('formRawParams.missingKeyInJson', {key: expectedKey}));
-                            }
+
+                    for (var key_expected in $scope.params) {
+                        if (_json[key_expected] === undefined) {
+                            sendErrorMessage($filter('translate')('formRawParams.missingKeyInJson', {key: key_expected}));
                             return false;
                         }
                     }
-                    for (var key in _json) {
-                        if (!isKeyInParams(key)) {
-                            if (!skipErrorMessage) {
-                                setDeployError($filter('translate')('formRawParams.unexpectedKeyInJson', {key: key}));
-                            }
+                    for (var key_present in _json) {
+                        if (!$scope.params.hasOwnProperty(key_present)) {
+                            sendErrorMessage($filter('translate')('formRawParams.unexpectedKeyInJson', {key: key_present}));
                             return false;
                         }
                     }
@@ -82,24 +56,23 @@ angular.module('cosmoUiApp')
                 }
 
                 // JSON validation by parsing it
-                function _validateJSON(skipKeys, skipErrorMessage) {
+                function _validateJSON(skipKeys) {
                     if ($scope.rawString === undefined) {
                         return false; // fail silently. we don't care about undefined. in this scenario. don't alert invalid json.
                     }
+
                     try {
-                        JSON.parse($scope.rawString);
-                        if (!skipErrorMessage) {
-                            setDeployError(null);
-                        }
+                        window.jsonlint.parse($scope.rawString);
                         return skipKeys || _validateJsonKeys();
-
                     } catch (e) {
-
-                        setDeployError('Invalid JSON: ' + e.message);
+                        sendErrorMessage(e.message.split('\n').reduce(function (result, chunk) {
+                            return result + '<div>' + chunk + '</div>';
+                        }, ''));
                         return false;
                     }
                 }
 
+                // check if there are no empty inputs
                 function _validateInputsNotEmpty() {
                     try {
                         var parsedInputs = JSON.parse($scope.rawString);
@@ -112,14 +85,25 @@ angular.module('cosmoUiApp')
                             }
                         });
                         return isInputsNotEmpty;
-                    }
-                    catch (e) {
+                    } catch (e) {
                         return false;
                     }
                 }
 
-                function _parseInputs() {
+                function parseDefVal(defaultVal) {
+                    //since typeof null is 'object' yet I don't want it to be stringify
+                    if (defaultVal === null) {
+                        return null;
+                    } else if (typeof defaultVal === 'object') {
+                        return JSON.stringify(defaultVal);
+                    } else {
+                        return defaultVal;
+                    }
+                }
+
+                function parseInputs() {
                     var result = {};
+
                     _.each($scope.inputs, function (value, key) {
                         try {
                             var parsedValue = JSON.parse(value);
@@ -132,27 +116,23 @@ angular.module('cosmoUiApp')
                             result[key] = value;
                         }
                     });
+
                     return result;
                 }
 
-                function _formToRaw() {
-                    // if error message is shown & json is invalid, stop raw JSON update process until JSON is fixed & valid
-                    if (!_validateJSON(true)) { // validate without keys
-                        return;
-                    }
-
+                function formToRaw() {
                     // try to parse input value. if parse fails, keep the input value as it is.
-                    $scope.rawString = JSON.stringify(_parseInputs(), null, 2);
-
-                    // now that we updated the RAW value properly, we would like to get an error if a key is missing
-                    _validateJsonKeys();
+                    $scope.rawString = JSON.stringify(parseInputs(), null, 2);
+                    $scope.valid = isValid();
                 }
 
-                function _rawToForm() {
+                function rawToForm() {
                     if ($scope.rawString === undefined) {
                         return;
                     }
-                    setDeployError(null);
+
+                    sendErrorMessage(null);
+
                     try {
                         var parsedInputs = JSON.parse($scope.rawString);
                         _.each(parsedInputs, function (value, key) {
@@ -160,8 +140,7 @@ angular.module('cosmoUiApp')
 
                             try {
                                 parsedValue = JSON.parse(value);
-                            } catch (e) {
-                            }
+                            } catch (e) { }
                             // if input type is object (except null) avoid [Object object] by stringifying
                             // if input type will be changed by parsing again (see parseInputs) then we want to keep it a string, so we need to stringify it
                             // this handles "true" and "1" strings that will accidentally be parsed to true (boolean) and 1 (number) etc..
@@ -172,72 +151,42 @@ angular.module('cosmoUiApp')
 
                         $scope.inputs = parsedInputs;
                     } catch (e) {
-                        $scope.inputsState = INPUT_STATE.RAW;
-
-                        setDeployError('Invalid JSON: ' + e.message);
+                        sendErrorMessage('Invalid JSON: ' + e.message);
                     }
+
+                    $scope.valid = isValid();
                 }
 
-                $scope.$watch('params', function () {
-                    if (!!$scope.params) {
-                        $scope.rawString = JSON.stringify($scope.params, null, 2);
-                        $scope.inputsState = INPUT_STATE.PARAMS;
-                    }
-                });
-                $scope.$watch('inputsState', function () {
-                    if (!!$scope.selectedBlueprint) {
-                        $scope.updateInputs();
-                    }
+                function toggleInputsState(state) {
+                    $scope.inputsState = state.toLocaleLowerCase();
+                }
+
+                function restoreDefault(paramName, defaultValue) {
+                    $scope.inputs[paramName] = parseDefVal(defaultValue);
+                }
+
+
+                $scope.$watch('params', function (params) {
+                    $scope.inputs = {};
+                    _.each(params, function (value, key) {
+                        $scope.inputs[key] = value.default !== undefined ? value.default : '';
+                    });
+                    $scope.rawString = JSON.stringify($scope.inputs);
                 });
 
                 // watching the raw json string changes, validating json on every change
-                $scope.$watch('rawString', _rawToForm);
-
-                $scope.$watch('params', function (params) {
-                    scope.inputs = {};
-                    if (!!params) {
-                        _.each(params, function (value, key) {
-                            scope.inputs[key] = value.default !== undefined ? value.default : '';
-                        });
-                    }
-                });
-
+                $scope.$watch('rawString', rawToForm);
                 // cover scenario where key is missing and I just added it in form mode
-                $scope.$watch('inputs', _formToRaw, true);
+                $scope.$watch('inputs', formToRaw, true);
 
-                $scope.toggleInputsState = function (state) {
-                    $scope.inputsState = INPUT_STATE[state];
-                };
 
-                $scope.updateInputs = function () {
-                    if ($scope.inputsState === INPUT_STATE.RAW) {
-                        _formToRaw();
-                    } else {
-                        _rawToForm();
-                    }
-                };
-
-                $scope.parseDefVal = function (defaultVal) {
-                    //since typeof null is 'object' yet I don't want it to be stringify
-                    if (defaultVal === null) {
-                        return null;
-                    } else if (typeof defaultVal === 'object') {
-                        return JSON.stringify(defaultVal);
-                    } else {
-                        return defaultVal;
-                    }
-                };
-
-                $scope.restoreDefault = function (paramName, defaultValue) {
-                    $scope.inputs[paramName] = $scope.parseDefVal(defaultValue);
-                };
-
-                // expose functions to test
+                $scope.parseDefVal = parseDefVal;
+                $scope.restoreDefault = restoreDefault;
+                $scope.toggleInputsState = toggleInputsState;
+                // expose functions for tests
                 $scope.validateJSON = _validateJSON;
                 $scope.validateJsonKeys = _validateJsonKeys;
-                $scope.rawToForm = _rawToForm;
                 $scope.validateInputsNotEmpty = _validateInputsNotEmpty;
-
             }
         };
     });

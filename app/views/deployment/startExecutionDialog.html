@@ -1,4 +1,4 @@
-<div id="confirmationDialogContainer" class="dialogBox start-execution-dialog">
+<div id="startExecutionDialog" class="dialogBox">
     <div> <div class="dialogTitle"><label>{{ 'dialogs.execution.confirmExecution' | translate }}</label></div></div>
 
 
@@ -20,7 +20,7 @@
     <div class="selected-workflow">
     <div form-raw-params
          ng-show="isParamsVisible()"
-         on-error="setErrorMessage(msg)"
+         on-error="setErrorMessage"
          params="workflow.parameters"
          raw-string="rawString"
          valid="inputsValid"></div>
@@ -29,11 +29,11 @@
 
 
 
-    <div class="error-message" data-ng-show="!!executeErrorMessage">{{ executeErrorMessage }}</div>
+    <div class="error-message monospace" ng-show="executeErrorMessage" ng-bind-html="executeErrorMessage"></div>
 
     <div class="buttonsContainer confirmationButtons">
         <button class="gs-btn" ng-click="closeThisDialog()" >{{ 'dialogs.confirm.cancel' | translate }}</button>
-        <button class="gs-btn" ng-enabled="isExecuteEnabled()" gs-spinner="{{inProcess}}" ng-click="executeWorkflow()">{{ 'dialogs.confirm.confirm' | translate }}</button>
+        <button class="gs-btn" ng-disabled="!isExecuteEnabled()" gs-spinner="{{inProcess}}" ng-click="executeWorkflow()">{{ 'dialogs.confirm.confirm' | translate }}</button>
     </div>
 
 

@@ -124,12 +124,13 @@ input[required] {
 
                 button {
                     width: 120px;
+                    outline: none;
                 }
                 .section-nav-menu-class {
                     margin-left: -6px;
                 }
             }
-            .inputsParameters {
+            .inputsParameters, .inputsRaw {
                 margin-top: 20px;
             }
             .form-raw-item-name {
@@ -195,6 +196,10 @@ input[required] {
             line-height: 20px;
             word-wrap: break-word;
             overflow-x: auto;
+
+            &.monospace {
+                font-family: monospace;
+            }
         }
         .buttonsContainer {
             display: block;

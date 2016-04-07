@@ -1,4 +1,4 @@
-<div id="deployDialogContainer" class="dialogBox">
+<div id="deployBlueprintDialog" class="dialogBox">
     <div class="dialogTitle">
         <label>{{ 'dialogs.deploy.title' | translate }} {{selectedBlueprint.id}}</label>
     </div>
@@ -14,14 +14,14 @@
 
             <div form-raw-params
                  ng-show="isParamsVisible()"
-                 on-error="setDeployError(msg)"
+                 on-error="setError"
                  params="selectedBlueprint.plan.inputs"
                  raw-string="rawString"
                  valid="inputsValid"></div>
 
         </div>
 
-        <div class="error-message" ng-show="!!deployErrorMessage">{{deployErrorMessage}}</div>
+        <div class="error-message monospace" ng-show="!!deployErrorMessage" ng-bind-html="deployErrorMessage"></div>
         <div class="buttonsContainer deployButtons">
             <button id="deployBtn" class="gs-btn" ng-disabled="!isDeployEnabled()" gs-spinner="{{inProcess}}" ng-click="deployBlueprint(selectedBlueprint.id)">{{ 'dialogs.deploy.create' | translate }}</button>
         </div>

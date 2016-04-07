@@ -38,6 +38,7 @@ module.exports = function(config) {
             'app/bower_components/SyntaxHighlighter/scripts/shBrushBash.js',
             'app/bower_components/SyntaxHighlighter/scripts/shBrushPlain.js',
             'app/bower_components/cloudify-js/dist/cloudify.angular.js',
+            'app/bower_components/jsonlint/web/jsonlint.js',
             'app/styles/SyntaxHighlighter/shBrushYaml.js',
 
             'app/bower_components/ngDialog/js/ngDialog.min.js',
