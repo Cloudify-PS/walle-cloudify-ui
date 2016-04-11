@@ -1,0 +1,17 @@
+#maintenance-message{
+    position: fixed;
+    top: 50px;
+    left: 25%;
+    right: 25%;
+    z-index: 1031;
+    min-height: 40px;
+    line-height: 40px;
+    vertical-align: middle;
+    text-align: center;
+    font-size: larger;
+    border-radius: 3px;
+    background: #cce4f6;
+    color: $DARK_BLUE_FONT_COLOR;
+
+    @include animate(fadeIn, 1s);
+}

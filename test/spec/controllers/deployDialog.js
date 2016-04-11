@@ -4,7 +4,7 @@
 describe('Controller: DeployDialogCtrl', function () {
     var DeployDialogCtrl, scope;
 
-    beforeEach(module('cosmoUiApp', 'ngMock', 'backend-mock'));
+    beforeEach(module('cosmoUiApp', 'ngMock', 'backend-mock', 'templates-main'));
 
     beforeEach(inject(function ($controller, $rootScope, cloudifyClient) {
 

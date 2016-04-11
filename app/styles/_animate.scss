@@ -26,3 +26,44 @@
         color: #049cdb;
     }
 }
+
+@mixin defineFadeIn($name, $maxOpacity){
+    @keyframes #{$name} {
+        from { opacity: 0; }
+        to   { opacity: $maxOpacity; }
+    }
+
+    /* Firefox < 16 */
+    @-moz-keyframes #{$name} {
+        from { opacity: 0; }
+        to   { opacity: $maxOpacity; }
+    }
+
+    /* Safari, Chrome and Opera > 12.1 */
+    @-webkit-keyframes #{$name} {
+        from { opacity: 0; }
+        to   { opacity: $maxOpacity; }
+    }
+
+    /* Internet Explorer */
+    @-ms-keyframes #{$name} {
+        from { opacity: 0; }
+        to   { opacity: $maxOpacity; }
+    }
+
+    /* Opera < 12.1 */
+    @-o-keyframes #{$name} {
+        from { opacity: 0; }
+        to   { opacity: $maxOpacity; }
+    }
+}
+@include defineFadeIn(fadeIn, 1);
+@include defineFadeIn(halfFadeIn, 0.5);
+
+@mixin animate($name, $duration){
+    -webkit-animation: $name $duration; /* Safari, Chrome and Opera > 12.1 */
+    -moz-animation: $name $duration; /* Firefox < 16 */
+    -ms-animation: $name $duration; /* Internet Explorer */
+    -o-animation: $name $duration; /* Opera < 12.1 */
+    animation: $name $duration;
+}

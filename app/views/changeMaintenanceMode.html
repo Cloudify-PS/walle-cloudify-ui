@@ -1,0 +1,11 @@
+<div id="change-maintenance-dialog" class="dialogBox">
+    <div class="dialogTitle" ng-if="deactivated">{{ 'maintenance.dialog.activateTitle' | translate }}</div>
+    <div class="dialogTitle" ng-if="!deactivated">{{ 'maintenance.dialog.deactivateTitle' | translate }}</div>
+
+    <div class="dialogDescription"> {{ 'maintenance.dialog.description' | translate }}</div>
+    <div class="error-message" data-ng-show="!!errorMessage">{{ errorMessage }}</div>
+    <div class="buttonsContainer confirmationButtons">
+        <button class="gs-btn" ng-click="closeThisDialog()">{{ 'maintenance.dialog.cancel' | translate }}</button>
+        <button id="change-maintenance-button" class="gs-btn" gs-spinner="{{inProcess}}" ng-click="changeMaintenance()">{{ 'maintenance.dialog.confirm' | translate }}</button>
+    </div>
+</div>

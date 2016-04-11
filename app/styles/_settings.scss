@@ -1,0 +1,33 @@
+#maintenance-page {
+    display: flex;
+    #maintenance-settings {
+        margin: auto;
+        z-index: 1032;
+        background: white;
+        padding: 0 40px 20px;
+        max-width:950px;
+        #maintenance-actions {
+            margin-top: 40px;
+            text-align: center;
+            button {
+                margin-top: 10px;
+            }
+            #maintenance-status{
+                font-weight: bold;
+            }
+        }
+    }
+
+    #maintenance-highlighter {
+        position: fixed;
+        width: 100%;
+        height: 100%;
+        background: black;
+        opacity: 0.5;
+        z-index: 1031; //1030 is header and footer
+        top: 0;
+        left: 0;
+
+        @include animate(halfFadeIn, 1s);
+    }
+}
