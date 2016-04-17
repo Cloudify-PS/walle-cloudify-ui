@@ -15,7 +15,7 @@ angular.module('cosmoUiApp')
                         $scope.succeed = undefined;
                         return;
                     }
-                    cloudifyClient.executions.getRunningExecutions({deployment_id: $scope.deploymentId, _include: 'id,workflow_id,status'}).then(function(httpResponse){
+                    return cloudifyClient.executions.getRunningExecutions({deployment_id: $scope.deploymentId, _include: 'id,workflow_id,status'}).then(function(httpResponse){
                         if(httpResponse.data.items.length !== 0){
                             $scope.succeed = undefined;
                             return;
