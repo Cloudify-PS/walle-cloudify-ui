@@ -12,8 +12,10 @@ describe('Directive: ngEnter', function () {
         var e = $.Event('keydown');
         e.which = 13;
         spyOn(e, 'preventDefault');
+        spyOn(e, 'stopPropagation');
         $(element).trigger(e);
         expect(e.preventDefault).toHaveBeenCalled();
+        expect(e.stopPropagation).toHaveBeenCalled();
 
     }));
 });

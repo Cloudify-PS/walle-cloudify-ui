@@ -253,10 +253,13 @@ input[required] {
                 padding: 2px 0 0 2px;
                 width: 35px;
                 height: 32px;
-                line-height: 32px;
-                vertical-align: middle;
-                text-align: center;
                 cursor: pointer;
+                display: flex;
+                i{
+                    margin: 0 auto;
+                    display: inline-block;
+                    vertical-align: middle;
+                }
             }
             .browseTxt {
                 position: absolute;

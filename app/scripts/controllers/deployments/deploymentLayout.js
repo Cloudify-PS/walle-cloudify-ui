@@ -80,4 +80,5 @@ angular.module('cosmoUiApp')
 
       $scope.loadExecutions = _loadExecutions;
       HotkeysManager.bindDeploymentActions($scope);
+      HotkeysManager.bindDeploymentNavigation($scope);
   });

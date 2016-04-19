@@ -8,9 +8,6 @@
     }
     table {
         width: $COSMOUI_LIST_WIDTH;
-        tr.selected{
-            border: #cce4f6 1px solid;
-        }
         td {
             &.actions {
                 width: $COSMOUI_LIST_HOVER_ACTION_WIDTH;

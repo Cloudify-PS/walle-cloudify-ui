@@ -2,8 +2,8 @@
     <div class="type-toggle">
         <div class="section-nav-menu-class">
             <div class="buttons-group">
-                <button ng-class="{'active': inputsState == 'form'}" class="btn btn-default" data-ng-click="toggleInputsState('form')">Parameters</button><!-- This comment is important!!! http://stackoverflow.com/questions/8824395/still-space-between-elements-buttons-with-margin-0
-                --><button ng-class="{'active': inputsState == 'raw'}" class="btn btn-default" data-ng-click="toggleInputsState('raw')">Raw</button>
+                <button ng-class="{'active': inputsState == 'form'}" class="btn btn-default" data-ng-click="toggleInputsState('form')" ng-enter="toggleInputsState('form')">Parameters</button><!-- This comment is important!!! http://stackoverflow.com/questions/8824395/still-space-between-elements-buttons-with-margin-0
+                --><button ng-class="{'active': inputsState == 'raw'}" class="btn btn-default" data-ng-click="toggleInputsState('raw')" ng-enter="toggleInputsState('raw')">Raw</button>
             </div>
         </div>
     </div>

@@ -482,6 +482,18 @@ button, input[type='button'], input[type='submit'], .btn.active:focus, .btn:acti
     outline: none;
 }
 
+.buttons-group, .ngdialog-content {
+    .btn-default, .btn, .gs-btn, .multiSelectMenu{
+        &:focus {
+            outline: 4px auto $OUTLINE_COLOR !important;
+        }
+
+        &:active{
+            outline: 0 !important;
+        }
+    }
+}
+
 .gs-font{
     display: inline-block;
     font-family: 'Varela', sans-serif;
@@ -490,4 +502,3 @@ button, input[type='button'], input[type='submit'], .btn.active:focus, .btn:acti
     padding-left:5px;
     margin-top: 2px;
 }
-

@@ -21,17 +21,31 @@ angular.module('cosmoUiApp')
             templateUrl: 'views/directives/sectionNavMenu.html',
             restrict: 'A',
             scope: {
-                'sections': '=sectionNavMenu'
+                'sections': '=sectionNavMenu',
+                'watch': '='
             },
             link: function postLink(scope/* ,element, attrs*/) {
-                scope.setSectionActive = function(sectionName){
-                    var section = _.find(scope.sections, {name: sectionName});
+                scope.setSectionActive = function(section){
                     if(section){
                         var activeSections = _.where(scope.sections,{active:true});
                         activeSections[0].active = false;
                         section.active = true;
                     }
                 };
+
+                if(scope.watch) {
+                    var unregister = scope.$on('$stateChangeSuccess', function (event, toState) {
+                        var section = _.find(scope.sections, function (section) {
+                            return _.include(section.href, toState.url);
+                        });
+                        scope.setSectionActive(section);
+                    });
+
+                    scope.$on('$destroy', function () {
+                        unregister();
+                    });
+                }
+
             }
         };
     });

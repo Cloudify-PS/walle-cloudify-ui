@@ -6,18 +6,18 @@
         <div class="dialogDescription">{{ 'dialogs.deploy.description' | translate }}</div>
         <div ng-show="!selectedBlueprint && !deployErrorMessage" class="gs-spinner large"></div>
 
-        <div ng-show="selectedBlueprint">
+        <div ng-if="selectedBlueprint" ng-enter="deployBlueprint(selectedBlueprint.id)">
 
             <div class="dialogDeploymentName">
-                <input type="text" spellcheck="false" ng-model="deployment_id" ng-enter="deployBlueprint(selectedBlueprint.id)" placeholder="{{ 'dialogs.deploy.name' | translate }}">
+                <input type="text" spellcheck="false" ng-model="$parent.deployment_id" placeholder="{{ 'dialogs.deploy.name' | translate }}" focus-on>
             </div>
 
             <div form-raw-params
-                 ng-show="isParamsVisible()"
-                 on-error="setError"
-                 params="selectedBlueprint.plan.inputs"
-                 raw-string="rawString"
-                 valid="inputsValid"></div>
+                 ng-show="$parent.isParamsVisible()"
+                 on-error="$parent.setError"
+                 params="$parent.selectedBlueprint.plan.inputs"
+                 raw-string="$parent.rawString"
+                 valid="$parent.inputsValid"></div>
 
         </div>
 

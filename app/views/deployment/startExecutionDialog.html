@@ -14,7 +14,8 @@
          data-ng-model="workflowName"
          data-listener="true"
          name="workflow"
-         data-text="{{'deployments.selectWorkflow' | translate}}"></div>
+         data-text="{{'deployments.selectWorkflow' | translate}}"
+         tabindex="0"></div>
     </div>
 
     <div class="selected-workflow">
@@ -32,7 +33,7 @@
     <div class="error-message monospace" ng-show="executeErrorMessage" ng-bind-html="executeErrorMessage"></div>
 
     <div class="buttonsContainer confirmationButtons">
-        <button class="gs-btn" ng-click="closeThisDialog()" >{{ 'dialogs.confirm.cancel' | translate }}</button>
+        <button class="gs-btn" ng-click="closeThisDialog()">{{ 'dialogs.confirm.cancel' | translate }}</button>
         <button class="gs-btn" ng-disabled="!isExecuteEnabled()" gs-spinner="{{inProcess}}" ng-click="executeWorkflow()">{{ 'dialogs.confirm.confirm' | translate }}</button>
     </div>
 

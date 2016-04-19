@@ -27,7 +27,7 @@
  */
 
 angular.module('cosmoUiApp')// todo : change to NodeCtrl
-    .controller('NodesInstancesCtrl', function ($scope, $filter, cloudifyClient, $q) {
+    .controller('NodesInstancesCtrl', function ($scope, $filter, cloudifyClient, $q, HotkeysManager) {
 
         $scope.typesList = [];
         var _blueprint = null;
@@ -251,4 +251,7 @@ angular.module('cosmoUiApp')// todo : change to NodeCtrl
             return matchFilter;
         };
 
+        HotkeysManager.bindQuickSearch($scope, function(){
+            $scope.focusInput = true;
+        });
     });

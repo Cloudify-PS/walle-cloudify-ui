@@ -30,7 +30,7 @@
         "cloudify-blueprint-topology": "http://gigaspaces-repository-eu.s3.amazonaws.com/org/cloudify3/3.4.0/m3-RELEASE/composer/blueprint-topology.zip",
         "angular-datepicker": "edenpessach/angular-datepicker#master",
         "angular-ui-router": "~0.2.15",
-        "angular-hotkeys": "chieffancypants/angular-hotkeys#~1.6.0",
+        "angular-hotkeys": "chieffancypants/angular-hotkeys#~1.7.0",
         "jsonlint": "~1.6.0"
     },
     "devDependencies": {

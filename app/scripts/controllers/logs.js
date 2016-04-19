@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('cosmoUiApp')
-    .controller('LogsCtrl', function ($scope, cloudifyClient, EventsMap, $stateParams, TableStateToRestApi, $state, $location) {
+    .controller('LogsCtrl', function ($scope, cloudifyClient, EventsMap, $stateParams, TableStateToRestApi, $state, $location, HotkeysManager) {
 
         //default sorting desc timestamp - when there is not a specific query
 
@@ -140,4 +140,8 @@ angular.module('cosmoUiApp')
             return time.constructor.name === 'Moment' || moment(time, 'YYYY-MM-DD HH:mm', true).isValid();
         };
 
+        HotkeysManager.bindQuickSearch($scope, function(){
+            $scope.focusInput = true;
+        });
+        HotkeysManager.bindPaging($scope);
     });

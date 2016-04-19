@@ -52,7 +52,9 @@
         border: 0 !important;
 
         tr {
-
+            &.selected{
+                outline: $OUTLINE_COLOR 1px solid;
+            }
             &.details {
                 background-color: #f5f5f5;
                 border-bottom: 1px solid #ccc;
@@ -422,4 +424,9 @@ input[type=text], input[type=password] {
             }
         }
     }
+}
+
+.cfp-hotkeys{
+    overflow: scroll;
+    display: inline-block !important;
 }
