@@ -45,7 +45,7 @@ body {
         left: 0;
         right: 0;
         bottom: $FOOTER_HEIGHT;
-        top: 35px;
+        top: $HEADER_HEIGHT;
         background: #fff;
 
         .main-content-display {
@@ -133,14 +133,14 @@ body {
 #header {
     .navbar{
         background: $COSMOUI_BACKGROUND;
-        min-height:35px;
+        min-height: $HEADER_HEIGHT;
     }
     .navbar-fixed-top{
         border:0;
     }
 
     .navbar-item{
-        height: 35px;
+        height: $HEADER_HEIGHT;
         display: table-cell;
         vertical-align: middle;
     }
@@ -165,7 +165,7 @@ body {
 
     .logout-panel {
         position: absolute;
-        top: 6px;
+        top: 8px;
         right: 21px;
         overflow: hidden;
         padding-top: 1px;
@@ -265,12 +265,14 @@ body {
 .logo {
     padding-left: 10px;
     padding-right: 10px;
-    display: inline-block;
+    display: inline-flex;
+    height: $HEADER_HEIGHT;
     .logo-img{
         height: 35px;
         background: url('#{$img-cloudify-logo}') no-repeat center center;
         background-size: cover;
         width: 110px;
+        margin: auto;
     }
     p{
         margin: 0;
