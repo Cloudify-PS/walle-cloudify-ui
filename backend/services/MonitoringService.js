@@ -33,7 +33,7 @@ function _getDashboardSeriesList(query, callbackFn) {
         }, null);
     }
     _createInfluxRequest({
-        q: 'list series like /' + query.dashboardId + '..*/i',
+        q: 'list series /' + query.dashboardId + '..*/i',
         time_precision: query.time_precision
     }, function (err, data) {
         return callbackFn(err, data);
