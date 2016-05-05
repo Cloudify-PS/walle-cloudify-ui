@@ -22,8 +22,8 @@ angular.module('cosmoUiApp')
                         'label': 'Logs & Events'
                     },
                     {
-                        'route': 'nodes-instances',
-                        'label': 'Nodes Instances'
+                        'route': 'node-instances',
+                        'label': 'Node Instances'
                     }
                 ];
                 scope.isActive = function(routeItem){
