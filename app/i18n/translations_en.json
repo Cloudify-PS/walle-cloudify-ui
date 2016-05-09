@@ -293,7 +293,8 @@
         "deployments": "Deployments",
         "logs": "Logs & Events",
         "nodesInstances": "Nodes Instances",
-        "interface": "Interface Elements"
+        "interface": "Interface Elements",
+        "settings": "Settings"
     },
     "formRawParams": {
         "noDescriptionTooltip": "No description was defined",
@@ -362,7 +363,32 @@
     },
      "columnsOrganizer" : {
          "buttonTitle" : "Customize Columns"
-     }
+     },
+    "maintenance": {
+        "message": {
+            "activating": "Cloudify is undergoing maintenance, some operations may not be available",
+            "activated": "Cloudify is undergoing maintenance and will be available again shortly"
+        },
+        "page":{
+            "title": "What is Maintenance Mode?",
+            "description": "Maintenance mode should be activated during maintenance operations on the Cloudify manager (such as upgrade), and blocks all major communication with it for all users.<br/> Activating maintenance mode will prevent making any new requests to the manager, but existing operations will not be canceled. Between activation time and the time all existing operations have been completed, only get requests will be served - enabling view of the current system resources with no change to those.<br/>Once activated it can deactivate at any given time.",
+            "statusesExplanation": "Maintenance mode has 3 different statuses:<br/>Deactivated - maintenance mode is off, all request are enabled<br/>Activating - maintenance mode is being activated, new operation requests are disabled, waiting for existing operations to finish<br/>Activated - maintenance mode is on, all existing operations have been completed, manager server major communication is disabled",
+            "currentStatus": "Maintenance mode is currently",
+            "notDeactivated": {
+                "button": "Deactivate Maintenance Mode"
+            },
+            "deactivated": {
+                "button": "Activate Maintenance Mode"
+            }
+        },
+        "dialog": {
+            "activateTitle": "Activate Maintenance Mode",
+            "deactivateTitle": "Deactivate Maintenance Mode",
+            "description": "Are you sure?",
+            "cancel": "Cancel",
+            "confirm": "Confirm"
+        }
+    }
 }
 
 

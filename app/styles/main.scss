@@ -29,6 +29,7 @@
 @import './sectionNavMenu';
 @import './startExecutionDialog';
 @import './SyntaxHighlighter/overwrites';
+@import './maintenanceMessage';
 
 $gs-infra-root: '../bower_components/gs-ui-infra';
 @import '../bower_components/gs-ui-infra/app/styles/main';
@@ -48,6 +49,7 @@ $fa-font-path: '../bower_components/font-awesome/fonts';
 @import './config';
 @import './logs';
 @import './login';
+@import './settings';
 @import './ngProgress';
 
 .embeded {

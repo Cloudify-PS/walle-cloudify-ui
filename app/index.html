@@ -135,6 +135,7 @@
 
 
     <div ui-view style="height:100%;"></div>
+    <maintenance-message></maintenance-message>
 
     <!-- build:js scripts/plugins.js -->
     <script src="bower_components/jquery/dist/jquery.js"></script>
@@ -187,6 +188,7 @@
 
     <!-- build:js scripts/modules.js -->
     <script src="scripts/app.js"></script>
+    <script src="scripts/run/pollMaintenanceStatus.js"></script>
     <script src="scripts/controllers/blueprintsIndex.js"></script>
     <script src="scripts/controllers/blueprints/uploadBlueprintDialog.js"></script>
     <script src="scripts/controllers/deployments/deploymentsIndex.js"></script>
@@ -267,6 +269,10 @@
     <script src="scripts/services/DATE_FORMATS.js"></script>
     <script src="scripts/services/HotkeysManager.js"></script>
     <script src="scripts/directives/bindTitle.js"></script>
+    <script src="scripts/services/MaintenanceService.js"></script>
+    <script src="scripts/directives/maintenanceMessage.js"></script>
+    <script src="scripts/controllers/maintenance.js"></script>
+    <script src="scripts/controllers/changeMaintenanceMode.js"></script>
     <!-- endbuild -->
 </body>
 </html>

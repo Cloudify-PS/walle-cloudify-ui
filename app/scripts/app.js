@@ -161,6 +161,16 @@ angular.module('cosmoUiApp', [
             templateUrl: 'views/interface.html',
             controller: 'InterfaceCtrl'
         })
+        .state('cloudifyLayout.settings', {
+            url: '/settings',
+            templateUrl: 'views/settings.html',
+            abstract: true
+        })
+        .state('cloudifyLayout.settings.maintenance', {
+            url: '/maintenance',
+            templateUrl: 'views/maintenance.html',
+            controller: 'MaintenanceCtrl'
+        })
         .state('cloudifyLayout.grafana', { url: '/grafana',
             templateUrl: 'views/grafana.html'
         })

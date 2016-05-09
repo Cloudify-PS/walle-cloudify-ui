@@ -32,3 +32,12 @@ window.mockPromise = function (successResponse, errorResponse) {
         }
     };
 };
+
+window.maintenanceMock = {
+    getOnStatusChangeMock: function(statusMock, unsubscribeCallback){
+        return function(callback){
+            callback(statusMock);
+            return unsubscribeCallback;
+        };
+    }
+};

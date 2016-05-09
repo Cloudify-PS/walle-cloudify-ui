@@ -166,7 +166,7 @@ body {
     .logout-panel {
         position: absolute;
         top: 8px;
-        right: 21px;
+        right: 60px;
         overflow: hidden;
         padding-top: 1px;
 
@@ -193,7 +193,6 @@ body {
         }
         .username {
             padding-right: 6px;
-            margin-right: 15px;
             font-family: 'OpenSansRegular', sans-serif;
             position: relative;
             display: inline-block;
@@ -209,6 +208,23 @@ body {
                 top: -2px;
                 right: 0;
             }
+        }
+    }
+
+    #settings-link{
+        float: right;
+        height: $HEADER_HEIGHT;
+        width: $HEADER_HEIGHT;
+        display: flex;
+        color: white;
+        text-decoration: none;
+        &:hover{
+            background: white;
+            color: $DARK_BLUE_FONT_COLOR;
+        }
+        i{
+            font-size: $HEADER_HEIGHT - 10;
+            margin: auto;
         }
     }
 }

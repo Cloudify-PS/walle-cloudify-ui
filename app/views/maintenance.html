@@ -1,0 +1,15 @@
+<div id="maintenance-page">
+    <div id="maintenance-settings" class="settings-card">
+        <h3>{{'maintenance.page.title' | translate}}</h3>
+        <p translate="maintenance.page.description"></p>
+        <p translate="maintenance.page.statusesExplanation"></p>
+        <div id="maintenance-actions">
+            <h4>{{'maintenance.page.currentStatus' | translate}} <span id="maintenance-status">{{status}}</span></h4>
+            <div ng-if="status && !loading">
+                <button class="gs-btn" ng-click="openMaintenanceDialog()">{{'maintenance.page.'+(status === "deactivated" ? "deactivated" : "notDeactivated")+'.button' | translate}}</button>
+                <p ng-if="errorMessage">{{errorMessage}}</p>
+            </div>
+        </div>
+    </div>
+    <div ng-if="status == 'activated'" id="maintenance-highlighter"></div>
+</div>
