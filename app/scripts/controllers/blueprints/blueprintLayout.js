@@ -68,4 +68,5 @@ angular.module('cosmoUiApp')
         };
 
         HotkeysManager.bindBlueprintActions($scope);
+        HotkeysManager.bindBlueprintNavigation($scope);
     });

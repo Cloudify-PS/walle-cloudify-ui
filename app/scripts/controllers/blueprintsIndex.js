@@ -1,12 +1,11 @@
 'use strict';
 
 angular.module('cosmoUiApp')
-    .controller('BlueprintsIndexCtrl', function ($scope, $log, cloudifyClient, CloudifyService, HotkeysManager) {
+    .controller('BlueprintsIndexCtrl', function ($scope, $log, cloudifyClient, CloudifyService, HotkeysManager, $state, ItemSelection) {
+        var blueprintsSelection;
         $scope.lastExecutedPlan = null;
-        $scope.selectedBlueprint = null;
         $scope.managerError = false;
         $scope.itemToDelete = null;
-
         $scope.itemsByPage = 9;
 
         function loadBlueprints() {
@@ -42,12 +41,29 @@ angular.module('cosmoUiApp')
 
         $scope.loadBlueprints();
 
-        $scope.select = function(selectedBlueprint){
-            _.each($scope.displayedBlueprints, function(blueprint){
-                blueprint.isSelected = false;
-            });
-            selectedBlueprint.isSelected = true;
+        $scope.select = function(blueprint){
+            blueprintsSelection.select(blueprint);
         };
 
+        $scope.$watch('displayedBlueprints', function(newValue){
+            blueprintsSelection = new ItemSelection(newValue);
+        });
+
         HotkeysManager.bindBlueprintActions($scope);
+        HotkeysManager.bindItemsNavigation($scope, function(){
+            blueprintsSelection.selectNext();
+        }, function () {
+            blueprintsSelection.selectPrevious();
+        }, {
+            description: 'Route to selected blueprint',
+            callback: function(){
+                if(blueprintsSelection.selected){
+                    $state.go('cloudifyLayout.blueprintLayout.topology',{blueprintId: blueprintsSelection.selected.id});
+                }
+            }
+        });
+        HotkeysManager.bindQuickSearch($scope, function(){
+            $scope.focusInput = true;
+        });
+        HotkeysManager.bindPaging($scope);
     });

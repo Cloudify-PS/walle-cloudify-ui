@@ -2,23 +2,19 @@
     <div class="dialogTitle">{{ 'dialogs.upload.title' | translate }}</div>
     <ng-progress></ng-progress>
     <div class="dialogDescription" ng-file-drop ng-model="myFile"  drag-over-class="dragover">{{ 'dialogs.upload.description' | translate }}</div>
-    <form id="uploadForm" name="uploadForm">
+    <form id="uploadForm" name="uploadForm" ng-enter="uploadFile()">
         <div class="browse">
-            <label id="browseBtn" class="gs-btn">
-                <i class="icon-gs-add-file"></i>
-                <input type="file" name="fileInput" id="fileInput" accept=".tar.bz2, .bz2, .gz,.tar.gz,.tar,.tgz,.zip" ng-file-select="onFileSelect($files)">
-            </label>
-            <input type="text" spellcheck="false" class="browseTxt" ng-change="updatePath()" ng-model="inputText" placeholder="{{ 'dialogs.upload.browseText' | translate }}" required>
-        </div>
-
-        <div class="name">
-            <input type="text" spellcheck="false" ng-model="blueprintUploadOpts.blueprint_id" placeholder="{{ 'dialogs.upload.name' | translate }}" required>
+            <input type="text" spellcheck="false" class="browseTxt" ng-change="updatePath()" ng-model="inputText" placeholder="{{ 'dialogs.upload.browseText' | translate }}" required  tabindex="1">
+            <upload-file on-file-select="onFileSelect" extensions="'.tar.bz2,.bz2,.gz,.tar.gz,.tar,.tgz,.zip'" open-file-selection="openFileSelection" ng-enter="openFileSelection()" tabindex="2"></upload-file>
         </div>
         <div class="name">
-            <input type="text" spellcheck="false" ng-model="blueprintUploadOpts.params.application_file_name" placeholder="{{ 'dialogs.upload.filename' | translate }}">
+            <input type="text" spellcheck="false" ng-model="blueprintUploadOpts.blueprint_id" placeholder="{{ 'dialogs.upload.name' | translate }}" required  tabindex="3">
+        </div>
+        <div class="name">
+            <input type="text" spellcheck="false" ng-model="blueprintUploadOpts.params.application_file_name" placeholder="{{ 'dialogs.upload.filename' | translate }}"  tabindex="4">
         </div>
         <div class="error-message" ng-show="isUploadError()">{{errorMessage}}</div>
         <div id="required-message">{{ 'dialogs.upload.required' | translate }}</div>
-        <button id="uploadBtn" class="gs-btn" ng-disabled="!isUploadEnabled()" gs-spinner="{{uploadInProcess}}" ng-click="uploadFile()">{{ 'dialogs.upload.save' | translate }}</button>
+        <button id="uploadBtn" class="gs-btn" ng-disabled="!isUploadEnabled()" gs-spinner="{{uploadInProcess}}" ng-click="uploadFile()" tabindex="5">{{ 'dialogs.upload.save' | translate }}</button>
     </form>
 </div>

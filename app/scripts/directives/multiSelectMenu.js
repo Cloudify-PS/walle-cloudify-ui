@@ -84,25 +84,34 @@ angular.module('cosmoUiApp')
                  * Open DropDown
                  * @private
                  */
+                var activeElement;
                 function _open( $event ) {
-                    if ($event.stopPropagation){ $event.stopPropagation(); }
-                    if ($event.preventDefault){ $event.preventDefault(); }
-                    $event.cancelBubble = true;
-                    $event.returnValue = false;
-
-                    if ( $event && $event.target ){
-                        if ( $($event.target).is('.no-click')  ){
-                            return;
-                        }
-
-                        if ( $($event.target).is('t') ){
-                            $('[data-ng-model="filter"]').focus();
-                            $('[data-ng-model="filter"]')[0].setSelectionRange(0,0);
-                        }
-
+                    activeElement = document.activeElement;
+                    if (activeElement) {
+                        activeElement.blur();
                     }
+                    if($event) {
+                        if ($event.stopPropagation) {
+                            $event.stopPropagation();
+                        }
+                        if ($event.preventDefault) {
+                            $event.preventDefault();
+                        }
+                        $event.cancelBubble = true;
+                        $event.returnValue = false;
 
+                        if ($event && $event.target) {
+                            if ($($event.target).is('.no-click')) {
+                                return;
+                            }
 
+                            if ($($event.target).is('t')) {
+                                $('[data-ng-model="filter"]').focus();
+                                $('[data-ng-model="filter"]')[0].setSelectionRange(0, 0);
+                            }
+
+                        }
+                    }
 
                     if ( !isOpen ){
                         $scope.filter = '';
@@ -122,6 +131,10 @@ angular.module('cosmoUiApp')
                  */
                 function _close() {
                     isOpen = false;
+                    if (activeElement) {
+                        activeElement.focus();
+                        activeElement = undefined;
+                    }
                 }
 
                 /**
@@ -287,8 +300,8 @@ angular.module('cosmoUiApp')
                 /**
                  * Keywords Shourcuts
                  */
-                $document.keyup(function (e) {
-                    if (!isOpen) {
+                $document.keydown(function (e) {
+                    if (!isOpen || e.isDefaultPrevented() ) {
                         return;
                     }
                     if (e.keyCode === 27) {
@@ -300,6 +313,7 @@ angular.module('cosmoUiApp')
                             break;
                         case 13: // Enter
                             $scope.$apply(_select(optionMark));
+                            e.preventDefault();
                             break;
                         case 38: // navigate up
                         case 40: // navigate down

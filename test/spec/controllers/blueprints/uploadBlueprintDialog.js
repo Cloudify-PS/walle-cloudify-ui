@@ -264,21 +264,4 @@ describe('Controller: UploadBlueprintDialogCtrl', function () {
             expect(opts.blueprint_id).toBe('a%2Fb');
         }));
     });
-
-
-    describe('display', function(){
-        it('should accept multiple file compressions', inject(function( $templateCache ){
-            var templateUrl = 'views/blueprint/uploadDialog.html';
-            var html = $templateCache.get(templateUrl);
-            var accepts = $(html).find('[accept]');
-
-            expect(accepts.length > 0).toBe(true); // expect it to have elements
-
-            // NOTE : very important, gz type must appear here even though incorrect (should be tar.gz) because in mac it does not work properly
-            // https://github.com/danialfarid/ng-file-upload/issues/1025
-            var multipleCompressions = $(html).find('[accept=".tar.bz2, .bz2, .gz,.tar.gz,.tar,.tgz,.zip"]');
-            expect(multipleCompressions.length).toBe(accepts.length); // all of the items should have the same compression types
-
-        }));
-    });
 });

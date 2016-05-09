@@ -2,14 +2,14 @@
 
 // TODO: this code should be much more testable
 angular.module('cosmoUiApp')
-    .controller('DeploymentsCtrl', function ($scope, ExecutionsService, $location, $log, cloudifyClient, HotkeysManager) {
+    .controller('DeploymentsCtrl', function ($scope, ExecutionsService, $location, $log, cloudifyClient, HotkeysManager, $state, ItemSelection) {
 
         $scope.deployments = null;
         $scope.confirmationType = '';
 
         // holds currently running execution per deployment_id
         var runningExecutions = {};
-
+        var deploymentsSelection;
         $scope.inputs = {};
         $scope.managerError = '';
 
@@ -76,14 +76,30 @@ angular.module('cosmoUiApp')
         $scope.loadDeployments();
 
         $scope.select = function(selectedDeployment){
-            _.each($scope.displayedDeployments, function(deployment){
-                deployment.isSelected = false;
-            });
-            selectedDeployment.isSelected = true;
-
+            deploymentsSelection.select(selectedDeployment);
         };
 
+        $scope.$watch('displayedDeployments', function(newValue){
+            deploymentsSelection = new ItemSelection(newValue);
+        });
+
         HotkeysManager.bindDeploymentActions($scope);
+        HotkeysManager.bindItemsNavigation($scope, function(){
+            deploymentsSelection.selectNext();
+        }, function () {
+            deploymentsSelection.selectPrevious();
+        }, {
+            description: 'Route to selected deployment',
+            callback: function(){
+                if(deploymentsSelection.selected){
+                    $state.go('cloudifyLayout.deploymentLayout.topology',{deploymentId: deploymentsSelection.selected.id});
+                }
+            }
+        });
+        HotkeysManager.bindQuickSearch($scope, function(){
+            $scope.focusInput = true;
+        });
+        HotkeysManager.bindPaging($scope);
     })
     .filter('customFilter', function ($filter) {
         var filterFilter = $filter('filter');
