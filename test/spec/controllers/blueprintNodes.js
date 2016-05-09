@@ -15,6 +15,7 @@ describe('Controller: BlueprintNodesCtrl', function () {
         spyOn(cloudifyClient.blueprints, 'get').and.returnValue(
             window.mockPromise({'data': {'plan': {'nodes': 'foo'}}}));
         spyOn(NodeService, 'createNodesTree').and.callFake(function(){});
+        spyOn(NodeService, 'assignNodesGroups').and.callFake(function(){});
 
         scope = $rootScope.$new();
         DeploymentNodesCtrl = $controller('BlueprintNodesCtrl', {
@@ -40,6 +41,7 @@ describe('Controller: BlueprintNodesCtrl', function () {
         it('is should get blueprintId from route params and call get blueprint on cloudify client', function(){
             expect(cloudifyClient.blueprints.get).toHaveBeenCalled();
             expect(NodeService.createNodesTree).toHaveBeenCalled();
+            expect(NodeService.assignNodesGroups).toHaveBeenCalled();
         });
     });
 

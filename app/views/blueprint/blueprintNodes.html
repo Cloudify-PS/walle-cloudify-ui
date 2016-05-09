@@ -11,6 +11,7 @@
                 <th>Number of instances</th>
                 <th>Contained in</th>
                 <th>Connected to</th>
+                <th>Group</th>
                 <th><!--Actions--></th>
             </tr>
             </thead>
@@ -19,17 +20,18 @@
                 <td><i class="gs-node-icon topology-glyph {{ row.class }}"></i></td>
                 <td>{{ row.name }}</td>
                 <td>{{ row.type }}</td>
-                <td>{{ row.instances.deploy }}</td>
+                <td>{{ row.instances.deploy || '-'}}</td>
                 <td>
                     <span data-ng-if="getRelationshipByType(row, 'contained_in').length > 0"
                           data-ng-repeat="container in getRelationshipByType(row, 'contained_in')">{{ container.target_id }}{{$last ? '' : ', '}}</span>
-                    <span data-ng-if="getRelationshipByType(row, 'contained_in').length == 0">--</span>
+                    <span data-ng-if="getRelationshipByType(row, 'contained_in').length == 0">-</span>
                 </td>
                 <td>
                     <span data-ng-if="getRelationshipByType(row, 'connected_to').length > 0"
                           data-ng-repeat="connection in getRelationshipByType(row, 'connected_to')">{{ connection.target_id }}{{$last ? '' : ', '}}</span>
-                    <span data-ng-if="getRelationshipByType(row, 'connected_to').length == 0">--</span>
+                    <span data-ng-if="getRelationshipByType(row, 'connected_to').length == 0">-</span>
                 </td>
+                <td>{{ row.group || '-'}}</td>
                 <td><i class="topology-glyph node-details" ng-click="viewNode(getNodeById(row.id))"></i></td>
             </tr>
             </tbody>

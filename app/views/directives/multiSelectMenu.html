@@ -3,7 +3,7 @@
         <div class="button">
             <label>
                 <t title="{{selectedLabel()}}">{{ selectedLabel() }}</t>
-                <input type="text" class="no-click" data-ng-model="filter" placeholder="{{ reflection() }}">
+                <input type="text" class="no-click" data-ng-model="filter" placeholder="{{ reflection() }}" ng-enter="selectMarked()">
                 <!--<input value="{{ reflection() }}"  class="no-click reflection">-->
             </label>
         </div>
@@ -12,13 +12,20 @@
 
 
     <ul>
-        <li data-ng-repeat="option in filteredItems = (options | filter: filter)"
-            data-ng-click="select(option)"
-            data-ng-class="navigator(option)"
-            data-ng-mouseover="hoverOption(option)"
-            title="{{ option.label }}">
-            <input type="checkbox" data-ng-show="multiple" data-ng-checked="optionChecked(option)">
-            {{ option.label }}
+        <li data-ng-repeat="option in filteredItems track by $index">
+            <div
+                ng-if="!option.groupLabel"
+                data-ng-click="select(option)"
+                data-ng-class="navigator(option)"
+                data-ng-mouseover="hoverOption(option)"
+                title="{{ option.label }}"
+                class="select-item">
+                <input type="checkbox" data-ng-show="multiple" data-ng-checked="optionChecked(option)">
+                {{ option.label }}
+            </div>
+            <div ng-if="option.groupLabel" class="group-label">
+                {{option.groupLabel}}
+            </div>
         </li>
     </ul>
 </div>
