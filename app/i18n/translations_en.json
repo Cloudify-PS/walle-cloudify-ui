@@ -27,8 +27,8 @@
             "uploadBlueprint": "Let's upload a blueprint"
         },
         "source": {
-            "chooseFile": "Please choose file to preview.",
-            "noPreview": "Generating Blueprint Source View...",
+            "chooseFile": "Please choose a file to preview.",
+            "noPreview": "Generating blueprint Source View...",
             "browseError": "Error browsing blueprint files",
             "downloadLink": "Download blueprint"
         },
@@ -38,7 +38,7 @@
         },
         "dialogs": {
             "delete" : {
-                "title" : "Delete blueprint?",
+                "title" : "Delete blueprint",
                 "description" : "Are you sure you want to delete '{{blueprint}}'?",
                 "cancel" : "Cancel",
                 "confirm" : "Confirm"
@@ -49,7 +49,7 @@
                 "title": "Blueprint name"
             },
             "deploymentsCount": {
-                "title": "Number Of Deployments"
+                "title": "Number of Deployments"
             }
         }
     },
@@ -88,7 +88,7 @@
         },
         "appStatus": {
             "succeedInstall": "Successfully installed",
-            "failedInstall": "Failed to install successfully"
+            "failedInstall": "Failed to install"
         },
         "executions": {
             "terminated": "Completed successfully",
@@ -108,7 +108,7 @@
             "wait": "Please wait"
         },
         "monitoring": {
-            "loading": "Please wait while monitoring dashboard loads"
+            "loading": "Please wait while the monitoring dashboard is loading..."
         },
         "inputsOutputs": {
             "inputsError": "Error getting deployment's inputs",
@@ -146,7 +146,7 @@
         },
         "dialogs":{
             "delete" : {
-                "title" : "Delete Deployment?",
+                "title" : "Delete deployment",
                 "description" : "Are you sure you want to delete '{{deployment}}'?",
                 "confirm" : "Yes",
                 "no" : "No",
@@ -162,7 +162,7 @@
             }
         },
         "deleteBtn": "Delete",
-        "executeWorkflowBtn" : "Execute Workflow",
+        "executeWorkflowBtn" : "Execute workflow",
         "selectWorkflow" : "Select a workflow"
     },
     "settingsToggles": {
@@ -197,8 +197,8 @@
             "target": "Target node",
             "source": "Source node",
             "type": "Relationship type",
-            "interface": "Interface Implementation",
-            "methods": "Interface Methods",
+            "interface": "Interface implementation",
+            "methods": "Interface methods",
             "noRelationships": "No relationships to display"
         }
 
@@ -245,28 +245,28 @@
         "filters": {
             "blueprints": {
                 "title": "Blueprints:",
-                "text": "Choose Blueprints"
+                "text": "Choose blueprints"
             },
             "deployments": {
                 "title": "Deployments:",
-                "text": "Choose Deployments"
+                "text": "Choose deployments"
             },
             "logLevels": {
                 "title": "Log Levels:",
-                "text": "Choose Log Levels"
+                "text": "Choose severity levels"
             },
             "eventTypes": {
                 "title": "Event Types",
-                "text": "Choose Event Types"
+                "text": "Choose event types"
             },
             "timeRange": {
-                "title": "Time Range:",
+                "title": "Time range:",
                 "from":{
-                    "title": "From Time",
+                    "title": "From time",
                     "placeholder": "YYYY-MM-DD HH:MM"
                 } ,
                 "to": {
-                    "title": "To Time",
+                    "title": "To time",
                     "placeholder": "YYYY-MM-DD HH:MM"
                 }
             },
@@ -313,14 +313,14 @@
         "execution" : {
             "confirmCancel" : "Cancel execution?",
             "confirmExecution" : "Start execution?",
-            "cancelDescription" : "Are you sure you want to cancel current execution?",
+            "cancelDescription" : "Are you sure you want to cancel the current execution?",
             "forceCancel" : "Force"
 
         },
         "upload": {
             "title": "Upload Blueprint",
-            "description": "Select blueprint file to upload, and click 'Upload'",
-            "browseText": "Select blueprint file or url",
+            "description": "Select blueprint archive to upload",
+            "browseText": "Select blueprint archive or url",
             "save": "Upload",
             "name": "Blueprint ID",
             "filename": "Blueprint filename (e.g blueprint.yaml)",
@@ -332,14 +332,14 @@
         },
         "deploy": {
             "title": "Deploy",
-            "description": "Please enter deployment name",
+            "description": "Enter a deployment name",
             "create": "Create",
             "name": "Deployment name",
             "value": "Enter Value"
         },
         "confirm": {
             "title": "Confirm",
-            "descriptionExecute": "Are you sure you want to execute",
+            "descriptionExecute": "Select a workflow to execute",
             "descriptionCancel": "Cancel",
             "confirm": "Confirm",
             "cancel": "Cancel",
@@ -348,16 +348,16 @@
     },
     "blueprintUpload" : {
         "generalError" : "Error uploading blueprint",
-        "tooBig" : "Blueprint is too big"
+        "tooBig" : "Blueprint archive is too big"
     },
     "nodesInstances" : {
-        "gettingNodesFailed": "Failed getting nodes instances",
+        "gettingNodesFailed": "Failed getting node instances",
         "chooseBlueprint" : "Choose a blueprint...",
-        "blueprintsFilter" : "Deployed Blueprints:",
+        "blueprintsFilter" : "Deployed blueprints:",
         "deploymentsFilter" : "Deployments:",
-        "blueprintsFilterPlaceholder" : "Choose a Blueprint",
-        "deploymentsFilterPlaceholder" : "Choose Deployments",
-        "typesFilterPlaceholder" : "Choose Types",
+        "blueprintsFilterPlaceholder" : "Choose a blueprint",
+        "deploymentsFilterPlaceholder" : "Choose deployments",
+        "typesFilterPlaceholder" : "Choose types",
         "typesFilter" : "Types:",
         "searchFilter" : "Free Text:"
     },
@@ -371,8 +371,8 @@
         },
         "page":{
             "title": "What is Maintenance Mode?",
-            "description": "Maintenance mode should be activated during maintenance operations on the Cloudify manager (such as upgrade), and blocks all major communication with it for all users.<br/> Activating maintenance mode will prevent making any new requests to the manager, but existing operations will not be canceled. Between activation time and the time all existing operations have been completed, only get requests will be served - enabling view of the current system resources with no change to those.<br/>Once activated it can deactivate at any given time.",
-            "statusesExplanation": "Maintenance mode has 3 different statuses:<br/>Deactivated - maintenance mode is off, all request are enabled<br/>Activating - maintenance mode is being activated, new operation requests are disabled, waiting for existing operations to finish<br/>Activated - maintenance mode is on, all existing operations have been completed, manager server major communication is disabled",
+            "description": "Maintenance mode should be activated during maintenance operations on the Manager (such as upgrade) and blocks all major communication with it for all users.<br/> Activating maintenance mode will prevent making any new requests to the Manager, but existing executions will continue running. Between activation time and the time all existing executions have been completed, only get requests will be served - enabling view of the current system resources with no change to those.<br/>Once activated it can be deactivated at any given time.",
+            "statusesExplanation": "Maintenance mode has 3 different statuses:<br/>Deactivated - maintenance mode is off, all requests are enabled<br/>Activating - maintenance mode is being activated, new requests are blocked, waiting for existing executions to finish<br/>Activated - maintenance mode is on, all existing executions have been completed, no requests can be served by the Manager",
             "currentStatus": "Maintenance mode is currently",
             "notDeactivated": {
                 "button": "Deactivate Maintenance Mode"
