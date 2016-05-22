@@ -13,7 +13,7 @@ angular.module('cosmoUiApp')
             hotkeys.bindTo(scope)
                 .add({
                     combo: 'mod+b',
-                    description: 'Navigating to Blueprint',
+                    description: 'Navigate to Blueprints',
                     allowIn: ['INPUT', 'TEXTAREA'],
                     callback: function () {
                         $state.go('cloudifyLayout.blueprints');
@@ -21,7 +21,7 @@ angular.module('cosmoUiApp')
                 })
                 .add({
                     combo: 'mod+d',
-                    description: 'Navigating to Deployments',
+                    description: 'Navigate to Deployments',
                     allowIn: ['INPUT', 'TEXTAREA'],
                     callback: function (e) {
                         e.preventDefault();
@@ -30,7 +30,7 @@ angular.module('cosmoUiApp')
                 })
                 .add({
                     combo: 'mod+l',
-                    description: 'Navigating to Logs & events',
+                    description: 'Navigate to Logs & Events',
                     allowIn: ['INPUT', 'TEXTAREA'],
                     callback: function (e) {
                         e.preventDefault();
@@ -39,7 +39,7 @@ angular.module('cosmoUiApp')
                 })
                 .add({
                     combo: 'mod+i',
-                    description: 'Navigating to Nodes-Instances',
+                    description: 'Navigate to Node-Instances',
                     allowIn: ['INPUT', 'TEXTAREA'],
                     callback: function () {
                         $state.go('cloudifyLayout.nodes');
@@ -51,7 +51,7 @@ angular.module('cosmoUiApp')
             hotkeys.bindTo(scope)
                 .add({
                     combo: 'u',
-                    description: 'Upload blueprint',
+                    description: 'Upload a blueprint',
                     callback: function () {
                         scope.openAddDialog();
                     }
@@ -64,14 +64,14 @@ angular.module('cosmoUiApp')
             hotkeys.bindTo(scope)
                 .add({
                     combo: 'd',
-                    description: 'Deploy blueprint',
+                    description: 'Create a deployment',
                     callback: function () {
                         scope.$broadcast('hotkeyDeploy');
                     }
                 })
                 .add({
                     combo: 'shift+d',
-                    description: 'Delete blueprint',
+                    description: 'Delete current blueprint',
                     callback: function () {
                         scope.$broadcast('hotkeyDeleteBlueprint');
                     }
@@ -82,21 +82,21 @@ angular.module('cosmoUiApp')
             hotkeys.bindTo(scope)
                 .add({
                     combo: 'e',
-                    description: 'Execute deployment',
+                    description: 'Execute a workflow',
                     callback: function () {
                         scope.$broadcast('hotkeyExecute');
                     }
                 })
                 .add({
                     combo: 'shift+e',
-                    description: 'Cancel Executing deployment',
+                    description: 'Cancel workflow execution',
                     callback: function () {
                         scope.$broadcast('hotkeyCancelExecution');
                     }
                 })
                 .add({
                     combo: 'shift+d',
-                    description: 'Delete blueprint',
+                    description: 'Delete current deployment',
                     callback: function () {
                         scope.$broadcast('hotkeyDeleteDeployment');
                     }
@@ -130,21 +130,21 @@ angular.module('cosmoUiApp')
             hotkeys.bindTo(scope)
                 .add({
                     combo: 'g t',
-                    description: 'Go to topology',
+                    description: 'Go to Topology',
                     callback: function () {
                         $state.go('cloudifyLayout.blueprintLayout.topology');
                     }
                 })
                 .add({
                     combo: 'g n',
-                    description: 'Go to nodes',
+                    description: 'Go to Nodes',
                     callback: function () {
                         $state.go('cloudifyLayout.blueprintLayout.nodes');
                     }
                 })
                 .add({
                     combo: 'g s',
-                    description: 'Go to source',
+                    description: 'Go to Source',
                     callback: function () {
                         $state.go('cloudifyLayout.blueprintLayout.source');
                     }
@@ -155,42 +155,42 @@ angular.module('cosmoUiApp')
             hotkeys.bindTo(scope)
                 .add({
                     combo: 'g t',
-                    description: 'Go to topology',
+                    description: 'Go to Topology',
                     callback: function () {
                         $state.go('cloudifyLayout.deploymentLayout.topology');
                     }
                 })
                 .add({
                     combo: 'g n',
-                    description: 'Go to nodes',
+                    description: 'Go to Nodes',
                     callback: function () {
                         $state.go('cloudifyLayout.deploymentLayout.nodes');
                     }
                 })
                 .add({
                     combo: 'g e',
-                    description: 'Go to executions',
+                    description: 'Go to Executions',
                     callback: function () {
                         $state.go('cloudifyLayout.deploymentLayout.executions');
                     }
                 })
                 .add({
                     combo: 'g i',
-                    description: 'Go to inputs & outputs',
+                    description: 'Go to Inputs & Outputs',
                     callback: function () {
                         $state.go('cloudifyLayout.deploymentLayout.inputsOutputs');
                     }
                 })
                 .add({
                     combo: 'g s',
-                    description: 'Go to source',
+                    description: 'Go to Source',
                     callback: function () {
                         $state.go('cloudifyLayout.deploymentLayout.source');
                     }
                 })
                 .add({
                     combo: 'g m',
-                    description: 'Go to monitoring',
+                    description: 'Go to Monitoring',
                     callback: function () {
                         $state.go('cloudifyLayout.deploymentLayout.monitoring');
                     }
@@ -201,7 +201,7 @@ angular.module('cosmoUiApp')
             hotkeys.bindTo(scope)
                 .add({
                     combo: '/',
-                    description: 'Quick search',
+                    description: 'Quick Search',
                     callback: callback
                 });
         };
