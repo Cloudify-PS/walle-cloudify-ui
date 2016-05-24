@@ -1,0 +1,39 @@
+.upload-plugin-dialog {
+
+    #uploadDialogContainer {
+
+        &.dragover {
+            outline: 2px dashed $clr-base-00;
+        }
+
+        #uploadForm {
+            padding: 0 20px 20px;
+
+            &::after{
+                content: '';
+                clear: both;
+                display: block;
+            }
+
+            .browse {
+                margin-bottom: 20px;
+
+                #browseBtn {
+                    margin: 0;
+                }
+            }
+            #uploadBtn {
+                position: static;
+                float: right;
+                margin: 0;
+
+                > span {
+                    position: relative;
+                }
+            }
+            .error-message {
+                margin: 20px -20px;
+            }
+        }
+    }
+}

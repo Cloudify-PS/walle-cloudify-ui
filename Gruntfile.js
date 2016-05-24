@@ -113,8 +113,7 @@ module.exports = function (grunt) {
                 options: {
                     middleware: function (connect) {
                         return [
-                            mountFolder(connect, '.tmp'),
-                            mountFolder(connect, 'test')
+                            mountFolder(connect, '.tmp')
                         ];
                     }
                 }
@@ -125,6 +124,22 @@ module.exports = function (grunt) {
                         return [
                             proxySnippet,
                             mountFolder(connect, yeomanConfig.dist)
+                        ];
+                    }
+                }
+            }
+        },
+        connectTest: {
+            options: {
+                port: 9003,
+                hostname: 'localhost'
+            },
+            test: {
+                options: {
+                    middleware: function (connect) {
+                        return [
+                            mountFolder(connect, '.tmp'),
+                            mountFolder(connect, 'test')
                         ];
                     }
                 }
@@ -793,6 +808,8 @@ module.exports = function (grunt) {
 
     grunt.registerTask('analyze', 'analyzes the sources and reports quality problems such as copy-paste', ['jscpd', 'grunt-jscpd-reporter']);
 
+    grunt.registerTask('connectTest', '', []);
+
     grunt.registerTask('test', function (testBackend) {
         var tasks = [];
         if (testBackend === undefined || testBackend === '' || testBackend === 'all' || testBackend === 'frontend') { // default
@@ -802,7 +819,7 @@ module.exports = function (grunt) {
                 'sasslint',
                 'clean:server',
                 'concurrent:test',
-                'connect:test',
+                'connectTest:test',
                 'html2js',
                 'karma:unit'
             ];

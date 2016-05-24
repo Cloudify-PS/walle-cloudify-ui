@@ -1,0 +1,29 @@
+#plugin {
+
+    .content-header {
+        margin-bottom: 4px;
+    }
+
+    .table-description {
+        font-size: 16px;
+        display: inline-block;
+        margin-top: 12px;
+        color: $clr-base-11;
+    }
+
+    action-selector {
+        float: right;
+    }
+
+    .content-section {
+        clear: both;
+        margin-top: 15px;
+    }
+
+    .gs-table {
+
+        th {
+            width: 50%;
+        }
+    }
+}

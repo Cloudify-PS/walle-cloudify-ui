@@ -1,0 +1,63 @@
+<div id="plugins">
+
+    <div class="content-header no-border">
+        <div class="breadcrumbs">
+            <ul>
+                <li><span>{{:: 'breadcrumb.plugins' | translate }}</span></li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="content-section" st-table="displayedPlugins" st-safe-src="plugins" ng-hide="errorMessage == 'permissionError'"
+         cfy-st-persist id="_plu" st-table-id="_plu" items-by-page="itemsByPage" content-loaded="plugins">
+        <form class="form-group">
+            <label for="searchByName">{{:: 'plugins.filter' | translate }}</label>
+            <input type="search" id="searchByName" class="form-control" st-search="package_name" placeholder="search" focus-on="focusInput" />
+            <div class="gs-btn" ng-click="uploadPlugin()">{{:: 'plugins.uploadBtn' | translate }}</div>
+        </form>
+        <table ng-hide="errorMessage" class="gs-table">
+            <thead>
+                <tr>
+                    <th st-sort="id" class="id sorting">{{:: 'plugins.table.id' | translate }}</th>
+                    <th st-sort="package_name" class="name sorting">{{:: 'plugins.table.name' | translate }}</th>
+                    <th st-sort="package_version" class="version sorting">{{:: 'plugins.table.version' | translate }}</th>
+                    <th st-sort="supported_platform" class="platform sorting">{{:: 'plugins.table.platform' | translate }}</th>
+                    <th st-sort="distribution" class="distribution sorting">{{:: 'plugins.table.distribution' | translate }}</th>
+                    <th st-sort="distribution_release" class="release sorting">{{:: 'plugins.table.release' | translate }}</th>
+                    <th st-sort="uploaded_at" class="uploaded sorting">{{:: 'plugins.table.uploaded' | translate }}</th>
+                    <th class="actions"></th>
+                </tr>
+            </thead>
+
+            <tbody ng-repeat="plugin in displayedPlugins" ng-click="select(plugin)">
+                <tr ng-class="{selected: plugin.isSelected}">
+                    <!--Access to single plugin view is disabled until there is a better API for getting plugin usage-->
+                    <!--<td class="id"><a ng-href="#/plugin/{{:: plugin.id }}">{{:: plugin.id }}</a></td>-->
+                    <td class="id">{{:: plugin.id }}</td>
+                    <td class="name">{{:: plugin.package_name }}</td>
+                    <td class="version sorting">{{:: plugin.package_version }}</td>
+                    <td class="platform sorting">{{:: plugin.supported_platform }}</td>
+                    <td class="distribution sorting">{{:: plugin.distribution }}</td>
+                    <td class="release sorting">{{:: plugin.distribution_release }}</td>
+                    <td class="uploaded sorting">{{:: plugin.uploaded_at }}</td>
+                    <td class="actions">
+                        <action-selector target="plugin" actions="actions"></action-selector>
+                    </td>
+                </tr>
+            </tbody>
+
+            <tfoot>
+                <tr>
+                    <td colspan="8" class="text-center">
+                        <div id="pagination" st-pagination st-items-by-page="itemsByPage"></div>
+                    </td>
+                </tr>
+            </tfoot>
+        </table>
+
+        <div class="gs-spinner large" ng-hide="plugins || errorMessage"></div>
+        <div class="empty-message" ng-show="plugins && !plugins.length">{{:: 'plugins.emptyMessage' | translate }}</div>
+    </div>
+
+    <div class="connect-error-message" ng-show="errorMessage">{{ errorMessage | translate }}</div>
+</div>

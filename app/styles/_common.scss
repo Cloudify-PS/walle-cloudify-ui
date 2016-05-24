@@ -286,7 +286,7 @@
     &.gs-icon-logs:before { color: #049cdb; }
 }
 
-p[tooltip], div[tooltip], td {
+p[tooltip], div[tooltip] {
     overflow: hidden;
     text-overflow: ellipsis;
 }
@@ -375,6 +375,27 @@ input[type=text], input[type=password] {
 
 .error {
     color: #f00;
+}
+.connect-error-message {
+    color: #f00;
+    margin-top: 20px;
+}
+.empty-message {
+    margin-top: 20px;
+    margin-left: 20px;
+}
+.not-found-message {
+    text-align: center;
+    vertical-align: middle;
+
+    .message {
+        margin-top: 100px;
+        padding: 20px;
+    }
+}
+
+label {
+    font-weight: normal;
 }
 
 [date-picker-wrapper] {

@@ -49,6 +49,7 @@ angular.module('cosmoUiApp')
         $scope.navMenu = [
             { 'name': 'Topology', 'href': '/topology'},
             { 'name': 'Nodes', 'href': '/nodes'},
+            { 'name': 'Plugins', 'href': '/plugins'},
             { 'name': 'Source', 'href': '/source'}
         ];
 
