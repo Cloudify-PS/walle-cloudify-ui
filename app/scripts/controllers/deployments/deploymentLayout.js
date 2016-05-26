@@ -56,6 +56,22 @@ angular.module('cosmoUiApp')
               }, function() {});
       }
 
+      var updateState;
+      function _loadDeploymentUpdates(){
+          if ( $scope.deploymentNotFound ){
+              return { then: function(){} };
+          }
+          return cloudifyClient.deploymentUpdates.list({deployment_id: $scope.deploymentId, _include: 'state'})
+              .then(function (result) {
+                  var first = _.first(result.data.items);
+                  if(first.state === 'committing'){
+                      $scope.currentUpdate = first;
+                  } else{
+                      $scope.currentUpdate = undefined;
+                      updateState = first.state;
+                  }
+              }, function() {});
+      }
 
       $scope.isInitializing = function () {
           return $scope.currentExecution && $scope.currentExecution.workflow_id === 'create_deployment_environment';
@@ -67,7 +83,15 @@ angular.module('cosmoUiApp')
           }
       };
 
+      $scope.reloadDeployment = function(){
+          if(updateState === 'committed'){
+              //TODO change this to reload when removing ticker
+              $scope.goToDeployments();
+          }
+      };
+
       $scope.registerTickerTask('deploymentLayout/loadExecutions', _loadExecutions, 1000);
+      $scope.registerTickerTask('deploymentLayout/loadDeploymentUpdates', _loadDeploymentUpdates, 1000);
 
       $scope.setShowEventsWidget = function(isShow){
           $scope.showDeploymentEvents = isShow;

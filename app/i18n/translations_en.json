@@ -162,7 +162,8 @@
             }
         },
         "deleteBtn": "Delete",
-        "executeWorkflowBtn" : "Execute workflow",
+        "executeWorkflowBtn" : "Execute Workflow",
+        "updateDeploymentBtn": "Update",
         "selectWorkflow" : "Select a workflow",
         "selectResource": "Select a node / group"
     },
@@ -391,6 +392,19 @@
             "confirm": "Confirm",
             "cancel": "Cancel",
             "value": "Enter Value"
+        },
+        "updateDeployment": {
+            "title": "Update {{deployment_id}}",
+            "description": "Select the new blueprint file or enter a url",
+            "selectArchive": "Select blueprint file or url",
+            "selectInputs": "Select inputs file",
+            "enterFileName": "Blueprint filename (e.g blueprint.yaml)",
+            "customWorkflow": "Run custom workflow",
+            "defaultWorkflow": "Run default workflow",
+            "workflowId": "Workflow ID:",
+            "enterWorkflowId": "Enter workflow ID",
+            "installAdded": "Run install workflow on added nodes",
+            "uninstallRemoved": "Run uninstall workflow on removed nodes"
         }
     },
     "blueprintUpload" : {
@@ -435,6 +449,9 @@
             "cancel": "Cancel",
             "confirm": "Confirm"
         }
+    },
+    "deploymentActionSelector": {
+        "updating": "Deployment update"
     }
 }
 

@@ -1,0 +1,43 @@
+.browse{
+    display: block;
+    height: 32px;
+    .browseTxt{
+        position: absolute;
+        left: 20px;
+        width: 340px;
+        height: 32px;
+        border-radius: 3px;
+        padding-left: 10px;
+        background-clip: padding-box;
+        background-color: $COSMOUI_INPUT_BACKGROUND;
+        border: 0;
+        &.url {
+            width: 385px;
+            &.disabled {
+                color: #f00;
+            }
+        }
+        &[disabled]{
+            border: 1px solid #cce4f6;
+            background: white;
+        }
+    }
+    #browseBtn{
+        font-size: 28px;
+        float: right;
+        margin: 0 22px 0 0;
+        padding: 2px 0 0 2px;
+        width: 35px;
+        height: 32px;
+        cursor: pointer;
+        display: flex;
+        .icon-gs-add-file{
+            margin: 0 auto;
+            display: inline-block;
+            vertical-align: middle;
+        }
+        #fileInput{
+            display: none;
+        }
+    }
+}

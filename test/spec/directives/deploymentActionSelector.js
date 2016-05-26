@@ -11,9 +11,9 @@ describe('Directive: deploymentActionSelector', function () {
     beforeEach(inject(function ($rootScope, ngDialog, $compile) {
         scope = $rootScope.$new();
         scope.deployment = {id: 'foo'};
-        scope.currentExecution = {};
         scope.onSubmit = jasmine.createSpy('onSubmit');
-        element = angular.element('<div class="deployment-action-selector" deployment="deployment" current-execution="currentExecution" on-submit="onSubmit()"></div>');
+        scope.onUpdate = jasmine.createSpy('onUpdate');
+        element = angular.element('<div class="deployment-action-selector" deployment="deployment" current-execution="currentExecution" on-submit="onSubmit()" current-update="currentUpdate" on-update="onUpdate()"></div>');
         element = $compile(element)(scope);
     }));
 
@@ -28,6 +28,19 @@ describe('Directive: deploymentActionSelector', function () {
             expect($selectedAction.css('text-overflow')).toBe('ellipsis');
             element.remove();
         }));
+
+        it('should show updating deployment', function(){
+            $('body').append(element);
+            var $selectedAction = $('.deployment-action-selector');
+
+            scope.currentUpdate = {state: 'committing'};
+            scope.$digest();
+            expect($selectedAction.hasClass('in-progress')).toBe(true);
+
+            scope.currentUpdate = undefined;
+            scope.$digest();
+            expect($selectedAction.hasClass('in-progress')).toBe(false);
+        });
     });
 
     describe('isolateScope functions', function () {
@@ -91,8 +104,12 @@ describe('Directive: deploymentActionSelector', function () {
                 expect(element.isolateScope().itemToDelete.id).toBe(element.isolateScope().deployment.id);
                 expect(ngDialog.open).toHaveBeenCalled();
 
-                ExecutionsService.isRunning.and.callFake(function(){return true;});
+                scope.currentUpdate = {state: 'committing'};
+                scope.$digest();
+                element.isolateScope().cancel();
+                expect(ngDialog.open.calls.count()).toBe(1);
 
+                ExecutionsService.isRunning.and.callFake(function(){return true;});
                 element.isolateScope().selectAction(deleteAction);
                 expect(ngDialog.open.calls.count()).toBe(1);
             });
@@ -107,8 +124,12 @@ describe('Directive: deploymentActionSelector', function () {
                 element.isolateScope().selectAction(executeAction);
                 expect(ngDialog.open).toHaveBeenCalled();
 
-                ExecutionsService.isRunning.and.callFake(function(){return true;});
+                scope.currentUpdate = {state: 'committing'};
+                scope.$digest();
+                element.isolateScope().cancel();
+                expect(ngDialog.open.calls.count()).toBe(1);
 
+                ExecutionsService.isRunning.and.callFake(function(){return true;});
                 element.isolateScope().selectAction(executeAction);
                 expect(ngDialog.open.calls.count()).toBe(1);
             });
@@ -123,7 +144,47 @@ describe('Directive: deploymentActionSelector', function () {
 
                 element.isolateScope().cancel();
                 expect(ngDialog.open).toHaveBeenCalled();
+
+                scope.currentUpdate = {state: 'committing'};
+                scope.$digest();
+                element.isolateScope().cancel();
+                expect(ngDialog.open.calls.count()).toBe(1);
+            });
+
+            it('should toggle update deployment dialog', function () {
+                var updateDeploymentAction = element.isolateScope().actions.filter(function (action) {
+                    return action.name === 'deployments.updateDeploymentBtn';
+                })[0];
+
+                scope.currentUpdate = {state: 'committing'};
+                scope.$digest();
+                element.isolateScope().selectAction(updateDeploymentAction);
+                expect(ngDialog.open).not.toHaveBeenCalled();
+
+                ExecutionsService.isRunning.and.callFake(function(){return true;});
+                scope.currentUpdate = undefined;
+                scope.$digest();
+                expect(ngDialog.open).not.toHaveBeenCalled();
+
+                ExecutionsService.isRunning.and.callFake(function(){return false;});
+                element.isolateScope().selectAction(updateDeploymentAction);
+                expect(ngDialog.open.calls.argsFor(0)).toEqual([{
+                    template: 'views/deployment/updateDeploymentDialog.html',
+                    controller: 'UpdateDeploymentDialogCtrl',
+                    scope: element.isolateScope(),
+                    className: 'update-deployment-dialog'
+                }]);
             });
         });
+    });
+
+    it('should call callback on update', function(){
+        scope.currentUpdate = {state: 'committing'};
+        scope.$digest();
+        expect(scope.onUpdate).not.toHaveBeenCalled();
+
+        scope.currentUpdate = undefined;
+        scope.$digest();
+        expect(scope.onUpdate).toHaveBeenCalled();
     });
 });

@@ -9,6 +9,7 @@ angular.module('cosmoUiApp')
 
         // holds currently running execution per deployment_id
         var runningExecutions = {};
+        var deploymentUpdates = {};
         var deploymentsSelection;
         $scope.inputs = {};
         $scope.managerError = '';
@@ -20,7 +21,11 @@ angular.module('cosmoUiApp')
         };
 
         $scope.getExecution = function (deployment) {
-            return _.first(runningExecutions[deployment.id]);
+            return _.first(runningExecutions[deployment]);
+        };
+
+        $scope.getUpdate = function (deployment) {
+            return _.first(deploymentUpdates[deployment]);
         };
 
         $scope.canPause = function (deployment_id) {
@@ -40,6 +45,13 @@ angular.module('cosmoUiApp')
             }, function () {
                 // todo: implement error handling
             });
+        }
+
+        function _loadDeploymentUpdates(){
+            return cloudifyClient.deploymentUpdates.list({deployment_id: _.pluck($scope.deployments,'id'),state: 'committing', _include: 'deployment_id, state'})
+                .then(function (result) {
+                    deploymentUpdates = _.groupBy(result.data.items, 'deployment_id');
+                }, function() {});
         }
 
         $scope.loadDeployments = function () {
@@ -72,6 +84,7 @@ angular.module('cosmoUiApp')
         };
 
         $scope.registerTickerTask('deployments/loadExecutions', _loadExecutions, 10000);
+        $scope.registerTickerTask('deployments/loadDeploymentUpdates', _loadDeploymentUpdates, 10000);
 
         $scope.loadDeployments();
 

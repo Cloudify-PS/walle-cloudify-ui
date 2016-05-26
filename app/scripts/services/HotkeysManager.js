@@ -109,6 +109,13 @@ angular.module('cosmoUiApp')
                     callback: function () {
                         scope.$broadcast('hotkeyDeleteDeployment');
                     }
+                })
+                .add({
+                    combo: 'u',
+                    description: 'Update deployment',
+                    callback: function () {
+                        scope.$broadcast('hotkeyUpdateDeployment');
+                    }
                 });
         };
 

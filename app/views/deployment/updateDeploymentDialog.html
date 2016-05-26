@@ -1,0 +1,44 @@
+<div class="update-deployment-dialog-container" ng-class="{'inprogress' : inProcess }" ng-enter="updateDeployment()">
+    <div class="dialogTitle">{{ 'dialogs.updateDeployment.title' | translate:{deployment_id: deployment.id}  }}</div>
+    <ng-progress></ng-progress>
+    <div class="dialogDescription">{{ 'dialogs.updateDeployment.description' | translate }}</div>
+    <form class="update-deployment-form" name="update-deployment-form">
+        <upload-file-form extensions="'.tar.bz2,.bz2,.gz,.tar.gz,.tar,.tgz,.zip'" input-placeholder="{{ 'dialogs.updateDeployment.selectArchive' | translate }}" selection="archive" ng-init="focusInput()"></upload-file-form>
+        <upload-file-form extensions="'.yaml,.yml'" input-placeholder="{{ 'dialogs.updateDeployment.selectInputs' | translate }}" selection="inputs" readonly-input="true"></upload-file-form>
+        <div class="file-name">
+            <input type="text" spellcheck="false" ng-model="fileName" placeholder="{{ 'dialogs.updateDeployment.enterFileName' | translate }}">
+        </div>
+        <div class="radio-option">
+            <label>
+                <input type="radio" ng-model="isCustomWorkflow" ng-value="false" ng-enter="isCustomWorkflow = false" ng-init="isCustomWorkflow = false" ng-checked="true">
+                {{ 'dialogs.updateDeployment.defaultWorkflow' | translate }}
+            </label>
+            <div class="option-content" ng-class="{'selected-option-content': isCustomWorkflow}">
+                <label>
+                    <input type="checkbox" ng-model="installAdded" ng-enter="installAdded = !installAdded" ng-init="installAdded = true" ng-disabled="isCustomWorkflow">
+                    {{ 'dialogs.updateDeployment.installAdded' | translate }}
+                </label>
+                <label>
+                    <input type="checkbox" ng-model="uninstallRemoved" ng-enter="uninstallRemoved = !uninstallRemoved" ng-init="uninstallRemoved = true" ng-disabled="isCustomWorkflow">
+                    {{ 'dialogs.updateDeployment.uninstallRemoved' | translate }}
+                </label>
+            </div>
+        </div>
+        <div class="radio-option">
+            <label>
+                <input type="radio" ng-model="isCustomWorkflow" ng-value="true" ng-enter="isCustomWorkflow = true">
+                {{ 'dialogs.updateDeployment.customWorkflow' | translate }}
+            </label>
+            <div class="option-content" ng-class="{'selected-option-content': !isCustomWorkflow}">
+                <span>{{ 'dialogs.updateDeployment.workflowId' | translate }}</span>
+                <input id="workflow-id" type="text" spellcheck="false" ng-model="workflowId" placeholder="{{ 'dialogs.updateDeployment.enterWorkflowId' | translate }}" ng-disabled="!isCustomWorkflow">
+            </div>
+        </div>
+        <div class="error-message" ng-if="updateError">{{updateError}}</div>
+        <div class="buttonsContainer confirmationButtons">
+            <button class="gs-btn" ng-click="closeThisDialog()">{{ 'dialogs.confirm.cancel' | translate }}</button>
+            <button class="gs-btn" ng-disabled="!isUpdateEnabled()" gs-spinner="{{inProcess}}" ng-click="updateDeployment()">{{ 'dialogs.confirm.confirm' | translate }}</button>
+        </div>
+    </form>
+</div>
+
