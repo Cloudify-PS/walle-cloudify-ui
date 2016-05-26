@@ -17,7 +17,8 @@ angular.module('cosmoUiApp', [
     'cfy.topology',
     'datePicker',
     'ui.router',
-    'cfp.hotkeys'
+    'cfp.hotkeys',
+    'toaster'
 ]).config( function ($httpProvider, $translateProvider, $provide, $stateProvider, $urlRouterProvider, cfpLoadingBarProvider) {
     cfpLoadingBarProvider.includeSpinner = false;
 
