@@ -1,0 +1,22 @@
+<div class="dialogBox" ng-file-drop ng-model="myFile" ng-class="{'inprogress': inProgress }">
+    <div class="dialogTitle">{{ 'snapshots.dialogs.upload.title' | translate }}</div>
+    <ng-progress></ng-progress>
+    <div class="dialogDescription" ng-file-drop ng-model="myFile" drag-over-class="dragover">
+        {{ 'snapshots.dialogs.upload.description' | translate }}</div>
+    <form name="uploadForm">
+        <div class="browse">
+            <input type="text" class="browseTxt" ng-model="inputText"
+                   placeholder="{{ 'snapshots.dialogs.upload.browseText' | translate }}" required spellcheck="false">
+            <label id="browseBtn" class="gs-btn">
+                <i class="icon-gs-add-file"></i>
+                <input type="file" name="fileInput" id="fileInput" accept=".tar.bz2, .bz2, .gz, .tar.gz, .tar, .tgz, .zip, .wgn"
+                       ng-file-select="onFileSelect($files)">
+            </label>
+        </div>
+        <input type="text" ng-model="snapshotId" required spellcheck="false"
+               placeholder="{{ 'snapshots.dialogs.upload.id' | translate }}">
+        <div class="error-message" ng-show="errorMessage">{{ errorMessage | translate | capitalizeFirstLetter }}</div>
+        <button id="uploadBtn" class="gs-btn" ng-disabled="uploadForm.$invalid" gs-spinner="{{ inProgress }}"
+                ng-click="upload()">{{ 'snapshots.dialogs.upload.submit' | translate }}</button>
+    </form>
+</div>

@@ -1,10 +1,16 @@
-<div id="settings">
+<div id="settings"
+     ng-init="navMenu=[
+        {name: 'Snapshots', href: '#/settings/snapshots', active: true},
+        {name: 'Maintenance', href: '#/settings/maintenance', active: false}
+     ]">
     <div class="content-header no-border">
-        <div class="breadcrumbs"><ul>
-            <li><span>{{'breadcrumb.settings'|translate}}</span></li>
-        </ul></div>
+        <div class="breadcrumbs">
+            <ul>
+                <li><span>{{ 'breadcrumb.settings' | translate }}</span></li>
+            </ul>
+        </div>
     </div>
-    <div section-nav-menu="[{'name': 'Maintenance', 'href': '#/settings/maintenance', active: true}]"></div>
+    <div section-nav-menu="navMenu"></div>
     <div class="content-section">
         <div ui-view></div>
     </div>

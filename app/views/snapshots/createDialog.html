@@ -1,0 +1,9 @@
+<div class="dialogBox">
+    <div class="dialogTitle">{{ 'snapshots.dialogs.create.title' | translate }}</div>
+    <div class="dialogDescription">{{ 'snapshots.dialogs.create.description' | translate }}</div>
+    <form name="createForm">
+        <input type="text" ng-model="id" placeholder="{{ 'snapshots.dialogs.create.id' | translate }}" required>
+        <button id="createBtn" class="gs-btn" ng-disabled="createForm.$invalid"
+                ng-click="confirm(id)">{{ 'snapshots.dialogs.create.submit' | translate }}</button>
+    </form>
+</div>

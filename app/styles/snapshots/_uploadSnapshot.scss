@@ -1,0 +1,36 @@
+.upload-snapshot-dialog {
+
+    .ngdialog-content {
+        .dialogBox {
+
+            &.dragover {
+                outline: 2px dashed $clr-base-00;
+            }
+
+            form {
+                display: flex;
+                flex-direction: column;
+                align-items: flex-end;
+                margin: -16px 20px 20px;
+
+                > * {
+                    margin: 16px 0 0;
+                    width: 100%;
+                }
+
+                .browse {
+
+                    #fileInput {
+                        display: none;
+                    }
+                    #browseBtn {
+                        margin: 0;
+                    }
+                }
+                #uploadBtn {
+                    width: auto;
+                }
+            }
+        }
+    }
+}

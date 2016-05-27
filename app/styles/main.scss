@@ -51,6 +51,8 @@ $fa-font-path: '../bower_components/font-awesome/fonts';
 @import './plugins/plugins';
 @import './plugins/plugin';
 @import './plugins/actionSelector';
+@import './snapshots/snapshots';
+@import './snapshots/actionSelector';
 @import './config';
 @import './logs';
 @import './login';
@@ -60,6 +62,8 @@ $fa-font-path: '../bower_components/font-awesome/fonts';
 
 //Dialogs
 @import 'plugins/uploadPlugin';
+@import 'snapshots/createSnapshot';
+@import 'snapshots/uploadSnapshot';
 
 .embeded {
     #header, #left-side-menu, #footer, .no-embed {
