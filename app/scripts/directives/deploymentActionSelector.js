@@ -14,17 +14,18 @@ angular.module('cosmoUiApp')
             scope: {
                 deployment: '=',
                 currentExecution: '=',
+                currentUpdate: '=',
                 onBegin: '&',
                 onCancel: '&',
                 onDelete: '&',
+                onUpdate: '&',
                 isSelected: '='
             },
             controller: function ($scope) {
                 var self = this;
-                $scope.showProgress = true;
 
                 self.openCancelExecutionDialog = function() {
-                    if($scope.canCancel()){
+                    if($scope.canCancel() && !$scope.currentUpdate){
                         ngDialog.open({
                             template: 'views/deployment/cancelExecutionDialog.html',
                             controller: 'CancelExecutionDialogCtrl',
@@ -35,7 +36,7 @@ angular.module('cosmoUiApp')
                 };
 
                 self.openStartExecutionDialog = function() {
-                    if(!$scope.isRunning()) {
+                    if(!$scope.isRunning() && !$scope.currentUpdate) {
                         ngDialog.open({
                             template: 'views/deployment/startExecutionDialog.html',
                             controller: 'StartExecutionDialogCtrl',
@@ -46,13 +47,24 @@ angular.module('cosmoUiApp')
                 };
 
                 self.openDeleteDialog = function() {
-                    if(!$scope.isRunning()) {
+                    if(!$scope.isRunning() && !$scope.currentUpdate) {
                         $scope.itemToDelete = $scope.deployment;
                         ngDialog.open({
                             template: 'views/deployment/deleteDeploymentDialog.html',
                             controller: 'DeleteDeploymentDialogCtrl',
                             scope: $scope,
                             className: 'delete-dialog'
+                        });
+                    }
+                };
+
+                self.openUpdateDeploymentDialog = function() {
+                    if(!$scope.isRunning() && !$scope.currentUpdate) {
+                        ngDialog.open({
+                            template: 'views/deployment/updateDeploymentDialog.html',
+                            controller: 'UpdateDeploymentDialogCtrl',
+                            scope: $scope,
+                            className: 'update-deployment-dialog'
                         });
                     }
                 };
@@ -101,10 +113,13 @@ angular.module('cosmoUiApp')
                         task: self.openStartExecutionDialog
                     },
                     {
+                        name: 'deployments.updateDeploymentBtn',
+                        task: self.openUpdateDeploymentDialog
+                    },
+                    {
                         name: 'deployments.deleteBtn',
                         task: self.openDeleteDialog
                     }
-
                 ];
                 $scope.defaultAction = $scope.actions[0];
 
@@ -118,16 +133,32 @@ angular.module('cosmoUiApp')
                     });
                 }
 
-                scope.$watch('currentExecution', function (executing, oldexecuting) {
-                    if (executing) {
-                        element.addClass('in-progress');
-                    } else {
-                        element.removeClass('in-progress');
-                        if (oldexecuting && oldexecuting.workflow_id === 'delete_deployment_environment') {
-                            deploymentDeletedChecker(oldexecuting.deployment_id);
+                function handleInProgress(){
+                    var className = 'in-progress';
+                    if(scope.isRunning() || scope.currentUpdate){
+                        if(!element.hasClass(className)){
+                            element.addClass(className);
+                        }
+                    } else{
+                        if(element.hasClass(className)) {
+                            element.removeClass(className);
                         }
                     }
+                }
+
+                scope.$watch('currentExecution', function (executing, oldexecuting) {
+                    handleInProgress();
+                    if (!executing && oldexecuting && oldexecuting.workflow_id === 'delete_deployment_environment') {
+                        deploymentDeletedChecker(oldexecuting.deployment_id);
+                    }
                 }, true);
+
+                scope.$watch('currentUpdate', function (update, oldUpdate) {
+                    handleInProgress();
+                    if(oldUpdate && !update){
+                        scope.onUpdate();
+                    }
+                });
 
                 scope.$on('hotkeyExecute', function() {
                     if(scope.isSelected) {
@@ -144,6 +175,12 @@ angular.module('cosmoUiApp')
                 scope.$on('hotkeyCancelExecution', function() {
                     if(scope.isSelected) {
                         ctrl.openCancelExecutionDialog();
+                    }
+                });
+
+                scope.$on('hotkeyUpdateDeployment', function() {
+                    if(scope.isSelected) {
+                        ctrl.openUpdateDeploymentDialog();
                     }
                 });
             }

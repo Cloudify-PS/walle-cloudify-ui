@@ -240,51 +240,6 @@ input[required] {
         }
     }
     #uploadForm {
-        position: relative;
-        display: block;
-
-        .browse {
-            display: block;
-            height: 32px;
-
-            #fileInput {
-                display: none;
-            }
-            #browseBtn {
-                font-size: 28px;
-                float: right;
-                margin: 0 22px 0 0;
-                padding: 2px 0 0 2px;
-                width: 35px;
-                height: 32px;
-                cursor: pointer;
-                display: flex;
-                i{
-                    margin: 0 auto;
-                    display: inline-block;
-                    vertical-align: middle;
-                }
-            }
-            .browseTxt {
-                position: absolute;
-                left: 20px;
-                width: 340px;
-                height: 32px;
-                border-radius: 3px;
-                padding-left: 10px;
-                background-clip: padding-box;
-                background-color: $COSMOUI_INPUT_BACKGROUND;
-                border: 0;
-
-                &.url {
-                    width: 385px;
-
-                    &.disabled {
-                        color: #f00;
-                    }
-                }
-            }
-        }
         .name {
             display: block;
             position: relative;
@@ -400,6 +355,53 @@ input[required] {
                 border-right: 1px solid $COSMOUI_BUTTON_DISABLED_BORDER_COLOR;
                 color: $clr-base-24;
                 cursor: default;
+            }
+        }
+    }
+}
+
+.update-deployment-dialog-container{
+    .update-deployment-form{
+        .browse{
+            margin-bottom: 10px;
+        }
+        .file-name{
+            display: block;
+            position: relative;
+            height: 48px;
+
+            &.browseUrl {
+                left: 10px;
+            }
+
+            input {
+                position: relative;
+                left: 20px;
+                width: 385px;
+                height: 32px;
+                border-radius: 3px;
+                padding-left: 10px;
+                background-clip: padding-box;
+                background-color: $COSMOUI_INPUT_BACKGROUND;
+                border: 0;
+            }
+        }
+        .radio-option{
+            margin-left: 20px;
+            width: 385px;
+            position: relative;
+            margin-bottom: 10px;
+            .selected-option-content{
+                opacity: 0.6;
+            }
+            .option-content{
+                margin-left: 20px;
+                #workflow-id{
+                    width: 277px;
+                }
+            }
+            span{
+                margin-right: 5px;
             }
         }
     }

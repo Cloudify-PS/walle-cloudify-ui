@@ -50,7 +50,8 @@
                              on-begin="onExecutionStart()"
                              on-cancel="onExecutionCancel()"
                              on-delete="loadDeployments()"
-                             current-execution="getExecution(deployment)"
+                             current-execution="getExecution(deployment.id)"
+                             current-update="getUpdate(deployment.id)"
                              is-selected="deployment.isSelected">
                         </div>
                     </td>

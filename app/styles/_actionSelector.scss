@@ -83,6 +83,11 @@
         overflow: hidden;
         text-overflow: ellipsis;
         text-align: center;
+
+        &.no-cancel{
+            min-width:190px;
+            max-width:190px;
+        }
     }
 
     .deployment-pause {

@@ -1,4 +1,4 @@
-<div class="btn-group" dropdown>
+<div class="btn-group" ng-if="!isRunning() && !currentUpdate" dropdown>
     <button id="split-button" class="btn" type="button" ng-click="selectAction(defaultAction)">{{ defaultAction.name | translate }}</button>
     <button type="button" class="btn" dropdown-toggle>
         <span class="caret"></span>
@@ -9,11 +9,9 @@
         </li>
     </ul>
 </div>
-<div class="executingWorkflow" ng-show="showProgress" title="{{getExecutionName(currentExecution)}}"> <!-- only in progress -->
-    <span class="gs-spinner inline">
-
-    </span>
-    {{ getExecutionName(currentExecution) }}
-
+<div class="executingWorkflow" ng-show="isRunning() || currentUpdate" ng-class="{'no-cancel': currentUpdate}">
+    <span class="gs-spinner inline"></span>
+    <span ng-if="!currentUpdate" title="{{getExecutionName(currentExecution)}}">{{ getExecutionName(currentExecution) }}</span>
+    <span ng-if="currentUpdate" title="{{'deploymentActionSelector.updating' | translate }}">{{'deploymentActionSelector.updating' | translate }}</span>
 </div>
-<i class="deployment-pause fa fa-times-circle" ng-show="canCancel()" ng-click="cancel()"></i>
+<i class="deployment-pause fa fa-times-circle" ng-show="canCancel() && !currentUpdate" ng-click="cancel()"></i>

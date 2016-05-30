@@ -29,6 +29,12 @@ window.mockPromise = function (successResponse, errorResponse) {
             if (!!errorResponse) {
                 error(errorResponse);
             }
+
+            return {
+                finally: function(callback){
+                    callback();
+                }
+            };
         }
     };
 };

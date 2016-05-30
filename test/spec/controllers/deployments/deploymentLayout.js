@@ -3,7 +3,7 @@
 describe('Controller: DeploymentLayoutCtrl', function () {
 
     var scope;
-    var DeploymentLayoutCtrl, $state, $rootScope;
+    var DeploymentLayoutCtrl, $state, $rootScope, cloudifyClient;
 
     beforeEach(module('cosmoUiApp', 'backend-mock','templates-main', function ($provide) {
         $provide.factory('deploymentActionSelectorDirective', function(){
@@ -11,16 +11,17 @@ describe('Controller: DeploymentLayoutCtrl', function () {
         }); // mock workflow selector
     }));
 
-    var init = inject(function ( cloudifyClient, _$rootScope_, _$state_ ) {
+    var init = inject(function ( _cloudifyClient_, _$rootScope_, _$state_ ) {
+        cloudifyClient = _cloudifyClient_;
         spyOn(cloudifyClient.deployments,'get').and.returnValue({then:function(){}});
         $state = _$state_;
         $state.go('cloudifyLayout.deploymentLayout.topology');
         $rootScope = _$rootScope_;
         $rootScope.$digest();
+        scope = $rootScope.$new();
     });
 
-    var initCtrl = inject(function($controller, $rootScope){
-        scope = $rootScope.$new();
+    var initCtrl = inject(function($controller){
         DeploymentLayoutCtrl = $controller('DeploymentLayoutCtrl',{
             $scope: scope
         });
@@ -116,6 +117,45 @@ describe('Controller: DeploymentLayoutCtrl', function () {
             scope.goToDeployments();
             $rootScope.$digest();
             expect($state.current.name).toBe('config');
+        });
+    });
+
+    describe('#loadDeploymentUpdates', function(){
+        beforeEach(function(){
+            spyOn(scope, 'registerTickerTask').and.callFake(function(id, callback){
+                if(id.indexOf('loadDeploymentUpdates') !== -1){
+                    callback();
+                }
+            });
+            spyOn(cloudifyClient.deploymentUpdates, 'list').and.returnValue(window.mockPromise({data: {items: [{state: 'committing'}]}}));
+            scope.deployment_id = 'dep1';
+        });
+
+        it('should load deployment updates', function(){
+            initCtrl();
+            expect(cloudifyClient.deploymentUpdates.list).toHaveBeenCalled();
+            expect(scope.currentUpdate).toEqual({state: 'committing'});
+
+            cloudifyClient.deploymentUpdates.list.and.returnValue(window.mockPromise({data: {items: [{state: 'committed'}]}}));
+            initCtrl();
+            expect(cloudifyClient.deploymentUpdates.list).toHaveBeenCalled();
+            expect(scope.currentUpdate).toEqual(undefined);
+        });
+
+        it('should redirect after update committed', function(){
+            cloudifyClient.deploymentUpdates.list.and.returnValue(window.mockPromise({data: {items: [{state: 'committed'}]}}));
+            initCtrl();
+            spyOn(scope, 'goToDeployments').and.callThrough();
+            scope.reloadDeployment();
+            expect(scope.goToDeployments).toHaveBeenCalled();
+        });
+
+        it('should not redirect after update failed', function(){
+            cloudifyClient.deploymentUpdates.list.and.returnValue(window.mockPromise({data: {items: [{state: 'failed'}]}}));
+            initCtrl();
+            spyOn(scope, 'goToDeployments').and.callThrough();
+            scope.reloadDeployment();
+            expect(scope.goToDeployments).not.toHaveBeenCalled();
         });
     });
 });

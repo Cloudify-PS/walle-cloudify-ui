@@ -4,10 +4,10 @@ describe('Controller: DeploymentsCtrl', function () {
     var DeploymentsCtrl, scope;
 
     beforeEach(module('cosmoUiApp', 'templates-main', 'backend-mock'));
-
+    var cloudifyClient;
     function _testSetup() {
-        inject(function ($controller, $rootScope, $httpBackend, $q, cloudifyClient) {
-
+        inject(function ($controller, $rootScope, $httpBackend, $q, _cloudifyClient_) {
+            cloudifyClient = _cloudifyClient_;
             scope = $rootScope.$new();
 
             spyOn(cloudifyClient.executions,'list').and.callFake(function(){
@@ -32,13 +32,19 @@ describe('Controller: DeploymentsCtrl', function () {
                 };
             });
 
-            DeploymentsCtrl = $controller('DeploymentsCtrl', {
-                $scope: scope
-            });
+            spyOn(cloudifyClient.deploymentUpdates, 'list').and.returnValue(window.mockPromise({data: {items:[{deployment_id: 'dep1', state: 'committing'}, {deployment_id: 'dep2', state: 'committing'}]}}));
 
-            scope.$digest();
+            initCtrl();
         });
     }
+
+    var initCtrl = inject(function($controller){
+        DeploymentsCtrl = $controller('DeploymentsCtrl', {
+            $scope: scope
+        });
+
+        scope.$digest();
+    });
 
     describe('#loadExecutions', function(){
 
@@ -130,5 +136,28 @@ describe('Controller: DeploymentsCtrl', function () {
 
 
 
+    });
+
+    describe('deployment updates', function(){
+        beforeEach(function(){
+            _testSetup();
+            spyOn(scope, 'registerTickerTask').and.callFake(function(id, callback){
+                if(id.indexOf('loadDeploymentUpdates') !== -1){
+                    callback();
+                }
+            });
+            initCtrl();
+        });
+
+        it('should load deployment updates', function(){
+            expect(cloudifyClient.deploymentUpdates.list).toHaveBeenCalled();
+        });
+
+        it('should get when deployment is updating', function(){
+            expect(cloudifyClient.deploymentUpdates.list).toHaveBeenCalled();
+            expect(scope.getUpdate('dep1')).toEqual({deployment_id: 'dep1', state: 'committing'});
+            expect(scope.getUpdate('dep2')).toEqual({deployment_id: 'dep2', state: 'committing'});
+            expect(scope.getUpdate('dep3')).toBeUndefined();
+        });
     });
 });
