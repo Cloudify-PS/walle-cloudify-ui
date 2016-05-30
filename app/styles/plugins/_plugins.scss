@@ -1,0 +1,16 @@
+#plugins {
+
+    .form-group {
+
+        label {
+            display: block;
+        }
+        #searchByName {
+            display: inline-block;
+            width: 175px;
+        }
+        .gs-btn {
+            float: right;
+        }
+    }
+}

@@ -1,0 +1,62 @@
+<div id="plugin">
+    <div ng-show="plugin">
+        <div class="content-top">
+            <div class="content-header">
+                <div class="breadcrumbs">
+                    <ul>
+                        <li><a href="#/plugins">{{:: 'breadcrumb.plugins' | translate }}</a></li>
+                        <li class="active"><span>{{:: plugin.package_name }} ({{:: plugin.id }})</span></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="content-top-info">
+                v{{:: plugin.package_version }} | {{:: plugin.supported_platform }} | {{:: plugin.distribution }} | {{:: plugin.distribution_release }}<br>
+            </div>
+
+            <div class="table-description">{{:: 'plugins.mapCaption' | translate }}</div>
+
+            <action-selector target="plugin" actions="actions"></action-selector>
+        </div>
+
+        <div class="content-section" st-table="displayedUsageMap" st-safe-src="usageMap" ng-hide="permissionDenied">
+            <table class="gs-table">
+                <thead>
+                <tr>
+                    <th st-sort="blueprint" class="blueprint sorting">{{:: 'breadcrumb.blueprints' | translate }}</th>
+                    <th st-sort="deployment" class="deployment sorting">{{:: 'breadcrumb.deployments' | translate }}</th>
+                </tr>
+                </thead>
+
+                <tbody ng-repeat="subMap in displayedUsageMap">
+                <tr ng-if="!subMap.deployments.length">
+                    <td class="blueprint"><a ng-href="#/blueprint/{{:: subMap.blueprint }}/topology">{{:: subMap.blueprint }}</a></td>
+                    <td class="deployment"></td>
+                </tr>
+                <tr ng-repeat="deployment in subMap.deployments" ng-if="subMap.deployments.length">
+                    <td class="blueprint"><a ng-href="#/blueprint/{{:: subMap.blueprint }}/topology">{{:: subMap.blueprint }}</a></td>
+                    <td class="deployment"><a ng-href="#/deployment/{{:: deployment }}/topology">{{:: deployment }}</a></td>
+                </tr>
+                </tbody>
+
+                <tfoot>
+                <tr>
+                    <td colspan="2" class="text-center">
+                        <div id="pagination" st-pagination st-items-by-page="itemsByPage"></div>
+                    </td>
+                </tr>
+                </tfoot>
+            </table>
+
+            <div class="empty-message" ng-hide="usageMap.length">{{:: 'plugins.emptyMessageUsage' | translate }}</div>
+        </div>
+    </div>
+
+    <div ng-hide="plugin" class="not-found-message">
+        <div class="message">{{:: 'plugins.notFound.title' | translate }}</div>
+        <div>
+            <a class="gs-btn" href="#/plugins">{{:: 'plugins.notFound.goBack' | translate }}</a>
+            <a class="gs-btn" href="javascript:void(0)" ng-click="uploadPlugin()">{{:: 'plugins.notFound.upload' | translate }}</a>
+        </div>
+    </div>
+</div>

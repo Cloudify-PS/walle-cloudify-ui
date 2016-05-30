@@ -1,0 +1,9 @@
+<div class="dialogBox" ng-init="plugin = ngDialogData">
+    <div class="dialogTitle">{{ 'plugins.dialogs.delete.title' | translate: {name: plugin.package_name, version: plugin.package_version} }}</div>
+    <div class="dialogDescription">{{ 'plugins.dialogs.delete.description' | translate }}</div>
+    <pre class="dialogDetails">{{ 'plugins.dialogs.delete.details' | translate: {id: plugin.id, name: plugin.package_name, version: plugin.package_version} }}</pre>
+    <div class="buttonsContainer">
+        <button class="gs-btn" ng-click="closeThisDialog('$cancelButton')">{{ 'dialogs.no' | translate }}</button>
+        <button class="gs-btn" ng-click="confirm(plugin)">{{ 'dialogs.yes' | translate }}</button>
+    </div>
+</div>

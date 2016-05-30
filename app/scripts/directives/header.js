@@ -18,6 +18,11 @@ angular.module('cosmoUiApp')
                         'otherRoutes': ['deployment']
                     },
                     {
+                        'route': 'plugins',
+                        'label': 'Plugins',
+                        'otherRoutes': ['plugin']
+                    },
+                    {
                         'route': 'logs',
                         'label': 'Logs & Events'
                     },

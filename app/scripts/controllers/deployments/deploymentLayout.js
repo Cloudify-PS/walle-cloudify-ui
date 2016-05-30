@@ -20,6 +20,7 @@ angular.module('cosmoUiApp')
           {'name': 'Nodes', 'href': '/nodes'},
           {'name': 'Executions', 'href': '/executions'},
           {'name': 'Inputs & Outputs', 'href': '/inputs-outputs'},
+          {'name': 'Plugins', 'href': '/plugins'},
           {'name': 'Source', 'href': '/source'},
           {'name': 'Monitoring', 'href': '/monitoring'}
       ];

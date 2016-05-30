@@ -44,6 +44,7 @@ angular.module('cosmoUiApp', [
             abstract: true,
             url:'?embed'
         })
+
         .state('cloudifyLayout.blueprints',{
             url: '/blueprints' +
             '?pageNobp1' +
@@ -76,11 +77,17 @@ angular.module('cosmoUiApp', [
             templateUrl: 'views/blueprint/blueprintNodes.html',
             controller: 'BlueprintNodesCtrl'
         })
+        .state('cloudifyLayout.blueprintLayout.plugins', {
+            url: '/plugins',
+            templateUrl: 'views/plugins/pluginsTab.html',
+            controller: 'PluginsTabCtrl'
+        })
         .state('cloudifyLayout.blueprintLayout.source', {
             url: '/source',
             templateUrl: 'views/blueprint/blueprintSource.html',
             controller: 'SourceCtrl'
         })
+
         .state('cloudifyLayout.deployments', {
             url: '/deployments'+
                 '?pageNodp1' +
@@ -132,11 +139,38 @@ angular.module('cosmoUiApp', [
             templateUrl: 'views/deployment/deploymentInputsOutputs.html',
             controller: 'InputsOutputsCtrl'
         })
+        .state('cloudifyLayout.deploymentLayout.plugins', {
+            url: '/plugins',
+            templateUrl: 'views/plugins/pluginsTab.html',
+            controller: 'PluginsTabCtrl'
+        })
         .state('cloudifyLayout.deploymentLayout.source', {
             url: '/source',
             templateUrl: 'views/deployment/deploymentSource.html',
             controller: 'SourceCtrl'
         })
+
+        .state('cloudifyLayout.plugins', {
+            url: '/plugins' +
+            '?pageNo_plu' +
+            '&sortBy_plu' +
+            '&reverse_plu' +
+            '&id_plu',
+            params: {
+                id_plu: {
+                    value: ''
+                }
+            },
+            templateUrl: 'views/plugins/pluginsIndex.html',
+            controller: 'PluginsCtrl',
+            reloadOnSearch: false
+        })
+        .state('cloudifyLayout.plugin', {
+            url: '/plugin/:pluginId',
+            templateUrl: 'views/plugins/plugin.html',
+            controller: 'PluginCtrl'
+        })
+
         .state('cloudifyLayout.logs', {
             url: '/logs' +
             '?pageNoLogs' +

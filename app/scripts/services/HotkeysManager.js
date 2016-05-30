@@ -29,6 +29,15 @@ angular.module('cosmoUiApp')
                     }
                 })
                 .add({
+                    combo: 'mod+p',
+                    description: 'Navigate to Plugins',
+                    allowIn: ['INPUT', 'TEXTAREA'],
+                    callback: function(e) {
+                        e.preventDefault();
+                        $state.go('cloudifyLayout.plugins');
+                    }
+                })
+                .add({
                     combo: 'mod+l',
                     description: 'Navigate to Logs & Events',
                     allowIn: ['INPUT', 'TEXTAREA'],
@@ -103,6 +112,29 @@ angular.module('cosmoUiApp')
                 });
         };
 
+        this.bindPluginActions = function(scope) {
+            hotkeys.bindTo(scope)
+                .add({
+                    combo: 'u',
+                    description: 'Upload plugin',
+                    callback: scope.uploadPlugin
+                })
+                .add({
+                    combo: 'd',
+                    description: 'Download plugin',
+                    callback: function() {
+                        scope.$broadcast('hotkeyDownloadPlugin');
+                    }
+                })
+                .add({
+                    combo: 'shift+d',
+                    description: 'Delete plugin',
+                    callback: function() {
+                        scope.$broadcast('hotkeyDeletePlugin');
+                    }
+                });
+        };
+
         this.bindItemsNavigation = function (scope, nextCallback, previousCallback, enterItemOpts) {
             hotkeys.bindTo(scope)
                 .add({
@@ -143,6 +175,13 @@ angular.module('cosmoUiApp')
                     }
                 })
                 .add({
+                    combo: 'g p',
+                    description: 'Go to Plugins',
+                    callback: function() {
+                        $state.go('cloudifyLayout.blueprintLayout.plugins');
+                    }
+                })
+                .add({
                     combo: 'g s',
                     description: 'Go to Source',
                     callback: function () {
@@ -179,6 +218,13 @@ angular.module('cosmoUiApp')
                     description: 'Go to Inputs & Outputs',
                     callback: function () {
                         $state.go('cloudifyLayout.deploymentLayout.inputsOutputs');
+                    }
+                })
+                .add({
+                    combo: 'g p',
+                    description: 'Go to Plugins',
+                    callback: function() {
+                        $state.go('cloudifyLayout.deploymentLayout.plugins');
                     }
                 })
                 .add({

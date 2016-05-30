@@ -46,12 +46,18 @@ $fa-font-path: '../bower_components/font-awesome/fonts';
 @import './deployments/deployments';
 @import './deployments/deploymentLayout';
 @import './deployments/deployment';
+@import './plugins/plugins';
+@import './plugins/plugin';
+@import './plugins/actionSelector';
 @import './config';
 @import './logs';
 @import './login';
 @import './settings';
 @import './ngProgress';
 @import './toaster';
+
+//Dialogs
+@import 'plugins/uploadPlugin';
 
 .embeded {
     #header, #left-side-menu, #footer, .no-embed {
