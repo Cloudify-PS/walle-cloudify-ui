@@ -127,6 +127,18 @@ angular.module('cosmoUiApp')
             return 'N/A';
         }
 
+        function _assignNodesGroups(nodes, groups){
+            _.each(nodes, function(node){
+                var group = _.findKey(groups,function(group){
+                    return group.members.indexOf(node.id) !== -1;
+                });
+                if(group){
+                    node.group = group;
+                }
+            });
+        }
+
         this.createNodesTree = _createNodesTree;
         this.getInstanceType = _getInstanceType;
+        this.assignNodesGroups = _assignNodesGroups;
     });

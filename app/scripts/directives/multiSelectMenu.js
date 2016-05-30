@@ -22,6 +22,21 @@ angular.module('cosmoUiApp')
                     ngModel.$setViewValue(value);
                 }
 
+                function isGroup(option){
+                    return option.groupLabel ? true : false;
+                }
+
+                $scope.$watch('filter', function(newValue){
+                    var filtered = [];
+                    _.forEachRight($scope.options, function(option){
+                        var beforeIsItem = filtered[0] && filtered[0].label ? true : false;
+                        if((isGroup(option) && beforeIsItem) || (option.label && option.label.indexOf(newValue) !== -1)){
+                            filtered.unshift(option);
+                        }
+                    });
+                    $scope.filteredItems = filtered;
+                },true);
+
                 /**
                  * Update Marked option when filtering the options
                  */
@@ -69,7 +84,7 @@ angular.module('cosmoUiApp')
                 function setInit() {
                     if(!$scope.isInit && $attrs.init !== undefined) {
                         for(var i in $scope.options) {
-                            if($attrs.init.indexOf($scope.options[i].value) !== -1) {
+                            if($scope.options[i].value && $attrs.init.indexOf($scope.options[i].value) !== -1) {
                                 _select($scope.options[i]);
                                 if(!$scope.multiple) {
                                     break;
@@ -86,10 +101,6 @@ angular.module('cosmoUiApp')
                  */
                 var activeElement;
                 function _open( $event ) {
-                    activeElement = document.activeElement;
-                    if (activeElement) {
-                        activeElement.blur();
-                    }
                     if($event) {
                         if ($event.stopPropagation) {
                             $event.stopPropagation();
@@ -112,6 +123,8 @@ angular.module('cosmoUiApp')
 
                         }
                     }
+                    activeElement = document.activeElement;
+                    activeElement && activeElement.blur();
 
                     if ( !isOpen ){
                         $scope.filter = '';
@@ -122,7 +135,6 @@ angular.module('cosmoUiApp')
                     }else{
                         _close();
                     }
-
                 }
 
                 /**
@@ -183,20 +195,33 @@ angular.module('cosmoUiApp')
                  * @private
                  */
                 function _navigate(to) {
+                    var ARROW_UP = 38;
+                    var ARROW_DOWN= 40;
+                    var currentIndex;
                     switch (to) {
-                        case 38:
-                            if ($scope.options.indexOf(optionMark) > 0) {
-                                $scope.$apply(function () {
-                                    optionMark = $scope.options[$scope.options.indexOf(optionMark) - 1];
-                                });
+                        case ARROW_UP:
+                            currentIndex = $scope.filteredItems.indexOf(optionMark);
+                            if(currentIndex - 1 > -1){
+                                if(isGroup($scope.filteredItems[currentIndex - 1])){
+                                    if(currentIndex -2 > -1) {
+                                        optionMark = $scope.filteredItems[currentIndex - 2];
+                                    }
+                                } else{
+                                    optionMark = $scope.filteredItems[currentIndex - 1];
+                                }
                             }
+                            $scope.$digest();
                             break;
-                        case 40:
-                            if ($scope.options.indexOf(optionMark) < $scope.options.length - 1) {
-                                $scope.$apply(function () {
-                                    optionMark = $scope.options[$scope.options.indexOf(optionMark) + 1];
-                                });
+                        case ARROW_DOWN:
+                            currentIndex = $scope.filteredItems.indexOf(optionMark);
+                            if($scope.filteredItems.length > currentIndex + 1){
+                                if(isGroup($scope.filteredItems[currentIndex + 1])){
+                                    optionMark = $scope.filteredItems[currentIndex + 2];
+                                } else{
+                                    optionMark = $scope.filteredItems[currentIndex + 1];
+                                }
                             }
+                            $scope.$digest();
                             break;
                     }
                 }
@@ -312,8 +337,7 @@ angular.module('cosmoUiApp')
                             $scope.$apply(_close);
                             break;
                         case 13: // Enter
-                            $scope.$apply(_select(optionMark));
-                            e.preventDefault();
+                            $scope.selectMarked(e);
                             break;
                         case 38: // navigate up
                         case 40: // navigate down
@@ -321,6 +345,14 @@ angular.module('cosmoUiApp')
                             break;
                     }
                 });
+
+                $scope.selectMarked = function(event){
+                    $scope.$apply(_select(optionMark));
+                    if(event){
+                        event.preventDefault();
+                    }
+                };
+
             }
         };
     });

@@ -6,29 +6,34 @@
     <div class="dialogDescription">{{ 'dialogs.execution.startDescription' | translate }}</div>
 
     <div class="select-workflow gs-selection-button">
-
-    <div multi-select-menu
-         class="gs-select"
-         data-multiple="false"
-         data-options="workflowsList"
-         data-ng-model="workflowName"
-         data-listener="true"
-         name="workflow"
-         data-text="{{'deployments.selectWorkflow' | translate}}"
-         tabindex="0"></div>
+        <div multi-select-menu
+             class="gs-select"
+             data-multiple="false"
+             data-options="workflowsList"
+             data-ng-model="workflowName"
+             data-listener="true"
+             name="workflow"
+             data-text="{{'deployments.selectWorkflow' | translate}}"
+             tabindex="0"></div>
     </div>
 
-    <div class="selected-workflow">
+    <div class="select-resource gs-selection-button" ng-if="workflowName.value==='scale' && !getResourcesError" ng-init="getScalingResources()">
+        <div multi-select-menu
+             class="gs-select"
+             data-multiple="false"
+             data-options="$parent.resources"
+             data-ng-model="$parent.resourceId"
+             data-listener="true"
+             name="resources"
+             data-text="{{'deployments.selectResource' | translate}}"
+             tabindex="0"></div>
+    </div>
     <div form-raw-params
-         ng-show="isParamsVisible()"
+         ng-show="(workflowName.value!=='scale' || resourceId!== undefined) && isParamsVisible()"
          on-error="setErrorMessage"
          params="workflow.parameters"
          raw-string="rawString"
          valid="inputsValid"></div>
-
-    </div>
-
-
 
     <div class="error-message monospace" ng-show="executeErrorMessage" ng-bind-html="executeErrorMessage"></div>
 
@@ -36,7 +41,4 @@
         <button class="gs-btn" ng-click="closeThisDialog()">{{ 'dialogs.confirm.cancel' | translate }}</button>
         <button class="gs-btn" ng-disabled="!isExecuteEnabled()" gs-spinner="{{inProcess}}" ng-click="executeWorkflow()">{{ 'dialogs.confirm.confirm' | translate }}</button>
     </div>
-
-
-
 </div>

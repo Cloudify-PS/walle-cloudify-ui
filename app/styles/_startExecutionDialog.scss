@@ -1,16 +1,16 @@
 #startExecutionDialog {
 
-    .select-workflow {
-        display: block;
+    .select-workflow, .select-resource {
         padding: 10px;
-        text-align: center;
+        display: flex;
 
         .gs-select {
-            float: none;
-            text-align: left;
+            margin: auto;
         }
     }
-    .multiSelectMenu {
-        vertical-align: top;
+
+    .select-resource {
+        padding-bottom: 20px;
+        padding-top: 0px;
     }
 }

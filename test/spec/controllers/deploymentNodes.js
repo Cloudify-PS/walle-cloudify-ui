@@ -21,7 +21,9 @@ describe('Controller: DeploymentNodesCtrl', function () {
         _NodeService = NodeService;
         scope = $rootScope.$new();
         spyOn(cloudifyClient.nodes, 'list').and.returnValue(window.mockPromise({data: {items: []}})); //default implementation can be override
+        spyOn(cloudifyClient.deployments, 'get').and.returnValue(window.mockPromise({data: {groups: []}}));
         spyOn(NodeService, 'createNodesTree').and.callFake(function(){});
+        spyOn(NodeService, 'assignNodesGroups').and.callFake(function(){});
         initCtrl();
     }));
 
@@ -45,6 +47,8 @@ describe('Controller: DeploymentNodesCtrl', function () {
             initCtrl();
             expect(scope.dataTable).toBe(nodesMock);
             expect(_NodeService.createNodesTree).toHaveBeenCalled();
+            expect(_cloudifyClient.deployments.get).toHaveBeenCalled();
+            expect(_NodeService.assignNodesGroups).toHaveBeenCalled();
         });
     });
 

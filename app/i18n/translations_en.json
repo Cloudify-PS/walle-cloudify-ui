@@ -163,7 +163,8 @@
         },
         "deleteBtn": "Delete",
         "executeWorkflowBtn" : "Execute workflow",
-        "selectWorkflow" : "Select a workflow"
+        "selectWorkflow" : "Select a workflow",
+        "selectResource": "Select a node / group"
     },
     "plugins": {
         "uploadBtn": "Upload Plugin",

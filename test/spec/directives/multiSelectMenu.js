@@ -21,7 +21,13 @@ describe('Directive: multiSelectMenu', function () {
             scope = $rootScope;
 
             scope.options = [
-                {'label': 'TestLabel', 'value': 'TestValue'}
+                {'label': 'TestLabel', 'value': 'TestValue'},
+                {'label': 'TestLabel2', 'value': 'TestValue2'},
+                {'groupLabel': 'group1'},
+                {'label': 'GroupItem1', 'value': 'GroupItem1'},
+                {'label': 'GroupItem2', 'value': 'GroupItem2'},
+                {'groupLabel': 'group2'},
+                {'label': 'GroupItem3', 'value': 'GroupItem3'}
             ];
 
             $document.click = function() {};
@@ -42,6 +48,18 @@ describe('Directive: multiSelectMenu', function () {
             scope.$apply();
 
             expect(scope.selected.length).toBe(0);
+        });
+
+        it('should filter options', function(){
+            element.isolateScope().filter = '2';
+            scope.$apply();
+            expect(element.isolateScope().filteredItems).toEqual(
+                [
+                    {'label': 'TestLabel2', 'value': 'TestValue2'},
+                    {'groupLabel': 'group1'},
+                    {'label': 'GroupItem2', 'value': 'GroupItem2'}
+                ]
+            );
         });
     });
 });
