@@ -357,8 +357,8 @@
         "yes" : "Yes",
         "no" : "No",
         "execution" : {
-            "confirmCancel" : "Cancel execution?",
-            "confirmExecution" : "Start execution?",
+            "startTitle" : "Start execution",
+            "startDescription": "Select the workflow you want to execute",
             "cancelDescription" : "Are you sure you want to cancel the current execution?",
             "forceCancel" : "Force"
 
