@@ -1,0 +1,30 @@
+.create-snapshot-dialog {
+
+    .dialogBox {
+
+        form {
+            padding: 0 20px 20px;
+
+            &::after{
+                content: '';
+                clear: both;
+                display: block;
+            }
+
+            input {
+                width: 100%;
+                margin: 2px 0 16px;
+            }
+
+            #createBtn {
+                position: static;
+                float: right;
+                margin: 0;
+
+                > span {
+                    position: relative;
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,8 @@
+<div class="dialogBox" ng-init="snapshot = ngDialogData">
+    <div class="dialogTitle">{{ 'snapshots.dialogs.delete.title' | translate: {id: snapshot.id} }}</div>
+    <div class="dialogDescription">{{ 'snapshots.dialogs.delete.description' | translate }}</div>
+    <div class="buttonsContainer">
+        <button class="gs-btn" ng-click="closeThisDialog('$cancelButton')">{{ 'dialogs.no' | translate }}</button>
+        <button class="gs-btn" ng-click="confirm(snapshot.id)">{{ 'dialogs.yes' | translate }}</button>
+    </div>
+</div>

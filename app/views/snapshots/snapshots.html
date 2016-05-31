@@ -1,0 +1,50 @@
+<div id="snapshots">
+
+    <div class="content-section" st-table="displayedSnapshots" st-safe-src="snapshots" ng-hide="errorMessage == 'permissionError'"
+         cfy-st-persist id="_snap" st-table-id="_snap" items-by-page="itemsByPage" content-loaded="snapshots">
+        <form class="form-group">
+            <label for="searchByName">{{:: 'snapshots.filter' | translate }}</label>
+            <input type="search" id="searchByName" class="form-control" st-search="id" placeholder="search" focus-on="focusInput" />
+            <div class="gs-btn" ng-click="uploadSnapshot()">{{:: 'snapshots.uploadBtn' | translate }}</div>
+            <div class="gs-btn" ng-click="createSnapshot()">{{:: 'snapshots.createBtn' | translate }}</div>
+        </form>
+        <table ng-hide="errorMessage" class="gs-table">
+            <thead>
+                <tr>
+                    <th st-sort="id" class="id sorting">{{:: 'snapshots.table.id' | translate }}</th>
+                    <th st-sort="created_at" class="created sorting">{{:: 'snapshots.table.created' | translate }}</th>
+                    <th st-sort="status" class="status sorting">{{:: 'snapshots.table.status' | translate }}</th>
+                    <th class="actions"></th>
+                </tr>
+            </thead>
+
+            <tbody ng-repeat="snapshot in displayedSnapshots track by $index"
+                   ng-click="select(snapshot);isOpen=!isOpen" ng-init="isOpen=false">
+                <tr ng-class="{selected: snapshot.isSelected}">
+                    <td class="id sorting">{{ snapshot.id }}</td>
+                    <td class="created sorting">{{ snapshot.created_at }}</td>
+                    <td class="status sorting">{{ snapshot.status }}</td>
+                    <td class="actions">
+                        <action-selector-snapshot target="snapshot" actions="actions"></action-selector-snapshot>
+                    </td>
+                </tr>
+                <tr class="error-details" ng-show="snapshot.error && isOpen">
+                    <td colspan="4">{{ 'snapshots.table.error' | translate }} <span>{{ snapshot.error }}</span></td>
+                </tr>
+            </tbody>
+
+            <tfoot>
+                <tr>
+                    <td colspan="4" class="text-center">
+                        <div id="pagination" st-pagination st-items-by-page="itemsByPage"></div>
+                    </td>
+                </tr>
+            </tfoot>
+        </table>
+
+        <div class="gs-spinner large" ng-hide="snapshots || errorMessage"></div>
+        <div class="empty-message" ng-show="snapshots && !snapshots.length">{{:: 'snapshots.emptyMessage' | translate }}</div>
+    </div>
+
+    <div class="connect-error-message" ng-show="errorMessage">{{ errorMessage | translate }}</div>
+</div>

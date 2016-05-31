@@ -452,6 +452,49 @@
     },
     "deploymentActionSelector": {
         "updating": "Deployment update"
+    },
+    "snapshots": {
+        "filter": "Snapshot ID:",
+        "createBtn": "Create Snapshot",
+        "uploadBtn": "Upload Snapshot",
+        "emptyMessage": "No snapshots found",
+        "table": {
+            "id": "ID",
+            "created": "Created at",
+            "status": "Status",
+            "error": "Error details:"
+        },
+        "dialogs": {
+            "create": {
+                "title": "Create Snapshot",
+                "description": "Save the current state of the manager",
+                "id": "Give this snapshot an ID",
+                "submit": "Create"
+            },
+            "upload": {
+                "title": "Upload Snapshot",
+                "description": "Select a snapshot archive to upload",
+                "browseText": "Paste a URL or select a file",
+                "id": "Give this snapshot an ID",
+                "submit": "Upload",
+                "defaultError" : "Error uploading archive",
+                "tooBig": "This archive is too big"
+            },
+            "delete": {
+                "title": "Delete {{id}}",
+                "description": "Are you sure you want to delete this snapshot?"
+            }
+        },
+        "actions": {
+            "restore": "Restore",
+            "download": "Download",
+            "delete": "Delete",
+            "inProgress": {
+                "restore": "Restoring",
+                "download": "Downloading",
+                "delete": "Deleting"
+            }
+        }
     }
 }
 

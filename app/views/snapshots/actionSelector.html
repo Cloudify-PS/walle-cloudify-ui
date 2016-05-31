@@ -1,0 +1,19 @@
+<div class="action-selector">
+    <div class="btn-group" ng-hide="inProgress" dropdown>
+        <button id="split-button" class="btn" type="button"
+                ng-click="selectAction(defaultAction, target)">{{ 'snapshots.actions.' + defaultAction.name | translate }}</button>
+        <button type="button" class="btn" dropdown-toggle>
+            <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu" role="menu" aria-labelledby="split-button">
+            <li ng-repeat="action in actions" role="menuitem">
+                <button class="btn" type="button" ng-click="selectAction(action, target)">{{:: 'snapshots.actions.' + action.name | translate }}</button>
+            </li>
+        </ul>
+    </div>
+
+    <div class="actionRunning" ng-show="inProgress">
+        <span class="gs-spinner inline"></span>
+        {{ ('snapshots.actions.inProgress.' + inProgress) | translate }}
+    </div>
+</div>
