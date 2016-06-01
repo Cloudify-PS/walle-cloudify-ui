@@ -23,8 +23,8 @@ angular.module('cosmoUiApp')
 
         function pollMaintenanceStatus(){
             return cloudifyClient.maintenance.get().then(function(httpResponse){
-                var status = httpResponse.data.status;
-                status && MaintenanceService.setStatus(status);
+                var data = httpResponse.data;
+                data && MaintenanceService.setMaintenanceData(data);
             });
         }
 

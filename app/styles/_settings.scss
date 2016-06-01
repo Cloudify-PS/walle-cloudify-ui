@@ -1,19 +1,28 @@
 #maintenance-page {
-    display: flex;
-    #maintenance-settings {
-        margin: auto;
-        z-index: 1032;
-        background: white;
-        padding: 0 40px 20px;
-        max-width:950px;
-        #maintenance-actions {
-            margin-top: 40px;
-            text-align: center;
-            button {
-                margin-top: 10px;
-            }
-            #maintenance-status{
-                font-weight: bold;
+    #maintenance-settings-container {
+        display: flex;
+        margin-bottom: 30px;
+        #maintenance-settings {
+            margin: auto;
+            z-index: 1032;
+            background: white;
+            padding: 0 40px 20px;
+            #maintenance-actions {
+                margin-top: 40px;
+                text-align: center;
+                button {
+                    margin-top: 10px;
+                }
+                #maintenance-popover{
+                    cursor: help;
+                }
+                [uib-popover-template-popup]{
+                    max-width: 950px !important;
+                    font-size: 14px;
+                }
+                #maintenance-status {
+                    font-weight: bold;
+                }
             }
         }
     }
@@ -29,5 +38,42 @@
         left: 0;
 
         @include animate(halfFadeIn, 1s);
+    }
+
+    .remaining-executions {
+        .loading-executions{
+            text-align: center;
+        }
+        .no-executions{
+            text-align: center;
+        }
+        .executions-error{
+            text-align: center;
+            color: red;
+        }
+        .executions-data {
+            .description{
+                text-align: center;
+                margin-bottom: 10px;
+            }
+            table {
+                tbody {
+                    .cancel-execution {
+                        text-align: center;
+                        .cancel-execution-button {
+                            font-size: 30px;
+                            color: #3aaeda;
+                            text-align: center;
+                            margin-left: 3px;
+                            width: auto;
+
+                            &:hover {
+                                color: #136e9d;
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 }

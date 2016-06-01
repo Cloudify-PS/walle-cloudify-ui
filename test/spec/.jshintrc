@@ -37,7 +37,8 @@
     "runs": false,
     "$": false,
     "moment": false,
-    "waits": false
+    "waits": false,
+    "_": false
   }
 }
 

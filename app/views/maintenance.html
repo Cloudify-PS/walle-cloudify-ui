@@ -1,14 +1,50 @@
 <div id="maintenance-page">
-    <div id="maintenance-settings" class="settings-card">
-        <h3>{{'maintenance.page.title' | translate}}</h3>
-        <p translate="maintenance.page.description"></p>
-        <p translate="maintenance.page.statusesExplanation"></p>
-        <div id="maintenance-actions">
-            <h4>{{'maintenance.page.currentStatus' | translate}} <span id="maintenance-status">{{status}}</span></h4>
-            <div ng-if="status && !loading">
-                <button class="gs-btn" ng-click="openMaintenanceDialog()">{{'maintenance.page.'+(status === "deactivated" ? "deactivated" : "notDeactivated")+'.button' | translate}}</button>
-                <p ng-if="errorMessage">{{errorMessage}}</p>
+    <div id="maintenance-settings-container">
+        <div id="maintenance-settings" class="settings-card">
+            <div id="maintenance-actions">
+                <h4>
+                    <a id="maintenance-popover" uib-popover-template="'views/maintenanceDefinition.html'" popover-title="{{dynamicPopover.title}}" popover-placement="bottom" title="?">{{'maintenance.page.currentStatus.maintenance' | translate}} </a>
+                    <span>{{'maintenance.page.currentStatus.text' | translate}} </span>
+                    <span id="maintenance-status">{{status}}</span></h4>
+                <div ng-if="status && !loading">
+                    <button class="gs-btn" ng-click="openMaintenanceDialog()">{{'maintenance.page.'+(status === "deactivated" ? "deactivated" : "notDeactivated")+'.button' | translate}}</button>
+                    <p ng-if="errorMessage">{{errorMessage}}</p>
+                </div>
             </div>
+        </div>
+    </div>
+    <div class="remaining-executions" ng-if="status === 'activating'">
+        <div class="loading-executions" ng-if="loadingExecutions">{{'maintenance.page.remainingExecutions.loading' | translate}}</div>
+        <div class="no-executions" ng-if="!remainingExecutions && !loadingExecutions && !executionsErrorMessage">{{'maintenance.page.remainingExecutions.noExecutions' | translate}}</div>
+        <div class="executions-error" ng-if="executionsErrorMessage">{{executionsErrorMessage}}</div>
+        <div class="executions-data" ng-if="!!remainingExecutions && !executionsErrorMessage && !loadingExecutions">
+            <div class="description">{{'maintenance.page.remainingExecutions.description' | translate}}</div>
+            <table class="gs-table">
+                <thead>
+                    <tr>
+                        <th class="workflow">{{'maintenance.page.remainingExecutions.table.workflow' | translate}}</th>
+                        <th class="id">{{'maintenance.page.remainingExecutions.table.id' | translate}}</th>
+                        <th class="deployment-id">{{'maintenance.page.remainingExecutions.table.deploymentId' | translate}}</th>
+                        <th class="created">{{'maintenance.page.remainingExecutions.table.created' | translate}}</th>
+                        <th class="system-workflow">{{'maintenance.page.remainingExecutions.table.systemWorkflow' | translate}}</th>
+                        <th class="status">{{'maintenance.page.remainingExecutions.table.status' | translate}}</th>
+                        <th class="cancel-execution"></th>
+                    </tr>
+                </thead>
+                <tbody data-ng-repeat="row in remainingExecutions | orderBy: 'created_at' track by row.id">
+                    <tr>
+                        <td class="workflow">{{ row.workflow_id }}</td>
+                        <td class="id">{{ row.id }}</td>
+                        <td class="id"><a href="#/deployment/{{row.deployment_id}}/topology">{{ row.deployment_id }}</a></td>
+                        <td class="created">{{ row.created_at | dateFormat: 'short' }}</td>
+                        <td class="system-workflow">{{ row.is_system_workflow }}</td>
+                        <td class="status">{{ 'deployment.executions.' + row.status | translate }}</td>
+                        <td class="cancel-execution">
+                            <i class="cancel-execution-button fa fa-times-circle" ng-if="['started', 'pending', 'cancelling'].indexOf(row.status) !== -1" ng-click="cancelExecution(row)"></i>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
     </div>
     <div ng-if="status == 'activated'" id="maintenance-highlighter"></div>

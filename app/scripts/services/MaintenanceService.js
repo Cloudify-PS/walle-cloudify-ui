@@ -9,25 +9,29 @@
  */
 angular.module('cosmoUiApp')
     .service('MaintenanceService', function () {
-        var status;
+        var maintenanceData;
         var callbacks = [];
 
-        this.getStatus = function(){
-            return status;
+        this.getMaintenanceData = function(){
+            return maintenanceData;
         };
 
-        this.setStatus = function(newStatus){
-            if(newStatus && newStatus !== status){
-                status = newStatus;
+        this.setMaintenanceData = function(newData){
+            if((newData && !maintenanceData) || (newData && newData.status !== maintenanceData.status)){
+                maintenanceData = newData;
                 _.forEach(callbacks,function(callback){
-                    callback(status);
+                    callback(maintenanceData.status);
                 });
+            }else {
+                maintenanceData = newData;
             }
         };
 
         this.onStatusChange = function(callback){
             callbacks.push(callback);
-            callback(status);
+            if(maintenanceData && maintenanceData.status){
+                callback(maintenanceData.status);
+            }
             return function unregister(){
                 callbacks.splice(callbacks.indexOf(callback), 1);
             };
