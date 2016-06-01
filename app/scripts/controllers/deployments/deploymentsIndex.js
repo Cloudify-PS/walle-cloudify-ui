@@ -48,7 +48,7 @@ angular.module('cosmoUiApp')
         }
 
         function _loadDeploymentUpdates(){
-            return cloudifyClient.deploymentUpdates.list({deployment_id: _.pluck($scope.deployments,'id'),state: 'committing', _include: 'deployment_id, state'})
+            return cloudifyClient.deploymentUpdates.list({deployment_id: _.pluck($scope.deployments,'id'),state: 'committing', _include: ['deployment_id', 'state']})
                 .then(function (result) {
                     deploymentUpdates = _.groupBy(result.data.items, 'deployment_id');
                 }, function() {});
