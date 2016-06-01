@@ -7,9 +7,6 @@ angular.module('cosmoUiApp')
         $scope.onError = onError;
         $scope.onFileSelect = onFileSelect;
 
-        $scope.selectedFile = '';
-        $scope.inputText = '';
-        $scope.snapshotId = '';
         $scope.errorMessage = null;
         $scope.inProgress = false;
 
