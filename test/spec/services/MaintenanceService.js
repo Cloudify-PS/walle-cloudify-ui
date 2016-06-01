@@ -17,13 +17,13 @@ describe('Service: MaintenanceService', function () {
             currentStatus = newStatus;
         });
 
-        MaintenanceService.setStatus('deactivated');
+        MaintenanceService.setMaintenanceData({status: 'deactivated'});
         expect(currentStatus).toBe('deactivated');
-        expect(MaintenanceService.getStatus()).toBe('deactivated');
+        expect(MaintenanceService.getMaintenanceData()).toEqual({status: 'deactivated'});
 
-        MaintenanceService.setStatus('activated');
+        MaintenanceService.setMaintenanceData({status: 'activated'});
         expect(currentStatus).toBe('activated');
-        expect(MaintenanceService.getStatus()).toBe('activated');
+        expect(MaintenanceService.getMaintenanceData()).toEqual({status: 'activated'});
     });
 
 });

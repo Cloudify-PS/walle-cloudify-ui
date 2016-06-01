@@ -361,6 +361,7 @@
         "execution" : {
             "startTitle" : "Start execution",
             "startDescription": "Select the workflow you want to execute",
+            "cancelTitle" : "Cancel execution?",
             "cancelDescription" : "Are you sure you want to cancel the current execution?",
             "forceCancel" : "Force"
 
@@ -434,12 +435,28 @@
             "title": "What is Maintenance Mode?",
             "description": "Maintenance mode should be activated during maintenance operations on the Manager (such as upgrade) and blocks all major communication with it for all users.<br/> Activating maintenance mode will prevent making any new requests to the Manager, but existing executions will continue running. Between activation time and the time all existing executions have been completed, only get requests will be served - enabling view of the current system resources with no change to those.<br/>Once activated it can be deactivated at any given time.",
             "statusesExplanation": "Maintenance mode has 3 different statuses:<br/>Deactivated - maintenance mode is off, all requests are enabled<br/>Activating - maintenance mode is being activated, new requests are blocked, waiting for existing executions to finish<br/>Activated - maintenance mode is on, all existing executions have been completed, no requests can be served by the Manager",
-            "currentStatus": "Maintenance mode is currently",
+            "currentStatus": {
+                "maintenance": "Maintenance mode",
+                "text": "is currently"
+            },
             "notDeactivated": {
                 "button": "Deactivate Maintenance Mode"
             },
             "deactivated": {
                 "button": "Activate Maintenance Mode"
+            },
+            "remainingExecutions": {
+                "description": "Waiting for executions to finish before maintenance mode is activated:",
+                "loading": "Checking to see if any executions are currently running",
+                "noExecutions": "No executions are currently running, maintenance mode will be activated shortly",
+                "table": {
+                    "workflow": "Workflow",
+                    "id": "ID",
+                    "deploymentId": "Deployment ID",
+                    "created": "Created",
+                    "systemWorkflow": "System Workflow",
+                    "status": "Status"
+                }
             }
         },
         "dialog": {

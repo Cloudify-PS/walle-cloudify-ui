@@ -30,9 +30,9 @@ describe('Run: pollMaintenanceStatus', function () {
 
             var maintenanceService = {
                 onStatusChange: function(){},
-                setStatus: function(){}
+                setMaintenanceData: function(){}
             };
-            spyOn(maintenanceService, 'setStatus').and.callThrough();
+            spyOn(maintenanceService, 'setMaintenanceData').and.callThrough();
             spyOn(maintenanceService, 'onStatusChange').and.callFake(window.maintenanceMock.getOnStatusChangeMock('activated'));
             $provide.value('MaintenanceService', maintenanceService);
 
@@ -59,7 +59,7 @@ describe('Run: pollMaintenanceStatus', function () {
     it('should poll and set maintenance status', function () {
         expect(TickerSrv.register).toHaveBeenCalled();
         expect(cloudifyClient.maintenance.get).toHaveBeenCalled();
-        expect(MaintenanceService.setStatus).toHaveBeenCalledWith('activated');
+        expect(MaintenanceService.setMaintenanceData).toHaveBeenCalledWith({status: 'activated'});
     });
 
     it('should route to maintenance when activated', function(){

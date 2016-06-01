@@ -13,8 +13,8 @@ describe('Controller: ChangeMaintenanceModeCtrl', function () {
         cloudifyClient = _cloudifyClient_;
         scope = $rootScope.$new();
 
-        spyOn(MaintenanceService,'getStatus').and.returnValue('deactivated');
-        spyOn(MaintenanceService,'setStatus').and.callThrough();
+        spyOn(MaintenanceService,'getMaintenanceData').and.returnValue({status: 'deactivated'});
+        spyOn(MaintenanceService,'setMaintenanceData').and.callThrough();
         spyOn(cloudifyClient.maintenance,'activate').and.returnValue(window.mockPromise());
         spyOn(cloudifyClient.maintenance,'deactivate').and.returnValue(window.mockPromise());
         //since ngDialog isn't opening this Ctrl we inject this manually
@@ -33,14 +33,14 @@ describe('Controller: ChangeMaintenanceModeCtrl', function () {
     it('should check if maintenance mode is deactivated', function(){
         expect(scope.deactivated).toEqual(true);
 
-        MaintenanceService.getStatus.and.returnValue(function(){
-            return 'activating';
+        MaintenanceService.getMaintenanceData.and.returnValue(function(){
+            return {status: 'activating'};
         });
         initCtrl();
         expect(scope.deactivated).toBe(false);
 
-        MaintenanceService.getStatus.and.returnValue(function(){
-            return 'activated';
+        MaintenanceService.getMaintenanceData.and.returnValue(function(){
+            return {status: 'activated'};
         });
         initCtrl();
         expect(scope.deactivated).toBe(false);
@@ -56,7 +56,7 @@ describe('Controller: ChangeMaintenanceModeCtrl', function () {
         scope.changeMaintenance();
 
         expect(cloudifyClient.maintenance.activate).toHaveBeenCalled();
-        expect(MaintenanceService.setStatus).toHaveBeenCalledWith('activating');
+        expect(MaintenanceService.setMaintenanceData).toHaveBeenCalledWith({status: 'activating'});
         expect(scope.errorMessage).toBe(undefined);
         expect(scope.closeThisDialog).toHaveBeenCalled();
     });
@@ -71,7 +71,7 @@ describe('Controller: ChangeMaintenanceModeCtrl', function () {
         scope.changeMaintenance();
 
         expect(cloudifyClient.maintenance.activate).toHaveBeenCalled();
-        expect(MaintenanceService.setStatus).not.toHaveBeenCalledWith('deactivated');
+        expect(MaintenanceService.setMaintenanceData).not.toHaveBeenCalledWith({status: 'deactivated'});
         expect(scope.errorMessage).toBe('This is an error');
         expect(scope.closeThisDialog).not.toHaveBeenCalled();
     });
@@ -83,12 +83,12 @@ describe('Controller: ChangeMaintenanceModeCtrl', function () {
             }
         };
         cloudifyClient.maintenance.deactivate.and.returnValue(window.mockPromise(successResponse));
-        MaintenanceService.getStatus.and.returnValue('activated');
+        MaintenanceService.getMaintenanceData.and.returnValue({status: 'activated'});
         initCtrl();
         scope.changeMaintenance();
 
         expect(cloudifyClient.maintenance.deactivate).toHaveBeenCalled();
-        expect(MaintenanceService.setStatus).toHaveBeenCalledWith('deactivated');
+        expect(MaintenanceService.setMaintenanceData).toHaveBeenCalledWith({status: 'deactivated'});
         expect(scope.errorMessage).toBe(undefined);
         expect(scope.closeThisDialog).toHaveBeenCalled();
     });
