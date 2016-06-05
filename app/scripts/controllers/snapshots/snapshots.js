@@ -12,6 +12,7 @@ angular.module('cosmoUiApp')
         $scope.loadSnapshots = loadSnapshots;
         $scope.createSnapshot = createSnapshot;
         $scope.uploadSnapshot = uploadSnapshot;
+        $scope.togglePolling = togglePolling;
 
         $scope.errorMessage = '';
         $scope.itemsByPage = 9;
@@ -19,16 +20,16 @@ angular.module('cosmoUiApp')
         SnapshotsService.actions.restore.success = $scope.loadSnapshots;
         $scope.actions = SnapshotsService.actions;
 
-        loadSnapshots();
+        $scope.loadSnapshots();
 
         function loadSnapshots() {
-            return SnapshotsService.getSnapshots()
+            SnapshotsService.getSnapshots()
                 .then(function(response) {
                     $scope.snapshots = response.data.items;
-                    togglePolling(
-                        $scope.snapshots.filter(function(snapshot) {
-                            return /creating|uploading|deleting|restoring/i.test(snapshot.status);
-                        }).length
+                    $scope.togglePolling(
+                        !!$scope.snapshots
+                            .filter(function(snapshot) { return /creating|uploading|deleting|restoring/i.test(snapshot.status); })
+                            .length
                     );
                 }, function(response) {
                     $scope.errorMessage = response.status === 403 ? 'permissionError' : 'connectError';
