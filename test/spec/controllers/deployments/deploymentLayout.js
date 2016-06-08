@@ -127,35 +127,44 @@ describe('Controller: DeploymentLayoutCtrl', function () {
                     callback();
                 }
             });
-            spyOn(cloudifyClient.deploymentUpdates, 'list').and.returnValue(window.mockPromise({data: {items: [{state: 'committing'}]}}));
+            spyOn(cloudifyClient.deploymentUpdates, 'list').and.returnValue(window.mockPromise({data: {items: [{state: 'updating'}]}}));
             scope.deployment_id = 'dep1';
         });
 
         it('should load deployment updates', function(){
             initCtrl();
             expect(cloudifyClient.deploymentUpdates.list).toHaveBeenCalled();
-            expect(scope.currentUpdate).toEqual({state: 'committing'});
+            expect(scope.currentUpdate).toEqual({state: 'updating'});
 
-            cloudifyClient.deploymentUpdates.list.and.returnValue(window.mockPromise({data: {items: [{state: 'committed'}]}}));
+            cloudifyClient.deploymentUpdates.list.and.returnValue(window.mockPromise({data: {items: [{state: 'executing_workflow'}]}}));
+            initCtrl();
+            expect(scope.currentUpdate).toEqual({state: 'executing_workflow'});
+
+            cloudifyClient.deploymentUpdates.list.and.returnValue(window.mockPromise({data: {items: [{state: 'finalizing'}]}}));
+            initCtrl();
+            expect(scope.currentUpdate).toEqual({state: 'finalizing'});
+
+            cloudifyClient.deploymentUpdates.list.and.returnValue(window.mockPromise({data: {items: [{state: 'successful'}]}}));
             initCtrl();
             expect(cloudifyClient.deploymentUpdates.list).toHaveBeenCalled();
             expect(scope.currentUpdate).toEqual(undefined);
         });
 
-        it('should redirect after update committed', function(){
-            cloudifyClient.deploymentUpdates.list.and.returnValue(window.mockPromise({data: {items: [{state: 'committed'}]}}));
-            initCtrl();
-            spyOn(scope, 'goToDeployments').and.callThrough();
-            scope.reloadDeployment();
-            expect(scope.goToDeployments).toHaveBeenCalled();
-        });
-
-        it('should not redirect after update failed', function(){
-            cloudifyClient.deploymentUpdates.list.and.returnValue(window.mockPromise({data: {items: [{state: 'failed'}]}}));
-            initCtrl();
-            spyOn(scope, 'goToDeployments').and.callThrough();
-            scope.reloadDeployment();
-            expect(scope.goToDeployments).not.toHaveBeenCalled();
-        });
+        //TODO currently topology is not updating, so no need to reload
+        //it('should redirect after update successful', function(){
+        //    cloudifyClient.deploymentUpdates.list.and.returnValue(window.mockPromise({data: {items: [{state: 'successful'}]}}));
+        //    initCtrl();
+        //    spyOn(scope, 'goToDeployments').and.callThrough();
+        //    scope.reloadDeployment();
+        //    expect(scope.goToDeployments).toHaveBeenCalled();
+        //});
+        //
+        //it('should not redirect after update failed', function(){
+        //    cloudifyClient.deploymentUpdates.list.and.returnValue(window.mockPromise({data: {items: [{state: 'failed'}]}}));
+        //    initCtrl();
+        //    spyOn(scope, 'goToDeployments').and.callThrough();
+        //    scope.reloadDeployment();
+        //    expect(scope.goToDeployments).not.toHaveBeenCalled();
+        //});
     });
 });

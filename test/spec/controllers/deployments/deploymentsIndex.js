@@ -32,7 +32,7 @@ describe('Controller: DeploymentsCtrl', function () {
                 };
             });
 
-            spyOn(cloudifyClient.deploymentUpdates, 'list').and.returnValue(window.mockPromise({data: {items:[{deployment_id: 'dep1', state: 'committing'}, {deployment_id: 'dep2', state: 'committing'}]}}));
+            spyOn(cloudifyClient.deploymentUpdates, 'list').and.returnValue(window.mockPromise({data: {items:[{deployment_id: 'dep1', state: 'updating'}, {deployment_id: 'dep2', state: 'executing_workflow'}, {deployment_id: 'dep3', state: 'finalizing'}]}}));
 
             initCtrl();
         });
@@ -155,9 +155,10 @@ describe('Controller: DeploymentsCtrl', function () {
 
         it('should get when deployment is updating', function(){
             expect(cloudifyClient.deploymentUpdates.list).toHaveBeenCalled();
-            expect(scope.getUpdate('dep1')).toEqual({deployment_id: 'dep1', state: 'committing'});
-            expect(scope.getUpdate('dep2')).toEqual({deployment_id: 'dep2', state: 'committing'});
-            expect(scope.getUpdate('dep3')).toBeUndefined();
+            expect(scope.getUpdate('dep1')).toEqual({deployment_id: 'dep1', state: 'updating'});
+            expect(scope.getUpdate('dep2')).toEqual({deployment_id: 'dep2', state: 'executing_workflow'});
+            expect(scope.getUpdate('dep3')).toEqual({deployment_id: 'dep3', state: 'finalizing'});
+            expect(scope.getUpdate('dep4')).toBeUndefined();
         });
     });
 });
