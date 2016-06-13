@@ -29,6 +29,12 @@ angular.module('cosmoUiApp')
                     opts.headers = _.merge({}, opts.headers, {'Content-Type': 'application/json'});
                 }
 
+                //sending FormData object as body, preventing $http from serializing it.
+                if(opts.data instanceof FormData){
+                    opts.transformRequest = angular.identity;
+                    opts.headers = {'Content-Type': undefined};
+                }
+
                 return $http(opts).then(function (result) {
                     callback(null, result, result ? result.data : null);
                     return result;

@@ -63,12 +63,22 @@ angular.module('cosmoUiApp')
           }
           return cloudifyClient.deploymentUpdates.list({deployment_id: $scope.deploymentId, _include: 'state'})
               .then(function (result) {
-                  var first = _.first(result.data.items);
-                  if(first.state === 'committing'){
-                      $scope.currentUpdate = first;
+                  var items = result.data.items;
+                  if(!items || items.length === 0){
+                      return;
+                  }
+                  var updatingStates = ['updating','executing_workflow','finalizing'];
+                  var updating = _.first(_.filter(items, function(item){
+                      return updatingStates.indexOf(item.state) !== -1;
+                  }));
+                  if(updating){
+                      $scope.currentUpdate = updating;
                   } else{
+                      var notUpdating = _.first(items, function(item){
+                          return updatingStates.indexOf(item.state) === -1;
+                      });
                       $scope.currentUpdate = undefined;
-                      updateState = first.state;
+                      updateState = notUpdating.state;
                   }
               }, function() {});
       }
@@ -84,10 +94,11 @@ angular.module('cosmoUiApp')
       };
 
       $scope.reloadDeployment = function(){
-          if(updateState === 'committed'){
-              //TODO change this to reload when removing ticker
-              $scope.goToDeployments();
-          }
+          //TODO currently topology is not updating, so no need to reload
+          //if(updateState === 'successful'){
+          //    //TODO change this to reload when removing ticker
+          //    $scope.goToDeployments();
+          //}
       };
 
       $scope.registerTickerTask('deploymentLayout/loadExecutions', _loadExecutions, 1000);

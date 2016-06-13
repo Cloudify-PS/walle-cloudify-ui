@@ -16,7 +16,7 @@
         "ngstorage": "~0.3.0",
         "grafana": "grafana/grafana#~1.6.1",
         "lodash": "~3.9.3",
-        "ng-file-upload": "~3.2.4",
+        "ng-file-upload": "~3.1.2",
         "ngprogress": "~1.0.7",
         "angular-loading-bar": "~0.7.1",
         "angular-translate": "~2.6.1",
