@@ -2,7 +2,8 @@
     <div class="dialogTitle" ng-if="deactivated">{{ 'maintenance.dialog.activateTitle' | translate }}</div>
     <div class="dialogTitle" ng-if="!deactivated">{{ 'maintenance.dialog.deactivateTitle' | translate }}</div>
 
-    <div class="dialogDescription"> {{ 'maintenance.dialog.description' | translate }}</div>
+    <div class="dialogDescription" ng-if="deactivated"> {{ 'maintenance.dialog.activateDescription' | translate }}</div>
+    <div class="dialogDescription" ng-if="!deactivated"> {{ 'maintenance.dialog.deactivateDescription' | translate }}</div>
     <div class="error-message" data-ng-show="!!errorMessage">{{ errorMessage }}</div>
     <div class="buttonsContainer confirmationButtons">
         <button class="gs-btn" ng-click="closeThisDialog()">{{ 'maintenance.dialog.cancel' | translate }}</button>
