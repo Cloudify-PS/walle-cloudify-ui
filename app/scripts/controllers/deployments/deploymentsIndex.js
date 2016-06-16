@@ -25,7 +25,7 @@ angular.module('cosmoUiApp')
         };
 
         $scope.getUpdate = function (deployment) {
-            return _.first(deploymentUpdates[deployment]);
+            return _.last(deploymentUpdates[deployment]);
         };
 
         $scope.canPause = function (deployment_id) {
@@ -48,7 +48,7 @@ angular.module('cosmoUiApp')
         }
 
         function _loadDeploymentUpdates(){
-            return cloudifyClient.deploymentUpdates.list({deployment_id: _.pluck($scope.deployments,'id'),state: ['updating','executing_workflow','finalizing'], _include: 'deployment_id,state'})
+            return cloudifyClient.deploymentUpdates.list({deployment_id: _.pluck($scope.deployments,'id'),state: ['updating','executing_workflow','finalizing'], _sort: ['deployment_id', 'created_at'], _include: 'deployment_id,state'})
                 .then(function (result) {
                     deploymentUpdates = _.groupBy(result.data.items, 'deployment_id');
                 }, function() {});
@@ -83,8 +83,8 @@ angular.module('cosmoUiApp')
             return _.pluck(objectsArray, key);
         };
 
-        $scope.registerTickerTask('deployments/loadExecutions', _loadExecutions, 10000);
         $scope.registerTickerTask('deployments/loadDeploymentUpdates', _loadDeploymentUpdates, 10000);
+        $scope.registerTickerTask('deployments/loadExecutions', _loadExecutions, 10000);
 
         $scope.loadDeployments();
 
