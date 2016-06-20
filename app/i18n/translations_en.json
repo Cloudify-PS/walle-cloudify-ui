@@ -462,7 +462,8 @@
         "dialog": {
             "activateTitle": "Activate Maintenance Mode",
             "deactivateTitle": "Deactivate Maintenance Mode",
-            "description": "Are you sure?",
+            "activateDescription": "Are you sure you want to activate maintenance mode?",
+            "deactivateDescription": "Are you sure you want to deactivate maintenance mode?",
             "cancel": "Cancel",
             "confirm": "Confirm"
         }
