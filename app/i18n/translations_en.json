@@ -363,8 +363,8 @@
             "startDescription": "Select the workflow you want to execute",
             "cancelTitle" : "Cancel execution?",
             "cancelDescription" : "Are you sure you want to cancel the current execution?",
-            "forceCancel" : "Force"
-
+            "forceCancel" : "Force",
+            "getScalingResourcesFail": "Failed to get all scalable entities"
         },
         "upload": {
             "title": "Upload Blueprint",

@@ -43,7 +43,7 @@ angular.module('cosmoUiApp')
                 }
             };
             var failedGettingResources = function(){
-                $scope.setErrorMessage($filter('translate')('dialogs.confirm.getScalingResourcesFail'));
+                $scope.setErrorMessage($filter('translate')('dialogs.execution.getScalingResourcesFail'));
                 $scope.isGetResourcesError = true;
             };
 
@@ -66,7 +66,7 @@ angular.module('cosmoUiApp')
                 $scope.workflow = _.find($scope.deployment.workflows, {name: $scope.workflowName.value});
                 $timeout(function(){
                     if($scope.workflowName.value === 'scale' && $scope.isGetResourcesError) {
-                        $scope.setErrorMessage($filter('translate')('dialogs.confirm.getScalingResourcesFail'));
+                        $scope.setErrorMessage($filter('translate')('dialogs.execution.getScalingResourcesFail'));
                     }
                 });
             }
@@ -87,6 +87,7 @@ angular.module('cosmoUiApp')
         };
 
         $scope.executeWorkflow = function () {
+            $scope.setErrorMessage(null);
             $scope.inProcess = true;
             var params = JSON.parse($scope.rawString);
             if(isCurrentWorkflowScale()){
