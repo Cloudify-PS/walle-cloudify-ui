@@ -61,24 +61,19 @@ angular.module('cosmoUiApp')
           if ( $scope.deploymentNotFound ){
               return { then: function(){} };
           }
-          return cloudifyClient.deploymentUpdates.list({deployment_id: $scope.deploymentId, _include: 'state'})
+          return cloudifyClient.deploymentUpdates.list({deployment_id: $scope.deploymentId, _sort:'created_at', _include: 'state'})
               .then(function (result) {
                   var items = result.data.items;
                   if(!items || items.length === 0){
                       return;
                   }
                   var updatingStates = ['updating','executing_workflow','finalizing'];
-                  var updating = _.first(_.filter(items, function(item){
-                      return updatingStates.indexOf(item.state) !== -1;
-                  }));
-                  if(updating){
-                      $scope.currentUpdate = updating;
+                  var latest = _.last(items);
+                  if(updatingStates.indexOf(latest.state) !== -1){
+                      $scope.currentUpdate = latest;
                   } else{
-                      var notUpdating = _.first(items, function(item){
-                          return updatingStates.indexOf(item.state) === -1;
-                      });
                       $scope.currentUpdate = undefined;
-                      updateState = notUpdating.state;
+                      updateState = latest.state;
                   }
               }, function() {});
       }
@@ -101,8 +96,8 @@ angular.module('cosmoUiApp')
           //}
       };
 
-      $scope.registerTickerTask('deploymentLayout/loadExecutions', _loadExecutions, 1000);
       $scope.registerTickerTask('deploymentLayout/loadDeploymentUpdates', _loadDeploymentUpdates, 1000);
+      $scope.registerTickerTask('deploymentLayout/loadExecutions', _loadExecutions, 1000);
 
       $scope.setShowEventsWidget = function(isShow){
           $scope.showDeploymentEvents = isShow;
