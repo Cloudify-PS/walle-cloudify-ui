@@ -16,8 +16,4 @@ angular.module('cosmoUiApp')
             node.nodeType = 'node';
             $scope.page.viewNode = node;
         };
-
-        $scope.$on('$routeChangeStart', function() { // need this to fix issue when navigating to blueprints/topology
-            $('[ui-topology]').remove();
-        });
     });

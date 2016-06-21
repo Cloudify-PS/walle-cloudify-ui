@@ -153,7 +153,7 @@ angular.module('cosmoUiApp')
 
                 scope.$watch('deploymentId', loadInstances);
 
-                scope.registerTickerTask('deploymentTopology/loadInstances', loadInstances, 1000);
+                scope.interval(loadInstances, 1000);
             }
         };
     });
