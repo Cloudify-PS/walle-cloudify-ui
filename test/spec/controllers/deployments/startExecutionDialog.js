@@ -218,4 +218,12 @@ describe('Controller: StartExecutionDialogCtrl', function () {
             expect(cloudifyClient.executions.start).toHaveBeenCalledWith('dep1', 'scale', {scalable_entity_name: 'node1'});
         });
     });
+
+    it('should not change original deployment workflows', function(){
+        scope.deployment = {workflows: [{name: 'scale', parameters: {delta: {}, scale_compute: {}, scalable_entity_name: {}}}], id: 'dep1'};
+        scope.$digest();
+        init();
+        var scale = _.find(scope.deployment.workflows, {name: 'scale'});
+        expect(scale.parameters).toEqual({delta: {}, scale_compute: {}, scalable_entity_name: {}});
+    });
 });

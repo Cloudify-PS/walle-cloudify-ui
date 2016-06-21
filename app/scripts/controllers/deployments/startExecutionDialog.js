@@ -16,7 +16,9 @@ angular.module('cosmoUiApp')
 
         var resourceParameter;
         (function removeScaleResourceParam(workflows){
-            var scale = _.find(workflows, {name: 'scale'});
+            //Copying workflows before locally (dialog scope) changing them
+            $scope.workflows = angular.copy(workflows);
+            var scale = _.find($scope.workflows, {name: 'scale'});
             //supporting backward compatibility using node_id instead of scalable_entity_name
             if(scale){
                 resourceParameter = scale.parameters.node_id ? 'node_id' : scale.parameters.scalable_entity_name ? 'scalable_entity_name' : undefined;
@@ -27,7 +29,7 @@ angular.module('cosmoUiApp')
         })($scope.deployment.workflows);
 
         //$scope.deployment.workflows --> expected to exist from parent scope
-        $scope.workflowsList = _.map($scope.deployment.workflows, function (w) {
+        $scope.workflowsList = _.map($scope.workflows, function (w) {
             return {label: w.name, value: w.name};
         });
 
@@ -68,7 +70,7 @@ angular.module('cosmoUiApp')
         $scope.workflowName = null;
         $scope.$watch('workflowName', function () {
             if ($scope.workflowName) {
-                $scope.workflow = _.find($scope.deployment.workflows, {name: $scope.workflowName.value});
+                $scope.workflow = _.find($scope.workflows, {name: $scope.workflowName.value});
                 $timeout(function(){
                     if($scope.workflowName.value === 'scale' && $scope.isGetResourcesError) {
                         $scope.setErrorMessage($filter('translate')('dialogs.execution.getScalingResourcesFail'));
