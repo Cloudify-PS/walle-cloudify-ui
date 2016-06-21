@@ -6,6 +6,9 @@ angular.module('cosmoUiApp')
         $scope.executeErrorMessage = null;
         $scope.inputs = {};
         $scope.inputsValid = false;
+        var groups;
+        var resourcesWatch;
+        var scale_compute;
 
         function isCurrentWorkflowScale(){
             return $scope.workflow.name === 'scale';
@@ -48,9 +51,11 @@ angular.module('cosmoUiApp')
             };
 
             if ($scope.deployment.groups) {
+                groups = Object.keys($scope.deployment.groups);
                 setGroup('Groups', Object.keys($scope.deployment.groups));
             } else {
                 cloudifyClient.deployments.get($scope.deployment.id).then(function (deploymentResponse) {
+                    groups = Object.keys(deploymentResponse.data.groups);
                     setGroup('Groups', Object.keys(deploymentResponse.data.groups));
                 }, failedGettingResources);
             }
@@ -69,6 +74,23 @@ angular.module('cosmoUiApp')
                         $scope.setErrorMessage($filter('translate')('dialogs.confirm.getScalingResourcesFail'));
                     }
                 });
+                if(isCurrentWorkflowScale()){
+                    resourcesWatch = $scope.$watch('resourceId', function(item){
+                        if(!groups || !item){
+                            return;
+                        }
+                        if(groups.indexOf(item.value) !== -1 && $scope.workflow.parameters.scale_compute){
+                            scale_compute = scale_compute ||  $scope.workflow.parameters.scale_compute ;
+                            delete $scope.workflow.parameters.scale_compute;
+                        }
+                        if(groups.indexOf(item.value) === -1 && !$scope.workflow.parameters.scale_compute && scale_compute){
+                            $scope.workflow.parameters.scale_compute = scale_compute;
+                        }
+                    });
+                }else if(resourcesWatch){
+                    resourcesWatch();
+                    resourcesWatch = undefined;
+                }
             }
         });
 

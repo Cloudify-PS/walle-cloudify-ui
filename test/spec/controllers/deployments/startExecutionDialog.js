@@ -168,6 +168,27 @@ describe('Controller: StartExecutionDialogCtrl', function () {
                 expect(scope.isGetResourcesError).toBe(true);
                 expect(scope.setErrorMessage).toHaveBeenCalledWith('dialogs.confirm.getScalingResourcesFail');
             });
+
+            describe('scale_compute', function(){
+                beforeEach(function(){
+                    scope.deployment.workflows.push({name: 'scale', parameters: {scale_compute: {default: '', description: ''}}});
+                    spyOn(scope,'$watch').and.callThrough();
+                    init();
+                    scope.getScalingResources();
+                    scope.workflowName = {value: 'scale'};
+                });
+
+                it('should toggle scale_compute for nodes and groups', function(){
+                    expect(scope.$watch).toHaveBeenCalled();
+                    scope.resourceId = {label: 'group2', value: 'group2'};
+                    scope.$digest();
+                    expect(scope.workflow.parameters.scale_compute).toBe(undefined);
+
+                    scope.resourceId = {label: 'node1', value: 'node1'};
+                    scope.$digest();
+                    expect(scope.workflow.parameters.scale_compute).not.toBe(undefined);
+                });
+            });
         });
 
         // Backward compatibility
