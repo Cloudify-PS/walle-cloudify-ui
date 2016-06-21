@@ -166,7 +166,7 @@ describe('Controller: StartExecutionDialogCtrl', function () {
                 cloudifyClient.nodes.list.and.returnValue(window.mockPromise(null,{}));
                 scope.getScalingResources();
                 expect(scope.isGetResourcesError).toBe(true);
-                expect(scope.setErrorMessage).toHaveBeenCalledWith('dialogs.confirm.getScalingResourcesFail');
+                expect(scope.setErrorMessage).toHaveBeenCalledWith('dialogs.execution.getScalingResourcesFail');
             });
 
             describe('scale_compute', function(){

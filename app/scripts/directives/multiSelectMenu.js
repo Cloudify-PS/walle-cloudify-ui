@@ -26,7 +26,8 @@ angular.module('cosmoUiApp')
                     return option.groupLabel ? true : false;
                 }
 
-                $scope.$watch('filter', function(newValue){
+                $scope.$watch('filter', filterOptions, true);
+                function filterOptions(newValue){
                     var filtered = [];
                     _.forEachRight($scope.options, function(option){
                         var beforeIsItem = filtered[0] && filtered[0].label ? true : false;
@@ -35,7 +36,7 @@ angular.module('cosmoUiApp')
                         }
                     });
                     $scope.filteredItems = filtered;
-                },true);
+                }
 
                 /**
                  * Update Marked option when filtering the options
@@ -52,6 +53,9 @@ angular.module('cosmoUiApp')
                 function _listener() {
                     $scope.$watch('options', function (options) {
                         setInit();
+                        if(options){
+                            filterOptions($scope.filter || '');
+                        }
                         if (ngModel.$modelValue && ngModel.$modelValue.length > 0) {
                             var selected = ngModel.$modelValue;
                             for(var i in selected) {

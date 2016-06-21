@@ -61,5 +61,47 @@ describe('Directive: multiSelectMenu', function () {
                 ]
             );
         });
+
+        it('should watch changed options', function(){
+            element.isolateScope().filter = '';
+            scope.options = [
+                {'label': 'TestLabel', 'value': 'TestValue'},
+                {'label': 'TestLabel2', 'value': 'TestValue2'},
+                {'groupLabel': 'group1'},
+                {'label': 'GroupItem1', 'value': 'GroupItem1'},
+                {'label': 'GroupItem2', 'value': 'GroupItem2'},
+                {'groupLabel': 'group2'},
+                {'label': 'GroupItem3', 'value': 'GroupItem3'},
+                {'groupLabel': 'group3'},
+                {'label': 'GroupItem4', 'value': 'GroupItem4'}
+            ];
+            scope.$digest();
+            expect(element.isolateScope().filteredItems).toEqual(scope.options);
+
+            element.isolateScope().filter = '2';
+            scope.$apply();
+
+            scope.options = [
+                {'label': 'TestLabel', 'value': 'TestValue'},
+                {'label': 'TestLabel2', 'value': 'TestValue2'},
+                {'groupLabel': 'group1'},
+                {'label': 'GroupItem1', 'value': 'GroupItem1'},
+                {'label': 'GroupItem2', 'value': 'GroupItem2'},
+                {'groupLabel': 'group2'},
+                {'label': 'GroupItem3', 'value': 'GroupItem3'},
+                {'groupLabel': 'group3'},
+                {'label': 'GroupItem24', 'value': 'GroupItem24'}
+            ];
+            scope.$apply();
+            expect(element.isolateScope().filteredItems).toEqual(
+                [
+                    {'label': 'TestLabel2', 'value': 'TestValue2'},
+                    {'groupLabel': 'group1'},
+                    {'label': 'GroupItem2', 'value': 'GroupItem2'},
+                    {'groupLabel': 'group3'},
+                    {'label': 'GroupItem24', 'value': 'GroupItem24'}
+                ]
+            );
+        });
     });
 });
