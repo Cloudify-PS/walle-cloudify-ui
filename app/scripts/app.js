@@ -249,6 +249,16 @@ angular.module('cosmoUiApp', [
         };
     });
 })
+
+.run(function($rootScope, $interval) {
+    Object.getPrototypeOf($rootScope).interval = function(fn, delay, count, invokeApply, pass) {
+        var interval = $interval(fn, delay, count, invokeApply, pass);
+        this.$on('$destroy', function(){ $interval.cancel(interval); });
+        this.$on('$stateChangeStart', function(){ $interval.cancel(interval); });
+        return interval;
+    };
+})
+
 .value('appConfig', {
     versions: {
         ui: '0.0',
