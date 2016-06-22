@@ -1,7 +1,6 @@
-.bp-action-selector, .deployment-action-selector {
+.action-selector, .bp-action-selector, .deployment-action-selector {
     display: flex;
-    align-items: center;
-    padding: 5px 0px 5px;
+    justify-content: flex-end;
 
     .btn-group {
         display: flex;
