@@ -40,7 +40,7 @@
                         <td class="system-workflow">{{ row.is_system_workflow }}</td>
                         <td class="status">{{ 'deployment.executions.' + row.status | translate }}</td>
                         <td class="cancel-execution">
-                            <i class="cancel-execution-button fa fa-times-circle" ng-if="['started', 'pending', 'cancelling'].indexOf(row.status) !== -1" ng-click="cancelExecution(row)"></i>
+                            <cancel-execution execution="row"></cancel-execution>
                         </td>
                     </tr>
                 </tbody>
