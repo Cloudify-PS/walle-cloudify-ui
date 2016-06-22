@@ -38,7 +38,7 @@
     <div class="error-message monospace" ng-show="executeErrorMessage" ng-bind-html="executeErrorMessage"></div>
 
     <div class="buttonsContainer confirmationButtons">
-        <button class="gs-btn" ng-click="closeThisDialog()">{{ 'dialogs.confirm.cancel' | translate }}</button>
-        <button class="gs-btn" ng-disabled="!isExecuteEnabled()" gs-spinner="{{inProcess}}" ng-click="executeWorkflow()">{{ 'dialogs.confirm.confirm' | translate }}</button>
+        <button class="gs-btn" ng-click="closeThisDialog()" ng-disabled="inProcess">{{ 'dialogs.confirm.cancel' | translate }}</button>
+        <button class="gs-btn" ng-disabled="!isExecuteEnabled() || inProcess" gs-spinner="{{inProcess}}" ng-click="executeWorkflow()">{{ 'dialogs.confirm.confirm' | translate }}</button>
     </div>
 </div>
