@@ -18,12 +18,11 @@
                 </tr>
             </thead>
 
-            <tbody ng-repeat="snapshot in displayedSnapshots track by $index"
-                   ng-click="select(snapshot);isOpen=!isOpen" ng-init="isOpen=false">
-                <tr ng-class="{selected: snapshot.isSelected}">
-                    <td class="id sorting">{{ snapshot.id }}</td>
-                    <td class="created sorting">{{ snapshot.created_at }}</td>
-                    <td class="status sorting">{{ snapshot.status }}</td>
+            <tbody ng-repeat="snapshot in displayedSnapshots track by $index" ng-click="select(snapshot)">
+                <tr ng-class="{selected: snapshot.isSelected}" ng-init="isOpen=false">
+                    <td class="id sorting" ng-click="isOpen=!isOpen">{{ snapshot.id }}</td>
+                    <td class="created sorting" ng-click="isOpen=!isOpen">{{ snapshot.created_at }}</td>
+                    <td class="status sorting" ng-click="isOpen=!isOpen">{{ snapshot.status }}</td>
                     <td class="actions">
                         <action-selector-snapshot target="snapshot" actions="actions"></action-selector-snapshot>
                     </td>
