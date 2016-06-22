@@ -87,36 +87,73 @@ angular.module('cosmoUiApp')
                     }
                 };
 
-                function loadInstances() {
+                function isNodesChanged(topologyNodes, newNodes) {
 
-                    if (scope.blueprintId && scope.deploymentId) {
+                    // compare # of nodes
+                    if (topologyNodes.length !== newNodes.length) {
+                        return true;
+                    }
 
-                        return $q.all([getBlueprint(scope.blueprintId), cloudifyClient.nodeInstances.list(scope.deploymentId)]).then(function (results) {
+                    // compare node names, and if in the same order
+                    for (var i = 0; i < topologyNodes.length; i++) {
+                        if (topologyNodes[i].templateData.name !== newNodes[i].name) {
+                            return true;
+                        }
+                    }
 
-                            var data = results[0].data;
-                            var instances = results[1].data.items;
-                            var executions = scope.currentExecution;
-                            var topologyData = _.merge({}, topologyScale, {
-                                data: data,
-                                instances: instances,
-                                executions: executions
-                            });
+                    return false;
+                }
 
-                            scope.initialized = scope.currentExecution || !!_.find(instances, function (i) {
-                                    return NodeService.status.isInProgress(i);
-                                });
-
-                            if (scope.topologyData) {
-                                $rootScope.$broadcast('topology::refresh', DataProcessingService.encodeTopologyFromRest(topologyData));
-                            } else {
-                                scope.topologyData = DataProcessingService.encodeTopologyFromRest(topologyData);
-                                scope.topologyLoading = false;
-                            }
-                        });
-
-                    } else {
+                function loadTopology() {
+                    if (!scope.deploymentId) {
                         return $q.defer().promise;
                     }
+
+                    return $q.all([cloudifyClient.nodes.list(scope.deploymentId), cloudifyClient.nodeInstances.list(scope.deploymentId), getBlueprint(scope.blueprintId)]).then(function (results) {
+
+                        var nodes = results[0].data.items.map(function(node) {
+                            node.name = node.id;
+                            node.instances = {};
+                            return node;
+                        });
+                        var instances = results[1].data.items;
+                        var blueprintData = {
+                            data: {
+                                plan: results[2].data.plan
+                            }
+                        };
+                        var nodesData = {
+                          plan: {
+                              nodes: nodes
+                          }
+                      };
+                        var execution = scope.currentExecution;
+                        var topologyData = _.merge({}, topologyScale, blueprintData,
+                         {
+                          data: nodesData,
+                          instances: instances,
+                          executions: execution
+                      });
+
+                        scope.initialized = execution || !!_.find(instances, function (i) {
+                              return NodeService.status.isInProgress(i);
+                          });
+
+                        if (scope.topologyData) {
+
+                            if (isNodesChanged(scope.topologyData.nodes, nodes)) {
+                                // if nodes have been added/removed, reload topology
+                                scope.topologyData = DataProcessingService.encodeTopologyFromRest(topologyData);
+                            } else {
+                                // otherwise, just refresh topology
+                                $rootScope.$broadcast('topology::refresh', DataProcessingService.encodeTopologyFromRest(topologyData));
+                            }
+                        } else {
+                            scope.topologyData = DataProcessingService.encodeTopologyFromRest(topologyData);
+                            scope.topologyLoading = false;
+                        }
+                    });
+
                 }
 
                 //caching blueprint
@@ -151,9 +188,9 @@ angular.module('cosmoUiApp')
 
                 scope.$watch('blueprintId', scope.loadBlueprint);
 
-                scope.$watch('deploymentId', loadInstances);
+                scope.$watch('deploymentId', loadTopology);
 
-                scope.interval(loadInstances, 1000);
+                scope.interval(loadTopology, 1000);
             }
         };
     });
