@@ -21,6 +21,24 @@ angular
 
                 scope.defaultAction = scope.actions[Object.keys(scope.actions)[0]]; // the first of actions
 
+                scope.$on('hotkeyRestoreSnapshot', function() {
+                    if (scope.target === scope.$parent.selection.selected) {
+                        selectAction(scope.actions.restore, scope.target);
+                    }
+                });
+
+                scope.$on('hotkeyDownloadSnapshot', function() {
+                    if (scope.target === scope.$parent.selection.selected) {
+                        selectAction(scope.actions.download, scope.target);
+                    }
+                });
+
+                scope.$on('hotkeyDeleteSnapshot', function() {
+                    if (scope.target === scope.$parent.selection.selected) {
+                        selectAction(scope.actions.delete, scope.target);
+                    }
+                });
+
                 function selectAction(action, target) {
                     var result = action.task(target);
                     scope.defaultAction = action;

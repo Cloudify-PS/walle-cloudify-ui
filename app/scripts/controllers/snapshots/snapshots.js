@@ -8,11 +8,12 @@
  * Controller of the cloudifyUiApp
  */
 angular.module('cosmoUiApp')
-    .controller('SnapshotsCtrl', function($scope, ngDialog, SnapshotsService, toaster) {
+    .controller('SnapshotsCtrl', function($scope, ngDialog, SnapshotsService, toaster, HotkeysManager, ItemSelection) {
         $scope.loadSnapshots = loadSnapshots;
         $scope.createSnapshot = createSnapshot;
         $scope.uploadSnapshot = uploadSnapshot;
         $scope.togglePolling = togglePolling;
+        $scope.select = select;
 
         $scope.errorMessage = '';
         $scope.itemsByPage = 9;
@@ -21,6 +22,21 @@ angular.module('cosmoUiApp')
         $scope.actions = SnapshotsService.actions;
 
         $scope.loadSnapshots();
+
+        $scope.$watch('displayedSnapshots', function(newValue) {
+            $scope.selection = new ItemSelection(newValue);
+        });
+
+        HotkeysManager.bindSnapshotActions($scope);
+        HotkeysManager.bindItemsNavigation($scope, function() {
+            $scope.selection.selectNext();
+        }, function() {
+            $scope.selection.selectPrevious();
+        });
+        HotkeysManager.bindQuickSearch($scope, function() {
+            $scope.focusInput = true;
+        });
+        HotkeysManager.bindPaging($scope);
 
         function loadSnapshots() {
             SnapshotsService.getSnapshots()
@@ -56,5 +72,9 @@ angular.module('cosmoUiApp')
             } else {
                 $scope.unregisterTickerTask('snapshots/inProgress');
             }
+        }
+
+        function select(snapshot) {
+            $scope.selection.select(snapshot);
         }
     });
