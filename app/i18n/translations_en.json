@@ -428,27 +428,26 @@
      },
     "maintenance": {
         "message": {
-            "activating": "Cloudify is undergoing maintenance, some operations may not be available",
-            "activated": "Cloudify is undergoing maintenance and will be available again shortly"
+            "activating": "Cloudify manager is entering maintenance mode, some operations may not be available",
+            "activated": "Cloudify manager is in maintenance mode"
         },
         "page":{
-            "title": "What is Maintenance Mode?",
-            "description": "Maintenance mode should be activated during maintenance operations on the Manager (such as upgrade) and blocks all major communication with it for all users.<br/> Activating maintenance mode will prevent making any new requests to the Manager, but existing executions will continue running. Between activation time and the time all existing executions have been completed, only get requests will be served - enabling view of the current system resources with no change to those.<br/>Once activated it can be deactivated at any given time.",
-            "statusesExplanation": "Maintenance mode has 3 different statuses:<br/>Deactivated - maintenance mode is off, all requests are enabled<br/>Activating - maintenance mode is being activated, new requests are blocked, waiting for existing executions to finish<br/>Activated - maintenance mode is on, all existing executions have been completed, no requests can be served by the Manager",
+            "title": "What is maintenance mode?",
+            "description": "Maintenance mode must be turned on during maintenance operations on the Manager (such as upgrading).<br/>While the Manager is entering maintenance mode, it blocks any new requests, but existing executions will continue running. During this time, only read requests will be served.<br/>Maintenance mode may be turned off at any time.",
             "currentStatus": {
                 "maintenance": "Maintenance mode",
                 "text": "is currently"
             },
             "notDeactivated": {
-                "button": "Deactivate Maintenance Mode"
+                "button": "Turn off Maintenance Mode"
             },
             "deactivated": {
-                "button": "Activate Maintenance Mode"
+                "button": "Turn on Maintenance Mode"
             },
             "remainingExecutions": {
-                "description": "Waiting for executions to finish before maintenance mode is activated:",
+                "description": "Waiting for executions to finish before entering maintenance mode:",
                 "loading": "Checking to see if any executions are currently running",
-                "noExecutions": "No executions are currently running, maintenance mode will be activated shortly",
+                "noExecutions": "No executions are currently running, entering maintenance mode",
                 "table": {
                     "workflow": "Workflow",
                     "id": "ID",
@@ -460,10 +459,10 @@
             }
         },
         "dialog": {
-            "activateTitle": "Activate Maintenance Mode",
-            "deactivateTitle": "Deactivate Maintenance Mode",
-            "activateDescription": "Are you sure you want to activate maintenance mode?",
-            "deactivateDescription": "Are you sure you want to deactivate maintenance mode?",
+            "activateTitle": "Turn on Maintenance Mode",
+            "deactivateTitle": "Turn off Maintenance Mode",
+            "activateDescription": "Are you sure you want to turn maintenance mode on?",
+            "deactivateDescription": "Are you sure you want to turn maintenance mode off?",
             "cancel": "Cancel",
             "confirm": "Confirm"
         }
