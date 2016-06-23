@@ -39,7 +39,7 @@
         "dialogs": {
             "delete" : {
                 "title" : "Delete blueprint",
-                "description" : "Are you sure you want to delete '{{blueprint}}'?",
+                "description" : "Are you sure you want to delete \"{{blueprint}}\"?",
                 "cancel" : "Cancel",
                 "confirm" : "Confirm"
             }
@@ -147,7 +147,7 @@
         "dialogs":{
             "delete" : {
                 "title" : "Delete deployment",
-                "description" : "Are you sure you want to delete '{{deployment}}'?",
+                "description" : "Are you sure you want to delete \"{{deployment}}\"?",
                 "confirm" : "Yes",
                 "no" : "No",
                 "force" : "Force"

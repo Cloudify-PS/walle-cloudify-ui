@@ -1,6 +1,6 @@
 <div id="deleteDialog" class="dialogBox">
     <div class="dialogTitle"> {{ 'deployments.dialogs.delete.title' | translate }}</div>
-    <div class="dialogDescription"> {{ 'deployments.dialogs.delete.description' | translate:'{deployment: deployment.id}' }}</div>
+    <div class="dialogDescription"> {{ 'deployments.dialogs.delete.description' | translate: {deployment: deployment.id} }}</div>
     <div class="error-message" data-ng-show="errorMessage">{{ errorMessage }}</div>
     <div class="buttonsContainer confirmationButtons">
 
