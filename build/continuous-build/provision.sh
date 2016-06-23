@@ -68,11 +68,10 @@ if [ "${SKIP_BUILD}" == "" ];then # for development purposes
         git checkout ${BUILD_BRANCH}
         echo "installing preprequirements and building"
         nvm install &> /dev/null
-
+        npm config set registry http://registry.npmjs.org
         npm -g install guy-mograbi-at-gigaspaces/cloudify-ui-build-helper
         create-and-push-build-tag
         export S3_FOLDER="`get-unstable-s3-folder`"
-
         npm run install_prereq
         npm run build_and_publish
     popd
