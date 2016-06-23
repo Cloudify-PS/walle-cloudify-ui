@@ -1,6 +1,6 @@
 .action-selector, .bp-action-selector, .deployment-action-selector {
     display: flex;
-    justify-content: flex-end;
+    float: right;
 
     .btn-group {
         display: flex;

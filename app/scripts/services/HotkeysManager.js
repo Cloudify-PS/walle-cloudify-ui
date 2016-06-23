@@ -142,6 +142,41 @@ angular.module('cosmoUiApp')
                 });
         };
 
+        this.bindSnapshotActions = function(scope) {
+            hotkeys.bindTo(scope)
+                .add({
+                    combo: 'c',
+                    description: 'Create snapshot',
+                    callback: scope.createSnapshot
+                })
+                .add({
+                    combo: 'u',
+                    description: 'Upload snapshot',
+                    callback: scope.uploadSnapshot
+                })
+                .add({
+                    combo: 'r',
+                    description: 'Restore snapshot',
+                    callback: function() {
+                        scope.$broadcast('hotkeyRestoreSnapshot');
+                    }
+                })
+                .add({
+                    combo: 'd',
+                    description: 'Download snapshot',
+                    callback: function() {
+                        scope.$broadcast('hotkeyDownloadSnapshot');
+                    }
+                })
+                .add({
+                    combo: 'shift+d',
+                    description: 'Delete snapshot',
+                    callback: function() {
+                        scope.$broadcast('hotkeyDeleteSnapshot');
+                    }
+                });
+        };
+
         this.bindItemsNavigation = function (scope, nextCallback, previousCallback, enterItemOpts) {
             hotkeys.bindTo(scope)
                 .add({
