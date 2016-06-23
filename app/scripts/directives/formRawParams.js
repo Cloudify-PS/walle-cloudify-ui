@@ -101,28 +101,21 @@ angular.module('cosmoUiApp')
                     }
                 }
 
-                function parseInputs() {
-                    var result = {};
-
-                    _.each($scope.inputs, function (value, key) {
-                        try {
-                            var parsedValue = JSON.parse(value);
-                            if (typeof(parsedValue) !== 'string') {
-                                result[key] = parsedValue;
-                            } else {
-                                result[key] = value;
-                            }
-                        } catch (e) {
-                            result[key] = value;
-                        }
-                    });
-
-                    return result;
-                }
-
                 function formToRaw() {
                     // try to parse input value. if parse fails, keep the input value as it is.
-                    $scope.rawString = JSON.stringify(parseInputs(), null, 2);
+                    $scope.rawString = JSON.stringify($scope.inputs, function(key, value) {
+                        var parsedValue = '';
+                        var exec;
+                        try {
+                            parsedValue = JSON.parse(value);
+                        } catch(e) { }
+                        if (typeof parsedValue === 'string') {
+                            return value;
+                        } else {
+                            exec = /^\d+\.0+$/.exec(value);
+                            return exec ? exec[0] : parsedValue;
+                        }
+                    }, 2);
                     $scope.valid = isValid();
                 }
 
@@ -137,15 +130,17 @@ angular.module('cosmoUiApp')
                         var parsedInputs = JSON.parse($scope.rawString);
                         _.each(parsedInputs, function (value, key) {
                             var parsedValue = value;
+                            var exec;
 
                             try {
                                 parsedValue = JSON.parse(value);
                             } catch (e) { }
                             // if input type is object (except null) avoid [Object object] by stringifying
-                            // if input type will be changed by parsing again (see parseInputs) then we want to keep it a string, so we need to stringify it
+                            // if input type will be changed by parsing again then we want to keep it a string, so we need to stringify it
                             // this handles "true" and "1" strings that will accidentally be parsed to true (boolean) and 1 (number) etc..
-                            if ((!!value && typeof(value) === 'object') || typeof(value) !== typeof(parsedValue)) {
-                                parsedInputs[key] = JSON.stringify(value);
+                            if ((value && typeof value === 'object') || typeof value !== typeof parsedValue) {
+                                exec = /^\d+\.0+$/.exec(value);
+                                parsedInputs[key] = exec ? exec[0] : JSON.stringify(value);
                             }
                         });
 
