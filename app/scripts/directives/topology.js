@@ -111,7 +111,7 @@ angular.module('cosmoUiApp')
 
                     return $q.all([cloudifyClient.nodes.list(scope.deploymentId), cloudifyClient.nodeInstances.list(scope.deploymentId), getBlueprint(scope.blueprintId)]).then(function (results) {
 
-                        var nodes = results[0].data.items.map(function(node) {
+                        nodes = results[0].data.items.map(function(node) {
                             node.name = node.id;
                             node.instances = {};
                             return node;
