@@ -9,6 +9,7 @@ angular.module('backend-mock', []).config(function ($translateProvider) {
     });
     $translateProvider.useMissingTranslationHandler('missingTranslationFactory');
 }).run(function ($httpBackend) {
+    $httpBackend.whenGET('/backend/configuration?access=public').respond(200);
     $httpBackend.whenGET('/backend/configuration?access=all').respond(200);
 });
 

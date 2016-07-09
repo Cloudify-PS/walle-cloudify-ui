@@ -259,6 +259,12 @@ angular.module('cosmoUiApp', [
     };
 })
 
+.run(function(CloudifyService, appConfig) {
+    CloudifyService.getConfiguration('public').then(function(response) {
+        angular.extend(appConfig, response.data);
+    });
+})
+
 .value('appConfig', {
     versions: {
         ui: '0.0',

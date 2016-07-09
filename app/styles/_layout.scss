@@ -49,7 +49,6 @@ body {
         background: #fff;
 
         .main-content-display {
-            $MAIN_PADDING: 20px;
             padding: $MAIN_PADDING;
             background: #fff;
             min-height: 100%;
@@ -152,14 +151,13 @@ body {
             padding-right: 7px;
             padding-left: 7px;
             color: white;
-            background-color: $COSMOUI_BACKGROUND;
             &:hover {
                 color: #4b6c8b;
                 background-color: white !important;
             }
         }
         &.active a{
-            background-color: #4b6c8b;
+            background-color: #4e4294;
         }
     }
 
@@ -176,14 +174,14 @@ body {
 
         }
         .user-icon {
-            background: url('/images/user_icon.jpg');
+            background: url('/images/user_icon.png');
             width: 23px;
             height: 24px;
             display: inline-block;
             vertical-align: middle;
         }
         .logout_icon {
-            background: url('/images/logout_icon.jpg');
+            background: url('/images/logout_icon.png');
             width: 19px;
             height: 23px;
             display: inline-block;
@@ -501,4 +499,16 @@ button, input[type='button'], input[type='submit'], .btn.active:focus, .btn:acti
     font-size: 24px;
     padding-left:5px;
     margin-top: 2px;
+}
+
+.ui-variation-telecom {
+    #header .navbar {
+        background-color: #1d1934;
+    }
+    .ui-variation-brand {
+        position: absolute;
+        top: $HEADER_HEIGHT + 10;
+        right: $MAIN_PADDING;
+        color: #ff7f00;
+    }
 }

@@ -1,4 +1,4 @@
-<div style="height:100%;" data-ng-class="{'embeded': embeded}">
+<div style="height:100%;" class="ui-variation-{{uiVariation}}" ng-class="{embeded: embeded}">
     <div class="layout">
         <div header id="header"></div>
             <div class="main-content">
@@ -24,4 +24,6 @@
             </div>
         </div>
     </div>
+
+    <div class="ui-variation-brand" ng-if="uiVariation == 'telecom'">Telecom Edition</div>
 </div>

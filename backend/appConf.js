@@ -48,7 +48,8 @@ var async = require('async');
 var publicConfiguration = {
     i18n: {
         language: 'en'
-    }
+    },
+    uiVariation: process.env.UI_VARIATION
 };
 
 var privateConfiguration = {
