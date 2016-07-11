@@ -19,7 +19,7 @@ angular.module('cosmoUiApp', [
     'ui.router',
     'cfp.hotkeys',
     'toaster'
-]).config( function ($httpProvider, $translateProvider, $provide, $stateProvider, $urlRouterProvider, cfpLoadingBarProvider) {
+]).config( function ($httpProvider, $translateProvider, $provide, $stateProvider, $urlRouterProvider, cfpLoadingBarProvider, $localStorageProvider) {
     cfpLoadingBarProvider.includeSpinner = false;
 
     //var isSettingsExists = window.isSettingsExists();
@@ -219,6 +219,8 @@ angular.module('cosmoUiApp', [
             controller: 'ConfigCtrl'
         });
     $urlRouterProvider.otherwise('/blueprints');
+
+    $localStorageProvider.setKeyPrefix('cloudify_');
 
 
     //initialize get if not there

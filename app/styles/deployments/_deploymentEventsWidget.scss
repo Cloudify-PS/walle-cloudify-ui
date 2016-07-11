@@ -1,26 +1,13 @@
 .events-widget {
-    $BOTTOM: 30px; // same as footer height
-    // todo: refactor this to be variables CFY-3326
     position: fixed;
-    bottom: $BOTTOM;
     left: 0;
     right: 0;
-    bottom: 30px;
+    bottom: $FOOTER_HEIGHT;
     height: auto;
     border-top: 2px solid #4b6b8b;
     z-index: 10000;
     box-shadow: 0 -1px 24px 0 rgba(0, 0, 0, .2);
-
-    .bg {
-        position: absolute;
-        top: 0;
-        left: 0;
-        background-color: #fff;
-        opacity: .9;
-        width: 100%;
-        height: 100%;
-        z-index: 1;
-    }
+    background-color: $clr-base-01;
 
     .head {
         position: relative;
@@ -64,7 +51,7 @@
             }
         }
 
-        .dragBtn {
+        .dragKnob {
             position: absolute;
             top: 15px;
             right: 12px;
@@ -79,7 +66,6 @@
         position: relative;
         z-index: 10;
         overflow-y: scroll;
-        height: 263px;
     }
 
     .icon-events {
@@ -87,16 +73,6 @@
         height: 24px;
         font-size: 24px;
         line-height: 25px;
-    }
-
-    &.closed {
-        overflow: hidden;
-        min-height: 42px;
-        bottom: $BOTTOM;
-
-        .containList {
-            display: none;
-        }
     }
 
     table.eventsList {

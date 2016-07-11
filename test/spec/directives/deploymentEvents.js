@@ -18,21 +18,20 @@ describe('Directive: deploymentEvents', function () {
         $rootScope.$apply();
 
         scope = element.isolateScope();
-        scope.$apply();
     }));
 
     describe('deploymentEvents scope', function () {
 
         it('should create scope object', function () {
-            expect(scope).not.toBeUndefined();
+            expect(scope).toBeDefined();
         });
 
         it('should create an element with getEventIcon function', function () {
-            expect(typeof(scope.getEventIcon)).toBe('function');
+            expect(typeof scope.eventsMap.getEventIcon).toBe('function');
         });
 
         it('should create an element with getEventText function', function () {
-            expect(typeof(scope.getEventText)).toBe('function');
+            expect(typeof scope.eventsMap.getEventText).toBe('function');
         });
 
 
@@ -51,10 +50,6 @@ describe('Directive: deploymentEvents', function () {
 
         it('should have events-widget div', function () {
             expect(element.find('div.events-widget').length).toBe(1);
-        });
-
-        it('should have opacity background div', function () {
-            expect(element.find('div.bg').length).toBe(1);
         });
 
         it('should have head div', function () {
@@ -77,32 +72,4 @@ describe('Directive: deploymentEvents', function () {
             expect(element.find('[ng-repeat="event in events track by $index"]').length).toBe(1);
         });
     });
-
-
-    describe('drag head functionality', function () {
-        it('should change the height', function(){
-            element.css({ height: 250, width: 200});
-            $('body').attr('class','main-content');
-            $('body').css('top','83px');
-            $('body').append(element);
-            $('.events-widget').css('top','500px');
-            $('.events-widget').css('height','500px');
-            var eventsList = element.find('.containList');
-            var dragBtn = element.find('.dragBtn');
-            dragBtn.simulate('drag', { dy:10}); // drag once to enforce maxHeight..
-            var firstHeight = eventsList.height();
-            dragBtn.simulate('drag', { dy:10}); // actual drag.
-            var lastHeight =  eventsList.height();
-            expect(firstHeight - lastHeight).toBe(10);
-            $('body').removeClass('bpContainer');
-            $('body').attr('class',null);
-            element.remove();
-        });
-
-        it('should enable drag from the entire header', function(){ // lets test that the drag button and the header tag have the same gs-mousedown attr..
-            expect(element.find('.head').attr('data-ng-mousedown')).toEqual(element.find('.dragBtn').attr('data-ng-mousedown'));
-        });
-
-    });
-
 });
