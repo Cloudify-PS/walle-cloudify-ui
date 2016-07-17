@@ -479,11 +479,19 @@
         padding: 0 20px;
         margin: 10px 0 0;
 
+    }
+
+    .executions{
         .gs-table {
             margin: 0;
 
             tr {
                 cursor: default;
+
+                td{
+                    padding: 5px 0 5px 10px;
+                    vertical-align: top;
+                }
 
                 //.workflow { }
                 .id {
@@ -496,11 +504,10 @@
                     min-width: 80px !important;
                 }
                 .error {
-                    min-width: 210px !important;
-                    max-width: 210px !important;
-                    overflow: hidden;
+                    min-width: 120px !important;
                 }
                 .parameters{
+                    min-width: 120px !important;
                     word-break: break-all;
                 }
 
@@ -514,6 +521,7 @@
             }
         }
     }
+
     div[ng-switch-when="nodes"], div[ng-switch-when="executions"], .executions, .nodesTable {
         margin: 15px 0 0;
         padding: 0;
