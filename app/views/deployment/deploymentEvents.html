@@ -1,23 +1,22 @@
-<div class="events-widget" data-ng-class="{'closed': minimizeMode}" ng-show="showDeploymentEvents">
-    <div class="bg"></div>
-    <div class="head" data-ng-mousedown="dragIt($event)">
+<div class="events-widget" ng-show="showDeploymentEvents">
+    <div class="head" ng-mousedown="dragIt($event)">
         <div class="title">Events</div>
-        <a id="logs-page-link" href="#/logs?deployment_idLogs={{logsSearchParams.deployment_Id | encodeUri}}&sortByLogs={{logsSearchParams.sortBy}}&reverseLogs={{logsSearchParams.reverseOrder}}">{{'deployment.eventsWidget.linkToLogs' | translate}}</a>
-        <div class="lastEvent" data-ng-show="!!lastEvent && minimizeMode">
+        <a id="logs-page-link" ng-href="#/logs?deployment_idLogs={{ logsSearchParams.deployment_Id | encodeUri }}&sortByLogs={{ logsSearchParams.sortBy }}&reverseLogs={{ logsSearchParams.reverseOrder }}">{{ 'deployment.eventsWidget.linkToLogs' | translate}}</a>
+        <div class="lastEvent" ng-show="lastEvent && storage.eventsMinimized">
             <div class="icon">
-                <div class="icon-events" ng-class="getEventIcon(lastEvent)"></div>
+                <div class="icon-events" ng-class="eventsMap.getEventIcon(lastEvent)"></div>
             </div>
-            <div class="type">{{ getEventText(lastEvent.event_type) }} {{ lastEvent.context.node_name ? ' - ' + lastEvent.context.node_name : '' }}</div>
+            <div class="type">{{ eventsMap.getEventText(lastEvent.event_type) }} {{ lastEvent.context.node_name ? ' - ' + lastEvent.context.node_name : '' }}</div>
         </div>
-        <div class="dragBtn" data-ng-mousedown="dragIt($event)"></div>
+        <div class="dragKnob"></div>
     </div>
-    <div class="containList" wheel-propagation="true">
+    <div class="containList" wheel-propagation="true" ng-hide="storage.eventsMinimized">
         <table class="eventsList">
             <tr class="animate-repeat" ng-repeat="event in events track by $index">
                 <td class="icon">
-                    <div class="icon-events" ng-class="getEventIcon(event)"></div>
+                    <div class="icon-events" ng-class="eventsMap.getEventIcon(event)"></div>
                 </td>
-                <td class="type">{{ getEventText(event.event_type) }} {{ event.context.node_name ? ' - ' + event.context.node_name : '' }}</td>
+                <td class="type">{{ eventsMap.getEventText(event.event_type) }} {{ event.context.node_name ? ' - ' + event.context.node_name : '' }}</td>
                 <td class="time">{{ event['@timestamp'] | dateFormat:'short' }}</td>
                 <td class="message">
                     <div class="brief">{{ event.message.text }}</div>
