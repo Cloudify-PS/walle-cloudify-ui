@@ -42,10 +42,7 @@ describe('Controller: PluginsTabCtrl', function() {
 
     describe('#aggregatePluginsList', function() {
         it('should form an array of plugins from blueprint plan', function() {
-            scope.plugins = [];
-            scope.aggregatePluginsList(plan);
-
-            expect(scope.plugins).toEqual([
+            expect(scope.aggregatePluginsList(plan)).toEqual([
                 {package_name: 'diamond'},
                 {package_name: 'fabric'}
             ]);
