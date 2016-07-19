@@ -30,7 +30,10 @@
             "chooseFile": "Please choose a file to preview.",
             "noPreview": "Generating blueprint Source View...",
             "browseError": "Error browsing blueprint files",
-            "downloadLink": "Download blueprint"
+            "downloadLink": "Download blueprint",
+            "largeFile": "File is too large",
+            "clickHere": "click here",
+            "toDownload": "to download it"
         },
         "actions": {
             "deployBtn": "Create Deployment",

@@ -17,9 +17,12 @@
 
             <div class="sourcecode">
                 <h4 data-ng-show="filename">{{ filename }}</h4>
-                <div class="pre" ng-show="isSourceText(filename)">
+                <div class="pre" ng-if="isSourceText(filename) && !largeFile">
                     <p class="empty" data-ng-hide="dataCode.data">{{ 'blueprints.source.chooseFile' | translate }}</p>
                     <div code-highlight="yml" ng-model="dataCode"></div>
+                </div>
+                <div ng-if="largeFile">
+                    {{'blueprints.source.largeFile' | translate}} <a download="{{filename}}" ng-href="{{url}}">{{'blueprints.source.clickHere' | translate}}</a> {{'blueprints.source.toDownload' | translate}}.
                 </div>
             </div>
         </div>
