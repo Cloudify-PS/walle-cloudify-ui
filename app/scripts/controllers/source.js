@@ -195,6 +195,16 @@ angular.module('cosmoUiApp')
         $scope.openSourceFile = function(data) {
             CloudifyService.blueprints.browseFile({id: $scope.selectedBlueprint.id, path: new Date($scope.selectedBlueprint.updated_at).getTime() + '/' + data.relativePath})
                 .then(function(fileContent) {
+                    var contentSizeInKb = (encodeURI(fileContent.data).split(/%..|./).length - 1)/1000;
+                    if(contentSizeInKb > 50){
+                        $scope.largeFile = true;
+                        var blob = new Blob([ fileContent.data ], { type : 'text/plain' });
+                        $scope.url = (window.URL || window.webkitURL).createObjectURL(blob);
+                    } else{
+                        $scope.largeFile = undefined;
+                        $scope.url = undefined;
+                    }
+
                     $scope.dataCode = {
                         data: fileContent.data,
                         brush: getBrushByFile(data.name),

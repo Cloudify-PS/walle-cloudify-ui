@@ -378,7 +378,10 @@ describe('Controller: SourceCtrl', function () {
     });
 
     describe('#openSourceFile', function () {
-        beforeEach(inject(function (CloudifyService) {
+        var CloudifyService;
+
+        beforeEach(inject(function (_CloudifyService_) {
+            CloudifyService = _CloudifyService_;
             spyOn(CloudifyService.blueprints, 'browseFile').and.callFake(function (browseData) {
                 return {
                     then: function (success) { // todo: handle errors.
@@ -399,7 +402,32 @@ describe('Controller: SourceCtrl', function () {
             expect(scope.dataCode.path).toBe('bar');
         });
 
+        it('should not set large file download url', function(){
+            scope.openSourceFile({'id': 'success', 'name': 'foo.yaml', 'path': 'bar'});
 
+            expect(scope.largeFile).toBe(undefined);
+            expect(scope.url).toBe(undefined);
+        });
+
+        it('should set large file download url', function(){
+            var hugeString = 'hugeString';
+            var iterations = 10;
+            for (var i = 0; i < iterations; i++) {
+                hugeString += hugeString+hugeString;
+            }
+            CloudifyService.blueprints.browseFile.and.callFake(function () {
+                    return {
+                        then: function (success) {
+                            success({data: hugeString});
+                        }
+                    };
+                });
+
+            scope.openSourceFile({'id': 'success', 'name': 'foo.yaml', 'path': 'bar'});
+
+            expect(scope.largeFile).toBe(true);
+            expect(scope.url).not.toBe(undefined);
+        });
     });
 
     describe('#autoSelectFile', function( ){

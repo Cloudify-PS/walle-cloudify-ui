@@ -19,7 +19,7 @@ angular.module('cosmoUiApp', [
     'ui.router',
     'cfp.hotkeys',
     'toaster'
-]).config( function ($httpProvider, $translateProvider, $provide, $stateProvider, $urlRouterProvider, cfpLoadingBarProvider, $localStorageProvider) {
+]).config( function ($httpProvider, $translateProvider, $provide, $stateProvider, $urlRouterProvider, cfpLoadingBarProvider, $localStorageProvider, $compileProvider) {
     cfpLoadingBarProvider.includeSpinner = false;
 
     //var isSettingsExists = window.isSettingsExists();
@@ -250,6 +250,8 @@ angular.module('cosmoUiApp', [
             return tz ? moment.tz(m, tz).format(format) : m.format(format);
         };
     });
+
+    $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|ftp|mailto|tel|file|blob):/);
 })
 
 .run(function($rootScope, $interval) {
