@@ -515,6 +515,33 @@
                 "delete": "Deleting"
             }
         }
+    },
+    "imageBakeryWizard": {
+        "configurationPanels":{
+            "firstPanel":{
+                "description": "This is a manager instance of an AMI, it requires some configuration.",
+                "button": "Lets begin"
+            },
+            "secondPanel":{
+                "description": "Here are the required parameters, once filled press configure and let us do all the work.",
+                "backButton": "back",
+                "configureButton": "configure"
+            },
+            "thirdPanel":{
+                "description": "Great! The manager is now being configured. This would take up to 15 minutes.<br/>Do not close this page.",
+                "timePassed": "Time passed:",
+                "lastSteps": "Almost done. In 15 seconds, this manager will be ready.<br/>To complete the process, you will be logged out and the page will refresh automatically.",
+                "countdown": "Done in {{value}} seconds"
+            }
+        },
+        "failedPanel":{
+            "description": "The configuration has failed and this manager is now UNUSABLE.<br/>Go to logs in order to investigate the cause of failure.",
+            "button": "Go to Logs"
+        },
+        "completedPanel": {
+            "description": "The manager has been successfully configured.",
+            "button": "Check out the outputs"
+        }
     }
 }
 

@@ -22,11 +22,11 @@
 window.mockPromise = function (successResponse, errorResponse) {
     return {
         then: function (success, error) {
-            if (!!successResponse) {
+            if (!!successResponse && success) {
                 success(successResponse);
             }
 
-            if (!!errorResponse) {
+            if (!!errorResponse && error) {
                 error(errorResponse);
             }
 

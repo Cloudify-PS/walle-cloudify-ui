@@ -1,0 +1,47 @@
+<div ng-if="showWizard">
+    <div id="wizard">
+        <div id="configuration-panels" ng-if="!isCompleted && !setupFailed">
+            <div class="wizard-panel" ng-show="panelIndex == 1">
+                <h1>{{title}}</h1>
+                <h3>{{ 'imageBakeryWizard.configurationPanels.firstPanel.description' | translate }}</h3>
+                <div class="panel-buttons">
+                    <button class="btn btn-primary" ng-click="$parent.$parent.panelIndex = 2">{{ 'imageBakeryWizard.configurationPanels.firstPanel.button' | translate }}</button>
+                </div>
+            </div>
+            <div class="wizard-panel" ng-show="panelIndex == 2">
+                <h3>{{ 'imageBakeryWizard.configurationPanels.secondPanel.description' | translate }}</h3>
+                <div form-raw-params
+                     on-error="setError"
+                     params="inputs"
+                     raw-string="$parent.$parent.rawString"
+                     valid="isInputsValid"></div>
+                <div id="inputs-error" ng-show="error" class="error-message monospace" ng-bind-html="error"></div>
+                <div class="panel-buttons">
+                    <button class="btn btn-link" ng-click="$parent.$parent.panelIndex = 1">{{ 'imageBakeryWizard.configurationPanels.secondPanel.backButton' | translate }}</button>
+                    <button class="btn btn-primary" ng-click="configure()" ng-disabled="!isInputsValid">{{ 'imageBakeryWizard.configurationPanels.secondPanel.configureButton' | translate }}</button>
+                </div>
+            </div>
+            <div class="wizard-panel" ng-show="panelIndex == 3">
+                <h3 translate="imageBakeryWizard.configurationPanels.thirdPanel.description"></h3>
+                <h4>{{ 'imageBakeryWizard.configurationPanels.thirdPanel.timePassed' | translate }} {{timer | timerFormat:true}}</h4>
+                <div ng-show="countdown.value">
+                    <hr/>
+                    <h3 translate="imageBakeryWizard.configurationPanels.thirdPanel.lastSteps"></h3>
+                    <h4>{{ 'imageBakeryWizard.configurationPanels.thirdPanel.countdown' | translate:countdown }}</h4>
+                </div>
+            </div>
+        </div>
+        <div id="completed-panel" class="wizard-panel" ng-if="isCompleted">
+            <h3>{{ 'imageBakeryWizard.completedPanel.description' | translate }}</h3>
+            <div class="panel-buttons">
+                <button class="btn btn-primary" ng-click="closeCompletedWizard()">{{ 'imageBakeryWizard.completedPanel.button' | translate }}</button>
+            </div>
+        </div>
+        <div id="failed-panel" class="wizard-panel" ng-if="setupFailed">
+            <h3 translate="imageBakeryWizard.failedPanel.description"></h3>
+            <div class="panel-buttons">
+                <button class="btn btn-primary" ng-click="closeFailedWizard()">{{ 'imageBakeryWizard.failedPanel.button' | translate }}</button>
+            </div>
+        </div>
+    </div>
+</div>

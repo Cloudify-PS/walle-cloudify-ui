@@ -1,0 +1,79 @@
+image-bakery-wizard{
+    &>div{
+        position: fixed;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background-color: rgba(0,0, 0,0.7);
+        display: flex;
+        z-index: 1030;
+
+        h3{
+            line-height: 30px;
+        }
+
+        #wizard{
+            //todo
+            display: flex;
+
+            margin: auto;
+            width: 1000px;
+            height: 600px;
+            vertical-align: middle;
+            background: white;
+            opacity: 1;
+            z-index: 1030;
+            padding: 20px;
+
+            #configuration-panels{
+                display: flex;
+                width: 100%;
+            }
+
+            .wizard-panel{
+                //todo
+                display: inline-block;
+                padding-bottom: 50px;
+                margin: auto;
+
+                text-align: center;
+
+                [form-raw-params]{
+                    margin-top: 50px;
+                    .deployInputs{
+                        width: 500px;
+                        ul li .form-raw-item-name{
+                            max-width: 200px;
+                        }
+                    }
+                }
+
+                .error-message {
+                    display: block;
+                    color: $clr-base-26;
+                    margin: 10px 0;
+                    padding: 10px 20px;
+                    word-break: normal;
+                    background-color: #f5f5f5;
+                    max-height: 300px;
+                    line-height: 20px;
+                    word-wrap: break-word;
+                    overflow-x: auto;
+
+                    &.monospace {
+                        font-family: monospace;
+                    }
+                }
+
+                .gs-spinner{
+                    padding-top: 20px;
+                }
+
+                .panel-buttons{
+                    padding-top: 20px;
+                }
+            }
+        }
+    }
+}
