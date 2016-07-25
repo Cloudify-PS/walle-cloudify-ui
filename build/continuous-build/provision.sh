@@ -53,7 +53,23 @@ else
     echo "bzip2 exists. skipping..."
 fi
 
-
+## for an unknown reason, some tests fail in PhantomJS when Chrome isn't installed on the machine
+## to remedy that, Chrome is installed
+if [ ! -f /usr/bin/google-chrome-stable ];then
+    echo "Installing Google Chrome"
+    # add google chrome repo to yum
+    sudo yum install -y wget
+    wget https://dl-ssl.google.com/linux/linux_signing_key.pub -o /tmp/linux_signing_key.pub
+    sudo rpm -import /tmp/linux_signing_key.pub
+    sudo sh -c "echo '[google-chrome]
+name=google-chrome - 64-bit
+baseurl=http://dl.google.com/linux/chrome/rpm/stable/x86_64
+enabled=1
+gpgcheck=1
+gpgkey=https://dl-ssl.google.com/linux/linux_signing_key.pub' > /etc/yum.repos.d/google-chrome.repo"
+    # install google chrome
+    sudo yum -y install google-chrome-stable --skip-broken
+fi
 
 if [ "${SKIP_BUILD}" == "" ];then # for development purposes
     if [ "${UPDATE_CLONE}" != "" ]; then
