@@ -58,9 +58,6 @@ fi
 if [ ! -f /usr/bin/google-chrome-stable ];then
     echo "Installing Google Chrome"
     # add google chrome repo to yum
-    sudo yum install -y wget
-    wget https://dl-ssl.google.com/linux/linux_signing_key.pub -o /tmp/linux_signing_key.pub
-    sudo rpm -import /tmp/linux_signing_key.pub
     sudo sh -c "echo '[google-chrome]
 name=google-chrome - 64-bit
 baseurl=http://dl.google.com/linux/chrome/rpm/stable/x86_64
