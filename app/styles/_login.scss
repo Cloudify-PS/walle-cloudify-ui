@@ -20,7 +20,7 @@
         margin-left: auto;
         margin-right: auto;
         width: 400px;
-        height: 230px;
+        height: 350px;
         z-index: 9996;
         border: 2px solid $COSMOUI_DIALOG_BORDER_COLOR;
         border-radius: 4px;
@@ -60,7 +60,6 @@
 
             .actions {
                 position: absolute;
-                bottom: 0;
                 width: 100%;
 
                 .error-message {

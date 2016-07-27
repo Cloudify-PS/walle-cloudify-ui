@@ -12,7 +12,7 @@ angular.module('cosmoUiApp')
 
         this.login = function (data) {
             return $http({
-                url: '/backend/login',
+                url: 'http://localhost:5000/login_openstack',				   
                 method: 'POST',
                 data: data
             });
