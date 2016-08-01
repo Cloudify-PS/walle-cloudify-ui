@@ -26,10 +26,11 @@ var querystring = require('querystring');
  * @param {string} opts.blueprint_id the blueprint's ID.
  * @param {object} opts.params
  * @param {string} opts.params.application_file_name name of yaml file to look for in the tar.
+ * @param {object} headers Request headers
  * @param {function} callback function(err,data)
  */
 // todo - Cloudify4node should be an instance.. why are we using static function declaration?
-exports.uploadBlueprint = function (cloudifyConf, streamReader, opts, callback) {
+exports.uploadBlueprint = function (cloudifyConf, streamReader, opts, headers, callback) {
     var ajax = require('http');
     var endpoint = require('url').parse(conf.cloudifyManagerEndpoint);
 
@@ -80,7 +81,11 @@ exports.uploadBlueprint = function (cloudifyConf, streamReader, opts, callback) 
         method: 'PUT',
         headers: {
             'Content-Type': 'application/octet-stream',
-            'Transfer-Encoding': 'chunked'
+            'Transfer-Encoding': 'chunked',
+			'x-openstack-authorization': headers['x-openstack-authorization'],
+			'x-openstack-keystore-url': headers['x-openstack-keystore-url'],
+			'x-openstack-keystore-region': headers['x-openstack-keystore-region'],
+			'x-openstack-keystore-tenant': headers['x-openstack-keystore-tenant']
         }
     };
 
