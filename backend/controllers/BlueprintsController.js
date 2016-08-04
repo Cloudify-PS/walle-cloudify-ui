@@ -103,6 +103,6 @@ exports.upload = function (req, res) {
 
     if (type === uploadTypes.ids.FILE) {
         var readStream = fs.createReadStream(req.files.application_archive.path, {bufferSize: 64 * 1024});
-        services.cloudify4node.uploadBlueprint(cloudifyConf, readStream, blueprintUploadData.opts, uploadCallback);
+        services.cloudify4node.uploadBlueprint(cloudifyConf, readStream, blueprintUploadData.opts, req.headers, uploadCallback);
     }
 };

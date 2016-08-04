@@ -12,7 +12,7 @@ angular.module('cosmoUiApp')
 
         this.login = function (data) {
             return $http({
-                url: '/backend/login',
+                url: 'backend/cloudify-api/login_openstack',
                 method: 'POST',
                 data: data
             });
