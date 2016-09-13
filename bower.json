@@ -33,7 +33,7 @@
     "angular-hotkeys": "chieffancypants/angular-hotkeys#~1.7.0",
     "jsonlint": "~1.6.0",
     "angularjs-toaster": "~1.0.0",
-    "selectn.min": "https://npmcdn.com/selectn/selectn.min.js"
+    "selectn.min": "https://unpkg.com/selectn/selectn.min.js"
   },
   "devDependencies": {
     "angular-mocks": "~1.5.0",
